@@ -12,7 +12,7 @@
 	<artifactId>csh-admin</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
-	<name>csh-operation Maven Webapp</name>
+	<name>csh-admin Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
