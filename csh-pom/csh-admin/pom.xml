@@ -28,7 +28,7 @@
 	</dependencies>
 	
 	<build>
-		<finalName>csh-operation</finalName>
+		<finalName>csh-admin</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

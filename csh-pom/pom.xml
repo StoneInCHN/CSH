@@ -397,8 +397,7 @@
 	<modules> 
 		<module>csh-entity</module>
 		<module>csh-interface</module>
-		<module>csh-operate</module>
+		<module>csh-operation</module>
 		<module>csh-admin</module>
-    	<module>csh-product</module>
   </modules>
 </project>
