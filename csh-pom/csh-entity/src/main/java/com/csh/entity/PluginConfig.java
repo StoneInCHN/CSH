@@ -21,9 +21,6 @@ import javax.persistence.Transient;
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_plugin_config_sequence")
 public class PluginConfig extends OrderEntity{
 
-    /**
-   * 
-   */
   private static final long serialVersionUID = -4659991911011721380L;
 
     /** 插件ID */

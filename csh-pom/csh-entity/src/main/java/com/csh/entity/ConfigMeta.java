@@ -57,10 +57,6 @@ public class ConfigMeta extends BaseEntity {
    */
   private Set<MetaProperty> metaProperty = new HashSet<MetaProperty>();
   
-  /**
-   * 租户配置
-   */
-  private Set<TenantConfigInfo> tenantConfigInfo = new HashSet<TenantConfigInfo>();
 
   private Set<VersionConfig> versionConfig = new HashSet<VersionConfig> ();
   
@@ -111,14 +107,6 @@ public class ConfigMeta extends BaseEntity {
     this.metaProperty = metaProperty;
   }
 
-  @OneToMany(mappedBy = "configMeta", fetch = FetchType.LAZY)
-  public Set<TenantConfigInfo> getTenantConfigInfo() {
-    return tenantConfigInfo;
-  }
-
-  public void setTenantConfigInfo(Set<TenantConfigInfo> tenantConfigInfo) {
-    this.tenantConfigInfo = tenantConfigInfo;
-  }
   
   @ManyToMany(mappedBy = "configMeta", fetch = FetchType.LAZY)
   public Set<VersionConfig> getVersionConfig ()
