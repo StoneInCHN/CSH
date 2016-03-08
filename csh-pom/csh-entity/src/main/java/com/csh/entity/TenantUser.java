@@ -1,14 +1,10 @@
 package com.csh.entity;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -92,6 +88,12 @@ public class TenantUser extends BaseEntity
 
   /**入职时间*/
   private Date hireDate;
+  
+  /**所在部门*/
+  private Department department;
+  
+  /**担任职务*/
+  private Position position;
 
   /**
     * 用户登录账号
@@ -290,5 +292,25 @@ public class TenantUser extends BaseEntity
   {
     this.tenantID = tenantID;
   }
+  @ManyToOne
+  @JsonProperty
+  @IndexedEmbedded
+  public Department getDepartment() {
+    return department;
+  }
 
+  public void setDepartment(Department department) {
+    this.department = department;
+  }
+
+  @ManyToOne
+  @JsonProperty
+  @IndexedEmbedded
+  public Position getPosition() {
+    return position;
+  }
+
+  public void setPosition(Position position) {
+    this.position = position;
+  }
 }

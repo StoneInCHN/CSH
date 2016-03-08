@@ -6,11 +6,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -52,11 +49,6 @@ public class ConfigMeta extends BaseEntity {
    */
   private ConfigType configType;
 
-  /**
-   * 配置元属性
-   */
-  private Set<MetaProperty> metaProperty = new HashSet<MetaProperty>();
-  
 
   private Set<VersionConfig> versionConfig = new HashSet<VersionConfig> ();
   
@@ -97,16 +89,6 @@ public class ConfigMeta extends BaseEntity {
   public void setConfigType(ConfigType configType) {
     this.configType = configType;
   }
-
-  @OneToMany(mappedBy = "configMeta", fetch = FetchType.LAZY)
-  public Set<MetaProperty> getMetaProperty() {
-    return metaProperty;
-  }
-
-  public void setMetaProperty(Set<MetaProperty> metaProperty) {
-    this.metaProperty = metaProperty;
-  }
-
   
   @ManyToMany(mappedBy = "configMeta", fetch = FetchType.LAZY)
   public Set<VersionConfig> getVersionConfig ()
