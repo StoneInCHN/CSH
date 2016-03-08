@@ -175,9 +175,10 @@ public class RoleController extends BaseController {
         
         //配置子节点（function）
         List<ConfigMeta> relatedFunctions = configMetaService.findRelationFunction (packagecConfigMeta);
+        List<TreeNodeResponse> childList = new ArrayList<TreeNodeResponse>();
         for (ConfigMeta function : relatedFunctions)
         {
-          List<TreeNodeResponse> childList = new ArrayList<TreeNodeResponse>();
+          
           TreeNodeResponse treeNodeResponseChild = new TreeNodeResponse();
           
           treeNodeResponseChild.setId(function.getId());
@@ -189,7 +190,7 @@ public class RoleController extends BaseController {
           }
           treeNodeResponseChild.setIconCls("icon-large-shapes");
           
-          treeNodeResponseChild.setState (TreeNodeState.closed);
+          treeNodeResponseChild.setState (TreeNodeState.open);
           
           if (treeNodeResponse != null && treeNodeResponse.getChildren() != null) {
             childList = treeNodeResponse.getChildren();
@@ -197,10 +198,11 @@ public class RoleController extends BaseController {
           
           
           childList.add(treeNodeResponseChild);
-          treeNodeResponse.setChildren(childList);
+          
         }
+        treeNodeResponse.setChildren(childList);
         
-        parentMap.put(treeNodeResponse.getId(), treeNodeResponse);
+//        parentMap.put(treeNodeResponse.getId(), treeNodeResponse);
         treeNodeResponses.add(treeNodeResponse);
     }
     // 创建子节点
