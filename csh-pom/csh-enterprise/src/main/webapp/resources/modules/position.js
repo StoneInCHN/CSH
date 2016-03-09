@@ -1,6 +1,6 @@
 $(function(){
 		$("#position-table-list").datagrid({
-			title:message("csh.bulding.list"),
+			title:message("csh.position.list"),
 			fitColumns:true,
 			url:'../position/list.jhtml',  
 			pagination: true,

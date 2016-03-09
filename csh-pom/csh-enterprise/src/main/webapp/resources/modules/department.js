@@ -1,6 +1,6 @@
 $(function(){
 		$("#department-table-list").treegrid({
-			title:message("csh.bulding.list"),
+			title:message("csh.department.list"),
 			fitColumns:true,
 			url:'../department/list.jhtml',  
 			rownumbers: true,

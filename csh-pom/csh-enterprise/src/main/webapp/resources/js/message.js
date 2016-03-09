@@ -84,12 +84,14 @@ var messages = {
 	"csh.tenantUser.hireDate":"入职时间",
 	
 	//department
+	"csh.department.list":"部门列表",
 	"csh.department.name":"部门名称",
 	"csh.department.grade":"部门层级",
 	"csh.department.parent":"上级部门",
 	"csh.department.add":"添加部门",
 	
 	//position
+	"csh.position.list":"职位列表",
 	"csh.position.add":"添加职位",
 	"csh.position.name":"职位名称",
 	"csh.position.department":"隶属部门",
