@@ -176,7 +176,7 @@ public class SystemConfigController extends BaseController {
         LogUtil.debug(SystemConfigController.class, "SystemConfigController",
             "systemConfig already used by other table, could can't delete, current tenant ID=%s",
             tenantAccountService.getCurrentTenantID());
-        return Message.error("yly.systemConfig.exception");
+        return Message.error("csh.systemConfig.exception");
       }
     }
     return SUCCESS_MESSAGE;

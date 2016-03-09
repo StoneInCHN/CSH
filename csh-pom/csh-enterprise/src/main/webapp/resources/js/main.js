@@ -108,7 +108,7 @@ $(function(){
 			    href:'../common/changePassword.jhtml',
 			    cache: false, 
 			    buttons:[{
-			    	text:message("yly.common.save"),
+			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
 						debugger;
@@ -120,7 +120,7 @@ $(function(){
 								data:$("#changePassword_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
-										text:message("yly.common.saving")
+										text:message("csh.common.saving")
 									});
 								},
 								success:function(result,response,status){
@@ -136,7 +136,7 @@ $(function(){
 						};
 					}
 				},{
-					text:message("yly.common.cancel"),
+					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
 						 $('#changePassword').dialog("close");

@@ -1,17 +1,17 @@
 $(function(){
 		$("#position-table-list").datagrid({
-			title:message("yly.bulding.list"),
+			title:message("csh.bulding.list"),
 			fitColumns:true,
 			url:'../position/list.jhtml',  
 			pagination: true,
-			loadMsg:message("yly.common.loading"),
+			loadMsg:message("csh.common.loading"),
 			striped:true,
 			toolbar: [{
-				text:message("yly.common.add"),
+				text:message("csh.common.add"),
 				iconCls: 'icon-add',
 				handler: function(){
 					$("#addPosition").dialog({    
-					    title:message("yly.position.add"),   
+					    title:message("csh.position.add"),   
 					    width: 350,    
 					    height: 220,    
 					    closed: false,    
@@ -19,7 +19,7 @@ $(function(){
 					    iconCls:'icon-mini-add',
 					    modal: true,
 					    buttons:[{
-					    	text:message("yly.common.save"),
+					    	text:message("csh.common.save"),
 					    	iconCls:'icon-save',
 							handler:function(){
 								var validate = $('#addPosition_form').form('validate');
@@ -30,7 +30,7 @@ $(function(){
 										data:$("#addPosition_form").serialize(),
 										beforeSend:function(){
 											$.messager.progress({
-												text:message("yly.common.saving")
+												text:message("csh.common.saving")
 											});
 										},
 										success:function(result,response,status){
@@ -48,7 +48,7 @@ $(function(){
 								};
 							}
 						},{
-							text:message("yly.common.cancel"),
+							text:message("csh.common.cancel"),
 							iconCls:'icon-cancel',
 							handler:function(){
 								 $('#addPosition').dialog("close");
@@ -61,7 +61,7 @@ $(function(){
 						    	    method:"get",
 						    	    animate:true,
 						    	    lines:true,
-						    	    prompt:message("yly.common.please.select"),
+						    	    prompt:message("csh.common.please.select"),
 						    	    formatter:function(node){
 						    	    	node.text = node.name;
 						    			return node.name;
@@ -75,12 +75,12 @@ $(function(){
 					});
 				}
 			},'-',{
-				text:message("yly.common.edit"),
+				text:message("csh.common.edit"),
 				iconCls: 'icon-edit',
 				handler: function(){
 					var _edit_row = $('#position-table-list').datagrid('getSelected');
 					if( _edit_row == null ){
-						$.messager.alert(message("yly.common.prompt"),message("yly.common.select.editRow"),'warning');    
+						$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');    
 						return false;
 					}
 					$("#editPosition").dialog({
@@ -91,7 +91,7 @@ $(function(){
 						href:'../position/edit.jhtml?id='+_edit_row.id,
 						modal: true,
 					    buttons:[{
-					    	text:message("yly.common.save"),
+					    	text:message("csh.common.save"),
 					    	iconCls:'icon-save',
 							handler:function(){
 								var validate = $('#editPosition_form').form('validate');
@@ -102,7 +102,7 @@ $(function(){
 										data:$("#editPosition_form").serialize(),
 										beforeSend:function(){
 											$.messager.progress({
-												text:message("yly.common.saving")
+												text:message("csh.common.saving")
 											});
 										},
 										success:function(result,response,status){
@@ -120,7 +120,7 @@ $(function(){
 								};
 							}
 						},{
-							text:message("yly.common.cancel"),
+							text:message("csh.common.cancel"),
 							iconCls:'icon-cancel',
 							handler:function(){
 								 $('#editPosition').dialog("close");
@@ -132,7 +132,7 @@ $(function(){
 				    	    method:"get",
 				    	    animate:true,
 				    	    lines:true,
-				    	    prompt:message("yly.common.please.select"),
+				    	    prompt:message("csh.common.please.select"),
 				    	    formatter:function(node){
 				    	    	node.text = node.name;
 				    			return node.name;
@@ -145,7 +145,7 @@ $(function(){
 					})
 				}
 			},'-',{
-				text:message("yly.common.remove"),
+				text:message("csh.common.remove"),
 				iconCls: 'icon-remove',
 				handler: function(){
 					listRemove('position-table-list','../position/delete.jhtml');
@@ -154,18 +154,18 @@ $(function(){
 			columns:[
 			   [
 			      {field:'ck',checkbox:true},
-			      {title:message("yly.position.name"),field:"name",width:100,sortable:true},
-			      {title:message("yly.position.department"),field:"department",width:100,sortable:true,formatter: function(value,row,index){
+			      {title:message("csh.position.name"),field:"name",width:100,sortable:true},
+			      {title:message("csh.position.department"),field:"department",width:100,sortable:true,formatter: function(value,row,index){
 			    	  if(value){
 			    		  return value.name;
 			    	  }else{
 			    		  return "";
 			    	  }
 				  }},
-			      {title:message("yly.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
+			      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 						return new Date(value).Format("yyyy-MM-dd");
 				  }},
-			      {title:message("yly.common.modifyDate"),field:"modifyDate",width:100,sortable:true,formatter: function(value,row,index){
+			      {title:message("csh.common.modifyDate"),field:"modifyDate",width:100,sortable:true,formatter: function(value,row,index){
 						return new Date(value).Format("yyyy-MM-dd");
 				  }}
 			   ]

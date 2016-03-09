@@ -1,6 +1,6 @@
 $(function(){
 		$("#department-table-list").treegrid({
-			title:message("yly.bulding.list"),
+			title:message("csh.bulding.list"),
 			fitColumns:true,
 			url:'../department/list.jhtml',  
 			rownumbers: true,
@@ -8,14 +8,14 @@ $(function(){
 			idField:'id',
     	    lines:true,
 		    treeField:'name', 
-			loadMsg:message("yly.common.loading"),
+			loadMsg:message("csh.common.loading"),
 			striped:true,
 			toolbar: [{
 				text:'添加',
 				iconCls: 'icon-add',
 				handler: function(){
 					$("#addDepartment").dialog({    
-					    title:message("yly.department.add"),   
+					    title:message("csh.department.add"),   
 					    width: 350,    
 					    height: 220,    
 					    closed: false,    
@@ -23,7 +23,7 @@ $(function(){
 					    iconCls:'icon-mini-add',
 					    modal: true,
 					    buttons:[{
-					    	text:message("yly.common.save"),
+					    	text:message("csh.common.save"),
 					    	iconCls:'icon-save',
 							handler:function(){
 								var validate = $('#addDepartment_form').form('validate');
@@ -34,7 +34,7 @@ $(function(){
 										data:$("#addDepartment_form").serialize(),
 										beforeSend:function(){
 											$.messager.progress({
-												text:message("yly.common.saving")
+												text:message("csh.common.saving")
 											});
 										},
 										success:function(result,response,status){
@@ -52,7 +52,7 @@ $(function(){
 								};
 							}
 						},{
-							text:message("yly.common.cancel"),
+							text:message("csh.common.cancel"),
 							iconCls:'icon-cancel',
 							handler:function(){
 								 $('#addDepartment').dialog("close");
@@ -65,7 +65,7 @@ $(function(){
 						    	    method:"get",
 						    	    animate:true,
 						    	    lines:true,
-						    	    prompt:message("yly.common.please.select"),
+						    	    prompt:message("csh.common.please.select"),
 						    	    formatter:function(node){
 						    	    	node.text = node.name;
 						    			return node.name;
@@ -84,7 +84,7 @@ $(function(){
 				handler: function(){
 					var _edit_row = $('#department-table-list').datagrid('getSelected');
 					if( _edit_row == null ){
-						$.messager.alert(message("yly.common.prompt"),message("yly.common.select.editRow"),'warning');    
+						$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');    
 						return false;
 					}
 					$("#editDepartment").dialog({
@@ -95,7 +95,7 @@ $(function(){
 						href:'../department/edit.jhtml?id='+_edit_row.id,
 						modal: true,
 					    buttons:[{
-					    	text:message("yly.common.save"),
+					    	text:message("csh.common.save"),
 					    	iconCls:'icon-save',
 							handler:function(){
 								var validate = $('#editDepartment_form').form('validate');
@@ -106,7 +106,7 @@ $(function(){
 										data:$("#editDepartment_form").serialize(),
 										beforeSend:function(){
 											$.messager.progress({
-												text:message("yly.common.saving")
+												text:message("csh.common.saving")
 											});
 										},
 										success:function(result,response,status){
@@ -124,7 +124,7 @@ $(function(){
 								};
 							}
 						},{
-							text:message("yly.common.cancel"),
+							text:message("csh.common.cancel"),
 							iconCls:'icon-cancel',
 							handler:function(){
 								 $('#editDepartment').dialog("close");
@@ -136,7 +136,7 @@ $(function(){
 				    	    method:"get",
 				    	    animate:true,
 				    	    lines:true,
-				    	    prompt:message("yly.common.please.select"),
+				    	    prompt:message("csh.common.please.select"),
 				    	    formatter:function(node){
 				    	    	node.text = node.name;
 				    			return node.name;
@@ -154,14 +154,14 @@ $(function(){
 				handler: function(){
 					var _rows = $("#department-table-list").treegrid('getSelections');
 					if (_rows.length == 0) {
-						$.messager.alert(message("yly.common.prompt"), message("yly.common.select.deleteRow"),'warning');
+						$.messager.alert(message("csh.common.prompt"), message("csh.common.select.deleteRow"),'warning');
 					} else {
 						var _ids = [];
 						for (var i = 0; i < _rows.length; i++) {
 							_ids.push(_rows[i].id);
 						}
 						if (_ids.length > 0) {
-							$.messager.confirm(message("yly.common.confirm"), message("yly.common.delete.confirm"), function(r) {
+							$.messager.confirm(message("csh.common.confirm"), message("csh.common.delete.confirm"), function(r) {
 								if (r) {
 									$.ajax({
 										url : "../department/delete.jhtml",
@@ -172,7 +172,7 @@ $(function(){
 										},
 										beforeSend : function() {
 											$.messager.progress({
-												text : message("yly.common.progress")
+												text : message("csh.common.progress")
 											});
 										},
 										success : function(result, response, status) {
@@ -195,12 +195,12 @@ $(function(){
 			}],
 			columns:[
 			   [
-			      {title:message("yly.department.name"),field:"name",width:100,sortable:true},
-			      {title:message("yly.department.grade"),field:"grade",width:100,sortable:true},
-			      {title:message("yly.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
+			      {title:message("csh.department.name"),field:"name",width:100,sortable:true},
+			      {title:message("csh.department.grade"),field:"grade",width:100,sortable:true},
+			      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 						return new Date(value).Format("yyyy-MM-dd");
 					}},
-			      {title:message("yly.common.modifyDate"),field:"modifyDate",width:100,sortable:true,formatter: function(value,row,index){
+			      {title:message("csh.common.modifyDate"),field:"modifyDate",width:100,sortable:true,formatter: function(value,row,index){
 						return new Date(value).Format("yyyy-MM-dd");
 					}}
 			   ]

@@ -1,13 +1,13 @@
 var tenantUser_manager_tool = {
 		add:function(){
 			$('#addTenantUser').dialog({
-			    title: message("yly.tenantUser.add"),    
+			    title: message("csh.tenantUser.add"),    
 			    width: 700,    
 			    height: 550,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{
-			    	text:message("yly.common.save"),
+			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
 						var validate = $('#addTenantUser_form').form('validate');
@@ -23,7 +23,7 @@ var tenantUser_manager_tool = {
 									data:$("#addTenantUser_form").serialize(),
 									beforeSend:function(){
 										$.messager.progress({
-											text:message("yly.common.saving")
+											text:message("csh.common.saving")
 										});
 									},
 									success:function(result,response,status){
@@ -41,7 +41,7 @@ var tenantUser_manager_tool = {
 						};
 					}
 				},{
-					text:message("yly.common.cancel"),
+					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
 						 $('#addTenantUser').dialog("close").form("reset");
@@ -55,7 +55,7 @@ var tenantUser_manager_tool = {
 					    animate:true,
 					    lines:true,
 					    required:true,
-					    prompt:message("yly.common.please.select"),
+					    prompt:message("csh.common.please.select"),
 					    formatter:function(node){
 					    	node.text = node.name;
 							return node.name;
@@ -71,7 +71,7 @@ var tenantUser_manager_tool = {
 					    textField:'name',
 					    editable : false,
 					    required:true,
-					    prompt:message("yly.common.please.select"),
+					    prompt:message("csh.common.please.select"),
 					});
 			    	//头像上传
 			     	var options ={
@@ -137,7 +137,7 @@ var tenantUser_manager_tool = {
 									data:$("#addTenantUser_form").serialize(),
 									beforeSend:function(){
 										$.messager.progress({
-											text:message("yly.common.saving")
+											text:message("csh.common.saving")
 										});
 									},
 									success:function(result,response,status){
@@ -166,18 +166,18 @@ var tenantUser_manager_tool = {
 		edit:function(){
 			var _edit_row = $('#tenantUser-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
-				$.messager.alert(message("yly.common.select.editRow"));  
+				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
 			var _dialog = $('#editTenantUser').dialog({    
-				title: message("yly.common.edit"),     
+				title: message("csh.common.edit"),     
 			    width: 700,    
 			    height: 550,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
 			    href:'../tenantUser/edit.jhtml?id='+_edit_row.id,
 			    buttons:[{
-			    	text:message("yly.common.save"),
+			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
 						var validate = $('#editTenantUser_form').form('validate');
@@ -188,7 +188,7 @@ var tenantUser_manager_tool = {
 								data:$("#editTenantUser_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
-										text:message("yly.common.saving")
+										text:message("csh.common.saving")
 									});
 								},
 								success:function(result,response,status){
@@ -201,7 +201,7 @@ var tenantUser_manager_tool = {
 						};
 					}
 				},{
-					text:message("yly.common.close"),
+					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
 						 $('#editTenantUser').dialog("close").form("reset");
@@ -309,7 +309,7 @@ $(function(){
 		 method:"get",
 		 animate:true,
 		 lines:true,
-		 prompt:message("yly.common.please.select"),
+		 prompt:message("csh.common.please.select"),
 	     formatter:function(node){
 	    	node.text = node.name;
 			return node.name;
@@ -326,26 +326,26 @@ $(function(){
 	    valueField:'id',    
 	    textField:'name',
 	    cache: true,
-	    prompt:message("yly.common.please.select")
+	    prompt:message("csh.common.please.select")
 	});
 	$("#tenantUser-table-list").datagrid({
-		title:message("yly.tenantUser.list"),
+		title:message("csh.tenantUser.list"),
 		fitColumns:true,
 		toolbar:"#tenantUser_manager_tool",
 		url:'../tenantUser/list.jhtml',  
 		pagination:true,
-		loadMsg:message("yly.common.loading"),
+		loadMsg:message("csh.common.loading"),
 		striped:true,
 		onDblClickRow : function (rowIndex, rowData){
 			$('#tenantUserDetail').dialog({    
-			    title: message("yly.common.detail"),    
+			    title: message("csh.common.detail"),    
 			    width: 660,    
 			    height: 550, 
 			    cache: false,
 			    modal: true,
 			    href:'../tenantUser/details.jhtml?id='+rowData.id,
 			    buttons:[{
-					text:message("yly.common.close"),
+					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
 						 $('#tenantUserDetail').dialog("close");
@@ -356,42 +356,42 @@ $(function(){
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
-		      {title:message("yly.tenantUser.realName"),field:"realName",width:100,sortable:true},
-		      {title:message("yly.common.gender"),field:"gender",width:100,sortable:true,
+		      {title:message("csh.tenantUser.realName"),field:"realName",width:100,sortable:true},
+		      {title:message("csh.common.gender"),field:"gender",width:100,sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(value == "MALE"){
-			    		  return  message("yly.common.male");
+			    		  return  message("csh.common.male");
 			    	  }else if (value = "FEMALE"){
-			    		  return  message("yly.common.female");
+			    		  return  message("csh.common.female");
 			    	  }
 		      	  }  },
-		      {title:message("yly.common.age"),field:"age",width:100,sortable:true},
-		      {title:message("yly.tenantUser.staffID"),field:"staffID",width:100,sortable:true},
-		      {title:message("yly.tenantUser.staffStatus"),field:"staffStatus",width:100,sortable:true,
+		      {title:message("csh.common.age"),field:"age",width:100,sortable:true},
+		      {title:message("csh.tenantUser.staffID"),field:"staffID",width:100,sortable:true},
+		      {title:message("csh.tenantUser.staffStatus"),field:"staffStatus",width:100,sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(value == "INSERVICE"){
-			    		  return  message("yly.tenantUser.staffStatus.inService");
+			    		  return  message("csh.tenantUser.staffStatus.inService");
 			    	  }else if (value = "OUTSERVICE"){
-			    		  return  message("yly.tenantUser.staffStatus.outService");
+			    		  return  message("csh.tenantUser.staffStatus.outService");
 			    	  }
 		      	  }  
 		      },
 	    	  
-		      {title:message("yly.tenantUser.department"),field:"department",width:100,sortable:true,formatter: function(value,row,index){
+		      {title:message("csh.tenantUser.department"),field:"department",width:100,sortable:true,formatter: function(value,row,index){
 		    	  if(value){
 		    		  return  value.name;
 		    	  }else{
 		    		  return  value;
 		    	  }
 	      	  }},
-		      {title:message("yly.tenantUser.position"),field:"position",width:100,sortable:true,formatter: function(value,row,index){
+		      {title:message("csh.tenantUser.position"),field:"position",width:100,sortable:true,formatter: function(value,row,index){
 		    	  if(value){
 		    		  return  value.name;
 		    	  }else{
 		    		  return  value;
 		    	  }
 	      	  }},
-		      {title:message("yly.tenantUser.hireDate"),field:"hireDate",width:100,sortable:true,formatter: function(value,row,index){
+		      {title:message("csh.tenantUser.hireDate"),field:"hireDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd");
 				}
 		      },

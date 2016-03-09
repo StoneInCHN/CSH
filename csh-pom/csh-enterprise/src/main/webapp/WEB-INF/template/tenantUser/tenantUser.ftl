@@ -3,34 +3,34 @@
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 <div>
 	  <fieldset>
-	    <legend>${message("yly.tenantUser.search")}</legend>
+	    <legend>${message("csh.tenantUser.search")}</legend>
 	    <form id="tenantUser-search-form" class="search-form">
 	    	<div class="search-item">
-			    <label> ${message("yly.tenantUser.search.realName")}:</label>
+			    <label> ${message("csh.tenantUser.search.realName")}:</label>
 			    <input type="text" class="easyui-textbox" id="realName" name="realNameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("yly.tenantUser.search.department")}:</label>
-			    <input type="text" class="easyui-combobox" id="tenantUserDepartment-search" name="departmentSearchId" data-options="prompt:'${message("yly.common.please.select")}'"/>
+			    <label> ${message("csh.tenantUser.search.department")}:</label>
+			    <input type="text" class="easyui-combobox" id="tenantUserDepartment-search" name="departmentSearchId" data-options="prompt:'${message("csh.common.please.select")}'"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("yly.tenantUser.search.position")}:</label>
+			    <label> ${message("csh.tenantUser.search.position")}:</label>
 			    <input type="text" class="easyui-combobox" id="tenantUserPosition-search" name="positionSearchId"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("yly.tenantUser.staffStatus")}:</label>
+			    <label> ${message("csh.tenantUser.staffStatus")}:</label>
 			    
 			    <input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
 				      label: 'INSERVICE',
-				      value: '${message("yly.tenantUser.staffStatus.inService")}'
+				      value: '${message("csh.tenantUser.staffStatus.inService")}'
 				     },{
 				      label: 'OUTSERVICE',
-				      value: '${message("yly.tenantUser.staffStatus.outService")}'
+				      value: '${message("csh.tenantUser.staffStatus.outService")}'
 				     }],
-				     prompt:'${message("yly.common.please.select")}',panelMaxHeight:100"  name="staffStatusSearch" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="staffStatusSearch" style="width:110px;"/>
 			    
 			</div>
 		</form>
@@ -53,11 +53,11 @@
 	<input type="hidden" id="addTenantUser_form_file_input" name="photo"> 
 	    <table class="table table-striped"  border="0">
 	    	<tr>
-	    		<th>${message("yly.tenantUser.realName")} :</th>
+	    		<th>${message("csh.tenantUser.realName")} :</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" id = "realName" name="realName" data-options="required:true" />   
 	    		</td>
-	    		<th>${message("yly.tenantUser.photo")}:</th>
+	    		<th>${message("csh.tenantUser.photo")}:</th>
 	    		<td  rowspan="6">
 	    			<div title="头像上传" class="easyui-tooltip headWarp">
 	    				<div id="tenantUserUploader-add" class="single-uploader">
@@ -75,7 +75,7 @@
 	    		
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.gender")}:</th>
+	    		<th>${message("csh.gender")}:</th>
 				  
 	    		<td>
 	    			<input class="easyui-combobox" data-options="
@@ -83,25 +83,25 @@
 				     textField: 'value',
 				     data: [{
 				      label: 'MALE',
-				      value: '${message("yly.gender.male")}'
+				      value: '${message("csh.gender.male")}'
 				     },{
 				      label: 'FEMALE',
-				      value: '${message("yly.gender.female")}'
+				      value: '${message("csh.gender.female")}'
 				     }],
-				     prompt:'${message("yly.common.please.select")}',panelMaxHeight:100"  name="gender" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="gender" style="width:110px;"/>
 	    		</td>
 	    	
 	    		
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.email")}:</th>
+	    		<th>${message("csh.email")}:</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" name="email" data-options="required:true" />
 	    		</td>
 	    		
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantUser.staffID")}:</th>
+	    		<th>${message("csh.tenantUser.staffID")}:</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" name="staffID" data-options="required:true" validtype="length[0,30];remote['../tenantUser/checkStaffID.jhtml']"/>   
 	    		</td>
@@ -109,24 +109,24 @@
 	    		
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantUser.staffStatus")}:</th>
+	    		<th>${message("csh.tenantUser.staffStatus")}:</th>
 	    		<td>
 	    			<input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
 				      label: 'INSERVICE',
-				      value: '${message("yly.tenantUser.staffStatus.inService")}'
+				      value: '${message("csh.tenantUser.staffStatus.inService")}'
 				     },{
 				      label: 'OUTSERVICE',
-				      value: '${message("yly.tenantUser.staffStatus.outService")}'
+				      value: '${message("csh.tenantUser.staffStatus.outService")}'
 				     }],
-				     prompt:'${message("yly.common.please.select")}',panelMaxHeight:100"  name="staffStatus" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="staffStatus" style="width:110px;"/>
 	    		</td>
 	    		
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.address")}:</th>
+	    		<th>${message("csh.address")}:</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" name="address" data-options="required:true" validtype="length[0,200]" />   
 	    		</td>
@@ -134,53 +134,53 @@
 	    		
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.phoneNumber")}:</th>
+	    		<th>${message("csh.phoneNumber")}:</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" name="telephone" />   
 	    		</td>
 	    	
-	    		<th>${message("yly.mobile")}:</th>
+	    		<th>${message("csh.mobile")}:</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" name="mobile" data-options="required:true" validtype="mobile"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantUser.department")}:</th>
+	    		<th>${message("csh.tenantUser.department")}:</th>
 	    		<td>
 	    			 <input class="easyui-combobox" id="tenantUserDepartment-add" name="departmentId" />   
 	    		</td>
 	    	
-	    		<th>${message("yly.tenantUser.position")}:</th>
+	    		<th>${message("csh.tenantUser.position")}:</th>
 	    		<td>
 	    			 <input class="easyui-combobox" type="text" id="tenantUserPosition-add" name="positionId" />
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantUser.hireDate")}:</th>
+	    		<th>${message("csh.tenantUser.hireDate")}:</th>
 	    		<td>
 	    			 <input type="text" class="easyui-datebox" name="hireDate"  data-options="required:true,editable:false"/>   
 	    		</td>
-	    		<th>${message("yly.tenantUser.age")}:</th>
+	    		<th>${message("csh.tenantUser.age")}:</th>
 	    		<td>
 	    			 <input class="easyui-numberbox" type="text" name="age" data-options="required:true" />
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantUser.IDCard")}:</th>
+	    		<th>${message("csh.tenantUser.IDCard")}:</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" name="IDCard" data-options="required:true" validtype="idcard;length[0,30]"/>
 	    		</td>
-	    		<th>${message("yly.tenantUser.workingYear")}:</th>
+	    		<th>${message("csh.tenantUser.workingYear")}:</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" name="workingYear" data-options="required:true" />
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantUser.birthDay")}:</th>
+	    		<th>${message("csh.tenantUser.birthDay")}:</th>
 	    		<td>
 	    			 <input type="text" class="easyui-datebox" name="birthDay"  data-options="required:true,editable:false"/>
 	    		</td>
-	    		<th>${message("yly.tenantUser.zipCode")}:</th>
+	    		<th>${message("csh.tenantUser.zipCode")}:</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text" name="zipCode" data-options="required:true" validtype="length[0,20]"/>
 	    		</td>

@@ -2,20 +2,20 @@
  <input type="hidden" id="newEnPassword">
 	<table class="table table-striped">
 	<tr>
-		<th>${message("yly.tenantAccount.oldPassword")}:</th>
+		<th>${message("csh.tenantAccount.oldPassword")}:</th>
 		<td >
 			 <input type="password" class="easyui-textbox" name="oldPassword" data-options="required:true"/>
 		</td>
 	</tr>
 	<tr>
-		<th>${message("yly.tenantAccount.newPassword")}:</th>
+		<th>${message("csh.tenantAccount.newPassword")}:</th>
 		<td>
 			 <input id="newPassword" type="password" class="easyui-textbox" name="newPassword" 
 			 	data-options="required:true" validType="minLength[6]" />
 		</td>
 	</tr>
 	<tr>
-		<th>${message("yly.tenantAccount.confirmPassword")}:</th>
+		<th>${message("csh.tenantAccount.confirmPassword")}:</th>
 		<td>
 			 <input type="password" class="easyui-textbox" name="confirmPassword"  
 			 	data-options="required:true" validType="passwordEequals['#newPassword']" />

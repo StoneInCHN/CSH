@@ -1,13 +1,13 @@
 var systemConfig_manager_tool = {
 		add:function(){		
 			$('#addSystemConfig').dialog({    
-			    title: message("yly.systemConfig.add"),    
+			    title: message("csh.systemConfig.add"),    
 			    width: 300,    
 			    height: 180,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{
-			    	text:message("yly.common.save"),
+			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
 						var validate = $('#addSystemConfig_form').form('validate');
@@ -18,7 +18,7 @@ var systemConfig_manager_tool = {
 								data:$("#addSystemConfig_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
-										text:message("yly.common.saving")
+										text:message("csh.common.saving")
 									});
 								},
 								success:function(result,response,status){
@@ -40,7 +40,7 @@ var systemConfig_manager_tool = {
 						};
 					}
 				},{
-					text:message("yly.common.cancel"),
+					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
 						 $('#addSystemConfig').dialog("close");
@@ -52,18 +52,18 @@ var systemConfig_manager_tool = {
 			edit:function(){
 				var _edit_row = $('#systemConfig_table_list').datagrid('getSelected');
 				if( _edit_row == null ){
-					$.messager.alert(message("yly.common.prompt"),message("yly.common.select.editRow"),'warning');      
+					$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');      
 					return false;
 				}
 				var _dialog = $('#editSystemConfig').dialog({    
-				    title: message("yly.systemConfig.edit"),     
+				    title: message("csh.systemConfig.edit"),     
 				    width: 300,    
 				    height: 180,    
 				    modal: true,
 				    iconCls:'icon-mini-edit',
 				    href:'../systemConfig/edit.jhtml?id='+_edit_row.id,
 				    buttons:[{
-				    	text:message("yly.common.save"),
+				    	text:message("csh.common.save"),
 				    	iconCls:'icon-save',
 						handler:function(){
 							var validate = $('#editSystemConfig_form').form('validate');
@@ -73,7 +73,7 @@ var systemConfig_manager_tool = {
 									type:"post",
 									data:$("#editSystemConfig_form").serialize(),
 									beforeSend:function(){
-										$.messager.progress({text:message("yly.common.saving")});
+										$.messager.progress({text:message("csh.common.saving")});
 									},
 									success:function(result,response,status){
 											$.messager.progress('close');
@@ -89,7 +89,7 @@ var systemConfig_manager_tool = {
 							};
 						}
 					},{
-						text:message("yly.common.cancel"),
+						text:message("csh.common.cancel"),
 						iconCls:'icon-cancel',
 						handler:function(){
 							 $('#editSystemConfig').dialog("close");
@@ -103,30 +103,30 @@ var systemConfig_manager_tool = {
 	}
 $(function(){
 	$("#systemConfig_table_list").datagrid({
-		title:message("yly.systemConfig.list"),
+		title:message("csh.systemConfig.list"),
 		fitColumns:true,
 		fit:true,
 		toolbar:"#systemConfig_manager_tool",
 		url:'../systemConfig/getListConfigValueByKey.jhtml',  
 		pagination:true,
-		loadMsg:message("yly.common.loading"),
+		loadMsg:message("csh.common.loading"),
 		striped:true,
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
-		      {title:message("yly.systemConfig.configValue"),field:"configValue",width:100,align:'center',sortable:true},
-		      {title:message("yly.systemConfig.isEnabled"),field:"isEnabled",width:20,align:'center',sortable:true,formatter: function(value,row,index){
+		      {title:message("csh.systemConfig.configValue"),field:"configValue",width:100,align:'center',sortable:true},
+		      {title:message("csh.systemConfig.isEnabled"),field:"isEnabled",width:20,align:'center',sortable:true,formatter: function(value,row,index){
 		    	  	if(value == true){
-		    	  		return  message("yly.common.yes");
+		    	  		return  message("csh.common.yes");
 		    	  	}else{
-		    	  		return  message("yly.common.no");
+		    	  		return  message("csh.common.no");
 		    	  	}
 		      }},
-		      {title:message("yly.common.createDate"),field:"createDate",width:60,align:'center',sortable:true,formatter: function(value,row,index){
+		      {title:message("csh.common.createDate"),field:"createDate",width:60,align:'center',sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd");
 				}
 		      },
-		      {title:message("yly.common.modifyDate"),field:"modifyDate",width:60,align:'center',sortable:true,formatter: function(value,row,index){
+		      {title:message("csh.common.modifyDate"),field:"modifyDate",width:60,align:'center',sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd");
 				}},
 		   ]

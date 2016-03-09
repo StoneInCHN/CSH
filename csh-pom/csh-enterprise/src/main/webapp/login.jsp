@@ -50,24 +50,24 @@ if (applicationContext != null) {
 	String loginFailure = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
 	if (loginFailure != null) {
 		if (loginFailure.equals("org.apache.shiro.authc.pam.UnsupportedTokenException")) {
-			message = "yly.captcha.invalid";
+			message = "csh.captcha.invalid";
 		} else if (loginFailure.equals("org.apache.shiro.authc.UnknownAccountException")) {
-			message = "yly.login.unknownAccount";
+			message = "csh.login.unknownAccount";
 		} else if (loginFailure.equals("org.apache.shiro.authc.DisabledAccountException")) {
-			message = "yly.login.disabledAccount";
+			message = "csh.login.disabledAccount";
 		} else if (loginFailure.equals("org.apache.shiro.authc.LockedAccountException")) {
-			message = "yly.login.lockedAccount";
+			message = "csh.login.lockedAccount";
 		} else if (loginFailure.equals("org.apache.shiro.authc.IncorrectCredentialsException")) {
-				message = "yly.login.incorrectCredentials";
+				message = "csh.login.incorrectCredentials";
 		} else if (loginFailure.equals("org.apache.shiro.authc.AuthenticationException")) {
-			message = "yly.login.authentication";
+			message = "csh.login.authentication";
 		}else{
-			message = "yly.login.incorrectCredentials";
+			message = "csh.login.incorrectCredentials";
 		}
 	}
 %>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title><%=SpringUtils.getMessage("yly.login.title")%> </title>
+	<title><%=SpringUtils.getMessage("csh.login.title")%> </title>
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -123,7 +123,7 @@ if (applicationContext != null) {
 		$loginForm.submit( function() {
 			if ($username.val() == "") {
 				$alertError.removeClass("hide");
-				$alertError.find("span").text("<%=SpringUtils.getMessage("yly.login.usernameRequired")%>");
+				$alertError.find("span").text("<%=SpringUtils.getMessage("csh.login.usernameRequired")%>");
 				$username.addClass("error");
 				$password.removeClass("error");
 				$captcha.removeClass("error");
@@ -131,7 +131,7 @@ if (applicationContext != null) {
 			}
 			if ($password.val() == "") {
 				$alertError.removeClass("hide");
-				$alertError.find("span").text("<%=SpringUtils.getMessage("yly.login.passwordRequired")%>");
+				$alertError.find("span").text("<%=SpringUtils.getMessage("csh.login.passwordRequired")%>");
 				$password.addClass("error");
 				$username.removeClass("error");
 				$captcha.removeClass("error");
@@ -139,7 +139,7 @@ if (applicationContext != null) {
 			}
 			if ($captcha.val() == "") {
 				$alertError.removeClass("hide");
-				$alertError.find("span").text("<%=SpringUtils.getMessage("yly.login.captchaRequired")%>");
+				$alertError.find("span").text("<%=SpringUtils.getMessage("csh.login.captchaRequired")%>");
 				$captcha.addClass("error");
 				$username.removeClass("error");
 				$password.removeClass("error");
@@ -224,14 +224,14 @@ if (applicationContext != null) {
 					<div class="input-icon left">
 						<i class="fa fa-lock"></i>
 						<input type="text" id="captcha" name="captcha" class="m-wrap placeholder-no-fix captcha" maxlength="4" autocomplete="off" placeholder="验证码"/>
-						<img id="captchaImage" src="<%=base%>/console/common/captcha.jhtml?captchaId=<%=captchaId%>" title="<%=SpringUtils.getMessage("yly.captcha.imageTitle")%>" />
+						<img id="captchaImage" src="<%=base%>/console/common/captcha.jhtml?captchaId=<%=captchaId%>" title="<%=SpringUtils.getMessage("csh.captcha.imageTitle")%>" />
 					</div>
 				</div>
 			</div>	
 			<%}%>
 			<div class="form-actions">
-					<input type="checkbox" class="checkbox" id="isRememberUsername" value="true" /><%=SpringUtils.getMessage("yly.login.rememberUsername")%>
-				<input type="submit" class="btn blue pull-right" value="<%=SpringUtils.getMessage("yly.login.login")%>"/>        
+					<input type="checkbox" class="checkbox" id="isRememberUsername" value="true" /><%=SpringUtils.getMessage("csh.login.rememberUsername")%>
+				<input type="submit" class="btn blue pull-right" value="<%=SpringUtils.getMessage("csh.login.login")%>"/>        
 			</div>
 		</form>
 	</div>

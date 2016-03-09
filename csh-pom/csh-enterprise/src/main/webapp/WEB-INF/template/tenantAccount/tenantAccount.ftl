@@ -4,25 +4,25 @@
 
 <div>
 	  <fieldset>
-	    <legend>${message("yly.tenantAccount.search")}</legend>
+	    <legend>${message("csh.tenantAccount.search")}</legend>
 	    <form id="tenantAccount-search-form" class="search-form">
 	    	<div class="search-item">
-			    <label> ${message("yly.tenantAccount.userName")}:</label>
+			    <label> ${message("csh.tenantAccount.userName")}:</label>
 			    <input type="text" class="easyui-textbox" id="userNameSearch" name="userNameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("yly.tenantUser.staffStatus")}:</label>
+			    <label> ${message("csh.tenantAccount.staffStatus")}:</label>
 			    <input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
 				      label: 'ACTIVED',
-				      value: '${message("yly.tenantAccount.accoutStatus.active")}'
+				      value: '${message("csh.tenantAccount.accoutStatus.active")}'
 				     },{
 				      label: 'LOCKED',
-				      value: '${message("yly.tenantAccount.accoutStatus.locked")}'
+				      value: '${message("csh.tenantAccount.accoutStatus.locked")}'
 				     }],
-				     prompt:'${message("yly.common.please.select")}',panelMaxHeight:100"  name="accountStatusSearch" id="accountStatusSearch" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="accountStatusSearch" id="accountStatusSearch" style="width:110px;"/>
 			</div>
 			
 		</form>
@@ -46,41 +46,41 @@
 	<input type="hidden" name="roleID" id="addTenantAccountRoleID">  
 	    <table class="table table-striped"  border="0">
 	    	<tr>
-	    		<th>${message("yly.tenantAccount.staffID")}:</th>
+	    		<th>${message("csh.tenantAccount.staffID")}:</th>
 	    		<td colspan='2'>
 	    			 <input type="text" class="easyui-textbox" name="staffID" id= "staffID"   data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantAccount.userName")}:</th>
+	    		<th>${message("csh.tenantAccount.userName")}:</th>
 	    		<td colspan='2'>
 	    			 <input type="text" class="easyui-textbox" name="userName" id= "userName"  data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantAccount.password")}:</th>
+	    		<th>${message("csh.tenantAccount.password")}:</th>
 	    		<td colspan='2'>
 	    			 <input type="password" class="easyui-textbox" name="password" id= "password"  data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantAccount.accoutStatus")}:</th>
+	    		<th>${message("csh.tenantAccount.accoutStatus")}:</th>
 	    		<td colspan='2'>
 	    			 <input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
 				      label: 'ACTIVED',
-				      value: '${message("yly.tenantAccount.accoutStatus.active")}'
+				      value: '${message("csh.tenantAccount.accoutStatus.active")}'
 				     },{
 				      label: 'LOCKED',
-				      value: '${message("yly.tenantAccount.accoutStatus.locked")}'
+				      value: '${message("csh.tenantAccount.accoutStatus.locked")}'
 				     }],
-				     prompt:'${message("yly.common.please.select")}',panelMaxHeight:100"  name="accoutStatus" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="accoutStatus" style="width:110px;"/>
 	    		</td>
 	    		</tr>
 	    	<tr>
-	    		<th>${message("yly.tenantAccount.tenantUser")}:</th>
+	    		<th>${message("csh.tenantAccount.tenantUser")}:</th>
 	    		<td>
 	    			 <input type="text" class="easyui-textbox" name="addTenantAccountUser" id= "addTenantAccountUser"  />
 	    		</td>
@@ -89,7 +89,7 @@
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    	<th>${message("yly.tenantAccount.role")}:</th>
+	    	<th>${message("csh.tenantAccount.role")}:</th>
 	    		<td>
 	    			 <input type="text" class="easyui-textbox" name="addTenantAccountRole" id= "addTenantAccountRole"  />
 	    		</td>
