@@ -302,7 +302,6 @@ function searchTenantUser(id) {
 
 }
 function searchRoles(id) {
-	alert(id);
 	$('#searchRoles')
 			.dialog(
 					{

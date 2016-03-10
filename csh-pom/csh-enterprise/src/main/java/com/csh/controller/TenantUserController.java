@@ -29,10 +29,14 @@ import com.csh.beans.FileInfo.FileType;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.Department;
+import com.csh.entity.Position;
 import com.csh.entity.TenantUser;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.DepartmentService;
 import com.csh.service.FileService;
+import com.csh.service.PositionService;
 import com.csh.service.TenantUserService;
 import com.csh.utils.DateTimeUtils;
 
@@ -48,7 +52,10 @@ public class TenantUserController extends BaseController
 
   @Resource (name = "tenantUserServiceImpl")
   private TenantUserService tenantUserService;
-  
+  @Resource(name = "departmentServiceImpl")
+  private DepartmentService departmentService;
+  @Resource(name = "positionServiceImpl")
+  private PositionService positionService;
   @Resource(name = "fileServiceImpl")
   private FileService fileService;
   
@@ -171,15 +178,23 @@ public class TenantUserController extends BaseController
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (TenantUser tenantUser)
+  public @ResponseBody Message add (TenantUser tenantUser,Long departmentId, Long positionId)
   {
+    Department department = departmentService.find (departmentId);
+    Position position = positionService.find (positionId);
+    tenantUser.setDepartment (department);
+    tenantUser.setPosition (position);
     tenantUserService.save (tenantUser,true);
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (TenantUser tenantUser)
+  public @ResponseBody Message update (TenantUser tenantUser,Long departmentId, Long positionId)
   {
+    Department department = departmentService.find (departmentId);
+    Position position = positionService.find (positionId);
+    tenantUser.setDepartment (department);
+    tenantUser.setPosition (position);
     tenantUserService.update (tenantUser,"photo");
     return SUCCESS_MESSAGE;
   }
@@ -229,4 +244,5 @@ public class TenantUserController extends BaseController
     model.addAttribute("tenantUser", tenantUser);
     return "tenantUser/details";
   }
+  
 }

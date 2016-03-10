@@ -1,5 +1,6 @@
 <form id="editTenantUser_form" method="post">   
 	<input type="hidden" name="id" value= "${tenantUser.id}">
+	<input type="hidden" name="tenantID" value= "${tenantUser.tenantID}">
 	    <table class="table table-striped"  border="0">
 	    	<tr>
 	    		<th>${message("csh.tenantUser.realName")}:</th>
@@ -32,7 +33,7 @@
 	    	<tr>
 	    		<th>${message("csh.gender")}:</th>
 				  <td>
-	    	 	<select id="gender" class="easyui-combobox" name="gender" style="width:50px;">   
+	    	 	<select id="gender" class="easyui-combobox" name="gender" style="width:100px;"  required=true>   
     			  	<option value="MALE" [#if tenantUser.gender =="MALE"] selected="selected" [/#if]>${message("csh.gender.male")}</option>
 					<option value="FEMALE" [#if tenantUser.gender =="FEMALE"] selected="selected" [/#if]>${message("csh.gender.female")}</option>
 				  </select>
@@ -56,7 +57,7 @@
 	    	<tr>
 	    		<th>${message("csh.tenantUser.staffStatus")}:</th>
 	    		<td>
-	    			<select id="gender" class="easyui-combobox" name="staffStatus"  style="width:80px;">   
+	    			<select id="gender" class="easyui-combobox" name="staffStatus"  style="width:80px;"  required=true>
     			  		<option value="INSERVICE" [#if tenantUser.staffStatus =="INSERVICE"] selected="selected" [/#if]>${message("csh.tenantUser.staffStatus.inService")}</option>
 						<option value="OUTSERVICE" [#if tenantUser.staffStatus =="OUTSERVICE"] selected="selected" [/#if]>${message("csh.tenantUser.staffStatus.outService")}</option>
 				  </select>
@@ -96,7 +97,7 @@
 	    	<tr>
 	    		<th>${message("csh.tenantUser.hireDate")}:</th>
 	    		<td>
-	    			 <input type="text" class="Wdate" name="hireDate" readonly="readonly" onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" value="${tenantUser.hireDate}"/>   
+	    			 <input type="text" class="easyui-datebox" name="hireDate" data-options="required:true,editable:false" value="${tenantUser.hireDate}"/>   
 	    		</td>
 	    		<th>${message("csh.tenantUser.age")}:</th>
 	    		<td>
@@ -116,7 +117,7 @@
 	    	<tr>
 	    		<th>${message("csh.tenantUser.birthDay")}:</th>
 	    		<td>
-	    			 <input type="text" class="Wdate" id="birthDay" name="birthDay" readonly="readonly" onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}',dateFmt:'yyyy-MM-dd'});" value="${tenantUser.birthDay}"/>
+	    			 <input type="text" class="easyui-datebox" id="birthDay" name="birthDay" data-options="required:true,editable:false" value="${tenantUser.birthDay}"/>
 	    		</td>
 	    		<th>${message("csh.tenantUser.zipCode")}:</th>
 	    		<td>

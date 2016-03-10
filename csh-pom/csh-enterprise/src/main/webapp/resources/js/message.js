@@ -70,6 +70,7 @@ var messages = {
 	
 	
 	//租户用户
+	"csh.tenantUser.add":"添加租户用户",
 	"csh.tenantUser.search":"用户查询",
 	"csh.tenantUser.list":"用户列表",
 	"csh.tenantUser.realName":"姓名",
