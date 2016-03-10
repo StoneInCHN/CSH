@@ -1,5 +1,7 @@
 package com.csh.entity;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,6 +70,16 @@ public class TenantInfo extends BaseEntity {
    * 版本
    */
   private VersionConfig versionConfig;
+  
+  /**
+   * 终端用户
+   */
+  private Set<EndUser> endUsers;
+  
+  /**
+   * 租户的店铺
+   */
+  private Store store;
   
   @Column(length = 20)
   public String getOrgCode() {
