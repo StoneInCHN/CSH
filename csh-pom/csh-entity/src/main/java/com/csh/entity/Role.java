@@ -13,8 +13,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Entity - 角色
  * 
  */
+@Indexed(index="role")
 @Entity
 @Table(name = "csh_role")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_role_sequence")
@@ -51,6 +57,7 @@ public class Role extends BaseEntity {
   private Long tenantID;
   
   @Index(name="role_tenantid")
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -68,6 +75,7 @@ public class Role extends BaseEntity {
   @NotEmpty
   @Length(max = 200)
   @Column(nullable = false)
+  @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getName() {
     return name;
   }

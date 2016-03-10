@@ -335,7 +335,7 @@ $(function(){
 			return node.name;
 		 },
 		 onSelect: function(rec){    
-	        var url = '../position/findAllPositions.jhtml?id='+rec.id;    
+	        var url = '../position/findPositions.jhtml?id='+rec.id;    
 	        $('#tenantUserPosition-search').combobox('clear');
 	        $('#tenantUserPosition-search').combobox('reload', url);    
 	     }
@@ -414,7 +414,7 @@ $(function(){
 		      {title:message("csh.tenantUser.hireDate"),field:"hireDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd");
 				}
-		      },
+		      }
 		   ]
 		]
 

@@ -89,13 +89,7 @@
 		</div>  
     </div>    
     
-    <div id="searchElderlyInfo"></div>
-    <div id="selectRoom"></div>
-    <div id="searchAlbum"></div>
-    <div id = "searchRoles"></div>
-    <div id = "searchTenantUser"></div>
-    <div id = "searchNurseArrangement"></div>
-    <div id = "searchBed"></div>
+    
     <div id = "changePassword">
     </div>
     <!-- JavaScript-->
