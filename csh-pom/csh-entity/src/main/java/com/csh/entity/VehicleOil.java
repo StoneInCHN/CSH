@@ -1,85 +1,67 @@
 package com.csh.entity;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.Status;
+
 import java.sql.Timestamp;
 
 
 /**
- * The persistent class for the csh_vehicle_oil database table.
+ * 油品信息表
  * 
  */
 @Entity
 @Table(name="csh_vehicle_oil")
-@NamedQuery(name="VehicleOil.findAll", query="SELECT v FROM VehicleOil v")
-public class VehicleOil implements Serializable {
+@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_oil_sequence")
+public class VehicleOil extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="CSH_VEHICLE_OIL_ID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CSH_VEHICLE_OIL_ID_GENERATOR")
-	private String id;
 
-	@Column(name="add_time")
-	private Timestamp addTime;
-
-	private String admin;
-
+	/**
+	 * 油品名称 如93#汽油，0#柴油
+	 */
 	private String name;
 
-	private float price;
+	/**
+	 * 状态
+	 */
+	private Status status;
 
-	private String status;
+	private Long tenantID;
 
-	public VehicleOil() {
-	}
+  public String getName ()
+  {
+    return name;
+  }
 
-	public String getId() {
-		return this.id;
-	}
+  public void setName (String name)
+  {
+    this.name = name;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public Status getStatus ()
+  {
+    return status;
+  }
 
-	public Timestamp getAddTime() {
-		return this.addTime;
-	}
+  public void setStatus (Status status)
+  {
+    this.status = status;
+  }
 
-	public void setAddTime(Timestamp addTime) {
-		this.addTime = addTime;
-	}
+  public Long getTenantID ()
+  {
+    return tenantID;
+  }
 
-	public String getAdmin() {
-		return this.admin;
-	}
-
-	public void setAdmin(String admin) {
-		this.admin = admin;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public float getPrice() {
-		return this.price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
+  }
+	
+	
 }

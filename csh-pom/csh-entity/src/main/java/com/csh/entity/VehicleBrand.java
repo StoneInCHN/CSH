@@ -1,228 +1,254 @@
 package com.csh.entity;
 
-import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.math.BigInteger;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
+import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.Status;
 
 /**
- * The persistent class for the csh_vehicle_brand database table.
+ * 车辆型号表
  * 
  */
 @Entity
-@Table(name="csh_vehicle_brand")
-@NamedQuery(name="VehicleBrand.findAll", query="SELECT v FROM VehicleBrand v")
-public class VehicleBrand implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table (name = "csh_vehicle_brand")
+@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_brand_sequence")
+public class VehicleBrand extends BaseEntity
+{
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="CSH_VEHICLE_BRAND_ID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CSH_VEHICLE_BRAND_ID_GENERATOR")
-	private String id;
+  /**
+   * 平均油耗
+   */
+  private Float averageOil;
 
-	@Column(name="add_time")
-	private Timestamp addTime;
+  /**
+   * 名称首字母
+   */
+  private String code;
 
-	private String admin;
+  /**
+   * 排量
+   */
+  private Float disp;
 
-	@Column(name="average_oil")
-	private float averageOil;
+  /**
+   * 是否支持获取里程
+   */
+  private Boolean canGetmileage;
 
-	private String code;
+  /**
+   * 是否支持获取油量
+   */
+  private Boolean canGetoil;
 
-	private float disp;
+  /**
+   * 树形节点级别
+   */
+  private int grade;
 
-	private int getmileage;
+  /**
+   * 图片
+   */
+  private String icon;
 
-	private int getoil;
+  /**
+   * 最大电压
+   */
+  private float maxbv;
 
-	private int grade;
+  /**
+   * 最小电压
+   */
+  private float minbv;
 
-	private String icon;
+  /**
+   * 名称
+   */
+  private String name;
 
-	private float maxbv;
+  /**
+   * 是否支持OBD
+   */
+  private Boolean canOBD;
+  /**
+   * 百公里油耗
+   */
+  private Float oilPerHundred;
 
-	private float minbv;
+  private VehicleBrand parent;
 
-	private String name;
+  /**
+   * 车型状态
+   */
+  private Status status;
 
-	private int nobd;
+  /**
+   * 油箱容积
+   */
+  private Float tank;
 
-	private float oil;
+  private Long tenantID;
 
-	private BigInteger parent;
+  public Float getAverageOil ()
+  {
+    return averageOil;
+  }
 
-	private String status;
+  public void setAverageOil (Float averageOil)
+  {
+    this.averageOil = averageOil;
+  }
 
-	private float tank;
+  public String getCode ()
+  {
+    return code;
+  }
 
-	private int type;
+  public void setCode (String code)
+  {
+    this.code = code;
+  }
 
-	@Column(name="use_oil")
-	private int useOil;
+  public Float getDisp ()
+  {
+    return disp;
+  }
 
-	public VehicleBrand() {
-	}
+  public void setDisp (Float disp)
+  {
+    this.disp = disp;
+  }
 
-	public String getId() {
-		return this.id;
-	}
+  public Boolean getCanGetmileage ()
+  {
+    return canGetmileage;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public void setCanGetmileage (Boolean canGetmileage)
+  {
+    this.canGetmileage = canGetmileage;
+  }
 
-	public Timestamp getAddTime() {
-		return this.addTime;
-	}
+  public Boolean getCanGetoil ()
+  {
+    return canGetoil;
+  }
 
-	public void setAddTime(Timestamp addTime) {
-		this.addTime = addTime;
-	}
+  public void setCanGetoil (Boolean canGetoil)
+  {
+    this.canGetoil = canGetoil;
+  }
 
-	public String getAdmin() {
-		return this.admin;
-	}
+  public int getGrade ()
+  {
+    return grade;
+  }
 
-	public void setAdmin(String admin) {
-		this.admin = admin;
-	}
+  public void setGrade (int grade)
+  {
+    this.grade = grade;
+  }
 
-	public float getAverageOil() {
-		return this.averageOil;
-	}
+  public String getIcon ()
+  {
+    return icon;
+  }
 
-	public void setAverageOil(float averageOil) {
-		this.averageOil = averageOil;
-	}
+  public void setIcon (String icon)
+  {
+    this.icon = icon;
+  }
 
-	public String getCode() {
-		return this.code;
-	}
+  public float getMaxbv ()
+  {
+    return maxbv;
+  }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+  public void setMaxbv (float maxbv)
+  {
+    this.maxbv = maxbv;
+  }
 
-	public float getDisp() {
-		return this.disp;
-	}
+  public float getMinbv ()
+  {
+    return minbv;
+  }
 
-	public void setDisp(float disp) {
-		this.disp = disp;
-	}
+  public void setMinbv (float minbv)
+  {
+    this.minbv = minbv;
+  }
 
-	public int getGetmileage() {
-		return this.getmileage;
-	}
+  public String getName ()
+  {
+    return name;
+  }
 
-	public void setGetmileage(int getmileage) {
-		this.getmileage = getmileage;
-	}
+  public void setName (String name)
+  {
+    this.name = name;
+  }
 
-	public int getGetoil() {
-		return this.getoil;
-	}
+  public Boolean getCanOBD ()
+  {
+    return canOBD;
+  }
 
-	public void setGetoil(int getoil) {
-		this.getoil = getoil;
-	}
+  public void setCanOBD (Boolean canOBD)
+  {
+    this.canOBD = canOBD;
+  }
 
-	public int getGrade() {
-		return this.grade;
-	}
+  public Float getOilPerHundred ()
+  {
+    return oilPerHundred;
+  }
 
-	public void setGrade(int grade) {
-		this.grade = grade;
-	}
+  public void setOilPerHundred (Float oilPerHundred)
+  {
+    this.oilPerHundred = oilPerHundred;
+  }
 
-	public String getIcon() {
-		return this.icon;
-	}
+  public VehicleBrand getParent ()
+  {
+    return parent;
+  }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+  public void setParent (VehicleBrand parent)
+  {
+    this.parent = parent;
+  }
 
-	public float getMaxbv() {
-		return this.maxbv;
-	}
+  public Status getStatus ()
+  {
+    return status;
+  }
 
-	public void setMaxbv(float maxbv) {
-		this.maxbv = maxbv;
-	}
+  public void setStatus (Status status)
+  {
+    this.status = status;
+  }
 
-	public float getMinbv() {
-		return this.minbv;
-	}
+  public Float getTank ()
+  {
+    return tank;
+  }
 
-	public void setMinbv(float minbv) {
-		this.minbv = minbv;
-	}
+  public void setTank (Float tank)
+  {
+    this.tank = tank;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public Long getTenantID ()
+  {
+    return tenantID;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getNobd() {
-		return this.nobd;
-	}
-
-	public void setNobd(int nobd) {
-		this.nobd = nobd;
-	}
-
-	public float getOil() {
-		return this.oil;
-	}
-
-	public void setOil(float oil) {
-		this.oil = oil;
-	}
-
-	public BigInteger getParent() {
-		return this.parent;
-	}
-
-	public void setParent(BigInteger parent) {
-		this.parent = parent;
-	}
-
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public float getTank() {
-		return this.tank;
-	}
-
-	public void setTank(float tank) {
-		this.tank = tank;
-	}
-
-	public int getType() {
-		return this.type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public int getUseOil() {
-		return this.useOil;
-	}
-
-	public void setUseOil(int useOil) {
-		this.useOil = useOil;
-	}
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
+  }
 
 }

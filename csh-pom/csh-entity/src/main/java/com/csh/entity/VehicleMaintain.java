@@ -1,86 +1,92 @@
 package com.csh.entity;
 
-import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.math.BigInteger;
+import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.csh.entity.base.BaseEntity;
 
 /**
- * The persistent class for the csh_vehicle_maintain database table.
+ * 车辆保养情况
  * 
  */
 @Entity
-@Table(name="csh_vehicle_maintain")
-@NamedQuery(name="VehicleMaintain.findAll", query="SELECT v FROM VehicleMaintain v")
-public class VehicleMaintain implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table (name = "csh_vehicle_maintain")
+@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_maintain_sequence")
+public class VehicleMaintain extends BaseEntity
+{
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="CSH_VEHICLE_MAINTAIN_ID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CSH_VEHICLE_MAINTAIN_ID_GENERATOR")
-	private String id;
+  /**
+   * 车辆
+   */
+  private Vehicle vehicle;
 
-	@Column(name="add_time")
-	private Timestamp addTime;
+  /**
+   * 下次保养时间
+   */
+  private Date nextMaintainDate;
+  /**
+   * 下次保养里程
+   */
+  private Long nextMaintainMileage;
+  /**
+   * 上次保养里程
+   */
+  private Long maintainMileage;
 
-	private BigInteger cid;
+  private Long tenantID;
 
-	private Timestamp inspection;
+  public Vehicle getVehicle ()
+  {
+    return vehicle;
+  }
 
-	private float maintain;
+  public void setVehicle (Vehicle vehicle)
+  {
+    this.vehicle = vehicle;
+  }
 
-	private float mileage;
+  public Date getNextMaintainDate ()
+  {
+    return nextMaintainDate;
+  }
 
-	public VehicleMaintain() {
-	}
+  public void setNextMaintainDate (Date nextMaintainDate)
+  {
+    this.nextMaintainDate = nextMaintainDate;
+  }
 
-	public String getId() {
-		return this.id;
-	}
+  public Long getNextMaintainMileage ()
+  {
+    return nextMaintainMileage;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public void setNextMaintainMileage (Long nextMaintainMileage)
+  {
+    this.nextMaintainMileage = nextMaintainMileage;
+  }
 
-	public Timestamp getAddTime() {
-		return this.addTime;
-	}
+  public Long getMaintainMileage ()
+  {
+    return maintainMileage;
+  }
 
-	public void setAddTime(Timestamp addTime) {
-		this.addTime = addTime;
-	}
+  public void setMaintainMileage (Long maintainMileage)
+  {
+    this.maintainMileage = maintainMileage;
+  }
 
-	public BigInteger getCid() {
-		return this.cid;
-	}
+  public Long getTenantID ()
+  {
+    return tenantID;
+  }
 
-	public void setCid(BigInteger cid) {
-		this.cid = cid;
-	}
-
-	public Timestamp getInspection() {
-		return this.inspection;
-	}
-
-	public void setInspection(Timestamp inspection) {
-		this.inspection = inspection;
-	}
-
-	public float getMaintain() {
-		return this.maintain;
-	}
-
-	public void setMaintain(float maintain) {
-		this.maintain = maintain;
-	}
-
-	public float getMileage() {
-		return this.mileage;
-	}
-
-	public void setMileage(float mileage) {
-		this.mileage = mileage;
-	}
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
+  }
 
 }
