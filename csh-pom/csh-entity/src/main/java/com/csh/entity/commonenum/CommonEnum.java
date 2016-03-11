@@ -538,4 +538,103 @@ public class CommonEnum {
        */
       DISABLE
   }
+  /**
+   * 数据字典
+   * 
+   * @author sujinxuan
+   *
+   */
+  public enum ConfigKey {
+    /**
+     * 房间类型,0
+     */
+    ROOMTYPE("房间类型"),
+    /**
+     * 护理级别,1
+     */
+    NURSELEVEL("护理级别"),
+    /**
+     * 伙食类别,2
+     */
+    MEALTYPE("伙食类别"),
+    /**
+     * 表单类型,3
+     */
+    FORMTYPE("表单类型"),
+    /**
+     * 计量单位,4
+     */
+    UNITS("计量单位"),
+    /**
+     * 药品分类,5
+     */
+    DRUGSCATEGORY("药品分类"),
+    /**
+     * 药品用法,6
+     */
+    DRUGSMETHOD("药品用法"),
+    /**
+     * 人员类别,7
+     */
+    PERSONNELCATEGORY("人员类别"),
+    /**
+     * 评估结果,8
+     */
+    EVALUATINGRESULT("评估结果"),
+    /**
+     * 结算日期,9
+     */
+    BILLDAY("结算日期"),
+    /**
+     * 调账原因（调钱）,10
+     */
+    ADJUSTMENTCAUSE("调账原因"),
+    /**
+     * 体检配置项,11
+     */
+    PHYSICALEXAMITEM("体检配置项"),
+    /**
+     * 评估等级,12
+     */
+    EVALUATINGLEVEL("评估等级"),
+    /**
+     * 个性化服务,13
+     */
+    PERSONALIZED("个性化服务");
+    
+    private String keyName; 
+    
+    private ConfigKey(String keyName) { 
+        this.keyName = keyName; 
+    } 
+        
+    public String getKeyName() { 
+        return this.keyName; 
+    } 
+  }
+  /**
+   * 人员编号
+   */
+  public enum IdentifierType {
+    /**
+     * 老人编号
+     */
+    ELDERLYINFO_IDENTIFIER
+  }
+  /**
+   * 树节点展开状态
+   * 
+   * @author tanbiao
+   *
+   */
+  public enum TreeNodeState {
+    /**
+     * 展开
+     */
+    open,
+    /**
+     * 关闭
+     */
+    closed
+  }
 }
