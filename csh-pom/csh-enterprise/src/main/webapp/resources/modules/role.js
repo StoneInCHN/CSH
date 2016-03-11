@@ -27,9 +27,7 @@ var role_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-							//console.log($('input:checkbox[name=auth_id]:checked'));
 							var selectedList = $('#roleTreeAuth').tree('getChecked', ['checked','indeterminate']);
-							debugger;
 							var _ids = [];
 							for(var i=0; i< selectedList.length; i++){
 								_ids[i] = selectedList[i].id;

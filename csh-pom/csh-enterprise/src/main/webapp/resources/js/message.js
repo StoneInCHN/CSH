@@ -120,6 +120,19 @@ var messages = {
 	"csh.tenantAccount.list":"用户列表",
 	"csh.tenantAccount.locked":"账号锁定",
 	
+	// 终端用户
+	"csh.endUser.add":"添加用户",
+	"csh.endUser.userName":"用户名",
+	"csh.endUser.realName":"真实姓名",
+	"csh.endUser.mobileNum":"手机号",
+	"csh.endUser.qq":"QQ号",
+	"csh.endUser.accoutStatus":"账号状态",
+	"csh.endUser.loginDate":"最后登录时间",
+	"csh.endUser.loginIp":"最后登录IP",
+	"csh.endUser.active":"账号正常",
+	"csh.endUser.list":"用户列表",
+	"csh.endUser.locked":"账号锁定",
+	
 };
 //多语言
 function message(code) {

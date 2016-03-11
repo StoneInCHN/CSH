@@ -36,6 +36,15 @@
 				[@shiro.hasPermission name="personnelManage"]
 				<li><a href="#personnel"><i class="fa fa-users fa-1x"></i>${message("csh.personnel.config")}</a></li>
 				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="vehicleManage"]
+				<li><a href="#vehicle"><i class="fa fa-users fa-1x"></i>${message("csh.vehicle.config")}</a></li>
+				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="deviceManage"]
+				<li><a href="#device"><i class="fa fa-users fa-1x"></i>${message("csh.device.config")}</a></li>
+				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="endUserManage"]
+				<li><a href="#endUser"><i class="fa fa-users fa-1x"></i>${message("csh.endUser.config")}</a></li>
+				[/@shiro.hasPermission]
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
 				<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>
 			</ul>
@@ -79,7 +88,31 @@
     		[@shiro.hasPermission name="tenantUser"]
     		<li><a href="#" data-url="${base}/console/tenantUser/tenantUser.jhtml">${message("csh.personnel.tenantuser")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul>    
+    	</ul>
+    	<ul title="${message("csh.vehicle.config")}" id="vehicle">
+    		[@shiro.hasPermission name="vehicle"]
+    		<li><a href="#" data-url="${base}/console/vehicle/vehicle.jhtml">${message("csh.vehicle.vehicle")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="vehicleBrand"]
+    		<li><a href="#" data-url="${base}/console/vehicle/vehicle.jhtml">${message("csh.vehicle.vehicleBrand")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="vehicleMaintain"]
+    		<li><a href="#" data-url="${base}/console/vehicle/vehicle.jhtml">${message("csh.vehicle.vehicleMaintain")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="vehicleOil"]
+    		<li><a href="#" data-url="${base}/console/vehicle/vehicle.jhtml">${message("csh.vehicle.vehicleOil")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>
+    	<ul title="${message("csh.device.config")}" id="device">
+    		[@shiro.hasPermission name="device"]
+    		<li><a href="#" data-url="${base}/console/device/device.jhtml">${message("csh.device.device")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>
+    	<ul title="${message("csh.endUser.config")}" id="endUser">
+    		[@shiro.hasPermission name="endUser"]
+    		<li><a href="#" data-url="${base}/console/endUser/endUser.jhtml">${message("csh.endUser.endUser")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>          
     </div>
   
     <div class="main-content" data-options="region:'center'">

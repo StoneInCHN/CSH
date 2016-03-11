@@ -13,6 +13,7 @@ import org.hibernate.annotations.Index;
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.Gender;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -109,6 +110,7 @@ public class EndUser extends BaseEntity  {
     this.tenantID = tenantID;
   }
 
+  @JsonProperty
   public AccountStatus getAccountStatus ()
   {
     return accountStatus;
@@ -118,7 +120,7 @@ public class EndUser extends BaseEntity  {
   {
     this.accountStatus = accountStatus;
   }
-
+  @JsonProperty
   public String getRealName ()
   {
     return realName;
@@ -128,7 +130,7 @@ public class EndUser extends BaseEntity  {
   {
     this.realName = realName;
   }
-
+  @JsonProperty
   public String getUserName ()
   {
     return userName;
@@ -138,7 +140,7 @@ public class EndUser extends BaseEntity  {
   {
     this.userName = userName;
   }
-
+  @JsonProperty
   public Integer getAge ()
   {
     return age;
@@ -148,7 +150,7 @@ public class EndUser extends BaseEntity  {
   {
     this.age = age;
   }
-
+  @JsonProperty
   public Gender getGender ()
   {
     return gender;
@@ -158,7 +160,7 @@ public class EndUser extends BaseEntity  {
   {
     this.gender = gender;
   }
-
+  @JsonProperty
   public String getMobileNum ()
   {
     return mobileNum;
@@ -209,6 +211,7 @@ public class EndUser extends BaseEntity  {
     this.address = address;
   }
 
+  @JsonProperty
   public String getQq ()
   {
     return qq;
