@@ -47,6 +47,14 @@ public class LoginStatistics extends BaseEntity{
   {
     return tenantID;
   }
+  
+  
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
+  }
+
+
   public Date getLoginDate() {
     return loginDate;
   }

@@ -1,8 +1,10 @@
 package com.csh.entity;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import javax.persistence.*;
+import com.csh.entity.base.BaseEntity;
 
 
 /**
@@ -12,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="csh_vehicle_dtc")
 @SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_dtc_sequence")
-public class VehicleDtc implements Serializable {
+public class VehicleDtc extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 
