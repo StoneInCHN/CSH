@@ -133,6 +133,18 @@ var messages = {
 	"csh.endUser.list":"用户列表",
 	"csh.endUser.locked":"账号锁定",
 	
+	//设备信息
+	"csh.deviceInfo.list":"设备列表",
+	"csh.deviceInfo.deviceNO":"设备编号",
+	"csh.deviceInfo.deviceStatus":"设备状态",
+	"csh.deviceInfo.deviceStatus.INITED":"初始状态",
+	"csh.deviceInfo.deviceStatus.SENDOUT":"下发状态",
+	"csh.deviceInfo.deviceStatus.STORAGEOUT":"已出库",
+	"csh.deviceInfo.deviceStatus.BINDED":"已绑定",
+	"csh.deviceInfo.deviceStatus.REFUNDED":"已退还",
+	"csh.deviceInfo.bindTime":"绑定时间",
+	"csh.deviceInfo.deviceType":"设备类型"
+	
 };
 //多语言
 function message(code) {

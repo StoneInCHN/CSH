@@ -105,7 +105,7 @@
     	</ul>
     	<ul title="${message("csh.device.config")}" id="device">
     		[@shiro.hasPermission name="device"]
-    		<li><a href="#" data-url="${base}/console/device/device.jhtml">${message("csh.device.device")}</a></li>
+    		<li><a href="#" data-url="${base}/console/deviceInfo/deviceInfo.jhtml">${message("csh.device.device")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.endUser.config")}" id="endUser">

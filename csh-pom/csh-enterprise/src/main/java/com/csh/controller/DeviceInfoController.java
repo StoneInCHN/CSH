@@ -25,37 +25,38 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.RSAService;
 import com.csh.utils.DateTimeUtils;
 
 /**
- * 终端用户
+ * 设备管理
  * @author huyong
  *
  */
-@Controller ("endUserController")
-@RequestMapping ("console/endUser")
-public class EndUserController extends BaseController
+@Controller ("deviceController")
+@RequestMapping ("console/deviceInfo")
+public class DeviceInfoController extends BaseController
 {
 
-  @Resource (name = "endUserServiceImpl")
-  private EndUserService endUserService;
-  @Resource(name = "rsaServiceImpl")
-  private RSAService rsaService;
+  @Resource (name = "deviceInfoServiceImpl")
+  private DeviceInfoService deviceInfoService;
   
-  @RequestMapping (value = "/endUser", method = RequestMethod.GET)
+  @RequestMapping (value = "/deviceInfo", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "endUser/endUser";
+    return "deviceInfo/deviceInfo";
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<EndUser> list (Pageable pageable, ModelMap model,
-      Date beginDate, Date endDate, String userNameSearch,AccountStatus accountStatusSearch)
+  public @ResponseBody Page<DeviceInfo> list (Pageable pageable, ModelMap model,
+      Date beginDate, Date endDate, String deviceNoSearch,DeviceStatus deviceStatusSearch)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -64,7 +65,7 @@ public class EndUserController extends BaseController
     analyzer.setMaxWordLength (true);
     BooleanQuery query = new BooleanQuery ();
 
-    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "userName",
+    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "deviceNo",
         analyzer);
     Query nameQuery = null;
     TermRangeQuery rangeQuery = null;
@@ -79,18 +80,18 @@ public class EndUserController extends BaseController
     {
       endDateStr = DateTimeUtils.convertDateToString (endDate, null);
     }
-    if (userNameSearch != null)
+    if (deviceNoSearch != null)
     {
-      String text = QueryParser.escape (userNameSearch);
+      String text = QueryParser.escape (deviceNoSearch);
         try
         {
           nameQuery = nameParser.parse (text);
           query.add (nameQuery, Occur.MUST);
           
-          if (LogUtil.isDebugEnabled (EndUserController.class))
+          if (LogUtil.isDebugEnabled (DeviceInfoController.class))
           {
-            LogUtil.debug (EndUserController.class, "search", "Search real name: "
-                + userNameSearch );
+            LogUtil.debug (DeviceInfoController.class, "search", "Search device NO: "
+                + deviceNoSearch );
           }
         }
         catch (ParseException e)
@@ -98,9 +99,9 @@ public class EndUserController extends BaseController
           e.printStackTrace();
         }
     }
-    if (accountStatusSearch != null)
+    if (deviceStatusSearch != null)
     {
-      statusQuery = new TermQuery (new Term ("accoutStatus",accountStatusSearch.toString ()));
+      statusQuery = new TermQuery (new Term ("deviceStatus",deviceStatusSearch.toString ()));
       query.add (statusQuery,Occur.MUST);
     }
     if (startDateStr != null || endDateStr != null)
@@ -108,17 +109,17 @@ public class EndUserController extends BaseController
       rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr, true, true);
       query.add (rangeQuery,Occur.MUST);
       
-      if (LogUtil.isDebugEnabled (EndUserController.class))
+      if (LogUtil.isDebugEnabled (DeviceInfoController.class))
       {
-        LogUtil.debug (EndUserController.class, "search", "Search start date: "+startDateStr
+        LogUtil.debug (DeviceInfoController.class, "search", "Search start date: "+startDateStr
             +" end date: "+endDateStr);
       }
     }
     if (nameQuery != null || rangeQuery != null || statusQuery != null)
     {
-      return endUserService.search (query, pageable, analyzer,filter,true);
+      return deviceInfoService.search (query, pageable, analyzer,filter,true);
     }
-      return endUserService.findPage (pageable, true);
+      return deviceInfoService.findPage (pageable, true);
     
   }
 
@@ -132,25 +133,22 @@ public class EndUserController extends BaseController
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
-    EndUser endUser = endUserService.find (id);
-    model.put ("endUser", endUser);
-    return "endUser/edit";
+    DeviceInfo deviceInfo = deviceInfoService.find (id);
+    model.put ("deviceInfo", deviceInfo);
+    return "deviceInfo/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (EndUser endUser)
+  public @ResponseBody Message add (DeviceInfo deviceInfo)
   {
-    endUserService.save (endUser,true);
+    deviceInfoService.save (deviceInfo,true);
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (String enPassword,EndUser endUser)
-  {
-    if (!enPassword.equals (endUser.getPassword ()))
-    {
-      endUser.setPassword (DigestUtils.md5Hex(endUser.getPassword ()));
-    }
+  public @ResponseBody Message update (DeviceInfo deviceInfo)
+  { 
+    deviceInfoService.update (deviceInfo);
     return SUCCESS_MESSAGE;
   }
  
@@ -165,7 +163,7 @@ public class EndUserController extends BaseController
     {
       // 检查是否能被删除
       // if()
-      endUserService.delete (ids);
+      deviceInfoService.delete (ids);
     }
     return SUCCESS_MESSAGE;
   }
@@ -178,8 +176,8 @@ public class EndUserController extends BaseController
    */
   @RequestMapping(value = "/details", method = RequestMethod.GET)
   public String details(ModelMap model, Long id) {
-    EndUser endUser = endUserService.find(id);
-    model.addAttribute("endUser", endUser);
+    DeviceInfo deviceInfo = deviceInfoService.find(id);
+    model.addAttribute("deviceInfo", deviceInfo);
     return "endUser/details";
   }
 }

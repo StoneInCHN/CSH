@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -61,6 +62,7 @@ public class DeviceInfo extends BaseEntity {
 	 */
 	private Long tenantID;
 
+	@JsonProperty
   public Date getBindTime ()
   {
     return bindTime;
@@ -70,7 +72,7 @@ public class DeviceInfo extends BaseEntity {
   {
     this.bindTime = bindTime;
   }
-
+  @JsonProperty
   public Date getUnBindTime ()
   {
     return unBindTime;
@@ -80,7 +82,7 @@ public class DeviceInfo extends BaseEntity {
   {
     this.unBindTime = unBindTime;
   }
-
+  @JsonProperty
   public String getDeviceNo ()
   {
     return deviceNo;
@@ -90,7 +92,7 @@ public class DeviceInfo extends BaseEntity {
   {
     this.deviceNo = deviceNo;
   }
-
+  @JsonProperty
   public DeviceStatus getDeviceStatus ()
   {
     return deviceStatus;
@@ -100,7 +102,7 @@ public class DeviceInfo extends BaseEntity {
   {
     this.deviceStatus = deviceStatus;
   }
-
+  @JsonProperty
   public String getSimNo ()
   {
     return simNo;
@@ -110,7 +112,7 @@ public class DeviceInfo extends BaseEntity {
   {
     this.simNo = simNo;
   }
-
+  @JsonProperty
   public DeviceType getType ()
   {
     return type;
