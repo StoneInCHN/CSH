@@ -1,9 +1,12 @@
 package com.csh.entity;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -20,30 +23,35 @@ import com.csh.entity.commonenum.CommonEnum.Gender;
  * 
  */
 @Entity
-@Table(name="csh_end_user")
+@Table(name = "csh_end_user")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_end_user_sequence")
-public class EndUser extends BaseEntity  {
-	private static final long serialVersionUID = 1L;
+public class EndUser extends BaseEntity {
+  private static final long serialVersionUID = 1L;
 
 
-	/**
+  /**
    * 租户ID
    */
   private Long tenantID;
-	 /**
+  /**
    * 账号状态
    */
   private AccountStatus accountStatus;
-  
+
   /**
    * 真实姓名
    */
   private String realName;
-  
+
   /**
    * 用户名
    */
   private String userName;
+
+  /**
+   * 昵称
+   */
+  private String nickName;
   /**
    * 年龄
    */
@@ -60,7 +68,7 @@ public class EndUser extends BaseEntity  {
    * 密码
    */
   private String password;
- 
+
   /**
    * 用户头像
    */
@@ -70,193 +78,184 @@ public class EndUser extends BaseEntity  {
    */
   private Date birthDay;
   /**
-   *  地址
+   * 地址
    */
   private String address;
 
   /**
    * QQ号
    */
-	private String qq;
-	/**
-	 * 签名
-	 */
-	private String signature;
+  private String qq;
+  /**
+   * 签名
+   */
+  private String signature;
 
-	/**
-	 * VIP等级
-	 */
-	private int vipLevel;
-	
-	/**
-	 * 驾照
-	 */
-	private DriverLicense driverLicense;
+  /**
+   * VIP等级
+   */
+  private int vipLevel;
 
-	/**
-	 * 车辆
-	 */
-	private Set<Vehicle> vehicles;
+  /**
+   * 驾照
+   */
+  private DriverLicense driverLicense;
 
-	@Index(name = "endUser_tenantid")
-  public Long getTenantID ()
-  {
+  /**
+   * 车辆
+   */
+  private Set<Vehicle> vehicles = new HashSet<Vehicle>();
+
+  /**
+   * login统计
+   */
+  private Set<LoginStatistics> loginStatistics = new HashSet<LoginStatistics>();
+
+
+  @OneToMany(mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  public Set<LoginStatistics> getLoginStatistics() {
+    return loginStatistics;
+  }
+
+  public void setLoginStatistics(Set<LoginStatistics> loginStatistics) {
+    this.loginStatistics = loginStatistics;
+  }
+
+  public String getNickName() {
+    return nickName;
+  }
+
+  public void setNickName(String nickName) {
+    this.nickName = nickName;
+  }
+
+  @Index(name = "endUser_tenantid")
+  public Long getTenantID() {
     return tenantID;
   }
 
-  public void setTenantID (Long tenantID)
-  {
+  public void setTenantID(Long tenantID) {
     this.tenantID = tenantID;
   }
 
-  public AccountStatus getAccountStatus ()
-  {
+  public AccountStatus getAccountStatus() {
     return accountStatus;
   }
 
-  public void setAccountStatus (AccountStatus accountStatus)
-  {
+  public void setAccountStatus(AccountStatus accountStatus) {
     this.accountStatus = accountStatus;
   }
 
-  public String getRealName ()
-  {
+  public String getRealName() {
     return realName;
   }
 
-  public void setRealName (String realName)
-  {
+  public void setRealName(String realName) {
     this.realName = realName;
   }
 
-  public String getUserName ()
-  {
+  public String getUserName() {
     return userName;
   }
 
-  public void setUserName (String userName)
-  {
+  public void setUserName(String userName) {
     this.userName = userName;
   }
 
-  public Integer getAge ()
-  {
+  public Integer getAge() {
     return age;
   }
 
-  public void setAge (Integer age)
-  {
+  public void setAge(Integer age) {
     this.age = age;
   }
 
-  public Gender getGender ()
-  {
+  public Gender getGender() {
     return gender;
   }
 
-  public void setGender (Gender gender)
-  {
+  public void setGender(Gender gender) {
     this.gender = gender;
   }
 
-  public String getMobileNum ()
-  {
+  public String getMobileNum() {
     return mobileNum;
   }
 
-  public void setMobileNum (String mobileNum)
-  {
+  public void setMobileNum(String mobileNum) {
     this.mobileNum = mobileNum;
   }
 
-  public String getPassword ()
-  {
+  public String getPassword() {
     return password;
   }
 
-  public void setPassword (String password)
-  {
+  public void setPassword(String password) {
     this.password = password;
   }
 
-  public String getPhoto ()
-  {
+  public String getPhoto() {
     return photo;
   }
 
-  public void setPhoto (String photo)
-  {
+  public void setPhoto(String photo) {
     this.photo = photo;
   }
 
-  public Date getBirthDay ()
-  {
+  public Date getBirthDay() {
     return birthDay;
   }
 
-  public void setBirthDay (Date birthDay)
-  {
+  public void setBirthDay(Date birthDay) {
     this.birthDay = birthDay;
   }
 
-  public String getAddress ()
-  {
+  public String getAddress() {
     return address;
   }
 
-  public void setAddress (String address)
-  {
+  public void setAddress(String address) {
     this.address = address;
   }
 
-  public String getQq ()
-  {
+  public String getQq() {
     return qq;
   }
 
-  public void setQq (String qq)
-  {
+  public void setQq(String qq) {
     this.qq = qq;
   }
 
-  public String getSignature ()
-  {
+  public String getSignature() {
     return signature;
   }
 
-  public void setSignature (String signature)
-  {
+  public void setSignature(String signature) {
     this.signature = signature;
   }
 
-  public int getVipLevel ()
-  {
+  public int getVipLevel() {
     return vipLevel;
   }
 
-  public void setVipLevel (int vipLevel)
-  {
+  public void setVipLevel(int vipLevel) {
     this.vipLevel = vipLevel;
   }
-  
-  public DriverLicense getDriverLicense ()
-  {
+
+  public DriverLicense getDriverLicense() {
     return driverLicense;
   }
 
-  public void setDriverLicense (DriverLicense driverLicense)
-  {
+  public void setDriverLicense(DriverLicense driverLicense) {
     this.driverLicense = driverLicense;
   }
 
-  @OneToMany(mappedBy="endUser")
-  public Set<Vehicle> getVehicles ()
-  {
+  @OneToMany(mappedBy = "endUser")
+  public Set<Vehicle> getVehicles() {
     return vehicles;
   }
 
-  public void setVehicles (Set<Vehicle> vehicles)
-  {
+  public void setVehicles(Set<Vehicle> vehicles) {
     this.vehicles = vehicles;
   }
 

@@ -36,25 +36,24 @@ public class CommonEnum {
     ASSOCIATION
   }
 
-  
-
-  
 
 
-  
+  /**
+   * 短信验证码类型
+   * 
+   * @author sujinxuan
+   *
+   */
+  public enum SmsTokenType {
+    /** 注册 */
+    REG,
+    /** 找回密码 */
+    FINDPWD,
+    /** 修改手机号 */
+    MODIFY_MOBILENUM
+  }
 
- 
 
-  
-
- 
-
-
- 
-  
-  
-
- 
 
   /**
    * 帐号状态
@@ -64,8 +63,11 @@ public class CommonEnum {
     /** 帐号正常 */
     ACTIVED,
 
-    /** 帐号锁定 */
-    LOCKED
+    /** 帐号禁用 */
+    LOCKED,
+
+    /** 帐号删除 */
+    DELETE
   }
 
   /**
@@ -92,7 +94,7 @@ public class CommonEnum {
     OUTSERVICE
   }
 
-  
+
 
   /**
    * 通用状态
@@ -112,10 +114,11 @@ public class CommonEnum {
   }
   /**
    * 设备状态
+   * 
    * @author huyong
    *
    */
-  public enum DeviceStatus{
+  public enum DeviceStatus {
     /**
      * 初始状态
      */
@@ -132,14 +135,14 @@ public class CommonEnum {
      * 已绑定
      */
     BINDED,
-    
+
     /**
      * 退还
      */
     REFUNDED
-    
+
   }
- 
+
   /**
    * 民族枚举数据
    * 
@@ -501,9 +504,7 @@ public class CommonEnum {
     OTHER
   }
 
-  
 
-  
 
   /**
    * 逻辑删除标记
@@ -522,21 +523,22 @@ public class CommonEnum {
     DELETED
   }
 
-  
+
   /**
    * 版本状态
+   * 
    * @author huyong
    *
    */
-  public enum VersionStatus{
-     /**
-      * 可用
-      */
-      ENABLE,
-      /**
-       * 禁用
-       */
-      DISABLE
+  public enum VersionStatus {
+    /**
+     * 可用
+     */
+    ENABLE,
+    /**
+     * 禁用
+     */
+    DISABLE
   }
   /**
    * 数据字典
@@ -601,16 +603,16 @@ public class CommonEnum {
      * 个性化服务,13
      */
     PERSONALIZED("个性化服务");
-    
-    private String keyName; 
-    
-    private ConfigKey(String keyName) { 
-        this.keyName = keyName; 
-    } 
-        
-    public String getKeyName() { 
-        return this.keyName; 
-    } 
+
+    private String keyName;
+
+    private ConfigKey(String keyName) {
+      this.keyName = keyName;
+    }
+
+    public String getKeyName() {
+      return this.keyName;
+    }
   }
   /**
    * 人员编号
