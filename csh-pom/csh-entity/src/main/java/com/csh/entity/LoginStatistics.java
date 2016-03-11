@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -15,13 +14,14 @@ import com.csh.entity.base.BaseEntity;
 
 /**
  * Entity - 登录统计
+ * 
  * @author sujinxuan
  *
  */
 @Entity
 @Table(name = "csh_login_statistics")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_login_statistics_sequence")
-public class LoginStatistics extends BaseEntity{
+public class LoginStatistics extends BaseEntity {
 
   private static final long serialVersionUID = -761304021347883183L;
   /**
@@ -36,21 +36,19 @@ public class LoginStatistics extends BaseEntity{
    * 登录用户
    */
   private EndUser endUser;
-  
+
   /**
    * 租户ID
    */
   private Long tenantID;
-  
+
   @Index(name = "loginStatistics_tenantid")
-  public Long getTenantID ()
-  {
+  public Long getTenantID() {
     return tenantID;
   }
-  
-  
-  public void setTenantID (Long tenantID)
-  {
+
+
+  public void setTenantID(Long tenantID) {
     this.tenantID = tenantID;
   }
 
@@ -58,24 +56,27 @@ public class LoginStatistics extends BaseEntity{
   public Date getLoginDate() {
     return loginDate;
   }
+
   public void setLoginDate(Date loginDate) {
     this.loginDate = loginDate;
   }
-  
-  @Column(length=50)
+
+  @Column(length = 50)
   public String getLoginIp() {
     return loginIp;
   }
+
   public void setLoginIp(String loginIp) {
     this.loginIp = loginIp;
   }
-  
-  @ManyToOne(fetch=FetchType.LAZY)
+
+  @ManyToOne
   public EndUser getEndUser() {
     return endUser;
   }
+
   public void setEndUser(EndUser endUser) {
     this.endUser = endUser;
   }
-  
+
 }

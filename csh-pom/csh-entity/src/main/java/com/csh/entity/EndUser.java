@@ -211,7 +211,6 @@ public class EndUser extends BaseEntity  {
     this.address = address;
   }
 
-  @JsonProperty
   public String getQq ()
   {
     return qq;

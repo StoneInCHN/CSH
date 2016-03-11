@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csh.beans.Principal;
 import com.csh.dao.AdminDao;
 import com.csh.entity.Admin;
+import com.csh.entity.ConfigMeta;
 import com.csh.entity.Role;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.AdminService;
@@ -65,10 +66,12 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long> implements Ad
   public List<String> findAuthorities(Long id) {
     List<String> authorities = new ArrayList<String>();
     Admin admin = adminDao.find(id);
-    /*
-     * if (admin != null) { for (Role role : admin.getRoles()) {
-     * authorities.addAll(role.getAuthorities()); } }
-     */
+
+    if (admin != null) {
+      for (Role role : admin.getRoles()) {
+        authorities.addAll(role.getAuthorities());
+      }
+    }
     return authorities;
   }
 

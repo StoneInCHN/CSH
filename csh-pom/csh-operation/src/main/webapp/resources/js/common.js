@@ -171,7 +171,9 @@ function message(code) {
 			return false;
 		}
 		
-		var $dialog = $('<div class="xxDialog"><\/div>');
+		var $dialog = $('<div class="modal-dialog xxDialog"><\/div>');
+		var $dialogWrap = $('<div class="modal-content"><\/div>');
+		var $dialogHeader = $('<div class="modal-header"><\/div>');
 		var $dialogTitle;
 		var $dialogClose ;
 		var $dialogContent;
@@ -179,25 +181,27 @@ function message(code) {
 		var $dialogOk;
 		var $dialogCancel;
 		var $dialogOverlay;
+		$dialogWrap.appendTo($dialog);
+		$dialogHeader.appendTo($dialogWrap);
 		if(settings.close){
-			$dialogClose = $('<div class="dialogClose"><\/div>').appendTo($dialog);
+			$dialogClose = $('<button data-dismiss="modal" class="close" type="button"><span aria-hidden="true"><i class="fa fa-times"></i></span><span class="sr-only">Close</span><\/button>').appendTo($dialogHeader);
 		}
 		if (settings.title != null) {
-			$dialogTitle = $('<div class="dialogTitle"><\/div>').appendTo($dialog);
+			$dialogTitle = $('<h4 class="modal-title"></h4>').appendTo($dialogHeader);
 		}
 		if (settings.type != null) {
-			$dialogContent = $('<div class="dialogContent dialog' + settings.type + 'Icon"><\/div>').appendTo($dialog);
+			$dialogContent = $('<div class="modal-body dialog' + settings.type + 'Icon"><\/div>').appendTo($dialogWrap);
 		} else {
-			$dialogContent = $('<div class="dialogContent"><\/div>').appendTo($dialog);
+			$dialogContent = $('<div class="modal-body"><\/div>').appendTo($dialogWrap);
 		}
 		if (settings.ok != null || settings.cancel != null) {
-			$dialogBottom = $('<div class="dialogBottom"><\/div>').appendTo($dialog);
+			$dialogBottom = $('<div class="modal-footer"><\/div>').appendTo($dialogWrap);
 		}
 		if (settings.ok != null) {
-			$dialogOk = $('<input type="button" class="button" value="' + settings.ok + '" \/>').appendTo($dialogBottom);
+			$dialogOk = $('<button  class="btn btn-default" type="button" >' + settings.ok + '<\/button>').appendTo($dialogBottom);
 		}
 		if (settings.cancel != null) {
-			$dialogCancel = $('<input type="button" class="button" value="' + settings.cancel + '" \/>').appendTo($dialogBottom);
+			$dialogCancel = $('<button type="button" data-dismiss="modal" class="btn btn-default">' + settings.cancel + '<\/button>').appendTo($dialogBottom);
 		}
 		if (!window.XMLHttpRequest) {
 			$dialog.append('<iframe class="dialogIframe"><\/iframe>');
@@ -213,8 +217,8 @@ function message(code) {
 			$dialogTitle.text(settings.title);
 		}
 		$dialogContent.html(settings.content);
-		$dialog.css({"width": settings.width, "height": settings.height, "margin-left": - (parseInt(settings.width / 2)), "z-index": zIndex ++});
-		
+		$dialog.css({"width": settings.width, "height": "auto", "margin-left": - (parseInt(settings.width / 2)), "z-index": zIndex ++});
+		$(".modal-body").css({"height": settings.height});
 		if(settings.top!=null){
 			$dialog.css({"top": settings.top});
 		}

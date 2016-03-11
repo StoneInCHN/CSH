@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>${message("admin.error.title")}</title>
-<link href="${base}/resources/css/common.css" rel="stylesheet" type="text/css" />
-<link href="${base}/resources/css/error.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/style/common.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/style/error.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<div class="wrap">
