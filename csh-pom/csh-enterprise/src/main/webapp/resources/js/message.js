@@ -143,7 +143,15 @@ var messages = {
 	"csh.deviceInfo.deviceStatus.BINDED":"已绑定",
 	"csh.deviceInfo.deviceStatus.REFUNDED":"已退还",
 	"csh.deviceInfo.bindTime":"绑定时间",
-	"csh.deviceInfo.deviceType":"设备类型"
+	"csh.deviceInfo.deviceType":"设备类型",
+	
+	//车辆信息
+	"csh.vehicle.plate":"车牌号",
+	"csh.vehicle.vehicleBrand":"车辆型号",
+	"csh.vehicle.endUser":"车辆所有者",
+	"csh.vehicle.device":"绑定设备",
+	"csh.vehicle.status":"车辆状态",
+	"csh.vehicle.list":"车辆列表"
 	
 };
 //多语言

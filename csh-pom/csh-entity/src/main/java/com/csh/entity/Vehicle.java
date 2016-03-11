@@ -2,13 +2,13 @@ package com.csh.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.Status;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The persistent class for the csh_vehicle database table.
@@ -69,6 +69,7 @@ public class Vehicle extends BaseEntity
 
   private Long tenantID;
 
+  @JsonProperty
   public Date getBindTime ()
   {
     return bindTime;
@@ -79,6 +80,7 @@ public class Vehicle extends BaseEntity
     this.bindTime = bindTime;
   }
 
+  @JsonProperty
   public VehicleBrand getVehicleBrand ()
   {
     return vehicleBrand;
@@ -99,6 +101,7 @@ public class Vehicle extends BaseEntity
     this.color = color;
   }
 
+  @JsonProperty
   public DeviceInfo getDevice ()
   {
     return device;
@@ -129,6 +132,7 @@ public class Vehicle extends BaseEntity
     this.isDefault = isDefault;
   }
 
+  @JsonProperty
   public String getPlate ()
   {
     return plate;
@@ -139,6 +143,7 @@ public class Vehicle extends BaseEntity
     this.plate = plate;
   }
 
+  @JsonProperty
   public Status getStatus ()
   {
     return status;
@@ -159,6 +164,7 @@ public class Vehicle extends BaseEntity
     this.vin = vin;
   }
 
+  @JsonProperty
   public EndUser getEndUser ()
   {
     return endUser;
