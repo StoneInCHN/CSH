@@ -1,5 +1,7 @@
 package com.csh.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +45,16 @@ public class TenantInfo extends BaseEntity {
    * 租户地址
    */
   private String address;
+  
+  /**
+   * 纬度
+   */
+  private BigDecimal latitude;
+
+  /**
+   * 经度
+   */
+  private BigDecimal longitude;
   
   /**
    * 联系人
@@ -113,6 +125,25 @@ public class TenantInfo extends BaseEntity {
   public void setAddress(String address) {
     this.address = address;
   }
+  
+  @Column(name = "Latitude", scale = 6, precision = 10, nullable = true)
+  public BigDecimal getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(BigDecimal latitude) {
+    this.latitude = latitude;
+  }
+
+  @Column(name = "Longitude", scale = 6, precision = 10, nullable = true)
+  public BigDecimal getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(BigDecimal longitude) {
+    this.longitude = longitude;
+  }
+  
 
   @Column(length = 15)
   public String getContactPerson() {

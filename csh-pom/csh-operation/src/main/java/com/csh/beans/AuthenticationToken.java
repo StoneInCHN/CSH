@@ -18,17 +18,12 @@ public class AuthenticationToken extends UsernamePasswordToken {
 	
 	/** 注册后自动登录 */
 	private Boolean isAutoLogin;
-	
-	/** 机构代码 */
-	private String orgCode;
 
 	/**
 	 * @param username
 	 *            用户名
 	 * @param password
 	 *            密码
-	 * @param orgCode
-	 *           机构代码           
 	 * @param captchaId
 	 *            验证码ID
 	 * @param captcha
@@ -40,11 +35,10 @@ public class AuthenticationToken extends UsernamePasswordToken {
 	 * @param isAutoLogin
 	 *            注册后自动登录           
 	 */
-	public AuthenticationToken(String username, String password, String orgCode,String captchaId, String captcha, boolean rememberMe, String host,Boolean isAutoLogin) {
+	public AuthenticationToken(String username, String password, String captchaId, String captcha, boolean rememberMe, String host,Boolean isAutoLogin) {
 		super(username, password, rememberMe, host);
 		this.captchaId = captchaId;
 		this.captcha = captcha;
-		this.orgCode = orgCode;
 		this.isAutoLogin = isAutoLogin;
 	}
 
@@ -102,11 +96,5 @@ public class AuthenticationToken extends UsernamePasswordToken {
       this.isAutoLogin = isAutoLogin;
     }
 
-    public String getOrgCode() {
-      return orgCode;
-    }
-
-    public void setOrgCode(String orgCode) {
-      this.orgCode = orgCode;
-    }
+	
 }

@@ -1,14 +1,12 @@
 package com.csh.dao;
 
-
 import com.csh.entity.Role;
 import com.csh.framework.dao.BaseDao;
 
 /**
- * DAO 角色
- * @author pengyanan
- *
+ * Dao - 角色
+ * 
  */
-public interface RoleDao extends BaseDao<Role, Long>{
+public interface RoleDao extends BaseDao<Role, Long> {
 
 }

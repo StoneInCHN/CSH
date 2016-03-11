@@ -1,6 +1,5 @@
 package com.csh.beans;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,13 +18,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
 import com.csh.beans.Setting.CaptchaType;
-import com.csh.entity.ConfigMeta;
-import com.csh.entity.TenantAccount;
-import com.csh.entity.TenantInfo;
-import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.entity.Admin;
+import com.csh.entity.Admin.AdminStatus;
+import com.csh.service.AdminService;
 import com.csh.service.CaptchaService;
-import com.csh.service.TenantAccountService;
-import com.csh.service.TenantInfoService;
 
 /**
  * 权限认证
@@ -33,12 +29,10 @@ import com.csh.service.TenantInfoService;
  */
 public class AuthenticationRealm extends AuthorizingRealm {
 
-	@Resource(name = "tenantAccountServiceImpl")
-	private TenantAccountService tenantAccountService;
-	@Resource(name = "tenantInfoServiceImpl")
-	private TenantInfoService tenantInfoService;
 	@Resource(name = "captchaServiceImpl")
 	private CaptchaService captchaService;
+	@Resource(name = "adminServiceImpl")
+	private AdminService adminService;
 
 	/**
 	 * 获取认证信息
@@ -52,41 +46,27 @@ public class AuthenticationRealm extends AuthorizingRealm {
 		AuthenticationToken authenticationToken = (AuthenticationToken) token;
 		String username = authenticationToken.getUsername();
 		String password = new String(authenticationToken.getPassword());
-		String orgCode = authenticationToken.getOrgCode();
 		String captchaId = authenticationToken.getCaptchaId();
 		String captcha = authenticationToken.getCaptcha();
 		String ip = authenticationToken.getHost();
-		
-		if (!captchaService.isValid(CaptchaType.LOGIN, captchaId, captcha)) {
-          throw new UnsupportedTokenException();
+		if (!captchaService.isValid(CaptchaType.adminLogin, captchaId, captcha)) {
+			throw new UnsupportedTokenException();
 		}
-		
-		if (username != null && password != null && orgCode != null) {
-		    
-		    TenantInfo tenantInfo = tenantInfoService.findTenantWithOrgCode(orgCode);
-		    TenantAccount tenantAccount = null;
-		    if(tenantInfo == null){
-		      throw new UnknownAccountException();
-		    }else {
-              if(tenantInfo.getAccountStatus().equals(AccountStatus.LOCKED)){
-                throw new DisabledAccountException();
-              }else{
-                tenantAccount = tenantAccountService.findByNameAndOrgCode(username, orgCode);
-                if (tenantAccount == null) {
-                    throw new UnknownAccountException();
-                }
-                if (tenantAccount.getAccoutStatus().equals(AccountStatus.LOCKED)) {
-                    throw new DisabledAccountException();
-                }
-                if (!DigestUtils.md5Hex(password).equals(tenantAccount.getPassword())) {
-                    throw new IncorrectCredentialsException();
-                }
-              }
-            }
-			tenantAccount.setLoginIp(ip);
-			tenantAccount.setLoginDate(new Date());
-			tenantAccountService.update(tenantAccount);
-			return new SimpleAuthenticationInfo(new Principal(tenantAccount.getId(), username,tenantInfo), password, getName());
+		if (username != null && password != null) {
+			Admin admin = adminService.findByUsername(username);
+			if (admin == null) {
+				throw new UnknownAccountException();
+			}
+			if (admin.getAdminStatus().equals(AdminStatus.locked)) {
+				throw new DisabledAccountException();
+			}
+			if (!DigestUtils.md5Hex(password).equals(admin.getPassword())) {
+				throw new IncorrectCredentialsException();
+			}
+			admin.setLoginIp(ip);
+			admin.setLoginDate(new Date());
+			adminService.update(admin);
+			return new SimpleAuthenticationInfo(new Principal(admin.getId(), username), password, getName());
 		}
 		throw new UnknownAccountException();
 	}
@@ -102,14 +82,10 @@ public class AuthenticationRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		Principal principal = (Principal) principals.fromRealm(getName()).iterator().next();
 		if (principal != null) {
-			List<ConfigMeta> authorityResources = tenantAccountService.findAuthorities(principal.getId());
-			List<String> strAuthorities = new ArrayList<String>();
-			for(ConfigMeta auth:authorityResources){
-			  strAuthorities.add(auth.getConfigKey ());
-			}
-			if (authorityResources != null) {
+			List<String> authorities = adminService.findAuthorities(principal.getId());
+			if (authorities != null) {
 				SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-				authorizationInfo.addStringPermissions(strAuthorities);
+				authorizationInfo.addStringPermissions(authorities);
 				return authorizationInfo;
 			}
 		}

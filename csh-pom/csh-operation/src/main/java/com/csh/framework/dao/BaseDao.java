@@ -2,17 +2,9 @@ package com.csh.framework.dao;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.LockModeType;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.search.Query;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.csh.beans.Message;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.ordering.Ordering;
 import com.csh.framework.paging.Page;
@@ -142,27 +134,4 @@ public interface BaseDao<T, ID extends Serializable> {
    */
   void flush();
 
-  /**
-   * 关键字搜索
-   */
-  Page<T>  search(Query query, Pageable pageable, Analyzer analyzer, org.apache.lucene.search.Filter filter);
-  
-  /**
-   * 重建索引
-   */
-  void refreshIndex();
-  
-  /**
-   * 查询实体对象数量
-   */
-  int count(Query query, Analyzer analyzer, org.apache.lucene.search.Filter filter);
-  /**
-   * 查找实体对象集合
-   */
-  List<T> searchList(Query query, Analyzer analyzer, org.apache.lucene.search.Filter filter);
-   
-  /**
-   * 调用存储过程
-   */
-  void callProcedure(String procName,Object...args);
 }

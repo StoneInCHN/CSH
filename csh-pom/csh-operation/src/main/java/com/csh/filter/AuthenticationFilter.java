@@ -20,7 +20,6 @@ import com.csh.beans.AuthenticationToken;
 import com.csh.common.log.LogUtil;
 import com.csh.service.RSAService;
 
-
 /**
  * Filter - 权限认证
  * 
@@ -45,9 +44,6 @@ public class AuthenticationFilter extends FormAuthenticationFilter {
   /** "验证码"参数名称 */
   private String captchaParam = DEFAULT_CAPTCHA_PARAM;
 
-  /** 组织机构代码" */
-  private static final String ORG_CODE = "orgCode";
-
   String url = null;
 
   @Resource(name = "rsaServiceImpl")
@@ -58,13 +54,12 @@ public class AuthenticationFilter extends FormAuthenticationFilter {
       ServletResponse servletResponse) {
     String username = getUsername(servletRequest);
     String password = getPassword(servletRequest);
-    String orgCode = getOrgCode(servletRequest);
     String captchaId = getCaptchaId(servletRequest);
     String captcha = getCaptcha(servletRequest);
     boolean rememberMe = isRememberMe(servletRequest);
     String host = getHost(servletRequest);
     Boolean isAutoLogin = false;
-    return new AuthenticationToken(username, password, orgCode,captchaId, captcha, rememberMe, host,
+    return new AuthenticationToken(username, password, captchaId, captcha, rememberMe, host,
         isAutoLogin);
   }
 
@@ -136,18 +131,6 @@ public class AuthenticationFilter extends FormAuthenticationFilter {
     String password = rsaService.decryptParameter(enPasswordParam, request);
     rsaService.removePrivateKey(request);
     return password;
-  }
-
-  /**
-   * 获取机构代码
-   * 
-   * @param servletRequest
-   * @return
-   */
-  public String getOrgCode(ServletRequest servletRequest) {
-    HttpServletRequest request = (HttpServletRequest) servletRequest;
-    String orgCode = request.getParameter(ORG_CODE);
-    return orgCode;
   }
 
 

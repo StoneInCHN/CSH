@@ -8,17 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
@@ -26,16 +17,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.csh.entity.base.BaseEntity;
 import com.csh.framework.dao.BaseDao;
+import com.csh.framework.entity.BaseEntity;
 import com.csh.framework.filter.Filter;
-import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.ordering.Ordering;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.BaseService;
-import com.csh.service.TenantAccountService;
-import com.csh.utils.FieldFilterUtils;
 
 
 @Transactional
@@ -46,12 +34,9 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
       BaseEntity.ID_PROPERTY_NAME, BaseEntity.CREATE_DATE_PROPERTY_NAME,
       BaseEntity.MODIFY_DATE_PROPERTY_NAME};
 
-  @Resource(name = "tenantAccountServiceImpl")
-  protected TenantAccountService tenantAccountService;
-
   /** baseDao */
   private BaseDao<T, ID> baseDao;
-  
+
   public void setBaseDao(BaseDao<T, ID> baseDao) {
     this.baseDao = baseDao;
   }
@@ -64,11 +49,6 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
   @Transactional(readOnly = true)
   public List<T> findAll() {
     return findList(null, null, null, null);
-  }
-  
-  @Transactional(readOnly = true)
-  public List<T> findAll(Boolean isTenant) {
-    return findList(null, null, null,isTenant, null);
   }
 
   @Transactional(readOnly = true)
@@ -123,14 +103,6 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
 
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public void save(T entity) {
-    baseDao.persist(entity);
-  }
-  
-  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public void save(T entity,Boolean isTenant) {
-    if (isTenant) {
-      FieldFilterUtils.addFieldValue("tenantID", tenantAccountService.getCurrentTenantID(), entity);
-    }
     baseDao.persist(entity);
   }
 
@@ -213,59 +185,4 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
       }
     }
   }
-
-  @Transactional(readOnly = true)
-  public List<T> findList(Integer count, List<Filter> filters, List<Ordering> orderings,
-      Boolean isTenant, String flag) {
-    if (isTenant) {
-      if(filters == null){
-        filters = new ArrayList<Filter>();
-      }
-      Filter tenantFilter =
-          new Filter("tenantID", Operator.eq, tenantAccountService.getCurrentTenantID());
-      filters.add(tenantFilter);
-    }
-    return findList(null, count, filters, orderings);
-  }
-
-  @Transactional(readOnly = true)
-  public Page<T> findPage(Pageable pageable, Boolean isTenant) {
-    if (isTenant) {
-      List<Filter> filters = pageable.getFilters();
-      Filter tenantFilter =
-          new Filter("tenantID", Operator.eq, tenantAccountService.getCurrentTenantID());
-      filters.add(tenantFilter);
-    }
-    return baseDao.findPage(pageable);
-  }
-
-  @Override
-  public Page<T> search (Query query, Pageable pageable, Analyzer analyzer,org.apache.lucene.search.Filter filter)
-  {
-   
-    return baseDao.search (query, pageable, analyzer,filter);
-  }
-  @Override
-  public Page<T> search (Query query, Pageable pageable, Analyzer analyzer,org.apache.lucene.search.Filter filter, Boolean isTenant)
-  {
-     if (isTenant)
-    {
-       
-      TermQuery tenantIdQuery = new TermQuery(new Term("tenantID", tenantAccountService.getCurrentTenantID().toString ()));
-      ((BooleanQuery)query).add (tenantIdQuery,Occur.MUST);
-    }
-    return baseDao.search (query, pageable, analyzer,filter);
-  }
-  @Override
-  public void refreshIndex ()
-  {
-   baseDao.refreshIndex ();    
-  }
-
-  @Override
-  public void callProcedure (String procName,Object... args)
-  {
-    baseDao.callProcedure (procName,args);
-  }
-
 }

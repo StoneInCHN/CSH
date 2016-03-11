@@ -24,7 +24,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!-- **** File name must match SAPILOGNAME value in Install.properties 
 			**** -->
-		<File>${LOG_PATH}/csh-operation.log</File>
+		<File>${LOG_PATH}/LogName.log</File>
 		<Append>true</Append>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<!-- <pattern>%d | [%.-1level] | %c | %X{DisplayUserName} | %X{userName} 
@@ -32,13 +32,14 @@
 
 			<pattern> %d | [%.-1level] | %logger | %X{threadId} |%m%n</pattern>
 		</encoder>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<maxHistory>30</maxHistory>    
-			<FileNamePattern>${LOG_PATH}/csh-operation-%d{yyyy-MM-dd}.log.%i</FileNamePattern>
-			<TimeBasedFileNamingAndTriggeringPolicy class= "ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<MaxFileSize>10MB</MaxFileSize>
-			</TimeBasedFileNamingAndTriggeringPolicy >
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<maxIndex>13</maxIndex>
+			<FileNamePattern>LogName.log.%i</FileNamePattern>
 		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>10MB</MaxFileSize>
+		</triggeringPolicy>
 	</appender>
 
 
@@ -57,7 +58,7 @@
 		appenders -->
 	<!-- ===================================================================================== -->
 
-	<logger name="com.lb" level="debug">
+	<logger name="com.cienet" level="debug">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="rolling_file_appender" />
 	</logger>
@@ -65,20 +66,17 @@
 	<!-- ================================================================================= -->
 	<!-- Below are the overrides to the default values specified above for com.cienet.* -->
 	<!-- ================================================================================= -->
-	<logger name="org.csh.service.impl" level="off" />
+	<logger name="com.cienet.service.impl" level="debug" />
 
-	<logger name="org.csh.dao.impl" level="off" />
+	<logger name="com.cienet.dao.impl" level="debug" />
 
-	<logger name="org.csh.framework" level="off" />
+	<logger name="com.cienet.framework" level="debug" />
 
 	<!-- ================================================================================= -->
 	<!-- 3p settings -->
 	<!-- ================================================================================= -->
 
 	<logger name="org.springframework" level="debug">
-		<appender-ref ref="rolling_file_appender" />
-	</logger>
-	<logger name="org.hibernate" level="debug">
 		<appender-ref ref="rolling_file_appender" />
 	</logger>
 
@@ -90,7 +88,6 @@
 
 	<root level="debug">
 		<appender-ref ref="stdout" />
-		<appender-ref ref="rolling_file_appender"/>
 	</root>
 
 </configuration>
