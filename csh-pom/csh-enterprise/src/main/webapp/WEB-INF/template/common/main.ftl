@@ -18,9 +18,6 @@
  	<link rel="stylesheet" type="text/css"href="${base}/resources/css/webuploader.css" >
  	<link rel="stylesheet" type="text/css"href="${base}/resources/css/upload-style.css" >
  	<link rel="stylesheet" type="text/css"href="${base}/resources/css/uploadPhotos_style.css" >
- 	<link rel="stylesheet" type="text/css"href="${base}/resources/css/newAlbum_style.css" >
- 	<link rel="stylesheet" type="text/css" href="${base}/resources/jcarousel/_shared/css/style.css">
-    <link rel="stylesheet" type="text/css" href="${base}/resources/jcarousel/connected-carousels/jcarousel.connected-carousels.css">
     <link rel="stylesheet" type="text/css" href="${base}/resources/css/evaluting.css">
 	<!--[if lt IE 9]>
     <script type="text/javascript" src="${base}/resources/js/respond.1.4.2.min.js"></script>
@@ -92,13 +89,7 @@
 		</div>  
     </div>    
     
-    <div id="searchElderlyInfo"></div>
-    <div id="selectRoom"></div>
-    <div id="searchAlbum"></div>
-    <div id = "searchRoles"></div>
-    <div id = "searchTenantUser"></div>
-    <div id = "searchNurseArrangement"></div>
-    <div id = "searchBed"></div>
+    
     <div id = "changePassword">
     </div>
     <!-- JavaScript-->
@@ -118,7 +109,6 @@
 	<script type="text/javascript" src="${base}/resources/js/kindeditor/kindeditor-min.js"></script>
 	<script src="${base}/resources/js/jquery.bootstrap.newsbox.min.js" type="text/javascript"></script>
 	<script src="${base}/resources/js/fileUploadCommon.js"></script>
-    <script src="${base}/resources/js/multiplefileUpload.js"></script>
     <script type="text/javascript" src="${base}/resources/js/jquery.easing.1.3.js"></script>
 	<script>
 		var BASE_URL = '${base}/resources' ;

@@ -70,6 +70,7 @@ var messages = {
 	
 	
 	//租户用户
+	"csh.tenantUser.add":"添加租户用户",
 	"csh.tenantUser.search":"用户查询",
 	"csh.tenantUser.list":"用户列表",
 	"csh.tenantUser.realName":"姓名",
@@ -97,6 +98,7 @@ var messages = {
 	"csh.position.department":"隶属部门",
 
 	//权限管理
+	"csh.role.createDate":"创建时间",
 	"csh.role.record":"角色管理",
 	"csh.role.name":"角色名称",
 	"csh.role.description":"描述",
@@ -105,12 +107,6 @@ var messages = {
 	"csh.role.auth.manange":"权限分配",
 	"csh.role.auth.name":"菜单名称",
 	"csh.role.auth.status":"权限状态",
-	"csh.drugsInfo.doseFrequency.Qd":"一天一次(Qd)",
-	"csh.drugsInfo.doseFrequency.Bid":"一天两次(Bid)",
-	"csh.drugsInfo.doseFrequency.Tid":"一天三次(Tid)",
-	"csh.drugsInfo.doseFrequency.Qid":"一天四次(Qid)",
-	"csh.drugsInfo.doseFrequency.Q2h":"两小时一次(Q2h)",
-	"csh.drugsInfo.doseFrequency.Q4h":"四小时一次(Q4h)",
 	
 	// 租户用户
 	"csh.tenantAccount.add":"添加用户",

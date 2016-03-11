@@ -88,7 +88,7 @@
 				      label: 'FEMALE',
 				      value: '${message("csh.gender.female")}'
 				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="gender" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="gender" style="width:110px;" required=true/>
 	    		</td>
 	    	
 	    		
@@ -103,7 +103,7 @@
 	    	<tr>
 	    		<th>${message("csh.tenantUser.staffID")}:</th>
 	    		<td>
-	    			 <input class="easyui-textbox" type="text" name="staffID" data-options="required:true" validtype="length[0,30];remote['../tenantUser/checkStaffID.jhtml']"/>   
+	    			 <input class="easyui-textbox" type="text" name="staffID" data-options="required:true" validtype="length[0,30];"/>   
 	    		</td>
 	    	
 	    		
@@ -121,7 +121,7 @@
 				      label: 'OUTSERVICE',
 				      value: '${message("csh.tenantUser.staffStatus.outService")}'
 				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="staffStatus" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="staffStatus" style="width:110px;" required=true/>
 	    		</td>
 	    		
 	    	</tr>

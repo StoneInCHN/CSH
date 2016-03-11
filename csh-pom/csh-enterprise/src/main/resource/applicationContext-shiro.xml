@@ -14,10 +14,20 @@
 				/ = anon
 				/index.jsp = anon
 				/login.jsp = authc
+				/console/common/main.jhtml=authc
 				/console/common/refreshIndex.jhtml=anon
 				/console/common/logout = logout
 				/console/common/captcha.jhtml = anon
 				/console/common/captchaCheck.jhtml = anon
+				<!--系统管理  -->
+				/console/tenantAccount/** = perms["tenantAccount"]
+		    	/console/role/** = perms["role"]
+		    	/console/operationLog/** = perms["operationLog"]
+		    	
+		    	<!-- 人事管理 -->
+				/console/department/** = perms["department"]
+				/console/position/** = perms["position"]
+				/console/tenantUser/** = perms["tenantUser"]
 			</value>
 		</property>
 		<property name="filters">

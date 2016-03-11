@@ -204,29 +204,50 @@ var tenantUser_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editTenantUser').dialog("close").form("reset");
+						 $('#editTenantUser').dialog("close");
 					}
 			    }],
 			    onLoad:function(){
-			    	$("#tenantUserDepartment-edit").combobox({    
-					    valueField:'id',    
+			    	$("#tenantUserDepartment-edit").combotree({    
+					    valueField:'id',
+					    method:"get",
 					    textField:'name',
 					    cache: true,
-					    url:'../department/findDepartments.jhtml',
-					    	onLoadSuccess:function(){
-						    	$("#tenantUserDepartment-edit").combobox("setValue",$("#tenantUserDepartment-edit").attr("data-value"))
+					    required:true,
+					    prompt:message("csh.common.please.select"),
+					    formatter:function(node){
+					    	node.text = node.name;
+							return node.name;
+						},
+						 onSelect: function(rec){
+				            var url = '../position/findPositions.jhtml?id='+rec.id;    
+				            $('#tenantUserPosition-edit').combobox('clear');
+				            $('#tenantUserPosition-edit').combobox('reload', url);    
+				        },
+					    url:'../department/list.jhtml',
+					    onLoadSuccess:function(){
+					    		var f=true;
+						    	$("#tenantUserDepartment-edit").combotree("setValue",$("#tenantUserDepartment-edit").attr("data-value"));
+						    	$("#tenantUserPosition-edit").combobox({    
+								    valueField:'id',    
+								    textField:'name',
+								    cache: true,
+								    editable : false,
+								    required:true,
+								    onLoadSuccess:function(){
+								    	if(f){
+								    		$("#tenantUserPosition-edit").combobox("setValue",$("#tenantUserPosition-edit").attr("data-value"))
+								    		f=false;
+								    	}
+								    	
+								    }
+								});
+						    	var url = '../position/findPositions.jhtml?id='+$("#tenantUserDepartment-edit").attr("data-value");    
+					            $('#tenantUserPosition-edit').combobox('clear');
+					            $('#tenantUserPosition-edit').combobox('reload', url);
 						    }
 					});
-			    	$("#tenantUserPosition-edit").combobox({    
-					    valueField:'id',    
-					    textField:'name',
-					    cache: true,
-					    editable : false,
-					    url:'../position/findAllPositions.jhtml',
-					    onLoadSuccess:function(){
-					    	$("#tenantUserPosition-edit").combobox("setValue",$("#tenantUserPosition-edit").attr("data-value"))
-					    }
-					});
+			    	
 			    	var editOptions ={
 			     			createOption:{
 			     				pick: {
@@ -285,7 +306,6 @@ var tenantUser_manager_tool = {
 			     				 data.tenantUserId=$("#editTenantUser_form").find("input[name='id']").val();;
 			     			}
 			     	};
-			     	
 			     	singleUpload(editOptions);
 			     	$("#editTenantUser_form").find(".savePhoto").on("click",function(){
 			     		$.messager.confirm('确认','头像保存后将直接修改当前用户的头像，确认要上传吗？',function(res){    
@@ -361,7 +381,7 @@ $(function(){
 		    	  formatter: function(value,row,index){
 			    	  if(value == "MALE"){
 			    		  return  message("csh.common.male");
-			    	  }else if (value = "FEMALE"){
+			    	  }else if (value == "FEMALE"){
 			    		  return  message("csh.common.female");
 			    	  }
 		      	  }  },
@@ -371,7 +391,7 @@ $(function(){
 		    	  formatter: function(value,row,index){
 			    	  if(value == "INSERVICE"){
 			    		  return  message("csh.tenantUser.staffStatus.inService");
-			    	  }else if (value = "OUTSERVICE"){
+			    	  }else if (value == "OUTSERVICE"){
 			    		  return  message("csh.tenantUser.staffStatus.outService");
 			    	  }
 		      	  }  
@@ -394,7 +414,7 @@ $(function(){
 		      {title:message("csh.tenantUser.hireDate"),field:"hireDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd");
 				}
-		      },
+		      }
 		   ]
 		]
 
