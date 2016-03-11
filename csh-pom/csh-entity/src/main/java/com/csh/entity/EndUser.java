@@ -1,9 +1,12 @@
 package com.csh.entity;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -15,36 +18,40 @@ import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 /**
  * 终端用户
  * 
  */
 @Entity
-@Table(name="csh_end_user")
-@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_end_user_sequence")
-public class EndUser extends BaseEntity  {
-	private static final long serialVersionUID = 1L;
+@Table (name = "csh_end_user")
+@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_end_user_sequence")
+public class EndUser extends BaseEntity
+{
+  private static final long serialVersionUID = 1L;
 
-
-	/**
+  /**
    * 租户ID
    */
   private Long tenantID;
-	 /**
+  /**
    * 账号状态
    */
   private AccountStatus accountStatus;
-  
+
   /**
    * 真实姓名
    */
   private String realName;
-  
+
   /**
    * 用户名
    */
   private String userName;
+
+  /**
+   * 昵称
+   */
+  private String nickName;
   /**
    * 年龄
    */
@@ -61,7 +68,7 @@ public class EndUser extends BaseEntity  {
    * 密码
    */
   private String password;
- 
+
   /**
    * 用户头像
    */
@@ -71,35 +78,61 @@ public class EndUser extends BaseEntity  {
    */
   private Date birthDay;
   /**
-   *  地址
+   * 地址
    */
   private String address;
 
   /**
    * QQ号
    */
-	private String qq;
-	/**
-	 * 签名
-	 */
-	private String signature;
+  private String qq;
+  /**
+   * 签名
+   */
+  private String signature;
 
-	/**
-	 * VIP等级
-	 */
-	private int vipLevel;
-	
-	/**
-	 * 驾照
-	 */
-	private DriverLicense driverLicense;
+  /**
+   * VIP等级
+   */
+  private int vipLevel;
 
-	/**
-	 * 车辆
-	 */
-	private Set<Vehicle> vehicles;
+  /**
+   * 驾照
+   */
+  private DriverLicense driverLicense;
 
-	@Index(name = "endUser_tenantid")
+  /**
+   * 车辆
+   */
+  private Set<Vehicle> vehicles = new HashSet<Vehicle> ();
+
+  /**
+   * login统计
+   */
+  private Set<LoginStatistics> loginStatistics = new HashSet<LoginStatistics> ();
+
+  @OneToMany (mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  public Set<LoginStatistics> getLoginStatistics ()
+  {
+    return loginStatistics;
+  }
+
+  public void setLoginStatistics (Set<LoginStatistics> loginStatistics)
+  {
+    this.loginStatistics = loginStatistics;
+  }
+
+  public String getNickName ()
+  {
+    return nickName;
+  }
+
+  public void setNickName (String nickName)
+  {
+    this.nickName = nickName;
+  }
+
+  @Index (name = "endUser_tenantid")
   public Long getTenantID ()
   {
     return tenantID;
@@ -110,7 +143,6 @@ public class EndUser extends BaseEntity  {
     this.tenantID = tenantID;
   }
 
-  @JsonProperty
   public AccountStatus getAccountStatus ()
   {
     return accountStatus;
@@ -120,6 +152,7 @@ public class EndUser extends BaseEntity  {
   {
     this.accountStatus = accountStatus;
   }
+
   @JsonProperty
   public String getRealName ()
   {
@@ -130,6 +163,7 @@ public class EndUser extends BaseEntity  {
   {
     this.realName = realName;
   }
+
   @JsonProperty
   public String getUserName ()
   {
@@ -140,7 +174,7 @@ public class EndUser extends BaseEntity  {
   {
     this.userName = userName;
   }
-  @JsonProperty
+
   public Integer getAge ()
   {
     return age;
@@ -150,6 +184,7 @@ public class EndUser extends BaseEntity  {
   {
     this.age = age;
   }
+
   @JsonProperty
   public Gender getGender ()
   {
@@ -160,6 +195,7 @@ public class EndUser extends BaseEntity  {
   {
     this.gender = gender;
   }
+
   @JsonProperty
   public String getMobileNum ()
   {
@@ -211,6 +247,7 @@ public class EndUser extends BaseEntity  {
     this.address = address;
   }
 
+  @JsonProperty
   public String getQq ()
   {
     return qq;
@@ -240,7 +277,7 @@ public class EndUser extends BaseEntity  {
   {
     this.vipLevel = vipLevel;
   }
-  
+
   public DriverLicense getDriverLicense ()
   {
     return driverLicense;
@@ -251,7 +288,7 @@ public class EndUser extends BaseEntity  {
     this.driverLicense = driverLicense;
   }
 
-  @OneToMany(mappedBy="endUser")
+  @OneToMany (mappedBy = "endUser")
   public Set<Vehicle> getVehicles ()
   {
     return vehicles;
@@ -261,6 +298,5 @@ public class EndUser extends BaseEntity  {
   {
     this.vehicles = vehicles;
   }
-
 
 }

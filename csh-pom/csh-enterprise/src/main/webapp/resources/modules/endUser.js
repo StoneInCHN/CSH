@@ -149,7 +149,6 @@ $(function(){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}
 		      },
-		      {title:message("csh.endUser.loginIp"),field:"loginIp",width:100,sortable:true},
 		   ]
 		]
 	});
