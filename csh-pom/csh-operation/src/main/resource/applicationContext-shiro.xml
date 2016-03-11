@@ -24,9 +24,9 @@
 				/console/common/lbs_public_key.jhtml = anon
 				/console/password/** = anon
 				
-				/console/user/** = perms["admin:user"]
+				/console/admin/** = perms["admin:admin"]
 				/console/role/** = perms["admin:role"]
-				/console/** = authc
+				/console/** = authc 
 			</value>
 		</property>
 		<property name="filters">

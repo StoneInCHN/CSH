@@ -1,19 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<title>${message("csh.account.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>${message("asup.account.edit")}</title>
-<link href="${base}/resources/css/common.css" rel="stylesheet" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/style/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/style/style.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/style/common.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="${base}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${base}/resources/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
-<style type="text/css">
-	html{
-		padding-left: 20px;
-		padding-right: 15px;
-	}
-</style>
 <script type="text/javascript">
 $().ready(function() {
 
@@ -40,14 +39,14 @@ $().ready(function() {
 		},
 		messages: {
 			password: {
-				pattern: "${message("asup.reg.passwordIllegal")}",
-				minlength: "${message("asup.password.minlength",6)}"
+				pattern: "${message("csh.reg.passwordIllegal")}",
+				minlength: "${message("csh.password.minlength",6)}"
 			},
 			repassword:{
-					 equalTo:"${message("asup.reg.passwordIllegal")}"
+					 equalTo:"${message("csh.reg.passwordIllegal")}"
 			},
 			name:{
-				required:"${message("asup.reg.nameRequired")}"
+				required:"${message("csh.reg.nameRequired")}"
 			}
 		},
 		
@@ -74,54 +73,84 @@ $().ready(function() {
 </script>
 </head>
 <body>
-	<div class="path">
-		 ${message("common.current.position")}：${message("asup.account.setting")}&raquo; ${message("asup.account.settingGroup")}
+	<div class="mainbar">
+		<div class="page-head">
+			<div class="bread-crumb">
+				<a ><i class="fa fa-user"></i> ${message("csh.account.settingGroup")}</a> 
+				<span class="divider">/</span> 
+				<span class="bread-current">${message("csh.account.setting")}</span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="matter">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="widget wgreen">
+                <div class="widget-head">
+                  <div class="pull-left">${message("csh.account.edit")}</div>
+                  <div class="widget-icons pull-right">
+                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
+                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  <div class="padd">
+                   <form id="inputForm" action="edit.jhtml" method="post">
+						<input type="hidden" name="id" value="${user.id}" />
+						<input type="hidden" name="userName" value="${user.userName}" />
+						<table class="input tabContent">
+							<tr>
+								<th>
+									${message("csh.admin.username")}:
+								</th>
+								<td>
+									${admin.username}
+								</td>
+							</tr>
+							<tr>
+								<th>
+									${message("csh.admin.password")}:
+								</th>
+								<td>
+									<input type="password" id="password" name="password" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									${message("csh.admin.rePassword")}:
+								</th>
+								<td>
+									<input type="password" name="rePassword" id="rePassword" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.admin.name")}:
+								</th>
+								<td>
+									<input type="text" id="name" name="name" class="text" value="${admin.name}" maxlength="200" />
+								</td>
+							</tr>				
+							<tr>
+								<th>
+									&nbsp;
+								</th>
+								<td>
+									<input type="submit" class="button" value="${message("csh.common.submit")}" />
+								</td>
+							</tr>
+						</table>
+					</form>
+                  </div>
+                </div>
+              </div>  
+            </div>
+          </div>
+        </div>
+	   </div>
 	</div>
-	<form id="inputForm" action="edit.jhtml" method="post">
-		<input type="hidden" name="id" value="${user.id}" />
-		<input type="hidden" name="userName" value="${user.userName}" />
-		<table class="input tabContent">
-			<tr>
-				<th>
-					${message("asup.admin.username")}:
-				</th>
-				<td>
-					${admin.username}
-				</td>
-			</tr>
-			<tr>
-				<th>
-					${message("asup.admin.password")}:
-				</th>
-				<td>
-					<input type="password" id="password" name="password" class="text" maxlength="20" />
-				</td>
-			</tr>
-			<tr>
-				<th>
-					${message("asup.admin.rePassword")}:
-				</th>
-				<td>
-					<input type="password" name="rePassword" id="rePassword" class="text" maxlength="20" />
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<span class="requiredField">*</span>${message("asup.admin.name")}:
-				</th>
-				<td>
-					<input type="text" id="name" name="name" class="text" value="${admin.name}" maxlength="200" />
-				</td>
-			</tr>				
-			<tr>
-				<th>
-					&nbsp;
-				</th>
-				<td>
-					<input type="submit" class="button" value="${message("asup.common.submit")}" />
-				</td>
-			</tr>
-		</table>
-	</form>
+	<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
 </body>
 </html>

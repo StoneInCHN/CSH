@@ -3,6 +3,7 @@ $().ready( function() {
 
 	var $listForm = $("#listForm");
 	var $pageTotal = $("#pageTotal");
+	var $addButton = $("#addButton");
 	var $deleteButton = $("#deleteButton");
 	var $deleteSpecialButton = $("#deleteSpecialButton");
 	var $deleteButtonFirst = $("#deleteButtonFirst");
@@ -16,8 +17,8 @@ $().ready( function() {
 	var $sendAllButton = $("#sendAllButton");
 	var $moreOperation = $("#moreOperation");
 	//var $searchPropertySelect = $("#searchPropertySelect");
-	//var $searchPropertyOption = $("#searchPropertyOption a");
-	var $searchPropertyOption = $("#searchPropertyOption");
+	var $searchPropertyOption = $("#searchPropertyOption li");
+	//var $searchPropertyOption = $("#searchPropertyOption");
 	var $searchValue = $("#searchValue");
 	var $listTable = $("#listTable");
 	var $selectAll = $("#selectAll");
@@ -96,6 +97,11 @@ $().ready( function() {
 		});
 	});
 
+	//添加
+	$addButton.click(function(){
+		location.href="add.jhtml";
+	});
+	
 	// 删除
 	$deleteButton.click( function() {
 		var $this = $(this);
@@ -281,7 +287,7 @@ $().ready( function() {
 	});
 	
 	// 搜索选项
-	$searchPropertyOption.mouseover( function() {
+/*	$searchPropertyOption.mouseover( function() {
 		var $this = $(this);
 		var offset = $this.offset();
 		var $menuWrap = $this.closest("div.menuWrap");
@@ -290,23 +296,24 @@ $().ready( function() {
 		$menuWrap.mouseleave(function() {
 			$popupMenu.hide();
 		});
-	});
-	
-//	// 搜索选项
-//	$searchPropertyOption.click( function() {
-//		var $this = $(this);
-//		$searchProperty.val($this.attr("val"));
-//		$searchPropertyOption.removeClass("current");
-//		$this.addClass("current");
-//		return false;
-//	});
+		alert("ok")
+	});*/
 	
 	// 搜索选项
-	$searchPropertyOption.change( function() {
+	$searchPropertyOption.click( function() {
+		var $this = $(this);
+		$searchProperty.val($this.attr("title"));
+		$searchPropertyOption.removeClass("active");
+		$this.addClass("active");
+		return false;
+	});
+	
+	// 搜索选项
+/*	$searchPropertyOption.change( function() {
 		var $this = $(this);
 		$searchProperty.val($this.val());
 		return false;
-	});
+	});*/
 	
 	// 全选
 	$selectAll.click( function() {
@@ -428,9 +435,12 @@ $().ready( function() {
 		if (!/^\d*[1-9]\d*$/.test($pageNumber.val())) {
 			$pageNumber.val("1");
 		}
+				
 		if ($searchValue.size() > 0 && $searchValue.val() != "" && $searchProperty.val() == "") {
-			$searchProperty.val($searchPropertyOption.eq(0).attr("val"));
-		}
+			console.log($searchPropertyOption.eq(0));
+			$searchProperty.val($searchPropertyOption.eq(0).attr("title"));
+		}	
+		
 	});
 	
 	// 页码跳转

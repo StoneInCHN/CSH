@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
@@ -25,222 +24,214 @@ import com.csh.entity.base.BaseEntity;
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_admin_sequence")
 public class Admin extends BaseEntity {
 
-	private static final long serialVersionUID = -7519486823153844426L;
-	
-	/**
-	 * 帐号状态
-	 */
-	public enum AdminStatus {
-		
-		/** 帐号正常 */
-		actived,
-		
-		/** 帐号锁定 */
-		locked
-	}
+  private static final long serialVersionUID = -7519486823153844426L;
 
-	/** 用户名 */
-	private String username;
+  /**
+   * 帐号状态
+   */
+  public enum AdminStatus {
 
-	/** 密码 */
-	private String password;
+    /** 帐号正常 */
+    actived,
 
-	/** E-mail */
-	private String email;
+    /** 帐号锁定 */
+    locked
+  }
 
-	/** 姓名 */
-	private String name;
+  /** 用户名 */
+  private String username;
+
+  /** 密码 */
+  private String password;
+
+  /** E-mail */
+  private String email;
+
+  /** 姓名 */
+  private String name;
 
 
-	/** 最后登录日期 */
-	private Date loginDate;
+  /** 最后登录日期 */
+  private Date loginDate;
 
-	/** 最后登录IP */
-	private String loginIp;
-	
-	
-	/** 帐号状态 */
-	private AdminStatus adminStatus;
-	
-	/** 角色 */
-	private Set<Role> roles = new HashSet<Role>();
+  /** 最后登录IP */
+  private String loginIp;
 
-	/**
-	 * 是否为内置账户
-	 */
-	private Boolean isSystem;
-	
-	
-	/**
-	 * 获取用户名
-	 * 
-	 * @return 用户名
-	 */
-	@NotEmpty(groups = Save.class)
-	@Length(min = 2, max = 20)
-	@Column(nullable = false, updatable = false, unique = true, length = 100)
-	public String getUsername() {
-		return username;
-	}
 
-	/**
-	 * 设置用户名
-	 * 
-	 * @param username
-	 *            用户名
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  /** 帐号状态 */
+  private AdminStatus adminStatus;
 
-	/**
-	 * 获取密码
-	 * 
-	 * @return 密码
-	 */
-	@NotEmpty(groups = Save.class)
-	@Pattern(regexp = "^[^\\s&\"<>]+$")
-	@Length(min = 4, max = 20)
-	@Column(nullable = false)
-	public String getPassword() {
-		return password;
-	}
+  /** 角色 */
+  private Set<Role> roles = new HashSet<Role>();
 
-	/**
-	 * 设置密码
-	 * 
-	 * @param password
-	 *            密码
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  /**
+   * 是否为内置账户
+   */
+  private Boolean isSystem;
 
-	/**
-	 * 获取E-mail
-	 * 
-	 * @return E-mail
-	 */
-	@NotEmpty
-	@Email
-	@Length(max = 200)
-	@Column(nullable = false)
-	public String getEmail() {
-		return email;
-	}
 
-	/**
-	 * 设置E-mail
-	 * 
-	 * @param email
-	 *            E-mail
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  /**
+   * 获取用户名
+   * 
+   * @return 用户名
+   */
+  @NotEmpty(groups = Save.class)
+  @Length(min = 2, max = 20)
+  @Column(nullable = false, updatable = false, unique = true, length = 100)
+  public String getUsername() {
+    return username;
+  }
 
-	/**
-	 * 获取姓名
-	 * 
-	 * @return 姓名
-	 */
-	@Length(max = 200)
-	public String getName() {
-		return name;
-	}
+  /**
+   * 设置用户名
+   * 
+   * @param username 用户名
+   */
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-	/**
-	 * 设置姓名
-	 * 
-	 * @param name
-	 *            姓名
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+  /**
+   * 获取密码
+   * 
+   * @return 密码
+   */
+  @NotEmpty(groups = Save.class)
+  @Pattern(regexp = "^[^\\s&\"<>]+$")
+  @Length(min = 4, max = 20)
+  @Column(nullable = false)
+  public String getPassword() {
+    return password;
+  }
+
+  /**
+   * 设置密码
+   * 
+   * @param password 密码
+   */
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  /**
+   * 获取E-mail
+   * 
+   * @return E-mail
+   */
+  @NotEmpty
+  @Email
+  @Length(max = 200)
+  @Column(nullable = false)
+  public String getEmail() {
+    return email;
+  }
+
+  /**
+   * 设置E-mail
+   * 
+   * @param email E-mail
+   */
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  /**
+   * 获取姓名
+   * 
+   * @return 姓名
+   */
+  @Length(max = 200)
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * 设置姓名
+   * 
+   * @param name 姓名
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
 
 
 
-	/**
-	 * 获取最后登录日期
-	 * 
-	 * @return 最后登录日期
-	 */
-	public Date getLoginDate() {
-		return loginDate;
-	}
+  /**
+   * 获取最后登录日期
+   * 
+   * @return 最后登录日期
+   */
+  public Date getLoginDate() {
+    return loginDate;
+  }
 
-	/**
-	 * 设置最后登录日期
-	 * 
-	 * @param loginDate
-	 *            最后登录日期
-	 */
-	public void setLoginDate(Date loginDate) {
-		this.loginDate = loginDate;
-	}
+  /**
+   * 设置最后登录日期
+   * 
+   * @param loginDate 最后登录日期
+   */
+  public void setLoginDate(Date loginDate) {
+    this.loginDate = loginDate;
+  }
 
-	/**
-	 * 获取最后登录IP
-	 * 
-	 * @return 最后登录IP
-	 */
-	public String getLoginIp() {
-		return loginIp;
-	}
+  /**
+   * 获取最后登录IP
+   * 
+   * @return 最后登录IP
+   */
+  public String getLoginIp() {
+    return loginIp;
+  }
 
-	/**
-	 * 设置最后登录IP
-	 * 
-	 * @param loginIp
-	 *            最后登录IP
-	 */
-	public void setLoginIp(String loginIp) {
-		this.loginIp = loginIp;
-	}
-	
-	
-	/**
-	 * 获取分销商状态
-	 * 
-	 * @return 分销商状态
-	 */
-	@Column(nullable = false)
-	public AdminStatus getAdminStatus() {
-		return adminStatus;
-	}
+  /**
+   * 设置最后登录IP
+   * 
+   * @param loginIp 最后登录IP
+   */
+  public void setLoginIp(String loginIp) {
+    this.loginIp = loginIp;
+  }
 
-	/**
-	 * 设置分销商状态
-	 * 
-	 * @param adminStatus
-	 *            分销商状态
-	 */
-	public void setAdminStatus(AdminStatus adminStatus) {
-		this.adminStatus = adminStatus;
-	}
 
-	/**
-	 * 获取角色
-	 * 
-	 * @return 角色
-	 */
-	@NotEmpty
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "csh_admin_role")
-	public Set<Role> getRoles() {
-		return roles;
-	}
+  /**
+   * 获取分销商状态
+   * 
+   * @return 分销商状态
+   */
+  @Column(nullable = false)
+  public AdminStatus getAdminStatus() {
+    return adminStatus;
+  }
 
-	/**
-	 * 设置角色
-	 * 
-	 * @param roles
-	 *            角色
-	 */
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+  /**
+   * 设置分销商状态
+   * 
+   * @param adminStatus 分销商状态
+   */
+  public void setAdminStatus(AdminStatus adminStatus) {
+    this.adminStatus = adminStatus;
+  }
+
+  /**
+   * 获取角色
+   * 
+   * @return 角色
+   */
+  @NotEmpty
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name = "csh_admin_role")
+  public Set<Role> getRoles() {
+    return roles;
+  }
+
+  /**
+   * 设置角色
+   * 
+   * @param roles 角色
+   */
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
+  }
 
   public Boolean getIsSystem() {
     return isSystem;
@@ -249,5 +240,5 @@ public class Admin extends BaseEntity {
   public void setIsSystem(Boolean isSystem) {
     this.isSystem = isSystem;
   }
-	
+
 }

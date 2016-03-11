@@ -637,4 +637,16 @@ public class CommonEnum {
      */
     closed
   }
+  
+  public enum SystemType{
+    /**
+     * 运营管理系统
+     */
+    OPERATION,
+    /**
+     * 多租户系统
+     */
+    ENTERPRISE
+  }
+  
 }

@@ -1,0 +1,25 @@
+.invoice{
+
+}
+.clearingRecord{
+	margin:5px 10px;
+	border:1px solid #ccc;
+	padding:5px 10px;
+}
+.clearingRecord .invoice-icon .iminimize , .clearingRecord .invoice-icon .iclose{
+	color:#aaa;
+}
+
+.clearingRecord .invoice-icon  i {
+	font-size: 14px;
+	margin: 0px 4px;
+}
+
+.clearingRecord strong{
+	height:30px;
+	line-height:30px;
+	font-weight:500;
+}
+.clearingRecord span{
+	margin-left:5px;
+}

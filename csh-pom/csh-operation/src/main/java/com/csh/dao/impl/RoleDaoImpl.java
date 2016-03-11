@@ -1,12 +1,8 @@
 package com.csh.dao.impl;
 
-import javax.persistence.LockModeType;
+import javax.persistence.FlushModeType;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.csh.dao.RoleDao;
 import com.csh.entity.Role;
@@ -20,31 +16,23 @@ import com.csh.framework.dao.impl.BaseDaoImpl;
 public class RoleDaoImpl extends BaseDaoImpl<Role, Long> implements RoleDao {
 
   @Override
-  @Transactional
-  @Cacheable(value ="role",key="'role.id='+#id")
-  public Role find(Long id) {
-    return super.find(id);
+  public boolean nameExists(String name, Long id) {
+    if (name == null) {
+      return false;
+    }
+    if (id == null) {
+      String jpql = "select count(*) from Role role where lower(role.name) = lower(:name)";
+      Long count =
+          entityManager.createQuery(jpql, Long.class).setFlushMode(FlushModeType.COMMIT)
+              .setParameter("name", name).getSingleResult();
+      return count > 0;
+    } else {
+      String jpql = "select count(*) from Role role where lower(role.name) = lower(:name) and role.id !=:id";
+      Long count =
+          entityManager.createQuery(jpql, Long.class).setFlushMode(FlushModeType.COMMIT)
+              .setParameter("name", name).setParameter("id", id).getSingleResult();
+      return count > 0;
+    }
   }
 
-  @Override
-  @Transactional
-  @Cacheable(value ="role",key="'role.id='+#id+',lockModeType='+#lockModeType")
-  public Role find(Long id, LockModeType lockModeType) {
-    return super.find(id, lockModeType);
-  }
-
-  @Override
-  @Transactional
-  @CachePut(value ="role",key="'role.id='+#entity.id")
-  public Role merge(Role entity) {
-    return super.merge(entity);
-  }
-
-  @Override
-  @Transactional
-  @CacheEvict(value ="role",key="'role.id='+#entity.id")
-  public void remove(Role entity) {
-    super.remove(entity);
-  }
-  
 }
