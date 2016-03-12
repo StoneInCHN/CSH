@@ -149,9 +149,10 @@ var messages = {
 	"csh.vehicle.plate":"车牌号",
 	"csh.vehicle.vehicleBrand":"车辆型号",
 	"csh.vehicle.endUser":"车辆所有者",
-	"csh.vehicle.device":"绑定设备",
+	"csh.vehicle.device":"绑定的设备",
 	"csh.vehicle.status":"车辆状态",
-	"csh.vehicle.list":"车辆列表"
+	"csh.vehicle.list":"车辆列表",
+	"csh.vehicle.bindTime":"绑定时间"
 	
 };
 //多语言

@@ -7,36 +7,12 @@
 	    <legend>${message("csh.vehicle.search")}</legend>
 	    <form id="endUser-search-form" class="search-form">
 	    	<div class="search-item">
-			    <label> ${message("csh.deviceInfo.deviceNO")}:</label>
-			    <input type="text" class="easyui-textbox" id="deviceNoSearch" name="deviceNoSearch" validtype="length[0,20]"/>
+			    <label> ${message("csh.vehicle.plate")}:</label>
+			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.device.device.deviceTpye")}:</label>
-			    <input type="text" class="easyui-textbox" id="deviceTpyeSearch" name="deviceTpyeSearch" validtype="length[0,20]"/>
-			</div>
-			
-			<div class="search-item">
-			    <label> ${message("csh.device.deviceStatus")}:</label>
-			    <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'INITED',
-				      value: '${message("csh.deviceInfo.deviceStatus.INITED")}'
-				     },{
-				      label: 'SENDOUT',
-				      value: '${message("csh.deviceInfo.deviceStatus.SENDOUT")}'
-				     },{
-				      label: 'STORAGEOUT',
-				      value: '${message("csh.deviceInfo.deviceStatus.STORAGEOUT")}'
-				     },{
-				      label: 'BINDED',
-				      value: '${message("csh.deviceInfo.deviceStatus.BINDED")}'
-				     },{
-				      label: 'REFUNDED',
-				      value: '${message("csh.deviceInfo.deviceStatus.REFUNDED")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="accountStatusSearch" id="accountStatusSearch" style="width:110px;"/>
+			    <label> ${message("csh.vehicle.vehiclebrand")}:</label>
+			    <input type="text" class="easyui-textbox" id="vehiclebrandSearch" name="vehiclebrandSearch" validtype="length[0,20]"/>
 			</div>
 			
 		</form>

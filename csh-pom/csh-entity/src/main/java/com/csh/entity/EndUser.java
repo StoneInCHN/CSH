@@ -143,6 +143,7 @@ public class EndUser extends BaseEntity
     this.tenantID = tenantID;
   }
 
+  @JsonProperty
   public AccountStatus getAccountStatus ()
   {
     return accountStatus;
@@ -288,7 +289,7 @@ public class EndUser extends BaseEntity
     this.driverLicense = driverLicense;
   }
 
-  @OneToMany (mappedBy = "endUser")
+  @OneToMany (mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   public Set<Vehicle> getVehicles ()
   {
     return vehicles;

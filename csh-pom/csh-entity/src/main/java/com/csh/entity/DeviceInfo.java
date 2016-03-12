@@ -3,6 +3,7 @@ package com.csh.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -123,6 +124,7 @@ public class DeviceInfo extends BaseEntity {
     this.type = type;
   }
 
+  @OneToOne(mappedBy="device")
   public Vehicle getVehicle ()
   {
     return vehicle;

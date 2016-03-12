@@ -140,7 +140,7 @@ $(function(){
 		    	  formatter: function(value,row,index){
 			    	  if(value == "ACTIVED"){
 			    		  return  message("csh.endUser.active");
-			    	  }else if (value = "LOCKED"){
+			    	  }else if (value == "LOCKED"){
 			    		  return  message("csh.endUser.locked");
 			    	  }
 		      	  }  

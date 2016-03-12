@@ -1,4 +1,4 @@
-var endUser_manager_tool = {
+var vehicle_manager_tool = {
 		add:function(){
 			$('#addEndUser').dialog({
 			    title: message("csh.endUser.add"),    

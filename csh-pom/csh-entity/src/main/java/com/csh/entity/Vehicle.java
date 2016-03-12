@@ -3,6 +3,9 @@ package com.csh.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -81,6 +84,7 @@ public class Vehicle extends BaseEntity
   }
 
   @JsonProperty
+  @ManyToOne
   public VehicleBrand getVehicleBrand ()
   {
     return vehicleBrand;
@@ -102,6 +106,7 @@ public class Vehicle extends BaseEntity
   }
 
   @JsonProperty
+  @OneToOne()
   public DeviceInfo getDevice ()
   {
     return device;
@@ -112,6 +117,7 @@ public class Vehicle extends BaseEntity
     this.device = device;
   }
 
+  @OneToOne(mappedBy="vehicle")
   public DrivingLicense getDrivingLicense ()
   {
     return drivingLicense;
@@ -165,6 +171,7 @@ public class Vehicle extends BaseEntity
   }
 
   @JsonProperty
+  @ManyToOne
   public EndUser getEndUser ()
   {
     return endUser;

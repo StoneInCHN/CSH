@@ -1,11 +1,18 @@
 package com.csh.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.Status;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 车辆型号表
@@ -90,6 +97,8 @@ public class VehicleBrand extends BaseEntity
   private Float tank;
 
   private Long tenantID;
+  
+  private Set<Vehicle> vehicles = new HashSet<Vehicle> ();
 
   public Float getAverageOil ()
   {
@@ -181,6 +190,7 @@ public class VehicleBrand extends BaseEntity
     this.minbv = minbv;
   }
 
+  @JsonProperty
   public String getName ()
   {
     return name;
@@ -249,6 +259,17 @@ public class VehicleBrand extends BaseEntity
   public void setTenantID (Long tenantID)
   {
     this.tenantID = tenantID;
+  }
+
+  @OneToMany
+  public Set<Vehicle> getVehicles ()
+  {
+    return vehicles;
+  }
+
+  public void setVehicles (Set<Vehicle> vehicles)
+  {
+    this.vehicles = vehicles;
   }
 
 }
