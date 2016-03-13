@@ -4,10 +4,17 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.Status;
@@ -17,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The persistent class for the csh_vehicle database table.
  * 
  */
+@Indexed(index="vehicle")
 @Entity
 @Table (name = "csh_vehicle")
 @SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_sequence")
@@ -85,6 +93,7 @@ public class Vehicle extends BaseEntity
 
   @JsonProperty
   @ManyToOne
+  @IndexedEmbedded
   public VehicleBrand getVehicleBrand ()
   {
     return vehicleBrand;
@@ -139,6 +148,7 @@ public class Vehicle extends BaseEntity
   }
 
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getPlate ()
   {
     return plate;
@@ -150,6 +160,7 @@ public class Vehicle extends BaseEntity
   }
 
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
   public Status getStatus ()
   {
     return status;
@@ -172,6 +183,7 @@ public class Vehicle extends BaseEntity
 
   @JsonProperty
   @ManyToOne
+  @IndexedEmbedded
   public EndUser getEndUser ()
   {
     return endUser;
@@ -181,7 +193,8 @@ public class Vehicle extends BaseEntity
   {
     this.endUser = endUser;
   }
-
+  @Index(name="vehicle_tenantid")
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
   public Long getTenantID ()
   {
     return tenantID;

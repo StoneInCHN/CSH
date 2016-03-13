@@ -26,6 +26,7 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
+import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.VehicleService;
@@ -51,7 +52,7 @@ public class VehicleController extends BaseController
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<Vehicle> list (Pageable pageable, ModelMap model,
-      Date beginDate, Date endDate, String deviceNoSearch,DeviceStatus deviceStatusSearch)
+      Date beginDate, Date endDate, String plateSearch,String vehicleBrandSearch,Status vehicleStatusSearch)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -60,9 +61,12 @@ public class VehicleController extends BaseController
     analyzer.setMaxWordLength (true);
     BooleanQuery query = new BooleanQuery ();
 
-    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "deviceNo",
+    QueryParser plateParser = new QueryParser (Version.LUCENE_35, "plate",
         analyzer);
-    Query nameQuery = null;
+    QueryParser brandParser = new QueryParser (Version.LUCENE_35, "vehicleBrand.name",
+        analyzer);
+    Query plateQuery = null;
+    Query brandQuery = null;
     TermRangeQuery rangeQuery = null;
     TermQuery statusQuery = null;
     
@@ -75,18 +79,22 @@ public class VehicleController extends BaseController
     {
       endDateStr = DateTimeUtils.convertDateToString (endDate, null);
     }
-    if (deviceNoSearch != null)
+    if (plateSearch != null)
     {
-      String text = QueryParser.escape (deviceNoSearch);
+      String text = QueryParser.escape (plateSearch);
         try
         {
-          nameQuery = nameParser.parse (text);
-          query.add (nameQuery, Occur.MUST);
+          //通配符查询，开启*开头，但影响效率
+          plateParser.setAllowLeadingWildcard (true);
+
+          plateQuery = plateParser.parse ("*"+text+"*");
+          
+          query.add (plateQuery, Occur.MUST);
           
           if (LogUtil.isDebugEnabled (VehicleController.class))
           {
-            LogUtil.debug (VehicleController.class, "search", "Search device NO: "
-                + deviceNoSearch );
+            LogUtil.debug (VehicleController.class, "search", "Search plate: "
+                + plateSearch );
           }
         }
         catch (ParseException e)
@@ -94,9 +102,28 @@ public class VehicleController extends BaseController
           e.printStackTrace();
         }
     }
-    if (deviceStatusSearch != null)
+    if (vehicleBrandSearch != null)
     {
-      statusQuery = new TermQuery (new Term ("deviceStatus",deviceStatusSearch.toString ()));
+      String text = QueryParser.escape (vehicleBrandSearch);
+        try
+        {
+          brandQuery = brandParser.parse (text);
+          query.add (brandQuery, Occur.MUST);
+          
+          if (LogUtil.isDebugEnabled (VehicleController.class))
+          {
+            LogUtil.debug (VehicleController.class, "search", "Search vehicle brand: "
+                + vehicleBrandSearch );
+          }
+        }
+        catch (ParseException e)
+        {
+          e.printStackTrace();
+        }
+    }
+    if (vehicleStatusSearch != null)
+    {
+      statusQuery = new TermQuery (new Term ("status",vehicleStatusSearch.toString ()));
       query.add (statusQuery,Occur.MUST);
     }
     if (startDateStr != null || endDateStr != null)
@@ -110,7 +137,7 @@ public class VehicleController extends BaseController
             +" end date: "+endDateStr);
       }
     }
-    if (nameQuery != null || rangeQuery != null || statusQuery != null)
+    if (plateQuery != null || brandQuery != null || rangeQuery != null || statusQuery != null)
     {
       return vehicleService.search (query, pageable, analyzer,filter,true);
     }

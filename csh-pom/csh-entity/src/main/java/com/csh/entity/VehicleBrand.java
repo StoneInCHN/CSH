@@ -10,6 +10,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.wltea.analyzer.lucene.IKAnalyzer;
+
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -191,6 +195,7 @@ public class VehicleBrand extends BaseEntity
   }
 
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getName ()
   {
     return name;

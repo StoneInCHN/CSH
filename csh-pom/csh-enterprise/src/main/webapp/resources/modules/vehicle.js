@@ -1,7 +1,7 @@
 var vehicle_manager_tool = {
 		add:function(){
-			$('#addEndUser').dialog({
-			    title: message("csh.endUser.add"),    
+			$('#addVehicle').dialog({
+			    title: message("csh.vehicle.add"),    
 			    width: 400,    
 			    height: 350,
 			    iconCls:'icon-mini-add',
@@ -10,13 +10,13 @@ var vehicle_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#addEndUser_form').form('validate');
+						var validate = $('#addVehicle_form').form('validate');
 						
 						if(validate){
 								$.ajax({
-									url:"../endUser/add.jhtml",
+									url:"../vehicle/add.jhtml",
 									type:"post",
-									data:$("#addEndUser_form").serialize(),
+									data:$("#addVehicle_form").serialize(),
 									beforeSend:function(){
 										$.messager.progress({
 											text:message("csh.common.saving")
@@ -26,9 +26,9 @@ var vehicle_manager_tool = {
 										$.messager.progress('close');
 										if(response == "success"){
 											showSuccessMsg(result.content);
-											$('#addEndUser').dialog("close")
-											$("#addEndUser_form").form("reset");
-											$("#endUser-table-list").datagrid('reload');
+											$('#addVehicle').dialog("close")
+											$("#addVehicle_form").form("reset");
+											$("#vehicle-table-list").datagrid('reload');
 										}else{
 											alertErrorMsg();
 										}
@@ -40,38 +40,38 @@ var vehicle_manager_tool = {
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#addEndUser').dialog("close");
-						 $("#addEndUser_form").form("reset");
+						 $('#addVehicle').dialog("close");
+						 $("#addVehicle_form").form("reset");
 					}
 			    }],
 			    onOpen:function(){
-			    	$('#addEndUser_form').show();
+			    	$('#addVehicle_form').show();
 			    },
 			});  
 		},
 		edit:function(){
-			var _edit_row = $('#endUser-table-list').datagrid('getSelected');
+			var _edit_row = $('#vehicle-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
-			var _dialog = $('#editEndUser').dialog({    
+			var _dialog = $('#editVehicle').dialog({    
 				title: message("csh.common.edit"),     
 			    width: 400,    
 			    height: 350,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
-			    href:'../endUser/edit.jhtml?id='+_edit_row.id,
+			    href:'../vehicle/edit.jhtml?id='+_edit_row.id,
 			    buttons:[{
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#endUser_form').form('validate');
+						var validate = $('#vehicle_form').form('validate');
 						if(validate){
 							$.ajax({
-								url:"../endUser/update.jhtml",
+								url:"../vehicle/update.jhtml",
 								type:"post",
-								data:$("#editEndUser_form").serialize(),
+								data:$("#editVehicle_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -80,8 +80,8 @@ var vehicle_manager_tool = {
 								success:function(result,response,status){
 									$.messager.progress('close');
 										showSuccessMsg(result.content);
-										$('#editEndUser').dialog("close");
-										$("#endUser-table-list").datagrid('reload');
+										$('#editVehicle').dialog("close");
+										$("#vehicle-table-list").datagrid('reload');
 								}
 							});
 						};
@@ -90,16 +90,16 @@ var vehicle_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editEndUser').dialog("close").form("reset");
+						 $('#editVehicle').dialog("close").form("reset");
 					}
 			    }],
 			    onLoad:function(){
-			    	$("#editAccountStatus").combobox("setValue",$("#editAccountStatus").attr("data-value"))
+//			    	$("#editAccountStatus").combobox("setValue",$("#editAccountStatus").attr("data-value"))
 			    }
 			});  
 		},
 		remove:function(){
-			listRemove('endUser-table-list','../endUser/delete.jhtml');
+			listRemove('vehicle-table-list','../vehicle/delete.jhtml');
 		}
 };
 

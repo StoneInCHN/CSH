@@ -5,19 +5,40 @@
 <div>
 	  <fieldset>
 	    <legend>${message("csh.vehicle.search")}</legend>
-	    <form id="endUser-search-form" class="search-form">
+	    <form id="vehicle-search-form" class="search-form">
 	    	<div class="search-item">
 			    <label> ${message("csh.vehicle.plate")}:</label>
 			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
 			    <label> ${message("csh.vehicle.vehiclebrand")}:</label>
-			    <input type="text" class="easyui-textbox" id="vehiclebrandSearch" name="vehiclebrandSearch" validtype="length[0,20]"/>
+			    <input type="text" class="easyui-textbox" id="vehicleBrandSearch" name="vehicleBrandSearch" validtype="length[0,20]"/>
 			</div>
-			
+			<div class="search-item">
+			    <label> ${message("csh.vehicle.status")}:</label>
+			    <input class="easyui-combobox" data-options="
+				     valueField: 'label',
+				     textField: 'value',
+				     data: [{
+				      label: 'ENABLE',
+				      value: '${message("csh.common.enable")}'
+				     },{
+				      label: 'DISABLE',
+				      value: '${message("csh.common.disable")}'
+				     }],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="status" id="status" style="width:110px;"/>
+			</div>
+			<div class="search-item">
+			    <label> 录入时间:</label>
+			    <input type="text" class="Wdate" id="beginDate" name="beginDate"  onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+			</div>
+			<div class="search-item">
+			    <label>到:</label>
+			   	<input type="text" class="Wdate" id="endDate"  name="endDate" onclick="WdatePicker({minDate: '#F{$dp.$D(\'beginDate\')}'});"/>
+			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="endUser-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="vehicle-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 </div>
