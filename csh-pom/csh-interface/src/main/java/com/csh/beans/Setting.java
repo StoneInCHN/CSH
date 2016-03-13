@@ -40,11 +40,6 @@ public class Setting implements Serializable {
   /** 短信验证码过期时间 */
   private Integer smsCodeTimeOut;
   
-  /** 邮箱验证token过期时间 */
-  private Integer emailTokenTimeOut;
-  /**修改领域间隔时间*/
-  private Long domainTimeOutTime;
-  
   /** 短信服务平台地址 */
   private String smsUrl;
 
@@ -62,9 +57,7 @@ public class Setting implements Serializable {
 
   /** 短信内容后缀 */
   private String smsTxtSuffix;
-  
-  /** 短信内容后缀(律师版) */
-  private String smsTxtSuffixLawyer;
+
 
   /** 邮箱正则表达式 */
   private String emailPattern;
@@ -85,19 +78,7 @@ public class Setting implements Serializable {
 
   /** SMTP密码 */
   private String smtpPassword;
-  
-  /** 退款期限默认配置*/
-  private String defaultRefundDayConfig;
-  
-  /** 结算最低金额默认配置 */
-  private String defaultClearingLimitedAmt;
-  
-  /** 评论提交可仲裁等待时间（天数） */
-  private Integer arbitrationOverDays;
-  
-  /** 问题自动过期时间（小时）*/
-  private Integer defaultConsultationExpireation;
-  
+
   /** 默认的模糊查询下拉菜单中返回的记录条数*/
   private Integer defaultPageSize;
   
@@ -113,145 +94,15 @@ public class Setting implements Serializable {
   /** 个推平台注册应用后生成的secret（公众版）*/
   private String appSecret;
   
-  /** 个推平台注册应用后生成的appId（律师版）*/
-  private String lawyerAppId;
-  
-  /** 个推平台注册应用后生成的appKey（律师版）*/
-  private String lawyerAppKey;
-  
-  /** 个推平台注册应用后生成的masterSecret（律师版）*/
-  private String lawyerMasterSecret;
-  
-  /** 个推平台注册应用后生成的secret（律师版）*/
-  private String lawyerAppSecret;
-  
   /** 个推平台消息推送Host*/
   private String pushHost;
-  
-  /** 消息中心*/
-  private String msgSuffix;
-  
-  /** 免费咨询*/
-  private String msgFreeService;
   
   /**
    * 网站域名
    */
   private String siteUrl;
   
-  /**
-   * 修改邮箱时修改链接提示前缀
-   */
-  private String editEmailTextPre;
-  /**
-   * 修改邮箱时修改链接提示后缀
-   */
-  private String editEmailTextSuffix;
-  
-  /**
-   * 修改email是的链接前缀
-   */
-  private String editEmailSiteUrl;
-  
-  /**消息中心问题关闭待评价，拼接字符串1**/
-  private String msgConsultation1;
-  
-  /**消息中心问题关闭待评价，拼接字符串2**/
-  private String msgConsultation2;
-  
-  /**消息中心问题关闭待评价，拼接字符串3**/
-  private String msgConsultation3;
-  
-  public String getMsgConsultation1() {
-    return msgConsultation1;
-  }
 
-  public void setMsgConsultation1(String msgConsultation1) {
-    this.msgConsultation1 = msgConsultation1;
-  }
-
-  public String getMsgConsultation2() {
-    return msgConsultation2;
-  }
-
-  public void setMsgConsultation2(String msgConsultation2) {
-    this.msgConsultation2 = msgConsultation2;
-  }
-
-  public String getMsgConsultation3() {
-    return msgConsultation3;
-  }
-
-  public void setMsgConsultation3(String msgConsultation3) {
-    this.msgConsultation3 = msgConsultation3;
-  }
-
-  public String getLawyerAppId() {
-    return lawyerAppId;
-  }
-
-  public void setLawyerAppId(String lawyerAppId) {
-    this.lawyerAppId = lawyerAppId;
-  }
-
-  public String getLawyerAppKey() {
-    return lawyerAppKey;
-  }
-
-  public void setLawyerAppKey(String lawyerAppKey) {
-    this.lawyerAppKey = lawyerAppKey;
-  }
-
-  public String getLawyerMasterSecret() {
-    return lawyerMasterSecret;
-  }
-
-  public void setLawyerMasterSecret(String lawyerMasterSecret) {
-    this.lawyerMasterSecret = lawyerMasterSecret;
-  }
-
-  public String getMsgFreeService() {
-    return msgFreeService;
-  }
-
-  public void setMsgFreeService(String msgFreeService) {
-    this.msgFreeService = msgFreeService;
-  }
-
-  public String getMsgSuffix() {
-    return msgSuffix;
-  }
-
-  public void setMsgSuffix(String msgSuffix) {
-    this.msgSuffix = msgSuffix;
-  }
-
-  public enum ImageType {
-    /**
-     * 营业执照
-     */
-    LICENSE,
-    /**
-     * 头像
-     */
-    PHOTO,
-    /**
-     * 建议
-     */
-    SUGGEST,
-    /**
-     * 音频
-     */
-    AUDIO
-  }
-  
-  public Integer getArbitrationOverDays() {
-    return arbitrationOverDays;
-  }
-
-  public void setArbitrationOverDays(Integer arbitrationOverDays) {
-    this.arbitrationOverDays = arbitrationOverDays;
-  }
 
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
@@ -314,14 +165,6 @@ public class Setting implements Serializable {
     this.appSecret = appSecret;
   }
 
-  public String getLawyerAppSecret() {
-    return lawyerAppSecret;
-  }
-
-  public void setLawyerAppSecret(String lawyerAppSecret) {
-    this.lawyerAppSecret = lawyerAppSecret;
-  }
-
   public void setSmsCodeTimeOut(Integer smsCodeTimeOut) {
     this.smsCodeTimeOut = smsCodeTimeOut;
   }
@@ -374,13 +217,6 @@ public class Setting implements Serializable {
     this.smsTxtSuffix = smsTxtSuffix;
   }
 
-  public String getSmsTxtSuffixLawyer() {
-    return smsTxtSuffixLawyer;
-  }
-
-  public void setSmsTxtSuffixLawyer(String smsTxtSuffixLawyer) {
-    this.smsTxtSuffixLawyer = smsTxtSuffixLawyer;
-  }
 
   /**
    * 获取发件人邮箱
@@ -488,46 +324,6 @@ public class Setting implements Serializable {
     this.siteName = siteName;
   }
 
-  public Integer getEmailTokenTimeOut() {
-    return emailTokenTimeOut;
-  }
-
-  public void setEmailTokenTimeOut(Integer emailTokenTimeOut) {
-    this.emailTokenTimeOut = emailTokenTimeOut;
-  }
-
-  public Long getDomainTimeOutTime() {
-    return domainTimeOutTime;
-  }
-
-  public void setDomainTimeOutTime(Long domainTimeOutTime) {
-    this.domainTimeOutTime = domainTimeOutTime;
-  }
-
-  public String getDefaultRefundDayConfig() {
-    return defaultRefundDayConfig;
-  }
-
-  public void setDefaultRefundDayConfig(String defaultRefundDayConfig) {
-    this.defaultRefundDayConfig = defaultRefundDayConfig;
-  }
-
-  public String getDefaultClearingLimitedAmt() {
-    return defaultClearingLimitedAmt;
-  }
-
-  public void setDefaultClearingLimitedAmt(String defaultClearingLimitedAmt) {
-    this.defaultClearingLimitedAmt = defaultClearingLimitedAmt;
-  }
-
-  public Integer getDefaultConsultationExpireation() {
-    return defaultConsultationExpireation;
-  }
-
-  public void setDefaultConsultationExpireation(Integer defaultConsultationExpireation) {
-    this.defaultConsultationExpireation = defaultConsultationExpireation;
-  }
-
   public Integer getDefaultPageSize() {
     return defaultPageSize;
   }
@@ -576,28 +372,5 @@ public class Setting implements Serializable {
     this.siteUrl = siteUrl;
   }
 
-  public String getEditEmailTextPre() {
-    return editEmailTextPre;
-  }
-
-  public void setEditEmailTextPre(String editEmailTextPre) {
-    this.editEmailTextPre = editEmailTextPre;
-  }
-
-  public String getEditEmailTextSuffix() {
-    return editEmailTextSuffix;
-  }
-
-  public void setEditEmailTextSuffix(String editEmailTextSuffix) {
-    this.editEmailTextSuffix = editEmailTextSuffix;
-  }
-
-  public String getEditEmailSiteUrl() {
-    return editEmailSiteUrl;
-  }
-
-  public void setEditEmailSiteUrl(String editEmailSiteUrl) {
-    this.editEmailSiteUrl = editEmailSiteUrl;
-  }
   
 }

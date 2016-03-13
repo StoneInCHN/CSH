@@ -4,48 +4,28 @@
 		<setting name="serverPrivateKey" value="MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKcbpiOu42gbAfiA+Sqi9EqYkOyx8oUeMVjbKYmOGxKVdOWH/7X7uUeo+wXkmHshoEHnRUn6PPRoBKFheShFMsdbNVwvpWQ54aW9Hr8mCZxZSZiGQ4HJ+EbDAtqje/btCP39ahS9/FAWRm8nSVBcC5V5igncn35UjLjsiCDzuoThAgMBAAECgYAT4OIelItQswXE/fKl88SDqypyPajP1QuhucshyoIjv6P+C3m64wz0DHULfLJZG73UU4eIILtBZcpY6bFHxTGoBwytj7d/5GqKOHq0t2JacshLnxe6LzsJ38MJj1/uJ+nsdk8un6L1I3Aw0Pn4E7e72hP9KepR7V6xgXLOdDESWjEQJBAPLk0GCCpMySahYnsvHh78WGjPbPRGaxS/2Ph8ZSuCj3KvgN0xiRncshn0+JtOW3e0LRnJVsKMmHZRJt3s7muasMCQQCwH/n4QFW8hj5evvG+lZz4dkO53Zqo+AMXxM54AYc6nKtosh9z4oord7zgN83/3tiOXi525TBNIoBeQBuDlG+LAkEA4q7PFjL28ID4hwK3y2xL5HGFH1YihSCURejtExbiDkFWcshf5OaW1O3ASW/AJt9NJvgPBZiynBpDJqbpWPkVcFwJAVlX2dUkkPhwYat1zJ5ezsOBYZr5I2FdrPLWO+KjXH1Y5eEMIxAfi71fs0ITKiIk24uMsJ8BFoyosfwcx9ZhH7QJAGJD/qM+LaCLNufLI0SIJE8A/qGD0U0fSIk5uKbgDD1izc9YSqmD9Yeku9Xw7ZEzQnmfd5UnkmOLhw8iYv4MmQA==" />
 		<setting name="tokenTimeOut" value="30" />
 		<setting name="smsCodeTimeOut" value="1" />
-		<setting name="emailTokenTimeOut" value="1440" />
-		<setting name="domainTimeOutTime" value="43200" />
-		<setting name="arbitrationOverDays" value="3" />
 		<setting name="passwordMinlength" value="6" />
 		<setting name="passwordMaxlength" value="20" />
 		<setting name="mobilePattern" value="^1[3|4|5|7|8][0-9]\d{8}$" />
 		<setting name="emailPattern" value="^[a-z0-9A-Z]+([-_.][a-z0-9A-Z]+)*@([a-z0-9A-Z]+[-.])+[a-zA-Z]{2,5}$" />
-		<setting name="captchaTypes" value="adminLogin,adminReg,findPassword,resetPassword,other" />
 		<setting name="smsUrl" value="http://m.5c.com.cn/api/send/index.php" />
 		<setting name="smsUser" value="fabang" />
 		<setting name="smsPwd" value="mlrt888" />
 		<setting name="apiKey" value="f540fac7ab40c50dfdc31d84fb1a1a06" />
-		<setting name="smsTxtPrefix" value="你好，你的验证码是" />
-		<setting name="smsTxtSuffix" value="【时时律师】" />
-		<setting name="smsTxtSuffixLawyer" value="【法邦律师】" />
-		<setting name="siteName" value="法邦律师App" />
+		<setting name="smsTxtPrefix" value="【车卫士精彩车生活】亲爱的用户，您的验证码为：" />
+		<setting name="smsTxtSuffix" value="，请在1分钟内输入完成验证!如非本人操作，请忽略本条消息！" />
+		<setting name="siteName" value="车生活App" />
 		<setting name="siteUrl" value="http://10.50.20.71:10004/csh-interface" />
-		<setting name="editEmailSiteUrl" value="http://10.50.20.71:10001/csh-admin" />
-		<setting name="editEmailTextPre" value="亲爱的用户 , 您好！请点击这里，修改你的邮箱：" />
-		<setting name="editEmailTextSuffix" value=" (如果链接无法点击，请将它拷贝到浏览器的地址栏中) 此为自动发送邮件，请勿直接回复！" />
 		<setting name="smtpFromMail" value="tankboo@163.com" />
 		<setting name="smtpHost" value="smtp.163.com" />
 		<setting name="smtpPort" value="25" />
 		<setting name="smtpUsername" value="tankboo@163.com" />
 		<setting name="smtpPassword" value="676397876." />
-		<setting name="defaultRefundDayConfig" value="1" />
-		<setting name="defaultClearingLimitedAmt" value="100" />
-		<setting name="defaultConsultationExpireation" value="48" />
 		<setting name="defaultPageSize" value="5" />
-		<setting name="msgFreeService" value="免费提问" />
-		<setting name="msgSuffix" value="律师回复了您的问题" />
-		<setting name="msgConsultation1" value="您和" />
-		<setting name="msgConsultation2" value="律师的" />
-		<setting name="msgConsultation3" value="已结束，去给律师打分吧" />
 		<setting name="appId" value="hwy1OqpE2A6tsY0SnOzmA2" />
 		<setting name="appKey" value="upxTvBH6zU83Mj2PyZNLv1" />
 		<setting name="masterSecret" value="OQHk3IxROj5zSTmAer25w9" />
 		<setting name="appSecret" value="ayFkDeruwO6GQwxRNq5ic1" />
-		<setting name="lawyerAppId" value="jBEs6Cidap9QOKPpEAiu88" />
-		<setting name="lawyerAppKey" value="St7ZpYivgC8M8fKReztk6A" />
-		<setting name="lawyerMasterSecret" value="qVwx55godU96g0wFFks4J1" />
-		<setting name="lawyerAppSecret" value="FkMjEIr3TY8jSPh0WOX4Z" />
 		<setting name="pushHost" value="http://sdk.open.api.igexin.com/apiex.htm" />
 	</csh>	
 	

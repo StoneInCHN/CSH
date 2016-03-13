@@ -648,7 +648,19 @@ public class CommonEnum {
     /**
      * 多租户系统
      */
-    ENTERPRISE
+    ENTERPRISE,
+    /**
+     * 接口系统
+     */
+    INTERFACE
   }
   
+  public enum ImageType {
+	   
+	    /**
+	     * 头像
+	     */
+	    PHOTO
+	   
+	  }
 }
