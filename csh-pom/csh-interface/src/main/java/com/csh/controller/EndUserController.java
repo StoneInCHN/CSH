@@ -106,10 +106,8 @@ public class EndUserController extends MobileBaseController {
     String serverPrivateKey = setting.getServerPrivateKey();
     String userName = userLoginReq.getUserName();
     String password = userLoginReq.getPassword();
-    String token = TokenGenerator.generateToken();
     
-    if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)|| password.length() < setting.getPasswordMinlength()
-            || password.length() > setting.getPasswordMaxlength()) {
+    if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
         response.setCode(CommonAttributes.FAIL_LOGIN);
         response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
         return response;
@@ -129,6 +127,7 @@ public class EndUserController extends MobileBaseController {
       } catch (Exception e) {
         e.printStackTrace();
       }
+    
     if (!DigestUtils.md5Hex(password).equals(loginUser.getPassword())) {
         response.setCode(CommonAttributes.FAIL_LOGIN);
         response.setDesc(Message.error("csh.nameorpwd.error").getContent());
@@ -158,6 +157,7 @@ public class EndUserController extends MobileBaseController {
     String[] properties = { "id","userName", "nickName", "photo","signature","driverLicense.sn_no"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
     response.setMsg(map);
+    String token = TokenGenerator.generateToken();
     endUserService.createEndUserToken(token, loginUser.getId());
     response.setToken(token);
     return response;
@@ -204,7 +204,11 @@ public class EndUserController extends MobileBaseController {
     	    } catch (Exception e) {
     	      e.printStackTrace();
     	    }
-    	   
+    	    if (password.length() < setting.getPasswordMinlength() || password.length() > setting.getPasswordMaxlength()) {
+    	        response.setCode(CommonAttributes.FAIL_RESET_PWD);
+    	        response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
+    	        return response;
+    	    }
     	    user.setPassword(DigestUtils.md5Hex(password));
     	    endUserService.update(user);
     	    
@@ -336,7 +340,12 @@ public class EndUserController extends MobileBaseController {
     	      response.setCode(CommonAttributes.FAIL_REG);
     	      response.setDesc(Message.error("csh.pwd.no.same").getContent());
     	      return response;
-    	   } 
+    	} 
+    	if (password.length() < setting.getPasswordMinlength() || password.length() > setting.getPasswordMaxlength()) {
+	        response.setCode(CommonAttributes.FAIL_REG);
+	        response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
+	        return response;
+	    }
     	try {
     	      password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
     	    } catch (Exception e) {

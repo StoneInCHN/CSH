@@ -60,6 +60,9 @@ public class FieldFilterUtils<T> {
   public static Map<String, Object> filterEntityMap(String[] propertys, Object entity) {
     Map<String, Object> map = new HashMap<String, Object>();
     Map<String, Object> childMap = new HashMap<String, Object>();
+    if (entity==null) {
+		return map;
+	}
     BeanMap beanMap = BeanMap.create(entity);
     for (String key : propertys) {
       String[] pros = key.split("\\.");

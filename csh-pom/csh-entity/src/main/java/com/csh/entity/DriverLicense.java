@@ -1,13 +1,13 @@
 package com.csh.entity;
 
-import java.io.Serializable;
+import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
-
-import java.sql.Timestamp;
-import java.util.Date;
 
 
 /**
@@ -111,6 +111,7 @@ public class DriverLicense extends BaseEntity {
     this.expirationDate = expirationDate;
   }
 
+  @OneToOne
   public EndUser getEndUser ()
   {
     return endUser;
