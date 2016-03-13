@@ -53,6 +53,11 @@ public class EndUserController extends BaseController
   {
     return "endUser/endUser";
   }
+  @RequestMapping (value = "/commonEndUserSearch", method = RequestMethod.GET)
+  public String commonEndUserSearch (ModelMap model)
+  {
+    return "common/commonEndUserSearch";
+  }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<EndUser> list (Pageable pageable, ModelMap model,
       Date beginDate, Date endDate, String userNameSearch,AccountStatus accountStatusSearch)

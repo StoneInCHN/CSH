@@ -2,8 +2,8 @@ var vehicle_manager_tool = {
 		add:function(){
 			$('#addVehicle').dialog({
 			    title: message("csh.vehicle.add"),    
-			    width: 400,    
-			    height: 350,
+			    width: 700,    
+			    height: 550,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{

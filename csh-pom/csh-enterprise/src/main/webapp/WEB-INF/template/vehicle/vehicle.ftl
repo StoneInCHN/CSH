@@ -26,7 +26,7 @@
 				      label: 'DISABLE',
 				      value: '${message("csh.common.disable")}'
 				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="status" id="status" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="statusSearch" id="status" style="width:110px;"/>
 			</div>
 			<div class="search-item">
 			    <label> 录入时间:</label>
@@ -51,68 +51,71 @@
 	</div>
 	<div class="tool-filter"></div>
 </div>
-<div id="addTenantAccount"> 
-	<form id="addTenantAccount_form" method="post" class="form-table">
-	<input type="hidden" name="tenantUserID" id="addTenantAccountUserID">
-	<input type="hidden" name="roleID" id="addTenantAccountRoleID">  
+<div id="addVehicle"> 
+	<form id="addVehicle_form" method="post" class="form-table">
+	<input type="hidden" name="endUserID" id="addVehicle_endUserID">
+	<input type="hidden" name="deviceInfoID" id="addVehicle_deviceInfoID">
 	    <table class="table table-striped"  border="0">
 	    	<tr>
-	    		<th>${message("csh.tenantAccount.staffID")}:</th>
-	    		<td colspan='2'>
-	    			 <input type="text" class="easyui-textbox" name="staffID" id= "staffID"   data-options="required:true"/>
+	    		<th>车牌号:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" name="plate" id= "plate"  data-options="required:true"/>
+	    		</td>
+	    		<th>车辆颜色:</th>
+	    		<td >
+	    			 <input class="easyui-textbox" name="color" id= "color" />
+	    		</td>
+	    		
+	    	</tr>
+	    	<tr>
+	    		<th>车型:</th>
+	    		<td>
+	    			 <input class="easyui-textbox" prompt="${message("yly.common.please.select")}" name="elderlyInfoName" id="addPrescription_elderlyInfo" panelHeight="150px" data-options="editable:false" />
+	    		</td>
+	    		<td>	 
+	    			 <a href="#" id="elderly_info_search_btn" class="easyui-linkbutton" onclick="searchElderlyInfo('addPrescription_elderlyInfo')" iconCls="icon-search" plain=true"></a>    
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("csh.tenantAccount.userName")}:</th>
-	    		<td colspan='2'>
-	    			 <input type="text" class="easyui-textbox" name="userName" id= "userName"  data-options="required:true"/>
+	    		<th>绑定设备:</th>
+	    		<td>
+	    			 <input class="easyui-textbox" prompt="${message("yly.common.please.select")}"  id="addVehicle_deviceInfo" panelHeight="150px" data-options="required:true,editable:false" />
+	    		</td>
+	    		<td>	 
+	    			 <a href="#" id="common_device_search_btn" class="easyui-linkbutton" onclick="searchDevice('addVehicle_deviceInfo')" iconCls="icon-search" plain=true"></a>    
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("csh.tenantAccount.password")}:</th>
-	    		<td colspan='2'>
-	    			 <input type="password" class="easyui-textbox" name="password" id= "password"  data-options="required:true"/>
+	    		<th>车辆所有者:</th>
+	    		<td>
+	    			 <input class="easyui-textbox" prompt="${message("yly.common.please.select")}" id="addVehicle_endUser" panelHeight="150px" data-options="required:true,editable:false" />
+	    		</td>
+	    		<td>	 
+	    			 <a href="#" id="common_endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('addVehicle_endUser')" iconCls="icon-search" plain=true"></a>    
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("csh.tenantAccount.accoutStatus")}:</th>
+	    		<th>${message("csh.vehicle.status")}:</th>
 	    		<td colspan='2'>
 	    			 <input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
-				      label: 'ACTIVED',
-				      value: '${message("csh.tenantAccount.accoutStatus.active")}'
+				      label: 'ENABLE',
+				      value: '${message("csh.common.enable")}'
 				     },{
-				      label: 'LOCKED',
-				      value: '${message("csh.tenantAccount.accoutStatus.locked")}'
+				      label: 'DISABLE',
+				      value: '${message("csh.common.disable")}'
 				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="accoutStatus" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="status" id="status" style="width:110px;"/>
 	    		</td>
 	    		</tr>
 	    	<tr>
-	    		<th>${message("csh.tenantAccount.tenantUser")}:</th>
-	    		<td>
-	    			 <input type="text" class="easyui-textbox" name="addTenantAccountUser" id= "addTenantAccountUser"  />
-	    		</td>
-	    		<td>
-	    			<a href="#" id="tenant_user_search_btn" class="easyui-linkbutton" onclick="searchTenantUser('addTenantAccountUser')" iconCls="icon-search" plain=true"></a>
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    	<th>${message("csh.tenantAccount.role")}:</th>
-	    		<td>
-	    			 <input type="text" class="easyui-textbox" name="addTenantAccountRole" id= "addTenantAccountRole"  />
-	    		</td>
-	    		<td>
-	    			<a href="#" id="role_search_btn" class="easyui-linkbutton" onclick="searchRoles('addTenantAccountRole')" iconCls="icon-search" plain=true"></a>
-	    		</td>
-	    	</tr>
 	    </table>
 	</form>
 </div>
-<div id="editTenantAccount"></div>
-<div id="tenantAccountDetail"></div>
+<div id="editVehicle"></div>
+<div id="vehicleDetail"></div>
 
 
 

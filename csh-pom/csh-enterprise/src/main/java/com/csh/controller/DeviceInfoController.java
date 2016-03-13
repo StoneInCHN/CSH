@@ -54,6 +54,11 @@ public class DeviceInfoController extends BaseController
   {
     return "deviceInfo/deviceInfo";
   }
+  @RequestMapping (value = "/commonDeviceInfoSearch", method = RequestMethod.GET)
+  public String commonDeviceInfoSearch (ModelMap model)
+  {
+    return "common/commonDeviceInfoSearch";
+  }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<DeviceInfo> list (Pageable pageable, ModelMap model,
       Date beginDate, Date endDate, String deviceNoSearch,DeviceStatus deviceStatusSearch)

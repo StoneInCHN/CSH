@@ -24,11 +24,15 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.DeviceInfo;
+import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.DeviceInfoService;
+import com.csh.service.EndUserService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
 
@@ -44,6 +48,10 @@ public class VehicleController extends BaseController
 
   @Resource (name = "vehicleServiceImpl")
   private VehicleService vehicleService;
+  @Resource (name = "deviceInfoServiceImpl")
+  private DeviceInfoService deviceInfoService;
+  @Resource (name = "endUserServiceImpl")
+  private EndUserService endUserService;
   
   @RequestMapping (value = "/vehicle", method = RequestMethod.GET)
   public String list (ModelMap model)
@@ -161,8 +169,12 @@ public class VehicleController extends BaseController
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (Vehicle vehicle)
+  public @ResponseBody Message add (Vehicle vehicle,Long endUserID,Long deviceInfoID, Long vehicleBrandID)
   {
+    EndUser endUser = endUserService.find (endUserID);
+    DeviceInfo deviceInfo = deviceInfoService.find (deviceInfoID);
+    vehicle.setDevice (deviceInfo);
+    vehicle.setEndUser (endUser);
     vehicleService.save (vehicle,true);
     return SUCCESS_MESSAGE;
   }

@@ -389,6 +389,180 @@ function searchRoles(id) {
 					});
 
 }
+//查询终端用户用户
+function searchEndUser(id) {
+	$('#commonMainDialog')
+			.dialog(
+					{
+						title : message("yly.endUser.search"),
+						width : 1000,
+						height : 500,
+						modal : true,
+						cache : false,
+						href : '../endUser/commonEndUserSearch.jhtml',
+						buttons : [ {
+							text : message("yly.common.cancel"),
+							iconCls : 'icon-cancel',
+							handler : function() {
+								$('#commonMainDialog').dialog("close");
+							}
+						} ],
+						onLoad : function() {
+							/**
+							 * 此datagrid 用户展示老人数据,并且提供查询功能
+							 */
+							$("#common-endUser-table-list")
+									.datagrid(
+											{
+												title : message("yly.endUser"),
+												fitColumns : true,
+												url : '../endUser/list.jhtml',
+												pagination : true,
+												loadMsg : message("yly.common.loading"),
+												striped : true,
+												onDblClickRow : function(
+														rowIndex, rowData) {
+													$("#" + id + "ID").val(
+															rowData.id);
+													$("#" + id).textbox(
+															'setValue',
+															rowData.realName);
+													
+													$('#commonMainDialog')
+															.dialog("close");
+												},
+												columns : [ [
+														      {field:'ck',checkbox:true},
+														      {title:message("csh.endUser.userName"),field:"userName",width:100,sortable:true},
+														      {title:message("csh.endUser.realName"),field:"realName",width:100,sortable:true   },
+														      {title:message("csh.endUser.mobileNum"),field:"mobileNum",width:100,sortable:true},
+														      {title:message("csh.endUser.qq"),field:"qq",width:100,sortable:true},
+														      {title:message("csh.endUser.accoutStatus"),field:"accoutStatus",width:100,sortable:true,
+														    	  formatter: function(value,row,index){
+															    	  if(value == "ACTIVED"){
+															    		  return  message("csh.endUser.active");
+															    	  }else if (value == "LOCKED"){
+															    		  return  message("csh.endUser.locked");
+															    	  }
+														      	  }  
+														      },
+														      {title:message("csh.endUser.loginDate"),field:"loginDate",width:100,sortable:true,formatter: function(value,row,index){
+																	return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+																}
+														      },
+														   ] ]
+
+											});
+
+							$("#common_endUser_search_btn")
+									.click(
+											function() {
+												var _queryParams = $(
+														"#common_endUser_search_form")
+														.serializeJSON();
+												$(
+														'#common-endUser-table-list')
+														.datagrid('options').queryParams = _queryParams;
+												$(
+														"#common-endUser-table-list")
+														.datagrid('reload');
+											})
+						}
+					});
+
+}
+//查询设备信息
+function searchDevice(id) {
+	$('#commonMainDialog')
+			.dialog(
+					{
+						title : message("yly.deviceInfo.search"),
+						width : 1000,
+						height : 500,
+						modal : true,
+						cache : false,
+						href : '../deviceInfo/commonDeviceInfoSearch.jhtml',
+						buttons : [ {
+							text : message("yly.common.cancel"),
+							iconCls : 'icon-cancel',
+							handler : function() {
+								$('#commonMainDialog').dialog("close");
+							}
+						} ],
+						onLoad : function() {
+							/**
+							 * 此datagrid 用户展示老人数据,并且提供查询功能
+							 */
+							$("#common-deviceInfo-table-list")
+									.datagrid(
+											{
+												title : message("yly.deviceInfo"),
+												fitColumns : true,
+												url : '../deviceInfo/list.jhtml',
+												pagination : true,
+												loadMsg : message("yly.common.loading"),
+												striped : true,
+												onDblClickRow : function(
+														rowIndex, rowData) {
+													$("#" + id + "ID").val(
+															rowData.id);
+													$("#" + id).textbox(
+															'setValue',
+															rowData.deviceNo);
+													
+													$('#commonMainDialog')
+															.dialog("close");
+												},
+												columns : [ [
+														      {field:'ck',checkbox:true},
+														      {title:message("csh.deviceInfo.deviceNO"),field:"deviceNo",width:100,sortable:true},
+														      {title:message("csh.deviceInfo.deviceType"),field:"type",width:100,sortable:true,
+														    	  formatter: function(value,row,index){
+															    	  if(value != null){
+															    		  return  value.name;
+															    	  }
+														      	  }},
+														      {title:message("csh.deviceInfo.deviceStatus"),field:"deviceStatus",width:100,sortable:true,
+														    	  formatter: function(value,row,index){
+															    	  if(value == "INITED"){
+															    		  return  message("csh.deviceInfo.deviceStatus.INITED");
+															    	  }else if (value = "SENDOUT"){
+															    		  return  message("csh.deviceInfo.deviceStatus.SENDOUT");
+															    	  }else if (value = "STORAGEOUT"){
+															    		  return  message("csh.deviceInfo.deviceStatus.STORAGEOUT");
+															    	  }else if (value = "BINDED"){
+															    		  return  message("csh.deviceInfo.deviceStatus.BINDED");
+															    	  }else if (value = "REFUNDED"){
+															    		  return  message("csh.deviceInfo.deviceStatus.REFUNDED");
+															    	  }
+														      	  }  
+														      },
+														      {title:message("csh.deviceInfo.bindTime"),field:"bindTime",width:100,sortable:true,formatter: function(value,row,index){
+																	return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+																}
+														      },
+														   ] ]
+
+											});
+
+							$("#common_deviceInfo_search_btn")
+									.click(
+											function() {
+												var _queryParams = $(
+														"#common_deviceInfo_search_form")
+														.serializeJSON();
+												$(
+														'#common-deviceInfo-table-list')
+														.datagrid('options').queryParams = _queryParams;
+												$(
+														"#common-deviceInfo-table-list")
+														.datagrid('reload');
+											})
+						}
+					});
+
+}
+
 function formReset(formId, tableId) {
 	$('#' + formId)[0].reset();
 	var _queryParams = {}
