@@ -59,6 +59,11 @@ public class CarService extends BaseEntity {
      * 服务单价
      */
     private BigDecimal price;
+    
+    /**
+     * 活动服务单价
+     */
+    private BigDecimal promotionPrice;
 
     /**
      * 评分
@@ -120,6 +125,15 @@ public class CarService extends BaseEntity {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+	
+	@Column(scale = 2, precision = 10, nullable = false)
+	public BigDecimal getPromotionPrice() {
+		return promotionPrice;
+	}
+
+	public void setPromotionPrice(BigDecimal promotionPrice) {
+		this.promotionPrice = promotionPrice;
 	}
 
 	public Integer getRate() {
