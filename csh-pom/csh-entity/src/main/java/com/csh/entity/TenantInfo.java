@@ -1,10 +1,12 @@
 package com.csh.entity;
 
-import java.util.Set;
+import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -13,7 +15,7 @@ import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 
 /**
- *  租户信息
+ * 租户信息
  * 
  * @author sujinxuan
  *
@@ -23,44 +25,44 @@ import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_tenant_info_sequence")
 public class TenantInfo extends BaseEntity {
 
-  
+
   private static final long serialVersionUID = 3525183712762376969L;
 
   /**
    * 租户组织机构代码
    */
   private String orgCode;
-  
+
   /**
    * 租户名称
    */
   private String tenantName;
-  
+
   /**
    * 联系电话
    */
   private String contactPhone;
-  
+
   /**
    * 租户地址
    */
   private String address;
-  
+
   /**
    * 联系人
    */
   private String contactPerson;
-  
+
   /** 邮编 */
   private String zipCode;
-  
+
   /** E-mail */
   private String email;
   /**
    * 备注
    */
   private String remark;
-  
+
   /**
    * 租户账号状态
    */
@@ -70,17 +72,125 @@ public class TenantInfo extends BaseEntity {
    * 版本
    */
   private VersionConfig versionConfig;
-  
+
+  /** 地区 */
+  private Area area;
+
   /**
-   * 终端用户
+   * 营业时间
    */
-  private Set<EndUser> endUsers;
-  
+  private String businessTime;
+
   /**
-   * 租户的店铺
+   * 描述
    */
-  private Store store;
-  
+  private String description;
+
+  /**
+   * 拥有者姓名
+   */
+  private String ownerName;
+
+  /**
+   * 好评率
+   */
+  private BigDecimal praiseRate;
+
+  /**
+   * 店铺logo
+   */
+  private String storeLogo;
+  /**
+   * 纬度
+   */
+  private BigDecimal latitude;
+
+  /**
+   * 经度
+   */
+  private BigDecimal longitude;
+
+  @Column(length = 50)
+  public String getBusinessTime() {
+    return businessTime;
+  }
+
+  public void setBusinessTime(String businessTime) {
+    this.businessTime = businessTime;
+  }
+
+  @Lob
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  @Column(length = 50)
+  public String getOwnerName() {
+    return ownerName;
+  }
+
+  public void setOwnerName(String ownerName) {
+    this.ownerName = ownerName;
+  }
+
+  @Column(scale = 2, precision = 2, nullable = true)
+  public BigDecimal getPraiseRate() {
+    return praiseRate;
+  }
+
+  public void setPraiseRate(BigDecimal praiseRate) {
+    this.praiseRate = praiseRate;
+  }
+
+  public String getStoreLogo() {
+    return storeLogo;
+  }
+
+  public void setStoreLogo(String storeLogo) {
+    this.storeLogo = storeLogo;
+  }
+
+  @Column(scale = 6, precision = 10, nullable = true)
+  public BigDecimal getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(BigDecimal latitude) {
+    this.latitude = latitude;
+  }
+
+  @Column(scale = 6, precision = 10, nullable = true)
+  public BigDecimal getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(BigDecimal longitude) {
+    this.longitude = longitude;
+  }
+
+  /**
+   * 获取地区
+   * 
+   * @return 地区
+   */
+  @ManyToOne(fetch = FetchType.LAZY)
+  public Area getArea() {
+    return area;
+  }
+
+  /**
+   * 设置地区
+   * 
+   * @param area 地区
+   */
+  public void setArea(Area area) {
+    this.area = area;
+  }
+
   @Column(length = 20)
   public String getOrgCode() {
     return orgCode;
@@ -160,15 +270,13 @@ public class TenantInfo extends BaseEntity {
   public void setAccountStatus(AccountStatus accountStatus) {
     this.accountStatus = accountStatus;
   }
-  
-  @ManyToOne(cascade=CascadeType.ALL)
-  public VersionConfig getVersionConfig ()
-  {
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  public VersionConfig getVersionConfig() {
     return versionConfig;
   }
 
-  public void setVersionConfig (VersionConfig versionConfig)
-  {
+  public void setVersionConfig(VersionConfig versionConfig) {
     this.versionConfig = versionConfig;
   }
 }

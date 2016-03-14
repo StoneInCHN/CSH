@@ -8,8 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Index;
-
 import com.csh.entity.base.BaseEntity;
 
 /**
@@ -38,20 +36,17 @@ public class LoginStatistics extends BaseEntity {
   private EndUser endUser;
 
   /**
-   * 租户ID
+   * 手机IMEI号
    */
-  private Long tenantID;
+  private String imei;
 
-  @Index(name = "loginStatistics_tenantid")
-  public Long getTenantID() {
-    return tenantID;
+  public String getImei() {
+    return imei;
   }
 
-
-  public void setTenantID(Long tenantID) {
-    this.tenantID = tenantID;
+  public void setImei(String imei) {
+    this.imei = imei;
   }
-
 
   public Date getLoginDate() {
     return loginDate;

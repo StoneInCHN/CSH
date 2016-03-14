@@ -49,13 +49,13 @@ public class EndUserController extends MobileBaseController {
 
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
-  
+
   @Resource(name = "smsTokenServiceImpl")
   private SmsTokenService smsTokenService;
-  
+
   @Resource(name = "fileServiceImpl")
   private FileService fileService;
-  
+
   /**
    * 用户注销
    * 
@@ -101,50 +101,53 @@ public class EndUserController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public @ResponseBody ResponseOne<Map<String, Object>> login(HttpServletRequest requesthttp,@RequestBody UserLoginRequest userLoginReq) {
+  public @ResponseBody ResponseOne<Map<String, Object>> login(HttpServletRequest requesthttp,
+      @RequestBody UserLoginRequest userLoginReq) {
     ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     String serverPrivateKey = setting.getServerPrivateKey();
     String userName = userLoginReq.getUserName();
     String password = userLoginReq.getPassword();
-    
+    String imei = userLoginReq.getImei();
+
     if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
-        response.setCode(CommonAttributes.FAIL_LOGIN);
-        response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
-        return response;
-      }
+      response.setCode(CommonAttributes.FAIL_LOGIN);
+      response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
+      return response;
+    }
     if (LogUtil.isDebugEnabled(EndUserController.class)) {
-        LogUtil.debug(EndUserController.class, "find",
-            "Fetching User from database with UserName: %s", userName);
-      }
+      LogUtil.debug(EndUserController.class, "find",
+          "Fetching User from database with UserName: %s", userName);
+    }
     EndUser loginUser = endUserService.findByUserName(userName);
     if (loginUser == null) {
-        response.setCode(CommonAttributes.FAIL_LOGIN);
-        response.setDesc(Message.error("csh.user.noexist").getContent());
-        return response;
-      }
+      response.setCode(CommonAttributes.FAIL_LOGIN);
+      response.setDesc(Message.error("csh.user.noexist").getContent());
+      return response;
+    }
     try {
-        password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    
+      password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     if (!DigestUtils.md5Hex(password).equals(loginUser.getPassword())) {
-        response.setCode(CommonAttributes.FAIL_LOGIN);
-        response.setDesc(Message.error("csh.nameorpwd.error").getContent());
-        return response;
-      }
-    
+      response.setCode(CommonAttributes.FAIL_LOGIN);
+      response.setDesc(Message.error("csh.nameorpwd.error").getContent());
+      return response;
+    }
+
     if (AccountStatus.LOCKED.equals(loginUser.getAccountStatus())
-            || AccountStatus.DELETE.equals(loginUser.getAccountStatus())) {
-          response.setCode(CommonAttributes.FAIL_LOGIN);
-          response.setDesc(Message.error("csh.current.user.invalid").getContent());
-          return response;
-     }
-    
+        || AccountStatus.DELETE.equals(loginUser.getAccountStatus())) {
+      response.setCode(CommonAttributes.FAIL_LOGIN);
+      response.setDesc(Message.error("csh.current.user.invalid").getContent());
+      return response;
+    }
+
     LoginStatistics loginStatistics = new LoginStatistics();
     loginStatistics.setEndUser(loginUser);
     loginStatistics.setLoginDate(new Date());
     loginStatistics.setLoginIp(requesthttp.getRemoteAddr());
+    loginStatistics.setImei(imei);
     loginUser.getLoginStatistics().add(loginStatistics);
     endUserService.update(loginUser);
     if (LogUtil.isDebugEnabled(EndUserController.class)) {
@@ -153,8 +156,9 @@ public class EndUserController extends MobileBaseController {
 
     response.setCode(CommonAttributes.SUCCESS);
     response.setDesc(loginUser.getId().toString());
-    
-    String[] properties = { "id","userName", "nickName", "photo","signature","driverLicense.sn_no"};
+
+    String[] properties =
+        {"id", "userName", "nickName", "photo", "signature", "driverLicense.sn_no"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
     response.setMsg(map);
     String token = TokenGenerator.generateToken();
@@ -162,7 +166,7 @@ public class EndUserController extends MobileBaseController {
     response.setToken(token);
     return response;
   }
-  
+
   /**
    * 重置密码
    * 
@@ -185,68 +189,69 @@ public class EndUserController extends MobileBaseController {
       response.setDesc(Message.error("csh.mobile.invaliable").getContent());
       return response;
     }
-    
+
     EndUser user = endUserService.findByUserName(mobileNo);
     if (user == null) {
       response.setCode(CommonAttributes.FAIL_RESET_PWD);
       response.setDesc(Message.error("csh.user.noexist").getContent());
       return response;
-      
-    } 
-    if (password!=null || password_confirm!=null) {
-    	if (!password.equals(password_confirm)) {
-    	      response.setCode(CommonAttributes.FAIL_RESET_PWD);
-    	      response.setDesc(Message.error("csh.pwd.no.same").getContent());
-    	      return response;
-    	   } 
-    	try {
-    	      password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
-    	    } catch (Exception e) {
-    	      e.printStackTrace();
-    	    }
-    	    if (password.length() < setting.getPasswordMinlength() || password.length() > setting.getPasswordMaxlength()) {
-    	        response.setCode(CommonAttributes.FAIL_RESET_PWD);
-    	        response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
-    	        return response;
-    	    }
-    	    user.setPassword(DigestUtils.md5Hex(password));
-    	    endUserService.update(user);
-    	    
-    	    if (LogUtil.isDebugEnabled(EndUserController.class)) {
-      	      LogUtil.debug(EndUserController.class, "update", "EndUser Reset Password. UserName: %s,id: %s",
-      	          mobileNo, user.getId());
-      	    }
-    	    response.setCode(CommonAttributes.SUCCESS);
-    	    return response;
-	}else {
-		 // 短信验证码验证
-	    SmsToken userSmsToken = smsTokenService.findByUserMobile(mobileNo,SmsTokenType.FINDPWD);
-	    if (userSmsToken == null) {
-	        response.setCode(CommonAttributes.FAIL_RESET_PWD);
-	        response.setDesc(Message.error("csh.mobile.invaliable").getContent());
-	        return response;
-	      } else {
-	        String timeOutToken = userSmsToken.getTimeoutToken();
-	        String smsCode = userSmsToken.getSmsToken();
-	        if (timeOutToken != null
-	            && !TokenGenerator.tokenTimeOut(timeOutToken, setting.getSmsCodeTimeOut())) {
-	          if (!smsCode.equals(smsToken)) {
-	            response.setCode(CommonAttributes.FAIL_RESET_PWD);
-	            response.setDesc(Message.error("csh.sms.token.error").getContent());
-	            return response;
-	          } else {
-	            smsTokenService.delete(userSmsToken);
-	            response.setCode(CommonAttributes.SUCCESS);
-	    	    return response;
-	          }
-	        } else {
-	          response.setCode(CommonAttributes.FAIL_RESET_PWD);
-	          response.setDesc(Message.error("csh.sms.token.timeout").getContent());
-	          return response;
-	        }
-	      }
-	}
-    
+
+    }
+    if (password != null || password_confirm != null) {
+      if (!password.equals(password_confirm)) {
+        response.setCode(CommonAttributes.FAIL_RESET_PWD);
+        response.setDesc(Message.error("csh.pwd.no.same").getContent());
+        return response;
+      }
+      try {
+        password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      if (password.length() < setting.getPasswordMinlength()
+          || password.length() > setting.getPasswordMaxlength()) {
+        response.setCode(CommonAttributes.FAIL_RESET_PWD);
+        response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
+        return response;
+      }
+      user.setPassword(DigestUtils.md5Hex(password));
+      endUserService.update(user);
+
+      if (LogUtil.isDebugEnabled(EndUserController.class)) {
+        LogUtil.debug(EndUserController.class, "update",
+            "EndUser Reset Password. UserName: %s,id: %s", mobileNo, user.getId());
+      }
+      response.setCode(CommonAttributes.SUCCESS);
+      return response;
+    } else {
+      // 短信验证码验证
+      SmsToken userSmsToken = smsTokenService.findByUserMobile(mobileNo, SmsTokenType.FINDPWD);
+      if (userSmsToken == null) {
+        response.setCode(CommonAttributes.FAIL_RESET_PWD);
+        response.setDesc(Message.error("csh.mobile.invaliable").getContent());
+        return response;
+      } else {
+        String timeOutToken = userSmsToken.getTimeoutToken();
+        String smsCode = userSmsToken.getSmsToken();
+        if (timeOutToken != null
+            && !TokenGenerator.tokenTimeOut(timeOutToken, setting.getSmsCodeTimeOut())) {
+          if (!smsCode.equals(smsToken)) {
+            response.setCode(CommonAttributes.FAIL_RESET_PWD);
+            response.setDesc(Message.error("csh.sms.token.error").getContent());
+            return response;
+          } else {
+            smsTokenService.delete(userSmsToken);
+            response.setCode(CommonAttributes.SUCCESS);
+            return response;
+          }
+        } else {
+          response.setCode(CommonAttributes.FAIL_RESET_PWD);
+          response.setDesc(Message.error("csh.sms.token.timeout").getContent());
+          return response;
+        }
+      }
+    }
+
   }
 
   /**
@@ -279,13 +284,15 @@ public class EndUserController extends MobileBaseController {
         }
       }
       if (tokenType == SmsTokenType.REG.ordinal()) {
-          if (endUser != null) {
-            response.setCode(CommonAttributes.FAIL_SMSTOKEN);
-            response.setDesc(Message.error("csh.mobile.used").getContent());
-            return response;
-          }
+        if (endUser != null) {
+          response.setCode(CommonAttributes.FAIL_SMSTOKEN);
+          response.setDesc(Message.error("csh.mobile.used").getContent());
+          return response;
         }
-      SmsToken smsToken = smsTokenService.findByUserMobile(mobileNo,SmsTokenType.class.getEnumConstants()[tokenType]);
+      }
+      SmsToken smsToken =
+          smsTokenService.findByUserMobile(mobileNo,
+              SmsTokenType.class.getEnumConstants()[tokenType]);
       if (smsToken != null) {
         smsTokenService.delete(smsToken);
       }
@@ -320,7 +327,7 @@ public class EndUserController extends MobileBaseController {
     String smsToken = userReg.getSmsToken();
     String password = userReg.getPassword();
     String password_confirm = userReg.getPassword_confirm();
-    
+
     // 手机号码格式验证
     if (StringUtils.isEmpty(userName) || !isMobileNumber(userName)) {
       response.setCode(CommonAttributes.FAIL_REG);
@@ -333,69 +340,70 @@ public class EndUserController extends MobileBaseController {
       response.setCode(CommonAttributes.FAIL_REG);
       response.setDesc(Message.error("csh.mobile.used").getContent());
       return response;
-      
-    } 
-    if (password!=null || password_confirm!=null) {
-    	if (!password.equals(password_confirm)) {
-    	      response.setCode(CommonAttributes.FAIL_REG);
-    	      response.setDesc(Message.error("csh.pwd.no.same").getContent());
-    	      return response;
-    	} 
-    	if (password.length() < setting.getPasswordMinlength() || password.length() > setting.getPasswordMaxlength()) {
-	        response.setCode(CommonAttributes.FAIL_REG);
-	        response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
-	        return response;
-	    }
-    	try {
-    	      password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
-    	    } catch (Exception e) {
-    	      e.printStackTrace();
-    	    }
-    	    EndUser regUser = new EndUser();
-    	    regUser.setMobileNum(userName);
-    	    regUser.setUserName(userName);
-    	    regUser.setPassword(DigestUtils.md5Hex(password));
-    	    regUser.setAccountStatus(AccountStatus.ACTIVED);
-    	    endUserService.save(regUser);
-    	    
-    	    if (LogUtil.isDebugEnabled(EndUserController.class)) {
-      	      LogUtil.debug(EndUserController.class, "save", "EndUser Reg. UserName: %s,id: %s",
-      	          userName, regUser.getId());
-      	    }
-    	    response.setCode(CommonAttributes.SUCCESS);
-    	    return response;
-	}else {
-		 // 短信验证码验证
-	    SmsToken userSmsToken = smsTokenService.findByUserMobile(userName,SmsTokenType.REG);
-	    if (userSmsToken == null) {
-	        response.setCode(CommonAttributes.FAIL_REG);
-	        response.setDesc(Message.error("csh.mobile.invaliable").getContent());
-	        return response;
-	      } else {
-	        String timeOutToken = userSmsToken.getTimeoutToken();
-	        String smsCode = userSmsToken.getSmsToken();
-	        if (timeOutToken != null
-	            && !TokenGenerator.tokenTimeOut(timeOutToken, setting.getSmsCodeTimeOut())) {
-	          if (!smsCode.equals(smsToken)) {
-	            response.setCode(CommonAttributes.FAIL_REG);
-	            response.setDesc(Message.error("csh.sms.token.error").getContent());
-	            return response;
-	          } else {
-	            smsTokenService.delete(userSmsToken);
-	            response.setCode(CommonAttributes.SUCCESS);
-	    	    return response;
-	          }
-	        } else {
-	          response.setCode(CommonAttributes.FAIL_REG);
-	          response.setDesc(Message.error("csh.sms.token.timeout").getContent());
-	          return response;
-	        }
-	      }
-	}
+
+    }
+    if (password != null || password_confirm != null) {
+      if (!password.equals(password_confirm)) {
+        response.setCode(CommonAttributes.FAIL_REG);
+        response.setDesc(Message.error("csh.pwd.no.same").getContent());
+        return response;
+      }
+      if (password.length() < setting.getPasswordMinlength()
+          || password.length() > setting.getPasswordMaxlength()) {
+        response.setCode(CommonAttributes.FAIL_REG);
+        response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
+        return response;
+      }
+      try {
+        password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      EndUser regUser = new EndUser();
+      regUser.setMobileNum(userName);
+      regUser.setUserName(userName);
+      regUser.setPassword(DigestUtils.md5Hex(password));
+      regUser.setAccountStatus(AccountStatus.ACTIVED);
+      endUserService.save(regUser);
+
+      if (LogUtil.isDebugEnabled(EndUserController.class)) {
+        LogUtil.debug(EndUserController.class, "save", "EndUser Reg. UserName: %s,id: %s",
+            userName, regUser.getId());
+      }
+      response.setCode(CommonAttributes.SUCCESS);
+      return response;
+    } else {
+      // 短信验证码验证
+      SmsToken userSmsToken = smsTokenService.findByUserMobile(userName, SmsTokenType.REG);
+      if (userSmsToken == null) {
+        response.setCode(CommonAttributes.FAIL_REG);
+        response.setDesc(Message.error("csh.mobile.invaliable").getContent());
+        return response;
+      } else {
+        String timeOutToken = userSmsToken.getTimeoutToken();
+        String smsCode = userSmsToken.getSmsToken();
+        if (timeOutToken != null
+            && !TokenGenerator.tokenTimeOut(timeOutToken, setting.getSmsCodeTimeOut())) {
+          if (!smsCode.equals(smsToken)) {
+            response.setCode(CommonAttributes.FAIL_REG);
+            response.setDesc(Message.error("csh.sms.token.error").getContent());
+            return response;
+          } else {
+            smsTokenService.delete(userSmsToken);
+            response.setCode(CommonAttributes.SUCCESS);
+            return response;
+          }
+        } else {
+          response.setCode(CommonAttributes.FAIL_REG);
+          response.setDesc(Message.error("csh.sms.token.timeout").getContent());
+          return response;
+        }
+      }
+    }
   }
-  
-  
-  
+
+
+
   /**
    * 修改终端用户信息(不包括头像)
    * 
@@ -403,8 +411,9 @@ public class EndUserController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/editUserInfo", method = RequestMethod.POST)
-  public @ResponseBody ResponseOne<Map<String, Object>> editUserInfo(@RequestBody EndUserInfoRequest req) {
-	ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+  public @ResponseBody ResponseOne<Map<String, Object>> editUserInfo(
+      @RequestBody EndUserInfoRequest req) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     Long userId = req.getUserId();
     String token = req.getToken();
     String nickName = req.getNickName();
@@ -418,7 +427,7 @@ public class EndUserController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
-    
+
     if (nickName != null) {// 修改昵称
       endUser.setNickName(nickName);
     }
@@ -427,26 +436,23 @@ public class EndUserController extends MobileBaseController {
     }
     endUserService.update(endUser);
     if (LogUtil.isDebugEnabled(EndUserController.class)) {
-      LogUtil
-          .debug(
-              EndUserController.class,
-              "Update",
-              "Edit EndUser Info. NickName: %s, Signature: %s",
-              endUser.getNickName(),endUser.getSignature());
+      LogUtil.debug(EndUserController.class, "Update",
+          "Edit EndUser Info. NickName: %s, Signature: %s", endUser.getNickName(),
+          endUser.getSignature());
     }
 
     response.setCode(CommonAttributes.SUCCESS);
-    String[] properties = { "id","userName", "nickName", "photo","signature"};
+    String[] properties = {"id", "userName", "nickName", "photo", "signature"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, endUser);
     response.setMsg(map);
-    
+
     String newtoken = TokenGenerator.generateToken(req.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
     return response;
   }
-  
-  
+
+
   /**
    * 修改用户头像
    * 
@@ -455,8 +461,8 @@ public class EndUserController extends MobileBaseController {
    */
   @RequestMapping(value = "/editUserPhoto", method = RequestMethod.POST)
   public @ResponseBody ResponseOne<Map<String, Object>> editUserPhoto(EndUserInfoRequest req) {
-	ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
-   
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+
     Long userId = req.getUserId();
     String token = req.getToken();
     MultipartFile photo = req.getPhoto();
@@ -481,7 +487,7 @@ public class EndUserController extends MobileBaseController {
     }
 
     response.setCode(CommonAttributes.SUCCESS);
-    String[] properties = { "id","userName", "nickName", "photo","signature"};
+    String[] properties = {"id", "userName", "nickName", "photo", "signature"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, endUser);
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(req.getToken());
