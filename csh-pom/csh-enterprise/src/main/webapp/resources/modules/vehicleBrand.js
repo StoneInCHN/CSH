@@ -1,9 +1,9 @@
-var vehicle_manager_tool = {
+var vehicleBrand_manager_tool = {
 		add:function(){
 			$('#addVehicleBrand').dialog({
 			    title: message("csh.vehicleBrand.add"),    
-			    width: 700,    
-			    height: 550,
+			    width: 350,    
+			    height: 250,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{
@@ -105,14 +105,11 @@ var vehicle_manager_tool = {
 
 $(function(){
 	$("#vehicleBrand-table-list").datagrid({
-		title:message("csh.vehicle.list"),
+		title:message("csh.vehicleBrand.list"),
+		url:'../vehicleBrand/list.jhtml', 
 		fitColumns:true,
-		url:'../vehicleBrand/list.jhtml',  
-		rownumbers: true,
-		method:"get",
-		idField:'id',
-	    lines:true,
-	    treeField:'name', 
+		toolbar:"#vehicleBrand_manager_tool",
+		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
 		onDblClickRow : function (rowIndex, rowData){
@@ -137,6 +134,10 @@ $(function(){
 		      {field:'ck',checkbox:true},
 		      {title:message("csh.vehicleBrand.name"),field:"name",width:100,sortable:true},
 		      {title:message("csh.vehicleBrand.code"),field:"code",width:100,sortable:true},
+		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
+					return new Date(value).Format("yyyy-MM-dd");
+				}
+		      }
 		   ]
 		]
 	});

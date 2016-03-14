@@ -7,26 +7,12 @@
 	    <legend>${message("csh.vehicleBrand.search")}</legend>
 	    <form id="vehicleBrand-search-form" class="search-form">
 	    	<div class="search-item">
-			    <label> ${message("csh.vehicle.plate")}:</label>
-			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
+			    <label> ${message("csh.vehicleBrand.name")}:</label>
+			    <input type="text" class="easyui-textbox" id="nameSearch" name="nameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.vehicle.vehiclebrand")}:</label>
-			    <input type="text" class="easyui-textbox" id="vehicleBrandSearch" name="vehicleBrandSearch" validtype="length[0,20]"/>
-			</div>
-			<div class="search-item">
-			    <label> ${message("csh.vehicle.status")}:</label>
-			    <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'ENABLE',
-				      value: '${message("csh.common.enable")}'
-				     },{
-				      label: 'DISABLE',
-				      value: '${message("csh.common.disable")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="statusSearch" id="status" style="width:110px;"/>
+			    <label> ${message("csh.vehicleBrand.code")}:</label>
+			    <input type="text" class="easyui-textbox" id="codeSearch" name="codeSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
 			    <label> 录入时间:</label>
@@ -38,7 +24,7 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="vehicle-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="vehicleBrand-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 </div>
@@ -55,21 +41,21 @@
 	<form id="addVehicleBrand_form" method="post" class="form-table">
 	    <table class="table table-striped"  border="0">
 	    	<tr>
-	    		<th>品牌名:</th>
+	    		<th>${message("csh.vehicleBrand.name")}:</th>
 	    		<td >
 	    			 <input  class="easyui-textbox" name="name" id= "name"  data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>名称首字母:</th>
-	    		<td >
+	    		<th>${message("csh.vehicleBrand.code")}:</th>
+	    		<td>
 	    			 <input class="easyui-textbox" name="code" id= "code" />
 	    		</td>
 	    	</tr>
 	    </table>
 	</form>
 </div>
-<div id="editVehicle"></div>
+<div id="editVehicleBrand"></div>
 <div id="vehicleDetail"></div>
 
 

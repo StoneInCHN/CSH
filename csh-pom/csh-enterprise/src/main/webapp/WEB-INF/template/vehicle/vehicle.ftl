@@ -43,7 +43,7 @@
 	  </fieldset>
 </div>
 <table id="vehicle-table-list"></table>
-<div id="deviceInfo_manager_tool">
+<div id="vehicle_manager_tool">
 	<div class="tool-button">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="vehicle_manager_tool.add();">添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="vehicle_manager_tool.edit();">修改</a>
