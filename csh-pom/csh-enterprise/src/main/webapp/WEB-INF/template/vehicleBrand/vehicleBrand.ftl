@@ -1,5 +1,5 @@
 <script src="${base}/resources/js/common.js"></script>
-<script src="${base}/resources/modules/vehicle.js"></script>
+<script src="${base}/resources/modules/vehicleBrand.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 
 <div>

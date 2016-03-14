@@ -1,19 +1,34 @@
-package com.csh.service.impl; 
+package com.csh.service.impl;
 
-import javax.annotation.Resource; 
+import java.util.List;
 
-import org.springframework.stereotype.Service; 
+import javax.annotation.Resource;
 
-import com.csh.entity.VehicleBrand;
-import com.csh.dao.VehicleBrandDao;
-import com.csh.service.VehicleBrandService;
+import org.springframework.stereotype.Service;
+
+import com.csh.dao.VehicleBrandDetailDao;
+import com.csh.entity.VehicleBrandDetail;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.service.VehicleBrandDetailService;
 
-@Service("vehicleBrandServiceImpl")
-public class VehicleBrandServiceImpl extends BaseServiceImpl<VehicleBrand,Long> implements VehicleBrandService {
+@Service ("vehicleBrandDetailServiceImpl")
+public class VehicleBrandServiceImpl extends
+    BaseServiceImpl<VehicleBrandDetail, Long> implements VehicleBrandDetailService
+{
 
-      @Resource(name="vehicleBrandDaoImpl")
-      public void setBaseDao(VehicleBrandDao vehicleBrandDao) {
-         super.setBaseDao(vehicleBrandDao);
+  @Resource (name = "vehicleBrandDetailDaoImpl")
+  private VehicleBrandDetailDao vehicleBrandDetailDaoDao;
+
+  @Resource
+  public void setBaseDao (VehicleBrandDetailDao vehicleBrandDetailDao)
+  {
+    super.setBaseDao (vehicleBrandDetailDao);
+  }
+
+  @Override
+  public List<VehicleBrandDetail> findRoots (Integer count)
+  {
+
+    return vehicleBrandDetailDaoDao.findRoots (count);
   }
 }

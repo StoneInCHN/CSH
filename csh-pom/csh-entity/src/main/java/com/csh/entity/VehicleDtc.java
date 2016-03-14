@@ -21,7 +21,7 @@ public class VehicleDtc extends BaseEntity {
 	/**
 	 * 车型
 	 */
-	private VehicleBrand brand;
+	private VehicleBrandDetail brand;
 
 	/**
 	 * 故障码
@@ -35,12 +35,12 @@ public class VehicleDtc extends BaseEntity {
 
 	private Long tenantID;
 
-  public VehicleBrand getBrand ()
+  public VehicleBrandDetail getBrand ()
   {
     return brand;
   }
 
-  public void setBrand (VehicleBrand brand)
+  public void setBrand (VehicleBrandDetail brand)
   {
     this.brand = brand;
   }

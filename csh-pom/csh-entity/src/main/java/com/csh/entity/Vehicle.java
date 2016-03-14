@@ -45,7 +45,7 @@ public class Vehicle extends BaseEntity
   /**
    * 车辆型号
    */
-  private VehicleBrand vehicleBrand;
+  private VehicleBrandDetail vehicleBrand;
 
   /**
    * 颜色
@@ -94,12 +94,12 @@ public class Vehicle extends BaseEntity
   @JsonProperty
   @ManyToOne
   @IndexedEmbedded
-  public VehicleBrand getVehicleBrand ()
+  public VehicleBrandDetail getVehicleBrand ()
   {
     return vehicleBrand;
   }
 
-  public void setVehicleBrand (VehicleBrand vehicleBrand)
+  public void setVehicleBrand (VehicleBrandDetail vehicleBrand)
   {
     this.vehicleBrand = vehicleBrand;
   }

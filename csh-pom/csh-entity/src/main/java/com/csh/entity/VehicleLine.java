@@ -20,13 +20,13 @@ import com.csh.entity.commonenum.CommonEnum.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * 车辆品牌表
+ * 车系
  * 
  */
 @Entity
 @Table (name = "csh_vehicle_brand")
 @SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_brand_sequence")
-public class VehicleBrand extends BaseEntity
+public class VehicleLine extends BaseEntity
 {
   private static final long serialVersionUID = 1L;
 
@@ -47,14 +47,13 @@ public class VehicleBrand extends BaseEntity
    */
   private String icon;
 
-
   /**
    * 名称
    */
   private String name;
 
   
-  private Set<VehicleLine> children = new HashSet<VehicleLine> ();
+  private Set<VehicleBrandDetail> children = new HashSet<VehicleBrandDetail> ();
 
 
   public String getCode ()
@@ -103,12 +102,12 @@ public class VehicleBrand extends BaseEntity
 
   
   @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-  public Set<VehicleLine> getChildren ()
+  public Set<VehicleBrandDetail> getChildren ()
   {
     return children;
   }
 
-  public void setChildren (Set<VehicleLine> children)
+  public void setChildren (Set<VehicleBrandDetail> children)
   {
     this.children = children;
   }

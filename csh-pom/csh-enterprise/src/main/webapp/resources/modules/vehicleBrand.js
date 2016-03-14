@@ -107,9 +107,12 @@ $(function(){
 	$("#vehicleBrand-table-list").datagrid({
 		title:message("csh.vehicle.list"),
 		fitColumns:true,
-		toolbar:"#vehicleBrand_manager_tool",
 		url:'../vehicleBrand/list.jhtml',  
-		pagination:true,
+		rownumbers: true,
+		method:"get",
+		idField:'id',
+	    lines:true,
+	    treeField:'name', 
 		loadMsg:message("csh.common.loading"),
 		striped:true,
 		onDblClickRow : function (rowIndex, rowData){
@@ -132,38 +135,8 @@ $(function(){
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
-		      {title:message("csh.vehicleBrand.plate"),field:"plate",width:100,sortable:true},
-		      {title:message("csh.vehicle.vehicleBrand"),field:"vehicleBrand",width:100,sortable:true,
-		    	  formatter: function(value,row,index){
-			    	  if(value != null){
-			    		  return  value.name;
-			    	  }
-		      	  }},
-	      	  {title:message("csh.vehicle.endUser"),field:"endUser",width:100,sortable:true,
-		    	  formatter: function(value,row,index){
-			    	  if(value != null){
-			    		  return  value.userName;
-			    	  }
-		      	  }},
-		      {title:message("csh.vehicle.device"),field:"device",width:100,sortable:true,
-		    	  formatter: function(value,row,index){
-			    	  if(value != null){
-			    		  return  value.deviceNo;
-			    	  }
-		      	  }},
-		      {title:message("csh.vehicle.status"),field:"status",width:100,sortable:true,
-		    	  formatter: function(value,row,index){
-			    	  if(value == "ENABLE"){
-			    		  return  message("csh.common.enable");
-			    	  }else if (value = "DISABLE"){
-			    		  return  message("csh.common.disable");
-			    	  }
-		      	  }  
-		      },
-		      {title:message("csh.vehicle.bindTime"),field:"bindTime",width:100,sortable:true,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
-				}
-		      },
+		      {title:message("csh.vehicleBrand.name"),field:"name",width:100,sortable:true},
+		      {title:message("csh.vehicleBrand.code"),field:"code",width:100,sortable:true},
 		   ]
 		]
 	});

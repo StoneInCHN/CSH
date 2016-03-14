@@ -29,7 +29,7 @@ public class DrivingLicense extends BaseEntity
   /**
    * 车辆型号
    */
-  private VehicleBrand brand;
+  private VehicleBrandDetail brand;
 
   private String engine;
 
@@ -73,12 +73,12 @@ public class DrivingLicense extends BaseEntity
     this.address = address;
   }
 
-  public VehicleBrand getBrand ()
+  public VehicleBrandDetail getBrand ()
   {
     return brand;
   }
 
-  public void setBrand (VehicleBrand brand)
+  public void setBrand (VehicleBrandDetail brand)
   {
     this.brand = brand;
   }
