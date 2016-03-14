@@ -152,7 +152,12 @@ var messages = {
 	"csh.vehicle.device":"绑定的设备",
 	"csh.vehicle.status":"车辆状态",
 	"csh.vehicle.list":"车辆列表",
-	"csh.vehicle.bindTime":"绑定时间"
+	"csh.vehicle.bindTime":"绑定时间",
+	//车辆品牌
+	"csh.vehicleBrand.list":"车辆品牌列表",
+	"csh.vehicleBrand.name":"品牌名称",
+	"csh.vehicleBrand.code":"品牌简码",
+	"csh.vehicleBrand.add":"添加车辆品牌"
 	
 };
 //多语言

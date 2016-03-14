@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 车辆品牌表
  * 
  */
+@Indexed(index="vehicleBrand")
 @Entity
 @Table (name = "csh_vehicle_brand")
 @SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_brand_sequence")
@@ -52,6 +54,8 @@ public class VehicleBrand extends BaseEntity
   private Set<VehicleLine> children = new HashSet<VehicleLine> ();
 
 
+  @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.UN_TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getCode ()
   {
     return code;

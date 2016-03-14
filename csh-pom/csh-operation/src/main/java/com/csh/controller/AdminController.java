@@ -22,7 +22,6 @@ import com.csh.framework.entity.BaseEntity.Save;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdminService;
 import com.csh.service.RoleService;
-import com.csh.service.VendorService;
 
 /**
  * Controller - 管理员
@@ -36,8 +35,7 @@ public class AdminController extends BaseController {
   private AdminService adminService;
   @Resource(name = "roleServiceImpl")
   private RoleService roleService;
-  @Resource(name = "vendorServiceImpl")
-  private VendorService vendorService;
+
 
   /**
    * 检查用户名是否存在

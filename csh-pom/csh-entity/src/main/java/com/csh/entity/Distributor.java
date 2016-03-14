@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
@@ -21,38 +20,38 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.entity.base.BaseEntity;
 
 /**
- * 商家
+ * 代理商
  * 
  * @author tanbiao
  *
  */
-@Indexed(index = "Vendor")
+@Indexed(index = "Distributor")
 @Entity
-@Table(name = "csh_vendor")
-@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_vendor_sequence")
-public class Vendor extends BaseEntity {
+@Table(name = "csh_distributor")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_distributor_sequence")
+public class Distributor extends BaseEntity {
 
   private static final long serialVersionUID = -7728373010431015082L;
 
   /**
    * 名称
    */
-  private String vendorName;
+  private String distributorName;
 
   /**
    * 简介
    */
-  private String vendorIntro;
+  private String distributorIntro;
 
   /**
    * 联系电话
    */
-  private String vendorPhone;
+  private String distributorPhone;
 
   /**
    * 地址
    */
-  private String vendorAddress;
+  private String distributorAddress;
 
 
   /**
@@ -77,43 +76,39 @@ public class Vendor extends BaseEntity {
   @Column(name = "Longitude", scale = 6, precision = 10, nullable = true)
   private BigDecimal longitude;
 
-  
-
-
 
   @Field(store = Store.YES, index = Index.TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
-  public String getVendorName() {
-    return vendorName;
+  public String getDistributorName() {
+    return distributorName;
   }
 
-  public void setVendorName(String vendorName) {
-    this.vendorName = vendorName;
+  public void setDistributorName(String distributorName) {
+    this.distributorName = distributorName;
   }
 
-  public String getVendorIntro() {
-    return vendorIntro;
+  public String getDistributorIntro() {
+    return distributorIntro;
   }
 
-  public void setVendorIntro(String vendorIntro) {
-    this.vendorIntro = vendorIntro;
+  public void setDistributorIntro(String distributorIntro) {
+    this.distributorIntro = distributorIntro;
   }
 
-  public String getVendorPhone() {
-    return vendorPhone;
+  public String getDistributorPhone() {
+    return distributorPhone;
   }
 
-  public void setVendorPhone(String vendorPhone) {
-    this.vendorPhone = vendorPhone;
+  public void setDistributorPhone(String distributorPhone) {
+    this.distributorPhone = distributorPhone;
   }
 
-  public String getVendorAddress() {
-    return vendorAddress;
+  public String getDistributorAddress() {
+    return distributorAddress;
   }
 
-  public void setVendorAddress(String vendorAddress) {
-    this.vendorAddress = vendorAddress;
+  public void setDistributorAddress(String distributorAddress) {
+    this.distributorAddress = distributorAddress;
   }
-
 
   public BigDecimal getLatitude() {
     return latitude;

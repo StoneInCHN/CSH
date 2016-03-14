@@ -66,7 +66,6 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin, Long> implements Ad
   public List<String> findAuthorities(Long id) {
     List<String> authorities = new ArrayList<String>();
     Admin admin = adminDao.find(id);
-
     if (admin != null) {
       for (Role role : admin.getRoles()) {
         authorities.addAll(role.getAuthorities());

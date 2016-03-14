@@ -48,7 +48,7 @@ public class Area extends OrderEntity {
   private Set<Area> children = new HashSet<Area>();
 
   /** 商家 */
-  private Set<Vendor> vendors = new HashSet<Vendor>();
+  private Set<Distributor> vendors = new HashSet<Distributor>();
 
 
   /**
@@ -150,11 +150,11 @@ public class Area extends OrderEntity {
   }
 
   @OneToMany(mappedBy = "area", fetch = FetchType.LAZY)
-  public Set<Vendor> getVendors() {
+  public Set<Distributor> getVendors() {
     return vendors;
   }
 
-  public void setVendors(Set<Vendor> vendors) {
+  public void setVendors(Set<Distributor> vendors) {
     this.vendors = vendors;
   }
 
