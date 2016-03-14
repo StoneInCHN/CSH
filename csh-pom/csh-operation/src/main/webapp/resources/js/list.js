@@ -5,7 +5,7 @@ $().ready( function() {
 	var $pageTotal = $("#pageTotal");
 	var $addButton = $("#addButton");
 	var $deleteButton = $("#deleteButton");
-	var $deleteSpecialButton = $("#deleteSpecialButton");
+	//var $deleteSpecialButton = $("#deleteSpecialButton");
 	var $deleteButtonFirst = $("#deleteButtonFirst");
 	var $refreshButton = $("#refreshButton");
 	var $refreshButtonFirst =$("#refreshButtonFirst");
@@ -13,8 +13,8 @@ $().ready( function() {
 	var $pageSizeOption = $("#pageSizeOption a");
 	var $locationSelect = $("[name='locationSelect']");
 	var $locationOption = $("#locationOption a");
-	var $sendSelectedButton = $("#sendSelectedButton");
-	var $sendAllButton = $("#sendAllButton");
+//	var $sendSelectedButton = $("#sendSelectedButton");
+//	var $sendAllButton = $("#sendAllButton");
 	var $moreOperation = $("#moreOperation");
 	//var $searchPropertySelect = $("#searchPropertySelect");
 	var $searchPropertyOption = $("#searchPropertyOption li");
@@ -40,7 +40,7 @@ $().ready( function() {
 	
 	
 	// 发送消息至所选用户
-	$sendSelectedButton.click( function() {
+	/*$sendSelectedButton.click( function() {
 		var $this = $(this);
 		if ($this.hasClass("disabled")) {
 			return false;
@@ -64,10 +64,10 @@ $().ready( function() {
 			}
 			    
 		});
-	});
+	});*/
 
 	//发送消息至所有用户
-	$sendAllButton.click( function() {
+/*	$sendAllButton.click( function() {
 		$.dialog({
 			type: "warn",
 			content: message("admin.sendMessage.allUser"),
@@ -95,7 +95,7 @@ $().ready( function() {
 				});
 			}
 		});
-	});
+	});*/
 
 	//添加
 	$addButton.click(function(){
@@ -183,7 +183,7 @@ $().ready( function() {
 	});
 	
 	// 删除
-	$deleteSpecialButton.click( function() {
+/*	$deleteSpecialButton.click( function() {
 		var $this = $(this);
 		if ($this.hasClass("disabled")) {
 			return false;
@@ -219,7 +219,7 @@ $().ready( function() {
 				});
 			}
 		});
-	});
+	});*/
 	
 	// 刷新
 	$refreshButton.click( function() {
@@ -324,7 +324,7 @@ $().ready( function() {
 			if ($enabledIds.filter(":checked").size() > 0) {
 				$deleteButton.removeClass("disabled");
 				$deleteButtonFirst.removeClass("disabled");
-				$deleteSpecialButton.removeClass("disabled");
+			//	$deleteSpecialButton.removeClass("disabled");
 				$sendSelectedButton.removeClass("disabled");
 				$promptButton.removeClass("disabled");
 				$marketButton.removeClass("disabled");
@@ -335,13 +335,13 @@ $().ready( function() {
 			} else {
 				$deleteButton.addClass("disabled");
 				$deleteButtonFirst.addClass("disabled");
-				$deleteSpecialButton.addClass("disabled");
+			//	$deleteSpecialButton.addClass("disabled");
 				$sendSelectedButton.addClass("disabled");
 			}
 		} else {
 			$enabledIds.prop("checked", false);
 			$deleteButton.addClass("disabled");
-			$deleteSpecialButton.addClass("disabled");
+		//	$deleteSpecialButton.addClass("disabled");
 			$sendSelectedButton.addClass("disabled");
 			$promptButton.addClass("disabled");
 			$marketButton.addClass("disabled");
@@ -359,7 +359,7 @@ $().ready( function() {
 			$this.closest("tr").addClass("selected");
 			$deleteButton.removeClass("disabled");
 			$deleteButtonFirst.removeClass("disabled");
-			$deleteSpecialButton.removeClass("disabled");
+		//	$deleteSpecialButton.removeClass("disabled");
 			$sendSelectedButton.removeClass("disabled");
 			$marketButton.removeClass("disabled");
 			$promotionButton.removeClass("disabled");
@@ -371,7 +371,7 @@ $().ready( function() {
 			if ($("#listTable input[name='ids']:enabled:checked").size() > 0) {
 				$deleteButton.removeClass("disabled");
 				$deleteButtonFirst.removeClass("disabled");
-				$deleteSpecialButton.removeClass("disabled");
+			//	$deleteSpecialButton.removeClass("disabled");
 				$sendSelectedButton.removeClass("disabled");
 				$marketButton.removeClass("disabled");
 				$promotionButton.removeClass("disabled");
@@ -380,7 +380,7 @@ $().ready( function() {
 				$batchAuditButton.removeClass("disabled");
 			} else {
 				$deleteButton.addClass("disabled");
-				$deleteSpecialButton.addClass("disabled");
+			//	$deleteSpecialButton.addClass("disabled");
 				$deleteButtonFirst.addClass("disabled");
 				$sendSelectedButton.addClass("disabled");
 				$marketButton.addClass("disabled");

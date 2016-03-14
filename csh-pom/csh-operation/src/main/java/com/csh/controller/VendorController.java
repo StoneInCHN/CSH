@@ -16,19 +16,19 @@ import com.csh.beans.Message;
 import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Admin;
-import com.csh.entity.Vendor;
+import com.csh.entity.Distributor;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdminService;
 import com.csh.service.AreaService;
+import com.csh.service.DistributorService;
 import com.csh.service.FileService;
-import com.csh.service.VendorService;
 
-@Controller("vendorController")
-@RequestMapping("/console/vendor")
+@Controller("distributorController")
+@RequestMapping("/console/distributor")
 public class VendorController extends BaseController{
 
-  @Resource(name="vendorServiceImpl")
-  private VendorService vendorService;
+  @Resource(name="distributorServiceImpl")
+  private DistributorService distributorService;
   
   @Resource(name="fileServiceImpl")
   private FileService fileService;
@@ -44,7 +44,7 @@ public class VendorController extends BaseController{
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String list(Pageable pageable, ModelMap model) {
-      model.addAttribute("page", vendorService.findPage(pageable));
+      model.addAttribute("page", distributorService.findPage(pageable));
       return "/vendor/list";
   }
   
@@ -68,26 +68,8 @@ public class VendorController extends BaseController{
    * 保存
    */
   @RequestMapping(value = "/save", method = RequestMethod.POST)
-  public String save(Vendor vendor,MultipartFile file,Long areaId,RedirectAttributes redirectAttributes,ModelMap map) {
+  public String save(Distributor vendor,MultipartFile file,Long areaId,RedirectAttributes redirectAttributes,ModelMap map) {
     Admin current = adminService.getCurrent();
-   /* if(current.getVendor()==null){
-      String path="";
-      if (file.getSize() >0) {
-        path = fileService.saveImage(file,ImageType.vendor);
-      }
-      vendor.setArea(areaService.find(areaId));
-      vendor.setCreateDate(new Date());
-      vendor.setModifyDate(new Date());
-      vendor.setVendorImagePath(path);
-      vendor.setVendorStatus(VendorStatus.AUDIT_WAITING);
-      vendor.setAdmin(current);
-      vendorService.save(vendor);
-      map.addAttribute("refresh", true);
-      map.addAttribute("vendor", vendor);
-    }else{
-      map.addAttribute("vendor", current.getVendor());
-    }*/
-    
     return "/vendor/info";
   }
 
@@ -96,7 +78,7 @@ public class VendorController extends BaseController{
    */
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
-      model.addAttribute("vendor", vendorService.find(id));
+      model.addAttribute("vendor", distributorService.find(id));
       return "/vendor/edit";
   }
   
@@ -105,7 +87,7 @@ public class VendorController extends BaseController{
    */
   @RequestMapping(value = "/approval", method = RequestMethod.GET)
   public String approval(Long id, ModelMap model) {
-      model.addAttribute("vendor", vendorService.find(id));
+      model.addAttribute("vendor", distributorService.find(id));
       return "/vendor/approval";
   }
   
@@ -113,10 +95,10 @@ public class VendorController extends BaseController{
    * 审批更新
    */
   @RequestMapping(value = "/statusUpdate", method = RequestMethod.POST)
-  public String statusUpdate(Vendor vendor, ModelMap model) {
-      Vendor vendorTemp = vendorService.find(vendor.getId());
+  public String statusUpdate(Distributor vendor, ModelMap model) {
+      Distributor vendorTemp = distributorService.find(vendor.getId());
     //  vendorTemp.setVendorStatus(vendor.getVendorStatus());
-      vendorService.update(vendorTemp);
+      distributorService.update(vendorTemp);
       return "redirect:list.jhtml";
   }
   
@@ -136,7 +118,7 @@ public class VendorController extends BaseController{
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(Vendor vendor,MultipartFile file,Long areaId,RedirectAttributes redirectAttributes,ModelMap map) {
+  public String update(Distributor vendor,MultipartFile file,Long areaId,RedirectAttributes redirectAttributes,ModelMap map) {
       if (!isValid(vendor)) {
           return ERROR_VIEW;
       }
@@ -147,7 +129,7 @@ public class VendorController extends BaseController{
       vendor.setModifyDate(new Date());
    //   vendor.setVendorStatus(VendorStatus.AUDIT_WAITING);
       vendor.setArea(areaService.find(areaId));
-      vendorService.update(vendor,"createDate","chainStore","admin","autoServices");
+      distributorService.update(vendor,"createDate","chainStore","admin","autoServices");
       map.addAttribute("refresh", true);
       map.addAttribute("vendor", vendor);
       return "/vendor/info";
@@ -159,10 +141,10 @@ public class VendorController extends BaseController{
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
   public @ResponseBody
   Message delete(Long[] ids) {
-      if (ids.length >= vendorService.count()) {
+      if (ids.length >= distributorService.count()) {
           return Message.error("admin.common.deleteAllNotAllowed");
       }
-      vendorService.delete(ids);
+      distributorService.delete(ids);
       return SUCCESS_MESSAGE;
   }
   
