@@ -655,6 +655,25 @@ public class CommonEnum {
     INTERFACE
   }
   
+  public enum ServiceType {
+		/**
+		 * 洗车
+		 */
+		WASHING,
+		/**
+		 * 美容
+		 */
+		COSMETOLOGY,
+		/**
+		 * 保养
+		 */
+		UPKEEP,
+		/**
+		 * 加油
+		 */
+		REFUEL;
+	}
+  
   public enum ImageType {
 	   
 	    /**
@@ -663,4 +682,20 @@ public class CommonEnum {
 	    PHOTO
 	   
 	  }
+  
+  
+  /**
+   * 服务状态
+   * @author sujinxuan
+   *
+   */
+  public enum ServiceStatus{
+      
+      /**可用 */
+	  ENABLED,
+      
+      /**禁用 */
+	  DISABLED,
+      
+    }
 }

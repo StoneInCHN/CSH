@@ -1,6 +1,8 @@
 package com.csh.entity;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -109,6 +112,21 @@ public class TenantInfo extends BaseEntity {
    * 经度
    */
   private BigDecimal longitude;
+  
+  /**
+   * 店铺汽车服务
+   */
+  private Set<CarService> carServices = new HashSet<CarService>();
+  
+  
+  @OneToMany(mappedBy="tenantInfo")
+  public Set<CarService> getCarServices() {
+	return carServices;
+  }
+
+  public void setCarServices(Set<CarService> carServices) {
+	this.carServices = carServices;
+  }
 
   @Column(length = 50)
   public String getBusinessTime() {
