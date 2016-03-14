@@ -1,8 +1,11 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -27,33 +30,37 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.VehicleBrand;
-import com.csh.entity.commonenum.CommonEnum.Status;
+import com.csh.entity.VehicleLine;
+import com.csh.entity.commonenum.CommonEnum.TreeNodeState;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.json.response.TreeNodeResponse;
 import com.csh.service.VehicleBrandService;
+import com.csh.service.VehicleLineService;
 import com.csh.utils.DateTimeUtils;
 
 
 /**
- * 车型管理
+ * 车系管理
  * @author huyong
  *
  */
-@Controller ("vehicleBrandController")
-@RequestMapping ("console/vehicleBrand")
-public class VehicleBrandController extends BaseController
+@Controller ("vehicleLineController")
+@RequestMapping ("console/vehicleLine")
+public class VehicleLineController extends BaseController
 {
 
+  @Resource (name = "vehicleLineServiceImpl")
+  private VehicleLineService vehicleLineService;
   @Resource (name = "vehicleBrandServiceImpl")
   private VehicleBrandService vehicleBrandService;
-  
-  @RequestMapping (value = "/vehicleBrand", method = RequestMethod.GET)
+  @RequestMapping (value = "/vehicleLine", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "vehicleBrand/vehicleBrand";
+    return "vehicleLine/vehicleLine";
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<VehicleBrand> list (Pageable pageable, ModelMap model,
+  public @ResponseBody Page<VehicleLine> list (Long vehicleBrandId,Pageable pageable, ModelMap model,
       Date beginDate, Date endDate, String nameSearch,String codeSearch)
   {
     String startDateStr = null;
@@ -68,7 +75,7 @@ public class VehicleBrandController extends BaseController
     Query nameqQuery = null;
     TermRangeQuery rangeQuery = null;
     TermQuery codeQuery = null;
-    
+    TermQuery idQuery = null;
     Filter filter = null;
     if (beginDate != null)
     {
@@ -90,9 +97,9 @@ public class VehicleBrandController extends BaseController
           
           query.add (nameqQuery, Occur.MUST);
           
-          if (LogUtil.isDebugEnabled (VehicleBrandController.class))
+          if (LogUtil.isDebugEnabled (VehicleLineController.class))
           {
-            LogUtil.debug (VehicleBrandController.class, "search", "Search name: "
+            LogUtil.debug (VehicleLineController.class, "search", "Search name: "
                 + nameSearch );
           }
         }
@@ -106,22 +113,27 @@ public class VehicleBrandController extends BaseController
       codeQuery = new TermQuery (new Term ("code",codeSearch));
       query.add (codeQuery,Occur.MUST);
     }
+    if (vehicleBrandId != null)
+    {
+      idQuery = new TermQuery (new Term ("vehicleBrand.id",vehicleBrandId.toString ()));
+      query.add (idQuery,Occur.MUST);
+    }
     if (startDateStr != null || endDateStr != null)
     {
       rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr, true, true);
       query.add (rangeQuery,Occur.MUST);
       
-      if (LogUtil.isDebugEnabled (VehicleBrandController.class))
+      if (LogUtil.isDebugEnabled (VehicleLineController.class))
       {
-        LogUtil.debug (VehicleBrandController.class, "search", "Search start date: "+startDateStr
+        LogUtil.debug (VehicleLineController.class, "search", "Search start date: "+startDateStr
             +" end date: "+endDateStr);
       }
     }
-    if (nameqQuery != null || rangeQuery != null || codeQuery != null)
+    if (nameqQuery != null || rangeQuery != null || codeQuery != null || idQuery != null)
     {
-      return vehicleBrandService.search (query, pageable, analyzer,filter);
+      return vehicleLineService.search (query, pageable, analyzer,filter);
     }
-      return vehicleBrandService.findPage (pageable);
+      return vehicleLineService.findPage (pageable);
     
   }
   /**
@@ -134,22 +146,22 @@ public class VehicleBrandController extends BaseController
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
-    VehicleBrand vehicleBrand = vehicleBrandService.find (id);
-    model.put ("vehicleBrand", vehicleBrand);
-    return "vehicleBrand/edit";
+    VehicleLine vehicleLine = vehicleLineService.find (id);
+    model.put ("vehicleLine", vehicleLine);
+    return "vehicleLine/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (VehicleBrand vehicleBrand)
+  public @ResponseBody Message add (VehicleLine vehicleLine)
   {
-    vehicleBrandService.save (vehicleBrand,true);
+    vehicleLineService.save (vehicleLine,true);
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (VehicleBrand vehicleBrand)
+  public @ResponseBody Message update (VehicleLine vehicleLine)
   { 
-    vehicleBrandService.update (vehicleBrand,"createDate");
+    vehicleLineService.update (vehicleLine,"createDate");
     return SUCCESS_MESSAGE;
   }
  
@@ -164,7 +176,7 @@ public class VehicleBrandController extends BaseController
     {
       // 检查是否能被删除
       // if()
-      vehicleBrandService.delete (ids);
+      vehicleLineService.delete (ids);
     }
     return SUCCESS_MESSAGE;
   }
@@ -177,12 +189,13 @@ public class VehicleBrandController extends BaseController
    */
   @RequestMapping(value = "/details", method = RequestMethod.GET)
   public String details(ModelMap model, Long id) {
-    VehicleBrand vehicleBrand = vehicleBrandService.find(id);
-    model.addAttribute("vehicleBrand", vehicleBrand);
-    return "vehicleBrand/details";
+    VehicleLine vehicleLine = vehicleLineService.find(id);
+    model.addAttribute("vehicleLine", vehicleLine);
+    return "vehicleLine/details";
   }
-  @RequestMapping(value = "/findAllVehicleBrand", method = RequestMethod.POST)
-  public @ResponseBody List<Map<String, Object>> findAllVehicleBrand() {
-    return vehicleBrandService.findAllVehicleBrand ();
+  @RequestMapping(value = "/findVehicleLineByBrand", method = RequestMethod.POST)
+  public @ResponseBody List<Map<String, Object>> findVehicleLineByBrand(Long vehicleBrandId) {
+    VehicleBrand vehicleBrand = vehicleBrandService.find (vehicleBrandId);
+    return vehicleLineService.findVehicleLineByBrand (vehicleBrand);
   }
 }

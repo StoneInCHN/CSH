@@ -3,9 +3,7 @@ package com.csh.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -13,10 +11,10 @@ import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
-import com.csh.entity.commonenum.CommonEnum.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -52,6 +50,7 @@ public class VehicleLine extends BaseEntity
    */
   private String name;
 
+  private VehicleLine parent;
   
   private Set<VehicleBrandDetail> children = new HashSet<VehicleBrandDetail> ();
 
@@ -114,6 +113,7 @@ public class VehicleLine extends BaseEntity
   }
 
   @ManyToOne
+  @IndexedEmbedded
   public VehicleBrand getVehicleBrand ()
   {
     return vehicleBrand;
@@ -122,6 +122,17 @@ public class VehicleLine extends BaseEntity
   public void setVehicleBrand (VehicleBrand vehicleBrand)
   {
     this.vehicleBrand = vehicleBrand;
+  }
+
+  @ManyToOne
+  public VehicleLine getParent ()
+  {
+    return parent;
+  }
+
+  public void setParent (VehicleLine parent)
+  {
+    this.parent = parent;
   }
 
 }

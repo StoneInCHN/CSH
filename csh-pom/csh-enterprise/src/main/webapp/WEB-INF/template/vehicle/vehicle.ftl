@@ -67,13 +67,12 @@
 	    		</td>
 	    		
 	    	</tr>
-	    	<tr>
-	    		<th>车型:</th>
-	    		<td>
-	    			 <input class="easyui-textbox" prompt="${message("yly.common.please.select")}" name="elderlyInfoName" id="addPrescription_elderlyInfo" panelHeight="150px" data-options="editable:false" />
-	    		</td>
-	    		<td>	 
-	    			 <a href="#" id="elderly_info_search_btn" class="easyui-linkbutton" onclick="searchElderlyInfo('addPrescription_elderlyInfo')" iconCls="icon-search" plain=true"></a>    
+	    	<tr >
+	    		<th >车型:</th>
+	    		<td colspan="3">
+	    			 <input class="easyui-combobox" id="vehicleSelectVehicleBrand-add" />
+	    			 <input class="easyui-combobox" id="vehicleSelectVehicleLine-add" />
+	    			 <input class="easyui-combobox" id="vehicleSelectVehicleBrandDetail-add" name="vehicleBrandDetailId"/>
 	    		</td>
 	    	</tr>
 	    	<tr>

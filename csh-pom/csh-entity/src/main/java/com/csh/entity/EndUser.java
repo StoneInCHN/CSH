@@ -12,8 +12,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
@@ -32,6 +34,10 @@ public class EndUser extends BaseEntity {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * 租户ID
+   */
+  private Long tenantID;
   /**
    * 账号状态
    */
@@ -110,6 +116,17 @@ public class EndUser extends BaseEntity {
    */
   private Set<LoginStatistics> loginStatistics = new HashSet<LoginStatistics>();
 
+  @Index (name = "endUser_tenantid")
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  public Long getTenantID ()
+  {
+    return tenantID;
+  }
+
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
+  }
   @OneToMany(mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   public Set<LoginStatistics> getLoginStatistics() {
     return loginStatistics;

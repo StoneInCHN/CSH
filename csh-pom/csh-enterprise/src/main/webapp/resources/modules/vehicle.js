@@ -45,6 +45,44 @@ var vehicle_manager_tool = {
 					}
 			    }],
 			    onOpen:function(){
+			    	$("#vehicleSelectVehicleBrand-add").combobox({
+			    		url: '../vehicleBrand/findAllVehicleBrand.jhtml',
+					    valueField:'id',    
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select"),
+					    formatter: function(row){
+							var opts = $(this).combobox('options');
+							return row[opts.textField];
+						},
+						onSelect: function(rec){    
+				            var url = '../vehicleLine/findVehicleLineByBrand.jhtml?vehicleBrandId='+rec.id;    
+				            $('#vehicleSelectVehicleLine-add').combobox('clear');
+				            $('#vehicleSelectVehicleLine-add').combobox('reload', url);    
+				        }
+
+					});
+			    	$("#vehicleSelectVehicleLine-add").combobox({
+					    valueField:'id',    
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select"),
+						onSelect: function(rec){ 
+				            var url = '../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml?vehicleLineId='+rec.id;    
+				            $('#vehicleSelectVehicleBrandDetail-add').combobox('clear');
+				            $('#vehicleSelectVehicleBrandDetail-add').combobox('reload', url);    
+				        }
+
+					});
+			    	$("#vehicleSelectVehicleBrandDetail-add").combobox({
+					    valueField:'id',    
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select")
+					});
 			    	$('#addVehicle_form').show();
 			    },
 			});  

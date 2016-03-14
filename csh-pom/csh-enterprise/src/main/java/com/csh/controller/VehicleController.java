@@ -27,12 +27,14 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
+import com.csh.entity.VehicleBrandDetail;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
+import com.csh.service.VehicleBrandDetailService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
 
@@ -52,7 +54,8 @@ public class VehicleController extends BaseController
   private DeviceInfoService deviceInfoService;
   @Resource (name = "endUserServiceImpl")
   private EndUserService endUserService;
-  
+  @Resource (name = "vehicleBrandDetailServiceImpl")
+  private VehicleBrandDetailService vehicleBrandDetailService;
   @RequestMapping (value = "/vehicle", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
@@ -169,12 +172,14 @@ public class VehicleController extends BaseController
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (Vehicle vehicle,Long endUserID,Long deviceInfoID, Long vehicleBrandID)
+  public @ResponseBody Message add (Vehicle vehicle,Long endUserID,Long deviceInfoID, Long vehicleBrandDetailId)
   {
     EndUser endUser = endUserService.find (endUserID);
     DeviceInfo deviceInfo = deviceInfoService.find (deviceInfoID);
+    VehicleBrandDetail vehicleBrandDetail = vehicleBrandDetailService.find (vehicleBrandDetailId);
     vehicle.setDevice (deviceInfo);
     vehicle.setEndUser (endUser);
+    vehicle.setVehicleBrandDetail (vehicleBrandDetail);
     vehicleService.save (vehicle,true);
     return SUCCESS_MESSAGE;
   }
