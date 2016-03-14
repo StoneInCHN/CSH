@@ -89,7 +89,7 @@ public class VehicleBrandDetail extends BaseEntity
    */
   private Float oilPerHundred;
 
-  private VehicleBrandDetail parent;
+  private VehicleLine vehicleLine;
 
   /**
    * 车型状态
@@ -101,7 +101,6 @@ public class VehicleBrandDetail extends BaseEntity
    */
   private Float tank;
   
-  private Set<VehicleBrandDetail> children = new HashSet<VehicleBrandDetail> ();
   private Set<Vehicle> vehicles = new HashSet<Vehicle> ();
 
   public Float getAverageOil ()
@@ -226,17 +225,7 @@ public class VehicleBrandDetail extends BaseEntity
     this.oilPerHundred = oilPerHundred;
   }
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  public VehicleBrandDetail getParent ()
-  {
-    return parent;
-  }
-
-  public void setParent (VehicleBrandDetail parent)
-  {
-    this.parent = parent;
-  }
-
+ 
   public Status getStatus ()
   {
     return status;
@@ -257,7 +246,7 @@ public class VehicleBrandDetail extends BaseEntity
     this.tank = tank;
   }
 
-  @OneToMany
+  @OneToMany(mappedBy="vehicleBrandDetail")
   public Set<Vehicle> getVehicles ()
   {
     return vehicles;
@@ -267,16 +256,16 @@ public class VehicleBrandDetail extends BaseEntity
   {
     this.vehicles = vehicles;
   }
-  
-  @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-  public Set<VehicleBrandDetail> getChildren ()
+
+  @ManyToOne
+  public VehicleLine getVehicleLine ()
   {
-    return children;
+    return vehicleLine;
   }
 
-  public void setChildren (Set<VehicleBrandDetail> children)
+  public void setVehicleLine (VehicleLine vehicleLine)
   {
-    this.children = children;
+    this.vehicleLine = vehicleLine;
   }
 
 }

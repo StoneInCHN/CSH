@@ -24,8 +24,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  */
 @Entity
-@Table (name = "csh_vehicle_brand")
-@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_brand_sequence")
+@Table (name = "csh_vehicle_line")
+@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_line_sequence")
 public class VehicleLine extends BaseEntity
 {
   private static final long serialVersionUID = 1L;
@@ -55,6 +55,7 @@ public class VehicleLine extends BaseEntity
   
   private Set<VehicleBrandDetail> children = new HashSet<VehicleBrandDetail> ();
 
+  private VehicleBrand vehicleBrand;
 
   public String getCode ()
   {
@@ -101,7 +102,7 @@ public class VehicleLine extends BaseEntity
   }
 
   
-  @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy="vehicleLine")
   public Set<VehicleBrandDetail> getChildren ()
   {
     return children;
@@ -110,6 +111,17 @@ public class VehicleLine extends BaseEntity
   public void setChildren (Set<VehicleBrandDetail> children)
   {
     this.children = children;
+  }
+
+  @ManyToOne
+  public VehicleBrand getVehicleBrand ()
+  {
+    return vehicleBrand;
+  }
+
+  public void setVehicleBrand (VehicleBrand vehicleBrand)
+  {
+    this.vehicleBrand = vehicleBrand;
   }
 
 }

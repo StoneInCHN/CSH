@@ -38,11 +38,6 @@ public class VehicleBrand extends BaseEntity
 
 
   /**
-   * 树形节点级别
-   */
-  private int grade;
-
-  /**
    * 图片
    */
   private String icon;
@@ -68,16 +63,6 @@ public class VehicleBrand extends BaseEntity
   }
 
 
-  public int getGrade ()
-  {
-    return grade;
-  }
-
-  public void setGrade (int grade)
-  {
-    this.grade = grade;
-  }
-
   public String getIcon ()
   {
     return icon;
@@ -100,9 +85,8 @@ public class VehicleBrand extends BaseEntity
   {
     this.name = name;
   }
-
   
-  @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy="vehicleBrand")
   public Set<VehicleLine> getChildren ()
   {
     return children;
