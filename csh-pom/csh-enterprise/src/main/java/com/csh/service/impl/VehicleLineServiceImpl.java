@@ -37,13 +37,18 @@ public class VehicleLineServiceImpl extends BaseServiceImpl<VehicleLine,Long> im
           vehicleBrandFilter.setOperator (Operator.eq);
           vehicleBrandFilter.setValue (vehicleBrand);
           vehicleBrandFilter.setProperty ("vehicleBrand");
-          
           filters.add (vehicleBrandFilter);
+          
+          Filter vehicleParentFilter = new Filter ();
+          vehicleParentFilter.setOperator (Operator.isNotNull);
+          vehicleParentFilter.setProperty ("parent");
+          filters.add (vehicleParentFilter);
         }
        
         
         List<VehicleLine> vehicleLineList = vehicleLineDao.findList (null, null, filters, null);
-        String[] propertys = {"id", "name","grade"};
+        
+        String[] propertys = {"id", "name","parent.name"};
         return FieldFilterUtils.filterCollectionMap(propertys, vehicleLineList);
       }
 }

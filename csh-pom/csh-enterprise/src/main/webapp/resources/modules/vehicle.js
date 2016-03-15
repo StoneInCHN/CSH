@@ -68,6 +68,19 @@ var vehicle_manager_tool = {
 					    textField:'name',
 					    editable : false,
 					    required:true,
+					    groupField:'group',
+						loadFilter :function(data) {
+							var newData=new Array()
+							for(var i=0;i<data.length;i++){
+								var newDataItem = null;
+								newData.name = data[i].name;
+								newData.id = data[i].id;
+								newData.group=data[i].parent.name;
+								newData.push(newData)
+							}
+							return newData;
+							
+						},
 					    prompt:message("csh.common.please.select"),
 						onSelect: function(rec){ 
 				            var url = '../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml?vehicleLineId='+rec.id;    
@@ -162,6 +175,18 @@ var vehicle_manager_tool = {
 					    editable : false,
 					    required:true,
 					    prompt:message("csh.common.please.select"),
+					    groupField:'group',
+						loadFilter :function(data) {
+							var newData=new Array()
+							for(var i=0;i<data.length;i++){
+								var newDataItem = null;
+								newData.name = data[i].name;
+								newData.id = data[i].id;
+								newData.group=data[i].parent.name;
+								newData.push(newData)
+							}
+							return newData;
+						},
 						onSelect: function(rec){ 
 				            var url = '../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml?vehicleLineId='+rec.id;
 				            $('#vehicleSelectVehicleBrandDetail-edit').combobox('clear');
