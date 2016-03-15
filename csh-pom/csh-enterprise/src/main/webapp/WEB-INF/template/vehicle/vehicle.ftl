@@ -11,7 +11,7 @@
 			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.vehicle.vehiclebrand")}:</label>
+			    <label> ${message("csh.vehicle.vehicleBrandDetail")}:</label>
 			    <input type="text" class="easyui-textbox" id="vehicleBrandSearch" name="vehicleBrandSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
@@ -78,7 +78,7 @@
 	    	<tr>
 	    		<th>绑定设备:</th>
 	    		<td>
-	    			 <input class="easyui-textbox" prompt="${message("yly.common.please.select")}"  id="addVehicle_deviceInfo" panelHeight="150px" data-options="required:true,editable:false" />
+	    			 <input class="easyui-textbox"  id="addVehicle_deviceInfo" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" />
 	    		</td>
 	    		<td>	 
 	    			 <a href="#" id="common_device_search_btn" class="easyui-linkbutton" onclick="searchDevice('addVehicle_deviceInfo')" iconCls="icon-search" plain=true"></a>    
@@ -87,7 +87,7 @@
 	    	<tr>
 	    		<th>车辆所有者:</th>
 	    		<td>
-	    			 <input class="easyui-textbox" prompt="${message("yly.common.please.select")}" id="addVehicle_endUser" panelHeight="150px" data-options="required:true,editable:false" />
+	    			 <input class="easyui-textbox"  id="addVehicle_endUser" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" />
 	    		</td>
 	    		<td>	 
 	    			 <a href="#" id="common_endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('addVehicle_endUser')" iconCls="icon-search" plain=true"></a>    

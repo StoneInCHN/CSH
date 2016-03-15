@@ -2,8 +2,8 @@ var vehicle_manager_tool = {
 		add:function(){
 			$('#addVehicle').dialog({
 			    title: message("csh.vehicle.add"),    
-			    width: 700,    
-			    height: 550,
+			    width: 600,    
+			    height: 350,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{
@@ -95,7 +95,7 @@ var vehicle_manager_tool = {
 			}
 			var _dialog = $('#editVehicle').dialog({    
 				title: message("csh.common.edit"),     
-			    width: 400,    
+			    width: 600,    
 			    height: 350,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
@@ -128,11 +128,64 @@ var vehicle_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editVehicle').dialog("close").form("reset");
+						 $('#editVehicle').dialog("close");
 					}
 			    }],
 			    onLoad:function(){
-//			    	$("#editAccountStatus").combobox("setValue",$("#editAccountStatus").attr("data-value"))
+			    	$("#vehicleSelectVehicleBrand-edit").combobox({
+			    		url: '../vehicleBrand/findAllVehicleBrand.jhtml',
+					    valueField:'id',
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select"),
+					    formatter: function(row){
+							var opts = $(this).combobox('options');
+							return row[opts.textField];
+						},
+						onSelect: function(rec){    
+				            var url = '../vehicleLine/findVehicleLineByBrand.jhtml?vehicleBrandId='+rec.id;
+				            $('#vehicleSelectVehicleLine-edit').combobox('clear');
+				            $('#vehicleSelectVehicleLine-edit').combobox('reload', url);    
+				        },
+						onChange:function(newValue, oldValue){
+							var url = '../vehicleLine/findVehicleLineByBrand.jhtml?vehicleBrandId='+newValue;
+				            $('#vehicleSelectVehicleLine-edit').combobox('clear');
+				            $('#vehicleSelectVehicleLine-edit').combobox('reload', url);
+						}
+
+					});
+			    	$("#vehicleSelectVehicleLine-edit").combobox({
+			    		url : '../vehicleLine/findVehicleLineByBrand.jhtml',
+					    valueField:'id',    
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select"),
+						onSelect: function(rec){ 
+				            var url = '../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml?vehicleLineId='+rec.id;
+				            $('#vehicleSelectVehicleBrandDetail-edit').combobox('clear');
+				            $('#vehicleSelectVehicleBrandDetail-edit').combobox('reload', url);    
+				        },
+				        onChange:function(newValue, oldValue){
+				        	var url = '../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml?vehicleLineId='+newValue;
+				            $('#vehicleSelectVehicleBrandDetail-edit').combobox('clear');
+				            $('#vehicleSelectVehicleBrandDetail-edit').combobox('reload', url);    
+						}
+
+					});
+			    	$("#vehicleSelectVehicleBrandDetail-edit").combobox({
+			    		url:'../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml',
+					    valueField:'id',    
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select")
+					});
+			    	$('#editVehicle_form').show();
+			    	$("#vehicleSelectVehicleBrand-edit").combobox("setValue",$("#vehicleSelectVehicleBrand-edit").attr("data-value"));
+			    	$("#vehicleSelectVehicleLine-edit").combobox("setValue",$("#vehicleSelectVehicleLine-edit").attr("data-value"));
+			    	$("#vehicleSelectVehicleBrandDetail-edit").combobox("setValue",$("#vehicleSelectVehicleBrandDetail-edit").attr("data-value"));
 			    }
 			});  
 		},
@@ -153,7 +206,7 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#vehicleDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 400,    
+			    width: 600,    
 			    height: 350, 
 			    cache: false,
 			    modal: true,
@@ -164,14 +217,45 @@ $(function(){
 					handler:function(){
 						 $('#vehicleDetail').dialog("close");
 					}
-			    }]
+			    }],
+			    onLoad:function(){
+			    	$("#vehicleSelectVehicleBrand-detail").combobox({
+			    		url: '../vehicleBrand/findAllVehicleBrand.jhtml',
+					    valueField:'id',
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select"),
+					});
+			    	$("#vehicleSelectVehicleLine-detail").combobox({
+			    		url : '../vehicleLine/findVehicleLineByBrand.jhtml',
+					    valueField:'id',    
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select")
+					});
+			    	$("#vehicleSelectVehicleBrandDetail-detail").combobox({
+			    		url:'../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml',
+					    valueField:'id',    
+					    textField:'name',
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select")
+					});
+			    	$('#editVehicle_form').show();
+			    	$("#vehicleSelectVehicleBrand-detail").combobox("setValue",$("#vehicleSelectVehicleBrand-detail").attr("data-value"));
+			    	$("#vehicleSelectVehicleLine-detail").combobox("setValue",$("#vehicleSelectVehicleLine-detail").attr("data-value"));
+			    	$("#vehicleSelectVehicleBrandDetail-detail").combobox("setValue",$("#vehicleSelectVehicleBrandDetail-detail").attr("data-value"));
+			    }
+			    
 			});   
 		},
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
 		      {title:message("csh.vehicle.plate"),field:"plate",width:100,sortable:true},
-		      {title:message("csh.vehicle.vehicleBrand"),field:"vehicleBrand",width:100,sortable:true,
+		      {title:message("csh.vehicle.vehicleBrandDetail"),field:"vehicleBrandDetail",width:100,sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(value != null){
 			    		  return  value.name;
@@ -198,7 +282,7 @@ $(function(){
 			    	  }
 		      	  }  
 		      },
-		      {title:message("csh.vehicle.bindTime"),field:"bindTime",width:100,sortable:true,formatter: function(value,row,index){
+		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}
 		      },

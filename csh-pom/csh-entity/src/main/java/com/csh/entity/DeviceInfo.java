@@ -7,6 +7,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+import org.wltea.analyzer.lucene.IKAnalyzer;
+
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 设备信息
  * 
  */
+@Indexed(index="deviceInfo")
 @Entity
 @Table(name="csh_device_info")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_device_info_sequence")
@@ -84,6 +92,7 @@ public class DeviceInfo extends BaseEntity {
     this.unBindTime = unBindTime;
   }
   @JsonProperty
+  @Field(store = Store.NO, index = Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getDeviceNo ()
   {
     return deviceNo;
@@ -94,6 +103,7 @@ public class DeviceInfo extends BaseEntity {
     this.deviceNo = deviceNo;
   }
   @JsonProperty
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
   public DeviceStatus getDeviceStatus ()
   {
     return deviceStatus;
@@ -135,6 +145,7 @@ public class DeviceInfo extends BaseEntity {
     this.vehicle = vehicle;
   }
 
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
   public Long getTenantID ()
   {
     return tenantID;

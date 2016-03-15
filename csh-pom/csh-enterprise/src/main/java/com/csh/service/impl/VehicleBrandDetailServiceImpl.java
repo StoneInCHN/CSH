@@ -36,12 +36,16 @@ public class VehicleBrandDetailServiceImpl extends
   {
     
     List<Filter> filters = new ArrayList<Filter>();
-    Filter vehicleLineFilter = new Filter ();
-    vehicleLineFilter.setOperator (Operator.eq);
-    vehicleLineFilter.setValue (vehicleLine);
-    vehicleLineFilter.setProperty ("vehicleLine");
+    if (vehicleLine != null)
+    {
+      Filter vehicleLineFilter = new Filter ();
+      vehicleLineFilter.setOperator (Operator.eq);
+      vehicleLineFilter.setValue (vehicleLine);
+      vehicleLineFilter.setProperty ("vehicleLine");
+      
+      filters.add (vehicleLineFilter);
+    }
     
-    filters.add (vehicleLineFilter);
     List<VehicleBrandDetail> vehicleBrandDetailList = vehicleBrandDetailDaoDao.findList (null, null, filters, null);
     String[] propertys = {"id", "name"};
     return FieldFilterUtils.filterCollectionMap(propertys, vehicleBrandDetailList);

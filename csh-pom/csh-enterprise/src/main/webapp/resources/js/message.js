@@ -146,8 +146,9 @@ var messages = {
 	"csh.deviceInfo.deviceType":"设备类型",
 	
 	//车辆信息
+	"csh.vehicle.add":"添加车辆",
 	"csh.vehicle.plate":"车牌号",
-	"csh.vehicle.vehicleBrand":"车辆型号",
+	"csh.vehicle.vehicleBrandDetail":"车辆型号",
 	"csh.vehicle.endUser":"车辆所有者",
 	"csh.vehicle.device":"绑定的设备",
 	"csh.vehicle.status":"车辆状态",

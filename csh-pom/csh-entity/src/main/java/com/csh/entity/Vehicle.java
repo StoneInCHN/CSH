@@ -2,7 +2,9 @@ package com.csh.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -37,10 +39,6 @@ public class Vehicle extends BaseEntity
    
   private String agent;
   */
-  /**
-   * 绑定时间
-   */
-  private Date bindTime;
 
   /**
    * 车辆型号
@@ -80,19 +78,9 @@ public class Vehicle extends BaseEntity
 
   private Long tenantID;
 
-  @JsonProperty
-  public Date getBindTime ()
-  {
-    return bindTime;
-  }
-
-  public void setBindTime (Date bindTime)
-  {
-    this.bindTime = bindTime;
-  }
 
   @JsonProperty
-  @ManyToOne
+  @ManyToOne(fetch=FetchType.EAGER)
   @IndexedEmbedded
   public VehicleBrandDetail getVehicleBrandDetail ()
   {
@@ -115,7 +103,7 @@ public class Vehicle extends BaseEntity
   }
 
   @JsonProperty
-  @OneToOne()
+  @OneToOne(cascade=CascadeType.MERGE)
   public DeviceInfo getDevice ()
   {
     return device;

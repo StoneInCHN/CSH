@@ -31,12 +31,16 @@ public class VehicleLineServiceImpl extends BaseServiceImpl<VehicleLine,Long> im
       public List<Map<String, Object>> findVehicleLineByBrand (VehicleBrand vehicleBrand)
       {
         List<Filter> filters = new ArrayList<Filter>();
-        Filter vehicleBrandFilter = new Filter ();
-        vehicleBrandFilter.setOperator (Operator.eq);
-        vehicleBrandFilter.setValue (vehicleBrand);
-        vehicleBrandFilter.setProperty ("vehicleBrand");
-        
-        filters.add (vehicleBrandFilter);
+        if (vehicleBrand != null)
+        {
+          Filter vehicleBrandFilter = new Filter ();
+          vehicleBrandFilter.setOperator (Operator.eq);
+          vehicleBrandFilter.setValue (vehicleBrand);
+          vehicleBrandFilter.setProperty ("vehicleBrand");
+          
+          filters.add (vehicleBrandFilter);
+        }
+       
         
         List<VehicleLine> vehicleLineList = vehicleLineDao.findList (null, null, filters, null);
         String[] propertys = {"id", "name","grade"};

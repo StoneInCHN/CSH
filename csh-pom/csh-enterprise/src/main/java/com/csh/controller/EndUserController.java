@@ -121,9 +121,9 @@ public class EndUserController extends BaseController
     }
     if (nameQuery != null || rangeQuery != null || statusQuery != null)
     {
-      return endUserService.search (query, pageable, analyzer,filter,true);
+      return endUserService.search (query, pageable, analyzer,filter);
     }
-      return endUserService.findPage (pageable, true);
+      return endUserService.findPage (pageable);
     
   }
 
