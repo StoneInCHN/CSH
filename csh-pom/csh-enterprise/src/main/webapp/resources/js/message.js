@@ -158,7 +158,13 @@ var messages = {
 	"csh.vehicleBrand.list":"车辆品牌列表",
 	"csh.vehicleBrand.name":"品牌名称",
 	"csh.vehicleBrand.code":"品牌简码",
-	"csh.vehicleBrand.add":"添加车辆品牌"
+	"csh.vehicleBrand.add":"添加车辆品牌",
+	//车辆保养信息
+	"csh.vehicleMaintain.list":"车辆保养信息列表",
+	"csh.vehicleMaintain.lastMaintainMileage":"上次保养里程",
+	"csh.vehicleMaintain.lastMaintainDate":"上次保养时间",
+	"csh.vehicleMaintain.nextMaintainMileage":"下次保养里程",
+	"csh.vehicleMaintain.nextMaintainDate":"下次保养时间"
 	
 };
 //多语言

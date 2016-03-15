@@ -1,11 +1,14 @@
 package com.csh.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -78,7 +81,7 @@ public class Vehicle extends BaseEntity
 
   private Long tenantID;
 
-
+  private Set<VehicleMaintain> vehicleMaintain = new HashSet<VehicleMaintain> ();
   @JsonProperty
   @ManyToOne(fetch=FetchType.EAGER)
   @IndexedEmbedded
@@ -191,6 +194,17 @@ public class Vehicle extends BaseEntity
   public void setTenantID (Long tenantID)
   {
     this.tenantID = tenantID;
+  }
+
+  @OneToMany(mappedBy="vehicle")
+  public Set<VehicleMaintain> getVehicleMaintain ()
+  {
+    return vehicleMaintain;
+  }
+
+  public void setVehicleMaintain (Set<VehicleMaintain> vehicleMaintain)
+  {
+    this.vehicleMaintain = vehicleMaintain;
   }
 
 }

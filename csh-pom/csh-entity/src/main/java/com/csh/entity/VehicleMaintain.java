@@ -3,15 +3,27 @@ package com.csh.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
+
 import com.csh.entity.base.BaseEntity;
+import com.csh.lucene.DateBridgeImpl;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 车辆保养情况
  * 
  */
+@Indexed(index="vehicleMaintain")
 @Entity
 @Table (name = "csh_vehicle_maintain")
 @SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_maintain_sequence")
@@ -35,10 +47,17 @@ public class VehicleMaintain extends BaseEntity
   /**
    * 上次保养里程
    */
-  private Long maintainMileage;
+  private Long lastMaintainMileage;
 
+  /**
+   * 上次保养时间
+   */
+  private Date lastMaintainDate;
   private Long tenantID;
 
+  @JsonProperty
+  @ManyToOne(fetch=FetchType.EAGER)
+  @IndexedEmbedded
   public Vehicle getVehicle ()
   {
     return vehicle;
@@ -49,16 +68,21 @@ public class VehicleMaintain extends BaseEntity
     this.vehicle = vehicle;
   }
 
+  @JsonProperty
+  @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+  @FieldBridge(impl = DateBridgeImpl.class)
   public Date getNextMaintainDate ()
   {
     return nextMaintainDate;
   }
 
+  
   public void setNextMaintainDate (Date nextMaintainDate)
   {
     this.nextMaintainDate = nextMaintainDate;
   }
 
+  @JsonProperty
   public Long getNextMaintainMileage ()
   {
     return nextMaintainMileage;
@@ -69,16 +93,8 @@ public class VehicleMaintain extends BaseEntity
     this.nextMaintainMileage = nextMaintainMileage;
   }
 
-  public Long getMaintainMileage ()
-  {
-    return maintainMileage;
-  }
-
-  public void setMaintainMileage (Long maintainMileage)
-  {
-    this.maintainMileage = maintainMileage;
-  }
-
+  @org.hibernate.annotations.Index(name="vehicleMaintain_tenantid")
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
   public Long getTenantID ()
   {
     return tenantID;
@@ -87,6 +103,30 @@ public class VehicleMaintain extends BaseEntity
   public void setTenantID (Long tenantID)
   {
     this.tenantID = tenantID;
+  }
+
+  @JsonProperty
+  public Long getLastMaintainMileage ()
+  {
+    return lastMaintainMileage;
+  }
+
+  public void setLastMaintainMileage (Long lastMaintainMileage)
+  {
+    this.lastMaintainMileage = lastMaintainMileage;
+  }
+
+  @JsonProperty
+  @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+  @FieldBridge(impl = DateBridgeImpl.class)
+  public Date getLastMaintainDate ()
+  {
+    return lastMaintainDate;
+  }
+
+  public void setLastMaintainDate (Date lastMaintainDate)
+  {
+    this.lastMaintainDate = lastMaintainDate;
   }
 
 }
