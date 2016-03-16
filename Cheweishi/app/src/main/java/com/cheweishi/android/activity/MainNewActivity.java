@@ -1006,4 +1006,8 @@ public class MainNewActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
 
     }
+
+    private void test(){
+
+    }
 }
