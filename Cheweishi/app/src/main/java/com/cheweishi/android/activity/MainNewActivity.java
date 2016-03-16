@@ -327,7 +327,6 @@ public class MainNewActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
         if (broad == null) {
             broad = new MyBroadcastReceiver();
@@ -525,7 +524,7 @@ public class MainNewActivity extends BaseActivity {
     private String compel;
 
     /**
-     * 数据解析
+     * //TODO 数据解析
      *
      * @param data
      */
@@ -558,7 +557,6 @@ public class MainNewActivity extends BaseActivity {
 
             }
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
