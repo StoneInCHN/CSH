@@ -1,11 +1,17 @@
 package com.csh.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.Status;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 设备类型
@@ -28,8 +34,8 @@ public class DeviceType extends BaseEntity
    */
   private Status status;
 
-  private Long tenantID;
-
+  private Set<DeviceInfo> deviceInfos = new HashSet<DeviceInfo> ();
+  @JsonProperty
   public String getName ()
   {
     return name;
@@ -50,14 +56,16 @@ public class DeviceType extends BaseEntity
     this.status = status;
   }
 
-  public Long getTenantID ()
+  @OneToMany(mappedBy= "type")
+  public Set<DeviceInfo> getDeviceInfos ()
   {
-    return tenantID;
+    return deviceInfos;
   }
 
-  public void setTenantID (Long tenantID)
+  public void setDeviceInfos (Set<DeviceInfo> deviceInfos)
   {
-    this.tenantID = tenantID;
+    this.deviceInfos = deviceInfos;
   }
+
 
 }

@@ -142,9 +142,13 @@ var messages = {
 	"csh.deviceInfo.deviceStatus.STORAGEOUT":"已出库",
 	"csh.deviceInfo.deviceStatus.BINDED":"已绑定",
 	"csh.deviceInfo.deviceStatus.REFUNDED":"已退还",
+	"csh.deviceInfo.bindStatus":"绑定状态",
+	"csh.deviceInfo.bindStatus.BINDED":"已绑定",
+	"csh.deviceInfo.bindStatus.UNBINDED":"未绑定",
 	"csh.deviceInfo.bindTime":"绑定时间",
 	"csh.deviceInfo.deviceType":"设备类型",
-	
+	"csh.deviceInfo.bindVehicle":"绑定车辆",
+	"csh.deviceInfo.bindStatus.unBinded":"设备未绑定",
 	//车辆信息
 	"csh.vehicle.add":"添加车辆",
 	"csh.vehicle.plate":"车牌号",

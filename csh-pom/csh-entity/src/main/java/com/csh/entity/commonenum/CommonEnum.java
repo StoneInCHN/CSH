@@ -142,7 +142,22 @@ public class CommonEnum {
     REFUNDED
 
   }
-
+  
+  /**
+   * 绑定状态
+   * @author huyong
+   *
+   */
+  public enum BindStatus{
+    /**
+     * 已绑定
+     */
+    BINDED,
+    /**
+     * 未绑定
+     */
+    UNBINDED
+  }
   /**
    * 民族枚举数据
    * 
