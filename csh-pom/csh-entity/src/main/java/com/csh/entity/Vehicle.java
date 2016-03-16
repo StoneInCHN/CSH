@@ -51,6 +51,10 @@ public class Vehicle extends BaseEntity
   private VehicleBrandDetail vehicleBrandDetail;
 
   /**
+   * 车架号
+   */
+  private String vehicleNo; 
+  /**
    * 颜色
    */
   private String color;
@@ -74,7 +78,31 @@ public class Vehicle extends BaseEntity
 
 
   private String vin;
+  
+  /**
+   * 仪表盘里程
+   */
+  private Float dashboardMileage;
+  
+  /**
+   * 仪表盘电压
+   */
+  private Float dashboardBV;
 
+  /**
+   * 仪表盘油量
+   */
+  private Float dashboradOil;
+  
+  /**
+   * 生产日期
+   */
+  private Date produceDate;
+  
+  /**
+   * 上牌日期
+   */
+  private Date plateDate;
   private EndUser endUser;
 
   private Long tenantID;
@@ -209,4 +237,54 @@ public class Vehicle extends BaseEntity
     this.deviceNo = deviceNo;
   }
 
+  @JsonProperty
+	public String getVehicleNo() {
+		return vehicleNo;
+	}
+
+	public void setVehicleNo(String vehicleNo) {
+		this.vehicleNo = vehicleNo;
+	}
+	@JsonProperty
+	public Float getDashboardMileage() {
+		return dashboardMileage;
+	}
+
+	public void setDashboardMileage(Float dashboardMileage) {
+		this.dashboardMileage = dashboardMileage;
+	}
+	@JsonProperty
+	public Float getDashboardBV() {
+		return dashboardBV;
+	}
+
+	public void setDashboardBV(Float dashboardBV) {
+		this.dashboardBV = dashboardBV;
+	}
+	@JsonProperty
+	public Float getDashboradOil() {
+		return dashboradOil;
+	}
+
+	public void setDashboradOil(Float dashboradOil) {
+		this.dashboradOil = dashboradOil;
+	}
+	public Date getProduceDate() {
+		return produceDate;
+	}
+
+	public void setProduceDate(Date produceDate) {
+		this.produceDate = produceDate;
+	}
+
+	public Date getPlateDate() {
+		return plateDate;
+	}
+
+	public void setPlateDate(Date plateDate) {
+		this.plateDate = plateDate;
+	}
+
+  
+  
 }

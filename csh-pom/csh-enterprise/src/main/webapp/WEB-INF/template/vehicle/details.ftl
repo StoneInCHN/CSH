@@ -9,7 +9,16 @@
 	    		<td >
 	    			 <input class="easyui-textbox" value="${vehicle.color}" name="color" id= "color" disabled="disabled"/>
 	    		</td>
-	    		
+	    	</tr>
+	    	<tr>
+	    		<th>绑定设备:</th>
+	    		<td >
+	    			 <input class="easyui-textbox" value="${vehicle.device.deviceNo}" id="editVehicle_deviceInfo" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" disabled="disabled"/>
+	    		</td>
+	    		<th>车辆所有者:</th>
+	    		<td>
+	    			 <input class="easyui-textbox" value="${vehicle.endUser.userName}"  id="editVehicle_endUser" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" disabled="disabled"/>
+	    		</td>
 	    	</tr>
 	    	<tr >
 	    		<th >车型:</th>
@@ -19,37 +28,37 @@
 	    			 <input class="easyui-combobox" id="vehicleSelectVehicleBrandDetail-detail" name="vehicleBrandDetailId" data-value="${vehicle.vehicleBrandDetail.id}" disabled="disabled"/>
 	    		</td>
 	    	</tr>
+	    	
 	    	<tr>
-	    		<th>绑定设备:</th>
-	    		<td>
-	    			 <input class="easyui-textbox" value="${vehicle.device.deviceNo}" id="editVehicle_deviceInfo" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" disabled="disabled"/>
+	    		<th>仪表盘里程（公里）:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" value="${vehicle.dashboardMileage}" name="dashboardMileage" id= "dashboardMileage" disabled="disabled"/>
+	    		</td>
+	    		<th>电瓶电压（V）:</th>
+	    		<td >
+	    			 <input class="easyui-textbox" value="${vehicle.dashboardBV}" name="dashboardBV" id= "dashboardBV" disabled="disabled"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>车辆所有者:</th>
-	    		<td>
-	    			 <input class="easyui-textbox" value="${vehicle.endUser.userName}"  id="editVehicle_endUser" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" disabled="disabled"/>
+	    		<th>油量(L):</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" value="${vehicle.dashboradOil}" name="dashboradOil" id= "dashboradOil"  disabled="disabled"/>
+	    		</td>
+	    		<th>上牌时间:</th>
+	    		<td >
+	    			 <input type="text" class="easyui-datebox" name="plateDate" data-options="editable:false" value="${vehicle.plateDate}" disabled="disabled"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("csh.vehicle.status")}:</th>
-	    		<td colspan='2'>
-	    			 <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'ENABLE',
-				      value: '${message("csh.common.enable")}'
-				      [#if vehicle.status =="ENABLE"], selected:true [/#if]
-				     },{
-				      label: 'DISABLE',
-				      value: '${message("csh.common.disable")}'
-				      [#if vehicle.status =="DISABLE"], selected:true [/#if]
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="status" id="editStatus" style="width:110px;" disabled="disabled"/>
+	    		<th>车架号:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" value="${vehicle.vehicleNo}" name="vehicleNo" id= "vehicleNo"  data-options="required:true" disabled="disabled"/>
 	    		</td>
-	    		</tr>
-	    	<tr>
+	    		<th>生产日期:</th>
+	    		<td >
+	    			 <input type="text" class="easyui-datebox" name="produceDate" data-options="editable:false" value="${vehicle.produceDate}" disabled="disabled"/>
+	    		</td>
+	    	</tr>
 	    </table>
 </form>
 

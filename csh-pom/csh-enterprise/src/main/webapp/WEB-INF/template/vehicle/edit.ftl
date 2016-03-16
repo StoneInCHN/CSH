@@ -13,7 +13,18 @@
 	    		<td >
 	    			 <input class="easyui-textbox" value="${vehicle.color}" name="color" id= "color" />
 	    		</td>
-	    		
+	    	</tr>
+	    	<tr>
+	    		<th>绑定设备:</th>
+	    		<td >
+	    			 <input class="easyui-textbox" value="${vehicle.device.deviceNo}" id="editVehicle_deviceInfo" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" />
+	    			 <a href="#" id="common_device_search_btn" class="easyui-linkbutton" onclick="searchDevice('editVehicle_deviceInfo')" iconCls="icon-search" plain=true"></a>
+	    		</td>
+	    		<th>车辆所有者:</th>
+	    		<td>
+	    			 <input class="easyui-textbox" value="${vehicle.endUser.userName}"  id="editVehicle_endUser" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" />
+	    			 <a href="#" id="common_endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('editVehicle_endUser')" iconCls="icon-search" plain=true"></a>
+	    		</td>
 	    	</tr>
 	    	<tr >
 	    		<th >车型:</th>
@@ -23,43 +34,37 @@
 	    			 <input class="easyui-combobox" id="vehicleSelectVehicleBrandDetail-edit" name="vehicleBrandDetailId" data-value="${vehicle.vehicleBrandDetail.id}"/>
 	    		</td>
 	    	</tr>
+	    	
 	    	<tr>
-	    		<th>绑定设备:</th>
-	    		<td>
-	    			 <input class="easyui-textbox" value="${vehicle.device.deviceNo}" id="editVehicle_deviceInfo" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" />
+	    		<th>仪表盘里程（公里）:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" value="${vehicle.dashboardMileage}" name="dashboardMileage" id= "dashboardMileage" />
 	    		</td>
-	    		<td>	 
-	    			 <a href="#" id="common_device_search_btn" class="easyui-linkbutton" onclick="searchDevice('editVehicle_deviceInfo')" iconCls="icon-search" plain=true"></a>    
+	    		<th>电瓶电压（V）:</th>
+	    		<td >
+	    			 <input class="easyui-textbox" value="${vehicle.dashboardBV}" name="dashboardBV" id= "dashboardBV" />
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>车辆所有者:</th>
-	    		<td>
-	    			 <input class="easyui-textbox" value="${vehicle.endUser.userName}"  id="editVehicle_endUser" panelHeight="150px" data-options="required:true,editable:false,prompt:'${message("csh.common.please.select")}'" />
+	    		<th>油量(L):</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" value="${vehicle.dashboradOil}" name="dashboradOil" id= "dashboradOil"  />
 	    		</td>
-	    		<td>	 
-	    			 <a href="#" id="common_endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('editVehicle_endUser')" iconCls="icon-search" plain=true"></a>    
+	    		<th>上牌时间:</th>
+	    		<td >
+	    			 <input type="text" class="easyui-datebox" name="plateDate" data-options="editable:false" value="${vehicle.plateDate}"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("csh.vehicle.status")}:</th>
-	    		<td colspan='2'>
-	    			 <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'ENABLE',
-				      value: '${message("csh.common.enable")}'
-				      [#if vehicle.status =="ENABLE"], selected:true [/#if]
-				     },{
-				      label: 'DISABLE',
-				      value: '${message("csh.common.disable")}'
-				      [#if vehicle.status =="DISABLE"], selected:true [/#if]
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="status" id="editStatus" style="width:110px;"/>
+	    		<th>车架号:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" value="${vehicle.vehicleNo}" name="vehicleNo" id= "vehicleNo"  data-options="required:true"/>
 	    		</td>
-	    		</tr>
-	    	<tr>
+	    		<th>生产日期:</th>
+	    		<td >
+	    			 <input type="text" class="easyui-datebox" name="produceDate" data-options="editable:false" value="${vehicle.produceDate}"/>
+	    		</td>
+	    	</tr>
 	    </table>
 </form>
 

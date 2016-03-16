@@ -85,23 +85,6 @@
 	    			 <a href="#" id="common_endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('addVehicle_endUser')" iconCls="icon-search" plain=true"></a>    
 	    		</td>
 	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.vehicle.status")}:</th>
-	    		<td colspan='2'>
-	    			 <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'ENABLE',
-				      value: '${message("csh.common.enable")}'
-				     },{
-				      label: 'DISABLE',
-				      value: '${message("csh.common.disable")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="status" id="status" style="width:110px;"/>
-	    		</td>
-	    		</tr>
-	    	<tr>
 	    </table>
 	</form>
 </div>

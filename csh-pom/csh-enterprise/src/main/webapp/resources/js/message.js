@@ -162,6 +162,9 @@ var messages = {
 	"csh.vehicle.status":"车辆状态",
 	"csh.vehicle.list":"车辆列表",
 	"csh.vehicle.bindTime":"绑定时间",
+	"csh.vehicle.vehicleNo":"车架号",
+	"csh.vehicle.dashboardBV":"电瓶电压",
+	"csh.vehicle.dashboardMileage":"仪表盘里程",
 	//车辆品牌
 	"csh.vehicleBrand.list":"车辆品牌列表",
 	"csh.vehicleBrand.name":"品牌名称",

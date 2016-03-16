@@ -108,8 +108,8 @@ var vehicle_manager_tool = {
 			}
 			var _dialog = $('#editVehicle').dialog({    
 				title: message("csh.common.edit"),     
-			    width: 600,    
-			    height: 350,    
+			    width: 700,    
+			    height: 450,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
 			    href:'../vehicle/edit.jhtml?id='+_edit_row.id,
@@ -231,8 +231,8 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#vehicleDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 600,    
-			    height: 350, 
+			    width: 700,    
+			    height: 450, 
 			    cache: false,
 			    modal: true,
 			    href:'../vehicle/details.jhtml?id='+rowData.id,
@@ -282,7 +282,7 @@ $(function(){
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
-		      {title:message("csh.vehicle.endUser"),field:"endUser",width:100,sortable:true,
+		      {title:message("csh.vehicle.endUser"),field:"endUser",sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(value != null){
 			    		  return  value.userName;
@@ -294,13 +294,16 @@ $(function(){
 			    		  return  row.endUser.mobileNum;
 			    	  }
 		      	  }},
-		      {title:message("csh.vehicle.plate"),field:"plate",width:100,sortable:true},
-		      {title:message("csh.vehicle.vehicleBrandDetail"),field:"vehicleBrandDetail",width:100,sortable:true,
+		      {title:message("csh.vehicle.plate"),field:"plate",sortable:true},
+		      {title:message("csh.vehicle.vehicleBrandDetail"),width:100,field:"vehicleBrandDetail",sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(value != null){
 			    		  return  value.name;
 			    	  }
 		      	  }},
+		      {title:message("csh.vehicle.vehicleNo"),field:"vehicleNo",sortable:true},
+	      	  {title:message("csh.vehicle.dashboardMileage"),field:"dashboardMileage",sortable:true},
+	      	  {title:message("csh.vehicle.dashboardBV"),field:"dashboardBV",sortable:true},
 		      {title:message("csh.vehicle.device"),field:"deviceNo",width:100,sortable:false},
 		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
