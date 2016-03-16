@@ -1007,7 +1007,4 @@ public class MainNewActivity extends BaseActivity {
 
     }
 
-    private void test(){
-
-    }
 }
