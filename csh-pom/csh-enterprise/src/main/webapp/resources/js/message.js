@@ -146,8 +146,9 @@ var messages = {
 	"csh.deviceInfo.deviceType":"设备类型",
 	
 	//车辆信息
+	"csh.vehicle.add":"添加车辆",
 	"csh.vehicle.plate":"车牌号",
-	"csh.vehicle.vehicleBrand":"车辆型号",
+	"csh.vehicle.vehicleBrandDetail":"车辆型号",
 	"csh.vehicle.endUser":"车辆所有者",
 	"csh.vehicle.device":"绑定的设备",
 	"csh.vehicle.status":"车辆状态",
@@ -157,7 +158,13 @@ var messages = {
 	"csh.vehicleBrand.list":"车辆品牌列表",
 	"csh.vehicleBrand.name":"品牌名称",
 	"csh.vehicleBrand.code":"品牌简码",
-	"csh.vehicleBrand.add":"添加车辆品牌"
+	"csh.vehicleBrand.add":"添加车辆品牌",
+	//车辆保养信息
+	"csh.vehicleMaintain.list":"车辆保养信息列表",
+	"csh.vehicleMaintain.lastMaintainMileage":"上次保养里程",
+	"csh.vehicleMaintain.lastMaintainDate":"上次保养时间",
+	"csh.vehicleMaintain.nextMaintainMileage":"下次保养里程",
+	"csh.vehicleMaintain.nextMaintainDate":"下次保养时间"
 	
 };
 //多语言

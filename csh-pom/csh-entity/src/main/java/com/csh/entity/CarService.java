@@ -12,7 +12,6 @@ import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
-import com.csh.entity.commonenum.CommonEnum.ServiceType;
 
 
 /**
@@ -25,132 +24,133 @@ import com.csh.entity.commonenum.CommonEnum.ServiceType;
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_car_service_sequence")
 public class CarService extends BaseEntity {
 
-    /**
+  /**
      *
      */
-    private static final long serialVersionUID = 4496524488163375888L;
+  private static final long serialVersionUID = 4496524488163375888L;
 
-    /**
-     * 服务名称
-     */
-    private String serviceName;
-    /**
-     * 服务简介
-     */
-    private String serviceDesc;
+  /**
+   * 服务名称
+   */
+  private String serviceName;
+  /**
+   * 服务简介
+   */
+  private String serviceDesc;
 
-    /**
-     * 服务介绍展示图片
-     */
-    private String imgPath;
+  /**
+   * 服务介绍展示图片
+   */
+  private String imgPath;
 
 
-    /**
-     * 商家
-     */
-    private TenantInfo tenantInfo;
+  /**
+   * 商家
+   */
+  private TenantInfo tenantInfo;
 
-    /**
-     * 服务分类
-     */
-    private ServiceType serviceType;
+  /**
+   * 服务分类
+   */
+  private ServiceCategory serviceCategory;
 
-    /**
-     * 服务单价
-     */
-    private BigDecimal price;
-    
-    /**
-     * 活动服务单价
-     */
-    private BigDecimal promotionPrice;
+  /**
+   * 服务单价
+   */
+  private BigDecimal price;
 
-    /**
-     * 评分
-     */
-    private Integer rate;
-    
-    /**
-     * 服务状态
-     */
-    private ServiceStatus serviceStatus;
-    
-    @Column(length=50)
-	public String getServiceName() {
-		return serviceName;
-	}
+  /**
+   * 活动服务单价
+   */
+  private BigDecimal promotionPrice;
 
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
+  /**
+   * 评分
+   */
+  private Integer rate;
 
-	@Lob
-	public String getServiceDesc() {
-		return serviceDesc;
-	}
+  /**
+   * 服务状态
+   */
+  private ServiceStatus serviceStatus;
 
-	public void setServiceDesc(String serviceDesc) {
-		this.serviceDesc = serviceDesc;
-	}
+  @Column(length = 50)
+  public String getServiceName() {
+    return serviceName;
+  }
 
-	public String getImgPath() {
-		return imgPath;
-	}
+  public void setServiceName(String serviceName) {
+    this.serviceName = serviceName;
+  }
 
-	public void setImgPath(String imgPath) {
-		this.imgPath = imgPath;
-	}
+  @Lob
+  public String getServiceDesc() {
+    return serviceDesc;
+  }
 
-	@ManyToOne
-	public TenantInfo getTenantInfo() {
-		return tenantInfo;
-	}
+  public void setServiceDesc(String serviceDesc) {
+    this.serviceDesc = serviceDesc;
+  }
 
-	public void setTenantInfo(TenantInfo tenantInfo) {
-		this.tenantInfo = tenantInfo;
-	}
+  public String getImgPath() {
+    return imgPath;
+  }
 
-	public ServiceType getServiceType() {
-		return serviceType;
-	}
+  public void setImgPath(String imgPath) {
+    this.imgPath = imgPath;
+  }
 
-	public void setServiceType(ServiceType serviceType) {
-		this.serviceType = serviceType;
-	}
+  @ManyToOne
+  public TenantInfo getTenantInfo() {
+    return tenantInfo;
+  }
 
-	@Column(scale = 2, precision = 10, nullable = false)
-	public BigDecimal getPrice() {
-		return price;
-	}
+  public void setTenantInfo(TenantInfo tenantInfo) {
+    this.tenantInfo = tenantInfo;
+  }
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
-	
-	@Column(scale = 2, precision = 10, nullable = false)
-	public BigDecimal getPromotionPrice() {
-		return promotionPrice;
-	}
+  @ManyToOne
+  public ServiceCategory getServiceCategory() {
+    return serviceCategory;
+  }
 
-	public void setPromotionPrice(BigDecimal promotionPrice) {
-		this.promotionPrice = promotionPrice;
-	}
+  public void setServiceCategory(ServiceCategory serviceCategory) {
+    this.serviceCategory = serviceCategory;
+  }
 
-	public Integer getRate() {
-		return rate;
-	}
+  @Column(scale = 2, precision = 10, nullable = false)
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	public void setRate(Integer rate) {
-		this.rate = rate;
-	}
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
 
-	public ServiceStatus getServiceStatus() {
-		return serviceStatus;
-	}
+  @Column(scale = 2, precision = 10, nullable = false)
+  public BigDecimal getPromotionPrice() {
+    return promotionPrice;
+  }
 
-	public void setServiceStatus(ServiceStatus serviceStatus) {
-		this.serviceStatus = serviceStatus;
-	}
-	
+  public void setPromotionPrice(BigDecimal promotionPrice) {
+    this.promotionPrice = promotionPrice;
+  }
+
+  public Integer getRate() {
+    return rate;
+  }
+
+  public void setRate(Integer rate) {
+    this.rate = rate;
+  }
+
+  public ServiceStatus getServiceStatus() {
+    return serviceStatus;
+  }
+
+  public void setServiceStatus(ServiceStatus serviceStatus) {
+    this.serviceStatus = serviceStatus;
+  }
+
 
 }

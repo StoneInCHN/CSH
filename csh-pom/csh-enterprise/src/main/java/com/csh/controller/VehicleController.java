@@ -176,6 +176,8 @@ public class VehicleController extends BaseController
   {
     EndUser endUser = endUserService.find (endUserID);
     DeviceInfo deviceInfo = deviceInfoService.find (deviceInfoID);
+    deviceInfo.setDeviceStatus (DeviceStatus.BINDED);
+    deviceInfo.setBindTime (new Date ());
     VehicleBrandDetail vehicleBrandDetail = vehicleBrandDetailService.find (vehicleBrandDetailId);
     vehicle.setDevice (deviceInfo);
     vehicle.setEndUser (endUser);
@@ -185,8 +187,16 @@ public class VehicleController extends BaseController
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (Vehicle vehicle)
+  public @ResponseBody Message update (Vehicle vehicle,Long endUserID,Long deviceInfoID, Long vehicleBrandDetailId)
   { 
+    EndUser endUser = endUserService.find (endUserID);
+    DeviceInfo deviceInfo = deviceInfoService.find (deviceInfoID);
+    deviceInfo.setDeviceStatus (DeviceStatus.BINDED);
+    deviceInfo.setBindTime (new Date ());
+    VehicleBrandDetail vehicleBrandDetail = vehicleBrandDetailService.find (vehicleBrandDetailId);
+    vehicle.setDevice (deviceInfo);
+    vehicle.setEndUser (endUser);
+    vehicle.setVehicleBrandDetail (vehicleBrandDetail);
     vehicleService.update (vehicle);
     return SUCCESS_MESSAGE;
   }

@@ -35,10 +35,6 @@ public class EndUser extends BaseEntity {
   private static final long serialVersionUID = 1L;
 
   /**
-   * 租户ID
-   */
-  private Long tenantID;
-  /**
    * 账号状态
    */
   private AccountStatus accountStatus;
@@ -116,17 +112,6 @@ public class EndUser extends BaseEntity {
    */
   private Set<LoginStatistics> loginStatistics = new HashSet<LoginStatistics>();
 
-  @Index (name = "endUser_tenantid")
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
-  public Long getTenantID ()
-  {
-    return tenantID;
-  }
-
-  public void setTenantID (Long tenantID)
-  {
-    this.tenantID = tenantID;
-  }
   @OneToMany(mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   public Set<LoginStatistics> getLoginStatistics() {
     return loginStatistics;

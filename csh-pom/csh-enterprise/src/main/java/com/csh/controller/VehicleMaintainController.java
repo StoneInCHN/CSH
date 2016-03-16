@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -25,42 +24,34 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.EndUser;
-import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.entity.VehicleMaintain;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
-import com.csh.service.EndUserService;
-import com.csh.service.RSAService;
+import com.csh.service.VehicleMaintainService;
 import com.csh.utils.DateTimeUtils;
 
+
 /**
- * 终端用户
+ * 车辆保养管理
  * @author huyong
  *
  */
-@Controller ("endUserController")
-@RequestMapping ("console/endUser")
-public class EndUserController extends BaseController
+@Controller ("vehicleMaintainController")
+@RequestMapping ("console/vehicleMaintain")
+public class VehicleMaintainController extends BaseController
 {
 
-  @Resource (name = "endUserServiceImpl")
-  private EndUserService endUserService;
-  @Resource(name = "rsaServiceImpl")
-  private RSAService rsaService;
+  @Resource (name = "vehicleMaintainServiceImpl")
+  private VehicleMaintainService vehicleMaintainService;
   
-  @RequestMapping (value = "/endUser", method = RequestMethod.GET)
+  @RequestMapping (value = "/vehicleMaintain", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "endUser/endUser";
-  }
-  @RequestMapping (value = "/commonEndUserSearch", method = RequestMethod.GET)
-  public String commonEndUserSearch (ModelMap model)
-  {
-    return "common/commonEndUserSearch";
+    return "vehicleMaintain/vehicleMaintain";
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<EndUser> list (Pageable pageable, ModelMap model,
-      Date beginDate, Date endDate, String userNameSearch,AccountStatus accountStatusSearch)
+  public @ResponseBody Page<VehicleMaintain> list (Pageable pageable, ModelMap model,
+      Date nextMaintainDateStart, Date nextMaintainDateEnd, String plateSearch)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -69,33 +60,36 @@ public class EndUserController extends BaseController
     analyzer.setMaxWordLength (true);
     BooleanQuery query = new BooleanQuery ();
 
-    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "userName",
+    QueryParser namepParser = new QueryParser (Version.LUCENE_35, "vehicle.plate",
         analyzer);
-    Query nameQuery = null;
+    Query nameqQuery = null;
     TermRangeQuery rangeQuery = null;
-    TermQuery statusQuery = null;
     
     Filter filter = null;
-    if (beginDate != null)
+    if (nextMaintainDateStart != null)
     {
-      startDateStr = DateTimeUtils.convertDateToString (beginDate, null);
+      startDateStr = DateTimeUtils.convertDateToString (nextMaintainDateStart, null);
     }
-    if (endDate != null)
+    if (nextMaintainDateEnd != null)
     {
-      endDateStr = DateTimeUtils.convertDateToString (endDate, null);
+      endDateStr = DateTimeUtils.convertDateToString (nextMaintainDateEnd, null);
     }
-    if (userNameSearch != null)
+    if (plateSearch != null)
     {
-      String text = QueryParser.escape (userNameSearch);
+      String text = QueryParser.escape (plateSearch);
         try
         {
-          nameQuery = nameParser.parse (text);
-          query.add (nameQuery, Occur.MUST);
+          //通配符查询，开启*开头，但影响效率
+          namepParser.setAllowLeadingWildcard (true);
+
+          nameqQuery = namepParser.parse ("*"+text+"*");
           
-          if (LogUtil.isDebugEnabled (EndUserController.class))
+          query.add (nameqQuery, Occur.MUST);
+          
+          if (LogUtil.isDebugEnabled (VehicleMaintainController.class))
           {
-            LogUtil.debug (EndUserController.class, "search", "Search real name: "
-                + userNameSearch );
+            LogUtil.debug (VehicleMaintainController.class, "search", "Search plate: "
+                + plateSearch );
           }
         }
         catch (ParseException e)
@@ -103,30 +97,24 @@ public class EndUserController extends BaseController
           e.printStackTrace();
         }
     }
-    if (accountStatusSearch != null)
-    {
-      statusQuery = new TermQuery (new Term ("accoutStatus",accountStatusSearch.toString ()));
-      query.add (statusQuery,Occur.MUST);
-    }
     if (startDateStr != null || endDateStr != null)
     {
-      rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr, true, true);
+      rangeQuery = new TermRangeQuery ("nextMaintainDate", startDateStr, endDateStr, true, true);
       query.add (rangeQuery,Occur.MUST);
       
-      if (LogUtil.isDebugEnabled (EndUserController.class))
+      if (LogUtil.isDebugEnabled (VehicleMaintainController.class))
       {
-        LogUtil.debug (EndUserController.class, "search", "Search start date: "+startDateStr
+        LogUtil.debug (VehicleMaintainController.class, "search", "Search start date: "+startDateStr
             +" end date: "+endDateStr);
       }
     }
-    if (nameQuery != null || rangeQuery != null || statusQuery != null)
+    if (nameqQuery != null || rangeQuery != null )
     {
-      return endUserService.search (query, pageable, analyzer,filter);
+      return vehicleMaintainService.search (query, pageable, analyzer,filter,true);
     }
-      return endUserService.findPage (pageable);
+      return vehicleMaintainService.findPage (pageable,true);
     
   }
-
   /**
    * get data for vendor edit page
    * 
@@ -137,25 +125,22 @@ public class EndUserController extends BaseController
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
-    EndUser endUser = endUserService.find (id);
-    model.put ("endUser", endUser);
-    return "endUser/edit";
+    VehicleMaintain vehicleMaintain = vehicleMaintainService.find (id);
+    model.put ("vehicleMaintain", vehicleMaintain);
+    return "vehicleMaintain/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (EndUser endUser)
+  public @ResponseBody Message add (VehicleMaintain vehicleMaintain)
   {
-    endUserService.save (endUser,true);
+    vehicleMaintainService.save (vehicleMaintain,true);
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (String enPassword,EndUser endUser)
-  {
-    if (!enPassword.equals (endUser.getPassword ()))
-    {
-      endUser.setPassword (DigestUtils.md5Hex(endUser.getPassword ()));
-    }
+  public @ResponseBody Message update (VehicleMaintain vehicleMaintain)
+  { 
+    vehicleMaintainService.update (vehicleMaintain,"createDate");
     return SUCCESS_MESSAGE;
   }
  
@@ -170,7 +155,7 @@ public class EndUserController extends BaseController
     {
       // 检查是否能被删除
       // if()
-      endUserService.delete (ids);
+      vehicleMaintainService.delete (ids);
     }
     return SUCCESS_MESSAGE;
   }
@@ -183,8 +168,8 @@ public class EndUserController extends BaseController
    */
   @RequestMapping(value = "/details", method = RequestMethod.GET)
   public String details(ModelMap model, Long id) {
-    EndUser endUser = endUserService.find(id);
-    model.addAttribute("endUser", endUser);
-    return "endUser/details";
+    VehicleMaintain vehicleMaintain = vehicleMaintainService.find(id);
+    model.addAttribute("vehicleMaintain", vehicleMaintain);
+    return "vehicleMaintain/details";
   }
 }

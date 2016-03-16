@@ -513,6 +513,9 @@ function searchDevice(id) {
 													$('#commonMainDialog')
 															.dialog("close");
 												},
+												onBeforeLoad:function(param){
+													param.deviceStatusSearch = "STORAGEOUT";
+												},
 												columns : [ [
 														      {field:'ck',checkbox:true},
 														      {title:message("csh.deviceInfo.deviceNO"),field:"deviceNo",width:100,sortable:true},
