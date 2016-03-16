@@ -62,7 +62,7 @@ public class EndUserController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/logout", method = RequestMethod.POST)
-  public @ResponseBody BaseResponse logout(BaseRequest req) {
+  public @ResponseBody BaseResponse logout(@RequestBody BaseRequest req) {
     BaseResponse response = new BaseResponse();
     Long userId = req.getUserId();
     String token = req.getToken();

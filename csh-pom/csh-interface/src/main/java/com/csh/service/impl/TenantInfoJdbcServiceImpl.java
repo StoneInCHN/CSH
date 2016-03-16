@@ -82,7 +82,7 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
     // Integer.valueOf(String.valueOf((total + pageable.getPageSize() - 1)
     // / pageable.getPageSize()));
 
-    pageable.setPageSize(tenantInfoList != null ? tenantInfoList.size() : 0);
+    //pageable.setPageSize(tenantInfoList != null ? tenantInfoList.size() : 0);
     Page<Map<String, Object>> page = new Page<Map<String, Object>>(tenantInfoList, total, pageable);
 
     return page;

@@ -102,7 +102,20 @@ public class Setting implements Serializable {
    */
   private String siteUrl;
   
+  /**
+   * app用户查询商家时的搜索半径
+   */
+  private Integer searchRadius;
+  
+  
 
+  public Integer getSearchRadius() {
+	return searchRadius;
+  }
+
+  public void setSearchRadius(Integer searchRadius) {
+	this.searchRadius = searchRadius;
+  }
 
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;

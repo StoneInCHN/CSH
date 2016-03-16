@@ -58,7 +58,7 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
 
   @Override
   public void deleteEndUserToken(Long id) {
-    deleteEndUserToken(id);
+	  endUserDao.deleteEndUserToken(id);
   }
 
 

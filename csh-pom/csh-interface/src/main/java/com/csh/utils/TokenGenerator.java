@@ -38,8 +38,12 @@ public class TokenGenerator {
 	 * @return
 	 */
     public static boolean isValiableToken(String token,String userToken){
+    	
+    	if (StringUtils.isEmpty(token) || StringUtils.isEmpty(userToken)) {
+			return false;
+		}
+    	
         Integer timeout = SettingUtils.get().getTokenTimeOut();
-        
         String tokenFromClient = token.split("__")[0];
         String tokenFromServer = userToken.split("__")[0];
         
