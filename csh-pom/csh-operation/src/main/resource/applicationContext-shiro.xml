@@ -17,11 +17,8 @@
 				/console/common/logout = logout
 				/console/common/captcha.jhtml = anon
 				/console/common/captchaCheck.jhtml = anon
-				/console/apply/check_phone.jhtml = anon
-				/console/apply/check_email.jhtml = anon
+				/console/common/area.jhtml = anon
 				/console/apply/submit.jhtml = anon
-				/console/common/public_key.jhtml = anon
-				/console/common/lbs_public_key.jhtml = anon
 				/console/password/** = anon
 				
 				/console/admin/** = perms["admin:admin"]

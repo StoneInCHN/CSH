@@ -31,7 +31,7 @@ img {
     vertical-align: middle;
 }
 .login .content {
-    background: url("../img/login/bg-white-lock.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("../images/login/bg-white-lock.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
     margin: 0 auto;
     padding: 20px 30px 15px;
     width: 291px;
@@ -71,7 +71,7 @@ img {
 }
 
 .close {
-    background-image: url("../img/login/remove-icon-small.png") !important;
+    background-image: url("../images/login/remove-icon-small.png") !important;
     background-repeat: no-repeat !important;
     display: inline-block;
     height: 9px;
@@ -241,7 +241,7 @@ div.checker, div.checker span, div.checker input {
     width: 19px;
 }
 div.selector, div.selector span, div.checker span, div.radio span, div.uploader, div.uploader span.action, div.button, div.button span {
-    background-image: url("../img/login/sprite.png");
+    background-image: url("../images/login/sprite.png");
     background-repeat: no-repeat;
 }
 
@@ -279,10 +279,10 @@ button.btn, input.btn[type="submit"] {
     background-position: -27px -10px;
 }
 .m-icon-white {
-    background-image: url("../img/login/syncfusion-icons-white.png");
+    background-image: url("../images/login/syncfusion-icons-white.png");
 }
 [class^="m-icon-"] {
-    background-image: url("../img/login/syncfusion-icons.png");
+    background-image: url("../images/login/syncfusion-icons.png");
     background-position: 0 0;
     background-repeat: no-repeat;
     display: inline-block;
@@ -339,38 +339,3 @@ button.btn, input.btn[type="submit"] {
 .error{
 	border:1px solid red !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

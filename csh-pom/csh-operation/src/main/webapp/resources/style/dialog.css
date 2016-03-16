@@ -19,7 +19,7 @@ div.xxDialog .modal-header{
 	-moz-opacity: 0.30;
 	opacity: 0.30;
 	zoom: 1;
-	background: url(../img/dialog_overlay.png);
+	background: url(../images/dialog_overlay.png);
 }
 
 
@@ -48,7 +48,7 @@ div.xxDialog .dialogTitle {
 	color: #666666;
 	font-weight: bold;
 	cursor: move;
-	background: url(../img/common.gif) 0px -210px repeat-x;
+	background: url(../images/common.gif) 0px -210px repeat-x;
 }
 
 div.xxDialog .dialogClose {
@@ -58,7 +58,7 @@ div.xxDialog .dialogClose {
 	top: 0px;
 	right: 10px;
 	cursor: pointer;
-	background: url(../img/common.gif) 0px -330px no-repeat;
+	background: url(../images/common.gif) 0px -330px no-repeat;
 }
 
 div.xxDialog .dialogClose:hover {
@@ -69,7 +69,7 @@ div.xxDialog .dialogwarnIcon {
 	line-height: 24px;
 	padding-left: 30px;
 	margin: 25px 0px 20px 30px;
-	background: url(../img/common.gif) -60px -345px no-repeat;
+	background: url(../images/common.gif) -60px -345px no-repeat;
 	padding-right: 70px
 }
 
@@ -77,21 +77,21 @@ div.xxDialog .dialogsuccessIcon {
 	line-height: 24px;
 	padding-left: 30px;
 	margin: 50px 0px 40px 60px;
-	background: url(../img/common.gif) -30px -390px no-repeat;
+	background: url(../images/common.gif) -30px -390px no-repeat;
 }
 
 div.xxDialog .dialogerrorIcon {
 	line-height: 24px;
 	padding-left: 30px;
 	margin: 50px 0px 40px 60px;
-	background: url(../img/common.gif) 0px -420px no-repeat;
+	background: url(../images/common.gif) 0px -420px no-repeat;
 }
 
 div.xxDialog .dialogBottom {
 	height: 34px;
 	padding-top: 6px;
 	text-align: center;
-	background: url(../img/common.gif) 0px -270px repeat-x #ffffff;
+	background: url(../images/common.gif) 0px -270px repeat-x #ffffff;
 }
 
 div.xxDialog .dialogIframe {

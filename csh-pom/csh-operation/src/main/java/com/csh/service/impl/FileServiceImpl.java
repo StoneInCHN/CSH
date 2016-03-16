@@ -2,6 +2,7 @@ package com.csh.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.csh.beans.Setting.ImageType;
 import com.csh.service.FileService;
 import com.csh.utils.ImageUtils;
+import com.ibm.icu.text.SimpleDateFormat;
 
 @Service("fileServiceImpl")
 public class FileServiceImpl implements FileService {
@@ -93,25 +95,27 @@ public class FileServiceImpl implements FileService {
 
   @Override
   public String saveImage(MultipartFile multiFile, ImageType imageType) {
+    SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String date = sdFormat.format(new Date());
     String webPath = null;
     String imgUploadPath = "";
     try {
-
       if (multiFile == null || multiFile.getSize() > ImageMaxSize) {
         return null;
       }
       String uuid = UUID.randomUUID().toString();
-
-
-      if (imageType == ImageType.vendor) {
-        imgUploadPath = uploadPath + File.separator + "vendor";
+      if (imageType == ImageType.LICENSE) {
+        imgUploadPath = uploadPath + File.separator + "license";
+      }
+      if (imageType == ImageType.STOREPICTURE) {
+        imgUploadPath = uploadPath + File.separator + "storePicture";
       }
 
       String sourcePath =
-          imgUploadPath + File.separator + "src_" + uuid + "."
+          imgUploadPath+File.separator+date+ File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      webPath = "src_" + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      String storePath = imgUploadPath + File.separator + uuid + "." + DEST_EXTENSION;;
+      webPath =date+ File.separator + "src_" + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+      String storePath = imgUploadPath +File.separator+date+ File.separator + uuid + "." + DEST_EXTENSION;;
 
       File tempFile =
           new File(System.getProperty("java.io.tmpdir") + File.separator + "upload_"

@@ -4,6 +4,6 @@
 	<setting name="passwordMaxlength" value="32" />
 	<setting name="mobilePattern" value="^1[3|4|5|8][0-9]\d{8}$" />
 	<setting name="captchaTypes"
-		value="adminLogin,adminReg,findPassword,resetPassword,other" />
+		value="adminLogin,adminApply,findPassword,resetPassword,other" />
 </csh>	
 	

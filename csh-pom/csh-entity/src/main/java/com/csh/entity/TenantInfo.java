@@ -114,6 +114,17 @@ public class TenantInfo extends BaseEntity {
   private BigDecimal longitude;
   
   /**
+   * 营业执照
+   */
+  private String license;
+  
+  /**
+   * 门店照片
+   */
+  private String photo;
+  
+  
+  /**
    * 店铺汽车服务
    */
   private Set<CarService> carServices = new HashSet<CarService>();
@@ -297,4 +308,21 @@ public class TenantInfo extends BaseEntity {
   public void setVersionConfig(VersionConfig versionConfig) {
     this.versionConfig = versionConfig;
   }
+
+  public String getLicense() {
+    return license;
+  }
+
+  public void setLicense(String license) {
+    this.license = license;
+  }
+
+  public String getPhoto() {
+    return photo;
+  }
+
+  public void setPhoto(String photo) {
+    this.photo = photo;
+  }
+  
 }

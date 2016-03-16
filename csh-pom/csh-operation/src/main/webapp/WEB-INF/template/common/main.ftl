@@ -5,7 +5,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>${message("csh.main.title")}</title>
-<link rel="shortcut icon" type="image/x-icon" href="${base}/resources/images/car.ico" media="screen" /> 
+<link rel="shortcut icon" type="image/x-icon" href="${base}/resources/images/carlife.ico" media="screen" /> 
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/bootstrap-theme.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/font-awesome.css" rel="stylesheet" media="screen">
@@ -62,6 +62,11 @@
 									<a href="../role/list.jhtml" target="iframe"><i class="fa fa-male"></i>${message("csh.main.role")}</a>
 								</li>
 							   [/@shiro.hasPermission]
+							   [@shiro.hasPermission name="admin:apply"]
+								<li>
+									<a href="../apply/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.apply")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
 							   [@shiro.hasPermission name="admin:account"]
 								<li>
 									<a href="../account/accountInfo.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.account.settingGroup")}</a>

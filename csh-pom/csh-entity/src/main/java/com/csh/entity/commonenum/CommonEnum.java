@@ -713,4 +713,20 @@ public class CommonEnum {
 	  DISABLED,
       
     }
+  /**
+   * 审核状态
+   * @author tanbiao
+   *
+   */
+  public enum ApplyStatus{
+      /** 待审核 */
+      AUDIT_WAITING,
+      
+      /** 审核通过 */
+      AUDIT_PASSED,
+      
+      /** 审核退回 */
+      AUDIT_FAILED
+      
+    }
 }

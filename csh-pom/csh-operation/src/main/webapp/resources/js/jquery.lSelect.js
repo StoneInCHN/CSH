@@ -9,7 +9,7 @@
 			var settings = {
 				choose: "请选择地址...",
 				emptyValue: "",
-				cssStyle: {"margin-right": "4px"},
+				cssStyle: {"margin-right": "4px","height":"26px"},
 				url: null,
 				type: "GET"
 			};

@@ -26,7 +26,7 @@ if (applicationContext != null) {
 <%
 }
 %>
-<!DOCTYPE html>A
+<!DOCTYPE html>
 <!--[if IE 8]> <html lang="zh-cn" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="zh-cn" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="zh-cn"> <!--<![endif]-->
@@ -74,6 +74,7 @@ if (applicationContext != null) {
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->
 	<link href="<%=base%>/resources/style/font-awesome.css" rel="stylesheet" type="text/css" />
 	<link href="<%=base%>/resources/style/login.css" rel="stylesheet" type="text/css" />
+	<link rel="shortcut icon" type="image/x-icon" href="<%=base%>/resources/images/carlife.ico" media="screen" /> 
 	<script src="<%=base%>/resources/js/jquery.js" type="text/javascript"></script>   
 	<script type="text/javascript" src="<%=base%>/resources/js/jquery.validate.js"></script>
 	<script type="text/javascript" src="<%=base%>/resources/js/jquery.placeholder.js"></script>
@@ -168,11 +169,12 @@ if (applicationContext != null) {
 <meta http-equiv="Cache-Control" content="no-cache" />
 <link href="<%=base%>/resources/style/font-awesome.css" rel="stylesheet" type="text/css" />
 <link href="<%=base%>/resources/style/login.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" type="image/x-icon" href="<%=base%>/resources/images/carlife.ico" media="screen" /> 
 <%}%>
 </head>
 <body class="login" onload="loadTopWindow()">
 	<div class="logo">
-		<img src="<%=base%>/resources/img/login/logo-big.png" alt="律帮后台管理系统" /> 
+		<img src="<%=base%>/resources/images/logo.png" alt="<%=SpringUtils.getMessage("csh.apply.logo")%>" /> 
 	</div>
 	<div class="content">
 		<form class="form-vertical login-form" id="loginForm" action="login.jsp" method="post">
@@ -188,20 +190,20 @@ if (applicationContext != null) {
 			</div>
 			<div  class="control-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">用户名</label>
+				<label class="control-label visible-ie8 visible-ie9"><%=SpringUtils.getMessage("csh.login.username")%></label>
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="fa fa-user"></i>
-						<input type="text" id="username" name="username" class="m-wrap placeholder-no-fix" maxlength="30"  placeholder ="用户名"/>
+						<input type="text" id="username" name="username" class="m-wrap placeholder-no-fix" maxlength="30"  placeholder ="<%=SpringUtils.getMessage("csh.login.username")%>"/>
 					</div>
 				</div>
 			</div>
 			<div  class="control-group">
-				<label class="control-label visible-ie8 visible-ie9">密码</label>
+				<label class="control-label visible-ie8 visible-ie9"><%=SpringUtils.getMessage("csh.login.password")%></label>
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="fa fa-lock"></i>
-						<input type="password" id="password" name="password" class="m-wrap placeholder-no-fix" maxlength="20" autocomplete="off" placeholder="密码"/>
+						<input type="password" id="password" name="password" class="m-wrap placeholder-no-fix" maxlength="20" autocomplete="off" placeholder="<%=SpringUtils.getMessage("csh.login.password")%>"/>
 					</div>
 				</div>
 			</div>
@@ -211,7 +213,7 @@ if (applicationContext != null) {
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="fa fa-lock"></i>
-						<input type="text" id="captcha" name="captcha" class="m-wrap placeholder-no-fix captcha" maxlength="4" autocomplete="off" placeholder="验证码"/>
+						<input type="text" id="captcha" name="captcha" class="m-wrap placeholder-no-fix captcha" maxlength="4" autocomplete="off" placeholder="<%=SpringUtils.getMessage("csh.captcha.imageTitle")%>"/>
 						<img id="captchaImage" src="<%=base%>/console/common/captcha.jhtml?captchaId=<%=captchaId%>" title="<%=SpringUtils.getMessage("csh.captcha.imageTitle")%>" />
 					</div>
 				</div>
@@ -230,10 +232,10 @@ if (applicationContext != null) {
     $(function(){
     	//背景图片滚动显示
     	  $.backstretch([
-    	 		        "resources/img/login/bg/1.jpg",
-    	 		        "resources/img/login/bg/2.jpg",
-    	 		        "resources/img/login/bg/3.jpg",
-    	 		        "resources/img/login/bg/4.jpg"
+    	 		        "resources/images/login/bg/1.jpg",
+    	 		        "resources/images/login/bg/2.jpg",
+    	 		        "resources/images/login/bg/3.jpg",
+    	 		        "resources/images/login/bg/4.jpg"
     	 		        ], {
     	 		          fade: 1000,
     	 		          duration: 8000

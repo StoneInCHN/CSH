@@ -25,19 +25,19 @@
 .dropdown-menu a.checked {
 	color: #2b2b2b;
 	font-weight: bold;
-	background: url(../img/common.gif) -220px -150px no-repeat;
+	background: url(../images/common.gif) -220px -150px no-repeat;
 }
 
 .dropdown-menu a.active {
 	color: #2b2b2b;
 	font-weight: bold;
-	background: url(../img/common.gif) -220px -150px no-repeat;
+	background: url(../images/common.gif) -220px -150px no-repeat;
 }
 
 .dropdown-menu li.active {
 	color: #2b2b2b;
 	font-weight: bold;
-	background: url(../img/common.gif) -220px -150px no-repeat;
+	background: url(../images/common.gif) -220px -150px no-repeat;
 }
 
 td i{

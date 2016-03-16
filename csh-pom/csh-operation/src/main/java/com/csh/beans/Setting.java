@@ -18,8 +18,8 @@ public class Setting implements Serializable {
     /** 后台登录 */
     adminLogin,
 
-    /** 后台注册 */
-    adminReg,
+    /** 租户资料上传 */
+    adminApply,
 
     /** 找回密码 */
     findPassword,
@@ -33,9 +33,17 @@ public class Setting implements Serializable {
 
   public enum ImageType {
     /**
-     * vendor
+     * Distributor
      */
-    vendor
+    DISTRIBUTOR,
+    /**
+     * 营业执照
+     */
+    LICENSE,
+    /**
+     * 门店照片
+     */
+    STOREPICTURE
   }
 
 
