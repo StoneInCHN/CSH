@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
@@ -112,31 +113,47 @@ public class TenantInfo extends BaseEntity {
    * 经度
    */
   private BigDecimal longitude;
-  
+
   /**
    * 营业执照
    */
   private String license;
-  
+
   /**
    * 门店照片
    */
   private String photo;
-  
-  
+
+
   /**
    * 店铺汽车服务
    */
   private Set<CarService> carServices = new HashSet<CarService>();
-  
-  
-  @OneToMany(mappedBy="tenantInfo")
+
+  /**
+   * 计算出的距离
+   */
+  private Long distance;
+
+  @Transient
+  public Long getDistance() {
+    if (distance == null) {
+      return 0l;
+    }
+    return distance;
+  }
+
+  public void setDistance(Long distance) {
+    this.distance = distance;
+  }
+
+  @OneToMany(mappedBy = "tenantInfo")
   public Set<CarService> getCarServices() {
-	return carServices;
+    return carServices;
   }
 
   public void setCarServices(Set<CarService> carServices) {
-	this.carServices = carServices;
+    this.carServices = carServices;
   }
 
   @Column(length = 50)
@@ -324,5 +341,5 @@ public class TenantInfo extends BaseEntity {
   public void setPhoto(String photo) {
     this.photo = photo;
   }
-  
+
 }

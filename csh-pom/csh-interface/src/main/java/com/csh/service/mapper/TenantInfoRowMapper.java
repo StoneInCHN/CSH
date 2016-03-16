@@ -1,0 +1,34 @@
+package com.csh.service.mapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.jdbc.core.RowMapper;
+
+
+public class TenantInfoRowMapper implements RowMapper<Map<String, Object>> {
+
+  public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+    Map<String, Object> tenantInfo = new HashMap<String, Object>();
+
+    /**
+     * 数据库字段映射
+     */
+    tenantInfo.put("id", rs.getLong("id"));
+    tenantInfo.put("distance", rs.getLong("distance"));
+    // tenantInfo.setLatitude(rs.getBigDecimal("latitude"));
+    // tenantInfo.setLongitude(rs.getBigDecimal("longitude"));
+    tenantInfo.put("address", rs.getString("address"));
+    tenantInfo.put("tenant_name", rs.getString("tenant_name"));
+    tenantInfo.put("photo", rs.getString("photo"));
+    tenantInfo.put("praiseRate", rs.getBigDecimal("praiseRate"));
+    tenantInfo.put("service_category_name", rs.getString("category_name"));
+    tenantInfo.put("price", rs.getBigDecimal("price"));
+    tenantInfo.put("promotion_price", rs.getBigDecimal("promotionPrice"));
+    return tenantInfo;
+  }
+
+
+}

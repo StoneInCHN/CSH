@@ -60,7 +60,7 @@ public class CarService extends BaseEntity {
   private BigDecimal price;
 
   /**
-   * 活动服务单价
+   * 活动优惠单价
    */
   private BigDecimal promotionPrice;
 
