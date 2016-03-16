@@ -176,6 +176,8 @@ public class EndUser extends BaseEntity {
   }
 
   @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer(
+      impl = IKAnalyzer.class))
   public String getMobileNum() {
     return mobileNum;
   }

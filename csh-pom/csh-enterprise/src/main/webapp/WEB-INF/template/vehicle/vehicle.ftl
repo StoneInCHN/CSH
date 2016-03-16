@@ -6,27 +6,18 @@
 	  <fieldset>
 	    <legend>${message("csh.vehicle.search")}</legend>
 	    <form id="vehicle-search-form" class="search-form">
+	    <input type="hidden" name="totalRecord" id="totalRecord"/>
 	    	<div class="search-item">
 			    <label> ${message("csh.vehicle.plate")}:</label>
 			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.vehicle.vehicleBrandDetail")}:</label>
-			    <input type="text" class="easyui-textbox" id="vehicleBrandSearch" name="vehicleBrandSearch" validtype="length[0,20]"/>
+			    <label> ${message("csh.vehicle.endUser")}:</label>
+			    <input type="text" class="easyui-textbox" id="userNameSearch" name="userNameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.vehicle.status")}:</label>
-			    <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'ENABLE',
-				      value: '${message("csh.common.enable")}'
-				     },{
-				      label: 'DISABLE',
-				      value: '${message("csh.common.disable")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="statusSearch" id="status" style="width:110px;"/>
+			    <label> ${message("csh.mobile")}:</label>
+			    <input type="text" class="easyui-textbox" id="mobileNumSearch" name="mobileNumSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
 			    <label> 录入时间:</label>
@@ -48,6 +39,7 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="vehicle_manager_tool.add();">添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="vehicle_manager_tool.edit();">修改</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="vehicle_manager_tool.remove();">删除</a>
+		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true" onclick="exportExcel('vehicle','vehicle-search-form','totalRecord');">导出</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>

@@ -94,7 +94,136 @@ function getCookie(name) {
 function removeCookie(name, options) {
 	addCookie(name, null, options);
 }
+//导出excel数据
+function exportData(control, form) {
+	// 建议一次导出excel数据的最大值为500
+	var maxSize = 500;
+	$.ajax({
+				url : "../" + control + "/count.jhtml",
+				type : "post",
+				data : $("#" + form).serialize(),
+				success : function(result, response, status) {
+					if (result.count != null) {
+						var text = "";
+						if (result.count == 0) {
+							// "当前条件无可导出的数据。"
+							text = message("yly.common.notice.current_condition_no_export_data");
+							$.messager.alert(message("yly.common.notice"),
+									text, 'warning');
+						} else if (result.count <= maxSize) {
+							// "确定导出 {0}条记录？"
+							text = message(
+									"yly.common.notice.comfirm_export_data",
+									result.count);
+							$.messager
+									.confirm(
+											message("yly.common.confirm"),
+											text,
+											function(r) {
+												if (r) {
+													$("#" + form)
+															.attr(
+																	"action",
+																	"../"
+																			+ control
+																			+ "/exportData.jhtml");
+													$("#" + form).attr(
+															"target", "_blank");
+													$("#" + form).submit();
+												}
 
+											});
+						} else {
+							// "导出数据超过 "+maxSize+" 条数据，建议搜索查询条件以缩小查询范围，再导出。";
+							text = message(
+									"yly.common.notice.export_data_too_much_advice_use_filter",
+									maxSize);
+							$.messager
+									.confirm(
+											message("yly.common.notice"),
+											text,
+											function(r) {
+												if (!r) {
+													// "导出共有"+ result.count
+													// +"条数据，导出超过 "+maxSize+"
+													// 条数据可能需要您耐心等待，仍需操作请确定继续。";
+													text = message(
+															"yly.common.notice.need_wait_export_too_much_data",
+															result.count,
+															maxSize);
+													$.messager
+															.confirm(
+																	message("yly.common.confirm"),
+																	text,
+																	function(
+																			yes) {
+																		if (yes) {
+																			$(
+																					"#"
+																							+ form)
+																					.attr(
+																							"action",
+																							"../"
+																									+ control
+																									+ "/exportData.jhtml");
+																			$(
+																					"#"
+																							+ form)
+																					.attr(
+																							"target",
+																							"_blank");
+																			$(
+																					"#"
+																							+ form)
+																					.submit();
+																		}
+																	});
+												}
+											})
+						}
+					}
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("error");
+					$.messager.progress('close');
+					alertErrorMsg();
+				}
+			});
+}
+function exportExcel(control,form,totalRecord){
+	var total = $('#'+totalRecord).val();
+	var max = 500;
+	if(total > max){
+	$.messager
+	.confirm(
+			message("yly.common.notice"),
+			text,
+			function(r) {
+				if (!r) {
+					// "导出共有"+ result.count
+					// +"条数据，导出超过 "+maxSize+"
+					// 条数据可能需要您耐心等待，仍需操作请确定继续。";
+					text = message(
+							"yly.common.notice.need_wait_export_too_much_data",
+							result.count,
+							maxSize);
+				}else{
+					$("#"+ form).attr("action","../"+ control+ "/exportData.jhtml");
+					$("#"+ form).attr("target","_blank");
+					$("#"+ form).submit();
+				}
+			});
+	}else if (total == 0 ){
+		text = message("yly.common.notice.current_condition_no_export_data");
+		$.messager.alert(message("yly.common.notice"),
+				text, 'warning');
+	}else{
+		$("#"+ form).attr("action","../"+ control+ "/exportData.jhtml");
+		$("#"+ form).attr("target","_blank");
+		$("#"+ form).submit();
+	}
+	
+}
 /**
  * 删除公用方法 id table_list id url 删除是向后台发送的链接
  */

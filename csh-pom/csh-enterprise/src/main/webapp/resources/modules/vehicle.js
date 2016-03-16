@@ -276,9 +276,24 @@ $(function(){
 			    
 			});   
 		},
+		onLoadSuccess:function(data){
+			$("#totalRecord").val(data.total);
+		},
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
+		      {title:message("csh.vehicle.endUser"),field:"endUser",width:100,sortable:true,
+		    	  formatter: function(value,row,index){
+			    	  if(value != null){
+			    		  return  value.userName;
+			    	  }
+		      	  }},
+			   {title:message("csh.endUser.mobileNum"),field:"mobileNum",width:100,sortable:true,
+		    	  formatter: function(value,row,index){
+			    	  if(row.endUser != null){
+			    		  return  row.endUser.mobileNum;
+			    	  }
+		      	  }},
 		      {title:message("csh.vehicle.plate"),field:"plate",width:100,sortable:true},
 		      {title:message("csh.vehicle.vehicleBrandDetail"),field:"vehicleBrandDetail",width:100,sortable:true,
 		    	  formatter: function(value,row,index){
@@ -286,27 +301,7 @@ $(function(){
 			    		  return  value.name;
 			    	  }
 		      	  }},
-	      	  {title:message("csh.vehicle.endUser"),field:"endUser",width:100,sortable:true,
-		    	  formatter: function(value,row,index){
-			    	  if(value != null){
-			    		  return  value.userName;
-			    	  }
-		      	  }},
-		      {title:message("csh.vehicle.device"),field:"device",width:100,sortable:true,
-		    	  formatter: function(value,row,index){
-			    	  if(value != null){
-			    		  return  value.deviceNo;
-			    	  }
-		      	  }},
-		      {title:message("csh.vehicle.status"),field:"status",width:100,sortable:true,
-		    	  formatter: function(value,row,index){
-			    	  if(value == "ENABLE"){
-			    		  return  message("csh.common.enable");
-			    	  }else if (value = "DISABLE"){
-			    		  return  message("csh.common.disable");
-			    	  }
-		      	  }  
-		      },
+		      {title:message("csh.vehicle.device"),field:"deviceNo",width:100,sortable:false},
 		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}

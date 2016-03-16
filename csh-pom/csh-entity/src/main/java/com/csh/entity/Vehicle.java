@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Index;
@@ -71,10 +72,6 @@ public class Vehicle extends BaseEntity
    */
   private String plate;
 
-  /**
-   * 车辆状态
-   */
-  private Status status;
 
   private String vin;
 
@@ -83,6 +80,11 @@ public class Vehicle extends BaseEntity
   private Long tenantID;
 
   private Set<VehicleMaintain> vehicleMaintain = new HashSet<VehicleMaintain> ();
+  
+  /**
+   * 设备编号，冗余字段，方便查询
+   */
+  private String deviceNo;
   @JsonProperty
   @ManyToOne(fetch=FetchType.EAGER)
   @IndexedEmbedded
@@ -150,18 +152,6 @@ public class Vehicle extends BaseEntity
     this.plate = plate;
   }
 
-  @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
-  public Status getStatus ()
-  {
-    return status;
-  }
-
-  public void setStatus (Status status)
-  {
-    this.status = status;
-  }
-
   public String getVin ()
   {
     return vin;
@@ -205,6 +195,18 @@ public class Vehicle extends BaseEntity
   public void setVehicleMaintain (Set<VehicleMaintain> vehicleMaintain)
   {
     this.vehicleMaintain = vehicleMaintain;
+  }
+
+  @JsonProperty
+  @Transient
+  public String getDeviceNo ()
+  {
+    return deviceNo;
+  }
+
+  public void setDeviceNo (String deviceNo)
+  {
+    this.deviceNo = deviceNo;
   }
 
 }

@@ -64,9 +64,13 @@ var messages = {
 	"csh.common.address":"地址",
 	"csh.common.print":"打印",
 	"csh.common.action":"操作",
+	"csh.common.notice":"注意",
 	"csh.common.dateFormatChina":"yyyy年MM月dd日",
 	"csh.common.elderlyInfo":"老人基本信息",
-	
+	"yly.common.notice.current_condition_no_export_data":"当前条件无可导出的数据。",
+	"yly.common.notice.comfirm_export_data":"确定导出 {0} 条记录？",
+	"yly.common.notice.export_data_too_much_advice_use_filter":"导出数据超过 {0} 条数据，建议搜索查询条件以缩小查询范围，再导出。",
+	"yly.common.notice.need_wait_export_too_much_data":"导出共有 {0} 条数据，导出超过 {1} 条数据可能需要您耐心等待，仍需操作请确定继续。",
 	
 	
 	//租户用户

@@ -151,7 +151,7 @@ public class BaseController {
       List<Map<String, String>> eventRecordMapList, String title, String[] headers,
       String[] headersName) {
     if (StringUtils.isBlank(title)) {
-      title = "YLY_DATA";
+      title = "CSH_DATA";
     }
     if (headers != null && headersName != null && headers.length == headersName.length) {
       JSONArray jsonArray = new JSONArray();
