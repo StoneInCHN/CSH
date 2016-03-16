@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
@@ -105,8 +106,7 @@ public class Vehicle extends BaseEntity
     this.color = color;
   }
 
-  @JsonProperty
-  @OneToOne(cascade=CascadeType.MERGE)
+  @OneToOne(mappedBy="vehicle",cascade=CascadeType.MERGE)
   public DeviceInfo getDevice ()
   {
     return device;

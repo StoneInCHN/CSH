@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -26,14 +25,10 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
-import com.csh.entity.EndUser;
-import com.csh.entity.commonenum.CommonEnum.AccountStatus;
-import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
+import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DeviceInfoService;
-import com.csh.service.EndUserService;
-import com.csh.service.RSAService;
 import com.csh.utils.DateTimeUtils;
 
 /**
@@ -61,7 +56,7 @@ public class DeviceInfoController extends BaseController
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<DeviceInfo> list (Pageable pageable, ModelMap model,
-      Date beginDate, Date endDate, String deviceNoSearch,DeviceStatus deviceStatusSearch)
+      Date beginDate, Date endDate, String deviceNoSearch,BindStatus bindStatusSearch)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -90,7 +85,8 @@ public class DeviceInfoController extends BaseController
       String text = QueryParser.escape (deviceNoSearch);
         try
         {
-          nameQuery = nameParser.parse (text);
+          nameParser.setAllowLeadingWildcard (true);
+          nameQuery = nameParser.parse ("*"+text+"*");
           query.add (nameQuery, Occur.MUST);
           
           if (LogUtil.isDebugEnabled (DeviceInfoController.class))
@@ -104,9 +100,9 @@ public class DeviceInfoController extends BaseController
           e.printStackTrace();
         }
     }
-    if (deviceStatusSearch != null)
+    if (bindStatusSearch != null)
     {
-      statusQuery = new TermQuery (new Term ("deviceStatus",deviceStatusSearch.toString ()));
+      statusQuery = new TermQuery (new Term ("bindStatus",bindStatusSearch.toString ()));
       query.add (statusQuery,Occur.MUST);
     }
     if (startDateStr != null || endDateStr != null)
@@ -184,5 +180,22 @@ public class DeviceInfoController extends BaseController
     DeviceInfo deviceInfo = deviceInfoService.find(id);
     model.addAttribute("deviceInfo", deviceInfo);
     return "endUser/details";
+  }
+  /**
+   * 解绑设备
+   * 
+   * @param model
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/unBind", method = RequestMethod.GET)
+  public @ResponseBody Message unBind(ModelMap model, Long id) {
+    DeviceInfo deviceInfo = deviceInfoService.find(id);
+    deviceInfo.setBindStatus (BindStatus.UNBINDED);
+    deviceInfo.setVehicle (null);
+    deviceInfo.setBindTime (null);
+    
+    deviceInfoService.update (deviceInfo);
+    return SUCCESS_MESSAGE;
   }
 }

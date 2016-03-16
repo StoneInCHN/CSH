@@ -3,6 +3,9 @@ package com.csh.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -15,6 +18,7 @@ import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -50,6 +54,11 @@ public class DeviceInfo extends BaseEntity {
 	 * 设备状态
 	 */
 	private DeviceStatus deviceStatus;
+	
+	/**
+	 * 绑定状态
+	 */
+	private BindStatus bindStatus;
 
 /**
  * sim 卡号
@@ -124,6 +133,7 @@ public class DeviceInfo extends BaseEntity {
     this.simNo = simNo;
   }
   @JsonProperty
+  @ManyToOne(fetch = FetchType.EAGER)
   public DeviceType getType ()
   {
     return type;
@@ -134,7 +144,8 @@ public class DeviceInfo extends BaseEntity {
     this.type = type;
   }
 
-  @OneToOne(mappedBy="device")
+  @OneToOne(fetch=FetchType.EAGER)
+  @JsonProperty
   public Vehicle getVehicle ()
   {
     return vehicle;
@@ -154,6 +165,18 @@ public class DeviceInfo extends BaseEntity {
   public void setTenantID (Long tenantID)
   {
     this.tenantID = tenantID;
+  }
+
+  @JsonProperty
+  @Field(store = Store.NO,index = Index.UN_TOKENIZED)
+  public BindStatus getBindStatus ()
+  {
+    return bindStatus;
+  }
+
+  public void setBindStatus (BindStatus bindStatus)
+  {
+    this.bindStatus = bindStatus;
   }
 	
 }
