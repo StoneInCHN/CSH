@@ -566,7 +566,6 @@ function searchEndUser(id) {
 														    required:true,
 														    prompt:message("csh.common.please.select"),
 														    onSelect:function(record){
-														    	debugger;
 														    	$("#dashboardMileage").textbox('setValue',record.dashboardMileage);
 														    }
 														});

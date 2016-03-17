@@ -88,8 +88,8 @@
 	    </table>
 	</form>
 </div>
-<div id="editVehicleBrand"></div>
-<div id="vehicleBrandDetail"></div>
+<div id="editVehicleMaintain"></div>
+<div id="vehicleMaintainDetail"></div>
 
 
 

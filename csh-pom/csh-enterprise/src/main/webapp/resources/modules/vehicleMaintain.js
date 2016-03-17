@@ -51,28 +51,28 @@ var vehicleMaintain_manager_tool = {
 			});  
 		},
 		edit:function(){
-			var _edit_row = $('#vehicleLine-table-list').datagrid('getSelected');
+			var _edit_row = $('#vehicleMaintain-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
-			var _dialog = $('#editVehicleLine').dialog({    
+			var _dialog = $('#editVehicleMaintain').dialog({    
 				title: message("csh.common.edit"),     
-			    width: 400,    
-			    height: 350,    
+			    width: 700,    
+			    height: 400,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
-			    href:'../vehicleLine/edit.jhtml?id='+_edit_row.id,
+			    href:'../vehicleMaintain/edit.jhtml?id='+_edit_row.id,
 			    buttons:[{
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#vehicleLine_form').form('validate');
+						var validate = $('#vehicleMaintain_form').form('validate');
 						if(validate){
 							$.ajax({
-								url:"../vehicleLine/update.jhtml",
+								url:"../vehicleMaintain/update.jhtml",
 								type:"post",
-								data:$("#editVehicleLine_form").serialize(),
+								data:$("#editVehicleMaintain_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -81,8 +81,8 @@ var vehicleMaintain_manager_tool = {
 								success:function(result,response,status){
 									$.messager.progress('close');
 										showSuccessMsg(result.content);
-										$('#editVehicleLine').dialog("close");
-										$("#vehicleLine-table-list").datagrid('reload');
+										$('#editVehicleMaintain').dialog("close");
+										$("#vehicleMaintain-table-list").datagrid('reload');
 								}
 							});
 						};
@@ -91,16 +91,28 @@ var vehicleMaintain_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editVehicleLine').dialog("close").form("reset");
+						 $('#editVehicleMaintain').dialog("close").form("reset");
 					}
 			    }],
 			    onLoad:function(){
-//			    	$("#editAccountStatus").combobox("setValue",$("#editAccountStatus").attr("data-value"))
+			    	debugger;
+			    	$("#editVehicleMaintain_plate").combobox({    
+					    valueField:'id',    
+					    textField:'plate',
+					    editable : false,
+					    required:true,
+					    data:$.parseJSON($("#vehicleListMap").val()),
+					    prompt:message("csh.common.please.select"),
+					    onLoadSuccess:function(){
+					    	$("#editVehicleMaintain_plate").combobox("setValue",$("#editVehicleMaintain_plate").attr("data-value"))    	
+					    }
+					});
+			    	
 			    }
 			});  
 		},
 		remove:function(){
-			listRemove('vehicleLine-table-list','../vehicleLine/delete.jhtml');
+			listRemove('vehicleMaintain-table-list','../vehicleMaintain/delete.jhtml');
 		}
 };
 

@@ -1,6 +1,8 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -12,6 +14,7 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
+import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,8 @@ import com.csh.framework.paging.Pageable;
 import com.csh.service.VehicleMaintainService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /**
@@ -156,7 +161,21 @@ public class VehicleMaintainController extends BaseController
   public String edit (ModelMap model, Long id)
   {
     VehicleMaintain vehicleMaintain = vehicleMaintainService.find (id);
+    
+    List<Map<String, Object>> vehicleListMap = vehicleService.findVehicleUnderUser(vehicleMaintain.getVehicle ().getId ());
+    
+    ObjectMapper objectMapper = new ObjectMapper();
+    String result = null;
+    try
+    {
+      result= objectMapper.writeValueAsString (vehicleListMap);
+    }
+    catch (JsonProcessingException e)
+    {
+      e.printStackTrace();
+    }
     model.put ("vehicleMaintain", vehicleMaintain);
+    model.put ("vehicleListMap", result);
     return "vehicleMaintain/edit";
   }
 
@@ -170,9 +189,11 @@ public class VehicleMaintainController extends BaseController
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (VehicleMaintain vehicleMaintain)
+  public @ResponseBody Message update (VehicleMaintain vehicleMaintain,Long vehicleId)
   { 
-    vehicleMaintainService.update (vehicleMaintain,"createDate");
+    Vehicle vehicle= vehicleService.find (vehicleId);
+    vehicleMaintain.setVehicle (vehicle);
+    vehicleMaintainService.update (vehicleMaintain,"createDate","tenantID");
     return SUCCESS_MESSAGE;
   }
  
