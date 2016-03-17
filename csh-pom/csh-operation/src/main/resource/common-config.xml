@@ -5,5 +5,7 @@
 	<setting name="mobilePattern" value="^1[3|4|5|8][0-9]\d{8}$" />
 	<setting name="captchaTypes"
 		value="adminLogin,adminApply,findPassword,resetPassword,other" />
+	<setting name="identifierLastvalue4OrgCode" value="000020" />
+	<setting name="identifierLength4OrgCode" value="6" />
 </csh>	
 	

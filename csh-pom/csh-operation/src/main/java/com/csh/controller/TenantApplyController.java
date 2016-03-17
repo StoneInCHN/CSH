@@ -1,10 +1,12 @@
 package com.csh.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Message;
 import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.TenantAccount;
 import com.csh.entity.TenantApply;
+import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.ApplyStatus;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -22,6 +27,8 @@ import com.csh.framework.paging.Pageable;
 import com.csh.service.AreaService;
 import com.csh.service.FileService;
 import com.csh.service.TenantApplyService;
+import com.csh.service.TenantInfoService;
+import com.csh.utils.CommonUtils;
 
 
 @RequestMapping("console/apply")
@@ -37,6 +44,9 @@ public class TenantApplyController extends BaseController {
 
   @Resource(name = "areaServiceImpl")
   private AreaService areaService;
+
+  @Resource(name = "tenantInfoServiceImpl")
+  private TenantInfoService tenantInfoService;
 
   @RequestMapping(value = "/submit", method = RequestMethod.POST)
   public String submit(TenantApply tenantApply, Long areaId, ModelMap map) {
@@ -107,12 +117,17 @@ public class TenantApplyController extends BaseController {
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(TenantApply tenantApply) {
+  public @ResponseBody Message update(TenantApply tenantApply) {
     TenantApply applyTemp = tenantApplyService.find(tenantApply.getId());
     applyTemp.setApplyStatus(tenantApply.getApplyStatus());
     applyTemp.setNotes(tenantApply.getNotes());
-    tenantApplyService.update(applyTemp);
-    return "redirect:list.jhtml";
+    if (ApplyStatus.AUDIT_PASSED.equals(tenantApply.getApplyStatus())) {
+       tenantApplyService.auditPassed(applyTemp);
+    }else {
+      tenantApplyService.update(applyTemp);
+    }
+
+    return SUCCESS_MESSAGE;
   }
 
   /**

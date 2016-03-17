@@ -630,13 +630,13 @@ public class CommonEnum {
     }
   }
   /**
-   * 人员编号
+   * 自增类型
    */
   public enum IdentifierType {
     /**
-     * 老人编号
+     * 租户机构代码自增
      */
-    ELDERLYINFO_IDENTIFIER
+    ORGCODE
   }
   /**
    * 树节点展开状态

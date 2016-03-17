@@ -17,13 +17,28 @@
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	
+	var $submit = $("#submit");
 	
 	// 表单验证
 	$inputForm.validate({
 		rules: {
 			notes: "required",
 			applyStatus: "required"
+		},
+		submitHandler:function(form){
+			$submit.attr("disabled",true);
+			$.ajax({
+				url:$inputForm.attr("action"),
+				type:"POST",
+				data:$inputForm.serialize(),
+				dataType:"json",
+				cache:false,
+				success:function(message){
+					$.message(message);
+					$submit.attr("disabled",false);
+					setTimeout("location.href='details.jhtml?id=${apply.id}'",1000);
+				}
+			});
 		}
 	});
 
@@ -141,7 +156,7 @@ $().ready(function() {
 									&nbsp;
 								</th>
 								<td>
-									<input type="submit" class="button" value="${message("csh.common.submit")}" />
+									<input type="submit" id="submit" class="button" value="${message("csh.common.submit")}" />
 									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 								</td>
 							</tr>

@@ -70,8 +70,15 @@ public class Setting implements Serializable {
   /** 验证码类型 */
   private CaptchaType[] captchaTypes;
 
-
-
+  /**
+   * 租户组织机构码起始数
+   */
+  private Long identifierLastvalue4OrgCode;
+  /**
+   * 租户组织机构码长度
+   */
+  private Integer identifierLength4OrgCode; 
+  
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
   }
@@ -104,4 +111,20 @@ public class Setting implements Serializable {
     this.captchaTypes = captchaTypes;
   }
 
+  public Long getIdentifierLastvalue4OrgCode() {
+    return identifierLastvalue4OrgCode;
+  }
+
+  public void setIdentifierLastvalue4OrgCode(Long identifierLastvalue4OrgCode) {
+    this.identifierLastvalue4OrgCode = identifierLastvalue4OrgCode;
+  }
+
+  public Integer getIdentifierLength4OrgCode() {
+    return identifierLength4OrgCode;
+  }
+
+  public void setIdentifierLength4OrgCode(Integer identifierLength4OrgCode) {
+    this.identifierLength4OrgCode = identifierLength4OrgCode;
+  }
+  
 }
