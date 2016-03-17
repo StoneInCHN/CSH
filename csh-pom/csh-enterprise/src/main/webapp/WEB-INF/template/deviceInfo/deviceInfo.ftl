@@ -12,7 +12,12 @@
 			</div>
 			<div class="search-item">
 			    <label> ${message("csh.device.device.deviceTpye")}:</label>
-			    <input type="text" class="easyui-textbox" id="deviceTpyeSearch" name="deviceTpyeSearch" validtype="length[0,20]"/>
+			     <input class="easyui-combobox" data-options="
+				     valueField: 'name',
+				     textField: 'name',
+				     method:'get',  
+				     url:'../deviceType/findAllDeviceType.jhtml',
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:60" name="deviceTpyeSearch" id="deviceTpyeSearch" style="width:110px;"/>
 			</div>
 			
 			<div class="search-item">

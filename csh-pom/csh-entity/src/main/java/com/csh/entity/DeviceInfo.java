@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -14,6 +13,7 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -134,6 +134,7 @@ public class DeviceInfo extends BaseEntity {
   }
   @JsonProperty
   @ManyToOne(fetch = FetchType.EAGER)
+  @IndexedEmbedded
   public DeviceType getType ()
   {
     return type;

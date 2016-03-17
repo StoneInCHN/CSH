@@ -56,7 +56,7 @@ public class DeviceInfoController extends BaseController
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<DeviceInfo> list (Pageable pageable, ModelMap model,
-      Date beginDate, Date endDate, String deviceNoSearch,BindStatus bindStatusSearch)
+      Date beginDate, Date endDate, String deviceNoSearch,String deviceTpyeSearch,BindStatus bindStatusSearch)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -70,7 +70,8 @@ public class DeviceInfoController extends BaseController
     Query nameQuery = null;
     TermRangeQuery rangeQuery = null;
     TermQuery statusQuery = null;
-    
+    TermQuery typeqQuery =null;
+   
     Filter filter = null;
     if (beginDate != null)
     {
@@ -105,6 +106,11 @@ public class DeviceInfoController extends BaseController
       statusQuery = new TermQuery (new Term ("bindStatus",bindStatusSearch.toString ()));
       query.add (statusQuery,Occur.MUST);
     }
+    if (deviceTpyeSearch != null)
+    {
+      typeqQuery = new TermQuery (new Term ("type.name",deviceTpyeSearch.toString ()));
+      query.add (typeqQuery,Occur.MUST);
+    }
     if (startDateStr != null || endDateStr != null)
     {
       rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr, true, true);
@@ -116,7 +122,7 @@ public class DeviceInfoController extends BaseController
             +" end date: "+endDateStr);
       }
     }
-    if (nameQuery != null || rangeQuery != null || statusQuery != null)
+    if (nameQuery != null || rangeQuery != null || typeqQuery != null || statusQuery != null)
     {
       return deviceInfoService.search (query, pageable, analyzer,filter,true);
     }

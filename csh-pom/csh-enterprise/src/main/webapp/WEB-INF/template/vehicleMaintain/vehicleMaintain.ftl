@@ -45,7 +45,7 @@
 	    		<td >
 	    			 <input  class="easyui-textbox" name="name" id= "name"  data-options="required:true"/>
 	    		</td>
-	    		<th>${message("csh.endUser.mobileNum")}:</th>
+	    		<th>${message("csh.mobile")}:</th>
 	    		<td >
 	    			 <input  class="easyui-textbox" name="mobileNum" id= "mobileNum"  data-options="required:true"/>
 	    		</td>
@@ -59,9 +59,9 @@
 	    		<td >
 	    			 <input  class="easyui-textbox" name="dashboardMileage" id= "dashboardMileage"  data-options="required:true"/>
 	    		</td>
-	    		<th>${message("csh.vehicleMaintain.currentDate")}:</th>
+	    		<th>${message("csh.common.currentDate")}:</th>
 	    		<td>
-	    			 <input type="text" class="easyui-datebox" name="hireDate"  data-options="required:true,editable:false"/>   
+	    			 <input type="text" class="easyui-datebox" name="currentDate"  data-options="required:true,editable:false"/>   
 	    		</td>
 	    	</tr>
 	    	<tr>
@@ -79,9 +79,9 @@
 	    		<td>
 	    			 <input type="text" class="easyui-datebox" name="nextMaintainDate"  data-options="required:true,editable:false"/>   
 	    		</td>
-	    		<th>${message("csh.vehicleMaintain.nextMaintainDate")}:</th>
+	    		<th>${message("csh.vehicleMaintain.nextMaintainMileage")}:</th>
 	    		<td >
-	    			 <input  class="easyui-textbox" name="nextMaintainDate" id= "nextMaintainDate"  data-options="required:true"/>
+	    			 <input  class="easyui-textbox" name="nextMaintainMileage" id= "nextMaintainMileage"  data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    </table>

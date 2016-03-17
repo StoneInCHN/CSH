@@ -2,8 +2,8 @@ var vehicleMaintain_manager_tool = {
 		add:function(){
 			$('#addVehicleMaintain').dialog({
 			    title: message("csh.vehicleMaintain.add"),    
-			    width: 350,    
-			    height: 250,
+			    width: 700,    
+			    height: 400,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{
