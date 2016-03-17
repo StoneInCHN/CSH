@@ -46,6 +46,7 @@ var vehicleMaintain_manager_tool = {
 			    }],
 			    onOpen:function(){
 			    	$('#addVehicleMaintain_form').show();
+			    	
 			    },
 			});  
 		},

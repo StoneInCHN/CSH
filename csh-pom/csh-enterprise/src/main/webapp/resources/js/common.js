@@ -523,7 +523,7 @@ function searchEndUser(id) {
 	$('#commonMainDialog')
 			.dialog(
 					{
-						title : message("yly.endUser.search"),
+						title : message("csh.endUser.search"),
 						width : 1000,
 						height : 500,
 						modal : true,
@@ -537,17 +537,14 @@ function searchEndUser(id) {
 							}
 						} ],
 						onLoad : function() {
-							/**
-							 * 此datagrid 用户展示老人数据,并且提供查询功能
-							 */
 							$("#common-endUser-table-list")
 									.datagrid(
 											{
-												title : message("yly.endUser"),
+												title : message("csh.endUser.list"),
 												fitColumns : true,
 												url : '../endUser/list.jhtml',
 												pagination : true,
-												loadMsg : message("yly.common.loading"),
+												loadMsg : message("csh.common.loading"),
 												striped : true,
 												onDblClickRow : function(
 														rowIndex, rowData) {
@@ -556,7 +553,24 @@ function searchEndUser(id) {
 													$("#" + id).textbox(
 															'setValue',
 															rowData.realName);
-													
+													if($("#mobileNum")!=undefined){
+														$("#mobileNum").textbox('setValue',rowData.mobileNum);
+													};
+													if($("#addVehicleMaintain_plate")!=undefined){
+														$("#addVehicleMaintain_plate").combobox({
+															url:"../vehicle/findVehicleUnderUser.jhtml?userId="+rowData.id,
+														    valueField:'id',
+														    method:"get",
+														    textField:'plate',
+														    editable : false,
+														    required:true,
+														    prompt:message("csh.common.please.select"),
+														    onSelect:function(record){
+														    	debugger;
+														    	$("#dashboardMileage").textbox('setValue',record.dashboardMileage);
+														    }
+														});
+													};
 													$('#commonMainDialog')
 															.dialog("close");
 												},

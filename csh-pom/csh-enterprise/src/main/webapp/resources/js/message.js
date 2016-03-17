@@ -136,6 +136,7 @@ var messages = {
 	"csh.endUser.active":"账号正常",
 	"csh.endUser.list":"用户列表",
 	"csh.endUser.locked":"账号锁定",
+	"csh.endUser.search":"用户搜索",
 	
 	//设备信息
 	"csh.deviceInfo.list":"设备列表",

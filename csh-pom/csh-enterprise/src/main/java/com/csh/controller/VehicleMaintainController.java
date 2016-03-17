@@ -4,14 +4,12 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
-import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Controller;
@@ -24,10 +22,12 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleMaintain;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.VehicleMaintainService;
+import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
 
 
@@ -43,6 +43,8 @@ public class VehicleMaintainController extends BaseController
 
   @Resource (name = "vehicleMaintainServiceImpl")
   private VehicleMaintainService vehicleMaintainService;
+  @Resource (name = "vehicleServiceImpl")
+  private VehicleService vehicleService;
   
   @RequestMapping (value = "/vehicleMaintain", method = RequestMethod.GET)
   public String list (ModelMap model)
@@ -159,8 +161,10 @@ public class VehicleMaintainController extends BaseController
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (VehicleMaintain vehicleMaintain)
+  public @ResponseBody Message add (VehicleMaintain vehicleMaintain,Long vehicleId)
   {
+    Vehicle vehicle= vehicleService.find (vehicleId);
+    vehicleMaintain.setVehicle (vehicle);
     vehicleMaintainService.save (vehicleMaintain,true);
     return SUCCESS_MESSAGE;
   }
