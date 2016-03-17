@@ -553,11 +553,12 @@ function searchEndUser(id) {
 													$("#" + id).textbox(
 															'setValue',
 															rowData.realName);
-													if($("#mobileNum")!=undefined){
-														$("#mobileNum").textbox('setValue',rowData.mobileNum);
+													if($("#vehicleMaintainMobileNum")!=undefined){
+														
+														$("#vehicleMaintainMobileNum").textbox('setValue',rowData.mobileNum);
 													};
-													if($("#addVehicleMaintain_plate")!=undefined){
-														$("#addVehicleMaintain_plate").combobox({
+													if($("#vehicleMaintain_plate")!=undefined){
+														$("#vehicleMaintain_plate").combobox({
 															url:"../vehicle/findVehicleUnderUser.jhtml?userId="+rowData.id,
 														    valueField:'id',
 														    method:"get",
@@ -567,6 +568,7 @@ function searchEndUser(id) {
 														    prompt:message("csh.common.please.select"),
 														    onSelect:function(record){
 														    	$("#dashboardMileage").textbox('setValue',record.dashboardMileage);
+														    	$("#lastMaintainMileage").textbox('setValue',record.dashboardMileage);
 														    }
 														});
 													};

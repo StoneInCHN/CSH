@@ -6,26 +6,22 @@
 	    	<tr>
 	    		<th>${message("csh.vehicle.endUser")}:</th>
 	    		<td colspan="3">
-	    			 <input  class="easyui-textbox"  id= "addVehicleMaintain_endUser" value="${vehicleMaintain.vehicle.endUser.userName}" data-options="required:true,editable:false"/>
-	    			 <a href="#" id="common_endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('addVehicleMaintain_endUser')" iconCls="icon-search" plain=true"></a>
+	    			 <input  class="easyui-textbox"  id= "vehicleMaintain_endUser" value="${vehicleMaintain.vehicle.endUser.userName}" data-options="required:true,editable:false"/>
+	    			 <a href="#" id="common_endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('vehicleMaintain_endUser')" iconCls="icon-search" plain=true"></a>
 	    		</td>
 	    		<th>${message("csh.mobile")}:</th>
 	    		<td>
-	    			 <input  class="easyui-textbox" id= "mobileNum" value="${vehicleMaintain.vehicle.endUser.mobileNum}"  data-options="required:true"/>
+	    			 <input  class="easyui-textbox" id= "vehicleMaintainMobileNum" value="${vehicleMaintain.vehicle.endUser.mobileNum}"  data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
 	    		<th>${message("csh.vehicle.plate")}:</th>
-	    		<td >
-	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${vehicleMaintain.vehicle.id}" id= "editVehicleMaintain_plate"  data-options="required:true"/>
+	    		<td colspan="3">
+	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${vehicleMaintain.vehicle.id}" id= "vehicleMaintain_plate"  data-options="required:true"/>
 	    		</td>
 	    		<th>${message("csh.vehicleMaintain.dashboardMileage")}:</th>
 	    		<td >
 	    			 <input  class="easyui-textbox" name="dashboardMileage" id= "dashboardMileage" value="${vehicleMaintain.vehicle.dashboardMileage}" data-options="required:true"/>
-	    		</td>
-	    		<th>${message("csh.common.currentDate")}:</th>
-	    		<td>
-	    			 <input type="text" class="easyui-datebox" name="currentDate"  data-options="required:true,editable:false"/>   
 	    		</td>
 	    	</tr>
 	    	<tr>

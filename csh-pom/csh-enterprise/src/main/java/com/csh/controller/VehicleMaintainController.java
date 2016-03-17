@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleMaintain;
+import com.csh.framework.ordering.Ordering;
+import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.VehicleMaintainService;
@@ -55,6 +58,11 @@ public class VehicleMaintainController extends BaseController
   public String list (ModelMap model)
   {
     return "vehicleMaintain/vehicleMaintain";
+  }
+  @RequestMapping (value = "/add", method = RequestMethod.GET)
+  public String add (ModelMap model)
+  {
+    return "vehicleMaintain/add";
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<VehicleMaintain> list (Pageable pageable, ModelMap model,
@@ -143,6 +151,7 @@ public class VehicleMaintainController extends BaseController
             +" end date: "+endDateStr);
       }
     }
+    
     if (nameqQuery != null || rangeQuery != null || plateQuery != null)
     {
       return vehicleMaintainService.search (query, pageable, analyzer,filter,true);

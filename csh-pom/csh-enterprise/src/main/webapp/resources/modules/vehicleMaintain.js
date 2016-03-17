@@ -1,8 +1,9 @@
 var vehicleMaintain_manager_tool = {
 		add:function(){
 			$('#addVehicleMaintain').dialog({
-			    title: message("csh.vehicleMaintain.add"),    
-			    width: 700,    
+			    title: message("csh.vehicleMaintain.add"),   
+			    href:'../vehicleMaintain/add.jhtml',
+			    width: 650,    
 			    height: 400,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
@@ -48,6 +49,9 @@ var vehicleMaintain_manager_tool = {
 			    	$('#addVehicleMaintain_form').show();
 			    	
 			    },
+			    onClose:function(){
+			    	$('#addVehicleMaintain').dialog("clear");
+			    }
 			});  
 		},
 		edit:function(){
@@ -58,7 +62,7 @@ var vehicleMaintain_manager_tool = {
 			}
 			var _dialog = $('#editVehicleMaintain').dialog({    
 				title: message("csh.common.edit"),     
-			    width: 700,    
+			    width: 650,    
 			    height: 400,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
@@ -91,12 +95,12 @@ var vehicleMaintain_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editVehicleMaintain').dialog("close").form("reset");
+						$('#editVehicleMaintain').dialog("close");
+						 $("#editVehicleMaintain_form").form("reset");
 					}
 			    }],
 			    onLoad:function(){
-			    	debugger;
-			    	$("#editVehicleMaintain_plate").combobox({    
+			    	$("#vehicleMaintain_plate").combobox({    
 					    valueField:'id',    
 					    textField:'plate',
 					    editable : false,
@@ -104,10 +108,13 @@ var vehicleMaintain_manager_tool = {
 					    data:$.parseJSON($("#vehicleListMap").val()),
 					    prompt:message("csh.common.please.select"),
 					    onLoadSuccess:function(){
-					    	$("#editVehicleMaintain_plate").combobox("setValue",$("#editVehicleMaintain_plate").attr("data-value"))    	
+					    	$("#vehicleMaintain_plate").combobox("setValue",$("#vehicleMaintain_plate").attr("data-value"))    	
 					    }
 					});
 			    	
+			    },
+			    onClose:function(){
+			    	$('#editVehicleMaintain').dialog("clear");
 			    }
 			});  
 		},
@@ -128,8 +135,8 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#vehicleMaintainDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 400,    
-			    height: 350, 
+			    width: 650,    
+			    height: 400, 
 			    cache: false,
 			    modal: true,
 			    href:'../vehicleMaintain/details.jhtml?id='+rowData.id,
@@ -139,7 +146,10 @@ $(function(){
 					handler:function(){
 						 $('#vehicleMaintainDetail').dialog("close");
 					}
-			    }]
+			    }],
+			    onClose:function(){
+			    	$('#vehicleMaintainDetail').dialog("clear");
+			    }
 			});   
 		},
 		columns:[
