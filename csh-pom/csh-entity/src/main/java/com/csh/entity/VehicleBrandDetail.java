@@ -256,6 +256,7 @@ public class VehicleBrandDetail extends BaseEntity
     this.vehicles = vehicles;
   }
 
+  @JsonProperty
   @ManyToOne(fetch=FetchType.EAGER)
   public VehicleLine getVehicleLine ()
   {

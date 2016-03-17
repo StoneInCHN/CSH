@@ -113,6 +113,7 @@ public class VehicleLine extends BaseEntity
     this.children = children;
   }
 
+  @JsonProperty
   @ManyToOne(fetch=FetchType.EAGER)
   @IndexedEmbedded
   public VehicleBrand getVehicleBrand ()

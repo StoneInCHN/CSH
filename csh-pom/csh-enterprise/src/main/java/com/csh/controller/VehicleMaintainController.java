@@ -51,7 +51,7 @@ public class VehicleMaintainController extends BaseController
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<VehicleMaintain> list (Pageable pageable, ModelMap model,
-      Date nextMaintainDateStart, Date nextMaintainDateEnd, String plateSearch)
+      Date nextMaintainDateStart, Date nextMaintainDateEnd, String plateSearch,String userNameSearch)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -60,9 +60,14 @@ public class VehicleMaintainController extends BaseController
     analyzer.setMaxWordLength (true);
     BooleanQuery query = new BooleanQuery ();
 
-    QueryParser namepParser = new QueryParser (Version.LUCENE_35, "vehicle.plate",
+    QueryParser namepParser = new QueryParser (Version.LUCENE_35, "vehicle.endUser.userName",
         analyzer);
     Query nameqQuery = null;
+    
+    QueryParser plateParser = new QueryParser (Version.LUCENE_35, "vehicle.plate",
+        analyzer);
+    Query plateQuery = null;
+    
     TermRangeQuery rangeQuery = null;
     
     Filter filter = null;
@@ -74,9 +79,9 @@ public class VehicleMaintainController extends BaseController
     {
       endDateStr = DateTimeUtils.convertDateToString (nextMaintainDateEnd, null);
     }
-    if (plateSearch != null)
+    if (userNameSearch != null)
     {
-      String text = QueryParser.escape (plateSearch);
+      String text = QueryParser.escape (userNameSearch);
         try
         {
           //通配符查询，开启*开头，但影响效率
@@ -85,6 +90,29 @@ public class VehicleMaintainController extends BaseController
           nameqQuery = namepParser.parse ("*"+text+"*");
           
           query.add (nameqQuery, Occur.MUST);
+          
+          if (LogUtil.isDebugEnabled (VehicleMaintainController.class))
+          {
+            LogUtil.debug (VehicleMaintainController.class, "search", "Search user: "
+                + userNameSearch );
+          }
+        }
+        catch (ParseException e)
+        {
+          e.printStackTrace();
+        }
+    }
+    if (plateSearch != null)
+    {
+      String text = QueryParser.escape (plateSearch);
+        try
+        {
+          //通配符查询，开启*开头，但影响效率
+          plateParser.setAllowLeadingWildcard (true);
+
+          plateQuery = plateParser.parse ("*"+text+"*");
+          
+          query.add (plateQuery, Occur.MUST);
           
           if (LogUtil.isDebugEnabled (VehicleMaintainController.class))
           {
@@ -108,7 +136,7 @@ public class VehicleMaintainController extends BaseController
             +" end date: "+endDateStr);
       }
     }
-    if (nameqQuery != null || rangeQuery != null )
+    if (nameqQuery != null || rangeQuery != null || plateQuery != null)
     {
       return vehicleMaintainService.search (query, pageable, analyzer,filter,true);
     }

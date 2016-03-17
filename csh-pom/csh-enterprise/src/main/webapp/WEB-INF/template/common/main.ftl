@@ -93,20 +93,11 @@
     		[@shiro.hasPermission name="vehicle"]
     		<li><a href="#" data-url="${base}/console/vehicle/vehicle.jhtml">${message("csh.vehicle.vehicle")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="vehicleBrand"]
-    		<li><a href="#" data-url="${base}/console/vehicleBrand/vehicleBrand.jhtml">${message("csh.vehicle.vehicleBrand")}</a></li>
-    		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="vehicleLine"]
-    		<li><a href="#" data-url="${base}/console/vehicleLine/vehicleLine.jhtml">${message("csh.vehicle.vehicleLine")}</a></li>
-    		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="vehicleDetail"]
     		<li><a href="#" data-url="${base}/console/vehicleDetail/vehicleDetail.jhtml">${message("csh.vehicle.vehicleLine")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="vehicleMaintain"]
     		<li><a href="#" data-url="${base}/console/vehicleMaintain/vehicleMaintain.jhtml">${message("csh.vehicle.vehicleMaintain")}</a></li>
-    		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="vehicleOil"]
-    		<li><a href="#" data-url="${base}/console/vehicleOil/vehicleOil.jhtml">${message("csh.vehicle.vehicleOil")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.device.config")}" id="device">

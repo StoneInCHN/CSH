@@ -295,6 +295,18 @@ $(function(){
 			    	  }
 		      	  }},
 		      {title:message("csh.vehicle.plate"),field:"plate",sortable:true},
+		      {title:message("csh.vehicle.vehicleBrand"),width:100,field:"vehicleBrand",sortable:true,
+		    	  formatter: function(value,row,index){
+			    	  if(row != null){
+			    		  return  row.vehicleBrandDetail.vehicleLine.vehicleBrand.name;
+			    	  }
+		      	  }},
+		      {title:message("csh.vehicle.vehicleLine"),width:100,field:"vehicleLine",sortable:true,
+		    	  formatter: function(value,row,index){
+			    	  if(row != null){
+			    		  return  row.vehicleBrandDetail.vehicleLine.name;
+			    	  }
+		      	  }},
 		      {title:message("csh.vehicle.vehicleBrandDetail"),width:100,field:"vehicleBrandDetail",sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(value != null){

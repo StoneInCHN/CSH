@@ -1,7 +1,7 @@
 var vehicleMaintain_manager_tool = {
 		add:function(){
 			$('#addVehicleMaintain').dialog({
-			    title: message("csh.vehicleLine.add"),    
+			    title: message("csh.vehicleMaintain.add"),    
 			    width: 350,    
 			    height: 250,
 			    iconCls:'icon-mini-add',
@@ -10,13 +10,13 @@ var vehicleMaintain_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#addVehicleLine_form').form('validate');
+						var validate = $('#addVehicleMaintain_form').form('validate');
 						
 						if(validate){
 								$.ajax({
-									url:"../vehicleLine/add.jhtml",
+									url:"../vehicleMaintain/add.jhtml",
 									type:"post",
-									data:$("#addVehicleLine_form").serialize(),
+									data:$("#addVehicleMaintain_form").serialize(),
 									beforeSend:function(){
 										$.messager.progress({
 											text:message("csh.common.saving")
@@ -26,9 +26,9 @@ var vehicleMaintain_manager_tool = {
 										$.messager.progress('close');
 										if(response == "success"){
 											showSuccessMsg(result.content);
-											$('#addVehicleLine').dialog("close")
-											$("#addVehicleLine_form").form("reset");
-											$("#vehicleLine-table-list").datagrid('reload');
+											$('#addVehicleMaintain').dialog("close")
+											$("#addVehicleMaintain_form").form("reset");
+											$("#vehicleMaintain-table-list").datagrid('reload');
 										}else{
 											alertErrorMsg();
 										}
@@ -40,12 +40,12 @@ var vehicleMaintain_manager_tool = {
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#addVehicleLine').dialog("close");
-						 $("#addVehicleLine_form").form("reset");
+						 $('#addVehicleMaintain').dialog("close");
+						 $("#addVehicleMaintain_form").form("reset");
 					}
 			    }],
 			    onOpen:function(){
-			    	$('#addVehicleLine_form').show();
+			    	$('#addVehicleMaintain_form').show();
 			    },
 			});  
 		},
@@ -136,6 +136,33 @@ $(function(){
 		    	  formatter:function(value,row,index){
 		    		  if(value !=null){
 		    			  return value.plate;
+		    		  }else{
+		    			  return null;
+		    		  }
+		    			  
+		    	  }},
+	    	  {title:message("csh.vehicle.endUser"),field:"userName",width:100,sortable:true,
+		    	  formatter:function(value,row,index){
+		    		  if(row !=null){
+		    			  return row.vehicle.endUser.userName;
+		    		  }else{
+		    			  return null;
+		    		  }
+		    			  
+		    	  }},
+	    	  {title:message("csh.endUser.mobileNum"),field:"mobileNum",width:100,sortable:true,
+		    	  formatter:function(value,row,index){
+		    		  if(row !=null){
+		    			  return row.vehicle.endUser.mobileNum;
+		    		  }else{
+		    			  return null;
+		    		  }
+		    			  
+		    	  }},
+	    	  {title:message("csh.vehicle.dashboardMileage"),field:"dashboardMileage",width:100,sortable:true,
+		    	  formatter:function(value,row,index){
+		    		  if(row !=null){
+		    			  return row.vehicle.dashboardMileage;
 		    		  }else{
 		    			  return null;
 		    		  }

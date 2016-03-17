@@ -11,8 +11,8 @@
 			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.vehicleBrand.code")}:</label>
-			    <input type="text" class="easyui-textbox" id="codeSearch" name="codeSearch" validtype="length[0,20]"/>
+			    <label> ${message("csh.vehicle.endUser")}:</label>
+			    <input type="text" class="easyui-textbox" id="userNameSearch" name="userNameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
 			    <label> 下次保养时间:</label>
@@ -41,15 +41,47 @@
 	<form id="addVehicleMaintain_form" method="post" class="form-table">
 	    <table class="table table-striped"  border="0">
 	    	<tr>
-	    		<th>${message("csh.vehicleMaintain.name")}:</th>
+	    		<th>${message("csh.vehicle.endUser")}:</th>
 	    		<td >
 	    			 <input  class="easyui-textbox" name="name" id= "name"  data-options="required:true"/>
 	    		</td>
+	    		<th>${message("csh.endUser.mobileNum")}:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" name="mobileNum" id= "mobileNum"  data-options="required:true"/>
+	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("csh.vehicleMaintain.code")}:</th>
+	    		<th>${message("csh.vehicle.plate")}:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" name="name" id= "name"  data-options="required:true"/>
+	    		</td>
+	    		<th>${message("csh.vehicleMaintain.dashboardMileage")}:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" name="dashboardMileage" id= "dashboardMileage"  data-options="required:true"/>
+	    		</td>
+	    		<th>${message("csh.vehicleMaintain.currentDate")}:</th>
 	    		<td>
-	    			 <input class="easyui-textbox" name="code" id= "code" />
+	    			 <input type="text" class="easyui-datebox" name="hireDate"  data-options="required:true,editable:false"/>   
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<th>${message("csh.vehicleMaintain.lastMaintainDate")}:</th>
+	    		<td>
+	    			 <input type="text" class="easyui-datebox" name="lastMaintainDate"  data-options="required:true,editable:false"/>   
+	    		</td>
+	    		<th>${message("csh.vehicleMaintain.lastMaintainMileage")}:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" name="lastMaintainMileage" id= "lastMaintainMileage"  data-options="required:true"/>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<th>${message("csh.vehicleMaintain.nextMaintainDate")}:</th>
+	    		<td>
+	    			 <input type="text" class="easyui-datebox" name="nextMaintainDate"  data-options="required:true,editable:false"/>   
+	    		</td>
+	    		<th>${message("csh.vehicleMaintain.nextMaintainDate")}:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" name="nextMaintainDate" id= "nextMaintainDate"  data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    </table>
