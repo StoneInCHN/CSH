@@ -45,6 +45,9 @@
 				[@shiro.hasPermission name="endUserManage"]
 				<li><a href="#endUser"><i class="fa fa-users fa-1x"></i>${message("csh.endUser.config")}</a></li>
 				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="reservationMange"]
+				<li><a href="#reservationMange"><i class="fa fa-users fa-1x"></i>${message("csh.reservationMange.config")}</a></li>
+				[/@shiro.hasPermission]
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
 				<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>
 			</ul>
@@ -108,6 +111,14 @@
     	<ul title="${message("csh.endUser.config")}" id="endUser">
     		[@shiro.hasPermission name="endUser"]
     		<li><a href="#" data-url="${base}/console/endUser/endUser.jhtml">${message("csh.endUser.endUser")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>
+    	<ul title="${message("csh.reservationManage.config")}" id="reservationMange">
+    		[@shiro.hasPermission name="repareReservation"]
+    		<li><a href="#" data-url="${base}/console/repareReservation/repareReservation.jhtml">${message("csh.repareReservation.repareReservation")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="maintainReservation"]
+    		<li><a href="#" data-url="${base}/console/maintainReservation/maintainReservation.jhtml">${message("csh.maintainReservation.maintainReservation")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>          
     </div>

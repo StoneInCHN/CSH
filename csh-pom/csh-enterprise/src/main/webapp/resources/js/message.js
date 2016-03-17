@@ -179,7 +179,14 @@ var messages = {
 	"csh.vehicleMaintain.lastMaintainDate":"上次保养时间",
 	"csh.vehicleMaintain.nextMaintainMileage":"下次保养里程",
 	"csh.vehicleMaintain.nextMaintainDate":"下次保养时间",
-	"csh.vehicleMaintain.add":"添加保养记录"
+	"csh.vehicleMaintain.add":"添加保养记录",
+	//预约中心
+	"csh.reservation.userName":"预约人",
+	"csh.reservation.reservationDate":"预约时间",
+	"csh.reservation.plate":"预约车牌号",
+	"csh.reservation.vehicleBrand":"预约车型",
+	"csh.maintainReservation.list":"保养预约列表",
+	"csh.repareReservation.list":"维修预约列表"
 	
 };
 //多语言

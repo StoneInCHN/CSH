@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -16,17 +17,23 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.Gender;
+import com.csh.lucene.DateBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 预约中心
  * 
  */
+@Indexed(index="maintainReservation")
 @Entity
 @Table (name = "csh_maintain_reservation")
 @SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_maintain_reservation_sequence")
@@ -57,6 +64,9 @@ public class MaintainReservation extends BaseEntity
 
   private Long tenantID;
 
+  @JsonProperty
+  @IndexedEmbedded
+  @ManyToOne
   public EndUser getEndUser ()
   {
     return endUser;
@@ -67,6 +77,9 @@ public class MaintainReservation extends BaseEntity
     this.endUser = endUser;
   }
 
+  @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @FieldBridge(impl = DateBridgeImpl.class)
   public Date getReservationDate ()
   {
     return reservationDate;
@@ -76,7 +89,8 @@ public class MaintainReservation extends BaseEntity
   {
     this.reservationDate = reservationDate;
   }
-
+  @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, store = Store.NO,analyzer=@Analyzer(impl=IKAnalyzer.class))
   public String getPlate ()
   {
     return plate;
@@ -87,6 +101,7 @@ public class MaintainReservation extends BaseEntity
     this.plate = plate;
   }
 
+  @JsonProperty
   public String getVehicleBrand ()
   {
     return vehicleBrand;
@@ -98,6 +113,7 @@ public class MaintainReservation extends BaseEntity
   }
 
   @Index (name = "maintainReservation_tenantid")
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
   public Long getTenantID ()
   {
     return tenantID;
