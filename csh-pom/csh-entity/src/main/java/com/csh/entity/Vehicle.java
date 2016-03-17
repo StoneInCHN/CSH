@@ -119,6 +119,68 @@ public class Vehicle extends BaseEntity {
    */
   private String vehicleFullBrand;
 
+  /**
+   * 交强险到期时间
+   */
+  private Date trafficInsuranceExpiration;
+  /**
+   * 商业险到期时间
+   */
+  private Date commercialInsuranceExpiration;
+
+  /**
+   * 下次年检时间
+   */
+  private Date nextAnnualInspection;
+
+  /**
+   * 行驶里程
+   */
+  private Long driveMileage;
+  /**
+   * 上次保养里程
+   */
+  private Long lastMaintainMileage;
+
+  public Date getTrafficInsuranceExpiration() {
+    return trafficInsuranceExpiration;
+  }
+
+  public void setTrafficInsuranceExpiration(Date trafficInsuranceExpiration) {
+    this.trafficInsuranceExpiration = trafficInsuranceExpiration;
+  }
+
+  public Date getCommercialInsuranceExpiration() {
+    return commercialInsuranceExpiration;
+  }
+
+  public void setCommercialInsuranceExpiration(Date commercialInsuranceExpiration) {
+    this.commercialInsuranceExpiration = commercialInsuranceExpiration;
+  }
+
+  public Date getNextAnnualInspection() {
+    return nextAnnualInspection;
+  }
+
+  public void setNextAnnualInspection(Date nextAnnualInspection) {
+    this.nextAnnualInspection = nextAnnualInspection;
+  }
+
+  public Long getDriveMileage() {
+    return driveMileage;
+  }
+
+  public void setDriveMileage(Long driveMileage) {
+    this.driveMileage = driveMileage;
+  }
+
+  public Long getLastMaintainMileage() {
+    return lastMaintainMileage;
+  }
+
+  public void setLastMaintainMileage(Long lastMaintainMileage) {
+    this.lastMaintainMileage = lastMaintainMileage;
+  }
 
   @Transient
   public String getVehicleFullBrand() {

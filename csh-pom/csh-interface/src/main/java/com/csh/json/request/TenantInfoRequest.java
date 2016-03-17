@@ -2,45 +2,55 @@ package com.csh.json.request;
 
 import com.csh.json.base.BaseRequest;
 
-public class TenantInfoRequest extends BaseRequest{
-      
-	  /**
-	   * 纬度
-	   */
-	  private String latitude;
+public class TenantInfoRequest extends BaseRequest {
 
-	  /**
-	   * 经度
-	   */
-	  private String longitude;
+  private Long tenantId;
+  /**
+   * 纬度
+   */
+  private String latitude;
 
-	  /**
-	   * 服务类别ID
-	   */
-      private Long serviceCategoryId;
+  /**
+   * 经度
+   */
+  private String longitude;
 
-	public String getLatitude() {
-		return latitude;
-	}
+  /**
+   * 服务类别ID
+   */
+  private Long serviceCategoryId;
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
 
-	public String getLongitude() {
-		return longitude;
-	}
+  public Long getTenantId() {
+    return tenantId;
+  }
 
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
+  public void setTenantId(Long tenantId) {
+    this.tenantId = tenantId;
+  }
 
-	public Long getServiceCategoryId() {
-		return serviceCategoryId;
-	}
+  public String getLatitude() {
+    return latitude;
+  }
 
-	public void setServiceCategoryId(Long serviceCategoryId) {
-		this.serviceCategoryId = serviceCategoryId;
-	}
-      
+  public void setLatitude(String latitude) {
+    this.latitude = latitude;
+  }
+
+  public String getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(String longitude) {
+    this.longitude = longitude;
+  }
+
+  public Long getServiceCategoryId() {
+    return serviceCategoryId;
+  }
+
+  public void setServiceCategoryId(Long serviceCategoryId) {
+    this.serviceCategoryId = serviceCategoryId;
+  }
+
 }

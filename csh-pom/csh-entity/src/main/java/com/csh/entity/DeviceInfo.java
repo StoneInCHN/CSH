@@ -27,157 +27,144 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 设备信息
  * 
  */
-@Indexed(index="deviceInfo")
+@Indexed(index = "deviceInfo")
 @Entity
-@Table(name="csh_device_info")
+@Table(name = "csh_device_info")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_device_info_sequence")
 public class DeviceInfo extends BaseEntity {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
 
-/**
- * 绑定时间
- */
-	private Date bindTime;
-	
-	/**
-	 * 解绑时间
-	 */
-	private Date unBindTime;
+  /**
+   * 绑定时间
+   */
+  private Date bindTime;
 
-	/**
-	 * 设备编号
-	 */
-	private String deviceNo;
+  /**
+   * 解绑时间
+   */
+  private Date unBindTime;
 
-	/**
-	 * 设备状态
-	 */
-	private DeviceStatus deviceStatus;
-	
-	/**
-	 * 绑定状态
-	 */
-	private BindStatus bindStatus;
+  /**
+   * 设备编号
+   */
+  private String deviceNo;
 
-/**
- * sim 卡号
- */
-	private String simNo;
+  /**
+   * 设备状态
+   */
+  private DeviceStatus deviceStatus;
 
-	/**
-	 * 设备类型
-	 */
-	private DeviceType type;
+  /**
+   * 绑定状态
+   */
+  private BindStatus bindStatus;
 
-	/**
-	 * 车辆
-	 */
-	private Vehicle vehicle;
-	
-	/**
-	 * 租户ID
-	 */
-	private Long tenantID;
+  /**
+   * sim 卡号
+   */
+  private String simNo;
 
-	@JsonProperty
-  public Date getBindTime ()
-  {
+  /**
+   * 设备类型
+   */
+  private DeviceType type;
+
+  /**
+   * 车辆
+   */
+  private Vehicle vehicle;
+
+  /**
+   * 租户ID
+   */
+  private Long tenantID;
+
+  @JsonProperty
+  public Date getBindTime() {
     return bindTime;
   }
 
-  public void setBindTime (Date bindTime)
-  {
+  public void setBindTime(Date bindTime) {
     this.bindTime = bindTime;
   }
+
   @JsonProperty
-  public Date getUnBindTime ()
-  {
+  public Date getUnBindTime() {
     return unBindTime;
   }
 
-  public void setUnBindTime (Date unBindTime)
-  {
+  public void setUnBindTime(Date unBindTime) {
     this.unBindTime = unBindTime;
   }
+
   @JsonProperty
-  @Field(store = Store.NO, index = Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
-  public String getDeviceNo ()
-  {
+  @Field(store = Store.NO, index = Index.TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
+  public String getDeviceNo() {
     return deviceNo;
   }
 
-  public void setDeviceNo (String deviceNo)
-  {
+  public void setDeviceNo(String deviceNo) {
     this.deviceNo = deviceNo;
   }
+
   @JsonProperty
   @Field(store = Store.NO, index = Index.UN_TOKENIZED)
-  public DeviceStatus getDeviceStatus ()
-  {
+  public DeviceStatus getDeviceStatus() {
     return deviceStatus;
   }
 
-  public void setDeviceStatus (DeviceStatus deviceStatus)
-  {
+  public void setDeviceStatus(DeviceStatus deviceStatus) {
     this.deviceStatus = deviceStatus;
   }
+
   @JsonProperty
-  public String getSimNo ()
-  {
+  public String getSimNo() {
     return simNo;
   }
 
-  public void setSimNo (String simNo)
-  {
+  public void setSimNo(String simNo) {
     this.simNo = simNo;
   }
+
   @JsonProperty
   @ManyToOne(fetch = FetchType.EAGER)
   @IndexedEmbedded
-  public DeviceType getType ()
-  {
+  public DeviceType getType() {
     return type;
   }
 
-  public void setType (DeviceType type)
-  {
+  public void setType(DeviceType type) {
     this.type = type;
   }
 
-  @OneToOne(fetch=FetchType.EAGER)
+  @OneToOne(fetch = FetchType.EAGER)
   @JsonProperty
-  public Vehicle getVehicle ()
-  {
+  public Vehicle getVehicle() {
     return vehicle;
   }
 
-  public void setVehicle (Vehicle vehicle)
-  {
+  public void setVehicle(Vehicle vehicle) {
     this.vehicle = vehicle;
   }
 
   @Field(store = Store.NO, index = Index.UN_TOKENIZED)
-  public Long getTenantID ()
-  {
+  public Long getTenantID() {
     return tenantID;
   }
 
-  public void setTenantID (Long tenantID)
-  {
+  public void setTenantID(Long tenantID) {
     this.tenantID = tenantID;
   }
 
   @JsonProperty
-  @Field(store = Store.NO,index = Index.UN_TOKENIZED)
-  public BindStatus getBindStatus ()
-  {
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  public BindStatus getBindStatus() {
     return bindStatus;
   }
 
-  public void setBindStatus (BindStatus bindStatus)
-  {
+  public void setBindStatus(BindStatus bindStatus) {
     this.bindStatus = bindStatus;
   }
-	
+
 }
