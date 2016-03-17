@@ -35,7 +35,6 @@ import com.csh.json.request.UserRegRequest;
 import com.csh.service.EndUserService;
 import com.csh.service.FileService;
 import com.csh.service.SmsTokenService;
-import com.csh.utils.ApiUtils;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.KeyGenerator;
 import com.csh.utils.RSAHelper;
@@ -157,8 +156,7 @@ public class EndUserController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     response.setDesc(loginUser.getId().toString());
 
-    String[] properties =
-        {"id", "userName", "nickName", "photo", "signature", "driverLicense.sn_no"};
+    String[] properties = {"id", "userName", "nickName", "photo", "signature", "defaultVehicle"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
     response.setMsg(map);
     String token = TokenGenerator.generateToken();
@@ -298,7 +296,7 @@ public class EndUserController extends MobileBaseController {
       }
       Integer smsTokenNo = (int) ((Math.random() * 9 + 1) * 1000);
       String smsTxt = setting.getSmsTxtPrefix() + smsTokenNo + setting.getSmsTxtSuffix();
-      ApiUtils.sendSmsMsg(mobileNo, smsTxt);// 通过第三平台发送短信验证码
+      // ApiUtils.sendSmsMsg(mobileNo, smsTxt);// 通过第三平台发送短信验证码
       SmsToken userSmsToken = new SmsToken();
       userSmsToken.setCreateDate(new Date());
       userSmsToken.setMobile(mobileNo);
@@ -348,16 +346,16 @@ public class EndUserController extends MobileBaseController {
         response.setDesc(Message.error("csh.pwd.no.same").getContent());
         return response;
       }
+      try {
+        password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
       if (password.length() < setting.getPasswordMinlength()
           || password.length() > setting.getPasswordMaxlength()) {
         response.setCode(CommonAttributes.FAIL_REG);
         response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
         return response;
-      }
-      try {
-        password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
-      } catch (Exception e) {
-        e.printStackTrace();
       }
       EndUser regUser = new EndUser();
       regUser.setMobileNum(userName);

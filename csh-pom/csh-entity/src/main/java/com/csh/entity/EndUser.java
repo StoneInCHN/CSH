@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
@@ -106,9 +107,30 @@ public class EndUser extends BaseEntity {
   private Set<Vehicle> vehicles = new HashSet<Vehicle>();
 
   /**
+   * 默认显示的车辆
+   */
+  private String defaultVehicle;
+
+  /**
    * login统计
    */
   private Set<LoginStatistics> loginStatistics = new HashSet<LoginStatistics>();
+
+
+  @Transient
+  public String getDefaultVehicle() {
+    for (Vehicle v : vehicles) {
+      if (v.getIsDefault()) {
+        defaultVehicle = v.getVehicleFullBrand();
+        break;
+      }
+    }
+    return defaultVehicle;
+  }
+
+  public void setDefaultVehicle(String defaultVehicle) {
+    this.defaultVehicle = defaultVehicle;
+  }
 
   @OneToMany(mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   public Set<LoginStatistics> getLoginStatistics() {

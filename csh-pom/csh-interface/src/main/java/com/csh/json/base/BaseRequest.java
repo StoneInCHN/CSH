@@ -10,10 +10,10 @@ public class BaseRequest {
    * 用户名
    */
   private String userName;
-  /**
-   * 手机号
-   */
-  private String mobileNum;
+  // /**
+  // * 手机号
+  // */
+  // private String mobileNum;
   /**
    * 用户ID
    */
@@ -69,11 +69,11 @@ public class BaseRequest {
     this.pageNumber = pageNumber;
   }
 
-  public String getMobileNum() {
-    return mobileNum;
-  }
-
-  public void setMobileNum(String mobileNum) {
-    this.mobileNum = mobileNum;
-  }
+  // public String getMobileNum() {
+  // return mobileNum;
+  // }
+  //
+  // public void setMobileNum(String mobileNum) {
+  // this.mobileNum = mobileNum;
+  // }
 }

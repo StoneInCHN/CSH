@@ -14,7 +14,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
@@ -24,26 +23,24 @@ import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
-import com.csh.entity.commonenum.CommonEnum.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The persistent class for the csh_vehicle database table.
  * 
  */
-@Indexed(index="vehicle")
+@Indexed(index = "vehicle")
 @Entity
-@Table (name = "csh_vehicle")
-@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_sequence")
-public class Vehicle extends BaseEntity
-{
+@Table(name = "csh_vehicle")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_vehicle_sequence")
+public class Vehicle extends BaseEntity {
   private static final long serialVersionUID = 1L;
 
   /**
    * 代理商
-   
-  private String agent;
-  */
+   * 
+   * private String agent;
+   */
 
   /**
    * 车辆型号
@@ -53,7 +50,7 @@ public class Vehicle extends BaseEntity
   /**
    * 车架号
    */
-  private String vehicleNo; 
+  private String vehicleNo;
   /**
    * 颜色
    */
@@ -69,7 +66,10 @@ public class Vehicle extends BaseEntity
    */
   private DrivingLicense drivingLicense;
 
-  private int isDefault;
+  /**
+   * 是否默认显示
+   */
+  private Boolean isDefault;
 
   /**
    * 车牌号
@@ -78,12 +78,12 @@ public class Vehicle extends BaseEntity
 
 
   private String vin;
-  
+
   /**
    * 仪表盘里程
    */
   private Float dashboardMileage;
-  
+
   /**
    * 仪表盘电压
    */
@@ -93,12 +93,12 @@ public class Vehicle extends BaseEntity
    * 仪表盘油量
    */
   private Float dashboradOil;
-  
+
   /**
    * 生产日期
    */
   private Date produceDate;
-  
+
   /**
    * 上牌日期
    */
@@ -107,184 +107,190 @@ public class Vehicle extends BaseEntity
 
   private Long tenantID;
 
-  private Set<VehicleMaintain> vehicleMaintain = new HashSet<VehicleMaintain> ();
-  
+  private Set<VehicleMaintain> vehicleMaintain = new HashSet<VehicleMaintain>();
+
   /**
    * 设备编号，冗余字段，方便查询
    */
   private String deviceNo;
+
+  /**
+   * 车辆车型全称
+   */
+  private String vehicleFullBrand;
+
+
+  @Transient
+  public String getVehicleFullBrand() {
+    VehicleLine vl = vehicleBrandDetail.getVehicleLine();
+    vehicleFullBrand = vl.getName();
+    if (vl.getParent() != null) {
+      VehicleLine vl_parent = vl.getParent();
+      vehicleFullBrand = vl_parent.getName() + "-" + vehicleFullBrand;
+    }
+    return vehicleFullBrand;
+  }
+
+  public void setVehicleFullBrand(String vehicleFullBrand) {
+    this.vehicleFullBrand = vehicleFullBrand;
+  }
+
   @JsonProperty
-  @ManyToOne(fetch=FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER)
   @IndexedEmbedded
-  public VehicleBrandDetail getVehicleBrandDetail ()
-  {
+  public VehicleBrandDetail getVehicleBrandDetail() {
     return vehicleBrandDetail;
   }
 
-  public void setVehicleBrandDetail (VehicleBrandDetail vehicleBrandDetail)
-  {
+  public void setVehicleBrandDetail(VehicleBrandDetail vehicleBrandDetail) {
     this.vehicleBrandDetail = vehicleBrandDetail;
   }
 
-  public String getColor ()
-  {
+  public String getColor() {
     return color;
   }
 
-  public void setColor (String color)
-  {
+  public void setColor(String color) {
     this.color = color;
   }
 
-  @OneToOne(mappedBy="vehicle",cascade=CascadeType.MERGE)
-  public DeviceInfo getDevice ()
-  {
+  @OneToOne(mappedBy = "vehicle", cascade = CascadeType.MERGE)
+  public DeviceInfo getDevice() {
     return device;
   }
 
-  public void setDevice (DeviceInfo device)
-  {
+  public void setDevice(DeviceInfo device) {
     this.device = device;
   }
 
-  @OneToOne(mappedBy="vehicle")
-  public DrivingLicense getDrivingLicense ()
-  {
+  @OneToOne(mappedBy = "vehicle")
+  public DrivingLicense getDrivingLicense() {
     return drivingLicense;
   }
 
-  public void setDrivingLicense (DrivingLicense drivingLicense)
-  {
+  public void setDrivingLicense(DrivingLicense drivingLicense) {
     this.drivingLicense = drivingLicense;
   }
 
-  public int getIsDefault ()
-  {
+  public Boolean getIsDefault() {
     return isDefault;
   }
 
-  public void setIsDefault (int isDefault)
-  {
+  public void setIsDefault(Boolean isDefault) {
     this.isDefault = isDefault;
   }
 
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
-  public String getPlate ()
-  {
+  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer(
+      impl = IKAnalyzer.class))
+  public String getPlate() {
     return plate;
   }
 
-  public void setPlate (String plate)
-  {
+  public void setPlate(String plate) {
     this.plate = plate;
   }
 
-  public String getVin ()
-  {
+  public String getVin() {
     return vin;
   }
 
-  public void setVin (String vin)
-  {
+  public void setVin(String vin) {
     this.vin = vin;
   }
 
   @JsonProperty
   @ManyToOne
   @IndexedEmbedded
-  public EndUser getEndUser ()
-  {
+  public EndUser getEndUser() {
     return endUser;
   }
 
-  public void setEndUser (EndUser endUser)
-  {
+  public void setEndUser(EndUser endUser) {
     this.endUser = endUser;
   }
-  @Index(name="vehicle_tenantid")
+
+  @Index(name = "vehicle_tenantid")
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
-  public Long getTenantID ()
-  {
+  public Long getTenantID() {
     return tenantID;
   }
 
-  public void setTenantID (Long tenantID)
-  {
+  public void setTenantID(Long tenantID) {
     this.tenantID = tenantID;
   }
 
-  @OneToMany(mappedBy="vehicle")
-  public Set<VehicleMaintain> getVehicleMaintain ()
-  {
+  @OneToMany(mappedBy = "vehicle")
+  public Set<VehicleMaintain> getVehicleMaintain() {
     return vehicleMaintain;
   }
 
-  public void setVehicleMaintain (Set<VehicleMaintain> vehicleMaintain)
-  {
+  public void setVehicleMaintain(Set<VehicleMaintain> vehicleMaintain) {
     this.vehicleMaintain = vehicleMaintain;
   }
 
   @JsonProperty
   @Transient
-  public String getDeviceNo ()
-  {
+  public String getDeviceNo() {
     return deviceNo;
   }
 
-  public void setDeviceNo (String deviceNo)
-  {
+  public void setDeviceNo(String deviceNo) {
     this.deviceNo = deviceNo;
   }
 
   @JsonProperty
-	public String getVehicleNo() {
-		return vehicleNo;
-	}
+  public String getVehicleNo() {
+    return vehicleNo;
+  }
 
-	public void setVehicleNo(String vehicleNo) {
-		this.vehicleNo = vehicleNo;
-	}
-	@JsonProperty
-	public Float getDashboardMileage() {
-		return dashboardMileage;
-	}
+  public void setVehicleNo(String vehicleNo) {
+    this.vehicleNo = vehicleNo;
+  }
 
-	public void setDashboardMileage(Float dashboardMileage) {
-		this.dashboardMileage = dashboardMileage;
-	}
-	@JsonProperty
-	public Float getDashboardBV() {
-		return dashboardBV;
-	}
+  @JsonProperty
+  public Float getDashboardMileage() {
+    return dashboardMileage;
+  }
 
-	public void setDashboardBV(Float dashboardBV) {
-		this.dashboardBV = dashboardBV;
-	}
-	@JsonProperty
-	public Float getDashboradOil() {
-		return dashboradOil;
-	}
+  public void setDashboardMileage(Float dashboardMileage) {
+    this.dashboardMileage = dashboardMileage;
+  }
 
-	public void setDashboradOil(Float dashboradOil) {
-		this.dashboradOil = dashboradOil;
-	}
-	public Date getProduceDate() {
-		return produceDate;
-	}
+  @JsonProperty
+  public Float getDashboardBV() {
+    return dashboardBV;
+  }
 
-	public void setProduceDate(Date produceDate) {
-		this.produceDate = produceDate;
-	}
+  public void setDashboardBV(Float dashboardBV) {
+    this.dashboardBV = dashboardBV;
+  }
 
-	public Date getPlateDate() {
-		return plateDate;
-	}
+  @JsonProperty
+  public Float getDashboradOil() {
+    return dashboradOil;
+  }
 
-	public void setPlateDate(Date plateDate) {
-		this.plateDate = plateDate;
-	}
+  public void setDashboradOil(Float dashboradOil) {
+    this.dashboradOil = dashboradOil;
+  }
 
-  
-  
+  public Date getProduceDate() {
+    return produceDate;
+  }
+
+  public void setProduceDate(Date produceDate) {
+    this.produceDate = produceDate;
+  }
+
+  public Date getPlateDate() {
+    return plateDate;
+  }
+
+  public void setPlateDate(Date plateDate) {
+    this.plateDate = plateDate;
+  }
+
+
+
 }

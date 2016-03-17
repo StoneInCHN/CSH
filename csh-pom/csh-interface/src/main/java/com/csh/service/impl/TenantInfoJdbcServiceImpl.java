@@ -35,7 +35,7 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
 
     StringBuffer tenant_sql = new StringBuffer();
     tenant_sql
-        .append("SELECT csc.category_name,ccs.price,ccs.promotionPrice,cti.id,cti.address,cti.tenant_name,cti.photo,cti.praiseRate");
+        .append("SELECT csc.category_name,ccs.price,ccs.promotion_price,cti.id,cti.address,cti.tenant_name,cti.photo,cti.praise_rate,");
     tenant_sql.append("round(6378.138*2*asin(sqrt(pow(sin((" + lat);
     tenant_sql.append("*pi()/180-latitude*pi()/180)/2),2)+cos(" + lat);
     tenant_sql.append("*pi()/180)*cos(latitude*pi()/180)*pow(sin((" + lng);
@@ -82,7 +82,7 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
     // Integer.valueOf(String.valueOf((total + pageable.getPageSize() - 1)
     // / pageable.getPageSize()));
 
-    //pageable.setPageSize(tenantInfoList != null ? tenantInfoList.size() : 0);
+    // pageable.setPageSize(tenantInfoList != null ? tenantInfoList.size() : 0);
     Page<Map<String, Object>> page = new Page<Map<String, Object>>(tenantInfoList, total, pageable);
 
     return page;

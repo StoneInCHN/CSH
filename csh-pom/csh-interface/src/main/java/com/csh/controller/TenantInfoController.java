@@ -30,16 +30,16 @@ import com.csh.utils.TokenGenerator;
 @RequestMapping("/tenantInfo")
 public class TenantInfoController extends MobileBaseController {
 
-	@Resource(name = "tenantInfoJdbcServiceImpl")
-	private TenantInfoJdbcService tenantInfoJdbcService;
-	
-	@Resource(name = "endUserServiceImpl")
-	private EndUserService endUserService;
-	
-	@Resource(name = "tenantInfoServiceImpl")
-	private TenantInfoService tenantInfoService;
+  @Resource(name = "tenantInfoJdbcServiceImpl")
+  private TenantInfoJdbcService tenantInfoJdbcService;
 
-  
+  @Resource(name = "endUserServiceImpl")
+  private EndUserService endUserService;
+
+  @Resource(name = "tenantInfoServiceImpl")
+  private TenantInfoService tenantInfoService;
+
+
   /**
    * 用户登录
    * 
@@ -49,7 +49,7 @@ public class TenantInfoController extends MobileBaseController {
   @RequestMapping(value = "/list", method = RequestMethod.POST)
   public @ResponseBody ResponseMultiple<Map<String, Object>> list(HttpServletRequest requesthttp,
       @RequestBody TenantInfoRequest tenantInfoReq) {
-	
+
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Long userId = tenantInfoReq.getUserId();
     String token = tenantInfoReq.getToken();
@@ -61,24 +61,27 @@ public class TenantInfoController extends MobileBaseController {
       return response;
     }
     Integer radius = setting.getSearchRadius();
-    String latitude = tenantInfoReq.getLatitude();//纬度
-    String longitude = tenantInfoReq.getLongitude();//经度
+    String latitude = tenantInfoReq.getLatitude();// 纬度
+    String longitude = tenantInfoReq.getLongitude();// 经度
     Long serviceCategoryId = tenantInfoReq.getServiceCategoryId();
 
     Pageable pageable = new Pageable(tenantInfoReq.getPageNumber(), tenantInfoReq.getPageSize());
-    Page<Map<String,Object>> tenantPage = tenantInfoJdbcService.getTenantInfos(longitude, latitude, pageable, radius, serviceCategoryId);
-   
+    Page<Map<String, Object>> tenantPage =
+        tenantInfoJdbcService.getTenantInfos(longitude, latitude, pageable, radius,
+            serviceCategoryId);
+
     PageResponse page = new PageResponse();
     page.setPageNumber(tenantInfoReq.getPageNumber());
     page.setPageSize(tenantInfoReq.getPageSize());
-    page.setTotal((int)tenantPage.getTotal());
+    page.setTotal((int) tenantPage.getTotal());
     response.setPage(page);
     response.setMsg(tenantPage.getContent());
     String newtoken = TokenGenerator.generateToken(tenantInfoReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
 
- 
+
 }

@@ -23,10 +23,10 @@ public class TenantInfoRowMapper implements RowMapper<Map<String, Object>> {
     tenantInfo.put("address", rs.getString("address"));
     tenantInfo.put("tenant_name", rs.getString("tenant_name"));
     tenantInfo.put("photo", rs.getString("photo"));
-    tenantInfo.put("praiseRate", rs.getBigDecimal("praiseRate"));
+    tenantInfo.put("praiseRate", rs.getBigDecimal("praise_rate"));
     tenantInfo.put("service_category_name", rs.getString("category_name"));
     tenantInfo.put("price", rs.getBigDecimal("price"));
-    tenantInfo.put("promotion_price", rs.getBigDecimal("promotionPrice"));
+    tenantInfo.put("promotion_price", rs.getBigDecimal("promotion_price"));
     return tenantInfo;
   }
 

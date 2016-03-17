@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
@@ -130,22 +129,6 @@ public class TenantInfo extends BaseEntity {
    */
   private Set<CarService> carServices = new HashSet<CarService>();
 
-  /**
-   * 计算出的距离
-   */
-  private Long distance;
-
-  @Transient
-  public Long getDistance() {
-    if (distance == null) {
-      return 0l;
-    }
-    return distance;
-  }
-
-  public void setDistance(Long distance) {
-    this.distance = distance;
-  }
 
   @OneToMany(mappedBy = "tenantInfo")
   public Set<CarService> getCarServices() {
