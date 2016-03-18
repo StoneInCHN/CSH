@@ -17,6 +17,7 @@ import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
 import com.csh.lucene.DateBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -52,6 +53,9 @@ public class RepareReservation extends BaseEntity
    * 预约车型
    */
   private String vehicleBrand;
+  
+  
+  private ReservationInfoFrom reservationInfoFrom;
 
   private Long tenantID;
 
@@ -114,6 +118,18 @@ public class RepareReservation extends BaseEntity
   public void setTenantID (Long tenantID)
   {
     this.tenantID = tenantID;
+  }
+  
+  @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  public ReservationInfoFrom getReservationInfoFrom ()
+  {
+    return reservationInfoFrom;
+  }
+
+  public void setReservationInfoFrom (ReservationInfoFrom reservationInfoFrom)
+  {
+    this.reservationInfoFrom = reservationInfoFrom;
   }
 
 }

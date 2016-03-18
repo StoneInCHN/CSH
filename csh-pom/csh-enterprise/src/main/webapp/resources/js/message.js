@@ -186,7 +186,10 @@ var messages = {
 	"csh.reservation.plate":"预约车牌号",
 	"csh.reservation.vehicleBrand":"预约车型",
 	"csh.maintainReservation.list":"保养预约列表",
-	"csh.repareReservation.list":"维修预约列表"
+	"csh.repareReservation.list":"维修预约列表",
+	"csh.reservation.reservationInfoFrom":"预约信息来源",
+	"csh.reservation.reservationInfoFrom.app":"手机APP预约",
+	"csh.reservation.reservationInfoFrom.call":"电话预约"
 	
 };
 //多语言

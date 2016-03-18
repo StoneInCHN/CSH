@@ -729,4 +729,19 @@ public class CommonEnum {
       AUDIT_FAILED
       
     }
+  /**
+   * 预约信息来源
+   * @author huyong
+   *
+   */
+  public enum ReservationInfoFrom{
+    /**
+     * 来自app
+     */
+    APP,
+    /**
+     * 电话预约
+     */
+    CALL
+  }
 }

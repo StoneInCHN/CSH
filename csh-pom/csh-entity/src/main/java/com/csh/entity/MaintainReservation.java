@@ -1,18 +1,11 @@
 package com.csh.entity;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
@@ -24,8 +17,7 @@ import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
-import com.csh.entity.commonenum.CommonEnum.AccountStatus;
-import com.csh.entity.commonenum.CommonEnum.Gender;
+import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
 import com.csh.lucene.DateBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -62,6 +54,11 @@ public class MaintainReservation extends BaseEntity
    */
   private String vehicleBrand;
 
+  /**
+   * 预约信息来源
+   */
+  private ReservationInfoFrom reservationInfoFrom;
+  
   private Long tenantID;
 
   @JsonProperty
@@ -122,6 +119,18 @@ public class MaintainReservation extends BaseEntity
   public void setTenantID (Long tenantID)
   {
     this.tenantID = tenantID;
+  }
+
+  @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  public ReservationInfoFrom getReservationInfoFrom ()
+  {
+    return reservationInfoFrom;
+  }
+
+  public void setReservationInfoFrom (ReservationInfoFrom reservationInfoFrom)
+  {
+    this.reservationInfoFrom = reservationInfoFrom;
   }
 
 }

@@ -132,7 +132,7 @@ $(function(){
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
-		      {title:message("csh.reservation.userName"),field:"endUser",width:100,sortable:true,
+		      {title:message("csh.reservation.userName"),field:"endUser",sortable:true,
 		    	  formatter:function(value,row,index){
 		    		  if(value != null){
 		    			  return value.userName;
@@ -152,6 +152,14 @@ $(function(){
 		    	  }},
 		      {title:message("csh.reservation.plate"),field:"plate",width:100,sortable:true},
 		      {title:message("csh.reservation.vehicleBrand"),field:"vehicleBrand",width:100,sortable:true},
+		      {title:message("csh.reservation.reservationInfoFrom"),field:"reservationInfoFrom",width:100,sortable:true,
+		    	  formatter:function(value,row,index){
+		    		  if(value =="APP"){
+		    			  return message("csh.reservation.reservationInfoFrom.app")
+		    		  }else if(value =="CALL"){
+		    			  return message("csh.reservation.reservationInfoFrom.call")
+		    		  }
+		    	  }},
 		      {title:message("csh.reservation.reservationDate"),field:"reservationDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}
