@@ -1,14 +1,14 @@
 <form id="editRepareReservation_form" method="post">   
 		<input type="hidden" name="id" value="${repareReservation.id}"/>
-		<input type="hidden" name="endUserID"  value="${repareReservation.endUser.id}" id="addRepareReservation_tenantUserID">
+		<input type="hidden" name="endUserID"  value="${repareReservation.endUser.id}" id="editRepareReservation_tenantUserID">
 		<input type="hidden" id="vehicleListMap" value= '${vehicleListMap}'/>  
 	    <table class="table table-striped"  border="0">
 	    	<table class="table table-striped"  border="0">
 		    <tr>
 	    		<th>${message("csh.vehicle.endUser")}:</th>
 	    		<td >
-	    			 <input  class="easyui-textbox" value="${repareReservation.endUser.userName}"  id= "addRepareReservation_tenantUser"  data-options="required:true,editable:false"/>
-	    			 <a href="#" id="endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('addRepareReservation_tenantUser')" iconCls="icon-search" plain=true"></a>
+	    			 <input  class="easyui-textbox" value="${repareReservation.endUser.userName}"  id= "editRepareReservation_tenantUser"  data-options="required:true,editable:false"/>
+	    			 <a href="#" id="endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('editRepareReservation_tenantUser')" iconCls="icon-search" plain=true"></a>
 	    		</td>
 	    		<th>${message("csh.mobile")}:</th>
 	    		<td>

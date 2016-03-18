@@ -1,4 +1,4 @@
-<form id="tenantAccountDetail_form" method="post">   
+<form id="repareReservationDetail_form" method="post">   
 	 <table class="table table-striped"  border="0">
 	    	<table class="table table-striped"  border="0">
 		    <tr>

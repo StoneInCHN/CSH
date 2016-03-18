@@ -43,15 +43,14 @@ var repareReservation_manager_tool = {
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#addRepareReservation').dialog("close");
-						 $("#addRepareReservation_form").form("reset");
+						$('#addRepareReservation').empty();
 					}
 			    }],
 			    onOpen:function(){
 			    	$('#addRepareReservation_form').show();
 			    },
 			    onClose:function(){
-			    	$('#addVehicleMaintain').dialog("clear");
+			    	$('#addRepareReservation').empty();
 			    }
 			});  
 		},
@@ -98,24 +97,24 @@ var repareReservation_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editRepareReservation').dialog("close").form("reset");
+						 $('#editRepareReservation').dialog("close");
 					}
 			    }],
 			    onLoad:function(){
-			    	$("#vehiclePlate").combobox({    
-				    valueField:'id',    
-				    textField:'plate',
-				    editable : false,
-				    required:true,
-				    data:$.parseJSON($("#vehicleListMap").val()),
-				    prompt:message("csh.common.please.select"),
-				    onLoadSuccess:function(){
-				    	$("#vehiclePlate").combobox("setValue",$("#vehiclePlate").attr("data-value"))    	
-				    }
-				});
+				    	$("#vehiclePlate").combobox({    
+					    valueField:'id',    
+					    textField:'plate',
+					    editable : false,
+					    required:true,
+					    data:$.parseJSON($("#vehicleListMap").val()),
+					    prompt:message("csh.common.please.select"),
+					    onLoadSuccess:function(){
+					    	$("#vehiclePlate").combobox("setValue",$("#vehiclePlate").attr("data-value"))    	
+					    }
+					});
 			    },
 			    onClose:function(){
-			    	$('#addVehicleMaintain').dialog("clear");
+			    	$('#editRepareReservation').empty();
 			    }
 			});  
 		},
@@ -149,7 +148,7 @@ $(function(){
 					}
 			    }],
 			    onClose:function(){
-			    	$('#addVehicleMaintain').dialog("clear");
+			    	$('#repareReservationDetail').empty();
 			    }
 			});   
 		},

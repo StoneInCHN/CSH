@@ -1,61 +1,41 @@
-<form id="editTenantAccount_form" method="post">   
-		<input type="hidden" name="id" value= "${tenantAccount.id}"/>
-		<input type="hidden" name="enPassword" value= "${tenantAccount.password}"/>
-		<input type="hidden" name="staffID" value= "${tenantAccount.staffID}"/>
-	    <input type="hidden" name="tenantUserID" id="editTenantAccountUserID" value="${tenantAccount.tenantUser.id}"/>
-		<input type="hidden" name="roleID" id="editTenantAccountRoleID" value="${roleInfo.id}"/>  
+<form id="editMaintainReservation_form" method="post">   
+		<input type="hidden" name="id" value="${maintainReservation.id}"/>
+		<input type="hidden" name="endUserID"  value="${maintainReservation.endUser.id}" id="editRepareReservation_tenantUserID">
+		<input type="hidden" id="vehicleListMap" value= '${vehicleListMap}'/>  
 	    <table class="table table-striped"  border="0">
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.staffID")}:</th>
-	    		<td colspan="2">
-	    			 <input type="text" class="easyui-textbox" value="${tenantAccount.staffID}" name="staffID" id= "staffID"  data-options="required:true" disabled="disabled"/>
+	    	<table class="table table-striped"  border="0">
+		    <tr>
+	    		<th>${message("csh.vehicle.endUser")}:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" value="${maintainReservation.endUser.userName}"  id= "editRepareReservation_tenantUser"  data-options="required:true,editable:false"/>
+	    			 <a href="#" id="endUser_search_btn" class="easyui-linkbutton" onclick="searchEndUser('editRepareReservation_tenantUser')" iconCls="icon-search" plain=true"></a>
 	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.userName")}:</th>
-	    		<td colspan="2">
-	    			 <input type="text" class="easyui-textbox" name="userName" value="${tenantAccount.userName}" id= "userName"  data-options="required:true"/>
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.password")}:</th>
-	    		<td colspan='2'>
-	    			 <input type="password" class="easyui-textbox" name="password" id= "password" value="${tenantAccount.password}"  data-options="required:true"/>
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.accoutStatus")}:</th>
-	    		<td colspan="2">
-	    			 <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'ACTIVED',
-				      value: '${message("csh.tenantAccount.accoutStatus.active")}'
-				     },{
-				      label: 'LOCKED',
-				      value: '${message("csh.tenantAccount.accoutStatus.locked")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100" id="editAccountStatus"  name="accoutStatus" style="width:110px;" data-value="${tenantAccount.accoutStatus}"/>
-				     
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.tenantUser")}:</th>
+	    		<th>${message("csh.mobile")}:</th>
 	    		<td>
-	    			 <input type="text" class="easyui-textbox" name="editTenantAccountUser" id= "editTenantAccountUser"  value="${tenantAccount.tenantUser.realName}"/>
-	    		</td>
-	    		<td>
-	    			<a href="#" id="tenant_user_search_btn" class="easyui-linkbutton" onclick="searchTenantUser('editTenantAccountUser')" iconCls="icon-search" plain=true"></a>
+	    			 <input  class="easyui-textbox" id= "endUserMobileNum" value="${maintainReservation.endUser.mobileNum}"  data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>${message("csh.tenantAccount.role")}:</th>
-	    		<td>
-	    			 <input type="text" class="easyui-textbox" name="addTenantAccountRole" value = "${roleInfo.name}" id= "editTenantAccountRole"  />
+	    		<th>${message("csh.vehicle.plate")}:</th>
+	    		<td >
+	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${maintainReservation.plate}"  id= "vehiclePlate"  data-options="required:true"/>
 	    		</td>
-	    		<td>
-	    			<a href="#" id="role_search_btn" class="easyui-linkbutton" onclick="searchRoles('editTenantAccountRole')" iconCls="icon-search" plain=true"></a>
+	    		<th>${message("csh.vehicle.vehicleBrand")}:</th>
+	    		<td >
+	    			 <input  class="easyui-textbox" value="${maintainReservation.vehicleBrand}" name="vehicleBrand" id= "vehicleBrand"  data-options="required:true"/>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<th>预约时间:</th>
+	    		<td colspan="5">
+	    			 <input  class="easyui-datebox" value="${maintainReservation.reservationDate}" name="reservationDate" id= "reservationDate"  data-options="required:true"/>
+	    		</td>
+	    		
+	    	</tr>
+	    	<tr>
+	    		<th >备注:</th>
+	    		<td colspan="5">
+	    			 <input  class="easyui-textbox" name="remark" id= "remark" value="${maintainReservation.remark}" data-options="multiline:true,height:120,width:500"/>
 	    		</td>
 	    	</tr>
 	    </table>

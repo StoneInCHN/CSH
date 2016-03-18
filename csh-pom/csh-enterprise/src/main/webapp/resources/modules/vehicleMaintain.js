@@ -50,7 +50,7 @@ var vehicleMaintain_manager_tool = {
 			    	
 			    },
 			    onClose:function(){
-			    	$('#addVehicleMaintain').dialog("clear");
+			    	$('#addVehicleMaintain').empty();
 			    }
 			});  
 		},
@@ -114,7 +114,7 @@ var vehicleMaintain_manager_tool = {
 			    	
 			    },
 			    onClose:function(){
-			    	$('#editVehicleMaintain').dialog("clear");
+			    	$('#editVehicleMaintain').empty();
 			    }
 			});  
 		},
@@ -148,7 +148,7 @@ $(function(){
 					}
 			    }],
 			    onClose:function(){
-			    	$('#vehicleMaintainDetail').dialog("clear");
+			    	$('#vehicleMaintainDetail').empty();
 			    }
 			});   
 		},
