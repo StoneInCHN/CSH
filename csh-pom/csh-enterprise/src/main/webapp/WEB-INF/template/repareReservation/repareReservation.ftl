@@ -16,6 +16,22 @@
 			    <input type="text" class="easyui-textbox" id="userNameSearch" name="userNameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
+			    <label> ${message("csh.reservation.infoFrom")}:</label>
+			    
+			    <input class="easyui-combobox" data-options="
+				     valueField: 'label',
+				     textField: 'value',
+				     data: [{
+				      label: 'APP',
+				      value: '${message("csh.reservation.infoFrom.app")}'
+				     },{
+				      label: 'CALL',
+				      value: '${message("csh.reservation.infoFrom.call")}'
+				     }],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="infoFromSearch" style="width:110px;"/>
+			    
+			</div>
+			<div class="search-item">
 			    <label> 预约时间:</label>
 			    <input type="text" class="Wdate" id="beginDate" name="beginDate"  onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 			</div>
@@ -27,6 +43,7 @@
 		<div class="search-item">
 	  	  <button id="repareReservation-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
+	    
 	  </fieldset>
 </div>
 <table id="repareReservation-table-list"></table>

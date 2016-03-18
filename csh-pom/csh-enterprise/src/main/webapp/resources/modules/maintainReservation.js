@@ -96,7 +96,7 @@ var maintainReservation_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editMaintainReservation').dialog("close").form("reset");
+						 $('#editMaintainReservation').dialog("close")
 					}
 			    }],
 			    onLoad:function(){

@@ -189,7 +189,6 @@ $(function(){
 		    		  }else{
 		    			  return null;
 		    		  }
-		    			  
 		    	  }},
 		      {title:message("csh.vehicleMaintain.lastMaintainMileage"),field:"lastMaintainMileage",width:100,sortable:true},
 		      {title:message("csh.vehicleMaintain.lastMaintainDate"),field:"lastMaintainDate",width:100,sortable:true,formatter: function(value,row,index){

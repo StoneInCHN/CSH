@@ -19,13 +19,13 @@
     		</td>
     		<th>${message("csh.vehicle.vehicleBrand")}:</th>
     		<td >
-    			 <input  class="easyui-textbox" name="vehicleBrand" id= "vehicleBrand"  data-options="required:true"/>
+    			 <input  class="easyui-textbox" name="vehicleBrand" id= "vehicleBrand"  data-options="required:true,"/>
     		</td>
     	</tr>
     	<tr>
     		<th>预约时间:</th>
     		<td colspan="5">
-    			 <input  class="easyui-datebox" name="reservationDate" id= "reservationDate"  data-options="required:true"/>
+    			 <input  class="easyui-datebox" name="reservationDate" id= "reservationDate"  data-options="required:true,editable:false"/>
     		</td>
     		
     	</tr>

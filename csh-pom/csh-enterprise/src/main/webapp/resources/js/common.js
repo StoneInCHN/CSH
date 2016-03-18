@@ -558,7 +558,6 @@ function searchEndUser(id) {
 														$("#endUserMobileNum").textbox('setValue',rowData.mobileNum);
 													};
 													if($("#vehiclePlate")!=undefined){
-														debugger;
 														$("#vehiclePlate").combobox({
 															url:"../vehicle/findVehicleUnderUser.jhtml?userId="+rowData.id,
 														    valueField:'id',
@@ -568,6 +567,7 @@ function searchEndUser(id) {
 														    required:true,
 														    prompt:message("csh.common.please.select"),
 														    onSelect:function(record){
+														    	debugger;
 														    	if($("#dashboardMileage")!=undefined)
 														    		$("#dashboardMileage").textbox('setValue',record.dashboardMileage);
 														    	if($("#lastMaintainMileage")!=undefined)
@@ -579,6 +579,7 @@ function searchEndUser(id) {
 														},
 														});
 														$("#vehiclePlate").combobox('clear');
+														$("#vehicleBrand").textbox('setValue','');
 													};
 													$('#commonMainDialog')
 															.dialog("close");
@@ -618,9 +619,6 @@ function searchEndUser(id) {
 												$("#common-endUser-table-list")
 														.datagrid('reload');
 											})
-						},
-						onBeforeClose:function(){
-							debugger;
 						}
 					});
 

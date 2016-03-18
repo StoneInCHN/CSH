@@ -6,12 +6,14 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Controller;
@@ -75,7 +77,7 @@ public class MaintainReservationController extends BaseController
    */
   @RequestMapping(value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<MaintainReservation> list(Model model, Pageable pageable,
-      Date beginDate, Date endDate, String plateSearch,String userNameSearch) {
+      Date beginDate, Date endDate, String plateSearch,String userNameSearch,ReservationInfoFrom infoFromSearch) {
     String startDateStr = null;
     String endDateStr = null;
 
@@ -90,7 +92,7 @@ public class MaintainReservationController extends BaseController
     Query plateQuery = null;
     Query userNameQuery = null;
     TermRangeQuery rangeQuery = null;
-    
+    TermQuery termQuery = null;
     
     Filter filter = null;
     if (beginDate != null)
@@ -155,7 +157,12 @@ public class MaintainReservationController extends BaseController
             +" end date: "+endDateStr);
       }
     }
-    if (plateQuery != null || userNameQuery != null || rangeQuery != null )
+    if (infoFromSearch != null)
+    {
+      termQuery = new TermQuery (new Term ("reservationInfoFrom", infoFromSearch.toString ()));
+      query.add (termQuery,Occur.MUST);
+    }
+    if (plateQuery != null || userNameQuery != null || rangeQuery != null || termQuery!= null)
     {
       return maintainReservationService.search (query, pageable, analyzer,filter,true);
     }else {

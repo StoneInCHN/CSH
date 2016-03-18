@@ -28,7 +28,7 @@
 	    	<tr>
 	    		<th>预约时间:</th>
 	    		<td colspan="5">
-	    			 <input  class="easyui-datebox" value="${repareReservation.reservationDate}" name="reservationDate" id= "reservationDate"  data-options="required:true"/>
+	    			 <input  class="easyui-datebox" value="${repareReservation.reservationDate}" name="reservationDate" id= "reservationDate"  data-options="required:true,editable:false"/>
 	    		</td>
 	    		
 	    	</tr>
