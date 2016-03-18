@@ -12,7 +12,7 @@
 	<groupId>csh-entity</groupId>
 	<artifactId>csh-entity</artifactId>
 	<version>1.0</version>
-	<name>csh-entity</name>
+	<name>csh-entity Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

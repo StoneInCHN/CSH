@@ -158,7 +158,7 @@ public class VehicleController extends MobileBaseController {
 
     List<Filter> filters = new ArrayList<Filter>();
     Filter deviceNoFilter = new Filter("deviceNo", Operator.eq, deviceNo);
-    Filter deviceStatusFilter = new Filter("deviceStatus", Operator.eq, BindStatus.UNBINDED);
+    Filter deviceStatusFilter = new Filter("bindStatus", Operator.eq, BindStatus.UNBINDED);
     filters.add(deviceNoFilter);
     filters.add(deviceStatusFilter);
     List<DeviceInfo> deviceInfos = deviceInfoService.findList(null, filters, null);
@@ -172,7 +172,7 @@ public class VehicleController extends MobileBaseController {
     vehicle.setDeviceNo(deviceNo);
     deviceInfo.setVehicle(vehicle);
     deviceInfo.setBindTime(new Date());
-    // deviceInfo.setBindStatus(BindStatus.BINDED);
+    deviceInfo.setBindStatus(BindStatus.BINDED);
     vehicle.setDevice(deviceInfo);
     vehicleService.update(vehicle);
 
