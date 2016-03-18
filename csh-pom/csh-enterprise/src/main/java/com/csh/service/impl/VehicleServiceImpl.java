@@ -40,8 +40,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
         Filter userFilter = new Filter ("endUser", Operator.eq, user);
         filters.add (userFilter);
         List<Vehicle> vehicleList=vehicleDao.findList (null, null, filters, null);
-        
-        String[] propertys = {"id", "plate","dashboardMileage"};
+        String[] propertys = {"id", "plate","dashboardMileage","vehicleFullBrand"};
         return FieldFilterUtils.filterCollectionMap(propertys, vehicleList);
+        
       }
 }

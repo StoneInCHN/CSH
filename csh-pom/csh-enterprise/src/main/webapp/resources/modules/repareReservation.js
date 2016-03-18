@@ -1,22 +1,25 @@
-var endUser_manager_tool = {
+var repareReservation_manager_tool = {
 		add:function(){
-			$('#addEndUser').dialog({
+			$('#addRepareReservation').dialog({
 			    title: message("csh.endUser.add"),    
-			    width: 400,    
-			    height: 350,
+			    width: 600,    
+			    height: 450,
+			    href:'../repareReservation/add.jhtml',
+			    method:"get",
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#addEndUser_form').form('validate');
-						
+						var validate = $('#addRepareReservation_form').form('validate');
+						var plate=$("#vehiclePlate").combobox('getText');
+						$('#addRepareReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')
 						if(validate){
 								$.ajax({
-									url:"../endUser/add.jhtml",
+									url:"../repareReservation/add.jhtml",
 									type:"post",
-									data:$("#addEndUser_form").serialize(),
+									data:$("#addRepareReservation_form").serialize(),
 									beforeSend:function(){
 										$.messager.progress({
 											text:message("csh.common.saving")
@@ -26,9 +29,9 @@ var endUser_manager_tool = {
 										$.messager.progress('close');
 										if(response == "success"){
 											showSuccessMsg(result.content);
-											$('#addEndUser').dialog("close")
-											$("#addEndUser_form").form("reset");
-											$("#endUser-table-list").datagrid('reload');
+											$('#addRepareReservation').dialog("close")
+											$("#addRepareReservation_form").form("reset");
+											$("#repareReservation-table-list").datagrid('reload');
 										}else{
 											alertErrorMsg();
 										}
@@ -40,38 +43,43 @@ var endUser_manager_tool = {
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#addEndUser').dialog("close");
-						 $("#addEndUser_form").form("reset");
+						 $('#addRepareReservation').dialog("close");
+						 $("#addRepareReservation_form").form("reset");
 					}
 			    }],
 			    onOpen:function(){
-			    	$('#addEndUser_form').show();
+			    	$('#addRepareReservation_form').show();
 			    },
+			    onClose:function(){
+			    	$('#addVehicleMaintain').dialog("clear");
+			    }
 			});  
 		},
 		edit:function(){
-			var _edit_row = $('#endUser-table-list').datagrid('getSelected');
+			var _edit_row = $('#repareReservation-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
-			var _dialog = $('#editEndUser').dialog({    
+			var _dialog = $('#editRepareReservation').dialog({    
 				title: message("csh.common.edit"),     
-			    width: 400,    
-			    height: 350,    
+			    width: 600,    
+			    height: 450,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
-			    href:'../endUser/edit.jhtml?id='+_edit_row.id,
+			    href:'../repareReservation/edit.jhtml?id='+_edit_row.id,
 			    buttons:[{
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#endUser_form').form('validate');
+						var validate = $('#repareReservation_form').form('validate');
+						var plate=$("#vehiclePlate").combobox('getText');
+						$('#editRepareReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')
 						if(validate){
 							$.ajax({
-								url:"../endUser/update.jhtml",
+								url:"../repareReservation/update.jhtml",
 								type:"post",
-								data:$("#editEndUser_form").serialize(),
+								data:$("#editRepareReservation_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -80,8 +88,8 @@ var endUser_manager_tool = {
 								success:function(result,response,status){
 									$.messager.progress('close');
 										showSuccessMsg(result.content);
-										$('#editEndUser').dialog("close");
-										$("#endUser-table-list").datagrid('reload');
+										$('#editRepareReservation').dialog("close");
+										$("#repareReservation-table-list").datagrid('reload');
 								}
 							});
 						};
@@ -90,16 +98,29 @@ var endUser_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editEndUser').dialog("close").form("reset");
+						 $('#editRepareReservation').dialog("close").form("reset");
 					}
 			    }],
 			    onLoad:function(){
-			    	$("#editAccountStatus").combobox("setValue",$("#editAccountStatus").attr("data-value"))
+			    	$("#vehiclePlate").combobox({    
+				    valueField:'id',    
+				    textField:'plate',
+				    editable : false,
+				    required:true,
+				    data:$.parseJSON($("#vehicleListMap").val()),
+				    prompt:message("csh.common.please.select"),
+				    onLoadSuccess:function(){
+				    	$("#vehiclePlate").combobox("setValue",$("#vehiclePlate").attr("data-value"))    	
+				    }
+				});
+			    },
+			    onClose:function(){
+			    	$('#addVehicleMaintain').dialog("clear");
 			    }
 			});  
 		},
 		remove:function(){
-			listRemove('endUser-table-list','../endUser/delete.jhtml');
+			listRemove('repareReservation-table-list','../repareReservation/delete.jhtml');
 		}
 };
 
@@ -115,8 +136,8 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#repareReservationDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 400,    
-			    height: 350, 
+			    width: 600,    
+			    height: 450, 
 			    cache: false,
 			    modal: true,
 			    href:'../repareReservation/details.jhtml?id='+rowData.id,
@@ -126,7 +147,10 @@ $(function(){
 					handler:function(){
 						 $('#repareReservationDetail').dialog("close");
 					}
-			    }]
+			    }],
+			    onClose:function(){
+			    	$('#addVehicleMaintain').dialog("clear");
+			    }
 			});   
 		},
 		columns:[

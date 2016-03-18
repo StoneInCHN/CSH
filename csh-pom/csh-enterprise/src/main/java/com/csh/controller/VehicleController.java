@@ -195,14 +195,6 @@ public class VehicleController extends BaseController
     }else {
       vehiclePage= vehicleService.findPage (pageable, true);
     }
-    for (Vehicle vehicle : vehiclePage.getRows ())
-    {
-      DeviceInfo deviceInfo = vehicle.getDevice ();
-      if ( deviceInfo != null)
-      {
-        vehicle.setDeviceNo (deviceInfo.getDeviceNo ());
-      }
-    }
     return vehiclePage;
   
   }
@@ -295,14 +287,6 @@ public class VehicleController extends BaseController
       vehicleList = searchVehicleList (pageable, model, beginDate, endDate, plateSearch, userNameSearch, mobileNumSearch).getRows ();
     }else {
       vehicleList = vehicleService.findAll ();
-      for (Vehicle vehicle : vehicleList)
-      {
-        DeviceInfo deviceInfo = vehicle.getDevice ();
-        if ( deviceInfo != null)
-        {
-          vehicle.setDeviceNo (deviceInfo.getDeviceNo ());
-        }
-      }
     }
     
     if (vehicleList != null && vehicleList.size() > 0) {

@@ -100,7 +100,7 @@ var vehicleMaintain_manager_tool = {
 					}
 			    }],
 			    onLoad:function(){
-			    	$("#vehicleMaintain_plate").combobox({    
+			    	$("#vehiclePlate").combobox({    
 					    valueField:'id',    
 					    textField:'plate',
 					    editable : false,
@@ -108,7 +108,7 @@ var vehicleMaintain_manager_tool = {
 					    data:$.parseJSON($("#vehicleListMap").val()),
 					    prompt:message("csh.common.please.select"),
 					    onLoadSuccess:function(){
-					    	$("#vehicleMaintain_plate").combobox("setValue",$("#vehicleMaintain_plate").attr("data-value"))    	
+					    	$("#vehiclePlate").combobox("setValue",$("#vehiclePlate").attr("data-value"))    	
 					    }
 					});
 			    	

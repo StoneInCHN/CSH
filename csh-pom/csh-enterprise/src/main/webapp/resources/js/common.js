@@ -553,12 +553,12 @@ function searchEndUser(id) {
 													$("#" + id).textbox(
 															'setValue',
 															rowData.realName);
-													if($("#vehicleMaintainMobileNum")!=undefined){
+													if($("#endUserMobileNum")!=undefined){
 														
-														$("#vehicleMaintainMobileNum").textbox('setValue',rowData.mobileNum);
+														$("#endUserMobileNum").textbox('setValue',rowData.mobileNum);
 													};
-													if($("#vehicleMaintain_plate")!=undefined){
-														$("#vehicleMaintain_plate").combobox({
+													if($("#vehiclePlate")!=undefined){
+														$("#vehiclePlate").combobox({
 															url:"../vehicle/findVehicleUnderUser.jhtml?userId="+rowData.id,
 														    valueField:'id',
 														    method:"get",
@@ -567,8 +567,13 @@ function searchEndUser(id) {
 														    required:true,
 														    prompt:message("csh.common.please.select"),
 														    onSelect:function(record){
-														    	$("#dashboardMileage").textbox('setValue',record.dashboardMileage);
-														    	$("#lastMaintainMileage").textbox('setValue',record.dashboardMileage);
+														    	debugger;
+														    	if($("#dashboardMileage")!=undefined)
+														    		$("#dashboardMileage").textbox('setValue',record.dashboardMileage);
+														    	if($("#lastMaintainMileage")!=undefined)
+														    		$("#lastMaintainMileage").textbox('setValue',record.dashboardMileage);
+														    	if($("#vehicleBrand")!=undefined)
+														    	$("#vehicleBrand").textbox('setValue',record.vehicleFullBrand);
 														    }
 														});
 													};
@@ -604,11 +609,10 @@ function searchEndUser(id) {
 												var _queryParams = $(
 														"#common_endUser_search_form")
 														.serializeJSON();
-												$(
-														'#common-endUser-table-list')
+												debugger;
+												$('#common-endUser-table-list')
 														.datagrid('options').queryParams = _queryParams;
-												$(
-														"#common-endUser-table-list")
+												$("#common-endUser-table-list")
 														.datagrid('reload');
 											})
 						}

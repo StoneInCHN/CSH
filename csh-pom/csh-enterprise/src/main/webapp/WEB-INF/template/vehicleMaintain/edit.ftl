@@ -11,13 +11,13 @@
 	    		</td>
 	    		<th>${message("csh.mobile")}:</th>
 	    		<td>
-	    			 <input  class="easyui-textbox" id= "vehicleMaintainMobileNum" value="${vehicleMaintain.vehicle.endUser.mobileNum}"  data-options="required:true"/>
+	    			 <input  class="easyui-textbox" id= "endUserMobileNum" value="${vehicleMaintain.vehicle.endUser.mobileNum}"  data-options="required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
 	    		<th>${message("csh.vehicle.plate")}:</th>
 	    		<td colspan="3">
-	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${vehicleMaintain.vehicle.id}" id= "vehicleMaintain_plate"  data-options="required:true"/>
+	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${vehicleMaintain.vehicle.id}" id= "vehiclePlate"  data-options="required:true"/>
 	    		</td>
 	    		<th>${message("csh.vehicleMaintain.dashboardMileage")}:</th>
 	    		<td >

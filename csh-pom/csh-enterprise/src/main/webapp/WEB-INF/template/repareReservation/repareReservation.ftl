@@ -38,68 +38,9 @@
 	</div>
 	<div class="tool-filter"></div>
 </div>
-<div id="addTenantAccount"> 
-	<form id="addTenantAccount_form" method="post" class="form-table">
-	<input type="hidden" name="tenantUserID" id="addTenantAccountUserID">
-	<input type="hidden" name="roleID" id="addTenantAccountRoleID">  
-	    <table class="table table-striped"  border="0">
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.staffID")}:</th>
-	    		<td colspan='2'>
-	    			 <input type="text" class="easyui-textbox" name="staffID" id= "staffID"   data-options="required:true"/>
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.userName")}:</th>
-	    		<td colspan='2'>
-	    			 <input type="text" class="easyui-textbox" name="userName" id= "userName"  data-options="required:true"/>
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.password")}:</th>
-	    		<td colspan='2'>
-	    			 <input type="password" class="easyui-textbox" name="password" id= "password"  data-options="required:true"/>
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.accoutStatus")}:</th>
-	    		<td colspan='2'>
-	    			 <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'ACTIVED',
-				      value: '${message("csh.tenantAccount.accoutStatus.active")}'
-				     },{
-				      label: 'LOCKED',
-				      value: '${message("csh.tenantAccount.accoutStatus.locked")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="accoutStatus" style="width:110px;"/>
-	    		</td>
-	    		</tr>
-	    	<tr>
-	    		<th>${message("csh.tenantAccount.tenantUser")}:</th>
-	    		<td>
-	    			 <input type="text" class="easyui-textbox" name="addTenantAccountUser" id= "addTenantAccountUser"  />
-	    		</td>
-	    		<td>
-	    			<a href="#" id="tenant_user_search_btn" class="easyui-linkbutton" onclick="searchTenantUser('addTenantAccountUser')" iconCls="icon-search" plain=true"></a>
-	    		</td>
-	    	</tr>
-	    	<tr>
-	    	<th>${message("csh.tenantAccount.role")}:</th>
-	    		<td>
-	    			 <input type="text" class="easyui-textbox" name="addTenantAccountRole" id= "addTenantAccountRole"  />
-	    		</td>
-	    		<td>
-	    			<a href="#" id="role_search_btn" class="easyui-linkbutton" onclick="searchRoles('addTenantAccountRole')" iconCls="icon-search" plain=true"></a>
-	    		</td>
-	    	</tr>
-	    </table>
-	</form>
-</div>
-<div id="editTenantAccount"></div>
-<div id="tenantAccountDetail"></div>
+<div id="addRepareReservation"></div>
+<div id="editRepareReservation"></div>
+<div id="repareReservationDetail"></div>
 
 
 

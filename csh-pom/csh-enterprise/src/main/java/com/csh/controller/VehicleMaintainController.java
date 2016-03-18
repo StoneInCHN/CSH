@@ -1,6 +1,5 @@
 package com.csh.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
-import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +26,6 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleMaintain;
-import com.csh.framework.ordering.Ordering;
-import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.VehicleMaintainService;
@@ -171,7 +167,7 @@ public class VehicleMaintainController extends BaseController
   {
     VehicleMaintain vehicleMaintain = vehicleMaintainService.find (id);
     
-    List<Map<String, Object>> vehicleListMap = vehicleService.findVehicleUnderUser(vehicleMaintain.getVehicle ().getId ());
+    List<Map<String, Object>> vehicleListMap = vehicleService.findVehicleUnderUser(vehicleMaintain.getVehicle ().getEndUser ().getId ());
     
     ObjectMapper objectMapper = new ObjectMapper();
     String result = null;

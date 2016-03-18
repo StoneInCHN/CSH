@@ -1,6 +1,6 @@
  <fieldset>
 	    <legend>${message("csh.endUser.search")}</legend>
-	    <form id="endUser-search-form" class="search-form">
+	    <form id="common_endUser_search_form" class="search-form">
 	    	<div class="search-item">
 			    <label> ${message("csh.endUser.userName")}:</label>
 			    <input type="text" class="easyui-textbox" id="userNameSearch" name="userNameSearch" validtype="length[0,20]"/>
@@ -22,7 +22,7 @@
 			
 		</form>
 		<div class="search-item">
-	  	  <button id="endUser-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="common_endUser_search_btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 <table id="common-endUser-table-list"></table>  

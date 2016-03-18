@@ -1,6 +1,8 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -20,13 +22,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.EndUser;
 import com.csh.entity.RepareReservation;
+import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.EndUserService;
 import com.csh.service.RepareReservationService;
+import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 维修预约
@@ -41,6 +50,11 @@ public class RepareReservationController extends BaseController
   @Resource (name = "repareReservationServiceImpl")
   private RepareReservationService repareReservationService;
   
+  @Resource (name = "endUserServiceImpl")
+  private EndUserService endUserService;
+  
+  @Resource (name = "vehicleServiceImpl")
+  private VehicleService vehicleService;
   /**
    * 界面展示
    * 
@@ -148,5 +162,79 @@ public class RepareReservationController extends BaseController
       return repareReservationService.findPage (pageable, true);
     }
   
+  }
+  
+  @RequestMapping (value = "/edit", method = RequestMethod.GET)
+  public String edit (ModelMap model, Long id)
+  {
+    RepareReservation repareReservation = repareReservationService.find (id);
+    List<Map<String, Object>> vehicleListMap = vehicleService.findVehicleUnderUser(repareReservation.getEndUser ().getId ());
+    
+    ObjectMapper objectMapper = new ObjectMapper();
+    String result = null;
+    try
+    {
+      result= objectMapper.writeValueAsString (vehicleListMap);
+    }
+    catch (JsonProcessingException e)
+    {
+      e.printStackTrace();
+    }
+    model.put ("vehicleListMap", result);
+    model.put ("repareReservation", repareReservation);
+    return "repareReservation/edit";
+  }
+  @RequestMapping (value = "/add", method = RequestMethod.GET)
+  public String add (ModelMap model)
+  {
+    return "repareReservation/add";
+  }
+  @RequestMapping (value = "/add", method = RequestMethod.POST)
+  public @ResponseBody Message add (RepareReservation repareReservation,Long endUserID)
+  {
+    EndUser endUser = endUserService.find (endUserID);
+    repareReservation.setEndUser (endUser);
+    repareReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
+    repareReservationService.save (repareReservation,true);
+    return SUCCESS_MESSAGE;
+  }
+  
+  @RequestMapping (value = "/update", method = RequestMethod.POST)
+  public @ResponseBody Message update (RepareReservation repareReservation,Long endUserID)
+  { 
+    EndUser endUser = endUserService.find (endUserID);
+    repareReservation.setEndUser (endUser);
+    repareReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
+    repareReservationService.update (repareReservation,"createDate","tenantID");
+    return SUCCESS_MESSAGE;
+  }
+ 
+
+  /**
+   * 删除
+   */
+  @RequestMapping (value = "/delete", method = RequestMethod.POST)
+  public @ResponseBody Message delete (Long[] ids)
+  {
+    if (ids != null)
+    {
+      // 检查是否能被删除
+      // if()
+      repareReservationService.delete (ids);
+    }
+    return SUCCESS_MESSAGE;
+  }
+  /**
+   * 获取数据进入详情页面
+   * 
+   * @param model
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/details", method = RequestMethod.GET)
+  public String details(ModelMap model, Long id) {
+    RepareReservation repareReservation = repareReservationService.find(id);
+    model.addAttribute("repareReservation", repareReservation);
+    return "repareReservation/details";
   }
 }
