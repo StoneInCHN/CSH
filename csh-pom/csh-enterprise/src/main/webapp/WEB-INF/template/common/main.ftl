@@ -45,8 +45,11 @@
 				[@shiro.hasPermission name="endUserManage"]
 				<li><a href="#endUser"><i class="fa fa-users fa-1x"></i>${message("csh.endUser.config")}</a></li>
 				[/@shiro.hasPermission]
-				[@shiro.hasPermission name="reservationMange"]
-				<li><a href="#reservationMange"><i class="fa fa-users fa-1x"></i>${message("csh.reservationMange.config")}</a></li>
+				[@shiro.hasPermission name="reservationManage"]
+				<li><a href="#reservationManage"><i class="fa fa-users fa-1x"></i>${message("csh.reservationMange.config")}</a></li>
+				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="informationManage"]
+				<li><a href="#informationManage"><i class="fa fa-users fa-1x"></i>${message("csh.informationManage.config")}</a></li>
 				[/@shiro.hasPermission]
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
 				<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>
@@ -78,7 +81,13 @@
     		<li><a href="#" data-url="${base}/console/role/role.jhtml">${message("csh.system.tenantAccount.role")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="operationLog"]
-    		<li><a href="#" data-url="${base}/console/operationLog/operationLog.jhtml">${message("csh.system.tenantAccount.operationLog")}</a></li>
+    		<li><a href="#" data-url="${base}/console/operationLog/operationLog.jhtml">${message("csh.system.operationLog")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="appConfig"]
+    		<li><a href="#" data-url="${base}/console/app/app.jhtml">${message("csh.system.appConfig")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="serviceConfig"]
+    		<li><a href="#" data-url="${base}/console/operationLog/operationLog.jhtml">${message("csh.system.serviceConfig")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.personnel.config")}" id="personnel">
@@ -113,14 +122,22 @@
     		<li><a href="#" data-url="${base}/console/endUser/endUser.jhtml">${message("csh.endUser.endUser")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
-    	<ul title="${message("csh.reservationManage.config")}" id="reservationMange">
+    	<ul title="${message("csh.reservationManage.config")}" id="reservationManage">
     		[@shiro.hasPermission name="repareReservation"]
     		<li><a href="#" data-url="${base}/console/repareReservation/repareReservation.jhtml">${message("csh.repareReservation.repareReservation")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="maintainReservation"]
     		<li><a href="#" data-url="${base}/console/maintainReservation/maintainReservation.jhtml">${message("csh.maintainReservation.maintainReservation")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul>          
+    	</ul>
+    	<ul title="${message("csh.informationManage.config")}" id="informationManage">
+    		[@shiro.hasPermission name="notificationPush"]
+    		<li><a href="#" data-url="${base}/console/shortMessagePush/shortMessagePush.jhtml">${message("csh.informationManage.notificationPush")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="shortMessagePush"]
+    		<li><a href="#" data-url="${base}/console/shortMessagePush/shortMessagePush.jhtml">${message("csh.informationManage.shortMessagePush")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>               
     </div>
   
     <div class="main-content" data-options="region:'center'">
