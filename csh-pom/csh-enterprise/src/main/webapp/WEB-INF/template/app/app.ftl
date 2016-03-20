@@ -13,7 +13,7 @@
 	    	</tr>
 	    	<tr>
 	    		<td colspan="2" style="text-align: center;">
-	    			 <input type="button"  class="btn btn-primary" value="${message('csh.save')}" id= "appSave" />
+	    			 <input type="button"  class="btn btn-primary" value="${message('csh.save')}" id= "appSave"  style="margin-top:20px"/>
 	    		</td>
 	    	</tr>
 	    </table>
