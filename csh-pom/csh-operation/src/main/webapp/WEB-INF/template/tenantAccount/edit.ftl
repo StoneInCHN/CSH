@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.apply.edit")}</title>
+<title>${message("csh.tenantAccount.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -17,28 +17,18 @@
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	var $submit = $("#submit");
+	
 	
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			notes: "required",
-			applyStatus: "required"
-		},
-		submitHandler:function(form){
-			$submit.attr("disabled",true);
-			$.ajax({
-				url:$inputForm.attr("action"),
-				type:"POST",
-				data:$inputForm.serialize(),
-				dataType:"json",
-				cache:false,
-				success:function(message){
-					$.message(message);
-					$submit.attr("disabled",false);
-					setTimeout("location.href='details.jhtml?id=${apply.id}'",1000);
-				}
-			});
+			name: "required",
+			email: {
+				required: true,
+				email: true
+			},
+			roleIds: "required",
+			adminStatus: "required"
 		}
 	});
 
@@ -49,11 +39,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.apply")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantAccount")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.apply.list")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.tenantAccount.list")}</a>
 				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.apply.edit")}</a>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.tenantAccount.edit")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -63,7 +53,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.apply.base")}</div>
+                  <div class="pull-left">${message("admin.admin.base")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -73,52 +63,64 @@ $().ready(function() {
                 <div class="widget-content">
                   <div class="padd">
                     <form id="inputForm" action="update.jhtml" method="post">
-						<input type="hidden" name="id" value="${tenantAccount.id}" />
+						<input type="hidden" name="id" value="${admin.id}" />
+						<input type="hidden" name="username" value="${admin.username}" />
+						<table class="input tabContent">
+							<tr>
+								<th>
+									${message("csh.admin.username")}:
+								</th>
+								<td>
+									${admin.username}
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.admin.name")}:
+								</th>
+								<td>
+									<input type="text" name="name" class="text" value="${admin.name}" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.admin.email")}:
+								</th>
+								<td>
+									<input type="text" name="email" class="text" maxlength="200" value="${admin.email}" />
+								</td>
+							</tr>
+							<tr class="roles">
+								<th>
+									<span class="requiredField">*</span>${message("csh.admin.roles")}:
+								</th>
+								<td>
+									<span class="fieldSet">
+										[#list roles as role]
+											<label>
+												<input type="checkbox" name="roleIds" value="${role.id}"[#if admin.roles?seq_contains(role)] checked="checked"[/#if] /><span>${role.name}</span>
+											</label>
+										[/#list]
+									</span>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									${message("csh.admin.adminStatus")}:
+								</th>
+								<td>
+									<input type="radio" value="actived" name="adminStatus" [#if admin.adminStatus== "actived" ]checked="checked"[/#if] />${message("csh.admin.adminStatus.actived")}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="radio" value="locked" name="adminStatus" [#if admin.adminStatus== "locked" ]checked="checked"[/#if] />${message("csh.admin.adminStatus.locked")}
+								</td>
+							</tr>
+						</table>
 						<table class="input">
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.tenantID")}:
-								</th>
-								<td>
-									<input type="password" realOnly class="text" maxlength="20" />
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.username")}:
-								</th>
-								<td>
-									<input type="text" realOnly class="text" maxlength="20" />
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.accoutStatus")}:
-								</th>
-								<td>
-									<input type="password" name="accoutStatus" />
-									<select name="accoutStatus">
-										<option value="">${message("csh.tenantAccount.accoutStatus.select")}</option>
-										<option value="ACTIVED" [#if admin.adminStatus== "ACTIVED" ]checked="checked"[/#if]>${message("csh.tenantAccount.accoutStatus.ACTIVED")}</option>
-										<option value="LOCKED" [#if admin.adminStatus== "LOCKED" ]checked="checked"[/#if]>${message("csh.tenantAccount.accoutStatus.LOCKED")}</option>
-										<option value="DELETE" [#if admin.adminStatus== "DELETE" ]checked="checked"[/#if]>${message("csh.tenantAccount.accoutStatus.DELETE")}</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.realName")}:
-								</th>
-								<td>
-									<input type="text" name="realName" class="text" maxlength="200" value-"${tenantAccount.realName}"/>
-								</td>
-							</tr>
 							<tr>
 								<th>
 									&nbsp;
 								</th>
 								<td>
-									<input type="submit" id="submit" class="button" value="${message("csh.common.submit")}" />
+									<input type="submit" class="button" value="${message("csh.common.submit")}" />
 									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 								</td>
 							</tr>
