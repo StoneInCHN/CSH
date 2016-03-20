@@ -20,6 +20,7 @@ import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleBrandDetail;
+import com.csh.entity.VehicleLine;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -30,6 +31,8 @@ import com.csh.json.request.VehicleRequest;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.VehicleBrandDetailService;
+import com.csh.service.VehicleBrandService;
+import com.csh.service.VehicleLineService;
 import com.csh.service.VehicleService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
@@ -52,6 +55,12 @@ public class VehicleController extends MobileBaseController {
 
   @Resource(name = "vehicleBrandDetailServiceImpl")
   private VehicleBrandDetailService vehicleBrandDetailService;
+  
+  @Resource(name = "vehicleLineServiceImpl")
+  private VehicleLineService vehicleLineService;
+  
+  @Resource(name = "vehicleBrandServiceImpl")
+  private VehicleBrandService vehicleBrandService;
 
 
 
@@ -176,6 +185,62 @@ public class VehicleController extends MobileBaseController {
     vehicle.setDevice(deviceInfo);
     vehicleService.update(vehicle);
 
+    String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+
+    return response;
+  }
+  
+  
+  /**
+   * 查询车辆品牌，车系，车型
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getVehicleBrand", method = RequestMethod.POST)
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getVehicleBrand(@RequestBody VehicleRequest vehicleReq) {
+
+	ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = vehicleReq.getUserId();
+    String token = vehicleReq.getToken();
+    Long vehicleLineId = vehicleReq.getVehicleLineId();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    List<Map<String, Object>> map = new ArrayList<Map<String,Object>>();
+    
+    if (vehicleLineId == null) {
+    	List<Filter> filters = new ArrayList<Filter>();
+        Filter parentFilter = new Filter("parent", Operator.isNull,null);
+        filters.add(parentFilter);
+		List<VehicleLine> vehicleLines = vehicleLineService.findList(null, filters, null);
+		String[] properties ={"id", "code", "name"};
+		map = FieldFilterUtils.filterCollectionMap(properties, vehicleLines);
+	}else {
+		VehicleLine vehicleLine = vehicleLineService.find(vehicleLineId);
+		if (vehicleLine.getParent()==null) {//子车系（只有2级树形结构）
+			String[] properties ={"id", "code", "name"};
+			map = FieldFilterUtils.filterCollectionMap(properties, vehicleLine.getChildren());
+		}else {//车型
+			List<Filter> filters = new ArrayList<Filter>();
+	        Filter filter = new Filter("vehicleLine", Operator.eq,vehicleLine);
+	        filters.add(filter);
+	        List<VehicleBrandDetail> vehicleBrandDetails = vehicleBrandDetailService.findList(null, filters, null);
+	        String[] properties ={"id", "code", "name"};
+			map = FieldFilterUtils.filterCollectionMap(properties, vehicleBrandDetails);
+		}
+	}
+    
+    response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);

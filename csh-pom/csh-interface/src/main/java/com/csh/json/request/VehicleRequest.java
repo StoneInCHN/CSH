@@ -12,10 +12,15 @@ public class VehicleRequest extends BaseRequest {
    * 设备号
    */
   private String deviceNo;
-  // /**
-  // * 车系ID
-  // */
-  // private Long vehicleLineId;
+  
+//  /**
+//   * 品牌ID
+//   */
+//  private Long brandId;
+   /**
+   * 车系ID
+   */
+   private Long vehicleLineId;
 
   /**
    * 车型ID
@@ -55,6 +60,14 @@ public class VehicleRequest extends BaseRequest {
    */
   private Long lastMaintainMileage;
 
+  
+//  public Long getBrandId() {
+//	return brandId;
+//  }
+//
+//  public void setBrandId(Long brandId) {
+//	this.brandId = brandId;
+//  }
 
   public String getDeviceNo() {
     return deviceNo;
@@ -72,13 +85,13 @@ public class VehicleRequest extends BaseRequest {
     this.vehicleId = vehicleId;
   }
 
-  // public Long getVehicleLineId() {
-  // return vehicleLineId;
-  // }
-  //
-  // public void setVehicleLineId(Long vehicleLineId) {
-  // this.vehicleLineId = vehicleLineId;
-  // }
+   public Long getVehicleLineId() {
+   return vehicleLineId;
+   }
+  
+   public void setVehicleLineId(Long vehicleLineId) {
+   this.vehicleLineId = vehicleLineId;
+   }
 
   public Long getBrandDetailId() {
     return brandDetailId;
