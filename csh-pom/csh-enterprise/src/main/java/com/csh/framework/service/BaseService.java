@@ -207,4 +207,6 @@ public interface BaseService<T, ID extends Serializable>
    * @param procName
    */
   void callProcedure (String procName, Object... param);
+  
+  T findEntityByTenantID();
 }

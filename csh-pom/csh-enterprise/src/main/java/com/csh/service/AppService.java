@@ -10,5 +10,4 @@ import com.csh.framework.service.BaseService;
  *
  */
 public interface AppService extends BaseService<App, Long> {
-  
 }

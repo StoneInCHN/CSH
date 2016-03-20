@@ -8,17 +8,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
@@ -266,6 +265,19 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
   public void callProcedure (String procName,Object... args)
   {
     baseDao.callProcedure (procName,args);
+  }
+
+  @Override
+  public T findEntityByTenantID ()
+  {
+    List<T> entityList = findAll (true);
+    if (entityList != null && entityList.size () == 1)
+    {
+      return entityList.get (0);
+    }else {
+      return null;
+    }
+    
   }
 
 }
