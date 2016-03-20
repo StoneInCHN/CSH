@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -93,6 +94,7 @@ public class CarService extends BaseEntity {
   }
 
   @Column(length = 50)
+  @JsonProperty
   public String getServiceName() {
     return serviceName;
   }
@@ -128,6 +130,7 @@ public class CarService extends BaseEntity {
   }
 
   @ManyToOne
+  @JsonProperty
   public ServiceCategory getServiceCategory() {
     return serviceCategory;
   }
@@ -137,6 +140,7 @@ public class CarService extends BaseEntity {
   }
 
   @Column(scale = 2, precision = 10, nullable = false)
+  @JsonProperty
   public BigDecimal getPrice() {
     return price;
   }
@@ -146,6 +150,7 @@ public class CarService extends BaseEntity {
   }
 
   @Column(scale = 2, precision = 10, nullable = false)
+  @JsonProperty
   public BigDecimal getPromotionPrice() {
     return promotionPrice;
   }
@@ -154,6 +159,7 @@ public class CarService extends BaseEntity {
     this.promotionPrice = promotionPrice;
   }
 
+  @JsonProperty
   public Integer getRate() {
     return rate;
   }
@@ -162,6 +168,7 @@ public class CarService extends BaseEntity {
     this.rate = rate;
   }
 
+  @JsonProperty
   public ServiceStatus getServiceStatus() {
     return serviceStatus;
   }

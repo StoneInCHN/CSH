@@ -11,6 +11,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "csh_service_category")
@@ -54,6 +55,7 @@ public class ServiceCategory extends BaseEntity {
     this.autoServices = autoServices;
   }
 
+  @JsonProperty
   public String getCategoryName() {
     return categoryName;
   }

@@ -87,7 +87,7 @@
     		<li><a href="#" data-url="${base}/console/app/app.jhtml">${message("csh.system.appConfig")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="serviceConfig"]
-    		<li><a href="#" data-url="${base}/console/operationLog/operationLog.jhtml">${message("csh.system.serviceConfig")}</a></li>
+    		<li><a href="#" data-url="${base}/console/carService/carService.jhtml">${message("csh.system.serviceConfig")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.personnel.config")}" id="personnel">

@@ -189,7 +189,18 @@ var messages = {
 	"csh.repareReservation.list":"维修预约列表",
 	"csh.reservation.reservationInfoFrom":"预约信息来源",
 	"csh.reservation.reservationInfoFrom.app":"手机APP预约",
-	"csh.reservation.reservationInfoFrom.call":"电话预约"
+	"csh.reservation.reservationInfoFrom.call":"电话预约",
+	//汽车服务
+	"csh.carService.add":"添加服务",
+	"csh.carService.serviceName":"服务名称",
+	"csh.carService.price":"价格",
+	"csh.carService.promotionPrice":"优惠价",
+	"csh.carService.rate":"评分",
+	"csh.carService.serviceStatus":"状态",
+	"csh.carService.serviceStatus.ENABLED":"启用",
+	"csh.carService.serviceStatus.DISABLED":"禁用",
+	"csh.carService.list":"服务列表",
+	"csh.carService.serviceCategory":"服务类型"
 	
 };
 //多语言
