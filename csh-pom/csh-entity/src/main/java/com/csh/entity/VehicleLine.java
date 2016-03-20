@@ -23,10 +23,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  */
 @Entity
-@Table (name = "csh_vehicle_line")
-@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_line_sequence")
-public class VehicleLine extends BaseEntity
-{
+@Table(name = "csh_vehicle_line")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_vehicle_line_sequence")
+public class VehicleLine extends BaseEntity {
   private static final long serialVersionUID = 1L;
 
 
@@ -52,88 +51,88 @@ public class VehicleLine extends BaseEntity
   private String name;
 
   private VehicleLine parent;
-  
-  private Set<VehicleBrandDetail> children = new HashSet<VehicleBrandDetail> ();
+
+  private Set<VehicleLine> children = new HashSet<VehicleLine>();
+
+  private Set<VehicleBrandDetail> brandDetails = new HashSet<VehicleBrandDetail>();
 
   private VehicleBrand vehicleBrand;
 
-  public String getCode ()
-  {
+
+  @OneToMany(mappedBy = "parent")
+  public Set<VehicleLine> getChildren() {
+    return children;
+  }
+
+  public void setChildren(Set<VehicleLine> children) {
+    this.children = children;
+  }
+
+  @OneToMany(mappedBy = "vehicleLine")
+  public Set<VehicleBrandDetail> getBrandDetails() {
+    return brandDetails;
+  }
+
+  public void setBrandDetails(Set<VehicleBrandDetail> brandDetails) {
+    this.brandDetails = brandDetails;
+  }
+
+  public String getCode() {
     return code;
   }
 
-  public void setCode (String code)
-  {
+  public void setCode(String code) {
     this.code = code;
   }
 
 
-  public int getGrade ()
-  {
+  public int getGrade() {
     return grade;
   }
 
-  public void setGrade (int grade)
-  {
+  public void setGrade(int grade) {
     this.grade = grade;
   }
 
-  public String getIcon ()
-  {
+  public String getIcon() {
     return icon;
   }
 
-  public void setIcon (String icon)
-  {
+  public void setIcon(String icon) {
     this.icon = icon;
   }
 
 
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
-  public String getName ()
-  {
+  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer(
+      impl = IKAnalyzer.class))
+  public String getName() {
     return name;
   }
 
-  public void setName (String name)
-  {
+  public void setName(String name) {
     this.name = name;
   }
 
-  
-  @OneToMany(mappedBy="vehicleLine")
-  public Set<VehicleBrandDetail> getChildren ()
-  {
-    return children;
-  }
 
-  public void setChildren (Set<VehicleBrandDetail> children)
-  {
-    this.children = children;
-  }
 
   @JsonProperty
-  @ManyToOne(fetch=FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER)
   @IndexedEmbedded
-  public VehicleBrand getVehicleBrand ()
-  {
+  public VehicleBrand getVehicleBrand() {
     return vehicleBrand;
   }
 
-  public void setVehicleBrand (VehicleBrand vehicleBrand)
-  {
+  public void setVehicleBrand(VehicleBrand vehicleBrand) {
     this.vehicleBrand = vehicleBrand;
   }
 
   @ManyToOne
-  public VehicleLine getParent ()
-  {
+  public VehicleLine getParent() {
     return parent;
   }
 
-  public void setParent (VehicleLine parent)
-  {
+  public void setParent(VehicleLine parent) {
     this.parent = parent;
   }
 
