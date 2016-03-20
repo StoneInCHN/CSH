@@ -744,4 +744,39 @@ public class CommonEnum {
      */
     CALL
   }
+  
+  public enum MessageType{
+      /** 个人消息 */
+      PERSONALMSG,
+      /** 新闻消息 */
+      NEWSMSG,
+      /** 购买服务消息 */
+      PURCHASESERVICEMSG
+     
+  }
+  
+  public enum BalanceType{
+      /** 收入*/
+      INCOME,
+      /** 支出 */
+      OUTCOME
+     
+  }
+  
+  public enum PaymentType{
+      /** 支付宝*/
+      ALIPAY,
+      /** 微信 */
+      WECHAT,
+      /** 钱包 */
+      WALLET
+  }
+  
+  public enum ChargeStatus{
+      /** 未支付*/
+      UNPAID,
+      /** 已支付 */
+      PAID
+  }
+  
 }

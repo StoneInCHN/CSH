@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
+import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
@@ -134,6 +135,10 @@ public class VehicleController extends MobileBaseController {
     }
 
     vehicleService.save(vehicle);
+    if (LogUtil.isDebugEnabled(VehicleController.class)) {
+        LogUtil.debug(VehicleController.class, "save",
+            "Add vehicle for User with UserName: %s", endUser.getUserName());
+      }
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -143,7 +148,7 @@ public class VehicleController extends MobileBaseController {
   }
 
   /**
-   * 添加车辆
+   * 车辆设备绑定
    * 
    * @param req
    * @return
@@ -185,6 +190,10 @@ public class VehicleController extends MobileBaseController {
     vehicle.setDevice(deviceInfo);
     vehicleService.update(vehicle);
 
+    if (LogUtil.isDebugEnabled(VehicleController.class)) {
+        LogUtil.debug(VehicleController.class, "Update",
+            "bind vehicle and device.DeviceNo: %s, VehicleId: %s,", deviceNo,vehicleId);
+    }
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);

@@ -22,6 +22,7 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.EndUser;
 import com.csh.entity.LoginStatistics;
 import com.csh.entity.SmsToken;
+import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.SmsTokenType;
@@ -362,6 +363,9 @@ public class EndUserController extends MobileBaseController {
       regUser.setUserName(userName);
       regUser.setPassword(DigestUtils.md5Hex(password));
       regUser.setAccountStatus(AccountStatus.ACTIVED);
+      Wallet wallet = new Wallet();
+      wallet.setEndUser(regUser);
+      regUser.setWallet(wallet);
       endUserService.save(regUser);
 
       if (LogUtil.isDebugEnabled(EndUserController.class)) {
@@ -493,4 +497,5 @@ public class EndUserController extends MobileBaseController {
     response.setToken(newtoken);
     return response;
   }
+  
 }

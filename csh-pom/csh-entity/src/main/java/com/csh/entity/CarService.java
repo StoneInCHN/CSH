@@ -2,11 +2,14 @@ package com.csh.entity;
 
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -73,6 +76,21 @@ public class CarService extends BaseEntity {
    * 服务状态
    */
   private ServiceStatus serviceStatus;
+  
+  /**
+   * 汽车服务购买记录
+   */
+  private Set<CarServiceRecord> carServiceRecords = new HashSet<CarServiceRecord>();
+  
+  
+  @OneToMany(mappedBy="carService")
+  public Set<CarServiceRecord> getCarServiceRecords() {
+	return carServiceRecords;
+  }
+
+  public void setCarServiceRecords(Set<CarServiceRecord> carServiceRecords) {
+	this.carServiceRecords = carServiceRecords;
+  }
 
   @Column(length = 50)
   public String getServiceName() {
