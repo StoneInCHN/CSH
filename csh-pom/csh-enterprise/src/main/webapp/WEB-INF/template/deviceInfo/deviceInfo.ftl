@@ -49,6 +49,21 @@
 	</div>
 	<div class="tool-filter"></div>
 </div>
+<div id = "bindDevice">
+	<form id="bindDevice_form" method="post" class="form-table">
+	 	<input type="hidden" name="vehicleId" id="bindDevice_vehicleID"/>    
+		    <table class="table table-striped"  border="0">
+		    	<tr>
+		    		<th>${message("csh.vehicle.plate")}:</th>
+		    		<td colspan="2">
+		    			 <input type="text" class="easyui-textbox" name="vehicleName" id= "bindDevice_vehicle"  data-options="required:true" disabled="disabled"/>
+		    			<a href="#" id="device_search_btn" class="easyui-linkbutton" onclick="searchVehicle('bindDevice_vehicle')" iconCls="icon-search" plain=true"></a>
+		    		</td>
+		    	</tr>
+		    </table>
+	</form>
+</div>
+
 
 
 

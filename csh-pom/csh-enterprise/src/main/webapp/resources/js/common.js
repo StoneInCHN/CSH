@@ -623,6 +623,105 @@ function searchEndUser(id) {
 					});
 
 }
+
+//查询车辆信息
+function searchVehicle(id) {
+$('#commonMainDialog')
+.dialog(
+		{
+			title : message("csh.vehicle.search"),
+			width : 1000,
+			height : 500,
+			modal : true,
+			cache : false,
+			href : '../deviceInfo/commonVehicleSearch.jhtml',
+			buttons : [ {
+				text : message("yly.common.cancel"),
+				iconCls : 'icon-cancel',
+				handler : function() {
+					$('#commonMainDialog').dialog("close");
+				}
+			} ],
+			onLoad : function() {
+				$("#common-vehicle-table-list")
+						.datagrid(
+								{
+									title : message("csh.vehicle.list"),
+									fitColumns : true,
+									url : '../vehicle/list.jhtml',
+									pagination : true,
+									loadMsg : message("csh.common.loading"),
+									striped : true,
+									onDblClickRow : function(
+											rowIndex, rowData) {
+										debugger;
+										$("#" + id + "ID").val(
+												rowData.id);
+										$("#" + id).textbox(
+												'setValue',
+												rowData.plate);
+										$('#commonMainDialog')
+												.dialog("close");
+									},
+									columns : [ [{field:'ck',checkbox:true},
+											      {title:message("csh.vehicle.endUser"),field:"endUser",sortable:true,
+								    	  formatter: function(value,row,index){
+									    	  if(value != null){
+									    		  return  value.userName;
+									    	  }
+								      	  }},
+									   {title:message("csh.endUser.mobileNum"),field:"mobileNum",width:100,sortable:true,
+								    	  formatter: function(value,row,index){
+									    	  if(row.endUser != null){
+									    		  return  row.endUser.mobileNum;
+									    	  }
+								      	  }},
+								      {title:message("csh.vehicle.plate"),field:"plate",sortable:true},
+								      {title:message("csh.vehicle.vehicleBrand"),width:100,field:"vehicleBrand",sortable:true,
+								    	  formatter: function(value,row,index){
+									    	  if(row != null){
+									    		  return  row.vehicleBrandDetail.vehicleLine.vehicleBrand.name;
+									    	  }
+								      	  }},
+								      {title:message("csh.vehicle.vehicleLine"),width:100,field:"vehicleLine",sortable:true,
+								    	  formatter: function(value,row,index){
+									    	  if(row != null){
+									    		  return  row.vehicleBrandDetail.vehicleLine.name;
+									    	  }
+								      	  }},
+								      {title:message("csh.vehicle.vehicleBrandDetail"),width:100,field:"vehicleBrandDetail",sortable:true,
+								    	  formatter: function(value,row,index){
+									    	  if(value != null){
+									    		  return  value.name;
+									    	  }
+								      	  }},
+								      {title:message("csh.vehicle.vehicleNo"),field:"vehicleNo",sortable:true},
+							      	  {title:message("csh.vehicle.dashboardMileage"),field:"dashboardMileage",sortable:true},
+							      	  {title:message("csh.vehicle.dashboardBV"),field:"dashboardBV",sortable:true},
+								      {title:message("csh.vehicle.device"),field:"deviceNo",width:100,sortable:false},
+								      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
+											return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+										}
+								      }] ]
+
+								});
+
+				$("#common-vehicle-search-btn")
+						.click(
+								function() {
+									var _queryParams = $(
+											"#vehicle-search-form")
+											.serializeJSON();
+									debugger;
+									$('#common-vehicle-table-list')
+											.datagrid('options').queryParams = _queryParams;
+									$("#common-vehicle-table-list")
+											.datagrid('reload');
+								})
+			}
+		});
+
+}
 //查询设备信息
 function searchDevice(id) {
 	$('#commonMainDialog')

@@ -25,10 +25,12 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
+import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DeviceInfoService;
+import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
 
 /**
@@ -43,6 +45,9 @@ public class DeviceInfoController extends BaseController
 
   @Resource (name = "deviceInfoServiceImpl")
   private DeviceInfoService deviceInfoService;
+  
+  @Resource (name = "vehicleServiceImpl")
+  private VehicleService vehicleService;
   
   @RequestMapping (value = "/deviceInfo", method = RequestMethod.GET)
   public String list (ModelMap model)
@@ -200,6 +205,36 @@ public class DeviceInfoController extends BaseController
     deviceInfo.setBindStatus (BindStatus.UNBINDED);
     deviceInfo.setVehicle (null);
     deviceInfo.setBindTime (null);
+    
+    deviceInfoService.update (deviceInfo);
+    return SUCCESS_MESSAGE;
+  }
+  
+  /**
+   * 解绑设备
+   * 
+   * @param model
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/commonVehicleSearch", method = RequestMethod.GET)
+  public String  commonVehicleSearch(ModelMap model, Long deviceId,Long vehicleId) {
+    return "common/commonVehicleSearch";
+  }
+  /**
+   * 解绑设备
+   * 
+   * @param model
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/bind", method = RequestMethod.POST)
+  public @ResponseBody Message bind(ModelMap model, Long deviceId,Long vehicleId) {
+    DeviceInfo deviceInfo = deviceInfoService.find(deviceId);
+    Vehicle vehicle = vehicleService.find (vehicleId);
+    deviceInfo.setBindStatus (BindStatus.BINDED);
+    deviceInfo.setVehicle (vehicle);
+    deviceInfo.setBindTime (new Date ());
     
     deviceInfoService.update (deviceInfo);
     return SUCCESS_MESSAGE;

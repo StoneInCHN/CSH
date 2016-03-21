@@ -35,6 +35,62 @@ var deviceInfo_manager_tool = {
 				}
 			});
 			
+		},
+		//绑定车辆
+		bind:function(){
+				$('#bindDevice').dialog({
+				    title: message("csh.deviceInfo.bindVehicle"),    
+				    width: 600,    
+				    height: 350,
+				    iconCls:'icon-mini-add',
+				    cache: false, 
+				    buttons:[{
+				    	text:message("csh.common.save"),
+				    	iconCls:'icon-save',
+						handler:function(){
+							var validate = $('#bindDevice_form').form('validate');
+							var _edit_row = $('#deviceInfo-table-list').datagrid('getSelected');
+							if( _edit_row == null ){
+								$.messager.alert(message("csh.common.select.editRow"));  
+								return false;
+							}
+							$('#bindDevice_form').append('<input type="hidden" name="deviceId" value="'+_edit_row.id+'"/>')
+							if(validate){
+									$.ajax({
+										url:"../deviceInfo/bind.jhtml",
+										type:"post",
+										data:$("#bindDevice_form").serialize(),
+										beforeSend:function(){
+											$.messager.progress({
+												text:message("csh.common.saving")
+											});
+										},
+										success:function(result,response,status){
+											$.messager.progress('close');
+											if(response == "success"){
+												showSuccessMsg(result.content);
+												$('#bindDevice').dialog("close")
+												$("#bindDevice_form").form("reset");
+												$("#deviceInfo-table-list").datagrid('reload');
+											}else{
+												alertErrorMsg();
+											}
+										}
+									});
+							};
+						}
+					},{
+						text:message("csh.common.cancel"),
+						iconCls:'icon-cancel',
+						handler:function(){
+							 $('#addVehicle').dialog("close");
+							 $("#addVehicle_form").form("reset");
+						}
+				    }],
+				    onOpen:function(){
+				    	$('#bindDevice_form').show();
+				    },
+				});  
 		}
 };
 
