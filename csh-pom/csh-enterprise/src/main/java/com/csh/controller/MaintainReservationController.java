@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +28,20 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.CarService;
+import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
 import com.csh.entity.MaintainReservation;
+import com.csh.entity.ServiceCategory;
+import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.MaintainReservationService;
+import com.csh.service.ServiceCategoryService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -57,6 +65,12 @@ public class MaintainReservationController extends BaseController
   
   @Resource (name = "vehicleServiceImpl")
   private VehicleService vehicleService;
+  
+  @Resource (name = "carServiceServiceImpl")
+  private CarServiceService carServiceService;
+  
+  @Resource (name = "serviceCategoryServiceImpl")
+  private ServiceCategoryService serviceCategoryService;
   /**
    * 界面展示
    * 
@@ -199,9 +213,32 @@ public class MaintainReservationController extends BaseController
   @RequestMapping (value = "/add", method = RequestMethod.POST)
   public @ResponseBody Message add (MaintainReservation maintainReservation,Long endUserID)
   {
+    //查询出保养服务
+    ServiceCategory category = serviceCategoryService.find (1L);
+    
+    List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter>();
+    com.csh.framework.filter.Filter categoryFilter = new com.csh.framework.filter.Filter();
+    categoryFilter.setProperty ("serviceCategory");
+    categoryFilter.setOperator (Operator.eq);
+    categoryFilter.setValue (category);
+    filters.add (categoryFilter);
+    
+    List<CarService> carServiceList = carServiceService.findList (null, filters, null);
+    if (carServiceList == null || carServiceList.size () != 1)
+    {
+      return ERROR_MESSAGE;
+    }
     EndUser endUser = endUserService.find (endUserID);
+    
+    CarServiceRecord record = new CarServiceRecord ();
+    record.setCarService (carServiceList.get (0));
+    record.setChargeStatus (ChargeStatus.RESERVATION);
+    record.setEndUser (endUser);
+    record.setPrice (carServiceList.get (0).getPrice ());
+    
     maintainReservation.setEndUser (endUser);
     maintainReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
+    maintainReservation.setCarServiceRecord (record);
     maintainReservationService.save (maintainReservation,true);
     return SUCCESS_MESSAGE;
   }
@@ -212,7 +249,7 @@ public class MaintainReservationController extends BaseController
     EndUser endUser = endUserService.find (endUserID);
     maintainReservation.setEndUser (endUser);
     maintainReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
-    maintainReservationService.update (maintainReservation,"createDate","tenantID");
+    maintainReservationService.update (maintainReservation,"createDate","tenantID","carServiceRecord");
     return SUCCESS_MESSAGE;
   }
  

@@ -2,8 +2,10 @@ package com.csh.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -54,9 +56,15 @@ public class RepareReservation extends BaseEntity
    */
   private String vehicleBrand;
   
-  
+  /**
+   * 预约信息来源
+   */
   private ReservationInfoFrom reservationInfoFrom;
 
+  /**
+   * 服务记录
+   */
+  private CarServiceRecord carServiceRecord;
   private Long tenantID;
 
   @ManyToOne
@@ -130,6 +138,17 @@ public class RepareReservation extends BaseEntity
   public void setReservationInfoFrom (ReservationInfoFrom reservationInfoFrom)
   {
     this.reservationInfoFrom = reservationInfoFrom;
+  }
+
+  @OneToOne(cascade = CascadeType.PERSIST)
+  public CarServiceRecord getCarServiceRecord ()
+  {
+    return carServiceRecord;
+  }
+
+  public void setCarServiceRecord (CarServiceRecord carServiceRecord)
+  {
+    this.carServiceRecord = carServiceRecord;
   }
 
 }

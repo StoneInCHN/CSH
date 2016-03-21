@@ -773,6 +773,8 @@ public class CommonEnum {
   }
   
   public enum ChargeStatus{
+      /*** 预约  */
+      RESERVATION,
       /** 未支付*/
       UNPAID,
       /** 已支付 */

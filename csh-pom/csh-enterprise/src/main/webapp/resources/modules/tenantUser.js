@@ -314,7 +314,7 @@ var tenantUser_manager_tool = {
 			     		    }    
 			     		}); 
 			     		//alert("保存头像");
-			     	})
+			     	});
 			    }
 			});  
 		},

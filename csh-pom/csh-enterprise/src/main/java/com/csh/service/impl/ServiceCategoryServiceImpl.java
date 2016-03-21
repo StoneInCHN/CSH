@@ -1,5 +1,6 @@
 package com.csh.service.impl; 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.csh.dao.ServiceCategoryDao;
 import com.csh.entity.ServiceCategory;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.ServiceCategoryService;
 import com.csh.utils.FieldFilterUtils;
