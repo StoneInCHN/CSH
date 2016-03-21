@@ -65,7 +65,7 @@ public class TenantAccountController extends BaseController{
 			return ERROR_VIEW;
 		}
 		
-		TenantAccount temp = tenantAccountService.find(id);
+		TenantAccount temp = tenantAccountService.find(tenantAccount.getId());
 		temp.setAccoutStatus(tenantAccount.getAccoutStatus());
 		temp.setRealName(tenantAccount.getRealName());
 		tenantAccountService.update(temp);
