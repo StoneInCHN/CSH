@@ -21,4 +21,5 @@ public interface TenantInfoJdbcService {
   public Page<Map<String, Object>> getTenantInfos(String lng, String lat, Pageable pageable,
       int radius, Long categoryId);
 
+
 }

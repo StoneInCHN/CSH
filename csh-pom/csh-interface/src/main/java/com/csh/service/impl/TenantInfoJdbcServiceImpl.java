@@ -23,9 +23,7 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
 
   public Page<Map<String, Object>> getTenantInfos(String lng, String lat, Pageable pageable,
       int radius, Long categoryId) {
-    if (categoryId == null) {
-      return null;
-    }
+
     double[] aroundGps = LatLonUtil.getAround(Double.valueOf(lat), Double.valueOf(lng), radius);
     // todo pageable.getPageNumber() <1
     /*
@@ -44,14 +42,15 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
     tenant_sql.append(" LEFT JOIN csh_car_service ccs ON cti.id = ccs.tenant_info");
     tenant_sql.append(" LEFT JOIN csh_service_category csc ON csc.id = ccs.service_category");
     tenant_sql.append(" WHERE cti.account_status = 0 AND ccs.service_status = 0");
-    tenant_sql.append(" AND csc.id = " + categoryId);
+    if (categoryId != null) {
+      tenant_sql.append(" AND csc.id = " + categoryId);
+    }
     tenant_sql.append(" AND longitude > " + aroundGps[1]);
     tenant_sql.append(" AND longitude <" + aroundGps[3]);
     tenant_sql.append(" AND latitude > " + aroundGps[0]);
     tenant_sql.append(" AND latitude < " + aroundGps[2]);
     tenant_sql.append(" ORDER BY distance LIMIT " + (pageable.getPageNumber() - 1)
         * pageable.getPageSize() + "," + pageable.getPageSize() + ";");
-
 
 
     StringBuffer total_count_sql = new StringBuffer();
@@ -64,7 +63,9 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
     total_count_sql.append(" LEFT JOIN csh_car_service ccs ON cti.id = ccs.tenant_info");
     total_count_sql.append(" LEFT JOIN csh_service_category csc ON csc.id = ccs.service_category");
     total_count_sql.append(" WHERE cti.account_status = 0 AND ccs.service_status = 0");
-    total_count_sql.append(" AND csc.id = " + categoryId);
+    if (categoryId != null) {
+      total_count_sql.append(" AND csc.id = " + categoryId);
+    }
     total_count_sql.append(" AND longitude > " + aroundGps[1]);
     total_count_sql.append(" AND longitude <" + aroundGps[3]);
     total_count_sql.append(" AND latitude > " + aroundGps[0]);
