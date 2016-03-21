@@ -27,7 +27,6 @@
     		<td colspan="5">
     			 <input  class="easyui-datebox" name="reservationDate" id= "reservationDate"  data-options="required:true,editable:false"/>
     		</td>
-    		
     	</tr>
     	<tr>
     		<th >备注:</th>

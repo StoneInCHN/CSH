@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +28,20 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.CarService;
+import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
 import com.csh.entity.RepareReservation;
+import com.csh.entity.ServiceCategory;
+import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.RepareReservationService;
+import com.csh.service.ServiceCategoryService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -57,6 +65,12 @@ public class RepareReservationController extends BaseController
   
   @Resource (name = "vehicleServiceImpl")
   private VehicleService vehicleService;
+  
+  @Resource (name = "carServiceServiceImpl")
+  private CarServiceService carServiceService;
+  
+  @Resource (name = "serviceCategoryServiceImpl")
+  private ServiceCategoryService serviceCategoryService;
   /**
    * 界面展示
    * 
@@ -199,9 +213,32 @@ public class RepareReservationController extends BaseController
   @RequestMapping (value = "/add", method = RequestMethod.POST)
   public @ResponseBody Message add (RepareReservation repareReservation,Long endUserID)
   {
+    //查询出维修服务的类型
+    ServiceCategory category = serviceCategoryService.find (3L);
+    
+    List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter>();
+    com.csh.framework.filter.Filter categoryFilter = new com.csh.framework.filter.Filter();
+    categoryFilter.setProperty ("serviceCategory");
+    categoryFilter.setOperator (Operator.eq);
+    categoryFilter.setValue (category);
+    filters.add (categoryFilter);
+    
+    List<CarService> carServiceList = carServiceService.findList (null, filters, null);
+    if (carServiceList == null || carServiceList.size () != 1)
+    {
+      return ERROR_MESSAGE;
+    }
     EndUser endUser = endUserService.find (endUserID);
+    
+    CarServiceRecord record = new CarServiceRecord ();
+    record.setCarService (carServiceList.get (0));
+    record.setChargeStatus (ChargeStatus.RESERVATION);
+    record.setEndUser (endUser);
+    record.setPrice (carServiceList.get (0).getPrice ());
+    
     repareReservation.setEndUser (endUser);
     repareReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
+    repareReservation.setCarServiceRecord (record);
     repareReservationService.save (repareReservation,true);
     return SUCCESS_MESSAGE;
   }
@@ -212,7 +249,7 @@ public class RepareReservationController extends BaseController
     EndUser endUser = endUserService.find (endUserID);
     repareReservation.setEndUser (endUser);
     repareReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
-    repareReservationService.update (repareReservation,"createDate","tenantID");
+    repareReservationService.update (repareReservation,"createDate","tenantID","carServiceRecord");
     return SUCCESS_MESSAGE;
   }
  

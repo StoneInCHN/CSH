@@ -44,12 +44,11 @@
 <table id="deviceInfo-table-list"></table>
 <div id="deviceInfo_manager_tool">
 	<div class="tool-button">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="deviceInfo_manager_tool.bind();">绑定</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="deviceInfo_manager_tool.unBind();">解绑</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>
-<div id="editTenantAccount"></div>
-<div id="tenantAccountDetail"></div>
 
 
 
