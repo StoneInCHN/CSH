@@ -113,7 +113,7 @@ public class Vehicle extends BaseEntity {
    * 设备编号，冗余字段，方便查询
    */
   private String deviceNo;
-  
+
 
   /**
    * 车辆车型全称
@@ -217,7 +217,7 @@ public class Vehicle extends BaseEntity {
     this.color = color;
   }
 
-  @OneToOne(mappedBy = "vehicle", cascade = CascadeType.MERGE,fetch=FetchType.EAGER)
+  @OneToOne(mappedBy = "vehicle", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   public DeviceInfo getDevice() {
     return device;
   }
@@ -273,7 +273,7 @@ public class Vehicle extends BaseEntity {
     this.endUser = endUser;
   }
 
-  @Index(name = "vehicle_tenantid")
+  @Index(name = "index_vehicle_tenantid")
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
   public Long getTenantID() {
     return tenantID;
@@ -295,13 +295,12 @@ public class Vehicle extends BaseEntity {
   @JsonProperty
   @Transient
   public String getDeviceNo() {
-    if (device != null)
-    {
-      return device.getDeviceNo ();
-    }else {
+    if (device != null) {
+      return device.getDeviceNo();
+    } else {
       return null;
     }
-     
+
   }
 
   public void setDeviceNo(String deviceNo) {

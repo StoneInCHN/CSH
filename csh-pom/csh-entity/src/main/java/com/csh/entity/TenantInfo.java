@@ -123,7 +123,11 @@ public class TenantInfo extends BaseEntity {
    */
   private String photo;
 
-
+  /**
+   * 商铺二维码
+   */
+  
+  private byte[] qrImage;
   /**
    * 店铺汽车服务
    */
@@ -324,5 +328,18 @@ public class TenantInfo extends BaseEntity {
   public void setPhoto(String photo) {
     this.photo = photo;
   }
+  
+  @Lob
+  @Column(length=100000,columnDefinition="blob")
+  public byte[] getQrImage ()
+  {
+    return qrImage;
+  }
+
+  public void setQrImage (byte[] qrImage)
+  {
+    this.qrImage = qrImage;
+  }
+
 
 }

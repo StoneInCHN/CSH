@@ -62,46 +62,51 @@ public class CarServiceRecord extends BaseEntity
    * 维修预约
    */
   private RepareReservation repareReservation;
+  /**
+   * 商家名称
+   */
+  private String tenantName;
+
+  @Column(length = 80)
+  public String getTenantName() {
+    return tenantName;
+  }
+
+  public void setTenantName(String tenantName) {
+    this.tenantName = tenantName;
+  }
 
   @ManyToOne
-  public CarService getCarService ()
-  {
+  public CarService getCarService() {
     return carService;
   }
 
-  public void setCarService (CarService carService)
-  {
+  public void setCarService(CarService carService) {
     this.carService = carService;
   }
 
   @ManyToOne
-  public EndUser getEndUser ()
-  {
+  public EndUser getEndUser() {
     return endUser;
   }
 
-  public void setEndUser (EndUser endUser)
-  {
+  public void setEndUser(EndUser endUser) {
     this.endUser = endUser;
   }
 
-  public PaymentType getPaymentType ()
-  {
+  public PaymentType getPaymentType() {
     return paymentType;
   }
 
-  public void setPaymentType (PaymentType paymentType)
-  {
+  public void setPaymentType(PaymentType paymentType) {
     this.paymentType = paymentType;
   }
 
-  public ChargeStatus getChargeStatus ()
-  {
+  public ChargeStatus getChargeStatus() {
     return chargeStatus;
   }
 
-  public void setChargeStatus (ChargeStatus chargeStatus)
-  {
+  public void setChargeStatus(ChargeStatus chargeStatus) {
     this.chargeStatus = chargeStatus;
   }
 
