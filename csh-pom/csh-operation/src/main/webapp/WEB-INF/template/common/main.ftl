@@ -67,6 +67,21 @@
 									<a href="../apply/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.apply")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:tenantAccount"]
+								<li>
+									<a href="../tenantAccount/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.tenantAccount")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:area"]
+								<li>
+									<a href="../area/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.area")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:tenantInfo"]
+								<li>
+									<a href="../tenantInfo/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.tenantInfo")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
 							   [@shiro.hasPermission name="admin:account"]
 								<li>
 									<a href="../account/accountInfo.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.account.settingGroup")}</a>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.tenantAccount.add")}</title>
+<title>${message("csh.tenantAccount.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -18,33 +18,20 @@ $().ready(function() {
 
 	var $inputForm = $("#inputForm");
 	
+	
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			username: {
+			name: "required",
+			email: {
 				required: true,
-				minlength: 2,
-				maxlength: 20,
-				remote: {
-					url: "check_username.jhtml",
-					cache: false
-				}
+				email: true
 			},
-			tenantID: {
-				required: true
-			},
-			accoutStatus: {
-				required: true
-			},
-			realName: "required"
-		},
-		messages: {
-			username: {
-				remote: "${message("username.validate.exist")}"
-			}
+			roleIds: "required",
+			adminStatus: "required"
 		}
 	});
-	
+
 });
 </script>
 </head>
@@ -54,9 +41,9 @@ $().ready(function() {
 			<div class="bread-crumb">
 				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantAccount")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantAccount.list")}</a>
-				<span class="divider">/</span> 
-				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.tenantAccount.add")}</span>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.tenantAccount.list")}</a>
+				<span class="divider">/</span>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.tenantAccount.edit")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -66,7 +53,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.tenantAccount.add")}</div>
+                  <div class="pull-left">${message("admin.admin.base")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -75,43 +62,55 @@ $().ready(function() {
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                     <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" role="form">
-                     	<table class="input tabContent">
-                     		<tr>
+                    <form id="inputForm" action="update.jhtml" method="post">
+						<input type="hidden" name="id" value="${admin.id}" />
+						<input type="hidden" name="username" value="${admin.username}" />
+						<table class="input tabContent">
+							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.tenantID")}:
+									${message("csh.admin.username")}:
 								</th>
 								<td>
-									<input type="password" id="tenantID" name="tenantID" class="text" maxlength="20" />
+									${admin.username}
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.userName")}:
+									<span class="requiredField">*</span>${message("csh.admin.name")}:
 								</th>
 								<td>
-									<input type="text" name="username" class="text" maxlength="20" />
+									<input type="text" name="name" class="text" value="${admin.name}" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.accoutStatus")}:
+									<span class="requiredField">*</span>${message("csh.admin.email")}:
 								</th>
 								<td>
-									<select name="accoutStatus" class="text">
-										<option value="">${message("csh.tenantAccount.accoutStatus.select")}</option>
-										<option value="ACTIVED">${message("csh.tenantAccount.accoutStatus.ACTIVED")}</option>
-										<option value="LOCKED">${message("csh.tenantAccount.accoutStatus.LOCKED")}</option>
-										<option value="DELETE">${message("csh.tenantAccount.accoutStatus.DELETE")}</option>
-									</select>
+									<input type="text" name="email" class="text" maxlength="200" value="${admin.email}" />
+								</td>
+							</tr>
+							<tr class="roles">
+								<th>
+									<span class="requiredField">*</span>${message("csh.admin.roles")}:
+								</th>
+								<td>
+									<span class="fieldSet">
+										[#list roles as role]
+											<label>
+												<input type="checkbox" name="roleIds" value="${role.id}"[#if admin.roles?seq_contains(role)] checked="checked"[/#if] /><span>${role.name}</span>
+											</label>
+										[/#list]
+									</span>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.realName")}:
+									${message("csh.admin.adminStatus")}:
 								</th>
 								<td>
-									<input type="text" name="realName" class="text" maxlength="200" />
+									<input type="radio" value="actived" name="adminStatus" [#if admin.adminStatus== "actived" ]checked="checked"[/#if] />${message("csh.admin.adminStatus.actived")}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="radio" value="locked" name="adminStatus" [#if admin.adminStatus== "locked" ]checked="checked"[/#if] />${message("csh.admin.adminStatus.locked")}
 								</td>
 							</tr>
 						</table>
@@ -125,8 +124,8 @@ $().ready(function() {
 									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 								</td>
 							</tr>
-						</table>                                     
-                     </form>
+						</table>
+					</form>
                   </div>
                 </div>
               </div>  

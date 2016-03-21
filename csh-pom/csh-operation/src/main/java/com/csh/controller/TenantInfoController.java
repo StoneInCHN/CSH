@@ -68,7 +68,7 @@ public class TenantInfoController extends BaseController {
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String list(Pageable pageable, ModelMap model) {
     model.addAttribute("page", tenantInfoService.findPage(pageable));
-    return "/role/list";
+    return "/tenantInfo/list";
   }
 
   /**

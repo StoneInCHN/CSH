@@ -32,7 +32,7 @@ public class TenantInfo extends BaseEntity {
   private static final long serialVersionUID = 3525183712762376969L;
 
   /**
-   * 租户组织机构代码
+   * 租户代码
    */
   private String orgCode;
 
