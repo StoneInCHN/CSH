@@ -58,7 +58,7 @@ public class Advertisement extends BaseEntity {
   private Long tenantId;
 
 
-  @Index(name = "index_tenantId_ad")
+  @Index(name = "index_ad_tenantid")
   public Long getTenantId() {
     return tenantId;
   }

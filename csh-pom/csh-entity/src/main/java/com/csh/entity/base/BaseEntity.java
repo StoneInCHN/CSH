@@ -11,12 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.groups.Default;
 
-import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.lucene.DateBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
