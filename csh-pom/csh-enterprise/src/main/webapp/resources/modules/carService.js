@@ -151,28 +151,28 @@ var carService_manager_tool = {
 			});  
 		},
 		edit:function(){
-			var _edit_row = $('#maintainReservation-table-list').datagrid('getSelected');
+			var _edit_row = $('#carService-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
-			var _dialog = $('#editMaintainReservation').dialog({    
+			var _dialog = $('#editCarService').dialog({    
 				title: message("csh.common.edit"),     
-			    width: 600,    
-			    height: 450,    
+			    width: 700,    
+			    height: 550,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
-			    href:'../maintainReservation/edit.jhtml?id='+_edit_row.id,
+			    href:'../carService/edit.jhtml?id='+_edit_row.id,
 			    buttons:[{
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#maintainReservation_form').form('validate');
+						var validate = $('#editCarService_form').form('validate');
 						if(validate){
 							$.ajax({
-								url:"../maintainReservation/update.jhtml",
+								url:"../carService/update.jhtml",
 								type:"post",
-								data:$("#editEndUser_form").serialize(),
+								data:$("#editCarService_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -181,8 +181,8 @@ var carService_manager_tool = {
 								success:function(result,response,status){
 									$.messager.progress('close');
 										showSuccessMsg(result.content);
-										$('#editMaintainReservation').dialog("close");
-										$("#maintainReservation-table-list").datagrid('reload');
+										$('#editCarService').dialog("close");
+										$("#carService-table-list").datagrid('reload');
 								}
 							});
 						};
@@ -191,30 +191,109 @@ var carService_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editMaintainReservation').dialog("close")
+						 $('#editCarService').dialog("close")
 					}
 			    }],
 			    onLoad:function(){
-			    	$("#serviceCategory").combobox({    
-				    valueField:'id',
-				    textField:'plate',
-				    url:"../serviceCategory/findAllServiceCategory.jhtml",
-				    editable : false,
-				    required:true,
-				    prompt:message("csh.common.please.select"),
+			    	$("#editCarServiceCategory").combobox({    
+					    valueField:'id',
+					    textField:'categoryName',
+					    url:"../serviceCategory/findAllServiceCategory.jhtml",
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select"),
+					    onLoadSuccess:function(){
+							$('#editCarServiceCategory').combobox("setValue",$("#editCarServiceCategory").attr("data-value"));
+						},
 			    	});
+			    	var editOptions ={
+			     			createOption:{
+			     				pick: {
+					                 id: '#carServiceFilePicker-edit',
+					                 innerHTML :'',
+					                 multiple :true
+					             },
+					             dnd: '#carServiceUploader-edit .queueList',
+					             accept: {
+					                 title: 'Images',
+					                 extensions: 'gif,jpg,jpeg,bmp,png',
+					                 mimeTypes: 'image/*'
+					             },
+					             thumb:{
+					            	    width: 150,
+					            	    height: 150,
+					            	    quality: 90,
+					            	    allowMagnify: false,
+					            	    crop: false,
+					            	    type: 'image/jpeg'
+					            	},
+					             // swf文件路径
+					             swf: BASE_URL + '/js/Uploader.swf',
+					             disableGlobalDnd: true,
+					             server: '../carService/uploadPhoto.jhtml',
+					             fileNumLimit: 100,
+					             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
+					             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
+					             compress:{
+					            	 width: 110,
+					            	    height: 110,
+					            	    // 图片质量，只有type为`image/jpeg`的时候才有效。
+					            	    quality: 90,
+					            	    // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+					            	    allowMagnify: false,
+					            	    // 是否允许裁剪。
+					            	    crop: false,
+					            	    // 是否保留头部meta信息。
+					            	    preserveHeaders: true,
+					            	    // 如果发现压缩后文件大小比原来还大，则使用原来图片
+					            	    // 此属性可能会影响图片自动纠正功能
+					            	    noCompressIfLarger: false,
+					            	    // 单位字节，如果图片大小小于此值，不会采用压缩。
+					            	    compressSize: 0
+					             }
+			     			},
+			     			warp :"editCarService_form",
+			     			uploadImageType:"edit",
+			     			addButton:{
+			     				id: '#carServiceFilePicker-edit2',
+			     				innerHTML: '替换头像'
+			     			},
+			     			uploadBeforeSend:function(object, data, headers){
+			     				 //
+//			     				 data.staffID =$("#editCarService_form").find("input[name='staffID']").val();
+			     				 data.carServiceId=$("#editCarService_form").find("input[name='id']").val();;
+			     			}
+			     	};
+			     	singleUpload(editOptions);
+			     	$("#editCarService_form").find(".savePhoto").on("click",function(){
+			     		$.messager.confirm('确认','头像保存后将直接修改当前用户的头像，确认要上传吗？',function(res){    
+			     		    if (res){
+			     		    	$("#carServiceUploader-edit .uploadBtn").trigger("upload");
+			     		    }    
+			     		}); 
+			     		//alert("保存头像");
+			     	});
 			    },
 			    onClose:function(){
-			    	$('#editMaintainReservation').empty();
+			    	$('#editCarService').empty();
 			    }
 			});  
 		},
 		remove:function(){
-			listRemove('maintainReservation-table-list','../maintainReservation/delete.jhtml');
+			listRemove('carService-table-list','../carService/delete.jhtml');
 		}
 };
 
 $(function(){
+	
+	$("#serviceCategorySearch").combobox({    
+	    valueField:'id',
+	    textField:'categoryName',
+	    url:"../serviceCategory/findAllServiceCategory.jhtml",
+	    editable : false,
+	    prompt:message("csh.common.please.select"),
+    	});
+	
 	$("#carService-table-list").datagrid({
 		title:message("csh.carService.list"),
 		fitColumns:true,
@@ -226,8 +305,8 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#carServiceDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 600,    
-			    height: 450, 
+			    width: 700,    
+			    height: 550, 
 			    cache: false,
 			    modal: true,
 			    href:'../carService/details.jhtml?id='+rowData.id,
@@ -240,6 +319,19 @@ $(function(){
 			    }],
 			    onClose:function(){
 			    	$('#carServiceDetail').empty();
+			    },
+			    onLoad:function(){
+			    	$("#carServiceCategoryDetail").combobox({    
+					    valueField:'id',
+					    textField:'categoryName',
+					    url:"../serviceCategory/findAllServiceCategory.jhtml",
+					    editable : false,
+					    required:true,
+					    prompt:message("csh.common.please.select"),
+					    onLoadSuccess:function(){
+							$('#carServiceCategoryDetail').combobox("setValue",$("#carServiceCategoryDetail").attr("data-value"));
+						},
+			    	});
 			    }
 			});   
 		},
@@ -275,9 +367,9 @@ $(function(){
 	});
 
 	
-	$("#maintainReservation-search-btn").click(function(){
-	  var _queryParams = $("#maintainReservation-search-form").serializeJSON();
-	  $('#maintainReservation-table-list').datagrid('options').queryParams = _queryParams;  
-	  $("#maintainReservation-table-list").datagrid('reload');
+	$("#carService-search-btn").click(function(){
+	  var _queryParams = $("#carService-search-form").serializeJSON();
+	  $('#carService-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#carService-table-list").datagrid('reload');
 	})
 })

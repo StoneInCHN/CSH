@@ -8,7 +8,7 @@
     		</td>
     		<th>${message("csh.carService.serviceCategory")}:</th>
     		<td>
-    			 <input  class="easyui-textbox" id= "addCarServiceCategory" name="serviceCategoryId"  data-options="required:true"/>
+    			 <input  class="easyui-combobox" id= "addCarServiceCategory" name="serviceCategoryId"  data-options="required:true"/>
     		</td>
     	</tr>
     	<tr>
@@ -62,7 +62,7 @@
     	<tr>
     		<th>${message("csh.carService.serviceDesc")}:</th>
     		<td colspan="4">
-    			 <input  class="easyui-textbox" id= "serviceDesc" name = "serviceDesc"  data-options="required:true"  style="height:100px;width:400px"/>
+    			 <input  class="easyui-textbox" id= "serviceDesc" name = "serviceDesc"   style="height:100px;width:400px"/>
     		</td>
     	</tr>
     </table>

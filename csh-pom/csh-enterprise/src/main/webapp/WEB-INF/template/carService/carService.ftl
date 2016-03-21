@@ -5,34 +5,33 @@
 <div>
 	  <fieldset>
 	    <legend>${message("csh.vehicle.search")}</legend>
-	    <form id="maintainReservation-search-form" class="search-form">
-	    <input type="hidden" name="totalRecord" id="totalRecord"/>
+	    <form id="carService-search-form" class="search-form">
 	    	<div class="search-item">
-			    <label> ${message("csh.vehicle.plate")}:</label>
-			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
+			    <label> ${message("csh.carService.serviceName")}:</label>
+			    <input type="text" class="easyui-textbox" id="serviceNameSearch" name="serviceNameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.reservation.userName")}:</label>
-			    <input type="text" class="easyui-textbox" id="userNameSearch" name="userNameSearch" validtype="length[0,20]"/>
+			    <label> ${message("csh.carService.serviceCategory")}:</label>
+			    <input type="text" class="easyui-textbox" id="serviceCategorySearch" name="serviceCategorySearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.reservation.infoFrom")}:</label>
+			    <label> ${message("csh.carService.serviceStatus")}:</label>
 			    
 			    <input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
-				      label: 'APP',
-				      value: '${message("csh.reservation.infoFrom.app")}'
+				      label: 'ENABLED',
+				      value: '${message("csh.common.enable")}'
 				     },{
-				      label: 'CALL',
-				      value: '${message("csh.reservation.infoFrom.call")}'
+				      label: 'DISABLED',
+				      value: '${message("csh.common.disable")}'
 				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="infoFromSearch" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="serviceStatusSearch" style="width:110px;"/>
 			    
 			</div>
 			<div class="search-item">
-			    <label> 预约时间:</label>
+			    <label> 创建时间:</label>
 			    <input type="text" class="Wdate" id="beginDate" name="beginDate"  onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 			</div>
 			<div class="search-item">
@@ -41,7 +40,7 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="maintainReservation-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="carService-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 </div>
@@ -56,7 +55,7 @@
 </div>
 <div id="addCarService"></div>
 <div id="editCarService"></div>
-<div id="addCarServiceDetail"></div>
+<div id="carServiceDetail"></div>
 
 
 

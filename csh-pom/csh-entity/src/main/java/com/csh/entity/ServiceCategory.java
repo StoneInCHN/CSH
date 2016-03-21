@@ -10,6 +10,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
+
 import com.csh.entity.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -56,6 +60,7 @@ public class ServiceCategory extends BaseEntity {
   }
 
   @JsonProperty
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
   public String getCategoryName() {
     return categoryName;
   }

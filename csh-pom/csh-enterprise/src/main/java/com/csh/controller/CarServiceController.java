@@ -1,7 +1,9 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -32,12 +34,15 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.CarService;
 import com.csh.entity.ServiceCategory;
-import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
+import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.CarServiceService;
 import com.csh.service.FileService;
 import com.csh.service.ServiceCategoryService;
+import com.csh.service.TenantAccountService;
 import com.csh.utils.DateTimeUtils;
 
 /**
@@ -54,17 +59,20 @@ public class CarServiceController extends BaseController
   private CarServiceService carServiceService;
   @Resource (name = "fileServiceImpl")
   private FileService fileService;
-  @Resource(name = "serviceCategoryServiceImpl")
+  @Resource (name = "serviceCategoryServiceImpl")
   private ServiceCategoryService serviceCategoryService;
-  
+  @Resource (name = "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
+
   /**
    * 界面展示
    * 
    * @param model
    * @return
    */
-  @RequestMapping(value = "/carService", method = RequestMethod.GET)
-  public String list(ModelMap model) {
+  @RequestMapping (value = "/carService", method = RequestMethod.GET)
+  public String list (ModelMap model)
+  {
     return "/carService/carService";
   }
 
@@ -75,9 +83,11 @@ public class CarServiceController extends BaseController
    * @param pageable
    * @return
    */
-  @RequestMapping(value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<CarService> list(Model model, Pageable pageable,
-      Date beginDate, Date endDate, String plateSearch,String userNameSearch,ReservationInfoFrom infoFromSearch) {
+  @RequestMapping (value = "/list", method = RequestMethod.POST)
+  public @ResponseBody Page<CarService> list (Model model, Pageable pageable,
+      Date beginDate, Date endDate, String serviceCategorySearch,
+      String serviceNameSearch, ServiceStatus serviceStatusSearch)
+  {
     String startDateStr = null;
     String endDateStr = null;
 
@@ -85,16 +95,17 @@ public class CarServiceController extends BaseController
     analyzer.setMaxWordLength (true);
     BooleanQuery query = new BooleanQuery ();
 
-    QueryParser plateParser = new QueryParser (Version.LUCENE_35, "plate",
-        analyzer);
-    QueryParser userNameParser = new QueryParser (Version.LUCENE_35, "endUser.userName",
-        analyzer);
+    QueryParser plateParser = new QueryParser (Version.LUCENE_35,
+        "serviceName", analyzer);
     Query plateQuery = null;
     Query userNameQuery = null;
     TermRangeQuery rangeQuery = null;
-    TermQuery termQuery = null;
-    
+    TermQuery categoryTermQuery = null;
+    TermQuery statusTermQuery = null;
+    TermQuery tenantInfoQuery = null;
     Filter filter = null;
+    
+    TenantInfo tenantInfo = tenantAccountService.getCurrentTenantInfo ();
     if (beginDate != null)
     {
       startDateStr = DateTimeUtils.convertDateToString (beginDate, null);
@@ -103,74 +114,79 @@ public class CarServiceController extends BaseController
     {
       endDateStr = DateTimeUtils.convertDateToString (endDate, null);
     }
-    if (plateSearch != null)
+    if (serviceNameSearch != null)
     {
-      String text = QueryParser.escape (plateSearch);
-        try
-        {
-          //通配符查询，开启*开头，但影响效率
-          plateParser.setAllowLeadingWildcard (true);
-
-          plateQuery = plateParser.parse ("*"+text+"*");
-          
-          query.add (plateQuery, Occur.MUST);
-          
-          if (LogUtil.isDebugEnabled (VehicleController.class))
-          {
-            LogUtil.debug (VehicleController.class, "search", "Search plate: "
-                + plateSearch );
-          }
-        }
-        catch (ParseException e)
-        {
-          e.printStackTrace();
-        }
-    }
-    if (userNameSearch != null)
-    {
-      String text = QueryParser.escape (userNameSearch);
-        try
-        {
-          userNameQuery = userNameParser.parse (text);
-          query.add (userNameQuery, Occur.MUST);
-          
-          if (LogUtil.isDebugEnabled (VehicleController.class))
-          {
-            LogUtil.debug (VehicleController.class, "search", "Search user name: "
-                + userNameSearch );
-          }
-        }
-        catch (ParseException e)
-        {
-          e.printStackTrace();
-        }
-    }
-    
-    if (startDateStr != null || endDateStr != null)
-    {
-      rangeQuery = new TermRangeQuery ("reservationDate", startDateStr, endDateStr, true, true);
-      query.add (rangeQuery,Occur.MUST);
-      
-      if (LogUtil.isDebugEnabled (VehicleController.class))
+      String text = QueryParser.escape (serviceNameSearch);
+      try
       {
-        LogUtil.debug (VehicleController.class, "search", "Search start date: "+startDateStr
-            +" end date: "+endDateStr);
+        //通配符查询，开启*开头，但影响效率
+        plateParser.setAllowLeadingWildcard (true);
+
+        plateQuery = plateParser.parse ("*" + text + "*");
+
+        query.add (plateQuery, Occur.MUST);
+
+        if (LogUtil.isDebugEnabled (VehicleController.class))
+        {
+          LogUtil.debug (VehicleController.class, "search",
+              "Search service name: " + serviceNameSearch);
+        }
+      }
+      catch (ParseException e)
+      {
+        e.printStackTrace ();
       }
     }
-    if (infoFromSearch != null)
+
+    if (startDateStr != null || endDateStr != null)
     {
-      termQuery = new TermQuery (new Term ("reservationInfoFrom", infoFromSearch.toString ()));
-      query.add (termQuery,Occur.MUST);
+      rangeQuery = new TermRangeQuery ("reservationDate", startDateStr,
+          endDateStr, true, true);
+      query.add (rangeQuery, Occur.MUST);
+
+      if (LogUtil.isDebugEnabled (VehicleController.class))
+      {
+        LogUtil.debug (VehicleController.class, "search", "Search start date: "
+            + startDateStr + " end date: " + endDateStr);
+      }
     }
-    if (plateQuery != null || userNameQuery != null || rangeQuery != null || termQuery!= null)
+    if (serviceStatusSearch != null)
     {
-      return carServiceService.search (query, pageable, analyzer,filter);
-    }else {
+      statusTermQuery = new TermQuery (new Term ("serviceStatus",
+          serviceStatusSearch.toString ()));
+      query.add (statusTermQuery, Occur.MUST);
+    }
+    if (serviceCategorySearch != null && serviceCategorySearch != null)
+    {
+      categoryTermQuery = new TermQuery (new Term ("serviceCategory.id",
+          serviceCategorySearch));
+      query.add (categoryTermQuery, Occur.MUST);
+    }
+    
+    if (plateQuery != null || userNameQuery != null || rangeQuery != null
+        || categoryTermQuery != null || statusTermQuery != null)
+    {
+      tenantInfoQuery = new TermQuery (new Term ("tenantInfo.id",
+          tenantInfo.getId ().toString ()));
+      query.add (tenantInfoQuery, Occur.MUST);
+      return carServiceService.search (query, pageable, analyzer, filter);
+    }
+    else
+    {
+      List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter>();
+      
+      com.csh.framework.filter.Filter tenantInfoFilter = new com.csh.framework.filter.Filter();
+      tenantInfoFilter.setOperator (Operator.eq);
+      tenantInfoFilter.setValue (tenantInfo);
+      tenantInfoFilter.setProperty ("tenantInfo");
+      filters.add (tenantInfoFilter);
+      
+      pageable.setFilters (filters);
       return carServiceService.findPage (pageable);
     }
-  
+
   }
-  
+
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
@@ -178,27 +194,35 @@ public class CarServiceController extends BaseController
     model.put ("carService", carService);
     return "carService/edit";
   }
+
   @RequestMapping (value = "/add", method = RequestMethod.GET)
   public String add (ModelMap model)
   {
     return "carService/add";
   }
+
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (CarService carService,Long serviceCategoryId)
+  public @ResponseBody Message add (CarService carService,
+      Long serviceCategoryId)
   {
-	ServiceCategory category = serviceCategoryService.find(serviceCategoryId);
-	carService.setServiceCategory(category);
+    TenantInfo tenantInfo = tenantAccountService.getCurrentTenantInfo ();
+    ServiceCategory category = serviceCategoryService.find (serviceCategoryId);
+    carService.setServiceCategory (category);
+    carService.setTenantInfo (tenantInfo);
     carServiceService.save (carService);
     return SUCCESS_MESSAGE;
   }
-  
+
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (CarService carService)
-  { 
-    carServiceService.update (carService,"createDate","tenantID");
+  public @ResponseBody Message update (CarService carService,Long serviceCategoryId)
+  {
+    TenantInfo tenantInfo = tenantAccountService.getCurrentTenantInfo ();
+    ServiceCategory category = serviceCategoryService.find (serviceCategoryId);
+    carService.setServiceCategory (category);
+    carService.setTenantInfo (tenantInfo);
+    carServiceService.update (carService, "createDate", "tenantID","imgPath");
     return SUCCESS_MESSAGE;
   }
- 
 
   /**
    * 删除
@@ -214,6 +238,7 @@ public class CarServiceController extends BaseController
     }
     return SUCCESS_MESSAGE;
   }
+
   /**
    * 获取数据进入详情页面
    * 
@@ -221,26 +246,32 @@ public class CarServiceController extends BaseController
    * @param id
    * @return
    */
-  @RequestMapping(value = "/details", method = RequestMethod.GET)
-  public String details(ModelMap model, Long id) {
-    CarService carService = carServiceService.find(id);
-    model.addAttribute("carService", carService);
+  @RequestMapping (value = "/details", method = RequestMethod.GET)
+  public String details (ModelMap model, Long id)
+  {
+    CarService carService = carServiceService.find (id);
+    model.addAttribute ("carService", carService);
     return "carService/details";
   }
-  
-  @RequestMapping(value = "/uploadPhoto", method = RequestMethod.POST)
-  public @ResponseBody Message uploadPhoto(@RequestParam("file") MultipartFile file,
-      Long carServiceId) {
-    Map<String, String> paramMap = new HashMap<String, String>();
 
-//    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, identifier);
-    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, paramMap);
-    if (filePath != null && carServiceId != null) {
-      CarService carService = carServiceService.find(carServiceId);
-      carService.setImgPath(filePath);
-      carServiceService.update(carService);
-      return Message.success(filePath);
-    } else {
+  @RequestMapping (value = "/uploadPhoto", method = RequestMethod.POST)
+  public @ResponseBody Message uploadPhoto (
+      @RequestParam ("file") MultipartFile file, Long carServiceId)
+  {
+    Map<String, String> paramMap = new HashMap<String, String> ();
+
+    //    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, identifier);
+    String filePath = fileService.upload (FileType.PROFILE_PICTURE, file,
+        paramMap);
+    if (filePath != null && carServiceId != null)
+    {
+      CarService carService = carServiceService.find (carServiceId);
+      carService.setImgPath (filePath);
+      carServiceService.update (carService);
+      return Message.success (filePath);
+    }
+    else
+    {
       return ERROR_MESSAGE;
     }
 
