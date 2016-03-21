@@ -53,40 +53,53 @@ public class CarServiceRecord extends BaseEntity {
    */
   private BigDecimal price;
 
-  
+  /**
+   * 商家名称
+   */
+  private String tenantName;
+
+  @Column(length = 80)
+  public String getTenantName() {
+    return tenantName;
+  }
+
+  public void setTenantName(String tenantName) {
+    this.tenantName = tenantName;
+  }
+
   @ManyToOne
   public CarService getCarService() {
-	return carService;
+    return carService;
   }
 
   public void setCarService(CarService carService) {
-	this.carService = carService;
+    this.carService = carService;
   }
-  
+
   @ManyToOne
   public EndUser getEndUser() {
-	return endUser;
+    return endUser;
   }
 
-public void setEndUser(EndUser endUser) {
-	this.endUser = endUser;
-}
+  public void setEndUser(EndUser endUser) {
+    this.endUser = endUser;
+  }
 
-public PaymentType getPaymentType() {
-	return paymentType;
-}
+  public PaymentType getPaymentType() {
+    return paymentType;
+  }
 
-public void setPaymentType(PaymentType paymentType) {
-	this.paymentType = paymentType;
-}
+  public void setPaymentType(PaymentType paymentType) {
+    this.paymentType = paymentType;
+  }
 
-public ChargeStatus getChargeStatus() {
-	return chargeStatus;
-}
+  public ChargeStatus getChargeStatus() {
+    return chargeStatus;
+  }
 
-public void setChargeStatus(ChargeStatus chargeStatus) {
-	this.chargeStatus = chargeStatus;
-}
+  public void setChargeStatus(ChargeStatus chargeStatus) {
+    this.chargeStatus = chargeStatus;
+  }
 
   @Column(scale = 2, precision = 10, nullable = false)
   public BigDecimal getPrice() {
