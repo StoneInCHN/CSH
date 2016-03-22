@@ -154,6 +154,7 @@ var messages = {
 	"csh.deviceInfo.deviceType":"设备类型",
 	"csh.deviceInfo.bindVehicle":"绑定车辆",
 	"csh.deviceInfo.bindStatus.unBinded":"设备未绑定",
+	"csh.deviceInfo.bindStatus.binded":"设备已绑定",
 	//车辆信息
 	"csh.vehicle.add":"添加车辆",
 	"csh.vehicle.plate":"车牌号",

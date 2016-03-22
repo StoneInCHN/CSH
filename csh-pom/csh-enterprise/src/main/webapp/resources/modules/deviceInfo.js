@@ -38,6 +38,15 @@ var deviceInfo_manager_tool = {
 		},
 		//绑定车辆
 		bind:function(){
+				var _edit_row = $('#deviceInfo-table-list').datagrid('getSelected');
+				if( _edit_row == null ){
+					$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');  
+					return false;
+				}
+				if(_edit_row.bindStatus=="BINDED"){
+					$.messager.alert(message("csh.deviceInfo.bindStatus"),message("csh.deviceInfo.bindStatus.binded"),'warning');  
+					return false;
+				}
 				$('#bindDevice').dialog({
 				    title: message("csh.deviceInfo.bindVehicle"),    
 				    width: 600,    
@@ -48,12 +57,11 @@ var deviceInfo_manager_tool = {
 				    	text:message("csh.common.save"),
 				    	iconCls:'icon-save',
 						handler:function(){
+							debugger;
 							var validate = $('#bindDevice_form').form('validate');
 							var _edit_row = $('#deviceInfo-table-list').datagrid('getSelected');
-							if( _edit_row == null ){
-								$.messager.alert(message("csh.common.select.editRow"));  
-								return false;
-							}
+							
+							
 							$('#bindDevice_form').append('<input type="hidden" name="deviceId" value="'+_edit_row.id+'"/>')
 							if(validate){
 									$.ajax({
@@ -101,6 +109,7 @@ $(function(){
 		toolbar:"#deviceInfo_manager_tool",
 		url:'../deviceInfo/list.jhtml',  
 		pagination:true,
+		singleSelect:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
 		onDblClickRow : function (rowIndex, rowData){
