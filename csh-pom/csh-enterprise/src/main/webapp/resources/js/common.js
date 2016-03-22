@@ -567,7 +567,6 @@ function searchEndUser(id) {
 														    required:true,
 														    prompt:message("csh.common.please.select"),
 														    onSelect:function(record){
-														    	debugger;
 														    	if($("#dashboardMileage")!=undefined)
 														    		$("#dashboardMileage").textbox('setValue',record.dashboardMileage);
 														    	if($("#lastMaintainMileage")!=undefined)
