@@ -143,6 +143,7 @@
     <div class="main-content" data-options="region:'center'">
     	<div id="manager-tabs">   
 		    <div title="起始页">
+		    	<p><img style="margin:0 auto;display:block;" id="qrCodeImage" src="${base}/console/common/showQrCode.jhtml" title="二维码"/></p>
 		    </div>    
 		</div>  
     </div>    

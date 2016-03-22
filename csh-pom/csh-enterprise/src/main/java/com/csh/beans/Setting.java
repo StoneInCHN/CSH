@@ -90,6 +90,11 @@ public class Setting implements Serializable {
     private String notifyPictureUploadPath;
     /** 相册上传路径 */
     private String albumUploadPath;
+    
+    /**
+     * 二维码中小图片
+     */
+    private String qrImageUrl;
     /**
      * 获取相册上传路径
      * 
@@ -659,4 +664,11 @@ public class Setting implements Serializable {
     public void setCaptchaTypes(CaptchaType[] captchaTypes) {
         this.captchaTypes = captchaTypes;
     }
+
+    public String getQrImageUrl ()
+    {
+      return this.qrImageUrl;
+    }
+    
+    
 }

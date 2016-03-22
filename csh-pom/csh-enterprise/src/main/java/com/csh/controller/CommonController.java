@@ -1,7 +1,9 @@
 package com.csh.controller;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,9 +30,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.TenantAccount;
+import com.csh.entity.TenantInfo;
 import com.csh.service.CaptchaService;
 import com.csh.service.RSAService;
 import com.csh.service.TenantAccountService;
+import com.csh.service.TenantInfoService;
+import com.csh.utils.QRCodeGenerator;
 
 /**
  * Controller - 共用
@@ -46,6 +51,8 @@ public class CommonController extends BaseController {
   private CaptchaService captchaService;
   @Resource(name = "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
+  @Resource(name = "tenantInfoServiceImpl")
+  private TenantInfoService tenantInfoService;
 //  @Resource(name = "areaServiceImpl")
 //  private AreaService areaService;
 
@@ -174,7 +181,55 @@ public String main(ModelMap model,  HttpSession session) {
     tenantAccountService.refreshIndex();
     return SUCCESS_MESSAGE;
   }
+  /**
+   * 生成二维码
+   */
+  @RequestMapping(value = "/generateQrImage", method = RequestMethod.GET)
+  public @ResponseBody Message
+   generateQrImage(HttpServletRequest request) {
+    
+    Long tenantID = tenantAccountService.getCurrentTenantID ();
+    
+    String content = "tenantInfo:"+tenantID;
+    byte[] qrByte = QRCodeGenerator.generateQrImage (content);
+    
+    TenantInfo tenantInfo = tenantInfoService.find (tenantID);
+    tenantInfo.setQrImage (qrByte);
+    
+    tenantInfoService.save (tenantInfo);
+    return SUCCESS_MESSAGE;
+  }
+  
+  /**
+   * 获取会员二维码图案
+   */
+  @RequestMapping(value = "/showQrCode", method = RequestMethod.GET)
+  public void getQrCode(HttpServletResponse response) {
+    TenantInfo tenantInfo = tenantAccountService.getCurrentTenantInfo ();
+    ServletOutputStream sos = null;
+    try {
+      if(null != tenantInfo.getQrImage()) {
+        InputStream buffin = new ByteArrayInputStream(
+            tenantInfo.getQrImage());
+        BufferedImage img = ImageIO.read(buffin);
+        // 禁止图像缓存。
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        // 将图像输出到Servlet输出流中。
 
+        sos = response.getOutputStream();
+        ImageIO.write(img, "jpg", sos);
+        sos.flush();
+        // sos.close();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      IOUtils.closeQuietly(sos);
+    }
+  }
 //  /**
 //   * 异步判断验证码是否正确
 //   * @param captchaType 验证码类型

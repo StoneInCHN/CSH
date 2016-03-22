@@ -24,6 +24,7 @@
 		<setting name="profilePictureUploadPath" value="/upload/image/${orgCode}/${identifier}/profile picture/" />
 		<setting name="albumUploadPath" value="/upload/image/${orgCode}/${identifier}/album/${albumName}/" />
 		<setting name="notifyPictureUploadPath" value="/upload/image/${orgCode}/${identifier}/notify picture/" />
+		<setting name="qrImageUrl" value="" />
 		<!-- cookie相关配置 -->
 		<setting name="cookiePath" value="/" />
 		<setting name="cookieDomain" value="" />
