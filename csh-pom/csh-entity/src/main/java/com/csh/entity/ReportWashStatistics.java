@@ -16,8 +16,8 @@ import com.csh.entity.base.BaseEntity;
  * 
  */
 @Entity
-@Table(name = "csh_report_repare_statistics")
-@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_report_repare_statistics_sequence")
+@Table(name = "csh_report_wash_statistics")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_report_wash_statistics_sequence")
 public class ReportWashStatistics extends BaseEntity {
   private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class ReportWashStatistics extends BaseEntity {
    */
   private Date statisticsDate;
   
- @Index(name="repare_statistics_tenantid")
+ @Index(name="wash_statistics_tenantid")
   public Long getTenantID() {
     return tenantID;
   }
