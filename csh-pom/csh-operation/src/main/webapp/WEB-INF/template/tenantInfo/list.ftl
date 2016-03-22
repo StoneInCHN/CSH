@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.tenantAccount.list")}</title>
+<title>${message("csh.tenantInfo.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.tenantAccount")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.tenantInfo")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantAccount.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantInfo.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -68,7 +68,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "username" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="username"><a href="#">${message("csh.tenantAccount.username")}</a></li>
+								          <li [#if page.searchProperty == "tenantName" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="username"><a href="#">${message("csh.tenantInfo.tenantName")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -83,7 +83,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.tenantAccount")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.tenantInfo")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -98,25 +98,25 @@
 														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="username">${message("csh.tenantAccount.userName")}</a>
+														<a href="javascript:;" class="sort" name="orgCode">${message("csh.tenantInfo.orgCode")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="tenantID">${message("csh.tenantAccount.tenantID")}</a>
+														<a href="javascript:;" class="sort" name="tenantName">${message("csh.tenantInfo.tenantName")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="realName">${message("csh.tenantAccount.realName")}</a>
+														<a href="javascript:;" class="sort" name="contactPhone">${message("csh.tenantInfo.contactPhone")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="loginDate">${message("csh.tenantAccount.loginDate")}</a>
+														<a href="javascript:;" class="sort" name="contactPerson">${message("csh.tenantInfo.contactPerson")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="loginIp">${message("csh.tenantAccount.loginIp")}</a>
+														<a href="javascript:;" class="sort" name="businessTime">${message("csh.tenantInfo.businessTime")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="createDate">${message("csh.common.createDate")}</a>
+														<a href="javascript:;" class="sort" name="area">${message("csh.tenantInfo.area")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="accoutStatus">${message("csh.tenantAccount.accoutStatus")}</a>
+														<a href="javascript:;" class="sort" name="accountStatus">${message("csh.tenantInfo.accountStatus")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -124,38 +124,34 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as tenantAccount]
+												[#list page.content as tenantInfo]
 												<tr>
 													<td>
-														<input type="checkbox"  name="ids" value="${tenantAccount.id}" />
+														<input type="checkbox"  name="ids" value="${tenantInfo.id}" />
 													</td>
 													<td>
-														${tenantAccount.username}
+														${tenantInfo.tenantName}
 													</td>
 													<td>
-														${tenantAccount.tenantID}
+														${tenantInfo.contactPhone}
 													</td>
 													<td>
-														${tenantAccount.realName}
+														${tenantInfo.contactPerson}
 													</td>
 													<td>
-														[#if admin.loginDate??]
-															<span title="${admin.loginDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.loginDate}</span>
-														[#else]
-															-
-														[/#if]
+														${tenantInfo.businessTime}
 													</td>
 													<td>
-														${(tenantAccount.loginIp)!"-"}
+														${tenantInfo.loginIp}
 													</td>
 													<td>
-														<span title="${admin.createDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.createDate}</span>
+														${tenantInfo.area}
 													</td>
 													<td>
-														${message("csh.tenantAccount.accoutStatus."+tenantAccount.accoutStatus)}
+														${message("csh.tenantInfo.accoutStatus."+tenantInfo.accountStatus)}
 													</td>
 													<td>
-														<a href="edit.jhtml?id=${admin.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														<a href="edit.jhtml?id=${tenantInfo.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
 												</tr>
 											</tbody>
