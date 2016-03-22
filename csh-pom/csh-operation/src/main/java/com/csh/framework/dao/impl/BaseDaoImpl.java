@@ -256,7 +256,7 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
         if (aliasCount >= 1000) {
           aliasCount = 0;
         }
-        alias = "shopxxGeneratedAlias" + aliasCount++;
+        alias = "csh" + aliasCount++;
         selection.alias(alias);
       }
       return alias;
