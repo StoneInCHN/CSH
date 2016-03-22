@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
@@ -413,6 +414,7 @@ public class EndUserController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/editUserInfo", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody ResponseOne<Map<String, Object>> editUserInfo(
       @RequestBody EndUserInfoRequest req) {
     ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
@@ -462,6 +464,7 @@ public class EndUserController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/editUserPhoto", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody ResponseOne<Map<String, Object>> editUserPhoto(EndUserInfoRequest req) {
     ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
 
@@ -497,5 +500,5 @@ public class EndUserController extends MobileBaseController {
     response.setToken(newtoken);
     return response;
   }
-  
+
 }

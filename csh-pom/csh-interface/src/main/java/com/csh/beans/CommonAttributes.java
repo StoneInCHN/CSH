@@ -70,6 +70,8 @@ public final class CommonAttributes {
   /** 没有取得任何信息 */
   public static final String FAIL_NO_INFO = "2000";// 没有取得任何信息
 
+  public static final String USER_INVALID = "3000";// 用户非法（禁用）
+
   /**
    * 不可实例化
    */

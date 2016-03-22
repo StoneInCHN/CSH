@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
@@ -72,6 +73,7 @@ public class VehicleController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/list", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody ResponseMultiple<Map<String, Object>> list(@RequestBody BaseRequest req) {
 
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
@@ -105,6 +107,7 @@ public class VehicleController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/add", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody BaseResponse add(@RequestBody VehicleRequest vehicleReq) {
 
     BaseResponse response = new BaseResponse();
@@ -154,12 +157,13 @@ public class VehicleController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/bindTenant", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody BaseResponse bindTenant(@RequestBody VehicleRequest vehicleReq) {
 
     BaseResponse response = new BaseResponse();
     Long userId = vehicleReq.getUserId();
     String token = vehicleReq.getToken();
-    String deviceNo = vehicleReq.getDeviceNo();
+    // String deviceNo = vehicleReq.getDeviceNo();
     Long vehicleId = vehicleReq.getVehicleId();
     Long tenantId = vehicleReq.getTenantId();
 
@@ -195,6 +199,7 @@ public class VehicleController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/bindDevice", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody BaseResponse bindDevice(@RequestBody VehicleRequest vehicleReq) {
 
     BaseResponse response = new BaseResponse();
@@ -252,6 +257,7 @@ public class VehicleController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/getVehicleBrand", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody ResponseMultiple<Map<String, Object>> getVehicleBrand(
       @RequestBody VehicleRequest vehicleReq) {
 

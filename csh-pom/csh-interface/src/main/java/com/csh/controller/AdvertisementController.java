@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
@@ -46,6 +47,7 @@ public class AdvertisementController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/getAdvImage", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody ResponseMultiple<Map<String, Object>> getAdvImage(
       @RequestBody BaseRequest request) {
 

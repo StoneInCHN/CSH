@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
@@ -37,7 +38,6 @@ public class BalanceController extends MobileBaseController {
 
 
 
-
   /**
    * 钱包充值余额
    * 
@@ -45,6 +45,7 @@ public class BalanceController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/walletCharge", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody BaseResponse walletCharge(@RequestBody OrderRequest orderRequest) {
 
     BaseResponse response = new BaseResponse();
@@ -66,12 +67,13 @@ public class BalanceController extends MobileBaseController {
     walletRecord.setWallet(wallet);
     wallet.getWalletRecords().add(walletRecord);
     walletService.update(wallet);
-    
+
     if (LogUtil.isDebugEnabled(BalanceController.class)) {
-        LogUtil.debug(BalanceController.class, "Update",
-            "User Charge in Wallet.UserName: %s, ChargeAmount: %s,", endUser.getUserName(),orderRequest.getAmount());
+      LogUtil.debug(BalanceController.class, "Update",
+          "User Charge in Wallet.UserName: %s, ChargeAmount: %s,", endUser.getUserName(),
+          orderRequest.getAmount());
     }
-    
+
     String newtoken = TokenGenerator.generateToken(orderRequest.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -79,5 +81,5 @@ public class BalanceController extends MobileBaseController {
     return response;
   }
 
-  
+
 }

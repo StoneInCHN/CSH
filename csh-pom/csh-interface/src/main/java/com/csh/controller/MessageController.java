@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
@@ -60,8 +61,9 @@ public class MessageController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/getMsgList", method = RequestMethod.POST)
-  public @ResponseBody ResponseMultiple<Map<String,Object>> getMsgList(@RequestBody BaseRequest req) {
-	ResponseMultiple<Map<String,Object>> response = new ResponseMultiple<Map<String,Object>>();
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getMsgList(@RequestBody BaseRequest req) {
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Integer pageSize = req.getPageSize();
     Integer pageNumber = req.getPageNumber();
     String token = req.getToken();
@@ -78,22 +80,22 @@ public class MessageController extends MobileBaseController {
     pageable.setPageNumber(pageNumber);
     pageable.setPageSize(pageSize);
     Page<MessageInfo> msgs = messageInfoService.findMsgByUser(userId, pageable);
-     
+
     PageResponse pageInfo = new PageResponse();
     pageInfo.setPageNumber(pageNumber);
     pageInfo.setPageSize(pageSize);
-    pageInfo.setTotal((int)msgs.getTotal());
+    pageInfo.setTotal((int) msgs.getTotal());
 
-    Integer count = 0; //未读消息数
+    Integer count = 0; // 未读消息数
     EndUser endUser = endUserService.find(userId);
-    if(endUser!=null){
-      for(MsgEndUser msgEndUser:endUser.getMsgEndUsers()){
-         if (!msgEndUser.getIsRead()) {
-           count++;
+    if (endUser != null) {
+      for (MsgEndUser msgEndUser : endUser.getMsgEndUsers()) {
+        if (!msgEndUser.getIsRead()) {
+          count++;
         }
       }
     }
-   
+
     List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
     String[] propertys =
         {"id", "createDate", "messageType", "messageTitle", "messageContent", "msgUser"};
@@ -103,7 +105,7 @@ public class MessageController extends MobileBaseController {
     }
     response.setMsg(result);
     response.setPage(pageInfo);
-    
+
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -113,39 +115,41 @@ public class MessageController extends MobileBaseController {
   }
 
 
-   /**
+  /**
    * 读取消息
+   * 
    * @param req
    * @return
    */
-   @RequestMapping(value = "/readMessage", method = RequestMethod.POST)
-   public @ResponseBody BaseResponse showMessage(@RequestBody MsgRequest req) {
-   BaseResponse response = new BaseResponse();
-   String token = req.getToken();
-   Long userId = req.getUserId();
-   Long msgId = req.getMsgId();
-  
-   // 验证登录token
-   String userToken = endUserService.getEndUserToken(userId);
-   if (!TokenGenerator.isValiableToken(token, userToken)) {
-     response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
-     response.setDesc(Message.error("csh.user.token.timeout").getContent());
-     return response;
-   }
-   
-   MessageInfo msg = messageInfoService.find(msgId);
-   if(MessageType.PERSONALMSG.equals(msg.getMessageType())){
-       for(MsgEndUser msgEndUser:msg.getMsgUser()){
-         msgEndUser.setIsRead(true);
-     }
-   }
-   messageInfoService.update(msg);
-   String newtoken = TokenGenerator.generateToken(token);
-   endUserService.createEndUserToken(newtoken, userId);
-   response.setToken(newtoken);
-   response.setCode(CommonAttributes.SUCCESS);
-   return response;
-   }
+  @RequestMapping(value = "/readMessage", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody BaseResponse showMessage(@RequestBody MsgRequest req) {
+    BaseResponse response = new BaseResponse();
+    String token = req.getToken();
+    Long userId = req.getUserId();
+    Long msgId = req.getMsgId();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    MessageInfo msg = messageInfoService.find(msgId);
+    if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
+      for (MsgEndUser msgEndUser : msg.getMsgUser()) {
+        msgEndUser.setIsRead(true);
+      }
+    }
+    messageInfoService.update(msg);
+    String newtoken = TokenGenerator.generateToken(token);
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
 
   /**
@@ -155,6 +159,7 @@ public class MessageController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/deleteMsgs", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody BaseResponse deleteMsgs(@RequestBody BaseRequest req) {
     BaseResponse response = new BaseResponse();
 
@@ -168,7 +173,7 @@ public class MessageController extends MobileBaseController {
       response.setDesc(Message.error("csh.user.token.timeout").getContent());
       return response;
     }
-    
+
     EndUser endUser = endUserService.find(userId);
     List<MessageInfo> msgs = messageInfoService.findMsgByUser(userId);
     for (MessageInfo msg : msgs) {

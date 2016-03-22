@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
@@ -58,6 +59,7 @@ public class CarServiceController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/buyService", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody BaseResponse buyService(@RequestBody CarServiceRequest serviceReq) {
 
     BaseResponse response = new BaseResponse();
@@ -107,6 +109,7 @@ public class CarServiceController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/payService", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody BaseResponse payService(@RequestBody CarServiceRequest serviceReq) {
 
     BaseResponse response = new BaseResponse();
@@ -152,6 +155,7 @@ public class CarServiceController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/purchaseList", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody ResponseMultiple<Map<String, Object>> purchaseList(
       @RequestBody CarServiceRequest serviceReq) {
 

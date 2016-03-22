@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
@@ -50,6 +51,7 @@ public class TenantInfoController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/list", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody ResponseMultiple<Map<String, Object>> list(
       @RequestBody TenantInfoRequest tenantInfoReq) {
 
@@ -88,12 +90,13 @@ public class TenantInfoController extends MobileBaseController {
 
 
   /**
-   * 租户列表
+   * 租户详情
    * 
    * @param req
    * @return
    */
   @RequestMapping(value = "/getTenantById", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody ResponseOne<Map<String, Object>> getTenantById(
       @RequestBody TenantInfoRequest tenantInfoReq) {
 
@@ -130,5 +133,40 @@ public class TenantInfoController extends MobileBaseController {
     return response;
   }
 
+
+  /**
+   * 用户所属租户保养美容服务
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getTenantByUser", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> getTenantByUser(
+      @RequestBody TenantInfoRequest tenantInfoReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = tenantInfoReq.getUserId();
+    String token = tenantInfoReq.getToken();
+    Long categoryId = tenantInfoReq.getServiceCategoryId();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    Map<String, Object> map =
+        tenantInfoService.getTenantByUserAndServiceCategory(userId, categoryId);
+
+    response.setMsg(map);
+    String newtoken = TokenGenerator.generateToken(tenantInfoReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
 }

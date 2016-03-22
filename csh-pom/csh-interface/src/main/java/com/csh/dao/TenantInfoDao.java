@@ -1,7 +1,8 @@
-package com.csh.dao; 
+package com.csh.dao;
+
 import com.csh.entity.TenantInfo;
 import com.csh.framework.dao.BaseDao;
 
-public interface TenantInfoDao extends  BaseDao<TenantInfo,Long>{
+public interface TenantInfoDao extends BaseDao<TenantInfo, Long> {
 
 }

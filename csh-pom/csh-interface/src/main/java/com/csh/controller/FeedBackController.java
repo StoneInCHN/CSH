@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
@@ -42,6 +43,7 @@ public class FeedBackController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/add", method = RequestMethod.POST)
+  @UserValidCheck
   public @ResponseBody BaseResponse walletCharge(@RequestBody FeedBackRequest feedBackReq) {
 
     BaseResponse response = new BaseResponse();
