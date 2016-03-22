@@ -148,7 +148,48 @@ public class VehicleController extends MobileBaseController {
   }
 
   /**
-   * 车辆设备绑定
+   * 手机扫描商家二维码时用户车辆与商家绑定
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/bindTenant", method = RequestMethod.POST)
+  public @ResponseBody BaseResponse bindTenant(@RequestBody VehicleRequest vehicleReq) {
+
+    BaseResponse response = new BaseResponse();
+    Long userId = vehicleReq.getUserId();
+    String token = vehicleReq.getToken();
+    String deviceNo = vehicleReq.getDeviceNo();
+    Long vehicleId = vehicleReq.getVehicleId();
+    Long tenantId = vehicleReq.getTenantId();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    Vehicle vehicle = vehicleService.find(vehicleId);
+    vehicle.setTenantID(tenantId);
+    vehicleService.update(vehicle);
+
+    if (LogUtil.isDebugEnabled(VehicleController.class)) {
+      LogUtil.debug(VehicleController.class, "Update",
+          "bind vehicle and tenant.TenantID: %s, VehicleId: %s,", tenantId, vehicleId);
+    }
+    String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+
+    return response;
+  }
+
+
+  /**
+   * 车辆与设备绑定
    * 
    * @param req
    * @return
