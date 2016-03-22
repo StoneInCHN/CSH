@@ -815,7 +815,32 @@ function searchDevice(id) {
 					});
 
 }
-
+// 线性图表
+function refreshLine(id, data, categoryName, valueName, viewName) {
+	if (data.length > 0) {
+		id.xAxis.categories = [];
+		if (valueName instanceof Array) {
+			for (var j = 0; j < valueName.length; j++) {
+				var value = new Object();
+				value.name = viewName[j];
+				value.data = [];
+				id.series.push(value);
+			}
+		}
+		for (var i = 0; i < data.length; i++) {
+			id.xAxis.categories.push(new Date(data[i][categoryName])
+					.Format("yyyy年MM月"));
+			if (valueName instanceof Array) {
+				for (var j = 0; j < valueName.length; j++) {
+					id.series[j].data.push(data[i][valueName[j]]);
+				}
+			} else {
+				id.series[0].data.push(data[i][valueName]);
+			}
+		}
+	}
+	var chart = new Highcharts.Chart(id);
+}
 function formReset(formId, tableId) {
 	$('#' + formId)[0].reset();
 	var _queryParams = {}

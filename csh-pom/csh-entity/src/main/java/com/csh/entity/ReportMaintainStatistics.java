@@ -5,10 +5,13 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Index;
 
 import com.csh.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -48,6 +51,7 @@ public class ReportMaintainStatistics extends BaseEntity {
     this.tenantID = tenantID;
   }
 
+  @JsonProperty
   public Double getTotalIncome ()
   {
     return totalIncome;
@@ -57,7 +61,9 @@ public class ReportMaintainStatistics extends BaseEntity {
   {
     this.totalIncome = totalIncome;
   }
-
+  
+  @JsonProperty
+  @Temporal (TemporalType.DATE)
   public Date getStatisticsDate ()
   {
     return statisticsDate;
