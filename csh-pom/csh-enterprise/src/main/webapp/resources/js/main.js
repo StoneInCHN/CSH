@@ -214,7 +214,6 @@ var reportMaintainStatistics = {
 					 
 					 var viewName = [];
 					 var categoryValue = [];
-						debugger;
 					for (var k = 0; k < data.length; k++) {
 						var name = data[k]["serviceCategory"].categoryName;
 						var category = new Date(data[k]["statisticsDate"])
@@ -230,6 +229,7 @@ var reportMaintainStatistics = {
 							reportMaintainStatistics.series.push(value);
 						}
 					}
+					reportMaintainStatistics.xAxis.categories = categoryValue;
 					for (var k = 0; k < categoryValue.length; k++) {
 						for (var j = 0; j < viewName.length; j++) {
 							// 如果该分类没数据，用0填充

@@ -174,16 +174,16 @@
 				    				<div class="mini-widget" style="height:80px;width: 260px;margin-top:30px;">
 						                <div class="mini-widget-heading clearfix">设备：</div>
 						                <div class="mini-widget-body clearfix">
-						                  <div id="elderlyNewComming"class="pull-left">已绑定：50</div>
+						                  <div id="elderlyNewComming"class="pull-left">已绑定：${response.bindedDeviceCount}</div>
 						                  <div class="pull-right">
-						                  	未绑定：80<div id="increasePercent"></div>
+						                  	未绑定：${response.unbindedDeviceCount}<div id="increasePercent"></div>
 						                  </div>
 						                </div>
              				 	</div>
 	             				 <div class="mini-widget" style="height:80px;width: 260px;">
 					                <div class="mini-widget-heading ">用户</div>
 					                <div class="mini-widget-body">
-					                	<div>用户数：20</div><div>车辆数：25<div>
+					                	<div>用户数：${response.endUserCount}</div><div>车辆数：${response.vehicleCount}<div>
 					                </div>
 	             				 </div>
 				    	</div><!--end col-->

@@ -31,10 +31,17 @@ import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.TenantAccount;
 import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
+import com.csh.json.response.ReportMainResponse;
 import com.csh.service.CaptchaService;
+import com.csh.service.DeviceInfoService;
+import com.csh.service.EndUserService;
 import com.csh.service.RSAService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantInfoService;
+import com.csh.service.VehicleService;
 import com.csh.utils.QRCodeGenerator;
 
 /**
@@ -53,9 +60,13 @@ public class CommonController extends BaseController {
   private TenantAccountService tenantAccountService;
   @Resource(name = "tenantInfoServiceImpl")
   private TenantInfoService tenantInfoService;
-//  @Resource(name = "areaServiceImpl")
-//  private AreaService areaService;
 
+  @Resource(name ="deviceInfoServiceImpl")
+  private DeviceInfoService deviceInfoService;
+  @Resource(name ="endUserServiceImpl")
+  private EndUserService endUserService;
+  @Resource(name ="vehicleServiceImpl")
+  private VehicleService vehicleService;
 
   /**
    * 验证码
@@ -99,6 +110,17 @@ public class CommonController extends BaseController {
 @RequestMapping(value = "/main", method = RequestMethod.GET)
 public String main(ModelMap model,  HttpSession session) {
     TenantAccount tenantAccount = tenantAccountService.getCurrent();
+    ReportMainResponse response = new ReportMainResponse ();
+    
+    Filter bindFilter = new Filter ("bindStatus", Operator.eq, BindStatus.BINDED);
+    Filter unbindFilter = new Filter ("bindStatus", Operator.eq, BindStatus.UNBINDED);
+    Filter tenantIdFilter = new Filter ("tenantID", Operator.eq, tenantAccount.getTenantID ());
+    
+    response.setBindedDeviceCount (deviceInfoService.count (bindFilter,tenantIdFilter));
+    response.setUnbindedDeviceCount (deviceInfoService.count (unbindFilter,tenantIdFilter));
+    response.setVehicleCount (vehicleService.count (true));
+    response.setEndUserCount (endUserService.countUserByTenantID (tenantAccount.getTenantID ()));
+    model.addAttribute ("response",response);
     model.addAttribute("tenantAccount", tenantAccount);
   return "/common/main";
 }

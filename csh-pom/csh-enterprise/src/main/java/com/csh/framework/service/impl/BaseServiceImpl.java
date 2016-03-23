@@ -280,4 +280,24 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     
   }
 
+  @Override
+  public long count (Boolean isTenant)
+  {
+    return count(true,new Filter[] {});
+  }
+
+  @Override
+  public long count (Boolean isTenant, Filter... filters)
+  {
+    Filter tenantIdFilter = new Filter();
+    tenantIdFilter.setOperator (Operator.eq);
+    tenantIdFilter.setProperty ("tenantID");
+    tenantIdFilter.setValue (tenantAccountService.getCurrentTenantID ());
+    
+    Filter[]copyArr = Arrays.copyOf(filters,filters.length+1);
+    copyArr[filters.length]=tenantIdFilter;
+    Arrays.sort(copyArr);
+    return baseDao.count (copyArr);
+  }
+
 }

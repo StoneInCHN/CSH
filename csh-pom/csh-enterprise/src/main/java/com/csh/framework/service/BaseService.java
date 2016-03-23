@@ -110,6 +110,13 @@ public interface BaseService<T, ID extends Serializable>
   long count ();
 
   /**
+   * 查询实体对象总数
+   * @param isTenant 是否只查询租户
+   * @return 实体对象总数
+   */
+  long count (Boolean isTenant);
+  
+  /**
    * 查询实体对象数量
    * 
    * @param filters 筛选
@@ -117,6 +124,13 @@ public interface BaseService<T, ID extends Serializable>
    */
   long count (Filter... filters);
 
+  /**
+   * 查询实体对象数量
+   * @param isTenant 是否只查询租户
+   * @param filters 筛选
+   * @return 实体对象数量
+   */
+  long count (Boolean isTenant,Filter... filters);
   /**
    * 判断实体对象是否存在
    * 
