@@ -230,10 +230,10 @@ body .welcome{
 .main-content-left{
      height: 100%;
      margin:0;
-     padding:0 240px 0 0;
+     padding:0 0 0 0;
 }
 .shortcutNavigation{
-	margin:0px;
+	margin:50px 0 0 50px;
 }
 .index-report{
 	margin:30px 0 0 0;
@@ -252,11 +252,11 @@ body .welcome{
 	margin:0;
 	border-right: 3px solid #ffffff;
 }
-.index-report-item >div{
+/* .index-report-item >div{
 	margin:0 auto;
 	height:300px;
 	width:260px;
-}
+} */
 
 .main-content-right{
      position: absolute;

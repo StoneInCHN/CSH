@@ -148,5 +148,107 @@ $(function(){
 			
 			});
 		});
-})
+//维修记录统计
+var reportMaintainStatistics = {
+//			colors : [ '#008000', '#FF0000', '#FFFF00', '#DDDF00', '#24CBE5',
+//					'#64E572', '#FF9655', '#FFF263', '#6AF9C4' ],
+			chart : {
+				type:'spline',
+				renderTo : 'serviceStatisticsReportId',
+				backgroundColor : {
+					linearGradient : {
+						x1 : 0,
+						y1 : 0,
+						x2 : 1,
+						y2 : 1
+					},
+					stops : [ [ 0, 'rgb(255, 255, 255)' ], [ 1, 'rgb(240, 240, 255)' ] ]
+				},
+			},
+			title : {
+				text : '业务统计',
+			// center
+			},
+			credits : {
+				enabled : false
+			// 禁用版权信息
+			},
+			xAxis : {
+				gridLineWidth : 0,
+				lineColor : '#000',
+				categories:[]
+			},
+			yAxis : {
+				minorTickInterval : 'auto',
+				lineColor : '#000',
+				lineWidth : 0,
+				tickWidth : 1,
+				tickColor : '#000',
+				title : {
+					text : '元'
+				},
+				plotLines : [ {
+					value : 0,
+					width : 1,
+					color : '#808080'
+				} ]
+			},
+			tooltip : {
+				valueSuffix : '元'
+			},
+			legend : {
+				layout : 'vertical',
+				align : 'right',
+				verticalAlign : 'middle',
+				borderWidth : 0
+			},
+			series: []
+		};
+		
+		$.ajax({
+			url : "../../console/reportServiceStatistics/report.jhtml",
+			type : "post",
+			cache : false,
+			success : function(data) {
+				 if (data.length > 0) {
+					 
+					 var viewName = [];
+					 var categoryValue = [];
+						debugger;
+					for (var k = 0; k < data.length; k++) {
+						var name = data[k]["serviceCategory"].categoryName;
+						var category = new Date(data[k]["statisticsDate"])
+								.Format("yyyy年MM月");
+						if (categoryValue.indexOf(category) == -1) {
+							categoryValue.push(category);
+						}
+						if (viewName.indexOf(name) == -1) {
+							viewName.push(name);
+							var value = new Object();
+							value.name = name;
+							value.data = [];
+							reportMaintainStatistics.series.push(value);
+						}
+					}
+					for (var k = 0; k < categoryValue.length; k++) {
+						for (var j = 0; j < viewName.length; j++) {
+							// 如果该分类没数据，用0填充
+							var viewValue = 0;
+							for (var i = 0; i < data.length; i++) {
+								var date = new Date(
+										data[i]["statisticsDate"])
+										.Format("yyyy年MM月");
+								if (viewName[j] == data[i]["serviceCategory"].categoryName
+										&& date == categoryValue[k]) {
+									viewValue = data[i]["totalCount"]
+								}
+							}
+							reportMaintainStatistics.series[j].data.push(viewValue);
+						}
+					}
+				}
+				var chart = new Highcharts.Chart(reportMaintainStatistics);
+			}
+		});
+});
 

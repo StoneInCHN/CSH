@@ -26,7 +26,7 @@
 
   <body class="easyui-layout" >   
 	<div class="header" data-options="region:'north',split:true,noheader:true,collapse:'west'">
-		<div class="logo">后台管理中心</div>
+		<div class="logo">商铺管理中心</div>
 		<div id="nav-wrap" class="nav-wrap"  style="width:730px">
 			<ul class="nav nav-pills">
 				<li><a href="#main"><i class="fa fa-home fa-1x"></i>首页</a></li>
@@ -69,7 +69,7 @@
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 				     <li><a href="#" id="changePasswordHref">修改密码</a></li>
 				    <li role="separator" class="divider"></li>
-				    <li><a href="${base}/console/common/logout.jhtml">退出</a></li>
+				    <li class="pull-right"><a href="${base}/console/common/logout.jhtml">退出</a></li>
 				  </ul>
 		    </li>
 		</ul>
@@ -157,7 +157,39 @@
     <div class="main-content" data-options="region:'center'">
     	<div id="manager-tabs">   
 		    <div title="起始页">
-		    	<p><img style="margin:0 auto;display:block;" id="qrCodeImage" src="${base}/console/common/showQrCode.jhtml" title="二维码"/></p>
+		    	<div class="main-content-left">
+		    			<div class="row shortcutNavigation">
+					        <div class="col-md-8">
+					        	<a href ="#"><img onclick="shortcutNavigation('办理入院','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/admission.png"/></a><a href ="#"><img onclick="shortcutNavigation('入院评估','${base}/console/elderlyEvaluatingRecord/elderlyEvaluatingRecord.jhtml')" src="${base}/resources/images/evaluating.png"/></a><a href ="#"><img onclick="shortcutNavigation('入院缴费','${base}/console/billing/checkinCharge.jhtml')" src="${base}/resources/images/checkinCharge.png"/></a><a href ="#"><img onclick="shortcutNavigation('日常缴费','${base}/console/billing/dailyBill.jhtml')" src="${base}/resources/images/normalCharge.png"/></a><a href ="#"><img onclick="shortcutNavigation('退住结算','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/checkoutCharge.png"/></a>
+					        </div>
+					        <div class="col-md-4 pull-right">
+					        	<img id="qrCodeImage" src="${base}/console/common/showQrCode.jhtml" title="扫码加入"/>
+					        </div>
+				        </div>
+						<div class="row index-report">
+								<div class="col-md-8 index-report-item">
+						    		<div id="serviceStatisticsReportId" style=""></div>
+						    	</div>
+						    	<div class="col-md-4">
+				    				<div class="mini-widget" style="height:80px;width: 260px;margin-top:30px;">
+						                <div class="mini-widget-heading clearfix">设备：</div>
+						                <div class="mini-widget-body clearfix">
+						                  <div id="elderlyNewComming"class="pull-left">已绑定：50</div>
+						                  <div class="pull-right">
+						                  	未绑定：80<div id="increasePercent"></div>
+						                  </div>
+						                </div>
+             				 	</div>
+	             				 <div class="mini-widget" style="height:80px;width: 260px;">
+					                <div class="mini-widget-heading ">用户</div>
+					                <div class="mini-widget-body">
+					                	<div>用户数：20</div><div>车辆数：25<div>
+					                </div>
+	             				 </div>
+				    	</div><!--end col-->
+						
+						</div>
+					</div>
 		    </div>    
 		</div>  
     </div>    
