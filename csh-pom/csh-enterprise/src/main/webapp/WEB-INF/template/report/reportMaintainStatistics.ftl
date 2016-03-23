@@ -12,7 +12,7 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="report_charge_statistics_search_btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">${message("csh.search")}</button>
+	  	  <button id="report_maintain_statistics_search_btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">${message("csh.search")}</button>
 	    </div>
 	  </fieldset>
 </div>

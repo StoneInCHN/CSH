@@ -93,8 +93,8 @@ $("#reportRepareStatistics-table-list").datagrid({
 	}
 
 });
-$("#report_charge_statistics_search_btn").click(function(){
-	  var _queryParams = $("#report_charge_statistics_search_form").serializeJSON();
-	  $('#reportChargeStatistics-table-list').datagrid('options').queryParams = _queryParams;
-	  $("#reportChargeStatistics-table-list").datagrid('reload');
+$("#report_repare_statistics_search_btn").click(function(){
+	  var _queryParams = $("#report_repare_statistics_search_form").serializeJSON();
+	  $('#reportRepareStatistics-table-list').datagrid('options').queryParams = _queryParams;
+	  $("#reportRepareStatistics-table-list").datagrid('reload');
 	})
