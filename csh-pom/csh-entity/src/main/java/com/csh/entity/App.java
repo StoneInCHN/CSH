@@ -53,6 +53,7 @@ public class App extends BaseEntity {
    */
   private String logo;
   
+  @Index(name = "app_tenantid")
   public Long getTenantID ()
   {
     return tenantID;

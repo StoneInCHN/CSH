@@ -1,6 +1,7 @@
 package com.csh.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Index;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
@@ -66,7 +69,29 @@ public class CarServiceRecord extends BaseEntity
    * 商家名称
    */
   private String tenantName;
+  
+  /**
+   * 结算时间
+   */
+  private Date balanceDate;
 
+
+  /**
+   * 租户ID
+   */
+  private Long tenantID;
+  
+  @Index(name = "carServiceRecord_tenantid")
+  public Long getTenantID ()
+  {
+    return tenantID;
+  }
+
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
+  }
+  
   @Column(length = 80)
   public String getTenantName() {
     return tenantName;
@@ -143,4 +168,15 @@ public class CarServiceRecord extends BaseEntity
     this.price = price;
   }
 
+  public Date getBalanceDate ()
+  {
+    return balanceDate;
+  }
+
+  public void setBalanceDate (Date balanceDate)
+  {
+    this.balanceDate = balanceDate;
+  }
+
+  
 }
