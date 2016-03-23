@@ -53,7 +53,7 @@ public class CarServiceController extends MobileBaseController {
 
 
   /**
-   * 用户购买汽车服务
+   * 用户直接购买汽车服务或预约
    * 
    * @param req
    * @return
@@ -77,10 +77,13 @@ public class CarServiceController extends MobileBaseController {
     CarService carService = carServiceService.find(serviceReq.getServiceId());
 
     CarServiceRecord carServiceRecord = new CarServiceRecord();
+    carServiceRecord.setTenantID(carService.getTenantInfo().getId());
     carServiceRecord.setCarService(carService);
     carServiceRecord.setEndUser(endUser);
     carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
-    carServiceRecord.setPaymentType(serviceReq.getPaymentType());
+    if (serviceReq.getPaymentType() != null) {
+      carServiceRecord.setPaymentType(serviceReq.getPaymentType());
+    }
     carServiceRecord.setPrice(serviceReq.getPrice());
     carServiceRecord.setTenantName(carService.getTenantInfo().getTenantName());
     carServiceRecordService.save(carServiceRecord);

@@ -374,6 +374,7 @@ public class EndUserController extends MobileBaseController {
             userName, regUser.getId());
       }
       response.setCode(CommonAttributes.SUCCESS);
+      response.setDesc(regUser.getId().toString());
       return response;
     } else {
       // 短信验证码验证

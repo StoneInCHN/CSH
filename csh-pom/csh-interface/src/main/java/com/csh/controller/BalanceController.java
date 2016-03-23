@@ -61,6 +61,7 @@ public class BalanceController extends MobileBaseController {
 
     EndUser endUser = endUserService.find(userId);
     Wallet wallet = endUser.getWallet();
+    wallet.setBalanceAmount(wallet.getBalanceAmount().add(orderRequest.getAmount()));
     WalletRecord walletRecord = new WalletRecord();
     walletRecord.setType(BalanceType.INCOME);
     walletRecord.setMoney(orderRequest.getAmount());

@@ -16,6 +16,7 @@ import com.csh.entity.base.BaseEntity;
 
 /**
  * 我的钱包
+ * 
  * @author Andrea
  *
  */
@@ -34,65 +35,65 @@ public class Wallet extends BaseEntity {
 
   /** 账户余额 */
   private BigDecimal balanceAmount = new BigDecimal(0);
-  
+
   /**
    * 红包金额
    */
-  private BigDecimal giftAmount= new BigDecimal(0);
+  private BigDecimal giftAmount = new BigDecimal(0);
   /**
    * 积分
    */
   private BigDecimal score = new BigDecimal(0);
-  
+
   /**
    * 钱包流水记录
    */
   private Set<WalletRecord> walletRecords = new HashSet<WalletRecord>();
-  
-    @OneToMany(mappedBy="wallet",cascade=CascadeType.ALL)
-    public Set<WalletRecord> getWalletRecords() {
-    	return walletRecords;
-    }
 
-	public void setWalletRecords(Set<WalletRecord> walletRecords) {
-		this.walletRecords = walletRecords;
-	}
+  @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
+  public Set<WalletRecord> getWalletRecords() {
+    return walletRecords;
+  }
 
-	@OneToOne
-	public EndUser getEndUser() {
-		return endUser;
-	}
-	
-	public void setEndUser(EndUser endUser) {
-		this.endUser = endUser;
-	}
-	
-	@Column(scale = 1, precision = 9, nullable = false)
-	public BigDecimal getBalanceAmount() {
-		return balanceAmount;
-	}
-	
-	public void setBalanceAmount(BigDecimal balanceAmount) {
-		this.balanceAmount = balanceAmount;
-	}
-	
-	@Column(scale = 1, precision = 9, nullable = false)
-	public BigDecimal getGiftAmount() {
-		return giftAmount;
-	}
-	
-	public void setGiftAmount(BigDecimal giftAmount) {
-		this.giftAmount = giftAmount;
-	}
-	
-	@Column(scale = 1, precision = 9, nullable = false)
-	public BigDecimal getScore() {
-		return score;
-	}
-	
-	public void setScore(BigDecimal score) {
-		this.score = score;
-	}
-  
-  
+  public void setWalletRecords(Set<WalletRecord> walletRecords) {
+    this.walletRecords = walletRecords;
+  }
+
+  @OneToOne
+  public EndUser getEndUser() {
+    return endUser;
+  }
+
+  public void setEndUser(EndUser endUser) {
+    this.endUser = endUser;
+  }
+
+  @Column(scale = 2, precision = 10, nullable = false)
+  public BigDecimal getBalanceAmount() {
+    return balanceAmount;
+  }
+
+  public void setBalanceAmount(BigDecimal balanceAmount) {
+    this.balanceAmount = balanceAmount;
+  }
+
+  @Column(scale = 2, precision = 10, nullable = false)
+  public BigDecimal getGiftAmount() {
+    return giftAmount;
+  }
+
+  public void setGiftAmount(BigDecimal giftAmount) {
+    this.giftAmount = giftAmount;
+  }
+
+  @Column(scale = 2, precision = 10, nullable = false)
+  public BigDecimal getScore() {
+    return score;
+  }
+
+  public void setScore(BigDecimal score) {
+    this.score = score;
+  }
+
+
 }
