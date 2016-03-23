@@ -51,6 +51,9 @@
 				[@shiro.hasPermission name="informationManage"]
 				<li><a href="#informationManage"><i class="fa fa-users fa-1x"></i>${message("csh.informationManage.config")}</a></li>
 				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="statisticsReport"]
+				<li><a href="#statisticsReport"><i class="fa fa-users fa-1x"></i>${message("csh.statisticsReport.report")}</a></li>
+				[/@shiro.hasPermission]
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
 				<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>
 			</ul>
@@ -137,7 +140,18 @@
     		[@shiro.hasPermission name="shortMessagePush"]
     		<li><a href="#" data-url="${base}/console/shortMessagePush/shortMessagePush.jhtml">${message("csh.informationManage.shortMessagePush")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul>               
+    	</ul>
+    	<ul title="${message("csh.statisticsReport.report")}" id="statisticsReport">
+    		[@shiro.hasPermission name="repareReport"]
+    		<li><a href="#" data-url="${base}/console/reportRepareStatistics/reportRepareStatistics.jhtml">${message("csh.statisticsReport.repareStatisticsReport")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="maintainReport"]
+    		<li><a href="#" data-url="${base}/console/reportMaintainStatistics/reportMaintainStatistics.jhtml">${message("csh.statisticsReport.maintainStatisticsReport")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="washReport"]
+    		<li><a href="#" data-url="${base}/console/reportWashStatistics/reportWashStatistics.jhtml">${message("csh.statisticsReport.washStatisticsReport")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>                 
     </div>
   
     <div class="main-content" data-options="region:'center'">
