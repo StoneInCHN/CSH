@@ -37,7 +37,7 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
     tenant_sql.append("round(6378.138*2*asin(sqrt(pow(sin((" + lat);
     tenant_sql.append("*pi()/180-latitude*pi()/180)/2),2)+cos(" + lat);
     tenant_sql.append("*pi()/180)*cos(latitude*pi()/180)*pow(sin((" + lng);
-    tenant_sql.append("*pi()/180-longitude*pi()/180)/2),2)))*1000) as distance");
+    tenant_sql.append("*pi()/180-longitude*pi()/180)/2),2)))*1000,2) as distance");
     tenant_sql.append(" FROM csh_tenant_info cti");
     tenant_sql.append(" LEFT JOIN csh_car_service ccs ON cti.id = ccs.tenant_info");
     tenant_sql.append(" LEFT JOIN csh_service_category csc ON csc.id = ccs.service_category");
@@ -58,7 +58,7 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
     total_count_sql.append(" round(6378.138*2*asin(sqrt(pow(sin((" + lat);
     total_count_sql.append("*pi()/180-latitude*pi()/180)/2),2)+cos(" + lat);
     total_count_sql.append("*pi()/180)*cos(latitude*pi()/180)*pow(sin((" + lng);
-    total_count_sql.append("*pi()/180-longitude*pi()/180)/2),2)))*1000) as distance");
+    total_count_sql.append("*pi()/180-longitude*pi()/180)/2),2)))*1000,2) as distance");
     total_count_sql.append(" FROM csh_tenant_info cti");
     total_count_sql.append(" LEFT JOIN csh_car_service ccs ON cti.id = ccs.tenant_info");
     total_count_sql.append(" LEFT JOIN csh_service_category csc ON csc.id = ccs.service_category");
