@@ -54,7 +54,7 @@ public class Role extends BaseEntity {
   private Set<ConfigMeta> configMetas = new HashSet<ConfigMeta>();
 
   /** 租户账号 */
-  private Set<TenantAccount> tenantAccounts = new HashSet<TenantAccount>();
+//  private Set<TenantAccount> tenantAccounts = new HashSet<TenantAccount>();
   
   /** 后台管理系统权限 */
   private List<String> authorities = new ArrayList<String>();
@@ -159,14 +159,14 @@ public class Role extends BaseEntity {
     this.configMetas = configMetas;
   }
 
-  @ManyToMany(mappedBy = "roles")
+ /* @ManyToMany(mappedBy = "roles")
   public Set<TenantAccount> getTenantAccounts() {
     return tenantAccounts;
   }
 
   public void setTenantAccounts(Set<TenantAccount> tenantAccounts) {
     this.tenantAccounts = tenantAccounts;
-  }
+  }*/
   
   /**
    * 获取权限

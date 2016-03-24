@@ -47,7 +47,7 @@
     <div class="content">
       <div class="sidebar" >
       	<ul id="nav">
-           [#list ["admin:admin", "admin:role","admin:account"] as permission]
+           [#list ["admin:admin", "admin:role","admin:area","admin:account"] as permission]
 					[@shiro.hasPermission name = permission]
 						<li class="has_sub" >
 							<a href="#admin" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.systemNav")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
@@ -62,6 +62,31 @@
 									<a href="../role/list.jhtml" target="iframe"><i class="fa fa-male"></i>${message("csh.main.role")}</a>
 								</li>
 							   [/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:area"]
+								<li>
+									<a href="../area/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.area")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:advertisement"]
+								<li>
+									<a href="../advertisement/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.advertisement")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							   [@shiro.hasPermission name="admin:account"]
+								<li>
+									<a href="../account/accountInfo.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.account.settingGroup")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+				            </ul>
+						</li>
+					[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
+		[#list ["admin:apply", "admin:tenantAccount","admin:tenantInfo"] as permission]
+					[@shiro.hasPermission name = permission]
+						<li class="has_sub" >
+							<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.tenant")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+							<ul class="sub_ul">
 							   [@shiro.hasPermission name="admin:apply"]
 								<li>
 									<a href="../apply/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.apply")}</a>
@@ -72,19 +97,29 @@
 									<a href="../tenantAccount/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.tenantAccount")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
-							 	[@shiro.hasPermission name="admin:area"]
-								<li>
-									<a href="../area/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.area")}</a>
-								</li>
-							 	[/@shiro.hasPermission]
 							 	[@shiro.hasPermission name="admin:tenantInfo"]
 								<li>
 									<a href="../tenantInfo/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.tenantInfo")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
-							   [@shiro.hasPermission name="admin:account"]
+				            </ul>
+						</li>
+					[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
+		[#list ["admin:deviceType", "admin:deviceInfo"] as permission]
+					[@shiro.hasPermission name = permission]
+						<li class="has_sub" >
+							<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.device")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+							<ul class="sub_ul">
+							   [@shiro.hasPermission name="admin:deviceType"]
 								<li>
-									<a href="../account/accountInfo.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.account.settingGroup")}</a>
+									<a href="../deviceType/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.deviceType")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:deviceInfo"]
+								<li>
+									<a href="../deviceInfo/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.deviceInfo")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
 				            </ul>

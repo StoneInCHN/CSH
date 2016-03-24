@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
@@ -133,6 +134,10 @@ public class TenantInfo extends BaseEntity {
    */
   private Set<CarService> carServices = new HashSet<CarService>();
 
+  /**
+   * 是否已开管理员账号
+   */
+  private Boolean isHaveAccount;
 
   @OneToMany(mappedBy = "tenantInfo")
   public Set<CarService> getCarServices() {
@@ -341,5 +346,12 @@ public class TenantInfo extends BaseEntity {
     this.qrImage = qrImage;
   }
 
+  public Boolean getIsHaveAccount() {
+    return isHaveAccount;
+  }
 
+  public void setIsHaveAccount(Boolean isHaveAccount) {
+    this.isHaveAccount = isHaveAccount;
+  }
+  
 }

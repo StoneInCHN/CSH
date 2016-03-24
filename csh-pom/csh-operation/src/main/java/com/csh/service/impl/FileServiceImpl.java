@@ -110,7 +110,9 @@ public class FileServiceImpl implements FileService {
       if (imageType == ImageType.STOREPICTURE) {
         imgUploadPath = uploadPath + File.separator + "storePicture";
       }
-
+      if (imageType == ImageType.ADVERTISEMENT) {
+        imgUploadPath = uploadPath + File.separator + "advertisement";
+      }
       String sourcePath =
           imgUploadPath+File.separator+date+ File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());

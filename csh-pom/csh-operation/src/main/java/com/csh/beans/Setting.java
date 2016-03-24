@@ -43,7 +43,11 @@ public class Setting implements Serializable {
     /**
      * 门店照片
      */
-    STOREPICTURE
+    STOREPICTURE,
+    /**
+     * 广告
+     */
+    ADVERTISEMENT
   }
 
 

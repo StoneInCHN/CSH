@@ -80,6 +80,12 @@ public class DeviceInfo extends BaseEntity {
    */
   private Long tenantID;
 
+  /**
+   * 所属代理商
+   */
+  private Long distributorId;
+  
+  
   @JsonProperty
   public Date getBindTime() {
     return bindTime;
@@ -167,4 +173,15 @@ public class DeviceInfo extends BaseEntity {
     this.bindStatus = bindStatus;
   }
 
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  public Long getDistributorId() {
+    return distributorId;
+  }
+
+  public void setDistributorId(Long distributorId) {
+    this.distributorId = distributorId;
+  }
+
+  
+  
 }

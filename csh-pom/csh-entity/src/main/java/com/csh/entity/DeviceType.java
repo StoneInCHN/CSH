@@ -3,6 +3,7 @@ package com.csh.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -42,6 +43,7 @@ public class DeviceType extends BaseEntity
   private Set<DeviceInfo> deviceInfos = new HashSet<DeviceInfo> ();
   @JsonProperty
   @Field(store=Store.NO,index=Index.UN_TOKENIZED)
+  @Column(length=20)
   public String getName ()
   {
     return name;
@@ -52,6 +54,7 @@ public class DeviceType extends BaseEntity
     this.name = name;
   }
 
+  @Column(nullable= false)
   public Status getStatus ()
   {
     return status;

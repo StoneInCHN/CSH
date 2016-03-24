@@ -1,12 +1,10 @@
 package com.csh.controller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Message;
 import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.TenantAccount;
 import com.csh.entity.TenantApply;
-import com.csh.entity.TenantInfo;
-import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.entity.VersionConfig;
 import com.csh.entity.commonenum.CommonEnum.ApplyStatus;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -28,7 +24,7 @@ import com.csh.service.AreaService;
 import com.csh.service.FileService;
 import com.csh.service.TenantApplyService;
 import com.csh.service.TenantInfoService;
-import com.csh.utils.CommonUtils;
+import com.csh.service.VersionConfigService;
 
 
 @RequestMapping("console/apply")
@@ -47,6 +43,10 @@ public class TenantApplyController extends BaseController {
 
   @Resource(name = "tenantInfoServiceImpl")
   private TenantInfoService tenantInfoService;
+  
+  @Resource(name = "versionConfigServiceImpl")
+  private VersionConfigService versionConfigService;
+  
 
   @RequestMapping(value = "/submit", method = RequestMethod.POST)
   public String submit(TenantApply tenantApply, Long areaId, ModelMap map) {
@@ -110,6 +110,7 @@ public class TenantApplyController extends BaseController {
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
     model.addAttribute("apply", tenantApplyService.find(id));
+    model.addAttribute("versions", versionConfigService.findAll());
     return "/apply/edit";
   }
 
@@ -121,9 +122,10 @@ public class TenantApplyController extends BaseController {
     TenantApply applyTemp = tenantApplyService.find(tenantApply.getId());
     applyTemp.setApplyStatus(tenantApply.getApplyStatus());
     applyTemp.setNotes(tenantApply.getNotes());
+    applyTemp.setVersionConfig(tenantApply.getVersionConfig());
     if (ApplyStatus.AUDIT_PASSED.equals(tenantApply.getApplyStatus())) {
-       tenantApplyService.auditPassed(applyTemp);
-    }else {
+      tenantApplyService.auditPassed(applyTemp);
+    } else {
       tenantApplyService.update(applyTemp);
     }
 

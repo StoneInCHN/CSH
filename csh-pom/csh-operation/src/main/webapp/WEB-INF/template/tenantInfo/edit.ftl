@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.tenantAccount.edit")}</title>
+<title>${message("csh.tenantInfo.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -39,11 +39,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantAccount")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantInfo")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.tenantAccount.list")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.tenantInfo.list")}</a>
 				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.tenantAccount.edit")}</a>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.tenantInfo.edit")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -53,7 +53,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("admin.admin.base")}</div>
+                  <div class="pull-left">${message("csh.tenantInfo.edit")}i</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -63,54 +63,100 @@ $().ready(function() {
                 <div class="widget-content">
                   <div class="padd">
                     <form id="inputForm" action="update.jhtml" method="post">
-						<input type="hidden" name="id" value="${admin.id}" />
-						<input type="hidden" name="username" value="${admin.username}" />
+						<input type="hidden" name="id" value="${tenantInfo.id}" />
 						<table class="input tabContent">
-							<tr>
+							<table class="input tabContent">
+                     		<tr>
 								<th>
-									${message("csh.admin.username")}:
+									<span class="requiredField">*</span>${message("csh.tenantInfo.tenantName")}:
 								</th>
 								<td>
-									${admin.username}
+									<input type="text" id="tenantName" name="tenantName" class="text" maxlength="20" value="${tenantInfo.tenantName}" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.admin.name")}:
+									<span class="requiredField">*</span>${message("csh.tenantInfo.contactPerson")}:
 								</th>
 								<td>
-									<input type="text" name="name" class="text" value="${admin.name}" />
+									<input type="text" name="contactPerson" class="text" maxlength="20" value="${tenantInfo.contactPerson}"/>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.admin.email")}:
+									<span class="requiredField">*</span>${message("csh.tenantInfo.contactPhone")}:
 								</th>
 								<td>
-									<input type="text" name="email" class="text" maxlength="200" value="${admin.email}" />
-								</td>
-							</tr>
-							<tr class="roles">
-								<th>
-									<span class="requiredField">*</span>${message("csh.admin.roles")}:
-								</th>
-								<td>
-									<span class="fieldSet">
-										[#list roles as role]
-											<label>
-												<input type="checkbox" name="roleIds" value="${role.id}"[#if admin.roles?seq_contains(role)] checked="checked"[/#if] /><span>${role.name}</span>
-											</label>
-										[/#list]
-									</span>
+									<input type="text" name="contactPhone" class="text" maxlength="20" value="${tenantInfo.contactPhone}"/>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									${message("csh.admin.adminStatus")}:
+									<span class="requiredField">*</span>${message("csh.tenantInfo.area")}:
 								</th>
 								<td>
-									<input type="radio" value="actived" name="adminStatus" [#if admin.adminStatus== "actived" ]checked="checked"[/#if] />${message("csh.admin.adminStatus.actived")}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									<input type="radio" value="locked" name="adminStatus" [#if admin.adminStatus== "locked" ]checked="checked"[/#if] />${message("csh.admin.adminStatus.locked")}
+									<input type="hidden" id="areaId"  name="areaId"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.address")}:
+								</th>
+								<td>
+									<input type="text" name="address" class="text" maxlength="20" value="${tenantInfo.address}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.email")}:
+								</th>
+								<td>
+									<input type="text" name="email" class="text" maxlength="20" value="${tenantInfo.email}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.businessTime")}:
+								</th>
+								<td>
+									<input type="text" name="businessTime" class="text" maxlength="20" value="${tenantInfo.businessTime}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.description")}:
+								</th>
+								<td>
+									<input type="text" name="description" class="text" maxlength="20" value="${tenantInfo.description}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.ownerName")}:
+								</th>
+								<td>
+									<input type="text" name="ownerName" class="text" maxlength="20" value="${tenantInfo.ownerName}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.accoutStatus.select")}:
+								</th>
+								<td>
+									<select name="accoutStatus" class="text">
+										<option value="">${message("csh.tenantInfo.accoutStatus.select")}</option>
+										<option value="ACTIVED">${message("csh.tenantInfo.accoutStatus.ACTIVED")}</option>
+										<option value="LOCKED">${message("csh.tenantInfo.accoutStatus.LOCKED")}</option>
+										<option value="DELETE">${message("csh.tenantInfo.accoutStatus.DELETE")}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.remark")}:
+								</th>
+								<td>
+									<input type="text" name="remark" class="text" maxlength="200" />
 								</td>
 							</tr>
 						</table>

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.Status;
+import com.csh.entity.commonenum.CommonEnum.SystemType;
 
 
 /**
@@ -22,7 +23,7 @@ import com.csh.entity.commonenum.CommonEnum.Status;
 @Entity
 @Table(name = "csh_advertisement")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_advertisement_sequence")
-public class Advertisement extends BaseEntity {
+public class Advertisement extends OrderEntity {
 
   /**
    * 
@@ -56,6 +57,11 @@ public class Advertisement extends BaseEntity {
    * 租户ID
    */
   private Long tenantId;
+  
+  /**
+   * 所属系统
+   */
+  private SystemType systemType;
 
 
   @Index(name = "index_ad_tenantid")
@@ -123,4 +129,14 @@ public class Advertisement extends BaseEntity {
     this.advContentLink = advContentLink;
   }
 
+  public SystemType getSystemType() {
+    return systemType;
+  }
+
+  public void setSystemType(SystemType systemType) {
+    this.systemType = systemType;
+  }
+
+  
+  
 }

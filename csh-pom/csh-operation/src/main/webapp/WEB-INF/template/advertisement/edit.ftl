@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.apply.edit")}</title>
+<title>${message("csh.advertisement.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -17,29 +17,23 @@
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	var $submit = $("#submit");
+	
 	
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			notes: "required",
-			applyStatus: "required",
-			versionConfig:"required"
-		},
-		submitHandler:function(form){
-			$submit.attr("disabled",true);
-			$.ajax({
-				url:$inputForm.attr("action"),
-				type:"POST",
-				data:$inputForm.serialize(),
-				dataType:"json",
-				cache:false,
-				success:function(message){
-					$.message(message);
-					$submit.attr("disabled",false);
-					setTimeout("location.href='details.jhtml?id=${apply.id}'",1000);
-				}
-			});
+			advName: {
+				required: true
+			},
+			advContentLink: {
+				required: true
+			},
+			remark: {
+				required: true
+			},
+			status: {
+				required: true
+			}
 		}
 	});
 
@@ -50,11 +44,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.apply")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.advertisement")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.apply.list")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.advertisement.list")}</a>
 				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.apply.edit")}</a>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.advertisement.edit")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -64,7 +58,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.apply.base")}</div>
+                  <div class="pull-left">${message("csh.advertisement.edit")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -73,104 +67,78 @@ $().ready(function() {
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                    <form id="inputForm" action="update.jhtml" method="post">
-						<input type="hidden" name="id" value="${apply.id}" />
+                    <form id="inputForm" action="update.jhtml" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="id" value="${advertisement.id}" />
+						<input type="hidden" name="advImageUrl" value="${advertisement.advImageUrl}" />
+						<table class="input tabContent">
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.advertisement.advName")}:
+								</th>
+								<td>
+									<input type="text" name="advName" class="text" maxlength="20" value="${advertisement.advName}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									${message("csh.advertisement.advImageUrl")}:
+								</th>
+								<td>
+									<a href="${base}/upload/advertisement/${advertisement.advImageUrl}" target="1024"><img src="${base}/advertisement/license/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.advertisement.advImage")}:
+								</th>
+								<td>
+									<input type="file" name="advImage" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.advertisement.advContentLink")}:
+								</th>
+								<td>
+									<input type="text" name="advContentLink" class="text" value="${advertisement.advContentLink}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.advertisement.remark")}:
+								</th>
+								<td>
+									<input type="text" name="remark" class="text" value="${advertisement.remark}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.advertisement.order")}:
+d
+								</th>
+								<td>
+									<input type="text" name="order" class="text" value="${advertisement.order}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									${message("csh.advertisement.status")}:
+								</th>
+								<td>
+									<select name="status" class="text">
+										<option value="ENABLE" [#if advertisement.status== "ENABLE" ] selected="selected" [/#if]>${message("csh.advertisement.status.ENABLE")}</option>
+										<option value="DISABLE" [#if advertisement.status== "DISABLE" ]selected="selected"[/#if]>${message("csh.advertisement.status.DISABLE")}</option>
+									</select>
+								</td>
+							</tr>
+						</table>
 						<table class="input">
-							<tr>
-								<th>
-									${message("csh.apply.tenantName")}:
-								</th>
-								<td>
-									${apply.tenantName}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.contactPerson")}:
-								</th>
-								<td>
-									${apply.contactPerson}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.contactPhone")}:
-								</th>
-								<td>
-									${apply.contactPhone}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.address")}:
-								</th>
-								<td>
-									${apply.address}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.license")}:
-								</th>
-								<td>
-									<a href="${base}/upload/license/${apply.license}" target="1024"><img src="${base}/upload/license/${apply.license}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.license")}"></a>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.photo")}:
-								</th>
-								<td>
-									<a href="${base}/upload/license/${apply.photo}" target="1024"><img src="${base}/upload/license/${apply.photo}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.photo")}"></a>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.area")}:
-								</th>
-								<td>
-									${apply.area}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.versionConfig")}:
-								</th>
-								<td>
-									<select name="versionConfig">
-										<option value="">${message("csh.apply.versionConfig.select")}</option>
-										[#list versions as version]
-										<option value="${version.id}">${version.versionName}</option>
-										[/#list]
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.applyStatus")}:
-								</th>
-								<td>
-									<select name="applyStatus">
-										<option value="">${message("csh.apply.applyStatus.select")}</option>
-										<option value="AUDIT_PASSED">${message("csh.apply.applyStatus.AUDIT_PASSED")}</option>
-										<option value="AUDIT_FAILED">${message("csh.apply.applyStatus.AUDIT_FAILED")}</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.apply.notes")}:
-								</th>
-								<td>
-									<textarea  name="notes" rows="6" cols="60">${apply.notes}</textarea>
-								</td>
-							</tr>
 							<tr>
 								<th>
 									&nbsp;
 								</th>
 								<td>
-									<input type="submit" id="submit" class="button" value="${message("csh.common.submit")}" />
+									<input type="submit" class="button" value="${message("csh.common.submit")}" />
 									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 								</td>
 							</tr>

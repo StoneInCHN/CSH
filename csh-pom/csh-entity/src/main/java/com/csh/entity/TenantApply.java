@@ -83,7 +83,21 @@ public class TenantApply extends BaseEntity {
    */
   private ApplyStatus applyStatus;
   
+  /**
+   * 备注
+   */
   private String notes;
+  
+  /**
+   * 邮件
+   */
+  private String email;
+  
+  /**
+   * 版本
+   */
+  private Long versionConfig;
+  
   
   public String getTenantName() {
     return tenantName;
@@ -192,6 +206,22 @@ public class TenantApply extends BaseEntity {
 
   public void setNotes(String notes) {
     this.notes = notes;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public Long getVersionConfig() {
+    return versionConfig;
+  }
+
+  public void setVersionConfig(Long versionConfig) {
+    this.versionConfig = versionConfig;
   }
   
 }

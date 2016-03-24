@@ -67,7 +67,7 @@ public class CommonEnum {
     LOCKED,
 
     /** 帐号删除 */
-    DELETE
+    DELETE 
   }
 
   /**

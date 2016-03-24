@@ -130,7 +130,7 @@
 														<input type="checkbox"  name="ids" value="${tenantAccount.id}" />
 													</td>
 													<td>
-														${tenantAccount.username}
+														${tenantAccount.userName}
 													</td>
 													<td>
 														${tenantAccount.tenantID}
@@ -139,8 +139,8 @@
 														${tenantAccount.realName}
 													</td>
 													<td>
-														[#if admin.loginDate??]
-															<span title="${admin.loginDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.loginDate}</span>
+														[#if tenantAccount.loginDate??]
+															<span title="${tenantAccount.loginDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.loginDate}</span>
 														[#else]
 															-
 														[/#if]
@@ -149,13 +149,13 @@
 														${(tenantAccount.loginIp)!"-"}
 													</td>
 													<td>
-														<span title="${admin.createDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.createDate}</span>
+														<span title="${tenantAccount.createDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.createDate}</span>
 													</td>
 													<td>
 														${message("csh.tenantAccount.accoutStatus."+tenantAccount.accoutStatus)}
 													</td>
 													<td>
-														<a href="edit.jhtml?id=${admin.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														<a href="edit.jhtml?id=${tenantAccount.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
 												</tr>
 											</tbody>

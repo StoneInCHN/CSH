@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.tenantAccount.add")}</title>
+<title>${message("csh.tenantInfo.add")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -13,33 +13,34 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/js/jquery.lSelect.js"></script>
 <script type="text/javascript">
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	
+	var $areaId = $("#areaId");
+		
+	// 地区选择
+	$areaId.lSelect({
+		url: "${base}/console/common/area.jhtml"
+	});
+
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			username: {
-				required: true,
-				minlength: 2,
-				maxlength: 20,
-				remote: {
-					url: "check_username.jhtml",
-					cache: false
-				}
+			tenantName: {
+				required: true
 			},
-			tenantID: {
+			contactPerson: {
 				required: true
 			},
 			accoutStatus: {
 				required: true
 			},
-			realName: "required"
+			contactPhone: "required"
 		},
 		messages: {
-			username: {
+			tenantName: {
 				remote: "${message("username.validate.exist")}"
 			}
 		}
@@ -52,11 +53,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantAccount")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantInfo")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantAccount.list")}</a>
+				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantInfo.list")}</a>
 				<span class="divider">/</span> 
-				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.tenantAccount.add")}</span>
+				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.tenantInfo.add")}</span>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -66,7 +67,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.tenantAccount.add")}</div>
+                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.tenantInfo.add")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -79,39 +80,95 @@ $().ready(function() {
                      	<table class="input tabContent">
                      		<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.tenantID")}:
+									<span class="requiredField">*</span>${message("csh.tenantInfo.tenantName")}:
 								</th>
 								<td>
-									<input type="password" id="tenantID" name="tenantID" class="text" maxlength="20" />
+									<input type="text" id="tenantName" name="tenantName" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.userName")}:
+									<span class="requiredField">*</span>${message("csh.tenantInfo.contactPerson")}:
 								</th>
 								<td>
-									<input type="text" name="username" class="text" maxlength="20" />
+									<input type="text" name="contactPerson" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.accoutStatus")}:
+									<span class="requiredField">*</span>${message("csh.tenantInfo.contactPhone")}:
+								</th>
+								<td>
+									<input type="text" name="contactPhone" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.area")}:
+								</th>
+								<td>
+									<input type="hidden" id="areaId"  name="areaId"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.address")}:
+								</th>
+								<td>
+									<input type="text" name="address" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.email")}:
+								</th>
+								<td>
+									<input type="text" name="email" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.businessTime")}:
+								</th>
+								<td>
+									<input type="text" name="businessTime" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.description")}:
+								</th>
+								<td>
+									<input type="text" name="description" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.ownerName")}:
+								</th>
+								<td>
+									<input type="text" name="ownerName" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.tenantInfo.accoutStatus.select")}:
 								</th>
 								<td>
 									<select name="accoutStatus" class="text">
-										<option value="">${message("csh.tenantAccount.accoutStatus.select")}</option>
-										<option value="ACTIVED">${message("csh.tenantAccount.accoutStatus.ACTIVED")}</option>
-										<option value="LOCKED">${message("csh.tenantAccount.accoutStatus.LOCKED")}</option>
-										<option value="DELETE">${message("csh.tenantAccount.accoutStatus.DELETE")}</option>
+										<option value="">${message("csh.tenantInfo.accoutStatus.select")}</option>
+										<option value="ACTIVED">${message("csh.tenantInfo.accoutStatus.ACTIVED")}</option>
+										<option value="LOCKED">${message("csh.tenantInfo.accoutStatus.LOCKED")}</option>
+										<option value="DELETE">${message("csh.tenantInfo.accoutStatus.DELETE")}</option>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.realName")}:
+									<span class="requiredField">*</span>${message("csh.tenantInfo.remark")}:
 								</th>
 								<td>
-									<input type="text" name="realName" class="text" maxlength="200" />
+									<input type="text" name="remark" class="text" maxlength="200" />
 								</td>
 							</tr>
 						</table>

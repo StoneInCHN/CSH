@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.tenantAccount.add")}</title>
+<title>${message("csh.deviceInfo.add")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 $().ready(function() {
 
@@ -21,27 +22,23 @@ $().ready(function() {
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			userName: {
-				required: true,
-				minlength: 2,
-				maxlength: 20,
-				remote: {
-					url: "check_userName.jhtml",
-					cache: false
-				}
-			},
-			tenantID: {
+			
+			deviceNo: {
 				required: true
 			},
-			accoutStatus: {
+			simNo: {
+				required: true
+			},
+			deviceStatus: {
+				required: true
+			},
+			bindStatus: {
+				required: true
+			},
+			typeId: {
 				required: true
 			}
-		},
-		messages: {
-			username: {
-				remote: "${message("username.validate.exist")}"
-			}
-		}
+		}	
 	});
 	
 });
@@ -51,11 +48,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantAccount")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.deviceInfo")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantAccount.list")}</a>
+				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.deviceInfo.list")}</a>
 				<span class="divider">/</span> 
-				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.tenantAccount.add")}</span>
+				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.deviceInfo.add")}</span>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -65,7 +62,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.tenantAccount.add")}</div>
+                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.deviceInfo.add")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -76,37 +73,77 @@ $().ready(function() {
                   <div class="padd">
                      <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" role="form">
                      	<table class="input tabContent">
-                     		<tr>
+							<!--
+							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantInfo.tenantName")}:
+									<span class="requiredField">*</span>${message("csh.deviceInfo.bindTime")}:
 								</th>
 								<td>
-									<select name="tenantID" class="text">
-										<option value="">${message("csh.tenantAccount.tenantName.select")}</option>
-										[#list tenantInfos as tenantInfo]
-											<option value="${tenantInfo.id}">${tenantInfo.tenantName}</option>
-										[/#list]
+									<input type="text" name="bindTime" class="text Wdate" id="bindTime"  onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.deviceInfo.unBindTime")}:
+								</th>
+								<td>
+									<input type="text" name="unBindTime" class="text Wdate" maxlength="20" onFocus="WdatePicker({isShowClear:false,readOnly:true})"/>
+								</td>
+							</tr>
+							-->
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.deviceInfo.deviceNo")}:
+								</th>
+								<td>
+									<input type="text" name="deviceNo" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.deviceInfo.simNo")}:
+								</th>
+								<td>
+									<input type="text" name="simNo" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.deviceInfo.deviceStatus")}:
+								</th>
+								<td>
+									<select name="deviceStatus">
+										<option value="">${message("csh.deviceInfo.deviceStatus.select")}</option>
+										<option value="INITED">${message("csh.deviceInfo.deviceStatus.INITED")}</option>
+										<option value="SENDOUT">${message("csh.deviceInfo.deviceStatus.SENDOUT")}</option>
+										<option value="STORAGEOUT">${message("csh.deviceInfo.deviceStatus.STORAGEOUT")}</option>
+										<option value="BINDED">${message("csh.deviceInfo.deviceStatus.BINDED")}</option>
+										<option value="REFUNDED">${message("csh.deviceInfo.deviceStatus.REFUNDED")}</option>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.userName")}:
+									<span class="requiredField">*</span>${message("csh.deviceInfo.bindStatus")}:
 								</th>
 								<td>
-									<input type="text" name="userName" class="text" maxlength="20" />
+									<select name="bindStatus">
+										<option value="">${message("csh.deviceInfo.bindStatus.select")}</option>
+										<option value="BINDED">${message("csh.deviceInfo.bindStatus.BINDED")}</option>
+										<option value="UNBINDED">${message("csh.deviceInfo.bindStatus.UNBINDED")}</option>
+									</select>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.accoutStatus")}:
+									<span class="requiredField">*</span>${message("csh.deviceInfo.type")}:
 								</th>
 								<td>
-									<select name="accoutStatus" class="text">
-										<option value="">${message("csh.tenantAccount.accoutStatus.select")}</option>
-										<option value="ACTIVED">${message("csh.tenantAccount.accoutStatus.ACTIVED")}</option>
-										<option value="LOCKED">${message("csh.tenantAccount.accoutStatus.LOCKED")}</option>
-										<option value="DELETE">${message("csh.tenantAccount.accoutStatus.DELETE")}</option>
+									<select name="typeId">
+										<option value="">${message("csh.deviceInfo.type.select")}</option>
+										[#list types as type]
+										<option value="${type.id}">${type.name}</option>
+										[/#list]
 									</select>
 								</td>
 							</tr>

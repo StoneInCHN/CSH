@@ -11,34 +11,35 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.TenantInfo;
+import com.csh.entity.DeviceType;
 import com.csh.framework.paging.Pageable;
-import com.csh.service.TenantInfoService;
+import com.csh.service.DeviceTypeService;
 
-@Controller("tenantInfoController")
-@RequestMapping("console/tenantInfo")
-public class TenantInfoController extends BaseController {
+@RequestMapping("console/deviceType")
+@Controller("deviceTypeController")
+public class DeviceTypeController extends BaseController {
 
-  @Resource(name = "tenantInfoServiceImpl")
-  private TenantInfoService tenantInfoService;
+  @Resource(name = "deviceTypeServiceImpl")
+  private DeviceTypeService deviceTypeService;
+
 
   /**
    * 添加
    */
   @RequestMapping(value = "/add", method = RequestMethod.GET)
   public String add() {
-    return "/tenantInfo/add";
+    return "/deviceType/add";
   }
 
   /**
    * 保存
    */
   @RequestMapping(value = "/save", method = RequestMethod.POST)
-  public String save(TenantInfo tenantInfo, RedirectAttributes redirectAttributes) {
-    if (!isValid(tenantInfo)) {
+  public String save(DeviceType deviceType) {
+    if (!isValid(deviceType)) {
       return ERROR_VIEW;
     }
-    tenantInfoService.save(tenantInfo);
+    deviceTypeService.save(deviceType);
     return "redirect:list.jhtml";
   }
 
@@ -47,18 +48,22 @@ public class TenantInfoController extends BaseController {
    */
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
-    model.addAttribute("tenantInfo", tenantInfoService.find(id));
-    return "/tenantInfo/edit";
+    model.addAttribute("deviceType", deviceTypeService.find(id));
+    return "/deviceType/edit";
   }
 
   /**
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(TenantInfo tenantInfo) {
-    if (!isValid(tenantInfo)) {
+  public String update(DeviceType deviceType) {
+    if (!isValid(deviceType)) {
       return ERROR_VIEW;
     }
+    DeviceType temp = deviceTypeService.find(deviceType.getId());
+    temp.setName(deviceType.getName());
+    temp.setStatus(deviceType.getStatus());
+    deviceTypeService.update(temp);
     return "redirect:list.jhtml";
   }
 
@@ -67,8 +72,8 @@ public class TenantInfoController extends BaseController {
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String list(Pageable pageable, ModelMap model) {
-    model.addAttribute("page", tenantInfoService.findPage(pageable));
-    return "/tenantInfo/list";
+    model.addAttribute("page", deviceTypeService.findPage(pageable));
+    return "/deviceType/list";
   }
 
   /**
@@ -77,7 +82,7 @@ public class TenantInfoController extends BaseController {
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
   public @ResponseBody Message delete(Long[] ids) {
     if (ids != null) {
-      tenantInfoService.delete(ids);
+      deviceTypeService.delete(ids);
     }
     return SUCCESS_MESSAGE;
   }

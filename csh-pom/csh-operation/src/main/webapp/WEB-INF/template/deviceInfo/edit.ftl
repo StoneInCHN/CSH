@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.tenantAccount.edit")}</title>
+<title>${message("csh.deviceType.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -23,12 +23,7 @@ $().ready(function() {
 	$inputForm.validate({
 		rules: {
 			name: "required",
-			email: {
-				required: true,
-				email: true
-			},
-			roleIds: "required",
-			adminStatus: "required"
+			status: "required"
 		}
 	});
 
@@ -39,11 +34,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantAccount")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.deviceType")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.tenantAccount.list")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.deviceType.list")}</a>
 				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.tenantAccount.edit")}</a>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.deviceType.edit")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -53,7 +48,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.tenantAccount.edit")}</div>
+                  <div class="pull-left">${message("csh.deviceType.edit")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -63,69 +58,25 @@ $().ready(function() {
                 <div class="widget-content">
                   <div class="padd">
                     <form id="inputForm" action="update.jhtml" method="post">
-						<input type="hidden" name="id" value="${tenantAccount.id}" />
+						<input type="hidden" name="id" value="${deviceType.id}" />
 						<table class="input tabContent">
 							<tr>
 								<th>
-									${message("csh.tenantAccount.userName")}:
+									${message("csh.deviceType.name")}:
 								</th>
 								<td>
-									${tenantAccount.userName}
+									<input type="text" name="name" class="text" maxlength="20"  value="${deviceType.name}"/> 
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.realName")}:
+									${message("csh.deviceType.status")}:
 								</th>
 								<td>
-									${tenantAccount.realName}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.loginDate")}:
-								</th>
-								<td>
-									[#if tenantAccount.loginDate??]
-										<span title="${tenantAccount.loginDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.loginDate}</span>
-									[#else]
-											-
-									[/#if]
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.realName")}:
-								</th>
-								<td>
-									<input type="text" name="realName" class="text" maxlength="200" value="${tenantAccount.realName}" />
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.tenantAccount.accoutStatus")}:
-								</th>
-								<td>
-									<select name="accoutStatus" class="text">
-										<option value="">${message("csh.tenantAccount.accoutStatus.select")}</option>
-										<option value="ACTIVED" [#if tenantAccount.accoutStatus== "ACTIVED" ] selected="selected" [/#if]>${message("csh.tenantAccount.accoutStatus.ACTIVED")}</option>
-										<option value="LOCKED" [#if tenantAccount.accoutStatus== "LOCKED" ]selected="selected"[/#if]>${message("csh.tenantAccount.accoutStatus.LOCKED")}</option>
-										<option value="DELETE" [#if tenantAccount.accoutStatus== "DELETE" ]selected="selected"[/#if]>${message("csh.tenantAccount.accoutStatus.DELETE")}</option>
+									<select name="status" class="text">
+										<option value="ENABLE" [#if deviceType.status== "ENABLE" ] selected="selected" [/#if]>${message("csh.deviceType.status.ENABLE")}</option>
+										<option value="DISABLE" [#if deviceType.status== "DISABLE" ]selected="selected"[/#if]>${message("csh.deviceType.status.DISABLE")}</option>
 									</select>
-								</td>
-							</tr>
-							<tr class="roles">
-								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.roles")}:
-								</th>
-								<td>
-									<span class="fieldSet">
-										[#list roles as role]
-											<label>
-												<input type="checkbox" name="roleIds" value="${role.id}"[#if tenantAccount.roles?seq_contains(role)] checked="checked"[/#if] /><span>${role.name}</span>
-											</label>
-										[/#list]
-									</span>
 								</td>
 							</tr>
 						</table>

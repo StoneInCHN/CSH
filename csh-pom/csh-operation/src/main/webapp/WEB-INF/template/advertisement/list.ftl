@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.tenantInfo.list")}</title>
+<title>${message("csh.advertisement.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.tenantInfo")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.advertisement")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantInfo.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.advertisement.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -68,7 +68,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "tenantName" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="username"><a href="#">${message("csh.tenantInfo.tenantName")}</a></li>
+								          <li [#if page.searchProperty == "username" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="username"><a href="#">${message("csh.tenantAccount.username")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -83,7 +83,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.tenantInfo")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.advertisement")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -98,28 +98,25 @@
 														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="orgCode">${message("csh.tenantInfo.orgCode")}</a>
+														<a href="javascript:;" class="sort" name="advName">${message("csh.advertisement.advName")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="tenantName">${message("csh.tenantInfo.tenantName")}</a>
+														<a href="javascript:;" class="sort" name="advImageUrl">${message("csh.advertisement.advImageUrl")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="contactPhone">${message("csh.tenantInfo.contactPhone")}</a>
+														<a href="javascript:;" class="sort" name="advContentLink">${message("csh.advertisement.advContentLink")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="contactPerson">${message("csh.tenantInfo.contactPerson")}</a>
+														<a href="javascript:;" class="sort" name="systemType">${message("csh.advertisement.systemType")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="isHaveAccount">${message("csh.tenantInfo.isHaveAccount")}</a>
+														<a href="javascript:;" class="sort" name="remark">${message("csh.advertisement.remark")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="businessTime">${message("csh.tenantInfo.businessTime")}</a>
-													</th>
+														<a href="javascript:;" class="sort" name="remark">${message("csh.advertisement.order")}</a>
+													</th>	
 													<th>
-														<a href="javascript:;" class="sort" name="area">${message("csh.tenantInfo.area")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="accountStatus">${message("csh.tenantInfo.accountStatus")}</a>
+														<a href="javascript:;" class="sort" name="status">${message("csh.advertisement.status")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -127,41 +124,40 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as tenantInfo]
+												[#list page.content as advertisement]
 												<tr>
 													<td>
-														<input type="checkbox"  name="ids" value="${tenantInfo.id}" />
+														<input type="checkbox"  name="ids" value="${advertisement.id}" />
 													</td>
 													<td>
-														${tenantInfo.orgCode}
+														${advertisement.advName}
 													</td>
 													<td>
-														${tenantInfo.tenantName}
+														<a href="${base}/upload/advertisement/${advertisement.advImageUrl}" target="2"><img src="${base}/upload/advertisement/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
 													</td>
 													<td>
-														${tenantInfo.contactPhone}
+														[#if advertisement.advContentLink??]
+															<a href="http://${advertisement.advContentLink}" target="1" >${advertisement.advContentLink}</a>
+														[/#if]
 													</td>
 													<td>
-														${tenantInfo.contactPerson}
+														${message("csh.advertisement.systemType."+advertisement.systemType)}
 													</td>
 													<td>
-														[#if tenantInfo.isHaveAccount??]${tenantInfo.isHaveAccount}[/#if]
+														${advertisement.remark}
 													</td>
 													<td>
-														${tenantInfo.businessTime}
+														${advertisement.order}
 													</td>
 													<td>
-														${tenantInfo.area}
+														${message("csh.advertisement.status."+advertisement.status)}
 													</td>
 													<td>
-														${message("csh.tenantInfo.accoutStatus."+tenantInfo.accountStatus)}
-													</td>
-													<td>
-														<a href="edit.jhtml?id=${tenantInfo.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														<a href="edit.jhtml?id=${advertisement.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
 												</tr>
-												[/#list]
 											</tbody>
+											[/#list]
 										</table>
 										<div class="widget-foot">
 					                       [@pagination pageNumber = page.pageNumber totalPages = page.totalPages]
