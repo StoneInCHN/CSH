@@ -376,6 +376,24 @@
 		  <artifactId>csh-entity</artifactId>
 		  <version>1.0</version>
 		</dependency>
+		
+		<!-- jpush -->
+		<dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+       	</dependency>
+       	<dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp</groupId>
+            <artifactId>mockwebserver</artifactId>
+        </dependency>
+        <dependency>
+	    	<groupId>cn.jpush.api</groupId>
+	   	    <artifactId>jpush-client</artifactId>
+		</dependency>
   	</dependencies>
  	<build>
 		<finalName>csh-interface</finalName>

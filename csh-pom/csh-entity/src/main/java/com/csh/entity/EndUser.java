@@ -110,6 +110,10 @@ public class EndUser extends BaseEntity {
    * 默认显示的车辆
    */
   private String defaultVehicle;
+  /**
+   * 默认显示的车辆车牌号
+   */
+  private String defaultVehiclePlate;
 
   /**
    * login统计
@@ -157,6 +161,21 @@ public class EndUser extends BaseEntity {
 
   public void setMsgEndUsers(Set<MsgEndUser> msgEndUsers) {
 	this.msgEndUsers = msgEndUsers;
+  }
+
+  @Transient
+  public String getDefaultVehiclePlate() {
+	  for (Vehicle v : vehicles) {
+	      if (v.getIsDefault()) {
+	    	  defaultVehiclePlate = v.getPlate();
+	        break;
+	      }
+	    }
+	  return defaultVehiclePlate;
+  }
+
+  public void setDefaultVehiclePlate(String defaultVehiclePlate) {
+	this.defaultVehiclePlate = defaultVehiclePlate;
   }
 
   @Transient

@@ -386,13 +386,35 @@
 				<artifactId>javax.mail</artifactId>
 				<version>1.5.2</version>
 			</dependency>
+			
+			<!-- jpush -->
+			<dependency>
+		    	<groupId>cn.jpush.api</groupId>
+		   	    <artifactId>jpush-client</artifactId>
+		        <version>3.2.9</version>
+			</dependency>
+			<dependency>
+	            <groupId>com.google.code.gson</groupId>
+	            <artifactId>gson</artifactId>
+	            <version>2.2.4</version>
+        	</dependency>
+        	<dependency>
+	            <groupId>com.google.guava</groupId>
+	            <artifactId>guava</artifactId>
+	            <version>17.0</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>com.squareup.okhttp</groupId>
+	            <artifactId>mockwebserver</artifactId>
+	            <version>1.5.4</version>
+	        </dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<modules> 
 		<module>csh-entity</module>
 		<module>csh-interface</module>
-		<module>csh-operation</module>
-		<module>csh-enterprise</module>
+		<!-- <module>csh-operation</module>
+		<module>csh-enterprise</module> -->
   </modules>
 </project>
