@@ -170,7 +170,7 @@ public class TenantInfo extends BaseEntity {
     this.ownerName = ownerName;
   }
 
-  @Column(scale = 2, precision = 2, nullable = true)
+  @Column(scale = 2, precision = 3, nullable = true)
   public BigDecimal getPraiseRate() {
     return praiseRate;
   }
