@@ -158,7 +158,9 @@ public class EndUserController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     response.setDesc(loginUser.getId().toString());
 
-    String[] properties = {"id", "userName", "nickName", "photo", "signature", "defaultVehiclePlate","defaultVehicle"};
+    String[] properties =
+        {"id", "userName", "nickName", "photo", "signature", "defaultVehiclePlate",
+            "defaultVehicle"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
     response.setMsg(map);
     String token = TokenGenerator.generateToken();
@@ -530,7 +532,8 @@ public class EndUserController extends MobileBaseController {
   //
   // EndUser endUser = endUserService.find(userId);
   //
-  // String[] properties = {"id", "userName", "nickName", "photo", "signature","defaultVehiclePlate", "defaultVehicle"};
+  // String[] properties = {"id", "userName", "nickName", "photo",
+  // "signature","defaultVehiclePlate", "defaultVehicle"};
   // Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, endUser);
   // response.setMsg(map);
   //

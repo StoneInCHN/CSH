@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -114,7 +115,10 @@ public class Vehicle extends BaseEntity {
    */
   private String deviceNo;
 
-
+  /**
+   * 品牌图标
+   */
+  private String brandIcon;
   /**
    * 车辆车型全称
    */
@@ -142,6 +146,15 @@ public class Vehicle extends BaseEntity {
    * 上次保养里程
    */
   private Long lastMaintainMileage;
+
+  @Column(length = 200)
+  public String getBrandIcon() {
+    return brandIcon;
+  }
+
+  public void setBrandIcon(String brandIcon) {
+    this.brandIcon = brandIcon;
+  }
 
   public Date getTrafficInsuranceExpiration() {
     return trafficInsuranceExpiration;

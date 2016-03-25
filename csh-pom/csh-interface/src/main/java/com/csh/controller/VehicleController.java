@@ -88,7 +88,7 @@ public class VehicleController extends MobileBaseController {
     }
 
     EndUser user = endUserService.find(userId);
-    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand"};
+    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, user.getVehicles());
     response.setMsg(map);
@@ -124,6 +124,7 @@ public class VehicleController extends MobileBaseController {
     Vehicle vehicle = new Vehicle();
     VehicleBrandDetail brandDetail = vehicleBrandDetailService.find(vehicleReq.getBrandDetailId());
     vehicle.setVehicleBrandDetail(brandDetail);
+    vehicle.setBrandIcon(brandDetail.getVehicleLine().getParent().getVehicleBrand().getIcon());
     vehicle.setPlate(vehicleReq.getPlateNo());
     vehicle.setVehicleNo(vehicleReq.getVehicleNo());
     vehicle.setTrafficInsuranceExpiration(vehicleReq.getTrafficInsuranceExpiration());

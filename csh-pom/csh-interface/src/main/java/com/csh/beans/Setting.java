@@ -39,16 +39,10 @@ public class Setting implements Serializable {
 
   /** 短信验证码过期时间 */
   private Integer smsCodeTimeOut;
-  
+
   /** 短信服务平台地址 */
   private String smsUrl;
 
-  /** 短信平台登录用户名 */
-  private String smsUser;
-
-  /** 短信平台登录密码 */
-  private String smsPwd;
-  
   /** 短信平台apiKey */
   private String apiKey;
 
@@ -79,42 +73,42 @@ public class Setting implements Serializable {
   /** SMTP密码 */
   private String smtpPassword;
 
-  /** 默认的模糊查询下拉菜单中返回的记录条数*/
+  /** 默认的模糊查询下拉菜单中返回的记录条数 */
   private Integer defaultPageSize;
-  
-  /** 个推平台注册应用后生成的appId（公众版）*/
+
+  /** 个推平台注册应用后生成的appId（公众版） */
   private String appId;
-  
-  /** 个推平台注册应用后生成的appKey（公众版）*/
+
+  /** 个推平台注册应用后生成的appKey（公众版） */
   private String appKey;
-  
-  /** 个推平台注册应用后生成的masterSecret（公众版）*/
+
+  /** 个推平台注册应用后生成的masterSecret（公众版） */
   private String masterSecret;
-  
-  /** 个推平台注册应用后生成的secret（公众版）*/
+
+  /** 个推平台注册应用后生成的secret（公众版） */
   private String appSecret;
-  
-  /** 个推平台消息推送Host*/
+
+  /** 个推平台消息推送Host */
   private String pushHost;
-  
+
   /**
    * 网站域名
    */
   private String siteUrl;
-  
+
   /**
    * app用户查询商家时的搜索半径
    */
   private Integer searchRadius;
-  
-  
+
+
 
   public Integer getSearchRadius() {
-	return searchRadius;
+    return searchRadius;
   }
 
   public void setSearchRadius(Integer searchRadius) {
-	this.searchRadius = searchRadius;
+    this.searchRadius = searchRadius;
   }
 
   public Integer getPasswordMaxlength() {
@@ -190,9 +184,6 @@ public class Setting implements Serializable {
     this.smsUrl = smsUrl;
   }
 
-  public String getSmsUser() {
-    return smsUser;
-  }
 
   public String getApiKey() {
     return apiKey;
@@ -202,17 +193,6 @@ public class Setting implements Serializable {
     this.apiKey = apiKey;
   }
 
-  public void setSmsUser(String smsUser) {
-    this.smsUser = smsUser;
-  }
-
-  public String getSmsPwd() {
-    return smsPwd;
-  }
-
-  public void setSmsPwd(String smsPwd) {
-    this.smsPwd = smsPwd;
-  }
 
   public String getSmsTxtPrefix() {
     return smsTxtPrefix;
@@ -385,5 +365,5 @@ public class Setting implements Serializable {
     this.siteUrl = siteUrl;
   }
 
-  
+
 }

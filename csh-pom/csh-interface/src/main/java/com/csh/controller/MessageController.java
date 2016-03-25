@@ -137,13 +137,11 @@ public class MessageController extends MobileBaseController {
       return response;
     }
 
+    EndUser endUser = endUserService.find(userId);
     MessageInfo msg = messageInfoService.find(msgId);
-    if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
-      for (MsgEndUser msgEndUser : msg.getMsgUser()) {
-        msgEndUser.setIsRead(true);
-      }
-    }
-    messageInfoService.update(msg);
+    MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
+    msgEndUser.setIsRead(true);
+    msgEndUserService.update(msgEndUser);
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -153,18 +151,19 @@ public class MessageController extends MobileBaseController {
 
 
   /**
-   * 清除全部消息
+   * 清除消息
    * 
    * @param req
    * @return
    */
   @RequestMapping(value = "/deleteMsgs", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse deleteMsgs(@RequestBody BaseRequest req) {
+  public @ResponseBody BaseResponse deleteMsgs(@RequestBody MsgRequest req) {
     BaseResponse response = new BaseResponse();
 
     String token = req.getToken();
     Long userId = req.getUserId();
+    Long[] msgIds = req.getMsgIds();
 
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
@@ -175,11 +174,9 @@ public class MessageController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
-    List<MessageInfo> msgs = messageInfoService.findMsgByUser(userId);
-    for (MessageInfo msg : msgs) {
+    for (Long msgId : msgIds) {
+      MessageInfo msg = messageInfoService.find(msgId);
       MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
-      endUser.getMsgEndUsers().remove(msgEndUser);
-      msg.getMsgUser().remove(msgEndUser);
       if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
         msgEndUserService.delete(msgEndUser);
         messageInfoService.delete(msg);

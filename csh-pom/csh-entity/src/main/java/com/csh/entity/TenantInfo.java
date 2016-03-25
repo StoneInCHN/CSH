@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.swing.text.StyledEditorKit.BoldAction;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
@@ -98,7 +97,7 @@ public class TenantInfo extends BaseEntity {
   /**
    * 好评率
    */
-  private BigDecimal praiseRate;
+  private Integer praiseRate;
 
   /**
    * 店铺logo
@@ -127,7 +126,7 @@ public class TenantInfo extends BaseEntity {
   /**
    * 商铺二维码
    */
-  
+
   private byte[] qrImage;
   /**
    * 店铺汽车服务
@@ -175,12 +174,11 @@ public class TenantInfo extends BaseEntity {
     this.ownerName = ownerName;
   }
 
-  @Column(scale = 2, precision = 3, nullable = true)
-  public BigDecimal getPraiseRate() {
+  public Integer getPraiseRate() {
     return praiseRate;
   }
 
-  public void setPraiseRate(BigDecimal praiseRate) {
+  public void setPraiseRate(Integer praiseRate) {
     this.praiseRate = praiseRate;
   }
 
@@ -333,16 +331,14 @@ public class TenantInfo extends BaseEntity {
   public void setPhoto(String photo) {
     this.photo = photo;
   }
-  
+
   @Lob
-  @Column(length=100000,columnDefinition="blob")
-  public byte[] getQrImage ()
-  {
+  @Column(length = 100000, columnDefinition = "blob")
+  public byte[] getQrImage() {
     return qrImage;
   }
 
-  public void setQrImage (byte[] qrImage)
-  {
+  public void setQrImage(byte[] qrImage) {
     this.qrImage = qrImage;
   }
 
@@ -353,5 +349,5 @@ public class TenantInfo extends BaseEntity {
   public void setIsHaveAccount(Boolean isHaveAccount) {
     this.isHaveAccount = isHaveAccount;
   }
-  
+
 }

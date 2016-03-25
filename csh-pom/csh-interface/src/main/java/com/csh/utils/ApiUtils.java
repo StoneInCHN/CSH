@@ -12,7 +12,6 @@ import com.csh.common.log.LogUtil;
 
 
 
-
 /**
  * API工具类
  * 
@@ -35,9 +34,9 @@ public final class ApiUtils {
 
     StringBuffer response = new StringBuffer();
     try {
-          String domain = setting.getSmsUrl();
+      String domain = setting.getSmsUrl();
       if (LogUtil.isDebugEnabled(ApiUtils.class)) {
-        LogUtil.debug(null,"Request API URL is : %s", domain + parameters);
+        LogUtil.debug(null, "Request API URL is : %s", domain + parameters);
       }
 
       URL url = new URL(domain);
@@ -71,23 +70,25 @@ public final class ApiUtils {
     return response.toString();
   }
 
- 
 
-  public static String sendSmsMsg(String mobile,String msg) {
+
+  public static String sendSmsMsg(String mobile, String msg) {
     try {
-          String user = setting.getSmsUser();
-          String pwd = setting.getSmsPwd();
-          String apikey = setting.getApiKey();
-          String message = URLEncoder.encode(msg, "UTF-8");
-          String param = "username=" + user + "&password=" + pwd + "&apikey="+apikey+"&mobile=" + mobile + "&content=" + message;
-          String rs = sendPost(param);
-          return rs;
+      String user = null;
+      String pwd = null;
+      String apikey = setting.getApiKey();
+      String message = URLEncoder.encode(msg, "UTF-8");
+      String param =
+          "username=" + user + "&password=" + pwd + "&apikey=" + apikey + "&mobile=" + mobile
+              + "&content=" + message;
+      String rs = sendPost(param);
+      return rs;
     } catch (Exception e) {
       e.printStackTrace();
     }
-      return null;
+    return null;
   }
 
-  
+
 
 }
