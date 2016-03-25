@@ -339,6 +339,7 @@ ul.room-item>li>div>a, ul.room-item>li>div>a:hover {
     -moz-border-radius: 2px 2px 0 0;
     border-radius: 2px 2px 0 0;
     text-transform: uppercase;
+    font-size: 20px;
     text-align: center;
     background:#808080;
     color: white; }
@@ -354,8 +355,8 @@ ul.room-item>li>div>a, ul.room-item>li>div>a:hover {
         line-height: 100%;
         margin-right: 2px; }
   .mini-widget .mini-widget-body {
-    padding: 5px 5px 0px 5px;;
-    font-size: 10px;
+    padding: 10px 5px 0px 10px;;
+    font-size: 15px;
     font-weight: 300;
     background: #D3D3D3; }
     .mini-widget .mini-widget-body i {
@@ -483,3 +484,8 @@ ul.room-item>li>div>a, ul.room-item>li>div>a:hover {
   width: 110px;
   height: 85px;
 }
+.endUserInfoCount{
+	background-color:#F90;
+	color:#FFF;
+	border-radius: 5px;
+	padding: 2px;}

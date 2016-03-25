@@ -185,7 +185,7 @@ var reportMaintainStatistics = {
 				tickWidth : 1,
 				tickColor : '#000',
 				title : {
-					text : '元'
+					text : '次'
 				},
 				plotLines : [ {
 					value : 0,
@@ -194,7 +194,7 @@ var reportMaintainStatistics = {
 				} ]
 			},
 			tooltip : {
-				valueSuffix : '元'
+				valueSuffix : '次'
 			},
 			legend : {
 				layout : 'vertical',
@@ -204,7 +204,174 @@ var reportMaintainStatistics = {
 			},
 			series: []
 		};
-		
+//设备绑定情况
+var deviceInfoStatistics ={
+	colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+    chart: {
+    	backgroundColor: {
+			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+			stops: [
+    				[0, 'rgb(250, 250, 250)'],
+    				[1, 'rgb(221, 221, 221)']
+    			]
+		},
+		borderRadius: 15,
+    	renderTo: 'deviceInfoStatisticsId',
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        borderWidth: null,
+        panning: false
+        },
+    credits:{
+        enabled:false // 禁用版权信息
+    },
+    title: {
+        text: '设备情况情况统计'
+    },
+    tooltip: {
+    	  pointFormat:  '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    legend:{
+    	itemMarginBottom:0,
+        labelFormatter:function(){
+            return this.name+':'+ this.y;
+        },
+        itemStyle: {
+        	itemWidth: 100
+        }
+    },
+    plotOptions: {
+        pie: {
+        	size:'150px',
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+             type: 'pie',
+             name:'占比',
+             data: [
+                    ['已绑定', Number($("#unbindedDeviceCount").val())],
+                    ['未绑定', Number($("#bindedDeviceCount").val())],
+                    ]
+    }]
+};
+var chart = new Highcharts.Chart(deviceInfoStatistics);
+//预约维修统计
+var repareReservationStatistics ={
+		colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+	    chart: {
+	    	backgroundColor: {
+				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+				stops: [
+	    				[0, 'rgb(250, 250, 250)'],
+	    				[1, 'rgb(221, 221, 221)']
+	    			]
+			},
+			borderRadius: 15,
+	    	renderTo: 'repareReservationStatisticsId',
+	        plotBackgroundColor: null,
+	        plotBorderWidth: null,
+	        plotShadow: false,
+	        borderWidth: null,
+	        panning: false
+	        },
+	    credits:{
+	        enabled:false // 禁用版权信息
+	    },
+	    title: {
+	        text: '维修预约处理情况统计'
+	    },
+	    tooltip: {
+	    	  pointFormat:  '{series.name}: <b>{point.percentage:.1f}%</b>'
+	    },
+	    legend:{
+	    	itemMarginBottom:0,
+	        labelFormatter:function(){
+	            return this.name+':'+ this.y;
+	        },
+	        itemStyle: {
+	        	itemWidth: 100
+	        }
+	    },
+	    plotOptions: {
+	        pie: {
+	        	size:'150px',
+	            allowPointSelect: true,
+	            cursor: 'pointer',
+	            dataLabels: {
+	                enabled: false
+	            },
+	            showInLegend: true
+	        }
+	    },
+	    series: [{
+	             type: 'pie',
+	             name:'数量',
+	             data: []
+	    }]
+	};
+//预约保养情况统计
+var maintainReservationStatistics ={
+		colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+	    chart: {
+	    	backgroundColor: {
+				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+				stops: [
+	    				[0, 'rgb(250, 250, 250)'],
+	    				[1, 'rgb(221, 221, 221)']
+	    			]
+			},
+			borderRadius: 15,
+	    	renderTo: 'maintainReservationStatisticsId',
+	        plotBackgroundColor: null,
+	        plotBorderWidth: null,
+	        plotShadow: false,
+	        borderWidth: null,
+	        panning: false
+	        },
+	    credits:{
+	        enabled:false // 禁用版权信息
+	    },
+	    title: {
+	        text: '保养预约处理情况统计'
+	    },
+	    tooltip: {
+	    	  pointFormat:  '{series.name}: <b>{point.percentage:.1f}%</b>'
+	    },
+	    legend:{
+	    	itemMarginBottom:0,
+	        labelFormatter:function(){
+	            return this.name+':'+ this.y;
+	        },
+	        itemStyle: {
+	        	itemWidth: 100
+	        }
+	    },
+	    plotOptions: {
+	        pie: {
+	        	size:'150px',
+	            allowPointSelect: true,
+	            cursor: 'pointer',
+	            dataLabels: {
+	                enabled: false
+	            },
+	            showInLegend: true
+	        }
+	    },
+	    series: [{
+	             type: 'pie',
+	             name:'数量',
+	             data: []
+	    }]
+	};
+
+//获取服务统计数据
 		$.ajax({
 			url : "../../console/reportServiceStatistics/report.jhtml",
 			type : "post",
@@ -248,6 +415,18 @@ var reportMaintainStatistics = {
 					}
 				}
 				var chart = new Highcharts.Chart(reportMaintainStatistics);
+			}
+		});
+		//获取预约数据
+		$.ajax({
+			url : "../../console/reportReservationStatistics/report.jhtml",
+			type : "get",
+			cache : false,
+			success : function(data) {
+				 if (data != null) {
+					 refreshPie(repareReservationStatistics, data,['预约中','处理完'],['reservationRepareCount','paidRepareCount']);
+					 refreshPie(maintainReservationStatistics, data,['预约中','处理完'],['reservationMaitainCount','paidMaintainCount']);
+				 }
 			}
 		});
 });

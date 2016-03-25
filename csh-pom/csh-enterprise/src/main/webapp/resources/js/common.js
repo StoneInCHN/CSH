@@ -841,6 +841,17 @@ function refreshLine(id, data, categoryName, valueName, viewName) {
 	}
 	var chart = new Highcharts.Chart(id);
 }
+
+function refreshPie(id, data, nameArray, dataArray) {
+	if (nameArray != null && dataArray != null) {
+		for (var i = 0; i < nameArray.length; i++) {
+			var value = [ nameArray[i], data[dataArray[i]] ];
+			id.series[0].data.push(value);
+		}
+	} 
+	var chart = new Highcharts.Chart(id);
+}
+
 function formReset(formId, tableId) {
 	$('#' + formId)[0].reset();
 	var _queryParams = {}

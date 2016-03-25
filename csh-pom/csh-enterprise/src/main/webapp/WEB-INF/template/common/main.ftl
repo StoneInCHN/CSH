@@ -162,31 +162,57 @@
 					        <div class="col-md-8">
 					        	<a href ="#"><img onclick="shortcutNavigation('办理入院','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/admission.png"/></a><a href ="#"><img onclick="shortcutNavigation('入院评估','${base}/console/elderlyEvaluatingRecord/elderlyEvaluatingRecord.jhtml')" src="${base}/resources/images/evaluating.png"/></a><a href ="#"><img onclick="shortcutNavigation('入院缴费','${base}/console/billing/checkinCharge.jhtml')" src="${base}/resources/images/checkinCharge.png"/></a><a href ="#"><img onclick="shortcutNavigation('日常缴费','${base}/console/billing/dailyBill.jhtml')" src="${base}/resources/images/normalCharge.png"/></a><a href ="#"><img onclick="shortcutNavigation('退住结算','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/checkoutCharge.png"/></a>
 					        </div>
-					        <div class="col-md-4 pull-right">
-					        	<img id="qrCodeImage" src="${base}/console/common/showQrCode.jhtml" title="扫码加入"/>
+					        <div class="col-md-4">
+					        	<div class=" pull-right">
+					        		<img id="qrCodeImage" src="${base}/console/common/showQrCode.jhtml" title="扫码加入"/>
+					        	</div>
 					        </div>
 				        </div>
+				        <div class="row index-report">
+							<div class="col-md-8 index-report-item">
+								<div class = "row">
+					         		<div class="col-md-4"><div id = "deviceInfoStatisticsId" style="height:260px"></div></div>
+					         		<div class="col-md-4"><div id = "repareReservationStatisticsId" style="height:260px"></div></div>
+					         		<div class="col-md-4"><div id = "maintainReservationStatisticsId" style="height:260px"></div></div>
+					         	</div>
+				         	</div>
+				         	<div class="col-md-4 ">
+				         		<div class = "pull-right">
+						         	<div id="calendar-panel " class="easyui-panel" title="日历" 
+										style="width:260px;height:260px;padding:10px;background:#fafafa;"data-options="collapsible:true">
+										<div id="cc" class="easyui-calendar" style="width:100%;height:100%;"></div>  
+									</div>
+								</div>
+				         	</div>
+				         </div>
 						<div class="row index-report">
-								<div class="col-md-8 index-report-item">
-						    		<div id="serviceStatisticsReportId" style=""></div>
+								<div class="col-md-8">
+						    		<div id="serviceStatisticsReportId" style="height:260px"></div>
 						    	</div>
 						    	<div class="col-md-4">
-				    				<div class="mini-widget" style="height:80px;width: 260px;margin-top:30px;">
-						                <div class="mini-widget-heading clearfix">设备：</div>
-						                <div class="mini-widget-body clearfix">
-						                  <div id="elderlyNewComming"class="pull-left">已绑定：${response.bindedDeviceCount}</div>
-						                  <div class="pull-right">
-						                  	未绑定：${response.unbindedDeviceCount}<div id="increasePercent"></div>
-						                  </div>
-						                </div>
-             				 	</div>
-	             				 <div class="mini-widget" style="height:80px;width: 260px;">
-					                <div class="mini-widget-heading ">用户</div>
-					                <div class="mini-widget-body">
-					                	<div>用户数：${response.endUserCount}</div><div>车辆数：${response.vehicleCount}<div>
-					                </div>
-	             				 </div>
-				    	</div><!--end col-->
+						    		<div class="row">
+					    				<div class="mini-widget pull-right" style="height:80px;width: 260px;margin-top:30px;">
+							                <div class="mini-widget-heading clearfix" >设备：</div>
+							                <div class="mini-widget-body clearfix">
+							                  <div class="pull-left" style="color:green">已绑定：${response.bindedDeviceCount}</div>
+							                  <input type="hidden" id='bindedDeviceCount' value='${response.bindedDeviceCount}'/>
+							                  <div class="pull-right" style="color:red">
+							                  	未绑定：${response.unbindedDeviceCount}
+							                  </div>
+							                  <input type="hidden" id='unbindedDeviceCount' value='${response.unbindedDeviceCount}'/>
+							                </div>
+						            	</div>
+             				 		</div>
+             				 		<div class="row">
+		             				 	<div class="mini-widget pull-right" style="height:80px;width: 260px;">
+							                <div class="mini-widget-heading"><span >用户</span></div>
+							                <div class="mini-widget-body">
+							                	<div style="padding:5px">用户数:<pan class="endUserInfoCount">${response.endUserCount}</pan></div>
+							                	<div style="padding:5px">车辆数:<pan class="endUserInfoCount">${response.vehicleCount}</pan><div>
+							                </div>
+							            </div>
+		             				 </div>
+				    		</div><!--end col-->
 						
 						</div>
 					</div>

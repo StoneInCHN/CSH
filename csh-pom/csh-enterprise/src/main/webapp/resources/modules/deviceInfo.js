@@ -142,9 +142,9 @@ $(function(){
 		      {title:message("csh.deviceInfo.bindStatus"),field:"bindStatus",width:100,sortable:true,
 		      		styler: function(value,row,index){
 		      			if(value == "BINDED"){
-							return 'color:red;';
+		      				return 'color:green;';
 						}else if (value == "UNBINDED" || value == null){
-							return 'color:green;';
+							return 'color:red;';
 						}
 					},
 		    	  formatter: function(value,row,index){
