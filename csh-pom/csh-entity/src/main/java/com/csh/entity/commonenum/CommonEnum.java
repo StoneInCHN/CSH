@@ -67,7 +67,7 @@ public class CommonEnum {
     LOCKED,
 
     /** 帐号删除 */
-    DELETE 
+    DELETE
   }
 
   /**
@@ -142,13 +142,14 @@ public class CommonEnum {
     REFUNDED
 
   }
-  
+
   /**
    * 绑定状态
+   * 
    * @author huyong
    *
    */
-  public enum BindStatus{
+  public enum BindStatus {
     /**
      * 已绑定
      */
@@ -654,8 +655,8 @@ public class CommonEnum {
      */
     closed
   }
-  
-  public enum SystemType{
+
+  public enum SystemType {
     /**
      * 运营管理系统
      */
@@ -669,72 +670,75 @@ public class CommonEnum {
      */
     INTERFACE
   }
-  
+
   public enum ServiceType {
-		/**
-		 * 洗车
-		 */
-		WASHING,
-		/**
-		 * 美容
-		 */
-		COSMETOLOGY,
-		/**
-		 * 保养
-		 */
-		UPKEEP,
-		/**
-		 * 加油
-		 */
-		REFUEL;
-	}
-  
+    /**
+     * 洗车
+     */
+    WASHING,
+    /**
+     * 美容
+     */
+    COSMETOLOGY,
+    /**
+     * 保养
+     */
+    UPKEEP,
+    /**
+     * 加油
+     */
+    REFUEL;
+  }
+
   public enum ImageType {
-	   
-	    /**
-	     * 头像
-	     */
-	    PHOTO
-	   
-	  }
-  
-  
+
+    /**
+     * 头像
+     */
+    PHOTO
+
+  }
+
+
   /**
    * 服务状态
+   * 
    * @author sujinxuan
    *
    */
-  public enum ServiceStatus{
-      
-      /**可用 */
-	  ENABLED,
-      
-      /**禁用 */
-	  DISABLED,
-      
-    }
+  public enum ServiceStatus {
+
+    /** 可用 */
+    ENABLED,
+
+    /** 禁用 */
+    DISABLED,
+
+  }
   /**
    * 审核状态
+   * 
    * @author tanbiao
    *
    */
-  public enum ApplyStatus{
-      /** 待审核 */
-      AUDIT_WAITING,
-      
-      /** 审核通过 */
-      AUDIT_PASSED,
-      
-      /** 审核退回 */
-      AUDIT_FAILED
-      
-    }
+  public enum ApplyStatus {
+    /** 待审核 */
+    AUDIT_WAITING,
+
+    /** 审核通过 */
+    AUDIT_PASSED,
+
+    /** 审核退回 */
+    AUDIT_FAILED
+
+  }
   /**
    * 预约信息来源
+   * 
    * @author huyong
    *
    */
-  public enum ReservationInfoFrom{
+  public enum ReservationInfoFrom {
     /**
      * 来自app
      */
@@ -744,41 +748,41 @@ public class CommonEnum {
      */
     CALL
   }
-  
-  public enum MessageType{
-      /** 个人消息 */
-      PERSONALMSG,
-      /** 新闻消息 */
-      NEWSMSG,
-      /** 购买服务消息 */
-      PURCHASESERVICEMSG
-     
+
+  public enum MessageType {
+    /** 个人消息 */
+    PERSONALMSG,
+    /** 新闻消息 */
+    NEWSMSG,
+    /** 活动消息 */
+    PROMOTION
+
   }
-  
-  public enum BalanceType{
-      /** 收入*/
-      INCOME,
-      /** 支出 */
-      OUTCOME
-     
+
+  public enum BalanceType {
+    /** 收入 */
+    INCOME,
+    /** 支出 */
+    OUTCOME
+
   }
-  
-  public enum PaymentType{
-      /** 支付宝*/
-      ALIPAY,
-      /** 微信 */
-      WECHAT,
-      /** 钱包 */
-      WALLET
+
+  public enum PaymentType {
+    /** 支付宝 */
+    ALIPAY,
+    /** 微信 */
+    WECHAT,
+    /** 钱包 */
+    WALLET
   }
-  
-  public enum ChargeStatus{
-      /*** 预约  */
-      RESERVATION,
-      /** 未支付*/
-      UNPAID,
-      /** 已支付 */
-      PAID
+
+  public enum ChargeStatus {
+    /*** 预约 */
+    RESERVATION,
+    /** 未支付 */
+    UNPAID,
+    /** 已支付 */
+    PAID
   }
-  
+
 }

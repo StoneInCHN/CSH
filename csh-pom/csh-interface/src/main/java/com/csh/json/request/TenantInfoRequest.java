@@ -4,7 +4,15 @@ import com.csh.json.base.BaseRequest;
 
 public class TenantInfoRequest extends BaseRequest {
 
+  /**
+   * 租户ID
+   */
   private Long tenantId;
+
+  /**
+   * 用户对租户评分（1-5星）
+   */
+  private Integer score;
   /**
    * 纬度
    */
@@ -20,6 +28,14 @@ public class TenantInfoRequest extends BaseRequest {
    */
   private Long serviceCategoryId;
 
+
+  public Integer getScore() {
+    return score;
+  }
+
+  public void setScore(Integer score) {
+    this.score = score;
+  }
 
   public Long getTenantId() {
     return tenantId;

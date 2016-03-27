@@ -281,7 +281,7 @@ public class VehicleController extends MobileBaseController {
     Filter parentFilter = new Filter("parent", Operator.isNull, null);
     filters.add(parentFilter);
     List<VehicleLine> vehicleLines = vehicleLineService.findList(null, filters, null);
-    String[] properties = {"id", "code", "name"};
+    String[] properties = {"id", "code", "name", "icon"};
     List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, vehicleLines);
     maps = VehicleUtil.getVehicleLineByCode(map);
     response.setMsg(maps);
@@ -323,7 +323,7 @@ public class VehicleController extends MobileBaseController {
     List<Map<String, Object>> map = new ArrayList<Map<String, Object>>();
     VehicleLine vehicleLine = vehicleLineService.find(vehicleLineId);
     if (vehicleLine.getParent() == null) {// 子车系（只有2级树形结构）
-      String[] properties = {"id", "code", "name"};
+      String[] properties = {"id", "code", "name", "icon"};
       map = FieldFilterUtils.filterCollectionMap(properties, vehicleLine.getChildren());
     } else {// 车型
       List<Filter> filters = new ArrayList<Filter>();
