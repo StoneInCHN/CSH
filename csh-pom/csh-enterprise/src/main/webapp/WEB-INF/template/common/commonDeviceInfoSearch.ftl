@@ -41,6 +41,7 @@
 	    </div>
 	  </fieldset>
 </div>
+
 <table id="common-deviceInfo-table-list"></table>
 
 

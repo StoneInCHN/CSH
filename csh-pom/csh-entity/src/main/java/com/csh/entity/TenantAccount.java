@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -157,7 +156,6 @@ public class TenantAccount extends BaseEntity {
    */
   @NotEmpty
   @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "csh_tenant_account_role")
   @JsonProperty
   public Set<Role> getRoles() {
       return roles;

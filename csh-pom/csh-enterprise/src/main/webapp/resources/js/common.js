@@ -520,6 +520,7 @@ function searchRoles(id) {
 }
 //查询终端用户用户
 function searchEndUser(id) {
+	debugger;
 	$('#commonMainDialog')
 			.dialog(
 					{
@@ -530,7 +531,7 @@ function searchEndUser(id) {
 						cache : false,
 						href : '../endUser/commonEndUserSearch.jhtml',
 						buttons : [ {
-							text : message("yly.common.cancel"),
+							text : message("csh.common.cancel"),
 							iconCls : 'icon-cancel',
 							handler : function() {
 								$('#commonMainDialog').dialog("close");
@@ -598,7 +599,7 @@ function searchEndUser(id) {
 															    	  }
 														      	  }  
 														      },
-														      {title:message("csh.endUser.loginDate"),field:"loginDate",width:100,sortable:true,formatter: function(value,row,index){
+														      {title:message("csh.common.create"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 																	return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 																}
 														      },
@@ -635,7 +636,7 @@ $('#commonMainDialog')
 			cache : false,
 			href : '../deviceInfo/commonVehicleSearch.jhtml',
 			buttons : [ {
-				text : message("yly.common.cancel"),
+				text : message("csh.common.cancel"),
 				iconCls : 'icon-cancel',
 				handler : function() {
 					$('#commonMainDialog').dialog("close");
@@ -726,14 +727,14 @@ function searchDevice(id) {
 	$('#commonMainDialog')
 			.dialog(
 					{
-						title : message("yly.deviceInfo.search"),
+						title : message("csh.deviceInfo.search"),
 						width : 1000,
 						height : 500,
 						modal : true,
 						cache : false,
 						href : '../deviceInfo/commonDeviceInfoSearch.jhtml',
 						buttons : [ {
-							text : message("yly.common.cancel"),
+							text : message("csh.common.cancel"),
 							iconCls : 'icon-cancel',
 							handler : function() {
 								$('#commonMainDialog').dialog("close");
@@ -741,16 +742,16 @@ function searchDevice(id) {
 						} ],
 						onLoad : function() {
 							/**
-							 * 此datagrid 用户展示老人数据,并且提供查询功能
+							 * 此datagrid 用户展示设备数据,并且提供查询功能
 							 */
 							$("#common-deviceInfo-table-list")
 									.datagrid(
 											{
-												title : message("yly.deviceInfo"),
+												title : message("csh.deviceInfo"),
 												fitColumns : true,
 												url : '../deviceInfo/list.jhtml',
 												pagination : true,
-												loadMsg : message("yly.common.loading"),
+												loadMsg : message("csh.common.loading"),
 												striped : true,
 												onDblClickRow : function(
 														rowIndex, rowData) {

@@ -54,6 +54,9 @@
 				[@shiro.hasPermission name="statisticsReport"]
 				<li><a href="#statisticsReport"><i class="fa fa-users fa-1x"></i>${message("csh.statisticsReport.report")}</a></li>
 				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="insuranceManage"]
+				<li><a href="#insuranceManage"><i class="fa fa-users fa-1x"></i>${message("csh.insuranceManage.config")}</a></li>
+				[/@shiro.hasPermission]
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
 				<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>
 			</ul>
@@ -151,6 +154,12 @@
     		[@shiro.hasPermission name="washReport"]
     		<li><a href="#" data-url="${base}/console/reportWashStatistics/reportWashStatistics.jhtml">${message("csh.statisticsReport.washStatisticsReport")}</a></li>
     		[/@shiro.hasPermission]
+    	</ul>
+    	
+    	<ul title="${message("csh.insuranceManage.vehicleInsurance")}" id="insuranceManage">
+    		[@shiro.hasPermission name="vehicleInsurance"]
+    		<li><a href="#" data-url="${base}/console/vehicleInsurance/vehicleInsurance.jhtml">${message("csh.insuranceManage.vehicleInsurance")}</a></li>
+    		[/@shiro.hasPermission]
     	</ul>                 
     </div>
   
@@ -217,11 +226,12 @@
 						</div>
 					</div>
 		    </div>    
-		</div>  
+		</div>
+		<div id = "commonMainDialog"></div>  
     </div>    
     
     
-    <div id = "commonMainDialog"></div>
+    
     <!-- JavaScript-->
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript" src="${base}/resources/js/jquery.min.js"></script>

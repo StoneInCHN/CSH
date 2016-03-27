@@ -145,7 +145,7 @@ var carService_manager_tool = {
 			     	singleUpload(options);
 				},
 			    onClose:function(){
-			    	$("#tenantUserUploader-add .uploadBtn").trigger("clearFileQuene");
+			    	$("#carServiceUploader-add .uploadBtn").trigger("clearFileQuene");
 			    	$('#addCarService').empty();
 			    }
 			});  

@@ -201,7 +201,16 @@ var messages = {
 	"csh.carService.serviceStatus.ENABLED":"启用",
 	"csh.carService.serviceStatus.DISABLED":"禁用",
 	"csh.carService.list":"服务列表",
-	"csh.carService.serviceCategory":"服务类型"
+	"csh.carService.serviceCategory":"服务类型",
+	//车辆保险
+	"csh.vehicleInsurance.userName":"投保人",
+	"csh.vehicleInsurance.mobile":"投保人电话",
+	"csh.vehicleInsurance.vehicle":"投保车辆",
+	"csh.vehicleInsurance.vehicleBrand":"投保车型",
+	"csh.vehicleInsurance.startDate":"保单开始时间",
+	"csh.vehicleInsurance.endDate":"保单结束时间",
+	"csh.vehicleInsurance.isOwned":"是否过户",
+	"csh.vehicleInsurance.isLoaned":"是否贷款车"
 	
 };
 //多语言
