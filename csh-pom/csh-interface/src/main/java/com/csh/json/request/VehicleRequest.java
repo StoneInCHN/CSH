@@ -1,7 +1,5 @@
 package com.csh.json.request;
 
-import java.util.Date;
-
 import com.csh.json.base.BaseRequest;
 
 public class VehicleRequest extends BaseRequest {
@@ -12,15 +10,15 @@ public class VehicleRequest extends BaseRequest {
    * 设备号
    */
   private String deviceNo;
-  
-//  /**
-//   * 品牌ID
-//   */
-//  private Long brandId;
-   /**
+
+  // /**
+  // * 品牌ID
+  // */
+  // private Long brandId;
+  /**
    * 车系ID
    */
-   private Long vehicleLineId;
+  private Long vehicleLineId;
 
   /**
    * 车型ID
@@ -40,16 +38,16 @@ public class VehicleRequest extends BaseRequest {
   /**
    * 交强险到期时间
    */
-  private Date trafficInsuranceExpiration;
+  private String trafficInsuranceExpiration;
   /**
    * 商业险到期时间
    */
-  private Date commercialInsuranceExpiration;
+  private String commercialInsuranceExpiration;
 
   /**
    * 下次年检时间
    */
-  private Date nextAnnualInspection;
+  private String nextAnnualInspection;
 
   /**
    * 行驶里程
@@ -60,14 +58,14 @@ public class VehicleRequest extends BaseRequest {
    */
   private Long lastMaintainMileage;
 
-  
-//  public Long getBrandId() {
-//	return brandId;
-//  }
-//
-//  public void setBrandId(Long brandId) {
-//	this.brandId = brandId;
-//  }
+
+  // public Long getBrandId() {
+  // return brandId;
+  // }
+  //
+  // public void setBrandId(Long brandId) {
+  // this.brandId = brandId;
+  // }
 
   public String getDeviceNo() {
     return deviceNo;
@@ -85,13 +83,13 @@ public class VehicleRequest extends BaseRequest {
     this.vehicleId = vehicleId;
   }
 
-   public Long getVehicleLineId() {
-   return vehicleLineId;
-   }
-  
-   public void setVehicleLineId(Long vehicleLineId) {
-   this.vehicleLineId = vehicleLineId;
-   }
+  public Long getVehicleLineId() {
+    return vehicleLineId;
+  }
+
+  public void setVehicleLineId(Long vehicleLineId) {
+    this.vehicleLineId = vehicleLineId;
+  }
 
   public Long getBrandDetailId() {
     return brandDetailId;
@@ -109,27 +107,27 @@ public class VehicleRequest extends BaseRequest {
     this.plateNo = plateNo;
   }
 
-  public Date getTrafficInsuranceExpiration() {
+  public String getTrafficInsuranceExpiration() {
     return trafficInsuranceExpiration;
   }
 
-  public void setTrafficInsuranceExpiration(Date trafficInsuranceExpiration) {
+  public void setTrafficInsuranceExpiration(String trafficInsuranceExpiration) {
     this.trafficInsuranceExpiration = trafficInsuranceExpiration;
   }
 
-  public Date getCommercialInsuranceExpiration() {
+  public String getCommercialInsuranceExpiration() {
     return commercialInsuranceExpiration;
   }
 
-  public void setCommercialInsuranceExpiration(Date commercialInsuranceExpiration) {
+  public void setCommercialInsuranceExpiration(String commercialInsuranceExpiration) {
     this.commercialInsuranceExpiration = commercialInsuranceExpiration;
   }
 
-  public Date getNextAnnualInspection() {
+  public String getNextAnnualInspection() {
     return nextAnnualInspection;
   }
 
-  public void setNextAnnualInspection(Date nextAnnualInspection) {
+  public void setNextAnnualInspection(String nextAnnualInspection) {
     this.nextAnnualInspection = nextAnnualInspection;
   }
 

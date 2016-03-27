@@ -127,16 +127,16 @@ public class Vehicle extends BaseEntity {
   /**
    * 交强险到期时间
    */
-  private Date trafficInsuranceExpiration;
+  private String trafficInsuranceExpiration;
   /**
    * 商业险到期时间
    */
-  private Date commercialInsuranceExpiration;
+  private String commercialInsuranceExpiration;
 
   /**
    * 下次年检时间
    */
-  private Date nextAnnualInspection;
+  private String nextAnnualInspection;
 
   /**
    * 行驶里程
@@ -156,27 +156,27 @@ public class Vehicle extends BaseEntity {
     this.brandIcon = brandIcon;
   }
 
-  public Date getTrafficInsuranceExpiration() {
+  public String getTrafficInsuranceExpiration() {
     return trafficInsuranceExpiration;
   }
 
-  public void setTrafficInsuranceExpiration(Date trafficInsuranceExpiration) {
+  public void setTrafficInsuranceExpiration(String trafficInsuranceExpiration) {
     this.trafficInsuranceExpiration = trafficInsuranceExpiration;
   }
 
-  public Date getCommercialInsuranceExpiration() {
+  public String getCommercialInsuranceExpiration() {
     return commercialInsuranceExpiration;
   }
 
-  public void setCommercialInsuranceExpiration(Date commercialInsuranceExpiration) {
+  public void setCommercialInsuranceExpiration(String commercialInsuranceExpiration) {
     this.commercialInsuranceExpiration = commercialInsuranceExpiration;
   }
 
-  public Date getNextAnnualInspection() {
+  public String getNextAnnualInspection() {
     return nextAnnualInspection;
   }
 
-  public void setNextAnnualInspection(Date nextAnnualInspection) {
+  public void setNextAnnualInspection(String nextAnnualInspection) {
     this.nextAnnualInspection = nextAnnualInspection;
   }
 
@@ -363,6 +363,7 @@ public class Vehicle extends BaseEntity {
   public void setProduceDate(Date produceDate) {
     this.produceDate = produceDate;
   }
+
 
   public Date getPlateDate() {
     return plateDate;

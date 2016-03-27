@@ -18,10 +18,8 @@ public class test {
     // Date date1 = new Date();
     // Date date2 = new Date();
     // System.out.println(DateUtils.isSameDay(date1, date2));
-    Double a = (double) 10;
-    Integer b = 3;
-    System.out.println(Math.ceil(a / b));
-
+    String res = UcpaasUtil.SendCodeBySms("15902823856", "6598");
+    System.out.println(res);
   }
 
 }

@@ -41,17 +41,22 @@ public class Setting implements Serializable {
   private Integer smsCodeTimeOut;
 
   /** 短信服务平台地址 */
-  private String smsUrl;
+  private String ucpaasUrl;
 
-  /** 短信平台apiKey */
-  private String apiKey;
+  /** 短信平台AccountId */
+  private String ucpaasSid;
 
-  /** 短信内容前缀 */
-  private String smsTxtPrefix;
+  /** 短信平台Token */
+  private String ucpaasToken;
 
-  /** 短信内容后缀 */
-  private String smsTxtSuffix;
+  /** 短信平台软件版本 */
+  private String ucpaasVersion;
 
+  /** 短信平台APPID */
+  private String ucpaasAppId;
+
+  /** 短信平台软件版本 */
+  private String ucpaasTemplate;
 
   /** 邮箱正则表达式 */
   private String emailPattern;
@@ -102,6 +107,13 @@ public class Setting implements Serializable {
   private Integer searchRadius;
 
 
+  public String getUcpaasAppId() {
+    return ucpaasAppId;
+  }
+
+  public void setUcpaasAppId(String ucpaasAppId) {
+    this.ucpaasAppId = ucpaasAppId;
+  }
 
   public Integer getSearchRadius() {
     return searchRadius;
@@ -176,40 +188,45 @@ public class Setting implements Serializable {
     this.smsCodeTimeOut = smsCodeTimeOut;
   }
 
-  public String getSmsUrl() {
-    return smsUrl;
+  public String getUcpaasUrl() {
+    return ucpaasUrl;
   }
 
-  public void setSmsUrl(String smsUrl) {
-    this.smsUrl = smsUrl;
+  public void setUcpaasUrl(String ucpaasUrl) {
+    this.ucpaasUrl = ucpaasUrl;
   }
 
-
-  public String getApiKey() {
-    return apiKey;
+  public String getUcpaasSid() {
+    return ucpaasSid;
   }
 
-  public void setApiKey(String apiKey) {
-    this.apiKey = apiKey;
+  public void setUcpaasSid(String ucpaasSid) {
+    this.ucpaasSid = ucpaasSid;
   }
 
-
-  public String getSmsTxtPrefix() {
-    return smsTxtPrefix;
+  public String getUcpaasToken() {
+    return ucpaasToken;
   }
 
-  public void setSmsTxtPrefix(String smsTxtPrefix) {
-    this.smsTxtPrefix = smsTxtPrefix;
+  public void setUcpaasToken(String ucpaasToken) {
+    this.ucpaasToken = ucpaasToken;
   }
 
-  public String getSmsTxtSuffix() {
-    return smsTxtSuffix;
+  public String getUcpaasVersion() {
+    return ucpaasVersion;
   }
 
-  public void setSmsTxtSuffix(String smsTxtSuffix) {
-    this.smsTxtSuffix = smsTxtSuffix;
+  public void setUcpaasVersion(String ucpaasVersion) {
+    this.ucpaasVersion = ucpaasVersion;
   }
 
+  public String getUcpaasTemplate() {
+    return ucpaasTemplate;
+  }
+
+  public void setUcpaasTemplate(String ucpaasTemplate) {
+    this.ucpaasTemplate = ucpaasTemplate;
+  }
 
   /**
    * 获取发件人邮箱

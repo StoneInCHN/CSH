@@ -125,7 +125,7 @@ public class VehicleController extends MobileBaseController {
     Vehicle vehicle = new Vehicle();
     VehicleBrandDetail brandDetail = vehicleBrandDetailService.find(vehicleReq.getBrandDetailId());
     vehicle.setVehicleBrandDetail(brandDetail);
-    vehicle.setBrandIcon(brandDetail.getVehicleLine().getParent().getVehicleBrand().getIcon());
+    vehicle.setBrandIcon(brandDetail.getVehicleLine().getParent().getIcon());
     vehicle.setPlate(vehicleReq.getPlateNo());
     vehicle.setVehicleNo(vehicleReq.getVehicleNo());
     vehicle.setTrafficInsuranceExpiration(vehicleReq.getTrafficInsuranceExpiration());
@@ -137,6 +137,8 @@ public class VehicleController extends MobileBaseController {
     EndUser endUser = endUserService.find(userId);
     if (endUser.getVehicles() == null || endUser.getVehicles().size() <= 0) {
       vehicle.setIsDefault(true);
+    } else {
+      vehicle.setIsDefault(false);
     }
 
     vehicleService.save(vehicle);
