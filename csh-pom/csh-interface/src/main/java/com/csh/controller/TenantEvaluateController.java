@@ -1,8 +1,5 @@
 package com.csh.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -15,43 +12,44 @@ import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
-import com.csh.json.base.BaseRequest;
-import com.csh.json.base.ResponseMultiple;
-import com.csh.service.AdvertisementService;
+import com.csh.entity.EndUser;
+import com.csh.json.base.BaseResponse;
+import com.csh.json.request.TenantInfoRequest;
 import com.csh.service.EndUserService;
+import com.csh.service.TenantEvaluateService;
 import com.csh.utils.TokenGenerator;
 
 /**
- * Control 广告
+ * Control 商家评分
  * 
  * @author Andrea
  *
  */
-@Controller("advertisementController")
-@RequestMapping("/advertisement")
-public class AdvertisementController extends MobileBaseController {
-
-  @Resource(name = "advertisementServiceImpl")
-  private AdvertisementService advertisementService;
+@Controller("tenantEvaluateController")
+@RequestMapping("/tenantEvaluate")
+public class TenantEvaluateController extends MobileBaseController {
 
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
 
+  @Resource(name = "tenantEvaluateServiceImpl")
+  private TenantEvaluateService tenantEvaluateService;
 
   /**
    * 获取广告
    * 
    * @return
    */
-  @RequestMapping(value = "/getAdvImage", method = RequestMethod.POST)
+  @RequestMapping(value = "/doRate", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseMultiple<Map<String, Object>> getAdvImage(
-      @RequestBody BaseRequest request) {
+  public @ResponseBody BaseResponse doRate(@RequestBody TenantInfoRequest renantReq) {
 
-    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    BaseResponse response = new BaseResponse();
 
-    Long userId = request.getUserId();
-    String token = request.getToken();
+    Long userId = renantReq.getUserId();
+    String token = renantReq.getToken();
+    Long tenantId = renantReq.getTenantId();
+    Integer score = renantReq.getScore();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -60,10 +58,10 @@ public class AdvertisementController extends MobileBaseController {
       return response;
     }
 
-    List<Map<String, Object>> advMap = advertisementService.getAdvBanner(userId);
-    response.setMsg(advMap);
+    EndUser endUser = endUserService.find(userId);
+    tenantEvaluateService.doRateForTenant(endUser, tenantId, score);
 
-    String newtoken = TokenGenerator.generateToken(request.getToken());
+    String newtoken = TokenGenerator.generateToken(renantReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);

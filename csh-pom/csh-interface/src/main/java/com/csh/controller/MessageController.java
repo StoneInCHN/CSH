@@ -1,6 +1,5 @@
 package com.csh.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -96,13 +95,15 @@ public class MessageController extends MobileBaseController {
       }
     }
 
-    List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-    String[] propertys =
-        {"id", "messageType", "messageTitle", "messageContent", "msgUser.createDate", "msgUser.id",
-            "msgUser.isRead"};
-    for (MessageInfo msg : msgs.getContent()) {
-      Map<String, Object> msgMap = FieldFilterUtils.filterEntityMap(propertys, msg);
-      result.add(msgMap);
+    String[] propertys = {"id", "messageType", "messageTitle", "messageContent"};
+    String[] msgUserPro = {"isRead", "createDate"};
+    List<Map<String, Object>> result =
+        FieldFilterUtils.filterCollectionMap(propertys, msgs.getContent());
+    for (Map<String, Object> map : result) {
+      MessageInfo messageInfo = messageInfoService.find((long) map.get("id"));
+      MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, messageInfo);
+      Map<String, Object> msgUser = FieldFilterUtils.filterEntityMap(msgUserPro, msgEndUser);
+      map.putAll(msgUser);
     }
     response.setMsg(result);
     response.setPage(pageInfo);
@@ -114,7 +115,6 @@ public class MessageController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 
   /**
    * 读取消息
@@ -183,9 +183,10 @@ public class MessageController extends MobileBaseController {
         messageInfoService.delete(msg);
       } else if (MessageType.NEWSMSG.equals(msg.getMessageType())) {
         msgEndUserService.delete(msgEndUser);
+      } else if (MessageType.PROMOTION.equals(msg.getMessageType())) {
+        msgEndUserService.delete(msgEndUser);
       }
     }
-
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
