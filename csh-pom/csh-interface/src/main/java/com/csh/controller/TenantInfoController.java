@@ -1,7 +1,11 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -15,7 +19,9 @@ import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.CarService;
 import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.PageResponse;
@@ -119,11 +125,34 @@ public class TenantInfoController extends MobileBaseController {
             "longitude"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, tenantInfo);
 
-    String[] service_properties =
-        {"id", "serviceName", "price", "promotionPrice", "serviceStatus",
-            "serviceCategory.categoryName"};
-    List<Map<String, Object>> service_map =
-        FieldFilterUtils.filterCollectionMap(service_properties, tenantInfo.getCarServices());
+    List<Map<String, Object>> service_map = new ArrayList<Map<String, Object>>();
+    Set<String> categoryNames = new HashSet<String>();
+    String[] service_properties = {"id", "serviceName", "price", "promotionPrice"};
+    for (CarService carService : tenantInfo.getCarServices()) {
+      List<Map<String, Object>> sub_service_maps = new ArrayList<Map<String, Object>>();
+      Map<String, Object> sub_service_map = new HashMap<String, Object>();
+      Map<String, Object> category_map = new HashMap<String, Object>();
+      if (!categoryNames.contains(carService.getServiceCategory().getCategoryName())
+          && ServiceStatus.ENABLED.equals(carService.getServiceStatus())) {
+        categoryNames.add(carService.getServiceCategory().getCategoryName());
+        category_map.put("categoryName", carService.getServiceCategory().getCategoryName());
+        sub_service_map = FieldFilterUtils.filterEntityMap(service_properties, carService);
+
+        service_map.add(category_map);
+      } else {
+        for (Map<String, Object> serviceMap : service_map) {
+          if (serviceMap.get("categoryName").equals(
+              carService.getServiceCategory().getCategoryName())) {
+            sub_service_maps = (List<Map<String, Object>>) serviceMap.get("subServices");
+            sub_service_map = FieldFilterUtils.filterEntityMap(service_properties, carService);
+
+          }
+        }
+      }
+      sub_service_maps.add(sub_service_map);
+      category_map.put("subServices", sub_service_maps);
+    }
+
     map.put("carServices", service_map);
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(tenantInfoReq.getToken());
@@ -132,7 +161,6 @@ public class TenantInfoController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 
   /**
    * 用户所属租户保养美容服务
