@@ -71,12 +71,12 @@ var vehicleInsurance_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#vehicleInsurance_form').form('validate');
+						var validate = $('#editVehicleInsurancen_form').form('validate');
 						if(validate){
 							$.ajax({
 								url:"../vehicleInsurance/update.jhtml",
 								type:"post",
-								data:$("#editVehicleInsurance_form").serialize(),
+								data:$("#editVehicleInsurancen_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -100,7 +100,7 @@ var vehicleInsurance_manager_tool = {
 					}
 			    }],
 			    onLoad:function(){
-			    	$("#vehiclePlate").combobox({    
+			    	$("#editInsuranceVehiclePlate").combobox({    
 					    valueField:'id',    
 					    textField:'plate',
 					    editable : false,
@@ -108,7 +108,7 @@ var vehicleInsurance_manager_tool = {
 					    data:$.parseJSON($("#vehicleListMap").val()),
 					    prompt:message("csh.common.please.select"),
 					    onLoadSuccess:function(){
-					    	$("#vehiclePlate").combobox("setValue",$("#vehiclePlate").attr("data-value"))    	
+					    	$("#editInsuranceVehiclePlate").combobox("setValue",$("#editInsuranceVehiclePlate").attr("data-value"))    	
 					    }
 					});
 			    	

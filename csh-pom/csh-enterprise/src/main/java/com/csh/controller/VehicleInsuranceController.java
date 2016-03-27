@@ -1,6 +1,8 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -31,6 +33,8 @@ import com.csh.service.EndUserService;
 import com.csh.service.VehicleInsuranceService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Controller - 车辆保险
@@ -177,6 +181,20 @@ public class VehicleInsuranceController extends BaseController {
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(ModelMap model, Long id) {
     VehicleInsurance vehicleInsurance = vehicleInsuranceService.find(id);
+    List<Map<String, Object>> vehicleListMap = vehicleService.findVehicleUnderUser(vehicleInsurance.getEndUser ().getId ());
+    
+    ObjectMapper objectMapper = new ObjectMapper();
+    String result = null;
+    try
+    {
+      result= objectMapper.writeValueAsString (vehicleListMap);
+    }
+    catch (JsonProcessingException e)
+    {
+      e.printStackTrace();
+    }
+    model.put ("vehicleListMap", result);
+    
     model.addAttribute("vehicleInsurance", vehicleInsurance);
     return "vehicleInsurance/edit";
   }
@@ -188,8 +206,22 @@ public class VehicleInsuranceController extends BaseController {
    * @return
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update(VehicleInsurance vehicleInsurance) {
-    vehicleInsuranceService.update(vehicleInsurance);
+  public @ResponseBody Message update(VehicleInsurance vehicleInsurance,Long vehicleId,Long endUserId) {
+	    
+    EndUser endUser = endUserService.find (endUserId);
+    Vehicle vehicle = vehicleService.find (vehicleId);
+    vehicleInsurance.setEndUser (endUser);
+    vehicleInsurance.setVehicle (vehicle);
+    vehicleInsuranceService.update(vehicleInsurance,"createDate","tenantID");
     return SUCCESS_MESSAGE;
+  }
+  
+  @RequestMapping(value = "/details", method = RequestMethod.GET)
+  public String details(ModelMap model, Long id) {
+    VehicleInsurance vehicleInsurance = vehicleInsuranceService.find(id);
+    
+    
+    model.addAttribute("vehicleInsurance", vehicleInsurance);
+    return "vehicleInsurance/details";
   }
 }
