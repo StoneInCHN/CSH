@@ -38,6 +38,7 @@ import com.csh.service.VehicleLineService;
 import com.csh.service.VehicleService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
+import com.csh.utils.VehicleUtil;
 
 
 
@@ -252,12 +253,54 @@ public class VehicleController extends MobileBaseController {
 
 
   /**
-   * 查询车辆品牌，车系，车型
+   * 查询车辆一级车系
    * 
    * @param req
    * @return
    */
-  @RequestMapping(value = "/getVehicleBrand", method = RequestMethod.POST)
+  @RequestMapping(value = "/getVehicleBrandByCode", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<List<Map<String, Object>>> getVehicleBrandByCode(
+      @RequestBody VehicleRequest vehicleReq) {
+
+    ResponseMultiple<List<Map<String, Object>>> response =
+        new ResponseMultiple<List<Map<String, Object>>>();
+    Long userId = vehicleReq.getUserId();
+    String token = vehicleReq.getToken();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    List<List<Map<String, Object>>> maps = new ArrayList<List<Map<String, Object>>>();
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter parentFilter = new Filter("parent", Operator.isNull, null);
+    filters.add(parentFilter);
+    List<VehicleLine> vehicleLines = vehicleLineService.findList(null, filters, null);
+    String[] properties = {"id", "code", "name"};
+    List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, vehicleLines);
+    maps = VehicleUtil.getVehicleLineByCode(map);
+    response.setMsg(maps);
+
+    String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+
+    return response;
+  }
+
+  /**
+   * 查询车辆二级车系，车型
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getVehicleBrandById", method = RequestMethod.POST)
   @UserValidCheck
   public @ResponseBody ResponseMultiple<Map<String, Object>> getVehicleBrand(
       @RequestBody VehicleRequest vehicleReq) {
@@ -275,31 +318,22 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
 
+
+
     List<Map<String, Object>> map = new ArrayList<Map<String, Object>>();
-
-    if (vehicleLineId == null) {
-      List<Filter> filters = new ArrayList<Filter>();
-      Filter parentFilter = new Filter("parent", Operator.isNull, null);
-      filters.add(parentFilter);
-      List<VehicleLine> vehicleLines = vehicleLineService.findList(null, filters, null);
+    VehicleLine vehicleLine = vehicleLineService.find(vehicleLineId);
+    if (vehicleLine.getParent() == null) {// 子车系（只有2级树形结构）
       String[] properties = {"id", "code", "name"};
-      map = FieldFilterUtils.filterCollectionMap(properties, vehicleLines);
-    } else {
-      VehicleLine vehicleLine = vehicleLineService.find(vehicleLineId);
-      if (vehicleLine.getParent() == null) {// 子车系（只有2级树形结构）
-        String[] properties = {"id", "code", "name"};
-        map = FieldFilterUtils.filterCollectionMap(properties, vehicleLine.getChildren());
-      } else {// 车型
-        List<Filter> filters = new ArrayList<Filter>();
-        Filter filter = new Filter("vehicleLine", Operator.eq, vehicleLine);
-        filters.add(filter);
-        List<VehicleBrandDetail> vehicleBrandDetails =
-            vehicleBrandDetailService.findList(null, filters, null);
-        String[] properties = {"id", "code", "name"};
-        map = FieldFilterUtils.filterCollectionMap(properties, vehicleBrandDetails);
-      }
+      map = FieldFilterUtils.filterCollectionMap(properties, vehicleLine.getChildren());
+    } else {// 车型
+      List<Filter> filters = new ArrayList<Filter>();
+      Filter filter = new Filter("vehicleLine", Operator.eq, vehicleLine);
+      filters.add(filter);
+      List<VehicleBrandDetail> vehicleBrandDetails =
+          vehicleBrandDetailService.findList(null, filters, null);
+      String[] properties = {"id", "code", "name"};
+      map = FieldFilterUtils.filterCollectionMap(properties, vehicleBrandDetails);
     }
-
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);

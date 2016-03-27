@@ -110,6 +110,12 @@ public class EndUser extends BaseEntity {
    * 默认显示的车辆
    */
   private String defaultVehicle;
+
+  /**
+   * 默认车辆对应设备号
+   */
+  private String defaultDeviceNo;
+
   /**
    * 默认显示的车辆车牌号
    */
@@ -119,63 +125,92 @@ public class EndUser extends BaseEntity {
    * login统计
    */
   private Set<LoginStatistics> loginStatistics = new HashSet<LoginStatistics>();
-  
+
   /**
    * 消息
    */
   private Set<MsgEndUser> msgEndUsers = new HashSet<MsgEndUser>();
-  
+
   /**
    * 我的钱包
    */
   private Wallet wallet;
-  
+
   /**
    * 汽车服务购买记录
    */
   private Set<CarServiceRecord> carServiceRecords = new HashSet<CarServiceRecord>();
-  
-  
-  @OneToMany(mappedBy="carService")
+
+  /**
+   * 用户对商户的评价
+   */
+  private Set<TenantEvaluate> tenantEvalutes = new HashSet<TenantEvaluate>();
+
+
+  @OneToMany(mappedBy = "endUser")
+  public Set<TenantEvaluate> getTenantEvalutes() {
+    return tenantEvalutes;
+  }
+
+  public void setTenantEvalutes(Set<TenantEvaluate> tenantEvalutes) {
+    this.tenantEvalutes = tenantEvalutes;
+  }
+
+  @OneToMany(mappedBy = "carService")
   public Set<CarServiceRecord> getCarServiceRecords() {
-	return carServiceRecords;
+    return carServiceRecords;
   }
 
   public void setCarServiceRecords(Set<CarServiceRecord> carServiceRecords) {
-	this.carServiceRecords = carServiceRecords;
+    this.carServiceRecords = carServiceRecords;
   }
-  
-  @OneToOne(mappedBy="endUser",cascade=CascadeType.ALL)
+
+  @OneToOne(mappedBy = "endUser", cascade = CascadeType.ALL)
   public Wallet getWallet() {
-	return wallet;
+    return wallet;
   }
 
   public void setWallet(Wallet wallet) {
-	this.wallet = wallet;
+    this.wallet = wallet;
   }
 
-  @OneToMany(mappedBy="endUser",cascade=CascadeType.ALL)
+  @OneToMany(mappedBy = "endUser", cascade = CascadeType.ALL)
   public Set<MsgEndUser> getMsgEndUsers() {
-	return msgEndUsers;
+    return msgEndUsers;
   }
 
   public void setMsgEndUsers(Set<MsgEndUser> msgEndUsers) {
-	this.msgEndUsers = msgEndUsers;
+    this.msgEndUsers = msgEndUsers;
+  }
+
+  @Transient
+  public String getDefaultDeviceNo() {
+    for (Vehicle v : vehicles) {
+      if (v.getIsDefault()) {
+        defaultDeviceNo = v.getDeviceNo();
+        break;
+      }
+    }
+    return defaultDeviceNo;
+  }
+
+  public void setDefaultDeviceNo(String defaultDeviceNo) {
+    this.defaultDeviceNo = defaultDeviceNo;
   }
 
   @Transient
   public String getDefaultVehiclePlate() {
-	  for (Vehicle v : vehicles) {
-	      if (v.getIsDefault()) {
-	    	  defaultVehiclePlate = v.getPlate();
-	        break;
-	      }
-	    }
-	  return defaultVehiclePlate;
+    for (Vehicle v : vehicles) {
+      if (v.getIsDefault()) {
+        defaultVehiclePlate = v.getPlate();
+        break;
+      }
+    }
+    return defaultVehiclePlate;
   }
 
   public void setDefaultVehiclePlate(String defaultVehiclePlate) {
-	this.defaultVehiclePlate = defaultVehiclePlate;
+    this.defaultVehiclePlate = defaultVehiclePlate;
   }
 
   @Transient

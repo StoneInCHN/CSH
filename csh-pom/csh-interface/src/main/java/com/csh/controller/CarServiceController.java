@@ -195,7 +195,8 @@ public class CarServiceController extends MobileBaseController {
     response.setPage(page);
 
     String[] properties =
-        {"createDate", "chargeStatus", "price", "carService.serviceName", "tenantName"};
+        {"createDate", "chargeStatus", "price", "carService.serviceCategory",
+            "carService.serviceName", "tenantName"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, records.getContent());
     response.setMsg(map);

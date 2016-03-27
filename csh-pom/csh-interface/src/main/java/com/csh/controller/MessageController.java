@@ -98,7 +98,8 @@ public class MessageController extends MobileBaseController {
 
     List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
     String[] propertys =
-        {"id", "createDate", "messageType", "messageTitle", "messageContent", "msgUser"};
+        {"id", "messageType", "messageTitle", "messageContent", "msgUser.createDate", "msgUser.id",
+            "msgUser.isRead"};
     for (MessageInfo msg : msgs.getContent()) {
       Map<String, Object> msgMap = FieldFilterUtils.filterEntityMap(propertys, msg);
       result.add(msgMap);

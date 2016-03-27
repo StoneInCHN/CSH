@@ -160,7 +160,7 @@ public class EndUserController extends MobileBaseController {
 
     String[] properties =
         {"id", "userName", "nickName", "photo", "signature", "defaultVehiclePlate",
-            "defaultVehicle"};
+            "defaultVehicle", "defaultDeviceNo"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
     response.setMsg(map);
     String token = TokenGenerator.generateToken();
@@ -470,7 +470,7 @@ public class EndUserController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/editUserPhoto", method = RequestMethod.POST)
-  @UserValidCheck
+  // @UserValidCheck
   public @ResponseBody ResponseOne<Map<String, Object>> editUserPhoto(EndUserInfoRequest req) {
     ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
 

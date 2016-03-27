@@ -79,9 +79,12 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
   public List<T> findList(Integer first, Integer count, List<Filter> filters,
       List<Ordering> orderings) {
     if (LogUtil.isDebugEnabled(BaseDaoImpl.class)) {
-      LogUtil.debug(BaseDaoImpl.class, "find",
-          "Fetching entities from database with first : %d, count : %d, filters : %s, orderings : %s",
-          first, count, filters, orderings);
+      LogUtil
+          .debug(
+              BaseDaoImpl.class,
+              "find",
+              "Fetching entities from database with first : %d, count : %d, filters : %s, orderings : %s",
+              first, count, filters, orderings);
     }
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
@@ -107,10 +110,10 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     Assert.notNull(entity);
     entityManager.persist(entity);
   }
-  
+
   public void persist(List<T> entities) {
-    Assert.notNull(entities,"entities is null.");
-    for(T entity : entities){
+    Assert.notNull(entities, "entities is null.");
+    for (T entity : entities) {
       entityManager.persist(entity);
     }
   }
@@ -119,10 +122,10 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     Assert.notNull(entity);
     return entityManager.merge(entity);
   }
-  
+
   public void merge(List<T> entities) {
     Assert.notNull(entities);
-    for(T entity : entities){
+    for (T entity : entities) {
       entityManager.merge(entity);
     }
   }
@@ -219,10 +222,15 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
       criteriaQuery.orderBy(criteriaBuilder.desc(root.get(Ordering.DEFAULT_ORDERING)));
     }
     long total = count(criteriaQuery, null);
-    int totalPages = (int) Math.ceil((double) total / (double) pageable.getPageSize());
-    if (totalPages < pageable.getPageNumber()) {
-      pageable.setPageNumber(totalPages);
-    }
+    /**
+     * 注释，用于手机接口，如果传入的pageNumber大于总页数，不做处理
+     * 
+     * @author sujinxuan
+     */
+    // int totalPages = (int) Math.ceil((double) total / (double) pageable.getPageSize());
+    // if (totalPages < pageable.getPageNumber()) {
+    // pageable.setPageNumber(totalPages);
+    // }
     TypedQuery<T> query =
         entityManager.createQuery(criteriaQuery).setFlushMode(FlushModeType.COMMIT);
     query.setFirstResult((pageable.getPageNumber() - 1) * pageable.getPageSize());
@@ -549,10 +557,10 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     criteriaQuery.orderBy(orderList);
   }
 
-  public List<T> findListCustomized(String jpql,Map<String, ? extends Object> paramMap) {
+  public List<T> findListCustomized(String jpql, Map<String, ? extends Object> paramMap) {
     if (LogUtil.isDebugEnabled(BaseDaoImpl.class)) {
-      LogUtil.debug(BaseDaoImpl.class, "find",
-          "Fetching entities from database with jpql : %s",jpql);
+      LogUtil.debug(BaseDaoImpl.class, "find", "Fetching entities from database with jpql : %s",
+          jpql);
     }
     TypedQuery<T> queryEntity =
         entityManager.createQuery(jpql, entityClass).setFlushMode(FlushModeType.COMMIT);
@@ -561,30 +569,30 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     }
     return queryEntity.getResultList();
   }
-  
+
   /**
    * 
    * @param pageable
    * @param jpql
-   * @param paramMap 用于设置SQL的参数
-   * 注意:paramMap.pub("distinct") 用于设置select 语句中有 distinct关键字，参数内容为distinct的内容
+   * @param paramMap 用于设置SQL的参数 注意:paramMap.pub("distinct") 用于设置select 语句中有
+   *        distinct关键字，参数内容为distinct的内容
    * 
    * @return
    */
   public Page<T> findPageCustomized(Pageable pageable, String jpql,
       Map<String, ? extends Object> paramMap) {
-    String subSql=null;
+    String subSql = null;
     if (paramMap.containsKey(CommonAttributes.DISTINCT_KEY)) {
-      subSql=(String) paramMap.get(CommonAttributes.DISTINCT_KEY);
+      subSql = (String) paramMap.get(CommonAttributes.DISTINCT_KEY);
       paramMap.remove(CommonAttributes.DISTINCT_KEY);
     }
-    String countJqpl = getCountJpql(jpql,subSql);
+    String countJqpl = getCountJpql(jpql, subSql);
     TypedQuery<Long> countQuery =
         entityManager.createQuery(countJqpl, Long.class).setFlushMode(FlushModeType.COMMIT);
     for (final Entry<String, ? extends Object> entry : paramMap.entrySet()) {
       countQuery.setParameter(entry.getKey(), entry.getValue());
     }
-    
+
     long total = countQuery.getSingleResult();
     int totalPages = (int) Math.ceil((double) total / (double) pageable.getPageSize());
     if (totalPages < pageable.getPageNumber()) {
@@ -600,12 +608,12 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     return new Page<T>(queryEntity.getResultList(), total, pageable);
   }
 
-  public String getCountJpql(String jpql,String subJpql) {
+  public String getCountJpql(String jpql, String subJpql) {
     StringBuilder stringBuilder = new StringBuilder();
     int from = jpql.toUpperCase().indexOf("FROM");
     if (subJpql != null) {
-      stringBuilder.append("SELECT COUNT("+subJpql+") ");
-    }else {
+      stringBuilder.append("SELECT COUNT(" + subJpql + ") ");
+    } else {
       stringBuilder.append("SELECT COUNT(*) ");
     }
     stringBuilder.append(jpql.substring(from));
