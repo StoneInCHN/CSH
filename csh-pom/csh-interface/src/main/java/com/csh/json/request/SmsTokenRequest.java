@@ -1,5 +1,7 @@
 package com.csh.json.request;
 
+import com.csh.entity.commonenum.CommonEnum.SmsTokenType;
+import com.csh.entity.commonenum.CommonEnum.TokenSendType;
 import com.csh.json.base.BaseRequest;
 
 public class SmsTokenRequest extends BaseRequest{
@@ -11,17 +13,31 @@ public class SmsTokenRequest extends BaseRequest{
     /**
      * 验证码类型
      */
-    private Integer tokenType;
+    private SmsTokenType tokenType;
 
-    public Integer getTokenType() {
-      return tokenType;
-    }
+    /**
+     * 发送方式
+     */
+    private TokenSendType sendType;
 
-    public void setTokenType(Integer tokenType) {
-      this.tokenType = tokenType;
-    }
+    
+    public SmsTokenType getTokenType() {
+		return tokenType;
+	}
 
-    public String getMobileNo() {
+	public void setTokenType(SmsTokenType tokenType) {
+		this.tokenType = tokenType;
+	}
+
+	public TokenSendType getSendType() {
+		return sendType;
+	}
+
+	public void setSendType(TokenSendType sendType) {
+		this.sendType = sendType;
+	}
+
+	public String getMobileNo() {
       return mobileNo;
     }
 

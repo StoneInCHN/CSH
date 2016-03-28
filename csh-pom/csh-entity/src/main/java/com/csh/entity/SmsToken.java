@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.SmsTokenType;
+import com.csh.entity.commonenum.CommonEnum.TokenSendType;
 
 /**
  * Entity - 短信验证
@@ -31,8 +32,23 @@ public class SmsToken extends BaseEntity {
   private String timeoutToken;
   /** 短信验证码类型 */
   private SmsTokenType smsTokenType;
+  
+  /**
+   * 发送方式
+   */
+  private TokenSendType sendType;
+  
+  
 
-  public SmsTokenType getSmsTokenType() {
+  public TokenSendType getSendType() {
+	return sendType;
+}
+
+public void setSendType(TokenSendType sendType) {
+	this.sendType = sendType;
+}
+
+public SmsTokenType getSmsTokenType() {
     return smsTokenType;
   }
 

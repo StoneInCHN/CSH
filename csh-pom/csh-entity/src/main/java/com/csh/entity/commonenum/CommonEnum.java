@@ -48,11 +48,21 @@ public class CommonEnum {
     /** 注册 */
     REG,
     /** 找回密码 */
-    FINDPWD,
-    /** 修改手机号 */
-    MODIFY_MOBILENUM
+    FINDPWD
   }
 
+  /**
+   * 验证码发送方式
+   * 
+   * @author sujinxuan
+   *
+   */
+  public enum TokenSendType {
+    /** 短信 */
+    SMS,
+    /** 语音 */
+    VOICE
+  }
 
 
   /**

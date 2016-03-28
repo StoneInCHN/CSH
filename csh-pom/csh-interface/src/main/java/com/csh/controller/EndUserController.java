@@ -27,6 +27,7 @@ import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.SmsTokenType;
+import com.csh.entity.commonenum.CommonEnum.TokenSendType;
 import com.csh.json.base.BaseRequest;
 import com.csh.json.base.BaseResponse;
 import com.csh.json.base.ResponseOne;
@@ -269,7 +270,8 @@ public class EndUserController extends MobileBaseController {
       @RequestBody SmsTokenRequest smsTokenRequest) {
     BaseResponse response = new BaseResponse();
     String mobileNo = smsTokenRequest.getMobileNo();
-    Integer tokenType = smsTokenRequest.getTokenType();
+    SmsTokenType tokenType = smsTokenRequest.getTokenType();
+    TokenSendType sendType = smsTokenRequest.getSendType();
     if (StringUtils.isEmpty(mobileNo) || !isMobileNumber(mobileNo)) {
       response.setCode(CommonAttributes.FAIL_SMSTOKEN);
       response.setDesc(Message.error("csh.mobile.invaliable").getContent());
@@ -279,14 +281,14 @@ public class EndUserController extends MobileBaseController {
             "Fetching SmsToken from database with mobile no: %s", mobileNo);
       }
       EndUser endUser = endUserService.findByUserName(mobileNo);
-      if (tokenType == SmsTokenType.FINDPWD.ordinal()) {
+      if (tokenType == SmsTokenType.FINDPWD) {
         if (endUser == null) {
           response.setCode(CommonAttributes.FAIL_SMSTOKEN);
           response.setDesc(Message.error("csh.user.noexist").getContent());
           return response;
         }
       }
-      if (tokenType == SmsTokenType.REG.ordinal()) {
+      if (tokenType == SmsTokenType.REG) {
         if (endUser != null) {
           response.setCode(CommonAttributes.FAIL_SMSTOKEN);
           response.setDesc(Message.error("csh.mobile.used").getContent());
@@ -294,19 +296,23 @@ public class EndUserController extends MobileBaseController {
         }
       }
       SmsToken smsToken =
-          smsTokenService.findByUserMobile(mobileNo,
-              SmsTokenType.class.getEnumConstants()[tokenType]);
+          smsTokenService.findByUserMobile(mobileNo,tokenType);
       if (smsToken != null) {
         smsTokenService.delete(smsToken);
       }
       Integer smsTokenNo = (int) ((Math.random() * 9 + 1) * 1000);
-      UcpaasUtil.SendCodeBySms(mobileNo, smsTokenNo.toString());
+      if (sendType == TokenSendType.SMS) {
+    	  UcpaasUtil.SendCodeBySms(mobileNo, smsTokenNo.toString());
+	  }else if (sendType == TokenSendType.VOICE) {
+		  UcpaasUtil.SendCodeByVoice(mobileNo, smsTokenNo.toString());
+	  }
+      
       SmsToken userSmsToken = new SmsToken();
       userSmsToken.setCreateDate(new Date());
       userSmsToken.setMobile(mobileNo);
       userSmsToken.setSmsToken(smsTokenNo.toString());
       userSmsToken.setTimeoutToken(TokenGenerator.generateToken());
-      userSmsToken.setSmsTokenType(SmsTokenType.class.getEnumConstants()[tokenType]);
+      userSmsToken.setSmsTokenType(tokenType);
       smsTokenService.save(userSmsToken);
       response.setCode(CommonAttributes.SUCCESS);
       response.setDesc(smsTokenNo.toString());

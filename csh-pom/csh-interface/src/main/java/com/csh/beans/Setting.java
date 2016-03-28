@@ -57,6 +57,9 @@ public class Setting implements Serializable {
 
   /** 短信平台软件版本 */
   private String ucpaasTemplate;
+  
+  /** 短信平台语音回拨号码 */
+  private String ucpaasCallDisplay;
 
   /** 邮箱正则表达式 */
   private String emailPattern;
@@ -106,6 +109,14 @@ public class Setting implements Serializable {
    */
   private Integer searchRadius;
 
+
+  public String getUcpaasCallDisplay() {
+	return ucpaasCallDisplay;
+  }
+
+  public void setUcpaasCallDisplay(String ucpaasCallDisplay) {
+	this.ucpaasCallDisplay = ucpaasCallDisplay;
+  }
 
   public String getUcpaasAppId() {
     return ucpaasAppId;

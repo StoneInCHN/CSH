@@ -21,6 +21,8 @@
 		<setting name="ucpaasVersion" value="2014-06-30" />
 		<!-- 短信平台短信模板ID -->
 		<setting name="ucpaasTemplate" value="18130" />
+		<!-- 短信平台语音回拨号码 -->
+		<setting name="ucpaasCallDisplay" value="4007930888" />
 		
 		<setting name="siteName" value="车生活App" />
 		<setting name="siteUrl" value="http://10.50.20.71:10004/csh-interface" />

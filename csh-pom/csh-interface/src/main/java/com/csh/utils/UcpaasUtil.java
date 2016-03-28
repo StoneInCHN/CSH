@@ -33,7 +33,7 @@ public class UcpaasUtil {
               .append(",").append("\"to\":").append("\"" + mobile + "\"").append(",")
               .append("\"templateId\":").append("\"" + template + "\"").append(",")
               .append("\"param\":").append("\"" + param + "\"").append("}}")).toString();
-      System.out.println(body);
+      //System.out.println(body);
       // {"resp":{"respCode":"000000","failure":1,"templateSMS":{"createDate":20140623185016,"smsId":"f96f79240e372587e9284cd580d8f953"}}}
       String response = ApiUtils.post(reqUrl, body, head);
       return response;
@@ -43,6 +43,34 @@ public class UcpaasUtil {
     return null;
   }
 
+  
+  public static String SendCodeByVoice(String mobile, String code) {
+
+	    try {
+	      String displayNum = setting.getUcpaasCallDisplay();
+	      String time = TimeUtils.format("yyyyMMddHHmmss", System.currentTimeMillis());
+	      String sig = getSigParam(time);
+	      Map<String, String> head = getAuthorization(time);
+	      String appId = setting.getUcpaasAppId();
+	      String reqUrl =setting.getUcpaasUrl()+"/"+setting.getUcpaasVersion()+"/Accounts/"+setting.getUcpaasSid()+"/Calls/voiceCode?sig=" + sig;
+	          
+	      // 设置post json数据
+	      String body = (new StringBuilder("{\"voiceCode\":{")
+			.append("\"appId\":").append("\""+appId+"\"").append(",")
+			.append("\"to\":").append("\""+mobile+"\"").append(",")
+			.append("\"verifyCode\":").append("\""+code+"\"").append(",")
+			.append("\"displayNum\":").append("\""+displayNum+"\"")
+			.append("}}")).toString();
+	      System.out.println(body);
+	      // {"resp":{"respCode":"000000","failure":1,"templateSMS":{"createDate":20140623185016,"smsId":"f96f79240e372587e9284cd580d8f953"}}}
+	      String response = ApiUtils.post(reqUrl, body, head);
+	      return response;
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    }
+	    return null;
+	  }
+  
   /**
    * MD5数字签名
    * 

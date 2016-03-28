@@ -33,7 +33,7 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
 
     StringBuffer tenant_sql = new StringBuffer();
     tenant_sql
-        .append("SELECT distinct(cti.id),cti.latitude,cti.longitude,csc.category_name,ccs.price,ccs.promotion_price,cti.address,cti.tenant_name,cti.photo,cti.praise_rate,");
+        .append("SELECT distinct(cti.id),cti.contact_phone,cti.latitude,cti.longitude,csc.category_name,ccs.price,ccs.promotion_price,cti.address,cti.tenant_name,cti.photo,cti.praise_rate,");
     tenant_sql.append("round(6378.138*2*asin(sqrt(pow(sin((" + lat);
     tenant_sql.append("*pi()/180-latitude*pi()/180)/2),2)+cos(" + lat);
     tenant_sql.append("*pi()/180)*cos(latitude*pi()/180)*pow(sin((" + lng);
