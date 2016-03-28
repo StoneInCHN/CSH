@@ -140,7 +140,7 @@ public class VehicleController extends MobileBaseController {
     } else {
       vehicle.setIsDefault(false);
     }
-
+    vehicle.setEndUser(endUser);
     vehicleService.save(vehicle);
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
       LogUtil.debug(VehicleController.class, "save", "Add vehicle for User with UserName: %s",
