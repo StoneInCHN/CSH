@@ -117,6 +117,11 @@ public class EndUser extends BaseEntity {
   private String defaultDeviceNo;
 
   /**
+   * 默认车辆对应icon
+   */
+  private String defaultVehicleIcon;
+
+  /**
    * 默认显示的车辆车牌号
    */
   private String defaultVehiclePlate;
@@ -181,6 +186,22 @@ public class EndUser extends BaseEntity {
 
   public void setMsgEndUsers(Set<MsgEndUser> msgEndUsers) {
     this.msgEndUsers = msgEndUsers;
+  }
+
+
+  @Transient
+  public String getDefaultVehicleIcon() {
+    for (Vehicle v : vehicles) {
+      if (v.getIsDefault()) {
+        defaultVehicleIcon = v.getBrandIcon();
+        break;
+      }
+    }
+    return defaultVehicleIcon;
+  }
+
+  public void setDefaultVehicleIcon(String defaultVehicleIcon) {
+    this.defaultVehicleIcon = defaultVehicleIcon;
   }
 
   @Transient

@@ -161,7 +161,7 @@ public class EndUserController extends MobileBaseController {
 
     String[] properties =
         {"id", "userName", "nickName", "photo", "signature", "defaultVehiclePlate",
-            "defaultVehicle", "defaultDeviceNo"};
+            "defaultVehicle", "defaultDeviceNo", "defaultVehicleIcon"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
     response.setMsg(map);
     String token = TokenGenerator.generateToken();

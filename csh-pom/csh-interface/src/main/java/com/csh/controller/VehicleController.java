@@ -255,6 +255,56 @@ public class VehicleController extends MobileBaseController {
 
 
   /**
+   * 设置默认车辆
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/setDefault", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> setDefault(
+      @RequestBody VehicleRequest vehicleReq) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = vehicleReq.getUserId();
+    String token = vehicleReq.getToken();
+    Long vehicleId = vehicleReq.getVehicleId();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    EndUser endUser = endUserService.find(userId);
+    for (Vehicle vehicle : endUser.getVehicles()) {
+      if (vehicle.getId().equals(vehicleId)) {
+        vehicle.setIsDefault(true);
+      } else {
+        vehicle.setIsDefault(false);
+      }
+    }
+    endUserService.update(endUser);
+
+    if (LogUtil.isDebugEnabled(VehicleController.class)) {
+      LogUtil.debug(VehicleController.class, "Update",
+          "set default vehicle.UserId: %s, VehicleId: %s,", userId, vehicleId);
+    }
+    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon"};
+    List<Map<String, Object>> map =
+        FieldFilterUtils.filterCollectionMap(properties, endUser.getVehicles());
+    response.setMsg(map);
+    String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+
+    return response;
+  }
+
+  /**
    * 查询车辆一级车系
    * 
    * @param req
