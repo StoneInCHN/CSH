@@ -1,7 +1,5 @@
 package com.csh.controller;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -13,9 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csh.beans.Message;
-import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.Admin;
 import com.csh.entity.Distributor;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdminService;
@@ -30,9 +26,6 @@ public class DistributorController extends BaseController {
   @Resource(name = "distributorServiceImpl")
   private DistributorService distributorService;
 
-  @Resource(name = "fileServiceImpl")
-  private FileService fileService;
-
   @Resource(name = "adminServiceImpl")
   private AdminService adminService;
   @Resource(name = "areaServiceImpl")
@@ -45,33 +38,28 @@ public class DistributorController extends BaseController {
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String list(Pageable pageable, ModelMap model) {
     model.addAttribute("page", distributorService.findPage(pageable));
-    return "/vendor/list";
+    return "/distributor/list";
   }
 
-  /**
-   * 添加
-   */
-  @RequestMapping(value = "/simulator", method = RequestMethod.GET)
-  public String simulator() {
-    return "/vendor/simulator";
-  }
+
 
   /**
    * 添加
    */
   @RequestMapping(value = "/add", method = RequestMethod.GET)
   public String add() {
-    return "/vendor/add";
+    return "/distributor/add";
   }
 
   /**
    * 保存
    */
   @RequestMapping(value = "/save", method = RequestMethod.POST)
-  public String save(Distributor vendor, MultipartFile file, Long areaId,
+  public String save(Distributor distributor, Long areaId,
       RedirectAttributes redirectAttributes, ModelMap map) {
-    Admin current = adminService.getCurrent();
-    return "/vendor/info";
+    distributor.setArea(areaService.find(areaId));
+    distributorService.save(distributor);
+    return "redirect:list.jhtml";
   }
 
   /**
@@ -79,39 +67,8 @@ public class DistributorController extends BaseController {
    */
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
-    model.addAttribute("vendor", distributorService.find(id));
-    return "/vendor/edit";
-  }
-
-  /**
-   * 审批
-   */
-  @RequestMapping(value = "/approval", method = RequestMethod.GET)
-  public String approval(Long id, ModelMap model) {
-    model.addAttribute("vendor", distributorService.find(id));
-    return "/vendor/approval";
-  }
-
-  /**
-   * 审批更新
-   */
-  @RequestMapping(value = "/statusUpdate", method = RequestMethod.POST)
-  public String statusUpdate(Distributor vendor, ModelMap model) {
-    Distributor vendorTemp = distributorService.find(vendor.getId());
-    // vendorTemp.setVendorStatus(vendor.getVendorStatus());
-    distributorService.update(vendorTemp);
-    return "redirect:list.jhtml";
-  }
-
-
-  /**
-   * 编辑
-   */
-  @RequestMapping(value = "/info", method = RequestMethod.GET)
-  public String info(ModelMap model) {
-    Admin current = adminService.getCurrent();
-    // model.addAttribute("vendor", current.getVendor());
-    return "/vendor/info";
+    model.addAttribute("distributor", distributorService.find(id));
+    return "/distributor/edit";
   }
 
 
@@ -119,22 +76,10 @@ public class DistributorController extends BaseController {
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(Distributor vendor, MultipartFile file, Long areaId,
-      RedirectAttributes redirectAttributes, ModelMap map) {
-    if (!isValid(vendor)) {
-      return ERROR_VIEW;
-    }
-    if (file.getSize() > 0) {
-      String path = fileService.saveImage(file, ImageType.DISTRIBUTOR);
-      // vendor.setVendorImagePath(path);
-    }
-    vendor.setModifyDate(new Date());
-    // vendor.setVendorStatus(VendorStatus.AUDIT_WAITING);
-    vendor.setArea(areaService.find(areaId));
-    distributorService.update(vendor, "createDate", "chainStore", "admin", "autoServices");
-    map.addAttribute("refresh", true);
-    map.addAttribute("vendor", vendor);
-    return "/vendor/info";
+  public String update(Distributor distributor, MultipartFile file, Long areaId, ModelMap map) {
+    distributor.setArea(areaService.find(areaId));
+    distributorService.update(distributor, "createDate");
+    return "redirect:list.jhtml";
   }
 
   /**

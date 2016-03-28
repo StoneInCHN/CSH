@@ -22,7 +22,6 @@ $().ready(function() {
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			
 			deviceNo: {
 				required: true
 			},

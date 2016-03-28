@@ -13,11 +13,16 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/js/jquery.lSelect.js"></script>
 <script type="text/javascript">
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	
+	var $areaId = $("#areaId");
+	// 地区选择
+	$areaId.lSelect({
+		url: "${base}/console/common/area.jhtml"
+	});
 	
 	// 表单验证
 	$inputForm.validate({
@@ -95,7 +100,7 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.tenantInfo.area")}:
 								</th>
 								<td>
-									<input type="hidden" id="areaId"  name="areaId"/>
+									<input type="hidden" id="areaId" name="areaId" value="${(tenantInfo.area.id)!}" treePath="${(tenantInfo.area.treePath)!}"/>
 								</td>
 							</tr>
 							<tr>

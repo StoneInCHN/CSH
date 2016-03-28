@@ -67,7 +67,14 @@ public class DeviceInfoController extends BaseController {
    */
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
-    model.addAttribute("deviceType", deviceInfoService.find(id));
+    model.addAttribute("deviceInfo", deviceInfoService.find(id));
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter();
+    filter.setProperty("status");
+    filter.setValue(Status.ENABLE);
+    filter.setOperator(Operator.eq);
+    filters.add(filter);
+    model.addAttribute("types", deviceTypeService.findList(null, filters, null));
     return "/deviceInfo/edit";
   }
 
@@ -76,12 +83,11 @@ public class DeviceInfoController extends BaseController {
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
   public String update(DeviceInfo deviceInfo,Long typeId) {
-    if (!isValid(deviceInfo)) {
-      return ERROR_VIEW;
-    }
+    DeviceInfo info = deviceInfoService.find(deviceInfo.getId());
     DeviceType type = deviceTypeService.find(typeId);
-    deviceInfo.setType(type);
-    
+    info.setType(type);
+    info.setDeviceNo(deviceInfo.getDeviceNo());
+    info.setSimNo(deviceInfo.getSimNo());
     return "redirect:list.jhtml";
   }
 

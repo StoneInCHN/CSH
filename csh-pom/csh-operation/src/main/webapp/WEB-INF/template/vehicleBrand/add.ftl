@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.deviceInfo.edit")}</title>
+<title>${message("csh.vehicleBrand.add")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -17,23 +17,22 @@
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	
-	
+
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			deviceNo: {
+			code: {
 				required: true
 			},
-			simNo: {
+			iconFile: {
 				required: true
 			},
-			typeId: {
+			name: {
 				required: true
 			}
 		}
 	});
-
+	
 });
 </script>
 </head>
@@ -41,11 +40,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.deviceInfo")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.vehicleBrand")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.deviceInfo.list")}</a>
-				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.deviceInfo.edit")}</a>
+				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.vehicleBrand.list")}</a>
+				<span class="divider">/</span> 
+				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.vehicleBrand.add")}</span>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -55,7 +54,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.deviceInfo.edit")}</div>
+                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.vehicleBrand.add")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -64,35 +63,30 @@ $().ready(function() {
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                    <form id="inputForm" action="update.jhtml" method="post">
-						<input type="hidden" name="id" value="${deviceInfo.id}" />
-						<table class="input tabContent">
-							<tr>
+                     <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
+                     	<table class="input tabContent">
+                     		<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.deviceNo")}:
+									<span class="requiredField">*</span>${message("csh.vehicleBrand.code")}:
 								</th>
 								<td>
-									<input type="text" name="deviceNo" class="text" maxlength="20" value="${deviceInfo.deviceNo}"/>
+									<input type="text" id="code" name="code" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.simNo")}:
+									<span class="requiredField">*</span>${message("csh.vehicleBrand.icon")}:
 								</th>
 								<td>
-									<input type="text" name="simNo" class="text" maxlength="20" value="${deviceInfo.simNo}"/>
+									<input type="file" name="iconFile"  />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.type")}:
+									<span class="requiredField">*</span>${message("csh.vehicleBrand.name")}:
 								</th>
 								<td>
-									<select name="typeId">
-										[#list types as type]
-										<option value="${type.id}" [#if deviceInfo.type.id== type.id ] selected="selected" [/#if]>${type.name}</option>
-										[/#list]
-									</select>
+									<input type="text" name="name" class="text" maxlength="20" />
 								</td>
 							</tr>
 						</table>
@@ -106,8 +100,8 @@ $().ready(function() {
 									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 								</td>
 							</tr>
-						</table>
-					</form>
+						</table>                                     
+                     </form>
                   </div>
                 </div>
               </div>  

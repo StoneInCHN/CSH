@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.deviceInfo.edit")}</title>
+<title>${message("csh.vehicleBrand.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -13,22 +13,22 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/js/jquery.lSelect.js"></script>
 <script type="text/javascript">
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
 	
-	
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			deviceNo: {
+			code: {
 				required: true
 			},
-			simNo: {
+			icon: {
 				required: true
 			},
-			typeId: {
+			name: {
 				required: true
 			}
 		}
@@ -41,11 +41,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.deviceInfo")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.vehicleBrand")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.deviceInfo.list")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.vehicleBrand.list")}</a>
 				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.deviceInfo.edit")}</a>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.vehicleBrand.edit")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -55,7 +55,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.deviceInfo.edit")}</div>
+                  <div class="pull-left">${message("csh.vehicleBrand.edit")}i</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -65,34 +65,39 @@ $().ready(function() {
                 <div class="widget-content">
                   <div class="padd">
                     <form id="inputForm" action="update.jhtml" method="post">
-						<input type="hidden" name="id" value="${deviceInfo.id}" />
+						<input type="hidden" name="id" value="${vehicleBrand.id}" />
 						<table class="input tabContent">
-							<tr>
+							<table class="input tabContent">
+                     		<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.deviceNo")}:
+									<span class="requiredField">*</span>${message("csh.vehicleBrand.code")}:
 								</th>
 								<td>
-									<input type="text" name="deviceNo" class="text" maxlength="20" value="${deviceInfo.deviceNo}"/>
+									<input type="text" id="code" name="code" class="text" maxlength="20" value="${vehicleBrand.code}" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.simNo")}:
+									${message("csh.vehicleBrand.icon")}:
 								</th>
 								<td>
-									<input type="text" name="simNo" class="text" maxlength="20" value="${deviceInfo.simNo}"/>
+									<a href="${base}/upload/vehicleIcon/${vehicleBrand.icon}" target="1024"><img src="${base}/upload/vehicleIcon/${vehicleBrand.icon}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.vehicleBrand.icon")}"></a>
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.type")}:
+									<span class="requiredField">*</span>${message("csh.vehicleBrand.icon")}:
 								</th>
 								<td>
-									<select name="typeId">
-										[#list types as type]
-										<option value="${type.id}" [#if deviceInfo.type.id== type.id ] selected="selected" [/#if]>${type.name}</option>
-										[/#list]
-									</select>
+									<input type="file" name="iconFile" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.vehicleBrand.name")}:
+								</th>
+								<td>
+									<input type="text" name="name" class="text" maxlength="20" value="${vehicleBrand.name}"/>
 								</td>
 							</tr>
 						</table>

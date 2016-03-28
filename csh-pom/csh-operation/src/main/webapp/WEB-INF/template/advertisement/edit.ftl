@@ -84,7 +84,7 @@ $().ready(function() {
 									${message("csh.advertisement.advImageUrl")}:
 								</th>
 								<td>
-									<a href="${base}/upload/advertisement/${advertisement.advImageUrl}" target="1024"><img src="${base}/advertisement/license/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
+									<a href="${base}/upload/advertisement/${advertisement.advImageUrl}" target="1024"><img src="${base}/upload/license/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
 								</td>
 							</tr>
 							<tr>

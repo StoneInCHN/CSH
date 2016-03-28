@@ -47,7 +47,11 @@ public class Setting implements Serializable {
     /**
      * 广告
      */
-    ADVERTISEMENT
+    ADVERTISEMENT,
+    /**
+     * 车辆品牌图标
+     */
+    VEHICLEICON
   }
 
 

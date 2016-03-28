@@ -1,8 +1,5 @@
 package com.csh.entity;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -20,7 +17,7 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.entity.base.BaseEntity;
 
 /**
- * 代理商
+ * 经销商
  * 
  * @author tanbiao
  *
@@ -64,19 +61,6 @@ public class Distributor extends BaseEntity {
 
 
 
-  /**
-   * 纬度
-   */
-  @Column(name = "Latitude", scale = 6, precision = 10, nullable = true)
-  private BigDecimal latitude;
-
-  /**
-   * 经度
-   */
-  @Column(name = "Longitude", scale = 6, precision = 10, nullable = true)
-  private BigDecimal longitude;
-
-
   @Field(store = Store.YES, index = Index.TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getDistributorName() {
     return distributorName;
@@ -110,21 +94,6 @@ public class Distributor extends BaseEntity {
     this.distributorAddress = distributorAddress;
   }
 
-  public BigDecimal getLatitude() {
-    return latitude;
-  }
-
-  public void setLatitude(BigDecimal latitude) {
-    this.latitude = latitude;
-  }
-
-  public BigDecimal getLongitude() {
-    return longitude;
-  }
-
-  public void setLongitude(BigDecimal longitude) {
-    this.longitude = longitude;
-  }
 
   @OneToOne(fetch = FetchType.LAZY)
   public Admin getAdmin() {
