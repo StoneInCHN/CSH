@@ -18,8 +18,8 @@ public class TenantInfoRowMapper implements RowMapper<Map<String, Object>> {
      */
     tenantInfo.put("id", rs.getLong("id"));
     tenantInfo.put("distance", rs.getDouble("distance"));
-    // tenantInfo.setLatitude(rs.getBigDecimal("latitude"));
-    // tenantInfo.setLongitude(rs.getBigDecimal("longitude"));
+    tenantInfo.put("latitude", rs.getBigDecimal("latitude"));
+    tenantInfo.put("longitude", rs.getBigDecimal("longitude"));
     tenantInfo.put("address", rs.getString("address"));
     tenantInfo.put("tenant_name", rs.getString("tenant_name"));
     tenantInfo.put("photo", rs.getString("photo"));
