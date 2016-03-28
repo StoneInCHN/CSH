@@ -1,6 +1,7 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Controller;
@@ -19,17 +21,21 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+import com.csh.beans.FileInfo.FileType;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleInsurance;
+import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.EndUserService;
+import com.csh.service.FileService;
 import com.csh.service.VehicleInsuranceService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
@@ -51,6 +57,8 @@ public class VehicleInsuranceController extends BaseController {
   private EndUserService endUserService;
   @Resource(name="vehicleServiceImpl")
   private VehicleService vehicleService;
+  @Resource(name = "fileServiceImpl")
+  private FileService fileService;
 
   /**
    * 界面展示
@@ -72,7 +80,8 @@ public class VehicleInsuranceController extends BaseController {
    */
   @RequestMapping(value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<VehicleInsurance> list(Model model, Pageable pageable,
-      Date beginDate, Date endDate, String roleNameSearch) {
+      Date vehicleInsuranceEndDateStrart, Date vehicleInsuranceEndDateStrartEnd, String mobileNumSearch,
+      String userNameSearch,String plateSearch) {
     String startDateStr = null;
     String endDateStr = null;
 
@@ -80,22 +89,29 @@ public class VehicleInsuranceController extends BaseController {
     analyzer.setMaxWordLength (true);
     BooleanQuery query = new BooleanQuery ();
 
-    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "name",
+    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "endUser.userName",
         analyzer);
+    QueryParser mobileNumParser = new QueryParser (Version.LUCENE_35, "endUser.mobile",
+        analyzer);
+    QueryParser plateParser = new QueryParser (Version.LUCENE_35, "vehicle.plate",
+        analyzer);
+    
     Query nameQuery = null;
+    Query mobileNumQuery = null;
+    Query plateQuery = null;
     TermRangeQuery rangeQuery = null;
     
-    if (beginDate != null)
+    if (vehicleInsuranceEndDateStrart != null)
     {
-      startDateStr = DateTimeUtils.convertDateToString (beginDate, null);
+      startDateStr = DateTimeUtils.convertDateToString (vehicleInsuranceEndDateStrart, null);
     }
-    if (endDate != null)
+    if (vehicleInsuranceEndDateStrartEnd != null)
     {
-      endDateStr = DateTimeUtils.convertDateToString (endDate, null);
+      endDateStr = DateTimeUtils.convertDateToString (vehicleInsuranceEndDateStrartEnd, null);
     }
-    if (roleNameSearch != null)
+    if (userNameSearch != null)
     {
-      String text = QueryParser.escape (roleNameSearch);
+      String text = QueryParser.escape (userNameSearch);
         try
         {
           nameQuery = nameParser.parse (text);
@@ -103,8 +119,48 @@ public class VehicleInsuranceController extends BaseController {
           
           if (LogUtil.isDebugEnabled (TenantAccountController.class))
           {
-            LogUtil.debug (TenantAccountController.class, "search", "Search role name: "
-                + roleNameSearch );
+            LogUtil.debug (TenantAccountController.class, "search", "Search user name: "
+                + userNameSearch );
+          }
+        }
+        catch (ParseException e)
+        {
+          e.printStackTrace();
+        }
+    }
+    if (mobileNumSearch != null)
+    {
+      String text = QueryParser.escape (mobileNumSearch);
+        try
+        {
+          mobileNumParser.setAllowLeadingWildcard (true);
+          mobileNumQuery = mobileNumParser.parse ("*"+text+"*");
+          query.add (mobileNumQuery, Occur.MUST);
+          
+          if (LogUtil.isDebugEnabled (TenantAccountController.class))
+          {
+            LogUtil.debug (TenantAccountController.class, "search", "Search mobile: "
+                + mobileNumSearch );
+          }
+        }
+        catch (ParseException e)
+        {
+          e.printStackTrace();
+        }
+    }
+    if (plateSearch != null)
+    {
+      String text = QueryParser.escape (plateSearch);
+        try
+        {
+          plateParser.setAllowLeadingWildcard (true);
+          plateQuery = plateParser.parse ("*"+text+"*");
+          query.add (plateQuery, Occur.MUST);
+          
+          if (LogUtil.isDebugEnabled (TenantAccountController.class))
+          {
+            LogUtil.debug (TenantAccountController.class, "search", "Search plate: "
+                + plateSearch );
           }
         }
         catch (ParseException e)
@@ -123,7 +179,8 @@ public class VehicleInsuranceController extends BaseController {
             +" end date: "+endDateStr);
       }
     }
-    if (nameQuery != null || rangeQuery != null)
+    if (nameQuery != null || rangeQuery != null 
+        || plateQuery != null || mobileNumQuery != null)
     {
       return vehicleInsuranceService.search (query, pageable, analyzer,null,true);
     }
@@ -138,13 +195,15 @@ public class VehicleInsuranceController extends BaseController {
    * @return
    */
   @RequestMapping(value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add(VehicleInsurance vehicleInsurance,Long vehicleId,Long endUserId) {
+  public @ResponseBody Message add(VehicleInsurance vehicleInsurance,Long vehicleId
+      ,Long endUserId) {
     
     EndUser endUser = endUserService.find (endUserId);
-    Vehicle vehicle = vehicleService.find (endUserId);
+    Vehicle vehicle = vehicleService.find (vehicleId);
+    
     vehicleInsurance.setEndUser (endUser);
     vehicleInsurance.setVehicle (vehicle);
-    vehicleInsuranceService.save (vehicleInsurance);
+    vehicleInsuranceService.save (vehicleInsurance,true);
     return SUCCESS_MESSAGE;
   }
   /**

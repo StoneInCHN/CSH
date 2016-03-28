@@ -27,6 +27,7 @@ import com.csh.beans.FileInfo;
 import com.csh.beans.Setting;
 import com.csh.beans.FileInfo.FileType;
 import com.csh.beans.FileInfo.OrderType;
+import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.plugin.StoragePlugin;
 import com.csh.service.FileService;
 import com.csh.service.PluginService;
@@ -312,6 +313,6 @@ public class FileServiceImpl  implements FileService, ServletContextAware{
       return "";
     }
     return servletContext.getRealPath(relativepath);
-  }  
+  }
   
 }

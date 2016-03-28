@@ -45,8 +45,63 @@ var vehicleInsurance_manager_tool = {
 						 $("#addVehicleInsurance_form").form("reset");
 					}
 			    }],
-			    onOpen:function(){
+			    onLoad:function(){
 			    	$('#addVehicleInsurance_form').show();
+			    	
+			    	$('#addIDphotoFile').change(function(){
+			    		var fd = new FormData($("#addVehicleInsurance_form"));
+			    		fd.append("file", $('#addIDphotoFile')[0].files[0]);
+			    		
+			    		$.ajax({
+					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  type: "POST",
+					    	  data: fd,
+					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
+					    	  contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+					    	  success:function(result,response,status){
+					    		  if(result.type = "success"){
+					    			  $("#addIDphotoFileValue").val(result.content);
+					    			  $("#addIDphotoImg").attr('src',result.content);
+					    		  }
+					    	  }
+					    	});
+			    	});
+			    	$('#addDrivingLicensePhoto').change(function(){
+			    		var fd = new FormData($("#addVehicleInsurance_form"));
+			    		fd.append("file", $('#addDrivingLicensePhoto')[0].files[0]);
+			    		
+			    		$.ajax({
+					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  type: "POST",
+					    	  data: fd,
+					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
+					    	  contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+					    	  success:function(result,response,status){
+					    		  if(result.type = "success"){
+					    			  $("#addDrivingLicensePhotoValue").val(result.content);
+					    			  $("#addDrivingLicensePhotoImg").attr('src',result.content);
+					    		  }
+					    	  }
+					    	});
+			    	});
+			    	$('#addDriverLicensePhoto').change(function(){
+			    		var fd = new FormData($("#addVehicleInsurance_form"));
+			    		fd.append("file", $('#addDriverLicensePhoto')[0].files[0]);
+			    		
+			    		$.ajax({
+					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  type: "POST",
+					    	  data: fd,
+					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
+					    	  contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+					    	  success:function(result,response,status){
+					    		  if(result.type = "success"){
+					    			  $("#addDriverLicensePhotoValue").val(result.content);
+					    			  $("#addDriverLicensePhotoImg").attr('src',result.content); 
+					    		  }
+					    	  }
+					    	});
+			    	});
 			    	
 			    },
 			    onClose:function(){
@@ -111,9 +166,63 @@ var vehicleInsurance_manager_tool = {
 					    	$("#editInsuranceVehiclePlate").combobox("setValue",$("#editInsuranceVehiclePlate").attr("data-value"))    	
 					    }
 					});
-			    	
+			    	$('#editIDphotoFile').change(function(){
+			    		var fd = new FormData($("#editVehicleInsurancen_form"));
+			    		fd.append("file", $('#editIDphotoFile')[0].files[0]);
+			    		
+			    		$.ajax({
+					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  type: "POST",
+					    	  data: fd,
+					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
+					    	  contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+					    	  success:function(result,response,status){
+					    		  if(result.type = "success"){
+					    			  $("#editIDphotoFileValue").val(result.content);
+					    			  $("#editIDphotoImg").attr('src',result.content);
+					    		  }
+					    	  }
+					    	});
+			    	});
+			    	$('#editDrivingLicensePhoto').change(function(){
+			    		var fd = new FormData($("#editVehicleInsurancen_form"));
+			    		fd.append("file", $('#editDrivingLicensePhoto')[0].files[0]);
+			    		
+			    		$.ajax({
+					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  type: "POST",
+					    	  data: fd,
+					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
+					    	  contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+					    	  success:function(result,response,status){
+					    		  if(result.type = "success"){
+					    			  $("#editDrivingLicensePhotoValue").val(result.content);
+					    			  $("#editDrivingLicensePhotoImg").attr('src',result.content);
+					    		  }
+					    	  }
+					    	});
+			    	});
+			    	$('#editDriverLicensePhoto').change(function(){
+			    		var fd = new FormData($("#editVehicleInsurancen_form"));
+			    		fd.append("file", $('#editDriverLicensePhoto')[0].files[0]);
+			    		
+			    		$.ajax({
+					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  type: "POST",
+					    	  data: fd,
+					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
+					    	  contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+					    	  success:function(result,response,status){
+					    		  if(result.type = "success"){
+					    			  $("#editDriverLicensePhotoValue").val(result.content);
+					    			  $("#editDriverLicensePhotoImg").attr('src',result.content); 
+					    		  }
+					    	  }
+					    	});
+			    	});
 			    },
 			    onClose:function(){
+			    	
 			    	$('#editVehicleInsurance').empty();
 			    }
 			});  
@@ -186,7 +295,7 @@ $(function(){
 		    		  formatter:function(value,row,index){
 			    		  if(value == true){
 			    			  return message("csh.common.yes");
-			    		  }else{
+			    		  }else if(value == false){
 			    			  return message("csh.common.no");
 			    		  }
 			    			  
@@ -196,7 +305,7 @@ $(function(){
 	    		  formatter:function(value,row,index){
 		    		  if(value == true){
 		    			  return message("csh.common.yes");
-		    		  }else{
+		    		  }else if(value == false){
 		    			  return message("csh.common.no");
 		    		  }
 		    			  
@@ -215,10 +324,10 @@ $(function(){
 	});
 
 	
-	$("#vehicleMaintain-search-btn").click(function(){
-	  var _queryParams = $("#vehicleMaintain-search-form").serializeJSON();
-	  $('#vehicleMaintain-table-list').datagrid('options').queryParams = _queryParams;  
-	  $("#vehicleMaintain-table-list").datagrid('reload');
+	$("#vehicleInsurance-search-btn").click(function(){
+	  var _queryParams = $("#vehicleInsurance-search-form").serializeJSON();
+	  $('#vehicleInsurance-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#vehicleInsurance-table-list").datagrid('reload');
 	});
 	
 })

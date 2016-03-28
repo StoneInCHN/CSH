@@ -12,6 +12,7 @@
  */
 function singleUpload(options) {
 	
+	
 	var $ = jQuery, // just in case. Make sure it's not an other libaray.
 
 	$wrap = $('#'+options.warp),
@@ -77,6 +78,7 @@ function singleUpload(options) {
 
 	// 实例化
 	if(options.createOption){
+		debugger;
 		uploader = WebUploader.create(options.createOption);
 	}
 	
@@ -99,6 +101,7 @@ function singleUpload(options) {
 
 	// 当有文件添加进来时执行，负责view的创建
 	function addFile(file) {
+		debugger;
 		var $li = $('<li id="' + file.id + '">' + '<p class="title">'
 			//	+ file.name + '</p>' + '<p class="imgWrap"></p>'
 				+ '</p>' + '<p class="imgWrap img-thumbnail"></p>'

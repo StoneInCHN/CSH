@@ -77,58 +77,35 @@
 			     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="isLoaned" style="width:110px;" required=true/>
     		</td>
     	</tr>
-    	<tr rowspan="4">
+    	<tr>
     		
     		<th>${message("csh.vehicleInsurancen.IDphoto")}:</th>
-    		<td  colspan="4">
-    			 <div title="图片上传" class="easyui-tooltip headWarp">
-	    				<div id="carServiceUploader-add" class="single-uploader">
-						    <div  class="queueList">
-						        <div  class="placeholder">
-						        	<div id="carServiceFilePicker-add" ></div>
-						        </div>
-						    </div>
-						    <div class="btns">
-						        <div class="uploadBtn state-pedding"></div>
-						    </div>
-						</div>
-	    			</div>
+    		<td  >
+    			<input id = "editIDphotoFile" type="file" accept="image/*" name = "file">
+	    		<input type="hidden" id ="editIDphotoFileValue" value="${vehicleInsurance.IDphoto}" name = "IDphoto">
+    		</td>
+    		<td>
+    			<img style="width:50px;height=50px" id="editIDphotoImg" src="${vehicleInsurance.IDphoto}"/>
     		</td>
     	</tr>
-    	<tr rowspan="4">
-    		
+    	<tr>
     		<th>${message("csh.vehicleInsurancen.drivingLicensePhoto")}:</th>
-    		<td  colspan="4">
-    			 <div title="图片上传" class="easyui-tooltip headWarp">
-	    				<div id="carServiceUploader-add" class="single-uploader">
-						    <div  class="queueList">
-						        <div  class="placeholder">
-						        	<div id="carServiceFilePicker-add" ></div>
-						        </div>
-						    </div>
-						    <div class="btns">
-						        <div class="uploadBtn state-pedding"></div>
-						    </div>
-						</div>
-	    			</div>
+    		<td  >
+    			<input id = "editDrivingLicensePhoto" type="file" accept="image/*" name = "file">
+	    		<input type="hidden"  id ="editDrivingLicensePhotoValue" value="${vehicleInsurance.drivingLicensePhoto}" name = "drivingLicensePhoto">
+    		</td>
+    		<td>
+    			<img style="width:50px;height=50px" id="editDrivingLicensePhotoImg" src="${vehicleInsurance.drivingLicensePhoto}"/>
     		</td>
     	</tr>
-    	<tr rowspan="4">
-    		
+    	<tr>
     		<th>${message("csh.vehicleInsurancen.driverLicensePhoto")}:</th>
-    		<td  colspan="4">
-    			 <div title="图片上传" class="easyui-tooltip headWarp">
-	    				<div id="carServiceUploader-add" class="single-uploader">
-						    <div  class="queueList">
-						        <div  class="placeholder">
-						        	<div id="carServiceFilePicker-add" ></div>
-						        </div>
-						    </div>
-						    <div class="btns">
-						        <div class="uploadBtn state-pedding"></div>
-						    </div>
-						</div>
-	    			</div>
+    		<td >
+    			<input id = "editDriverLicensePhoto" type="file" accept="image/*" name = "file">
+	    		<input type="hidden" id ="editDriverLicensePhotoValue" value="${vehicleInsurance.driverLicensePhoto}" name = "driverLicensePhoto">
+    		</td>
+    		<td>
+    			<img style="width:50px;height=50px" id="editDriverLicensePhotoImg" src="${vehicleInsurance.driverLicensePhoto}"/>
     		</td>
     	</tr>
     </table>

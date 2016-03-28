@@ -1,5 +1,5 @@
 <form id="addVehicleInsurance_form" method="post">
-<input type="hidden" name="endUserID" id="addVehicleInsurancen_endUserID">
+<input type="hidden" name="endUserId" id="addVehicleInsurancen_endUserID">
     <table class="table table-striped"  border="0">
 	    <tr>
     		<th>${message("csh.vehicle.endUser")}:</th>
@@ -29,7 +29,7 @@
     		</td>
     		<th>保险结束时间:</th>
     		<td >
-    			 <input  class="easyui-datebox" name="insuranceEndDate" id= "insuranceEndDate"  data-options="required:true,editable:false"/>
+    			 <input  class="easyui-datebox" name="insuranceEndDate" id= "insuranceEndDate"  data-options="required:true,editable:false" />
     		</td>
     	</tr>
     	<tr>
@@ -57,63 +57,42 @@
 			      value: '${message("csh.common.yes")}'
 			     },{
 			      label: false,
-			      value: '${message("csh.common.no")}'
+			      value: '${message("csh.common.no")}',
 			     }],
 			     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="isLoaned" style="width:110px;" required=true/>
     		</td>
     	</tr>
-    	<tr rowspan="4">
+    	<tr>
     		
     		<th>${message("csh.vehicleInsurancen.IDphoto")}:</th>
-    		<td  colspan="4">
-    			 <div title="图片上传" class="easyui-tooltip headWarp">
-	    				<div id="carServiceUploader-add" class="single-uploader">
-						    <div  class="queueList">
-						        <div  class="placeholder">
-						        	<div id="carServiceFilePicker-add" ></div>
-						        </div>
-						    </div>
-						    <div class="btns">
-						        <div class="uploadBtn state-pedding"></div>
-						    </div>
-						</div>
-	    			</div>
+    		<td  >
+	    		<input id = "addIDphotoFile" type="file" accept="image/*" name = "file">
+	    		<input type="hidden" id ="addIDphotoFileValue" name = "IDphoto">
+    		</td>
+    		<td>
+    			<img style="width:50px;height=50px" id="addIDphotoImg" />
     		</td>
     	</tr>
-    	<tr rowspan="4">
+    	<tr>
     		
     		<th>${message("csh.vehicleInsurancen.drivingLicensePhoto")}:</th>
-    		<td  colspan="4">
-    			 <div title="图片上传" class="easyui-tooltip headWarp">
-	    				<div id="carServiceUploader-add" class="single-uploader">
-						    <div  class="queueList">
-						        <div  class="placeholder">
-						        	<div id="carServiceFilePicker-add" ></div>
-						        </div>
-						    </div>
-						    <div class="btns">
-						        <div class="uploadBtn state-pedding"></div>
-						    </div>
-						</div>
-	    			</div>
+    		<td  >
+    			<input id = "addDrivingLicensePhoto" type="file" accept="image/*" name = "file">
+	    		<input type="hidden"  id ="addDrivingLicensePhotoValue" name = "drivingLicensePhoto">
+    		</td>
+    		<td>
+    			<img style="width:50px;height=50px" id="addDrivingLicensePhotoImg" />
     		</td>
     	</tr>
-    	<tr rowspan="4">
+    	<tr>
     		
     		<th>${message("csh.vehicleInsurancen.driverLicensePhoto")}:</th>
-    		<td  colspan="4">
-    			 <div title="图片上传" class="easyui-tooltip headWarp">
-	    				<div id="carServiceUploader-add" class="single-uploader">
-						    <div  class="queueList">
-						        <div  class="placeholder">
-						        	<div id="carServiceFilePicker-add" ></div>
-						        </div>
-						    </div>
-						    <div class="btns">
-						        <div class="uploadBtn state-pedding"></div>
-						    </div>
-						</div>
-	    			</div>
+    		<td >
+    			<input id = "addDriverLicensePhoto" type="file" accept="image/*" name = "file">
+	    		<input type="hidden" id ="addDriverLicensePhotoValue" name = "driverLicensePhoto">
+    		</td>
+    		<td>
+    			<img style="width:50px;height=50px" id="addDriverLicensePhotoImg" />
     		</td>
     	</tr>
     </table>

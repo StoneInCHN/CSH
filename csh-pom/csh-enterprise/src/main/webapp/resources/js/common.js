@@ -520,7 +520,6 @@ function searchRoles(id) {
 }
 //查询终端用户用户
 function searchEndUser(id) {
-	debugger;
 	$('#commonMainDialog')
 			.dialog(
 					{

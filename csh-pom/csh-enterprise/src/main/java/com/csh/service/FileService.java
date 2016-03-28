@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.csh.beans.FileInfo;
 import com.csh.beans.FileInfo.FileType;
 import com.csh.beans.FileInfo.OrderType;
+import com.csh.entity.commonenum.CommonEnum.ImageType;
 
 public interface FileService {
 
@@ -72,5 +73,6 @@ public interface FileService {
    * @return
    */
   String getRealPath(String relativepath);
+
 
 }
