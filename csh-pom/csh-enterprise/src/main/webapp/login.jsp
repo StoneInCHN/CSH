@@ -174,7 +174,8 @@ if (applicationContext != null) {
 </head>
 <body class="login" onload="loadTopWindow()">
 	<div class="logo">
-		<img src="<%=base%>/resources/images/login/logo-big.png" alt="后台管理系统" /> 
+		<img src="<%=base%>/resources/images/login/logo-big.png" alt="后台管理系统" />
+		管理系统登录
 	</div>
 	<div class="content">
 		<form class="form-vertical login-form" id="loginForm" action="login.jsp" method="post">
@@ -183,14 +184,13 @@ if (applicationContext != null) {
 			<%if (ArrayUtils.contains(setting.getCaptchaTypes(), CaptchaType.LOGIN)) {%>
 						<input type="hidden" name="captchaId" value="<%=captchaId%>" />
 			<%}%>
-			<h3 class="form-title">用户登陆</h3>
 			<div id="alertError" class="alert alert-error hide">
 				<button class="close" data-dismiss="alert"></button>
 				<span>Enter any username and password.</span>
 			</div>
 			<div  class="control-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">机构代码</label>
+				<label class="control-label visible-ie8 visible-ie9">商户代码</label>
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="fa fa-user"></i>
@@ -243,9 +243,6 @@ if (applicationContext != null) {
     	//背景图片滚动显示
     	  $.backstretch([
     	 		        "resources/images/login/bg/1.jpg",
-    	 		        "resources/images/login/bg/2.jpg",
-    	 		        "resources/images/login/bg/3.jpg",
-    	 		        "resources/images/login/bg/4.jpg"
     	 		        ], {
     	 		          fade: 1000,
     	 		          duration: 8000

@@ -206,7 +206,7 @@ var reportMaintainStatistics = {
 		};
 //设备绑定情况
 var deviceInfoStatistics ={
-	colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+//	colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
     chart: {
     	backgroundColor: {
 			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -264,7 +264,7 @@ var deviceInfoStatistics ={
 var chart = new Highcharts.Chart(deviceInfoStatistics);
 //预约维修统计
 var repareReservationStatistics ={
-		colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+//		colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
 	    chart: {
 	    	backgroundColor: {
 				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -318,7 +318,7 @@ var repareReservationStatistics ={
 	};
 //预约保养情况统计
 var maintainReservationStatistics ={
-		colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+//		colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
 	    chart: {
 	    	backgroundColor: {
 				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -428,6 +428,59 @@ var maintainReservationStatistics ={
 					 refreshPie(maintainReservationStatistics, data,['预约中','处理完'],['reservationMaitainCount','paidMaintainCount']);
 				 }
 			}
+		});
+		/**
+		 * 修改密码事件
+		 */
+		$("#changePasswordHref").click(function(){
+			debugger;
+			$('#commonMainDialog').dialog({
+			    title: "修改密码",//message("yly.drugsInfo.add"),    
+			    width: 500,    
+			    height: 480,
+			    iconCls:'icon-mini-add',
+			    href:'../common/changePassword.jhtml',
+			    cache: false, 
+			    buttons:[{
+			    	text:message("csh.common.save"),
+			    	iconCls:'icon-save',
+					handler:function(){
+						debugger;
+						var validate = $('#changePassword_form').form('validate');
+						if(validate){
+							$.ajax({
+								url:"../common/savePassword.jhtml",
+								type:"post",
+								data:$("#changePassword_form").serialize(),
+								beforeSend:function(){
+									$.messager.progress({
+										text:message("yly.common.saving")
+									});
+								},
+								success:function(result,response,status){
+									$.messager.progress('close');
+									if(response == "success"){
+										showSuccessMsg(result.content);
+										$('#commonMainDialog').dialog("close");
+									}else{
+										alertErrorMsg();
+									}
+								}
+							});
+						};
+					}
+				},{
+					text:message("csh.common.cancel"),
+					iconCls:'icon-cancel',
+					handler:function(){
+						 $('#commonMainDialog').dialog("close");
+					}
+			    }],
+			    onOpen:function(){
+			    	$('#changePassword').show();
+			    },
+			
+			});
 		});
 });
 

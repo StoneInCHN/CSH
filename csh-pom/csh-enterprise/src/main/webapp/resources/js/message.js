@@ -203,6 +203,7 @@ var messages = {
 	"csh.carService.list":"服务列表",
 	"csh.carService.serviceCategory":"服务类型",
 	//车辆保险
+	"csh.vehicleInsurance.add":"保险添加",
 	"csh.vehicleInsurance.userName":"投保人",
 	"csh.vehicleInsurance.mobile":"投保人电话",
 	"csh.vehicleInsurance.vehicle":"投保车辆",

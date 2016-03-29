@@ -30,32 +30,32 @@
 		<div id="nav-wrap" class="nav-wrap"  style="width:730px">
 			<ul class="nav nav-pills">
 				<li><a href="#main"><i class="fa fa-home fa-1x"></i>首页</a></li>
-				[@shiro.hasPermission name="systemManage"]
-				<li><a href="#system"><i class="fa fa-users fa-1x"></i>系统管理</a></li>
-				[/@shiro.hasPermission]
-				[@shiro.hasPermission name="personnelManage"]
-				<li><a href="#personnel"><i class="fa fa-users fa-1x"></i>${message("csh.personnel.config")}</a></li>
-				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="vehicleManage"]
-				<li><a href="#vehicle"><i class="fa fa-users fa-1x"></i>${message("csh.vehicle.config")}</a></li>
+				<li><a href="#vehicle"><i class="fa fa-car fa-1x"></i>${message("csh.vehicle.config")}</a></li>
 				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="deviceManage"]
-				<li><a href="#device"><i class="fa fa-users fa-1x"></i>${message("csh.device.config")}</a></li>
+				<li><a href="#device"><i class="fa fa-cogs fa-1x"></i>${message("csh.device.config")}</a></li>
 				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="endUserManage"]
 				<li><a href="#endUser"><i class="fa fa-users fa-1x"></i>${message("csh.endUser.config")}</a></li>
 				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="reservationManage"]
-				<li><a href="#reservationManage"><i class="fa fa-users fa-1x"></i>${message("csh.reservationMange.config")}</a></li>
+				<li><a href="#reservationManage"><i class="fa fa-mobile fa-1x"></i>${message("csh.reservationMange.config")}</a></li>
 				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="informationManage"]
-				<li><a href="#informationManage"><i class="fa fa-users fa-1x"></i>${message("csh.informationManage.config")}</a></li>
+				<li><a href="#informationManage"><i class="fa fa-envelope fa-1x"></i>${message("csh.informationManage.config")}</a></li>
 				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="statisticsReport"]
-				<li><a href="#statisticsReport"><i class="fa fa-users fa-1x"></i>${message("csh.statisticsReport.report")}</a></li>
+				<li><a href="#statisticsReport"><i class="fa fa-bar-chart fa-1x"></i>${message("csh.statisticsReport.report")}</a></li>
 				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="insuranceManage"]
-				<li><a href="#insuranceManage"><i class="fa fa-users fa-1x"></i>${message("csh.insuranceManage.config")}</a></li>
+				<li><a href="#insuranceManage"><i class="fa fa-briefcase fa-1x"></i>${message("csh.insuranceManage.config")}</a></li>
+				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="personnelManage"]
+				<li><a href="#personnel"><i class="fa fa-user fa-1x"></i>${message("csh.personnel.config")}</a></li>
+				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="systemManage"]
+				<li><a href="#system"><i class="fa fa-windows fa-1x"></i>系统管理</a></li>
 				[/@shiro.hasPermission]
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
 				<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>
@@ -169,7 +169,12 @@
 		    	<div class="main-content-left">
 		    			<div class="row shortcutNavigation">
 					        <div class="col-md-8">
-					        	<a href ="#"><img onclick="shortcutNavigation('办理入院','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/admission.png"/></a><a href ="#"><img onclick="shortcutNavigation('入院评估','${base}/console/elderlyEvaluatingRecord/elderlyEvaluatingRecord.jhtml')" src="${base}/resources/images/evaluating.png"/></a><a href ="#"><img onclick="shortcutNavigation('入院缴费','${base}/console/billing/checkinCharge.jhtml')" src="${base}/resources/images/checkinCharge.png"/></a><a href ="#"><img onclick="shortcutNavigation('日常缴费','${base}/console/billing/dailyBill.jhtml')" src="${base}/resources/images/normalCharge.png"/></a><a href ="#"><img onclick="shortcutNavigation('退住结算','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/checkoutCharge.png"/></a>
+					        	<!--<a href ="#"><img style="width:120px;height:120px" onclick="shortcutNavigation('保养预约','${base}/console/billing/dailyBill.jhtml')" src="${base}/resources/images/maintain.png"/></a>
+					        		<a href ="#"><img style="width:120px;height:120px" onclick="shortcutNavigation('维修预约','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/service.png"/></a>
+					        	-->
+					        	<a href ="#"><img title="车辆信息" style="width:120px;height:120px" onclick="shortcutNavigation('车辆信息','${base}/console/vehicle/vehicle.jhtml')" src="${base}/resources/images/car.png"/></a>
+					        	<a href ="#"><img title="设备信息" style="width:120px;height:120px" onclick="shortcutNavigation('设备信息','${base}/console/deviceInfo/deviceInfo.jhtml')" src="${base}/resources/images/device.png"/></a>
+					        	<a href ="#"><img title="保险管理" style="width:120px;height:120px" onclick="shortcutNavigation('车辆保险','${base}/console/vehicleInsurance/vehicleInsurance.jhtml')" src="${base}/resources/images/insurance.png"/></a>
 					        </div>
 					        <div class="col-md-4">
 					        	<div class=" pull-right">
