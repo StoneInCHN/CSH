@@ -24,8 +24,11 @@ import com.csh.entity.commonenum.CommonEnum.BalanceType;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.paging.Page;
+import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseRequest;
 import com.csh.json.base.BaseResponse;
+import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.WalletRequest;
@@ -166,11 +169,21 @@ public class BalanceController extends MobileBaseController {
     Filter typeFilter = new Filter("walletType", Operator.eq, walletType);
     filters.add(walletFilter);
     filters.add(typeFilter);
-    List<WalletRecord> walletRecords = walletRecordService.findList(null, filters, null);
-    String[] properties = {"id", "money", "redPacket", "score", "balanceType", "remark"};
-    List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, walletRecords);
+    Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
+    pageable.setFilters(filters);
+    Page<WalletRecord> walletRecords = walletRecordService.findPage(pageable);
 
+    String[] properties =
+        {"id", "createDate", "money", "redPacket", "score", "balanceType", "remark"};
+    List<Map<String, Object>> map =
+        FieldFilterUtils.filterCollectionMap(properties, walletRecords.getContent());
     response.setMsg(map);
+
+    PageResponse page = new PageResponse();
+    page.setPageNumber(request.getPageNumber());
+    page.setPageSize(request.getPageSize());
+    page.setTotal((int) walletRecords.getTotal());
+    response.setPage(page);
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
