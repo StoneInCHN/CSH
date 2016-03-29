@@ -777,6 +777,15 @@ public class CommonEnum {
 
   }
 
+  public enum WalletType {
+    /** 余额 */
+    MONEY,
+    /** 红包 */
+    REDPACKET,
+    /** 积分 */
+    SCORE
+  }
+
   public enum PaymentType {
     /** 支付宝 */
     ALIPAY,

@@ -1,5 +1,7 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -19,11 +21,16 @@ import com.csh.entity.EndUser;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.BalanceType;
+import com.csh.entity.commonenum.CommonEnum.WalletType;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.json.base.BaseRequest;
 import com.csh.json.base.BaseResponse;
+import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
-import com.csh.json.request.OrderRequest;
+import com.csh.json.request.WalletRequest;
 import com.csh.service.EndUserService;
+import com.csh.service.WalletRecordService;
 import com.csh.service.WalletService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
@@ -41,6 +48,9 @@ public class BalanceController extends MobileBaseController {
   @Resource(name = "walletServiceImpl")
   private WalletService walletService;
 
+  @Resource(name = "walletRecordServiceImpl")
+  private WalletRecordService walletRecordService;
+
 
 
   /**
@@ -51,11 +61,11 @@ public class BalanceController extends MobileBaseController {
    */
   @RequestMapping(value = "/walletCharge", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse walletCharge(@RequestBody OrderRequest orderRequest) {
+  public @ResponseBody BaseResponse walletCharge(@RequestBody WalletRequest walletRequest) {
 
     BaseResponse response = new BaseResponse();
-    Long userId = orderRequest.getUserId();
-    String token = orderRequest.getToken();
+    Long userId = walletRequest.getUserId();
+    String token = walletRequest.getToken();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -66,10 +76,12 @@ public class BalanceController extends MobileBaseController {
 
     EndUser endUser = endUserService.find(userId);
     Wallet wallet = endUser.getWallet();
-    wallet.setBalanceAmount(wallet.getBalanceAmount().add(orderRequest.getAmount()));
+    wallet.setBalanceAmount(wallet.getBalanceAmount().add(walletRequest.getAmount()));
     WalletRecord walletRecord = new WalletRecord();
-    walletRecord.setType(BalanceType.INCOME);
-    walletRecord.setMoney(orderRequest.getAmount());
+    walletRecord.setBalanceType(BalanceType.INCOME);
+    walletRecord.setWalletType(WalletType.MONEY);
+    walletRecord.setMoney(walletRequest.getAmount());
+    walletRecord.setRemark(walletRequest.getRemark());
     walletRecord.setWallet(wallet);
     wallet.getWalletRecords().add(walletRecord);
     walletService.update(wallet);
@@ -77,10 +89,10 @@ public class BalanceController extends MobileBaseController {
     if (LogUtil.isDebugEnabled(BalanceController.class)) {
       LogUtil.debug(BalanceController.class, "Update",
           "User Charge in Wallet.UserName: %s, ChargeAmount: %s,", endUser.getUserName(),
-          orderRequest.getAmount());
+          walletRequest.getAmount());
     }
 
-    String newtoken = TokenGenerator.generateToken(orderRequest.getToken());
+    String newtoken = TokenGenerator.generateToken(walletRequest.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
@@ -123,5 +135,47 @@ public class BalanceController extends MobileBaseController {
     return response;
   }
 
+
+  /**
+   * 按类别查询钱包明细
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/walletRecordByType", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> walletRecordByType(
+      @RequestBody WalletRequest request) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    WalletType walletType = request.getWalletType();
+    Long walletId = request.getWalletId();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    Wallet wallet = walletService.find(walletId);
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter walletFilter = new Filter("wallet", Operator.eq, wallet);
+    Filter typeFilter = new Filter("walletType", Operator.eq, walletType);
+    filters.add(walletFilter);
+    filters.add(typeFilter);
+    List<WalletRecord> walletRecords = walletRecordService.findList(null, filters, null);
+    String[] properties = {"id", "money", "redPacket", "score", "balanceType", "remark"};
+    List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, walletRecords);
+
+    response.setMsg(map);
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
 }
