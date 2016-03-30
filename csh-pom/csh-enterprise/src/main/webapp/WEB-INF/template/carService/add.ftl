@@ -14,11 +14,11 @@
     	<tr>
     		<th>${message("csh.carService.price")}:</th>
     		<td >
-    			 <input  class="easyui-textbox"  id= "price" name="price"  data-options="required:true"/>
+    			 <input  class="easyui-numberbox"  id= "price" name="price"  data-options="required:true,min:0,precision:2"/>
     		</td>
     		<th>${message("csh.carService.promotionPrice")}:</th>
     		<td>
-    			 <input  class="easyui-textbox" name="promotionPrice" id= "promotionPrice" />
+    			 <input  class="easyui-numberbox" name="promotionPrice" id= "promotionPrice" data-options="required:true,min:0,precision:2"/>
     		</td>
     	</tr>
     	<tr>

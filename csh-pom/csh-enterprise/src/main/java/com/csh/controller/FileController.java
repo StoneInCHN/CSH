@@ -1,11 +1,6 @@
 package com.csh.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.csh.beans.Message;
-import com.csh.beans.FileInfo.FileType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.service.FileService;
-import com.csh.utils.JsonUtils;
 
 /**
  * 文件上传

@@ -14,11 +14,11 @@
     	<tr>
     		<th>${message("csh.carService.price")}:</th>
     		<td >
-    			 <input  class="easyui-textbox"  id= "price" value="${carService.price}" name="price"  data-options="required:true"/>
+    			 <input  class="easyui-numberbox"  id= "price" value="${carService.price}" name="price"  data-options="required:true,min:0,precision:2"/>
     		</td>
     		<th>${message("csh.carService.promotionPrice")}:</th>
     		<td>
-    			 <input  class="easyui-textbox" name="promotionPrice" value="${carService.promotionPrice}"  id= "promotionPrice" />
+    			 <input  class="easyui-numberbox" name="promotionPrice" value="${carService.promotionPrice}"  id= "promotionPrice" data-options="required:true,min:0,precision:2"/>
     		</td>
     	</tr>
     	<tr>
@@ -59,7 +59,7 @@
 						        </div>
 						        <div class="show-img">
 						        	<p class="imgWrap img-thumbnail">
-										    <img id ="carServiceImgPath-edit" src="${carService.imgPath}" style ="width:110px;hight:110 px">
+										    <img id ="carServiceImgPath-edit" src="${base}/${carService.imgPath}" style ="width:110px;hight:110 px">
 									 </p>
 						        </div>
 						    </div>

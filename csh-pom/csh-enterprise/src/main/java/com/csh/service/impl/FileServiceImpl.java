@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.service.FileService;
+import com.csh.service.TenantAccountService;
+import com.csh.service.TenantUserService;
 import com.csh.utils.ImageUtils;
 
 @Service("fileServiceImpl")
@@ -23,7 +27,8 @@ public class FileServiceImpl implements FileService {
   private String uploadPath;
   @Value("${ProjectUploadPath}")
   private String projectUploadPath;
-  
+  @Resource(name="tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
 
   @Override
   public String saveImage(MultipartFile[] multipartFile) {
@@ -110,7 +115,7 @@ public class FileServiceImpl implements FileService {
   public String saveImage(MultipartFile multiFile ,ImageType imageType) {
     String webPath = null;
     String imgUploadPath ="";
-    String projectPath="";
+    String projectPath="/upload";
     try {
 
       if (multiFile == null) {
@@ -118,19 +123,24 @@ public class FileServiceImpl implements FileService {
       }
       String uuid = UUID.randomUUID().toString();
       if (imageType == ImageType.CARSERVICEPICTURE) {
-        imgUploadPath = uploadPath + File.separator + "carServicePicture";
+        imgUploadPath = uploadPath +File.separator+tenantAccountService.getCurrentTenantOrgCode ()+ File.separator + "carServicePicture";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "carServicePicture";
       }
       if (imageType == ImageType.DRIVERLICENSEPHOTO) {
-        imgUploadPath = uploadPath + File.separator + "driverLicensePhoto";
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "driverLicensePhoto";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "driverLicensePhoto";
       }
       if (imageType == ImageType.DRIVINGLICENSEPHOTO) {
-        imgUploadPath = uploadPath + File.separator + "drivingLicensePhoto";
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "drivingLicensePhoto";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "drivingLicensePhoto";
       }
       if (imageType == ImageType.IDPHOTO) {
-        imgUploadPath = uploadPath + File.separator + "IDPhoto";
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "IDPhoto";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "IDPhoto";
       }
       if (imageType == ImageType.PHOTO) {
-        imgUploadPath = uploadPath + File.separator + "photo";
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "photo";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "photo";
       }
       String sourcePath =
           imgUploadPath + File.separator + "src_" + uuid + "."
@@ -138,7 +148,6 @@ public class FileServiceImpl implements FileService {
       webPath =projectPath+File.separator+"src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
       //String storePath = imgUploadPath + File.separator + uuid + "." + DEST_EXTENSION;;
-
       File tempFile =
           new File(System.getProperty("java.io.tmpdir") + File.separator + "upload_"
               + UUID.randomUUID() + ".tmp");

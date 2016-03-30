@@ -61,7 +61,7 @@ var vehicleInsurance_manager_tool = {
 					    	  success:function(result,response,status){
 					    		  if(result.type = "success"){
 					    			  $("#addIDphotoFileValue").val(result.content);
-					    			  $("#addIDphotoImg").attr('src',result.content);
+					    			  $("#addIDphotoImg").attr('src',"../../"+result.content);
 					    		  }
 					    	  }
 					    	});
@@ -79,7 +79,7 @@ var vehicleInsurance_manager_tool = {
 					    	  success:function(result,response,status){
 					    		  if(result.type = "success"){
 					    			  $("#addDrivingLicensePhotoValue").val(result.content);
-					    			  $("#addDrivingLicensePhotoImg").attr('src',result.content);
+					    			  $("#addDrivingLicensePhotoImg").attr('src',"../../"+result.content);
 					    		  }
 					    	  }
 					    	});
@@ -97,7 +97,7 @@ var vehicleInsurance_manager_tool = {
 					    	  success:function(result,response,status){
 					    		  if(result.type = "success"){
 					    			  $("#addDriverLicensePhotoValue").val(result.content);
-					    			  $("#addDriverLicensePhotoImg").attr('src',result.content); 
+					    			  $("#addDriverLicensePhotoImg").attr('src',"../../"+result.content); 
 					    		  }
 					    	  }
 					    	});
@@ -169,9 +169,9 @@ var vehicleInsurance_manager_tool = {
 			    	$('#editIDphotoFile').change(function(){
 			    		var fd = new FormData($("#editVehicleInsurancen_form"));
 			    		fd.append("file", $('#editIDphotoFile')[0].files[0]);
-			    		
+			    		fd.append("imageType","IDPHOTO");
 			    		$.ajax({
-					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  url: "../file/uploadPhoto.jhtml",
 					    	  type: "POST",
 					    	  data: fd,
 					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
@@ -179,7 +179,7 @@ var vehicleInsurance_manager_tool = {
 					    	  success:function(result,response,status){
 					    		  if(result.type = "success"){
 					    			  $("#editIDphotoFileValue").val(result.content);
-					    			  $("#editIDphotoImg").attr('src',result.content);
+					    			  $("#editIDphotoImg").attr('src',"../../"+result.content);
 					    		  }
 					    	  }
 					    	});
@@ -187,9 +187,9 @@ var vehicleInsurance_manager_tool = {
 			    	$('#editDrivingLicensePhoto').change(function(){
 			    		var fd = new FormData($("#editVehicleInsurancen_form"));
 			    		fd.append("file", $('#editDrivingLicensePhoto')[0].files[0]);
-			    		
+			    		fd.append("imageType","DRIVINGLICENSEPHOTO");
 			    		$.ajax({
-					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  url: "../file/uploadPhoto.jhtml",
 					    	  type: "POST",
 					    	  data: fd,
 					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
@@ -197,7 +197,7 @@ var vehicleInsurance_manager_tool = {
 					    	  success:function(result,response,status){
 					    		  if(result.type = "success"){
 					    			  $("#editDrivingLicensePhotoValue").val(result.content);
-					    			  $("#editDrivingLicensePhotoImg").attr('src',result.content);
+					    			  $("#editDrivingLicensePhotoImg").attr('src',"../../"+result.content);
 					    		  }
 					    	  }
 					    	});
@@ -205,9 +205,9 @@ var vehicleInsurance_manager_tool = {
 			    	$('#editDriverLicensePhoto').change(function(){
 			    		var fd = new FormData($("#editVehicleInsurancen_form"));
 			    		fd.append("file", $('#editDriverLicensePhoto')[0].files[0]);
-			    		
+			    		fd.append("imageType","DRIVERLICENSEPHOTO");
 			    		$.ajax({
-					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  url: "../file/uploadPhoto.jhtml",
 					    	  type: "POST",
 					    	  data: fd,
 					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
@@ -215,7 +215,7 @@ var vehicleInsurance_manager_tool = {
 					    	  success:function(result,response,status){
 					    		  if(result.type = "success"){
 					    			  $("#editDriverLicensePhotoValue").val(result.content);
-					    			  $("#editDriverLicensePhotoImg").attr('src',result.content); 
+					    			  $("#editDriverLicensePhotoImg").attr('src',"../../"+result.content); 
 					    		  }
 					    	  }
 					    	});

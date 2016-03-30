@@ -85,7 +85,7 @@
 	    		<input type="hidden" id ="editIDphotoFileValue" value="${vehicleInsurance.IDphoto}" name = "IDphoto">
     		</td>
     		<td>
-    			<img style="width:50px;height=50px" id="editIDphotoImg" src="${vehicleInsurance.IDphoto}"/>
+    			<img style="width:50px;height=50px" id="editIDphotoImg" src="${base}/${vehicleInsurance.IDphoto}"/>
     		</td>
     	</tr>
     	<tr>
@@ -95,7 +95,7 @@
 	    		<input type="hidden"  id ="editDrivingLicensePhotoValue" value="${vehicleInsurance.drivingLicensePhoto}" name = "drivingLicensePhoto">
     		</td>
     		<td>
-    			<img style="width:50px;height=50px" id="editDrivingLicensePhotoImg" src="${vehicleInsurance.drivingLicensePhoto}"/>
+    			<img style="width:50px;height=50px" id="editDrivingLicensePhotoImg" src="${base}/${vehicleInsurance.drivingLicensePhoto}"/>
     		</td>
     	</tr>
     	<tr>
@@ -105,7 +105,7 @@
 	    		<input type="hidden" id ="editDriverLicensePhotoValue" value="${vehicleInsurance.driverLicensePhoto}" name = "driverLicensePhoto">
     		</td>
     		<td>
-    			<img style="width:50px;height=50px" id="editDriverLicensePhotoImg" src="${vehicleInsurance.driverLicensePhoto}"/>
+    			<img style="width:50px;height=50px" id="editDriverLicensePhotoImg" src="${base}/${vehicleInsurance.driverLicensePhoto}"/>
     		</td>
     	</tr>
     </table>
