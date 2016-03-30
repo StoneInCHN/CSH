@@ -142,19 +142,24 @@
 					[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
-			[#list ["admin:vehicleBrand"] as permission]
-					[@shiro.hasPermission name = permission]
-						<li class="has_sub" >
-							<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.vehicleBrand")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
-							<ul class="sub_ul">
-							   [@shiro.hasPermission name="admin:vehicleBrand"]
+		[#list ["admin:vehicleBrand" ,"admin:vehicleLine"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.vehicleBrand")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							[@shiro.hasPermission name="admin:vehicleBrand"]
 								<li>
 									<a href="../vehicleBrand/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.vehicleBrand")}</a>
 								</li>
+							[/@shiro.hasPermission]
+							 [@shiro.hasPermission name="admin:vehicleLine"]
+								<li>
+									<a href="../vehicleLine/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.vehicleLine")}</a>
+								</li>
 							 	[/@shiro.hasPermission]
-				            </ul>
-						</li>
-					[#break /]
+				       </ul>
+				</li>
+				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
        </ul>

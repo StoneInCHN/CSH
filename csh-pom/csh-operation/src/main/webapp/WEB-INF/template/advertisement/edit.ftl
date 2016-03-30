@@ -114,7 +114,6 @@ $().ready(function() {
 							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.advertisement.order")}:
-d
 								</th>
 								<td>
 									<input type="text" name="order" class="text" value="${advertisement.order}"/>

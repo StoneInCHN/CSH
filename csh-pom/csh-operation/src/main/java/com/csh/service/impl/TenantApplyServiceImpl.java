@@ -58,6 +58,7 @@ public class TenantApplyServiceImpl extends BaseServiceImpl<TenantApply, Long> i
     tenantInfo.setContactPerson(tenantApply.getContactPerson());
     tenantInfo.setContactPhone(tenantApply.getContactPhone());
     tenantInfo.setTenantName(tenantApply.getTenantName());
+    tenantInfo.setEmail(tenantApply.getEmail());
     VersionConfig versionConfig = versionConfigDao.find(tenantApply.getVersionConfig());
     if (versionConfig!=null) {
       tenantInfo.setVersionConfig(versionConfig);

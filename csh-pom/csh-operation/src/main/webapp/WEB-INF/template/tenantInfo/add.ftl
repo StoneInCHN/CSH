@@ -14,6 +14,10 @@
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
 <script type="text/javascript" src="${base}/resources/js/jquery.lSelect.js"></script>
+<script type="text/javascript" src="${base}/resources/js/bootstrap-modal.js"></script>
+<style  type="text/css" >
+	#allmap {width: 550px;height: 400px;overflow: hidden;margin:0}
+</style>
 <script type="text/javascript">
 $().ready(function() {
 
@@ -34,10 +38,13 @@ $().ready(function() {
 			contactPerson: {
 				required: true
 			},
-			accoutStatus: {
+			accountStatus: {
 				required: true
 			},
-			contactPhone: "required"
+			contactPhone: "required",
+			versionConfigId:"required",
+			areaId:"required",
+			address:"required"
 		},
 		messages: {
 			tenantName: {
@@ -119,6 +126,16 @@ $().ready(function() {
 								</td>
 							</tr>
 							<tr>
+								<th><span class="requiredField">*</span>${message("csh.apply.pisotion.point")}>:</th>
+								<td>
+									<input type="hidden"  id="longitude" name="longitude" />
+									<input type="hidden"  id="latitude" name="latitude" />
+									<button type="button" class="btn btn-info " id="selectPositionPoint">
+									  ${message("csh.apply.select.pisotion.point")}
+									</button>
+								</td>
+							</tr>
+							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.tenantInfo.email")}:
 								</th>
@@ -152,10 +169,23 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
+									${message("csh.apply.versionConfig")}:
+								</th>
+								<td>
+									<select name="versionConfigId">
+										<option value="">${message("csh.apply.versionConfig.select")}</option>
+										[#list versions as version]
+										<option value="${version.id}">${version.versionName}</option>
+										[/#list]
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
 									<span class="requiredField">*</span>${message("csh.tenantInfo.accoutStatus.select")}:
 								</th>
 								<td>
-									<select name="accoutStatus" class="text">
+									<select name="accountStatus" class="text">
 										<option value="">${message("csh.tenantInfo.accoutStatus.select")}</option>
 										<option value="ACTIVED">${message("csh.tenantInfo.accoutStatus.ACTIVED")}</option>
 										<option value="LOCKED">${message("csh.tenantInfo.accoutStatus.LOCKED")}</option>
@@ -192,6 +222,135 @@ $().ready(function() {
         </div>
 	   </div>
 	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" >
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="mapModalLabel">
+	        	${message("csh.apply.pisotion.point")}
+	        	<input type="text" class="text" id="modalTitleInput">
+	        </h4>
+	      </div>
+	      <div class="modal-body">
+	       	<div id="allmap"></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+	<script type="text/javascript">
+		//百度地图API功能
+		function loadJScript() {
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.src = "http://api.map.baidu.com/api?v=2.0&ak=D767b598a9f1e43c3cadc4fe26cdb610&callback=init";
+			document.body.appendChild(script);
+		}
+		function init() {
+			// 百度地图API功能
+			var address = $("select[name='areaId_select']  option:selected").text();
+			var map = new BMap.Map("allmap");
+			var point = new BMap.Point(116.331398,39.897445);
+			map.centerAndZoom(point,12);
+            map.addControl(new BMap.NavigationControl());
+            map.enableScrollWheelZoom(true);
+            map.addControl(new BMap.OverviewMapControl());              //添加默认缩略地图控件
+			map.addControl(new BMap.OverviewMapControl({isOpen:true}));   //右上角，打开
+			map.addEventListener("click", showInfo);
+			var marker ;
+			 function showInfo(e){
+				 if(marker){
+					map.removeOverlay(marker);
+				 }
+				$("#longitude").val(e.point.lng);
+				$("#latitude").val(e.point.lat);
+				marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注
+				map.addOverlay(marker);              // 将标注添加到地图中
+				marker.enableDragging(); 
+				marker.addEventListener("dragend", function showInfo(){
+					 var p = marker.getPosition();       //获取marker的位置
+					 $("#longitude").val(p.lng);
+					 $("#latitude").val(p.lat); 
+				});
+			};
+			
+			var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+				{"input" : "modalTitleInput"
+				,"location" : map
+			});
+			
+			ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+			var str = "";
+				var _value = e.fromitem.value;
+				var value = "";
+				if (e.fromitem.index > -1) {
+					value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+				}    
+				str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+				
+				value = "";
+				if (e.toitem.index > -1) {
+					_value = e.toitem.value;
+					value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+				}    
+				str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+				$("#searchResultPanel").html(str);
+			});
+			
+			ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+			var _value = e.item.value;
+				var	myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+				$("#searchResultPanel").html("onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue);
+				setPlace(myValue);
+			});
+		
+			function setPlace(myValue){
+				map.clearOverlays();    //清除地图上所有覆盖物
+				function myFun(){
+					var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+					map.centerAndZoom(pp, 14);
+					marker = new BMap.Marker(new BMap.Point(pp.lng, pp.lat));  // 创建标注
+					map.addOverlay(marker);              // 将标注添加到地图中
+					$("#longitude").val(pp.lng);
+					$("#latitude").val(pp.lat);
+					marker.enableDragging(); 
+					marker.addEventListener("dragend", function changePosition(){
+						 var p = marker.getPosition();       //获取marker的位置
+						 $("#longitude").val(p.lng);
+						 $("#latitude").val(p.lat); 
+					});
+				}
+				var local = new BMap.LocalSearch(map, { //智能搜索
+				  onSearchComplete: myFun
+				});
+				local.search(myValue);
+			};
+			 
+			setPlace(address);
+			$("#modalTitleInput").attr("placeholder",address);
+		}  
+		
+		var $selectPositionPoint = $("#selectPositionPoint");
+		$selectPositionPoint.click(function(){
+			
+			var val = $("#areaId").val();
+			if(!val){
+				alert("请先选择地区");
+			}else{
+				$('#mapModal').modal("show");
+			}
+			
+			
+		});
+		$('#mapModal').on('show.bs.modal', function (e) {
+			loadJScript();
+		})
+</script>
 </body>
 </html>

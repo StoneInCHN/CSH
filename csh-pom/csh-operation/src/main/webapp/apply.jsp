@@ -69,6 +69,10 @@
 				contactPerson:{
 					required:true
 				},
+				email:{
+					required:true,
+					email:true
+				},
 				address:{
 					required:true
 				},
@@ -90,6 +94,10 @@
 				},
 				contactPerson:{
 					required:"<%=SpringUtils.getMessage("csh.apply.contactPersonRequired")%>"
+				},
+				email:{
+					required:"<%=SpringUtils.getMessage("csh.apply.emailRequired")%>",
+					email:"<%=SpringUtils.getMessage("csh.apply.email.format")%>"
 				},
 				address:{
 					required:"<%=SpringUtils.getMessage("csh.apply.addressRequired")%>"
@@ -168,6 +176,10 @@
 						<tr>
 							<th><span class="requiredField">*</span><%=SpringUtils.getMessage("csh.apply.contactPhone")%>:</th>
 							<td><input type="text" id="contactPhone" name="contactPhone" class="text" maxlength="30" /></td>
+						</tr>
+						<tr>
+							<th><span class="requiredField">*</span><%=SpringUtils.getMessage("csh.apply.email")%>:</th>
+							<td><input type="text" id="email" name="email" class="text" maxlength="30" /></td>
 						</tr>
 						<tr>
 							<th><span class="requiredField">*</span><%=SpringUtils.getMessage("csh.apply.area")%>:</th>
@@ -353,9 +365,9 @@
 		$('#mapModal').on('show.bs.modal', function (e) {
 			loadJScript();
 		})
-		$('#mapModal').on('hidden.bs.modal', function (e) {
+/* 		$('#mapModal').on('hidden.bs.modal', function (e) {
 			alert("位置点选择成功")
-		})
+		}) */
 </script>
 </body>
 </html>

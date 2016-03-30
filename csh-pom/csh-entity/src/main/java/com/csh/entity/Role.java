@@ -147,6 +147,7 @@ public class Role extends BaseEntity {
    * @return 权限
    */
   @JsonProperty
+  @NotEmpty
   @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
   @JoinColumn(name = "csh_role_config_meta")
   public Set<ConfigMeta> getConfigMetas ()

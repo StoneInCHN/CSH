@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/js/bootstrap-modal.js"></script>
 <script type="text/javascript">
 $().ready(function() {
 
@@ -110,6 +111,34 @@ $().ready(function() {
         </div>
 	   </div>
 	</div>
-	<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+	<!-- Modal -->
+	<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" >
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="mapModalLabel">
+	        <%=SpringUtils.getMessage("csh.apply.pisotion.point")%>
+	        	<input type="text" class="text" id="modalTitleInput">
+	        </h4>
+	      </div>
+	      <div class="modal-body">
+	       	<div id="allmap"></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="footer-warp">
+		<div class="copy-warp">
+			<div class="copy">
+				版权所有©2014<span>Copyright © 2016 </span>
+			</div>
+		</div>
+	</div>
+script type="text/javascript" src="${base}/resources/js/custom.js"></script>
 </body>
 </html>

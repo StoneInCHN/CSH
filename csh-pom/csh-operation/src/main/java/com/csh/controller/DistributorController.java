@@ -76,7 +76,7 @@ public class DistributorController extends BaseController {
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(Distributor distributor, MultipartFile file, Long areaId, ModelMap map) {
+  public String update(Distributor distributor,Long areaId, ModelMap map) {
     distributor.setArea(areaService.find(areaId));
     distributorService.update(distributor, "createDate");
     return "redirect:list.jhtml";
