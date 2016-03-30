@@ -32,10 +32,8 @@
 		<setting name="smtpUsername" value="tankboo@163.com" />
 		<setting name="smtpPassword" value="676397876." />
 		<setting name="defaultPageSize" value="5" />
-		<setting name="appId" value="hwy1OqpE2A6tsY0SnOzmA2" />
-		<setting name="appKey" value="upxTvBH6zU83Mj2PyZNLv1" />
-		<setting name="masterSecret" value="OQHk3IxROj5zSTmAer25w9" />
-		<setting name="appSecret" value="ayFkDeruwO6GQwxRNq5ic1" />
-		<setting name="pushHost" value="http://sdk.open.api.igexin.com/apiex.htm" />
+		<!-- 极光推送Key -->
+		<setting name="appKey" value="14d1a87d7060e744e4b22aad" />
+		<setting name="masterSecret" value="1d063710b79d84eaefa436b5" />
 	</csh>	
 	

@@ -89,7 +89,10 @@ public class VehicleController extends MobileBaseController {
     }
 
     EndUser user = endUserService.find(userId);
-    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo"};
+    String[] properties =
+        {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo", "vehicleNo",
+            "trafficInsuranceExpiration", "commercialInsuranceExpiration", "nextAnnualInspection",
+            "driveMileage", "lastMaintainMileage"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, user.getVehicles());
     response.setMsg(map);
@@ -153,6 +156,54 @@ public class VehicleController extends MobileBaseController {
     response.setDesc(vehicle.getId().toString());
     return response;
   }
+
+
+  /**
+   * 车辆编辑
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/edit", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody BaseResponse edit(@RequestBody VehicleRequest vehicleReq) {
+
+    BaseResponse response = new BaseResponse();
+    Long userId = vehicleReq.getUserId();
+    String token = vehicleReq.getToken();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    Vehicle vehicle = vehicleService.find(vehicleReq.getVehicleId());
+    VehicleBrandDetail brandDetail = vehicleBrandDetailService.find(vehicleReq.getBrandDetailId());
+    vehicle.setVehicleBrandDetail(brandDetail);
+    vehicle.setBrandIcon(brandDetail.getVehicleLine().getParent().getIcon());
+    vehicle.setPlate(vehicleReq.getPlateNo());
+    vehicle.setVehicleNo(vehicleReq.getVehicleNo());
+    vehicle.setTrafficInsuranceExpiration(vehicleReq.getTrafficInsuranceExpiration());
+    vehicle.setCommercialInsuranceExpiration(vehicleReq.getCommercialInsuranceExpiration());
+    vehicle.setNextAnnualInspection(vehicleReq.getNextAnnualInspection());
+    vehicle.setDriveMileage(vehicleReq.getDriveMileage());
+    vehicle.setLastMaintainMileage(vehicleReq.getLastMaintainMileage());
+
+    vehicleService.update(vehicle);
+    if (LogUtil.isDebugEnabled(VehicleController.class)) {
+      LogUtil.debug(VehicleController.class, "Update", "Update vehicle Info. UserId: %s", userId);
+    }
+
+    String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    response.setDesc(vehicle.getId().toString());
+    return response;
+  }
+
 
   /**
    * 手机扫描商家二维码时用户车辆与商家绑定

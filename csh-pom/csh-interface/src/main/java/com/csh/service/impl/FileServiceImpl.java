@@ -27,12 +27,12 @@ public class FileServiceImpl implements FileService {
   private Integer imageWidth;
   @Value("${ImageHeight}")
   private Integer imageHeight;
-  
+
 
   @Override
   public String saveImage(MultipartFile[] multipartFile) {
     String webPath = null;
-    String projectPath=projectUploadPath;
+    String projectPath = projectUploadPath;
     if (multipartFile == null || multipartFile.length == 0) {
       return null;
     }
@@ -42,10 +42,10 @@ public class FileServiceImpl implements FileService {
         String sourcePath =
             uploadPath + File.separator + "src_" + uuid + "."
                 + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-        webPath = projectPath+
-            File.separator + "src_" + uuid + "."
+        webPath =
+            projectPath + File.separator + "src_" + uuid + "."
                 + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-        //String storePath = uploadPath + File.separator + uuid + "." + DEST_EXTENSION;;
+        // String storePath = uploadPath + File.separator + uuid + "." + DEST_EXTENSION;;
 
         File tempFile =
             new File(System.getProperty("java.io.tmpdir") + File.separator + "upload_"
@@ -68,6 +68,7 @@ public class FileServiceImpl implements FileService {
 
   /**
    * 处理并保存图片
+   * 
    * @param tempFile
    * @param sourcePath
    * @param resizedPath
@@ -97,53 +98,55 @@ public class FileServiceImpl implements FileService {
 
   /**
    * 直接保存手机端图片，不处理
+   * 
    * @param tempFile
    * @param sourcePath
    * @param resizedPath
    */
   private void proccessImage(File tempFile, String sourcePath) {
     try {
-          File destSrcFile = new File(sourcePath);
-          FileUtils.moveFile(tempFile, destSrcFile);
+      File destSrcFile = new File(sourcePath);
+      FileUtils.moveFile(tempFile, destSrcFile);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
-  
+
   @Override
-  public String saveImage(MultipartFile multiFile ,ImageType imageType) {
+  public String saveImage(MultipartFile multiFile, ImageType imageType) {
     String webPath = null;
-    String imgUploadPath ="";
-    String projectPath="";
+    String imgUploadPath = "";
+    String projectPath = "";
     try {
 
       if (multiFile == null) {
         return null;
       }
       String uuid = UUID.randomUUID().toString();
-      
-//      if (imageType == ImageType.LICENSE) {
-//        imgUploadPath = uploadPath+ File.separator+"license";
-//        projectPath = projectUploadPath+File.separator+"license";
-//      }
+
+      // if (imageType == ImageType.LICENSE) {
+      // imgUploadPath = uploadPath+ File.separator+"license";
+      // projectPath = projectUploadPath+File.separator+"license";
+      // }
       if (imageType == ImageType.PHOTO) {
-        imgUploadPath = uploadPath+ File.separator+"photo";
-        projectPath = projectUploadPath+File.separator+"photo";
+        imgUploadPath = uploadPath + File.separator + "endUser" + File.separator + "photo";
+        projectPath = projectUploadPath + File.separator + "endUser" + File.separator + "photo";
       }
-//      if (imageType == ImageType.AUDIO) {
-//        imgUploadPath = uploadPath+ File.separator+"audio";
-//        projectPath = projectUploadPath+File.separator+"audio";
-//      }
-//      if (imageType == ImageType.SUGGEST) {
-//        imgUploadPath = uploadPath+ File.separator+"suggest";
-//        projectPath = projectUploadPath+File.separator+"suggest";
-//      }
+      // if (imageType == ImageType.AUDIO) {
+      // imgUploadPath = uploadPath+ File.separator+"audio";
+      // projectPath = projectUploadPath+File.separator+"audio";
+      // }
+      // if (imageType == ImageType.SUGGEST) {
+      // imgUploadPath = uploadPath+ File.separator+"suggest";
+      // projectPath = projectUploadPath+File.separator+"suggest";
+      // }
       String sourcePath =
           imgUploadPath + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      webPath =projectPath+File.separator+"src_" + uuid + "."
+      webPath =
+          projectPath + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      //String storePath = imgUploadPath + File.separator + uuid + "." + DEST_EXTENSION;;
+      // String storePath = imgUploadPath + File.separator + uuid + "." + DEST_EXTENSION;;
 
       File tempFile =
           new File(System.getProperty("java.io.tmpdir") + File.separator + "upload_"
@@ -160,4 +163,3 @@ public class FileServiceImpl implements FileService {
   }
 
 }
-

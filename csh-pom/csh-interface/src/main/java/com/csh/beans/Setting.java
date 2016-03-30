@@ -57,7 +57,7 @@ public class Setting implements Serializable {
 
   /** 短信平台软件版本 */
   private String ucpaasTemplate;
-  
+
   /** 短信平台语音回拨号码 */
   private String ucpaasCallDisplay;
 
@@ -84,20 +84,11 @@ public class Setting implements Serializable {
   /** 默认的模糊查询下拉菜单中返回的记录条数 */
   private Integer defaultPageSize;
 
-  /** 个推平台注册应用后生成的appId（公众版） */
-  private String appId;
-
-  /** 个推平台注册应用后生成的appKey（公众版） */
+  /** 极光平台注册应用后生成的appKey */
   private String appKey;
 
-  /** 个推平台注册应用后生成的masterSecret（公众版） */
+  /** 极光平台注册应用后生成的masterSecret */
   private String masterSecret;
-
-  /** 个推平台注册应用后生成的secret（公众版） */
-  private String appSecret;
-
-  /** 个推平台消息推送Host */
-  private String pushHost;
 
   /**
    * 网站域名
@@ -111,11 +102,11 @@ public class Setting implements Serializable {
 
 
   public String getUcpaasCallDisplay() {
-	return ucpaasCallDisplay;
+    return ucpaasCallDisplay;
   }
 
   public void setUcpaasCallDisplay(String ucpaasCallDisplay) {
-	this.ucpaasCallDisplay = ucpaasCallDisplay;
+    this.ucpaasCallDisplay = ucpaasCallDisplay;
   }
 
   public String getUcpaasAppId() {
@@ -185,14 +176,6 @@ public class Setting implements Serializable {
 
   public Integer getSmsCodeTimeOut() {
     return smsCodeTimeOut;
-  }
-
-  public String getAppSecret() {
-    return appSecret;
-  }
-
-  public void setAppSecret(String appSecret) {
-    this.appSecret = appSecret;
   }
 
   public void setSmsCodeTimeOut(Integer smsCodeTimeOut) {
@@ -353,14 +336,6 @@ public class Setting implements Serializable {
     this.defaultPageSize = defaultPageSize;
   }
 
-  public String getAppId() {
-    return appId;
-  }
-
-  public void setAppId(String appId) {
-    this.appId = appId;
-  }
-
   public String getAppKey() {
     return appKey;
   }
@@ -375,14 +350,6 @@ public class Setting implements Serializable {
 
   public void setMasterSecret(String masterSecret) {
     this.masterSecret = masterSecret;
-  }
-
-  public String getPushHost() {
-    return pushHost;
-  }
-
-  public void setPushHost(String pushHost) {
-    this.pushHost = pushHost;
   }
 
   public String getSiteUrl() {
