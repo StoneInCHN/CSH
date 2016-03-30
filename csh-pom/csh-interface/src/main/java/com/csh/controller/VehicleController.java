@@ -89,7 +89,7 @@ public class VehicleController extends MobileBaseController {
     }
 
     EndUser user = endUserService.find(userId);
-    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon"};
+    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, user.getVehicles());
     response.setMsg(map);
