@@ -75,6 +75,8 @@ public class CarServiceRecord extends BaseEntity
    */
   private Date balanceDate;
 
+  
+  private TenantClearingRecord tenantClearingRecord;
 
   /**
    * 租户ID
@@ -176,6 +178,17 @@ public class CarServiceRecord extends BaseEntity
   public void setBalanceDate (Date balanceDate)
   {
     this.balanceDate = balanceDate;
+  }
+
+  @ManyToOne
+  public TenantClearingRecord getTenantClearingRecord ()
+  {
+    return tenantClearingRecord;
+  }
+
+  public void setTenantClearingRecord (TenantClearingRecord tenantClearingRecord)
+  {
+    this.tenantClearingRecord = tenantClearingRecord;
   }
 
   

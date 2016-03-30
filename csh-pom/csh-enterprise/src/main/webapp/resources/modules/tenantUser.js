@@ -99,7 +99,7 @@ var tenantUser_manager_tool = {
 					             // swf文件路径
 					             swf: BASE_URL + '/js/Uploader.swf',
 					             disableGlobalDnd: true,
-					             server: '../file/uploadProfilePhoto.jhtml',
+					             server: '../file/uploadPhoto.jhtml',
 					             fileNumLimit: 1,
 					             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
 					             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
@@ -126,7 +126,7 @@ var tenantUser_manager_tool = {
 			     			warp :"addTenantUser_form",
 			     			uploadBeforeSend:function(object, data, headers){
 			     				 //在参数中增加一个员工编号字段 staffID
-			     				 data.staffID =$("#staffID").val();
+			     				 data.imageType ='PHOTO';
 			     			},
 			     			uploadSuccess:function(file, response){
 			     				//将返回的图片路径放到隐藏的input中，用于表单保存

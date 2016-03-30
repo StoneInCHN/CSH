@@ -32,6 +32,7 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.Department;
 import com.csh.entity.Position;
 import com.csh.entity.TenantUser;
+import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DepartmentService;
@@ -204,7 +205,7 @@ public class TenantUserController extends BaseController
     Map<String, String> paramMap = new HashMap<String, String>();
     paramMap.put("staffID", staffID);
 //    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, identifier);
-    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, paramMap);
+    String filePath = fileService.saveImage (file, ImageType.PHOTO);
     if (filePath != null && tenantUserId != null) {
       TenantUser tenantUser = tenantUserService.find(tenantUserId);
       tenantUser.setPhoto (filePath);

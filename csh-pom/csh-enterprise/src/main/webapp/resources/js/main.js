@@ -96,6 +96,12 @@ $(function(){
 			}
 		}
 	});
+//	$("#imgService").mouseover(function(){
+//		debugger;
+//		$("#imgService").attr("src","../../resources/images/service-focus.png")
+//	});
+	
+	
 		/**
 		 * 修改密码事件
 		 */
@@ -150,8 +156,6 @@ $(function(){
 		});
 //维修记录统计
 var reportMaintainStatistics = {
-//			colors : [ '#008000', '#FF0000', '#FFFF00', '#DDDF00', '#24CBE5',
-//					'#64E572', '#FF9655', '#FFF263', '#6AF9C4' ],
 			chart : {
 				type:'spline',
 				renderTo : 'serviceStatisticsReportId',
@@ -206,7 +210,7 @@ var reportMaintainStatistics = {
 		};
 //设备绑定情况
 var deviceInfoStatistics ={
-//	colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+	colors: ['#50B432','#058DC7'],
     chart: {
     	backgroundColor: {
 			linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -264,7 +268,7 @@ var deviceInfoStatistics ={
 var chart = new Highcharts.Chart(deviceInfoStatistics);
 //预约维修统计
 var repareReservationStatistics ={
-//		colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+		colors: ['#50B432','#058DC7'],
 	    chart: {
 	    	backgroundColor: {
 				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
@@ -318,7 +322,7 @@ var repareReservationStatistics ={
 	};
 //预约保养情况统计
 var maintainReservationStatistics ={
-//		colors: ['#DDDF00','#058DC7', '#50B432', '#ED561B',  '#000000', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+		colors: ['#50B432','#058DC7'],
 	    chart: {
 	    	backgroundColor: {
 				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },

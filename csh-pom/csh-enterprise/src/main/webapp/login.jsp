@@ -236,7 +236,7 @@ if (applicationContext != null) {
 		</form>
 	</div>
 	<div class="copyright">
-		2015 &copy; rights reserved.
+		2016 &copy; rights reserved.
 	</div>
 	<script type="text/javascript">
     $(function(){

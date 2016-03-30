@@ -35,6 +35,7 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.CarService;
 import com.csh.entity.ServiceCategory;
 import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
@@ -259,11 +260,8 @@ public class CarServiceController extends BaseController
   public @ResponseBody Message uploadPhoto (
       @RequestParam ("file") MultipartFile file, Long carServiceId)
   {
-    Map<String, String> paramMap = new HashMap<String, String> ();
-
     //    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, identifier);
-    String filePath = fileService.upload (FileType.PROFILE_PICTURE, file,
-        paramMap);
+    String filePath = fileService.saveImage (file, ImageType.CARSERVICEPICTURE);
     if (filePath != null && carServiceId != null)
     {
       CarService carService = carServiceService.find (carServiceId);

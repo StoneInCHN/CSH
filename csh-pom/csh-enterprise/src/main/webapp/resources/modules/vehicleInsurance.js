@@ -51,9 +51,9 @@ var vehicleInsurance_manager_tool = {
 			    	$('#addIDphotoFile').change(function(){
 			    		var fd = new FormData($("#addVehicleInsurance_form"));
 			    		fd.append("file", $('#addIDphotoFile')[0].files[0]);
-			    		
+			    		fd.append("imageType","IDPHOTO");
 			    		$.ajax({
-					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  url: "../file/uploadPhoto.jhtml",
 					    	  type: "POST",
 					    	  data: fd,
 					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
@@ -69,9 +69,9 @@ var vehicleInsurance_manager_tool = {
 			    	$('#addDrivingLicensePhoto').change(function(){
 			    		var fd = new FormData($("#addVehicleInsurance_form"));
 			    		fd.append("file", $('#addDrivingLicensePhoto')[0].files[0]);
-			    		
+			    		fd.append("imageType","DRIVINGLICENSEPHOTO");
 			    		$.ajax({
-					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  url: "../file/uploadPhoto.jhtml",
 					    	  type: "POST",
 					    	  data: fd,
 					    	  processData: false,  // 告诉jQuery不要去处理发送的数据
@@ -87,9 +87,9 @@ var vehicleInsurance_manager_tool = {
 			    	$('#addDriverLicensePhoto').change(function(){
 			    		var fd = new FormData($("#addVehicleInsurance_form"));
 			    		fd.append("file", $('#addDriverLicensePhoto')[0].files[0]);
-			    		
+			    		fd.append("imageType","DRIVERLICENSEPHOTO");
 			    		$.ajax({
-					    	  url: "../file/uploadProfilePhoto.jhtml",
+					    	  url: "../file/uploadPhoto.jhtml",
 					    	  type: "POST",
 					    	  data: fd,
 					    	  processData: false,  // 告诉jQuery不要去处理发送的数据

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.csh.beans.Message;
 import com.csh.beans.FileInfo.FileType;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.service.FileService;
 import com.csh.utils.JsonUtils;
 
@@ -34,43 +35,13 @@ public class FileController extends BaseController {
   private FileService fileService;
   
 
-  @RequestMapping(value = "/uploadProfilePhoto", method = RequestMethod.POST)
-//  public @ResponseBody Message uploadProfilePhoto(@RequestParam("file") MultipartFile file,String identifier) {
-   public @ResponseBody Message uploadProfilePhoto(@RequestParam("file") MultipartFile file,Map<String, String> paramMap) { 
-//    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, identifier);
-    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, paramMap);
+  @RequestMapping(value = "/uploadPhoto", method = RequestMethod.POST)
+   public @ResponseBody Message uploadPhoto(@RequestParam("file") MultipartFile file,ImageType imageType) { 
+    String filePath = fileService.saveImage (file,imageType);
     if(filePath ==null){
       filePath ="";
     }
     return Message.success(filePath);
   }
   
-  @RequestMapping(value = "/uploadNotificationPicutre", method = RequestMethod.POST, produces = "text/html; charset=UTF-8")
-  public @ResponseBody Map<String, Object> upload(@RequestParam("file") MultipartFile file, HttpServletResponse response,Map<String, String> paramMap) {
-    Map<String, Object> data = new HashMap<String, Object>();
-//    if (!fileService.isValid(fileType, file)) {
-//      data.put("error",1);
-//      data.put("message", Message.warn("admin.upload.invalid"));
-//    } else {
-      String url = fileService.upload(FileType.NOTIFY_PICTURE,file,paramMap);
-      if (url == null) {
-        data.put("error",1);
-        data.put("width", "100%");
-        data.put("message", Message.warn("admin.upload.error"));
-      } else {
-        data.put("error",0);
-        data.put("message", Message.Type.success);
-        data.put("url", url);
-        data.put("width", "100%");
-      }
-//    }
-      try{
-        response.setContentType("text/html; charset=UTF-8");
-        JsonUtils.writeValue (response.getWriter (), data);
-      }
-      catch (IOException e){
-        e.printStackTrace();
-      }
-      return data;
-  }
 }

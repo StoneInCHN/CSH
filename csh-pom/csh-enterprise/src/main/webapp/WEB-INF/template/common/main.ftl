@@ -39,6 +39,10 @@
 				[@shiro.hasPermission name="endUserManage"]
 				<li><a href="#endUser"><i class="fa fa-users fa-1x"></i>${message("csh.endUser.config")}</a></li>
 				[/@shiro.hasPermission]
+				<!--[@shiro.hasPermission name="clearingManage"]
+				<li><a href="#clearingManage"><i class="fa fa-users fa-1x"></i>${message("csh.clearingManage.config")}</a></li>
+				[/@shiro.hasPermission]
+				-->
 				[@shiro.hasPermission name="reservationManage"]
 				<li><a href="#reservationManage"><i class="fa fa-mobile fa-1x"></i>${message("csh.reservationMange.config")}</a></li>
 				[/@shiro.hasPermission]
@@ -57,6 +61,7 @@
 				[@shiro.hasPermission name="systemManage"]
 				<li><a href="#system"><i class="fa fa-windows fa-1x"></i>系统管理</a></li>
 				[/@shiro.hasPermission]
+				
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
 				<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>
 			</ul>
@@ -160,7 +165,12 @@
     		[@shiro.hasPermission name="vehicleInsurance"]
     		<li><a href="#" data-url="${base}/console/vehicleInsurance/vehicleInsurance.jhtml">${message("csh.insuranceManage.vehicleInsurance")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul>                 
+    	</ul>
+    	<ul title="${message("csh.clearingManage.clearingRecord")}" id="clearingManage">
+    		[@shiro.hasPermission name="clearingRecord"]
+    		<li><a href="#" data-url="${base}/console/tenantClearingRecord/tenantClearingRecord.jhtml">${message("csh.clearingManage.clearingRecord")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>                  
     </div>
   
     <div class="main-content" data-options="region:'center'">
@@ -168,70 +178,70 @@
 		    <div title="起始页">
 		    	<div class="main-content-left">
 		    			<div class="row shortcutNavigation">
-					        <div class="col-md-8">
-					        	<!--<a href ="#"><img style="width:120px;height:120px" onclick="shortcutNavigation('保养预约','${base}/console/billing/dailyBill.jhtml')" src="${base}/resources/images/maintain.png"/></a>
-					        		<a href ="#"><img style="width:120px;height:120px" onclick="shortcutNavigation('维修预约','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/service.png"/></a>
-					        	-->
-					        	<a href ="#"><img title="车辆信息" style="width:120px;height:120px" onclick="shortcutNavigation('车辆信息','${base}/console/vehicle/vehicle.jhtml')" src="${base}/resources/images/car.png"/></a>
-					        	<a href ="#"><img title="设备信息" style="width:120px;height:120px" onclick="shortcutNavigation('设备信息','${base}/console/deviceInfo/deviceInfo.jhtml')" src="${base}/resources/images/device.png"/></a>
-					        	<a href ="#"><img title="保险管理" style="width:120px;height:120px" onclick="shortcutNavigation('车辆保险','${base}/console/vehicleInsurance/vehicleInsurance.jhtml')" src="${base}/resources/images/insurance.png"/></a>
-					        </div>
-					        <div class="col-md-4">
-					        	<div class=" pull-right">
-					        		<img id="qrCodeImage" src="${base}/console/common/showQrCode.jhtml" title="扫码加入"/>
-					        	</div>
-					        </div>
-				        </div>
-				        <div class="row index-report">
-							<div class="col-md-8 index-report-item">
-								<div class = "row">
-					         		<div class="col-md-4"><div id = "deviceInfoStatisticsId" style="height:260px"></div></div>
-					         		<div class="col-md-4"><div id = "repareReservationStatisticsId" style="height:260px"></div></div>
-					         		<div class="col-md-4"><div id = "maintainReservationStatisticsId" style="height:260px"></div></div>
+		    				<div class="row">
+						        <div class="col-md-12 ">
+						        	<a href ="#"><img class="imgNav" title="车辆信息" onclick="shortcutNavigation('车辆信息','${base}/console/vehicle/vehicle.jhtml')" src="${base}/resources/images/car.png"/></a>
+						        	<a href ="#"><img class="imgNav" title="设备信息" onclick="shortcutNavigation('设备信息','${base}/console/deviceInfo/deviceInfo.jhtml')" src="${base}/resources/images/device.png"/></a>
+						        	<a href ="#"><img class="imgNav" title="保险管理" onclick="shortcutNavigation('车辆保险','${base}/console/vehicleInsurance/vehicleInsurance.jhtml')" src="${base}/resources/images/insurance.png"/></a>
+						        	<a href ="#"><img class="imgNav" title="保养预约" onclick="shortcutNavigation('保养预约','${base}/console/billing/dailyBill.jhtml')" src="${base}/resources/images/maintain.png"/></a>
+						        	<a href ="#"><img class="imgNav" title="维修预约" onclick="shortcutNavigation('维修预约','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/service.png"/></a>
+						        </div>
+						    </div>
+						    <div class="row">
+								<div class="col-md-12 index-report-item">
+									<div class = "row">
+						         		<div class="col-md-4 index-report-item"><div id = "deviceInfoStatisticsId" style="height:240px"></div></div>
+						         		<div class="col-md-4 index-report-item"><div id = "repareReservationStatisticsId" style="height:240px"></div></div>
+						         		<div class="col-md-4 index-report-item"><div id = "maintainReservationStatisticsId" style="height:240px"></div></div>
+						         	</div>
 					         	</div>
-				         	</div>
-				         	<div class="col-md-4 ">
-				         		<div class = "pull-right">
-						         	<div id="calendar-panel " class="easyui-panel" title="日历" 
-										style="width:260px;height:260px;padding:10px;background:#fafafa;"data-options="collapsible:true">
-										<div id="cc" class="easyui-calendar" style="width:100%;height:100%;"></div>  
-									</div>
-								</div>
-				         	</div>
-				         </div>
-						<div class="row index-report">
-								<div class="col-md-8">
+					         </div>
+					         <div class="row">
+								<div class="col-md-12">
 						    		<div id="serviceStatisticsReportId" style="height:260px"></div>
-						    	</div>
-						    	<div class="col-md-4">
-						    		<div class="row">
-					    				<div class="mini-widget pull-right" style="height:80px;width: 260px;margin-top:30px;">
-							                <div class="mini-widget-heading clearfix" >设备：</div>
-							                <div class="mini-widget-body clearfix">
-							                  <div class="pull-left" style="color:green">已绑定：${response.bindedDeviceCount}</div>
-							                  <input type="hidden" id='bindedDeviceCount' value='${response.bindedDeviceCount}'/>
-							                  <div class="pull-right" style="color:red">
-							                  	未绑定：${response.unbindedDeviceCount}
-							                  </div>
-							                  <input type="hidden" id='unbindedDeviceCount' value='${response.unbindedDeviceCount}'/>
-							                </div>
-						            	</div>
-             				 		</div>
-             				 		<div class="row">
-		             				 	<div class="mini-widget pull-right" style="height:80px;width: 260px;">
-							                <div class="mini-widget-heading"><span >用户</span></div>
-							                <div class="mini-widget-body">
-							                	<div style="padding:5px">用户数:<pan class="endUserInfoCount">${response.endUserCount}</pan></div>
-							                	<div style="padding:5px">车辆数:<pan class="endUserInfoCount">${response.vehicleCount}</pan><div>
-							                </div>
-							            </div>
-		             				 </div>
-				    		</div><!--end col-->
+						    	</div><!--end col-->
+						     </div>
+						</div><!-- end row shortcutNavigation-->
+					</div>
+					<div class="main-content-right">
+						<div class="row">
+							<div class="">
+								<img id="qrCodeImage" style="width:120px;height:120px" src="${base}/console/common/showQrCode.jhtml" title="扫码加入"/>
+							</div>
 						
+							<div class = "">
+								<div id="calendar-panel " class="easyui-panel" title="日历" 
+									style="width:220px;height:180px;padding:5px;background:#fafafa;"data-options="collapsible:true">
+									<div id="cc" class="easyui-calendar" style="width:100%;height:100%;"></div>  
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="mini-widget pull-right" style="height:60px;width: 260px;margin-top:30px;">
+								<div class="mini-widget-heading clearfix" >设备：</div>
+								<div class="mini-widget-body clearfix">
+								  <div class="pull-left" style="color:green">已绑定：${response.bindedDeviceCount}</div>
+								  <input type="hidden" id='bindedDeviceCount' value='${response.bindedDeviceCount}'/>
+								  <div class="pull-right" style="color:red">
+									未绑定：${response.unbindedDeviceCount}
+								  </div>
+								  <input type="hidden" id='unbindedDeviceCount' value='${response.unbindedDeviceCount}'/>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="mini-widget pull-right" style="height:60px;width: 260px;">
+								<div class="mini-widget-heading"><span >用户</span></div>
+								<div class="mini-widget-body">
+									<div style="padding:5px">用户数:<pan class="endUserInfoCount">${response.endUserCount}</pan></div>
+									<div style="padding:5px">车辆数:<pan class="endUserInfoCount">${response.vehicleCount}</pan><div>
+								</div>
+							</div>
 						</div>
 					</div>
-		    </div>    
-		</div>
+		   	 	</div>
+		   	 	
+			</div>
 		<div id = "commonMainDialog"></div>  
     </div>    
     

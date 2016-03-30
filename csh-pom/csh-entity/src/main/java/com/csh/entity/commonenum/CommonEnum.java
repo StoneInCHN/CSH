@@ -705,8 +705,23 @@ public class CommonEnum {
     /**
      * 头像
      */
-    PHOTO
-
+    PHOTO,
+    /**
+     * 服务照片
+     */
+    CARSERVICEPICTURE,
+    /**
+     * 行驶证照片
+     */
+   DRIVINGLICENSEPHOTO,
+   /**
+    * 驾驶证照片
+    */
+   DRIVERLICENSEPHOTO,
+   /**
+    * 身份证照片
+    */
+   IDPHOTO
   }
 
 
@@ -803,5 +818,29 @@ public class CommonEnum {
     /** 已支付 */
     PAID
   }
+  /**
+   * 结算状态
+   * @author huyong
+   *
+   */
+  public enum ClearingStatus
+  {
+    /**
+     * 待开发票
+     */
+    WAITING_FOR_INVOICE,
+    /**
+     * 发票已上传
+     */
+    INVOICE_ALREADY_PROVIDED,
+    /**
+     * 已付款
+     */
+    PAID,
+    /**
+     * 结算完成
+     */
+    CLEARING_COMPLETE
 
+  }
 }

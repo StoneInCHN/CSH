@@ -211,7 +211,18 @@ var messages = {
 	"csh.vehicleInsurance.startDate":"保单开始时间",
 	"csh.vehicleInsurance.endDate":"保单结束时间",
 	"csh.vehicleInsurance.isOwned":"是否过户",
-	"csh.vehicleInsurance.isLoaned":"是否贷款车"
+	"csh.vehicleInsurance.isLoaned":"是否贷款车",
+	
+	//结算记录
+	"csh.carService.clearingSn":"结算单号",
+	"csh.carService.clearingStatus":"结算状态",
+	"csh.carService.periodBeginDate":"结算周期开始时间",
+	"csh.carService.periodEndDate":"结算周期结束时间",
+	"csh.tenantClearingRecord.list":"结算记录列表",
+	"csh.tenantClearingRecord.clearingDate":"结算时间",
+	"csh.tenantClearingRecord.periodBeginDate":"结算周期开始时间",
+	"csh.tenantClearingRecord.periodEndDate":"结算周期结束时间"
+	
 	
 };
 //多语言
