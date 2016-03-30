@@ -137,10 +137,9 @@ public class JPushUtil {
 
   public static void main(String[] args) throws Exception {
     // PushPayload payload = JPushUtil.buildPushObject("推送广播，推送到所有客户端");
-    PushPayload payload = JPushUtil.buildPushObject_android("推送广播，推送到Android客户端");
+    // PushPayload payload = JPushUtil.buildPushObject_android("推送广播，推送到Android客户端");
     // // PushPayload payload = JPushUtil.buildPushObject_android_tag("推送广播，推送到指定Tag客户端", "重庆");
-    // PushPayload payload =
-    // JPushUtil.buildPushObject_android_alias("推送广播，推送到指定Alias设备", "862961026447979");
+    PushPayload payload = JPushUtil.buildPushObject_android_alias("推送广播，推送到指定Alias设备", "111111");// 864981026401782
     JPushUtil.sendPush(payload);
 
   }
