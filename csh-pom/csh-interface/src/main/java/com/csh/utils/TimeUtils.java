@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class TimeUtils {
 
+  private static final SimpleDateFormat longDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+
   /**
    * 格式化时间
    * 
@@ -22,6 +24,11 @@ public class TimeUtils {
     SimpleDateFormat sdf = new SimpleDateFormat(format);
     Date d = new Date(time);
     return sdf.format(d);
+  }
+
+
+  public static String getLongDateStr(Date date) {
+    return longDateFormat.format(date);
   }
 
 }

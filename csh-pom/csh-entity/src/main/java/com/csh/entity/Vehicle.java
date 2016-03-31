@@ -147,6 +147,7 @@ public class Vehicle extends BaseEntity {
    */
   private Long lastMaintainMileage;
 
+
   @Column(length = 200)
   public String getBrandIcon() {
     return brandIcon;

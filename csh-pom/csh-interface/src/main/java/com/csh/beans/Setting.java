@@ -100,6 +100,19 @@ public class Setting implements Serializable {
    */
   private Integer searchRadius;
 
+  /**
+   * 保险类别ID
+   */
+  private Long insuranceId;
+
+
+  public Long getInsuranceId() {
+    return insuranceId;
+  }
+
+  public void setInsuranceId(Long insuranceId) {
+    this.insuranceId = insuranceId;
+  }
 
   public String getUcpaasCallDisplay() {
     return ucpaasCallDisplay;
