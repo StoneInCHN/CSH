@@ -13,6 +13,7 @@ import com.csh.dao.WalletDao;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
+import com.csh.entity.VehicleInsurance;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.BalanceType;
@@ -74,5 +75,32 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     }
     return carServiceRecord;
 
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public CarServiceRecord createInsuranceRecord(EndUser endUser, CarService carService,
+      BigDecimal price, String company, String IDphoto, String drivingLicensePhoto,
+      String driverLicensePhoto, Boolean isOwned, Boolean isLoaned) {
+
+    CarServiceRecord carServiceRecord = new CarServiceRecord();
+    // carServiceRecord.setTenantID(carService.getTenantInfo().getId());
+    carServiceRecord.setTenantID(endUser.getDefaultVehicle().getDevice().getTenantID());
+    String recordNo = ToolsUtils.generateRecordNo(carService.getTenantInfo().getOrgCode());
+    carServiceRecord.setRecordNo(recordNo);
+    carServiceRecord.setCarService(carService);
+    carServiceRecord.setEndUser(endUser);
+    carServiceRecord.setPrice(price);
+    carServiceRecord.setTenantName(carService.getTenantInfo().getTenantName());
+    VehicleInsurance vehicleInsurance = new VehicleInsurance();
+    vehicleInsurance.setInsuredCompany(company);
+    vehicleInsurance.setIDphoto(IDphoto);
+    vehicleInsurance.setDrivingLicensePhoto(drivingLicensePhoto);
+    vehicleInsurance.setDriverLicensePhoto(driverLicensePhoto);
+    vehicleInsurance.setIsLoaned(isLoaned);
+    vehicleInsurance.setIsOwned(isOwned);
+    carServiceRecord.setVehicleInsurance(vehicleInsurance);
+    carServiceRecordDao.persist(carServiceRecord);
+    return carServiceRecord;
   }
 }

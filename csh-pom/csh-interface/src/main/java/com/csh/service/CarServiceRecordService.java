@@ -34,4 +34,25 @@ public interface CarServiceRecordService extends BaseService<CarServiceRecord, L
    */
   public CarServiceRecord createServiceRecord(EndUser endUser, CarService carService,
       ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType);
+
+
+  /**
+   * 用户购买保险记录
+   * 
+   * @param endUser
+   * @param carService
+   * @param price
+   * @param company
+   * @param IDphoto
+   * @param drivingLicensePhoto
+   * @param driverLicensePhoto
+   * @param isOwned
+   * @param isLoaned
+   * @return
+   */
+  public CarServiceRecord createInsuranceRecord(EndUser endUser, CarService carService,
+      BigDecimal price, String company, String IDphoto, String drivingLicensePhoto,
+      String driverLicensePhoto, Boolean isOwned, Boolean isLoaned);
+
+
 }

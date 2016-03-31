@@ -37,6 +37,7 @@ import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.CarServiceRequest;
+import com.csh.json.request.InsuranceRequest;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
@@ -207,23 +208,7 @@ public class CarServiceController extends MobileBaseController {
                 carService.getServiceName(), carServiceRecord.getPrice(),
                 carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
       }
-    } else {
-      carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
-
-      carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
-      carServiceRecordService.update(carServiceRecord);
-      if (LogUtil.isDebugEnabled(CarServiceController.class)) {
-        LogUtil
-            .debug(
-                CarServiceController.class,
-                "Update",
-                "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
-                endUser.getUserName(), carServiceRecord.getTenantName(), carServiceRecord
-                    .getCarService().getServiceName(), carServiceRecord.getPrice(),
-                carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
-      }
     }
-
 
     if (PaymentType.WECHAT.equals(paymentType)) {
       try {
@@ -444,11 +429,19 @@ public class CarServiceController extends MobileBaseController {
    */
   @RequestMapping(value = "/buyInsurance", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse buyInsurance(@RequestBody CarServiceRequest serviceReq) {
+  public @ResponseBody BaseResponse buyInsurance(@RequestBody InsuranceRequest insuranceReq) {
 
     BaseResponse response = new BaseResponse();
-    Long userId = serviceReq.getUserId();
-    String token = serviceReq.getToken();
+    Long userId = insuranceReq.getUserId();
+    String token = insuranceReq.getToken();
+    String company = insuranceReq.getInsuredCompany();
+    String IDphoto = insuranceReq.getIDphoto();
+    String drivingLicensePhoto = insuranceReq.getDrivingLicensePhoto();
+    String driverLicensePhoto = insuranceReq.getDriverLicensePhoto();
+    Boolean isOwned = insuranceReq.getIsOwned();
+    Boolean isLoaned = insuranceReq.getIsLoaned();
+    BigDecimal price = insuranceReq.getPrice();
+
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -457,24 +450,14 @@ public class CarServiceController extends MobileBaseController {
       return response;
     }
 
+    EndUser endUser = endUserService.find(userId);
+    carServiceRecordService.createInsuranceRecord(endUser, null, price, company, IDphoto,
+        drivingLicensePhoto, driverLicensePhoto, isOwned, isLoaned);
 
-    CarServiceRecord carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
-    String[] properties = {"id", "createDate", "price", "recordNo"};
-    Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, carServiceRecord);
-    map.put("serviceName", carServiceRecord.getCarService().getServiceName());
-    String[] insurance_properties =
-        {"id", "insuredCompany", "insuranceStartDate", "insuranceEndDate", "isOwned", "isLoaned",
-            "driverLicensePhoto", "drivingLicensePhoto", "IDphoto"};
-    Map<String, Object> insurance_map =
-        FieldFilterUtils.filterEntityMap(insurance_properties,
-            carServiceRecord.getVehicleInsurance());
-    map.put("insurance", insurance_map);
-
-    String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
+    String newtoken = TokenGenerator.generateToken(insuranceReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 }

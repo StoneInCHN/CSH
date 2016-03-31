@@ -3,6 +3,7 @@ package com.csh.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -195,7 +196,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
 
-  @OneToOne(mappedBy = "carServiceRecord")
+  @OneToOne(mappedBy = "carServiceRecord", cascade = CascadeType.ALL)
   public VehicleInsurance getVehicleInsurance() {
     return vehicleInsurance;
   }
