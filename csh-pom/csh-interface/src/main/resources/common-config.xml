@@ -37,5 +37,21 @@
 		<setting name="masterSecret" value="e658c652b6b824afd582ab26" />
 		
 		<setting name="insuranceId" value="6" />
+		
+		<!-- 微信支付平台 -->
+		<!-- 秘钥 -->
+		<setting name="wechatKey" value="a09d313c915246009685239d39b3e416" />
+		<!-- 微信分配的公众账号ID（企业号corpid即为此appId） -->
+		<setting name="wechatAppid" value="wx75b0585936937e4a" />
+		<!-- 商户ID -->
+		<setting name="wechatMchId" value="1249451301" />
+		<!-- 交易类型 -->
+		<setting name="wechatTradeType" value="APP" />
+		<!-- 通知地址 -->
+		<setting name="wechatNotifyUrl" value="http://jfinal.chcws.com/notify/pay/notify_wechat" />
+		<!-- 微信下订单接口 -->
+		<setting name="wechatAddOrderUrl" value="https://api.mch.weixin.qq.com/pay/unifiedorder" />
+		<!-- 微信Token接口 -->
+		<setting name="wechatTokenUrl" value="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET" />
 	</csh>	
 	

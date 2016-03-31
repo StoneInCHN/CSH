@@ -713,15 +713,15 @@ public class CommonEnum {
     /**
      * 行驶证照片
      */
-   DRIVINGLICENSEPHOTO,
-   /**
-    * 驾驶证照片
-    */
-   DRIVERLICENSEPHOTO,
-   /**
-    * 身份证照片
-    */
-   IDPHOTO
+    DRIVINGLICENSEPHOTO,
+    /**
+     * 驾驶证照片
+     */
+    DRIVERLICENSEPHOTO,
+    /**
+     * 身份证照片
+     */
+    IDPHOTO
   }
 
 
@@ -806,7 +806,7 @@ public class CommonEnum {
     ALIPAY,
     /** 微信 */
     WECHAT,
-    /** 钱包 */
+    /** 钱包余额 */
     WALLET
   }
 
@@ -820,11 +820,11 @@ public class CommonEnum {
   }
   /**
    * 结算状态
+   * 
    * @author huyong
    *
    */
-  public enum ClearingStatus
-  {
+  public enum ClearingStatus {
     /**
      * 待开发票
      */

@@ -1,11 +1,14 @@
 package com.csh.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.dom4j.DocumentException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,9 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
+import com.csh.entity.Wallet;
+import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
+import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.ordering.Ordering;
@@ -35,8 +41,8 @@ import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
+import com.csh.utils.PayUtil;
 import com.csh.utils.TokenGenerator;
-import com.csh.utils.ToolsUtils;
 
 
 @Controller("CarServiceController")
@@ -55,18 +61,20 @@ public class CarServiceController extends MobileBaseController {
 
 
   /**
-   * 用户直接购买汽车服务或预约
+   * 用户预约汽车服务
    * 
    * @param req
    * @return
    */
-  @RequestMapping(value = "/buyService", method = RequestMethod.POST)
+  @RequestMapping(value = "/subscribeService", method = RequestMethod.POST)
   @UserValidCheck
   public @ResponseBody BaseResponse buyService(@RequestBody CarServiceRequest serviceReq) {
 
     BaseResponse response = new BaseResponse();
     Long userId = serviceReq.getUserId();
     String token = serviceReq.getToken();
+    // ChargeStatus chargeStatus = serviceReq.getChargeStatus();
+    BigDecimal price = serviceReq.getPrice();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -78,19 +86,10 @@ public class CarServiceController extends MobileBaseController {
     EndUser endUser = endUserService.find(userId);
     CarService carService = carServiceService.find(serviceReq.getServiceId());
 
-    CarServiceRecord carServiceRecord = new CarServiceRecord();
-    carServiceRecord.setTenantID(carService.getTenantInfo().getId());
-    String recordNo = ToolsUtils.generateRecordNo(carService.getTenantInfo().getOrgCode());
-    carServiceRecord.setRecordNo(recordNo);
-    carServiceRecord.setCarService(carService);
-    carServiceRecord.setEndUser(endUser);
-    carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
-    if (serviceReq.getPaymentType() != null) {
-      carServiceRecord.setPaymentType(serviceReq.getPaymentType());
-    }
-    carServiceRecord.setPrice(serviceReq.getPrice());
-    carServiceRecord.setTenantName(carService.getTenantInfo().getTenantName());
-    carServiceRecordService.save(carServiceRecord);
+    CarServiceRecord carServiceRecord =
+        carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.RESERVATION,
+            price, null);
+
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
       LogUtil
           .debug(
@@ -109,15 +108,16 @@ public class CarServiceController extends MobileBaseController {
     return response;
   }
 
+
   /**
-   * 用户支付汽车服务
+   * 更新支付状态
    * 
    * @param req
    * @return
    */
-  @RequestMapping(value = "/payService", method = RequestMethod.POST)
+  @RequestMapping(value = "/updatePayStatus", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse payService(@RequestBody CarServiceRequest serviceReq) {
+  public @ResponseBody BaseResponse updatePayStatus(@RequestBody CarServiceRequest serviceReq) {
 
     BaseResponse response = new BaseResponse();
     Long userId = serviceReq.getUserId();
@@ -130,21 +130,20 @@ public class CarServiceController extends MobileBaseController {
       return response;
     }
 
-
+    EndUser endUser = endUserService.find(userId);
     CarServiceRecord carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
+
     carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
-    carServiceRecord.setPaymentType(serviceReq.getPaymentType());
-    // carServiceRecord.setPrice(serviceReq.getPrice());
     carServiceRecordService.update(carServiceRecord);
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
       LogUtil
           .debug(
               CarServiceController.class,
               "Update",
-              "User Pay for Car Service. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
-              carServiceRecord.getEndUser().getUserName(), carServiceRecord.getTenantName(),
-              carServiceRecord.getCarService().getServiceName(), carServiceRecord.getPrice(),
-              carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
+              "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+              endUser.getUserName(), carServiceRecord.getTenantName(), carServiceRecord
+                  .getCarService().getServiceName(), carServiceRecord.getPrice(), carServiceRecord
+                  .getPaymentType(), carServiceRecord.getChargeStatus());
     }
 
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
@@ -154,6 +153,95 @@ public class CarServiceController extends MobileBaseController {
     return response;
   }
 
+
+  /**
+   * 支付(余额支付直接支付，第三方支付调用P++接口)
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/payService", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody BaseResponse payService(@RequestBody CarServiceRequest serviceReq,
+      HttpServletRequest httpReq) {
+
+    BaseResponse response = new BaseResponse();
+    Long userId = serviceReq.getUserId();
+    String token = serviceReq.getToken();
+    PaymentType paymentType = serviceReq.getPaymentType();
+    // ChargeStatus chargeStatus = serviceReq.getChargeStatus();
+    BigDecimal price = serviceReq.getPrice();
+    Long serviceId = serviceReq.getServiceId();
+    Long recordId = serviceReq.getRecordId();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    EndUser endUser = endUserService.find(userId);
+    Wallet wallet = endUser.getWallet();
+    if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
+      if (serviceReq.getPrice().compareTo(wallet.getBalanceAmount()) < 0) {
+        response.setCode(CommonAttributes.FAIL_COMMON);
+        response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+      }
+    }
+
+    CarServiceRecord carServiceRecord = new CarServiceRecord();
+    CarService carService = carServiceService.find(serviceId);
+    if (recordId == null) {
+      carServiceRecord =
+          carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
+              price, paymentType);
+      if (LogUtil.isDebugEnabled(CarServiceController.class)) {
+        LogUtil
+            .debug(
+                CarServiceController.class,
+                "Save",
+                "User buy Car Service. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+                endUser.getUserName(), carServiceRecord.getTenantName(),
+                carService.getServiceName(), carServiceRecord.getPrice(),
+                carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
+      }
+    } else {
+      carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
+
+      carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
+      carServiceRecordService.update(carServiceRecord);
+      if (LogUtil.isDebugEnabled(CarServiceController.class)) {
+        LogUtil
+            .debug(
+                CarServiceController.class,
+                "Update",
+                "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+                endUser.getUserName(), carServiceRecord.getTenantName(), carServiceRecord
+                    .getCarService().getServiceName(), carServiceRecord.getPrice(),
+                carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
+      }
+    }
+
+
+    if (PaymentType.WECHAT.equals(paymentType)) {
+      try {
+        response =
+            PayUtil.wechat(carServiceRecord.getRecordNo(), carService.getServiceName(),
+                httpReq.getRemoteAddr(), serviceId.toString(), price.toString());
+      } catch (DocumentException e) {
+        e.printStackTrace();
+      }
+    } else {
+      response.setCode(CommonAttributes.SUCCESS);
+    }
+
+    String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    return response;
+  }
 
   /**
    * 记录详情

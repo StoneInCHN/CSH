@@ -105,6 +105,97 @@ public class Setting implements Serializable {
    */
   private Long insuranceId;
 
+  /**
+   * 秘钥
+   */
+  private String wechatKey;
+
+  /**
+   * 微信分配的公众账号ID（企业号corpid即为此appId）
+   */
+  private String wechatAppid;
+
+  /**
+   * 商户ID
+   */
+  private String wechatMchId;
+
+  /**
+   * 交易类型
+   */
+  private String wechatTradeType;
+
+  /**
+   * 通知地址
+   */
+  private String wechatNotifyUrl;
+
+  /**
+   * 微信下订单接口
+   */
+  private String wechatAddOrderUrl;
+
+  /**
+   * 微信Token接口
+   */
+  private String wechatTokenUrl;
+
+
+  public String getWechatKey() {
+    return wechatKey;
+  }
+
+  public void setWechatKey(String wechatKey) {
+    this.wechatKey = wechatKey;
+  }
+
+  public String getWechatAppid() {
+    return wechatAppid;
+  }
+
+  public void setWechatAppid(String wechatAppid) {
+    this.wechatAppid = wechatAppid;
+  }
+
+  public String getWechatMchId() {
+    return wechatMchId;
+  }
+
+  public void setWechatMchId(String wechatMchId) {
+    this.wechatMchId = wechatMchId;
+  }
+
+  public String getWechatTradeType() {
+    return wechatTradeType;
+  }
+
+  public void setWechatTradeType(String wechatTradeType) {
+    this.wechatTradeType = wechatTradeType;
+  }
+
+  public String getWechatNotifyUrl() {
+    return wechatNotifyUrl;
+  }
+
+  public void setWechatNotifyUrl(String wechatNotifyUrl) {
+    this.wechatNotifyUrl = wechatNotifyUrl;
+  }
+
+  public String getWechatAddOrderUrl() {
+    return wechatAddOrderUrl;
+  }
+
+  public void setWechatAddOrderUrl(String wechatAddOrderUrl) {
+    this.wechatAddOrderUrl = wechatAddOrderUrl;
+  }
+
+  public String getWechatTokenUrl() {
+    return wechatTokenUrl;
+  }
+
+  public void setWechatTokenUrl(String wechatTokenUrl) {
+    this.wechatTokenUrl = wechatTokenUrl;
+  }
 
   public Long getInsuranceId() {
     return insuranceId;
