@@ -167,6 +167,36 @@
 				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
+		[#list ["admin:serviceCategory"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.service")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:serviceCategory"]
+								<li>
+									<a href="../serviceCategory/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.serviceCategory")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
+		[#list ["admin:feedBack"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.feedBack")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:feedBack"]
+								<li>
+									<a href="../feedBack/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.feedBack")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
        </ul>
       </div>
       <div class="mainbar">
