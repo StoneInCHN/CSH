@@ -99,27 +99,31 @@ public class FileServiceImpl implements FileService {
     String date = sdFormat.format(new Date());
     String webPath = null;
     String imgUploadPath = "";
+    String subPath = "";
     try {
       if (multiFile == null || multiFile.getSize() > ImageMaxSize) {
         return null;
       }
       String uuid = UUID.randomUUID().toString();
       if (imageType == ImageType.LICENSE) {
-        imgUploadPath = uploadPath + File.separator + "license";
+        subPath =  File.separator + "license";
       }
       if (imageType == ImageType.STOREPICTURE) {
-        imgUploadPath = uploadPath + File.separator + "storePicture";
+        subPath =  File.separator + "storePicture";
       }
       if (imageType == ImageType.ADVERTISEMENT) {
-        imgUploadPath = uploadPath + File.separator + "advertisement";
+        subPath =  File.separator + "advertisement";
       }
       if (imageType == ImageType.VEHICLEICON) {
-        imgUploadPath = uploadPath + File.separator + "vehicleIcon";
+        subPath =  File.separator + "vehicleIcon";
       }
+      
+      imgUploadPath =uploadPath + subPath;
+      
       String sourcePath =
           imgUploadPath+File.separator+date+ File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      webPath =date+ File.separator + "src_" + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+      webPath =File.separator+"upload"+ subPath+ File.separator+date+ File.separator + "src_" + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
       String storePath = imgUploadPath +File.separator+date+ File.separator + uuid + "." + DEST_EXTENSION;;
 
       File tempFile =

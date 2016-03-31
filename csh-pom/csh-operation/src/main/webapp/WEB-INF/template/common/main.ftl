@@ -157,6 +157,11 @@
 									<a href="../vehicleLine/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.vehicleLine")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
+							 [@shiro.hasPermission name="admin:vehicleBrandDetail"]
+								<li>
+									<a href="../vehicleBrandDetail/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.vehicleBrandDetail")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
 				       </ul>
 				</li>
 				[#break /]

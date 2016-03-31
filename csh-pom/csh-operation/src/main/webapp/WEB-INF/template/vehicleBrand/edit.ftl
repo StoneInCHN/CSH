@@ -64,7 +64,7 @@ $().ready(function() {
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                    <form id="inputForm" action="update.jhtml" method="post">
+                    <form id="inputForm" action="update.jhtml" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="id" value="${vehicleBrand.id}" />
 						<table class="input tabContent">
 							<table class="input tabContent">
@@ -81,7 +81,7 @@ $().ready(function() {
 									${message("csh.vehicleBrand.icon")}:
 								</th>
 								<td>
-									<a href="${base}/upload/vehicleIcon/${vehicleBrand.icon}" target="1024"><img src="${base}/upload/vehicleIcon/${vehicleBrand.icon}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.vehicleBrand.icon")}"></a>
+									<a href="${vehicleBrand.icon}" target="1024"><img src="${base + vehicleBrand.icon}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.vehicleBrand.icon")}"></a>
 								</td>
 							</tr>
 							<tr>

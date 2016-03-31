@@ -68,7 +68,8 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "tenantName" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="username"><a href="#">${message("csh.vehicleBrand.tenantName")}</a></li>
+								          <li [#if page.searchProperty == "name" ] selected="selected" class="active" [/#if] title="name"><a href="#">${message("csh.vehicleBrand.name")}</a></li>
+								          <li [#if page.searchProperty == "code"] selected="selected" class="active" [/#if] title="code"><a href="#">${message("csh.vehicleBrand.code")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -121,7 +122,7 @@
 														${vehicleBrand.code}
 													</td>
 													<td>
-														<a href="${base}/upload/vehicleIcon/${vehicleBrand.icon}" target="1"><img src="${base}/upload/vehicleIcon/${vehicleBrand.icon}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.vehicleBrand.icon")}"></a>	
+														<a href="${vehicleBrand.icon}" target="1"><img src="${vehicleBrand.icon}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.vehicleBrand.icon")}"></a>	
 													</td>
 													<td>
 														${vehicleBrand.name}

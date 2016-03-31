@@ -67,7 +67,6 @@ $().ready(function() {
                     <form id="inputForm" action="update.jhtml" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="id" value="${vehicleLine.id}" />
 						<table class="input tabContent">
-							<table class="input tabContent">
                      		<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.vehicleLine.code")}:
@@ -81,7 +80,7 @@ $().ready(function() {
 									${message("csh.vehicleLine.icon")}:
 								</th>
 								<td>
-									<a href="${base}/upload/vehicleIcon/${vehicleLine.icon}" target="1024"><img src="${base}/upload/vehicleIcon/${vehicleLine.icon}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.vehicleLine.icon")}"></a>
+									<a href="${vehicleLine.icon}" target="1024"><img src="${vehicleLine.icon}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.vehicleLine.icon")}"></a>
 								</td>
 							</tr>
 							<tr>

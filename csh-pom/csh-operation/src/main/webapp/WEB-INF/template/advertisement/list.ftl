@@ -133,7 +133,7 @@
 														${advertisement.advName}
 													</td>
 													<td>
-														<a href="${base}/upload/advertisement/${advertisement.advImageUrl}" target="2"><img src="${base}/upload/advertisement/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
+														<a href="${base}/${advertisement.advImageUrl}" target="2"><img src="${base}/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
 													</td>
 													<td>
 														[#if advertisement.advContentLink??]

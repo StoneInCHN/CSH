@@ -75,7 +75,7 @@ public class VehicleBrandController extends BaseController {
     }
     temp.setCode(vehicleBrand.getCode());
     temp.setName(vehicleBrand.getName());
-    vehicleBrandService.update(vehicleBrand);
+    vehicleBrandService.update(temp);
     return "redirect:list.jhtml";
   }
 

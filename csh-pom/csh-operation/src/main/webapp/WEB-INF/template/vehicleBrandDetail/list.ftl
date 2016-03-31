@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.distributor.list")}</title>
+<title>${message("csh.vehicleBrandDetail.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.distributor")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.vehicleBrandDetail")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.distributor.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.vehicleBrandDetail.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -68,7 +68,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "distributorName" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="distributorName"><a href="#">${message("csh.distributor.distributorName")}</a></li>
+								          <li [#if page.searchProperty == "name" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="name"><a href="#">${message("csh.vehicleBrandDetail.name")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -83,7 +83,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.distributor")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.vehicleBrandDetail")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -98,19 +98,40 @@
 														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="distributorName">${message("csh.distributor.distributorName")}</a>
+														<a href="javascript:;" class="sort" name="averageOil">${message("csh.vehicleBrandDetail.averageOil")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="distributorIntro">${message("csh.distributor.distributorIntro")}</a>
+														<a href="javascript:;" class="sort" name="disp">${message("csh.vehicleBrandDetail.disp")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="distributorPhone">${message("csh.distributor.distributorPhone")}</a>
+														<a href="javascript:;" class="sort" name="canGetmileage">${message("csh.vehicleBrandDetail.canGetmileage")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="distributorAddress">${message("csh.distributor.distributorAddress")}</a>
+														<a href="javascript:;" class="sort" name="canGetoil">${message("csh.vehicleBrandDetail.canGetoil")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="area">${message("csh.distributor.area")}</a>
+														<a href="javascript:;" class="sort" name="maxbv">${message("csh.vehicleBrandDetail.maxbv")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="minbv">${message("csh.vehicleBrandDetail.minbv")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="name">${message("csh.vehicleBrandDetail.name")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="canOBD">${message("csh.vehicleBrandDetail.canOBD")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="oilPerHundred">${message("csh.vehicleBrandDetail.oilPerHundred")}</a>
+													</th>
+													<th>
+														${message("csh.vehicleBrandDetail.vehicleLine")}
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="status">${message("csh.vehicleBrandDetail.status")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="tank">${message("csh.vehicleBrandDetail.tank")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -118,28 +139,49 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as distributor]
+												[#list page.content as vehicleBrandDetail]
 												<tr>
 													<td>
-														<input type="checkbox"  name="ids" value="${distributor.id}" />
+														<input type="checkbox"  name="ids" value="${vehicleBrandDetail.id}" />
 													</td>
 													<td>
-														${distributor.distributorName}
+														${vehicleBrandDetail.averageOil}
 													</td>
 													<td>
-														${distributor.distributorIntro}
+														${vehicleBrandDetail.disp}
 													</td>
 													<td>
-														${distributor.distributorPhone}
+														${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canGetmileage?string('yes','no'))} 
 													</td>
 													<td>
-														${distributor.distributorAddress}
+														${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canGetoil?string('yes','no'))} 
 													</td>
 													<td>
-														[#if distributor.area??]${distributor.area}[/#if]
+														${vehicleBrandDetail.maxbv}
 													</td>
 													<td>
-														<a href="edit.jhtml?id=${distributor.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														${vehicleBrandDetail.minbv}
+													</td>
+													<td>
+														${vehicleBrandDetail.name}
+													</td>
+													<td>
+														${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canOBD?string('yes','no'))} 
+													</td>
+													<td>
+														${vehicleBrandDetail.oilPerHundred}
+													</td>
+													<td>
+														[#if vehicleBrandDetail.vehicleLine??]${vehicleBrandDetail.vehicleLine.name}[/#if]
+													</td>
+													<td>
+														${vehicleBrandDetail.status}
+													</td>
+													<td>
+														[#if vehicleBrandDetail.tank??]${vehicleBrandDetail.tank}[/#if]
+													</td>
+													<td>
+														<a href="edit.jhtml?id=${vehicleBrandDetail.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
 												</tr>
 												[/#list]

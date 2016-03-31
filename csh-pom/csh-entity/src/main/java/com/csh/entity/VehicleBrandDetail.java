@@ -34,10 +34,6 @@ public class VehicleBrandDetail extends BaseEntity
    */
   private Float averageOil;
 
-  /**
-   * 名称首字母
-   */
-  private String code;
 
   /**
    * 排量
@@ -53,16 +49,6 @@ public class VehicleBrandDetail extends BaseEntity
    * 是否支持获取油量
    */
   private Boolean canGetoil;
-
-  /**
-   * 树形节点级别
-   */
-  private int grade;
-
-  /**
-   * 图片
-   */
-  private String icon;
 
   /**
    * 最大电压
@@ -112,16 +98,6 @@ public class VehicleBrandDetail extends BaseEntity
     this.averageOil = averageOil;
   }
 
-  public String getCode ()
-  {
-    return code;
-  }
-
-  public void setCode (String code)
-  {
-    this.code = code;
-  }
-
   public Float getDisp ()
   {
     return disp;
@@ -150,26 +126,6 @@ public class VehicleBrandDetail extends BaseEntity
   public void setCanGetoil (Boolean canGetoil)
   {
     this.canGetoil = canGetoil;
-  }
-
-  public int getGrade ()
-  {
-    return grade;
-  }
-
-  public void setGrade (int grade)
-  {
-    this.grade = grade;
-  }
-
-  public String getIcon ()
-  {
-    return icon;
-  }
-
-  public void setIcon (String icon)
-  {
-    this.icon = icon;
   }
 
   public float getMaxbv ()
