@@ -68,7 +68,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "username" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="username"><a href="#">${message("csh.tenantAccount.username")}</a></li>
+								          <li [#if page.searchProperty == "name" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="name"><a href="#">${message("csh.deviceType.name")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
