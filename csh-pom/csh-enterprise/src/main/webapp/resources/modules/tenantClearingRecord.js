@@ -124,7 +124,7 @@ $(function(){
 	$("#tenantClearingRecord-table-list").datagrid({
 		title:message("csh.tenantClearingRecord.list"),
 		fitColumns:true,
-		toolbar:"#carService_manager_tool",
+		toolbar:"#tenantClearingRecord_manager_tool",
 		url:'../tenantClearingRecord/list.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),

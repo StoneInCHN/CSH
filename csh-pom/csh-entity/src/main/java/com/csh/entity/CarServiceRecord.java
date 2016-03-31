@@ -78,6 +78,7 @@ public class CarServiceRecord extends BaseEntity
   
   private TenantClearingRecord tenantClearingRecord;
 
+  private VehicleInsurance vehicleInsurance;
   /**
    * 租户ID
    */
@@ -189,6 +190,17 @@ public class CarServiceRecord extends BaseEntity
   public void setTenantClearingRecord (TenantClearingRecord tenantClearingRecord)
   {
     this.tenantClearingRecord = tenantClearingRecord;
+  }
+
+  @OneToOne(mappedBy="carServiceRecord")
+  public VehicleInsurance getVehicleInsurance ()
+  {
+    return vehicleInsurance;
+  }
+
+  public void setVehicleInsurance (VehicleInsurance vehicleInsurance)
+  {
+    this.vehicleInsurance = vehicleInsurance;
   }
 
   

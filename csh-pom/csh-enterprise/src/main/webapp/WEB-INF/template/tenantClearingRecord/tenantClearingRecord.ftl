@@ -47,9 +47,9 @@
 <table id="tenantClearingRecord-table-list"></table>
 <div id="tenantClearingRecord_manager_tool">
 	<div class="tool-button">
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="carService_manager_tool.add();">添加</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="carService_manager_tool.edit();">修改</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="carService_manager_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="tenantClearingRecord_manager_tool.add();">申请结算</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="tenantClearingRecord_manager_tool.edit();">修改</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="tenantClearingRecord_manager_tool.remove();">删除</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>

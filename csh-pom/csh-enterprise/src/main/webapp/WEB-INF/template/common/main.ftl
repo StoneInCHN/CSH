@@ -57,6 +57,9 @@
 				[@shiro.hasPermission name="insuranceManage"]
 				<li><a href="#insuranceManage"><i class="fa fa-briefcase fa-1x"></i>${message("csh.insuranceManage.config")}</a></li>
 				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="appActivity"]
+				<li><a href="#appActivity"><i class="fa fa-briefcase fa-1x"></i>${message("csh.appActivity.config")}</a></li>
+				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="personnelManage"]
 				<li><a href="#personnel"><i class="fa fa-user fa-1x"></i>${message("csh.personnel.config")}</a></li>
 				[/@shiro.hasPermission]
@@ -178,18 +181,26 @@
     		[@shiro.hasPermission name="product"]
     		<li><a href="#" data-url="${base}/console/product/product.jhtml">${message("csh.estoreManage.product")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="clearingRecord"]
+    		[@shiro.hasPermission name="order"]
     		<li><a href="#" data-url="${base}/console/order/order.jhtml">${message("csh.estoreManage.order")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="marketingCenter"]
     		<li><a href="#" data-url="${base}/console/marketingCenter/marketingCenter.jhtml">${message("csh.estoreManage.marketingCenter")}</a></li>
     		[/@shiro.hasPermission]
     	</ul> 
-    	<ul title="${message("csh.clearingManage.clearingRecord")}" id="estoreManage">
+    	<ul title="${message("csh.clearingManage.config")}" id="clearingManage">
     		[@shiro.hasPermission name="clearingRecord"]
     		<li><a href="#" data-url="${base}/console/tenantClearingRecord/tenantClearingRecord.jhtml">${message("csh.clearingManage.clearingRecord")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul>                 
+    	</ul>
+    	<ul title="${message("csh.appActivity.config")}" id="appActivity">
+    		[@shiro.hasPermission name="redPacketSend"]
+    		<li><a href="#" data-url="${base}/console/redPacketSend/redPacketSend.jhtml">${message("csh.appActivity.redPacketSend")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="joyDraw"]
+    		<li><a href="#" data-url="${base}/console/joyDraw/joyDraw.jhtml">${message("csh.appActivity.joyDraw")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>                   
     </div>
   
     <div class="main-content" data-options="region:'center'">

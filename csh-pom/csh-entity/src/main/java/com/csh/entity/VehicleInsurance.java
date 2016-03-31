@@ -2,6 +2,7 @@ package com.csh.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -87,7 +88,7 @@ public class VehicleInsurance extends BaseEntity
    */
   private Long tenantID;
   
-  @OneToOne
+  @OneToOne(cascade=CascadeType.PERSIST)
   public CarServiceRecord getCarServiceRecord ()
   {
     return carServiceRecord;

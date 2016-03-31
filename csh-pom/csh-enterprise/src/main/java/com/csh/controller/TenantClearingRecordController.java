@@ -140,6 +140,11 @@ public class TenantClearingRecordController extends BaseController
     return "tenantClearingRecord/edit";
   }
 
+  @RequestMapping (value = "/add", method = RequestMethod.GET)
+  public String add (ModelMap model, Long id)
+  {
+    return "tenantClearingRecord/add";
+  }
   @RequestMapping (value = "/add", method = RequestMethod.POST)
   public @ResponseBody Message add (TenantClearingRecord tenantClearingRecord)
   {
