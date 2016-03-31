@@ -224,10 +224,10 @@ public class MaintainReservationController extends BaseController
     filters.add (categoryFilter);
     
     List<CarService> carServiceList = carServiceService.findList (null, filters, null);
-    if (carServiceList == null || carServiceList.size () != 1)
-    {
-      return ERROR_MESSAGE;
-    }
+//    if (carServiceList == null || carServiceList.size () != 1)
+//    {
+//      return ERROR_MESSAGE;
+//    }
     EndUser endUser = endUserService.find (endUserID);
     
     CarServiceRecord record = new CarServiceRecord ();
@@ -235,7 +235,7 @@ public class MaintainReservationController extends BaseController
     record.setChargeStatus (ChargeStatus.RESERVATION);
     record.setEndUser (endUser);
     record.setPrice (carServiceList.get (0).getPrice ());
-    
+    record.setTenantID (carServiceList.get (0).getTenantInfo ().getId ());
     maintainReservation.setEndUser (endUser);
     maintainReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
     maintainReservation.setCarServiceRecord (record);

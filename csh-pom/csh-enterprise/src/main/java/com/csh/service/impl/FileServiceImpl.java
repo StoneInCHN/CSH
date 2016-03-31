@@ -115,7 +115,7 @@ public class FileServiceImpl implements FileService {
   public String saveImage(MultipartFile multiFile ,ImageType imageType) {
     String webPath = null;
     String imgUploadPath ="";
-    String projectPath="/upload";
+    String projectPath="/upload/tenant";
     try {
 
       if (multiFile == null) {
@@ -123,24 +123,24 @@ public class FileServiceImpl implements FileService {
       }
       String uuid = UUID.randomUUID().toString();
       if (imageType == ImageType.CARSERVICEPICTURE) {
-        imgUploadPath = uploadPath +File.separator+tenantAccountService.getCurrentTenantOrgCode ()+ File.separator + "carServicePicture";
-        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "carServicePicture";
+        imgUploadPath = uploadPath +File.separator+tenantAccountService.getCurrentTenantID ()+ File.separator + "carServicePicture";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "carServicePicture";
       }
       if (imageType == ImageType.DRIVERLICENSEPHOTO) {
-        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "driverLicensePhoto";
-        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "driverLicensePhoto";
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "driverLicensePhoto";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "driverLicensePhoto";
       }
       if (imageType == ImageType.DRIVINGLICENSEPHOTO) {
-        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "drivingLicensePhoto";
-        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "drivingLicensePhoto";
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "drivingLicensePhoto";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "drivingLicensePhoto";
       }
       if (imageType == ImageType.IDPHOTO) {
-        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "IDPhoto";
-        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "IDPhoto";
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "IDPhoto";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "IDPhoto";
       }
       if (imageType == ImageType.PHOTO) {
-        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "photo";
-        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantOrgCode () + File.separator + "photo";
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "photo";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "photo";
       }
       String sourcePath =
           imgUploadPath + File.separator + "src_" + uuid + "."

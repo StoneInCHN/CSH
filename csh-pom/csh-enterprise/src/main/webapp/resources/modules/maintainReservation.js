@@ -12,6 +12,7 @@ var maintainReservation_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
+						debugger;
 						var validate = $('#addMaintainReservation_form').form('validate');
 						var plate=$("#vehiclePlate").combobox('getText');
 						$('#addMaintainReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')

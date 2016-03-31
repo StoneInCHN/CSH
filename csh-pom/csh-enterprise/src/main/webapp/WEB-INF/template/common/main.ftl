@@ -39,10 +39,12 @@
 				[@shiro.hasPermission name="endUserManage"]
 				<li><a href="#endUser"><i class="fa fa-users fa-1x"></i>${message("csh.endUser.config")}</a></li>
 				[/@shiro.hasPermission]
-				<!--[@shiro.hasPermission name="clearingManage"]
+				[@shiro.hasPermission name="clearingManage"]
 				<li><a href="#clearingManage"><i class="fa fa-users fa-1x"></i>${message("csh.clearingManage.config")}</a></li>
 				[/@shiro.hasPermission]
-				-->
+				[@shiro.hasPermission name="estoreManage"]
+				<li><a href="#estoreManage"><i class="fa fa-users fa-1x"></i>${message("csh.estoreManage.config")}</a></li>
+				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="reservationManage"]
 				<li><a href="#reservationManage"><i class="fa fa-mobile fa-1x"></i>${message("csh.reservationMange.config")}</a></li>
 				[/@shiro.hasPermission]
@@ -161,16 +163,27 @@
     		[/@shiro.hasPermission]
     	</ul>
     	
-    	<ul title="${message("csh.insuranceManage.vehicleInsurance")}" id="insuranceManage">
+    	<ul title="${message("csh.insuranceManage.config")}" id="insuranceManage">
     		[@shiro.hasPermission name="vehicleInsurance"]
     		<li><a href="#" data-url="${base}/console/vehicleInsurance/vehicleInsurance.jhtml">${message("csh.insuranceManage.vehicleInsurance")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
-    	<ul title="${message("csh.clearingManage.clearingRecord")}" id="clearingManage">
+    	<ul title="${message("csh.estoreManage.config")}" id="estoreManage">
+    		[@shiro.hasPermission name="product"]
+    		<li><a href="#" data-url="${base}/console/product/product.jhtml">${message("csh.estoreManage.product")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="clearingRecord"]
+    		<li><a href="#" data-url="${base}/console/order/order.jhtml">${message("csh.estoreManage.order")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="marketingCenter"]
+    		<li><a href="#" data-url="${base}/console/marketingCenter/marketingCenter.jhtml">${message("csh.estoreManage.marketingCenter")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul> 
+    	<ul title="${message("csh.clearingManage.clearingRecord")}" id="estoreManage">
     		[@shiro.hasPermission name="clearingRecord"]
     		<li><a href="#" data-url="${base}/console/tenantClearingRecord/tenantClearingRecord.jhtml">${message("csh.clearingManage.clearingRecord")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul>                  
+    	</ul>                 
     </div>
   
     <div class="main-content" data-options="region:'center'">
@@ -183,8 +196,8 @@
 						        	<a href ="#"><img class="imgNav" title="车辆信息" onclick="shortcutNavigation('车辆信息','${base}/console/vehicle/vehicle.jhtml')" src="${base}/resources/images/car.png"/></a>
 						        	<a href ="#"><img class="imgNav" title="设备信息" onclick="shortcutNavigation('设备信息','${base}/console/deviceInfo/deviceInfo.jhtml')" src="${base}/resources/images/device.png"/></a>
 						        	<a href ="#"><img class="imgNav" title="保险管理" onclick="shortcutNavigation('车辆保险','${base}/console/vehicleInsurance/vehicleInsurance.jhtml')" src="${base}/resources/images/insurance.png"/></a>
-						        	<a href ="#"><img class="imgNav" title="保养预约" onclick="shortcutNavigation('保养预约','${base}/console/billing/dailyBill.jhtml')" src="${base}/resources/images/maintain.png"/></a>
-						        	<a href ="#"><img class="imgNav" title="维修预约" onclick="shortcutNavigation('维修预约','${base}/console/admission/admission.jhtml')" src="${base}/resources/images/service.png"/></a>
+						        	<a href ="#"><img class="imgNav" title="保养预约" onclick="shortcutNavigation('保养预约','${base}/console/maintainReservation/maintainReservation.jhtml')" src="${base}/resources/images/maintain.png"/></a>
+						        	<a href ="#"><img class="imgNav" title="维修预约" onclick="shortcutNavigation('维修预约','${base}/console/repareReservation/repareReservation.jhtml')" src="${base}/resources/images/service.png"/></a>
 						        </div>
 						    </div>
 						    <div class="row">

@@ -78,21 +78,21 @@
     		
     		<th>${message("csh.vehicleInsurancen.IDphoto")}:</th>
     		<td  colspan="4">
-    			 <img  style="width:50px;height=50px" src="${vehicleInsurance.IDphoto}"/>
+    			 <img  style="width:50px;height=50px" src="${base}/${vehicleInsurance.IDphoto}"/>
     		</td>
     	</tr>
     	<tr rowspan="4">
     		
     		<th>${message("csh.vehicleInsurancen.drivingLicensePhoto")}:</th>
     		<td  colspan="4">
-    			<img style="width:50px;height=50px" src="${vehicleInsurance.drivingLicensePhoto}"/>
+    			<img style="width:50px;height=50px" src="${base}/${vehicleInsurance.drivingLicensePhoto}"/>
     		</td>
     	</tr>
     	<tr rowspan="4">
     		
     		<th>${message("csh.vehicleInsurancen.driverLicensePhoto")}:</th>
     		<td  colspan="4">
-    			<img style="width:50px;height=50px" src="${vehicleInsurance.driverLicensePhoto}"/>
+    			<img style="width:50px;height=50px" src="${base}/${vehicleInsurance.driverLicensePhoto}"/>
     		</td>
     	</tr>
     </table>
