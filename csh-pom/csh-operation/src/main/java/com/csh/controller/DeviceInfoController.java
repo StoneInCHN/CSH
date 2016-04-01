@@ -110,4 +110,39 @@ public class DeviceInfoController extends BaseController {
     }
     return SUCCESS_MESSAGE;
   }
+  
+  /**
+   * 添加
+   */
+  @RequestMapping(value = "/singleDeviceBinding", method = RequestMethod.GET)
+  public String singleDeviceBinding(ModelMap modelMap) {
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter();
+    filter.setProperty("status");
+    filter.setValue(Status.ENABLE);
+    filter.setOperator(Operator.eq);
+    filters.add(filter);
+    modelMap.addAttribute("types", deviceTypeService.findList(null, filters, null));
+    return "/deviceInfo/singleDeviceBinding";
+  }
+  
+  /**
+   * 删除
+   */
+  @RequestMapping(value = "/getDevice", method = RequestMethod.GET)
+  public @ResponseBody DeviceInfo getDevice(String deviceNo) {
+    DeviceInfo info = new DeviceInfo();
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter();
+    filter.setProperty("deviceNo");
+    filter.setValue(deviceNo);
+    filter.setOperator(Operator.eq);
+    filters.add(filter);
+    List<DeviceInfo> deviceInfos =  deviceInfoService.findList(null, filters, null);
+    if (deviceInfos!=null && deviceInfos.size() == 1) {
+      info = deviceInfos.get(0);
+    }
+    return info;
+  }
+  
 }

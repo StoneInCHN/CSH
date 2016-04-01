@@ -41,6 +41,12 @@
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
+										<div class="btn-group operationButton">
+										  <button type="button" id="singleDeviceBinding" class="btn btn-default"><i class="fa fa-wrench"></i>&nbsp;&nbsp;${message("csh.common.singleDeviceBinding")}</button>
+										</div>
+										<div class="btn-group operationButton">
+										  <button type="button" id="batchDeviceBinding" class="btn btn-default"><i class="fa fa-cogs"></i>&nbsp;&nbsp;${message("csh.common.batchDeviceBinding")}</button>
+										</div>
 									</li>
 									  <li role="presentation" class="dropdown pull-right">
 										    <a id="pageSizeSelect" aria-expanded="false" role="button" aria-haspopup="true" data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -68,7 +74,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "deviceNo" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="deviceNo"><a href="#">${message("csh.tenantAccount.deviceNo")}</a></li>
+								          <li [#if page.searchProperty == "deviceNo" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="deviceNo"><a href="#">${message("csh.deviceInfo.deviceNo")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -178,10 +184,24 @@
 				</div>
 			</form>
 </div>
+
 <script type="text/javascript" src="${base}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${base}/resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript">
+	var $singleDeviceBinding = $("#singleDeviceBinding");
+	var $batchDeviceBinding = $("#batchDeviceBinding");
+	
+	$singleDeviceBinding.click(function(){
+		var $deviceBinding = window.parent.$('#operationModal');
+		var $operationModalIframe= window.parent.$('#operationModalIframe');
+		$deviceBinding.find(".modal-title").text("设备绑定");
+		$deviceBinding.modal("show");
+		$operationModalIframe.attr("src","${base}/console/deviceInfo/singleDeviceBinding.jhtml");
+	})
+	
+</script>
 </body>
 </html>
