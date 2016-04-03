@@ -394,6 +394,12 @@
 	    	<groupId>cn.jpush.api</groupId>
 	   	    <artifactId>jpush-client</artifactId>
 		</dependency>
+		<!-- wechat pay -->
+		 <dependency>
+	    	<groupId>wx.pay</groupId>
+	   	    <artifactId>java</artifactId>
+	   	    <version>1.0</version>
+		</dependency>
   	</dependencies>
  	<build>
 		<finalName>csh-interface</finalName>

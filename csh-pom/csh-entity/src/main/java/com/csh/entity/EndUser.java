@@ -107,24 +107,9 @@ public class EndUser extends BaseEntity {
   private Set<Vehicle> vehicles = new HashSet<Vehicle>();
 
   /**
-   * 默认显示的车辆
+   * 默认车辆
    */
-  private String defaultVehicle;
-
-  /**
-   * 默认车辆对应设备号
-   */
-  private String defaultDeviceNo;
-
-  /**
-   * 默认车辆对应icon
-   */
-  private String defaultVehicleIcon;
-
-  /**
-   * 默认显示的车辆车牌号
-   */
-  private String defaultVehiclePlate;
+  private Vehicle defaultVehicle;
 
   /**
    * login统计
@@ -190,64 +175,20 @@ public class EndUser extends BaseEntity {
 
 
   @Transient
-  public String getDefaultVehicleIcon() {
+  public Vehicle getDefaultVehicle() {
     for (Vehicle v : vehicles) {
       if (v.getIsDefault()) {
-        defaultVehicleIcon = v.getBrandIcon();
-        break;
-      }
-    }
-    return defaultVehicleIcon;
-  }
-
-  public void setDefaultVehicleIcon(String defaultVehicleIcon) {
-    this.defaultVehicleIcon = defaultVehicleIcon;
-  }
-
-  @Transient
-  public String getDefaultDeviceNo() {
-    for (Vehicle v : vehicles) {
-      if (v.getIsDefault()) {
-        defaultDeviceNo = v.getDeviceNo();
-        break;
-      }
-    }
-    return defaultDeviceNo;
-  }
-
-  public void setDefaultDeviceNo(String defaultDeviceNo) {
-    this.defaultDeviceNo = defaultDeviceNo;
-  }
-
-  @Transient
-  public String getDefaultVehiclePlate() {
-    for (Vehicle v : vehicles) {
-      if (v.getIsDefault()) {
-        defaultVehiclePlate = v.getPlate();
-        break;
-      }
-    }
-    return defaultVehiclePlate;
-  }
-
-  public void setDefaultVehiclePlate(String defaultVehiclePlate) {
-    this.defaultVehiclePlate = defaultVehiclePlate;
-  }
-
-  @Transient
-  public String getDefaultVehicle() {
-    for (Vehicle v : vehicles) {
-      if (v.getIsDefault()) {
-        defaultVehicle = v.getVehicleFullBrand();
+        defaultVehicle = v;
         break;
       }
     }
     return defaultVehicle;
   }
 
-  public void setDefaultVehicle(String defaultVehicle) {
+  public void setDefaultVehicle(Vehicle defaultVehicle) {
     this.defaultVehicle = defaultVehicle;
   }
+
 
   @OneToMany(mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   public Set<LoginStatistics> getLoginStatistics() {

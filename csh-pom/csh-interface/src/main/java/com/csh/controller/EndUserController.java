@@ -160,10 +160,12 @@ public class EndUserController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     response.setDesc(loginUser.getId().toString());
 
-    String[] properties =
-        {"id", "userName", "nickName", "photo", "signature", "defaultVehiclePlate",
-            "defaultVehicle", "defaultDeviceNo", "defaultVehicleIcon"};
+    String[] properties = {"id", "userName", "nickName", "photo", "signature"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
+    map.put("defaultVehiclePlate", loginUser.getDefaultVehicle().getPlate());
+    map.put("defaultVehicle", loginUser.getDefaultVehicle().getVehicleFullBrand());
+    map.put("defaultDeviceNo", loginUser.getDefaultVehicle().getDeviceNo());
+    map.put("defaultVehicleIcon", loginUser.getDefaultVehicle().getBrandIcon());
     response.setMsg(map);
     String token = TokenGenerator.generateToken();
     endUserService.createEndUserToken(token, loginUser.getId());
@@ -295,18 +297,17 @@ public class EndUserController extends MobileBaseController {
           return response;
         }
       }
-      SmsToken smsToken =
-          smsTokenService.findByUserMobile(mobileNo,tokenType);
+      SmsToken smsToken = smsTokenService.findByUserMobile(mobileNo, tokenType);
       if (smsToken != null) {
         smsTokenService.delete(smsToken);
       }
       Integer smsTokenNo = (int) ((Math.random() * 9 + 1) * 1000);
       if (sendType == TokenSendType.SMS) {
-    	  UcpaasUtil.SendCodeBySms(mobileNo, smsTokenNo.toString());
-	  }else if (sendType == TokenSendType.VOICE) {
-		  UcpaasUtil.SendCodeByVoice(mobileNo, smsTokenNo.toString());
-	  }
-      
+        UcpaasUtil.SendCodeBySms(mobileNo, smsTokenNo.toString());
+      } else if (sendType == TokenSendType.VOICE) {
+        UcpaasUtil.SendCodeByVoice(mobileNo, smsTokenNo.toString());
+      }
+
       SmsToken userSmsToken = new SmsToken();
       userSmsToken.setCreateDate(new Date());
       userSmsToken.setMobile(mobileNo);

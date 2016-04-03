@@ -3,6 +3,7 @@ package com.csh.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -23,10 +24,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 @Entity
-@Table (name = "csh_car_service_record")
-@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_car_service_record_sequence")
-public class CarServiceRecord extends BaseEntity
-{
+@Table(name = "csh_car_service_record")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_car_service_record_sequence")
+public class CarServiceRecord extends BaseEntity {
 
   /**
      *
@@ -71,13 +71,13 @@ public class CarServiceRecord extends BaseEntity
    * 商家名称
    */
   private String tenantName;
-  
+
   /**
    * 结算时间
    */
   private Date clearingDate;
 
-  
+
   private TenantClearingRecord tenantClearingRecord;
 
   private VehicleInsurance vehicleInsurance;
@@ -85,18 +85,31 @@ public class CarServiceRecord extends BaseEntity
    * 租户ID
    */
   private Long tenantID;
-  
+
+  /**
+   * 记录编号，自动生成
+   */
+  private String recordNo;
+
+
+  @Column(length = 30)
+  public String getRecordNo() {
+    return recordNo;
+  }
+
+  public void setRecordNo(String recordNo) {
+    this.recordNo = recordNo;
+  }
+
   @Index(name = "carServiceRecord_tenantid")
-  public Long getTenantID ()
-  {
+  public Long getTenantID() {
     return tenantID;
   }
 
-  public void setTenantID (Long tenantID)
-  {
+  public void setTenantID(Long tenantID) {
     this.tenantID = tenantID;
   }
-  
+
   @Column(length = 80)
   public String getTenantName() {
     return tenantName;
@@ -145,26 +158,23 @@ public class CarServiceRecord extends BaseEntity
   }
 
   @OneToOne(mappedBy = "carServiceRecord")
-  public MaintainReservation getMaintainReservation ()
-  {
+  public MaintainReservation getMaintainReservation() {
     return maintainReservation;
   }
 
-  public void setMaintainReservation (MaintainReservation maintainReservation)
-  {
+  public void setMaintainReservation(MaintainReservation maintainReservation) {
     this.maintainReservation = maintainReservation;
   }
 
   @OneToOne(mappedBy = "carServiceRecord")
-  public RepareReservation getRepareReservation ()
-  {
+  public RepareReservation getRepareReservation() {
     return repareReservation;
   }
 
-  public void setRepareReservation (RepareReservation repareReservation)
-  {
+  public void setRepareReservation(RepareReservation repareReservation) {
     this.repareReservation = repareReservation;
   }
+
 
   @Column (scale = 2, precision = 10, nullable = false)
   @JsonProperty
@@ -173,10 +183,10 @@ public class CarServiceRecord extends BaseEntity
     return price;
   }
 
-  public void setPrice (BigDecimal price)
-  {
+  public void setPrice(BigDecimal price) {
     this.price = price;
   }
+
   
   public Date getClearingDate ()
   {
@@ -186,29 +196,27 @@ public class CarServiceRecord extends BaseEntity
   public void setClearingDate (Date clearingDate)
   {
     this.clearingDate = clearingDate;
-  }
 
+  }
   @ManyToOne
-  public TenantClearingRecord getTenantClearingRecord ()
-  {
+  public TenantClearingRecord getTenantClearingRecord() {
     return tenantClearingRecord;
   }
 
-  public void setTenantClearingRecord (TenantClearingRecord tenantClearingRecord)
-  {
+  public void setTenantClearingRecord(TenantClearingRecord tenantClearingRecord) {
     this.tenantClearingRecord = tenantClearingRecord;
   }
 
-  @OneToOne(mappedBy="carServiceRecord")
-  public VehicleInsurance getVehicleInsurance ()
-  {
+
+  @OneToOne(mappedBy = "carServiceRecord", cascade = CascadeType.ALL)
+  public VehicleInsurance getVehicleInsurance() {
     return vehicleInsurance;
   }
 
-  public void setVehicleInsurance (VehicleInsurance vehicleInsurance)
-  {
+  public void setVehicleInsurance(VehicleInsurance vehicleInsurance) {
     this.vehicleInsurance = vehicleInsurance;
   }
+
 
   @JsonProperty
   public Date getPaymentDate ()
@@ -222,4 +230,5 @@ public class CarServiceRecord extends BaseEntity
   }
 
   
+
 }

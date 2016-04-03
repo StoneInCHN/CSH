@@ -5,6 +5,7 @@ package com.csh.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -33,6 +34,11 @@ public class ServiceCategory extends BaseEntity {
    * 描述
    */
   private String categoryDesc;
+  
+  /**
+   * 是否系统内置
+   */
+  private Boolean isSystem;
 
   /**
    * 汽车服务
@@ -69,6 +75,15 @@ public class ServiceCategory extends BaseEntity {
     this.categoryName = categoryName;
   }
 
+  @Column(length=2)
+  public Boolean getIsSystem() {
+    return isSystem;
+  }
 
+
+  public void setIsSystem(Boolean isSystem) {
+    this.isSystem = isSystem;
+  }
+  
 
 }

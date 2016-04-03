@@ -18,8 +18,9 @@ public class test {
     // Date date1 = new Date();
     // Date date2 = new Date();
     // System.out.println(DateUtils.isSameDay(date1, date2));
-    String res = UcpaasUtil.SendCodeBySms("15902823856", "6598");
-    System.out.println(res);
+    // String res = UcpaasUtil.SendCodeBySms("15902823856", "6598");
+    // System.out.println(res);
+    System.out.println(ToolsUtils.generateRecordNo("0001"));
   }
 
 }
