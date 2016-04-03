@@ -57,7 +57,7 @@
 		appenders -->
 	<!-- ===================================================================================== -->
 
-	<logger name="com.lb" level="debug">
+	<logger name="com.csh" level="debug">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="rolling_file_appender" />
 	</logger>

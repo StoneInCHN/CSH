@@ -161,7 +161,7 @@ public class EndUser extends BaseEntity {
     this.tenantEvalutes = tenantEvalutes;
   }
 
-  @OneToMany(mappedBy = "carService")
+  @OneToMany(mappedBy = "endUser")
   public Set<CarServiceRecord> getCarServiceRecords() {
     return carServiceRecords;
   }

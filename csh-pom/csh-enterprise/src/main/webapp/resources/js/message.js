@@ -214,14 +214,19 @@ var messages = {
 	"csh.vehicleInsurance.isLoaned":"是否贷款车",
 	
 	//结算记录
-	"csh.carService.clearingSn":"结算单号",
-	"csh.carService.clearingStatus":"结算状态",
-	"csh.carService.periodBeginDate":"结算周期开始时间",
-	"csh.carService.periodEndDate":"结算周期结束时间",
+	"csh.carServiceRecord.list":"服务记录列表",
+	"csh.carServiceRecord.serviceName":"服务名称",
+	"csh.carServiceRecord.endUser":"购买用户",
+	"csh.carServiceRecord.price":"价格",
+	"csh.carServiceRecord.chargeStatus":"支付状态",
+	"csh.carServiceRecord.paymentType":"支付方式",
+	"csh.tenantClearingRecord.add":"添加结算单",
+	"csh.tenantClearingRecord.clearingSn":"结算单号",
+	"csh.tenantClearingRecord.clearingStatus":"结算状态",
+	"csh.tenantClearingRecord.periodBeginDate":"结算周期开始时间",
+	"csh.tenantClearingRecord.periodEndDate":"结算周期结束时间",
 	"csh.tenantClearingRecord.list":"结算记录列表",
 	"csh.tenantClearingRecord.clearingDate":"结算时间",
-	"csh.tenantClearingRecord.periodBeginDate":"结算周期开始时间",
-	"csh.tenantClearingRecord.periodEndDate":"结算周期结束时间"
 	
 	
 };

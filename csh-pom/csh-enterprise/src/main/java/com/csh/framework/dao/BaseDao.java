@@ -165,4 +165,12 @@ public interface BaseDao<T, ID extends Serializable> {
    * 调用存储过程
    */
   void callProcedure(String procName,Object...args);
+
+  /**
+   * 调用存储过程，带返回值
+   * @param procName 存储过程名字
+   * @param args 参数列表
+   * @return
+   */
+  List<T> callProcedureWithResult (String procName, Object... args);
 }

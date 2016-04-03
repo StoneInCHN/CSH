@@ -27,7 +27,7 @@ import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table (name = "tenant_clearing_record")
+@Table (name = "csh_tenant_clearing_record")
 @SequenceGenerator (name = "sequenceGenerator", sequenceName = "tenant_clearing_record_sequence")
 public class TenantClearingRecord extends BaseEntity
 {
@@ -56,7 +56,7 @@ public class TenantClearingRecord extends BaseEntity
    */
   private Date periodEndDate;
   
-  private TenantUser tenantUser;
+  private EndUser endUser;
 
   /**
    *本次结算周期金额 
@@ -180,14 +180,14 @@ public class TenantClearingRecord extends BaseEntity
   }
    
   @ManyToOne(fetch = FetchType.LAZY) 
-  public TenantUser getTenantUser ()
+  public EndUser getEndUser ()
   {
-    return tenantUser;
+    return endUser;
   }
 
-  public void setTenantUser (TenantUser tenantUser)
+  public void setEndUser (EndUser endUser)
   {
-    this.tenantUser = tenantUser;
+    this.endUser = endUser;
   }
 
   @OneToMany(mappedBy = "tenantClearingRecord", cascade = {CascadeType.MERGE})

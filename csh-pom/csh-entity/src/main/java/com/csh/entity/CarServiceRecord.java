@@ -15,6 +15,7 @@ import org.hibernate.annotations.Index;
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 汽车服务购买记录
@@ -46,6 +47,7 @@ public class CarServiceRecord extends BaseEntity
    */
   private PaymentType paymentType;
 
+  private Date paymentDate;
   /**
    * 付款状态
    */
@@ -73,7 +75,7 @@ public class CarServiceRecord extends BaseEntity
   /**
    * 结算时间
    */
-  private Date balanceDate;
+  private Date clearingDate;
 
   
   private TenantClearingRecord tenantClearingRecord;
@@ -105,6 +107,7 @@ public class CarServiceRecord extends BaseEntity
   }
 
   @ManyToOne
+  @JsonProperty
   public CarService getCarService() {
     return carService;
   }
@@ -114,6 +117,7 @@ public class CarServiceRecord extends BaseEntity
   }
 
   @ManyToOne
+  @JsonProperty
   public EndUser getEndUser() {
     return endUser;
   }
@@ -122,6 +126,7 @@ public class CarServiceRecord extends BaseEntity
     this.endUser = endUser;
   }
 
+  @JsonProperty
   public PaymentType getPaymentType() {
     return paymentType;
   }
@@ -130,6 +135,7 @@ public class CarServiceRecord extends BaseEntity
     this.paymentType = paymentType;
   }
 
+  @JsonProperty
   public ChargeStatus getChargeStatus() {
     return chargeStatus;
   }
@@ -161,6 +167,7 @@ public class CarServiceRecord extends BaseEntity
   }
 
   @Column (scale = 2, precision = 10, nullable = false)
+  @JsonProperty
   public BigDecimal getPrice ()
   {
     return price;
@@ -170,15 +177,15 @@ public class CarServiceRecord extends BaseEntity
   {
     this.price = price;
   }
-
-  public Date getBalanceDate ()
+  
+  public Date getClearingDate ()
   {
-    return balanceDate;
+    return clearingDate;
   }
 
-  public void setBalanceDate (Date balanceDate)
+  public void setClearingDate (Date clearingDate)
   {
-    this.balanceDate = balanceDate;
+    this.clearingDate = clearingDate;
   }
 
   @ManyToOne
@@ -201,6 +208,17 @@ public class CarServiceRecord extends BaseEntity
   public void setVehicleInsurance (VehicleInsurance vehicleInsurance)
   {
     this.vehicleInsurance = vehicleInsurance;
+  }
+
+  @JsonProperty
+  public Date getPaymentDate ()
+  {
+    return paymentDate;
+  }
+
+  public void setPaymentDate (Date paymentDate)
+  {
+    this.paymentDate = paymentDate;
   }
 
   

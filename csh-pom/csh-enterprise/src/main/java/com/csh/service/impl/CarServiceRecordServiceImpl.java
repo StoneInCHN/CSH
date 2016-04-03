@@ -1,5 +1,7 @@
 package com.csh.service.impl; 
 
+import java.util.List;
+
 import javax.annotation.Resource; 
 
 import org.springframework.stereotype.Service; 
@@ -13,7 +15,15 @@ import com.csh.framework.service.impl.BaseServiceImpl;
 public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecord,Long> implements CarServiceRecordService {
 
       @Resource(name="carServiceRecordDaoImpl")
+      private CarServiceRecordDao carServiceRecordDao;
+      @Resource
       public void setBaseDao(CarServiceRecordDao carServiceRecordDao) {
          super.setBaseDao(carServiceRecordDao);
   }
+
+      @Override
+      public List<CarServiceRecord> findCurrentClearingRecords ()
+      {
+        return carServiceRecordDao.callProcedureWithResult ("findCurrentClearingServiceRecord", 1,7);
+      }
 }

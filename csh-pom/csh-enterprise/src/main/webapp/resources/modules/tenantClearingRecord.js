@@ -1,10 +1,10 @@
 var tenantClearingRecord_manager_tool = {
-		add:function(){
-			$('#addTenantClearingRecord').dialog({
+		applyClearingRecord:function(){
+			$('#applyClearingRecord').dialog({
 			    title: message("csh.tenantClearingRecord.add"),    
 			    width: 700,    
 			    height: 550,
-			    href:'../tenantClearingRecord/add.jhtml',
+			    href:'../tenantClearingRecord/applyClearing.jhtml',
 			    method:"get",
 			    iconCls:'icon-mini-add',
 			    cache: false, 
@@ -45,7 +45,55 @@ var tenantClearingRecord_manager_tool = {
 						 $("#addTenantClearingRecord_form").form("reset");
 					}
 			    }],
-				onLoad:function(){},
+				onLoad:function(){
+					//结算账单清单
+					$("#clearingCarServiceRecord-table-list").datagrid({
+						title:message("csh.carServiceRecord.list"),
+						fitColumns:true,
+						url:'../carServiceRecord/showCurrentClearingRecord.jhtml',  
+						loadMsg:message("csh.common.loading"),
+						striped:true,
+						columns:[
+						   [
+						      {field:'ck',checkbox:true},
+						      {title:message("csh.carServiceRecord.serviceName"),field:"carService",sortable:true,
+						    	  formatter: function(value,row,index){
+						    		  return value.serviceName;
+						    	  }},
+					    	  {title:message("csh.carServiceRecord.chargeStatus"),width:50,field:"chargeStatus",sortable:true,
+						    	  formatter: function(value,row,index){
+						    		  if(value == "RESERVATION"){
+						    			  return "预约"
+						    		  }else if(value == "UNPAID"){
+						    			  return "未支付"
+						    		  }else if(value == "PAID"){
+						    			  return "已支付"
+						    		  }
+						    	  }},
+						    	  
+						    	  {title:message("csh.carServiceRecord.paymentType"),width:50,field:"paymentType",sortable:true,
+							    	  formatter: function(value,row,index){
+							    		  if(value == "ALIPAY"){
+							    			  return "支付宝"
+							    		  }else if(value == "WECHAT"){
+							    			  return "微信"
+							    		  }else if(value == "WALLET"){
+							    			  return "钱包"
+							    		  }
+							    	  }},
+					    	  {title:message("csh.carServiceRecord.endUser"),field:"endUser",sortable:true,
+						    	  formatter: function(value,row,index){
+						    		  return value.userName;
+						    	  }},
+					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"price",sortable:true},  
+						      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
+									return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+								}
+						      },
+						   ]
+						]
+					});
+				},
 			    onClose:function(){
 			    	$('#addTenantClearingRecord').empty();
 			    }
@@ -154,7 +202,7 @@ $(function(){
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
-		      {title:message("csh.carService.clearingSn"),field:"clearingSn",sortable:true},
+		      {title:message("csh.tenantClearingRecord.clearingSn"),field:"clearingSn",sortable:true},
 		      {title:message("csh.tenantClearingRecord.periodBeginDate"),field:"periodBeginDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}

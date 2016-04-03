@@ -124,67 +124,10 @@ public class TenantClearingRecordController extends BaseController
       return tenantClearingRecordService.findPage (pageable, true);
     
   }
-
-  /**
-   * get data for vendor edit page
-   * 
-   * @param model
-   * @param vendorId
-   * @return
-   */
-  @RequestMapping (value = "/edit", method = RequestMethod.GET)
-  public String edit (ModelMap model, Long id)
+  
+  @RequestMapping (value = "/applyClearing", method = RequestMethod.GET)
+  public String applyClearing ()
   {
-    TenantClearingRecord tenantClearingRecord = tenantClearingRecordService.find (id);
-    model.put ("tenantClearingRecord", tenantClearingRecord);
-    return "tenantClearingRecord/edit";
-  }
-
-  @RequestMapping (value = "/add", method = RequestMethod.GET)
-  public String add (ModelMap model, Long id)
-  {
-    return "tenantClearingRecord/add";
-  }
-  @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (TenantClearingRecord tenantClearingRecord)
-  {
-    tenantClearingRecordService.save (tenantClearingRecord,true);
-    return SUCCESS_MESSAGE;
-  }
-
-  @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (TenantClearingRecord tenantClearingRecord)
-  { 
-    tenantClearingRecordService.update (tenantClearingRecord);
-    return SUCCESS_MESSAGE;
-  }
- 
-
-  /**
-   * 删除
-   */
-  @RequestMapping (value = "/delete", method = RequestMethod.POST)
-  public @ResponseBody Message delete (Long[] ids)
-  {
-    if (ids != null)
-    {
-      // 检查是否能被删除
-      // if()
-      tenantClearingRecordService.delete (ids);
-    }
-    return SUCCESS_MESSAGE;
-  }
-  /**
-   * 获取数据进入详情页面
-   * 
-   * @param model
-   * @param id
-   * @return
-   */
-  @RequestMapping(value = "/details", method = RequestMethod.GET)
-  public String details(ModelMap model, Long id) {
-    TenantClearingRecord tenantClearingRecord = tenantClearingRecordService.find(id);
-    model.addAttribute("tenantClearingRecord", tenantClearingRecord);
-    return "tenantClearingRecord/details";
+    return "tenantClearingRecord/applyClearing";
   }
 }
