@@ -48,7 +48,7 @@
 <div id="tenantClearingRecord_manager_tool">
 	<div class="tool-button">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="tenantClearingRecord_manager_tool.applyClearingRecord();">申请结算</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="tenantClearingRecord_manager_tool.edit();">修改</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="tenantClearingRecord_manager_tool.show();">查看详情</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="tenantClearingRecord_manager_tool.remove();">删除</a>
 	</div>
 	<div class="tool-filter"></div>

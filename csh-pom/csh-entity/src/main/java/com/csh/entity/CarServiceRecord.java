@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -119,7 +120,7 @@ public class CarServiceRecord extends BaseEntity {
     this.tenantName = tenantName;
   }
 
-  @ManyToOne
+  @ManyToOne(fetch=FetchType.EAGER)
   @JsonProperty
   public CarService getCarService() {
     return carService;
@@ -129,7 +130,7 @@ public class CarServiceRecord extends BaseEntity {
     this.carService = carService;
   }
 
-  @ManyToOne
+  @ManyToOne(fetch=FetchType.EAGER)
   @JsonProperty
   public EndUser getEndUser() {
     return endUser;

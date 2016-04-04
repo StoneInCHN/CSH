@@ -220,6 +220,7 @@ var messages = {
 	"csh.carServiceRecord.price":"价格",
 	"csh.carServiceRecord.chargeStatus":"支付状态",
 	"csh.carServiceRecord.paymentType":"支付方式",
+	"csh.carServiceRecord.paymentDate":"付款时间",
 	"csh.tenantClearingRecord.add":"添加结算单",
 	"csh.tenantClearingRecord.clearingSn":"结算单号",
 	"csh.tenantClearingRecord.clearingStatus":"结算状态",
@@ -227,6 +228,7 @@ var messages = {
 	"csh.tenantClearingRecord.periodEndDate":"结算周期结束时间",
 	"csh.tenantClearingRecord.list":"结算记录列表",
 	"csh.tenantClearingRecord.clearingDate":"结算时间",
+	"csh.clearingCarServiceRecord.no":"没有可结算的账单"
 	
 	
 };

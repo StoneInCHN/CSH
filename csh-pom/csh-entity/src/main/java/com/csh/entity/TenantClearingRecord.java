@@ -9,7 +9,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -56,7 +55,6 @@ public class TenantClearingRecord extends BaseEntity
    */
   private Date periodEndDate;
   
-  private EndUser endUser;
 
   /**
    *本次结算周期金额 
@@ -179,19 +177,8 @@ public class TenantClearingRecord extends BaseEntity
     this.amountOutOfCurrentPeriod = amountOutOfCurrentPeriod;
   }
    
-  @ManyToOne(fetch = FetchType.LAZY) 
-  public EndUser getEndUser ()
-  {
-    return endUser;
-  }
 
-  public void setEndUser (EndUser endUser)
-  {
-    this.endUser = endUser;
-  }
-
-  @OneToMany(mappedBy = "tenantClearingRecord", cascade = {CascadeType.MERGE})
-  //@LazyCollection(LazyCollectionOption.FALSE)
+  @OneToMany(mappedBy = "tenantClearingRecord",fetch=FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
   public List<CarServiceRecord> getCarServiceRecords ()
   {
     return carServiceRecords;

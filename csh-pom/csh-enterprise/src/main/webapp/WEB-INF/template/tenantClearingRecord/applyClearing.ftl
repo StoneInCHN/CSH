@@ -7,17 +7,17 @@
 		</td>
 		<th>结算周期从：</th>
 		<td>
-			 <input type="text" class="Wdate" id="beginDate" name="beginDate" readonly="readonly" onclick="WdatePicker()"/>
+			 <input type="text" class="easyui-datetimebox"  name="periodBeginDate" value="${peroidBeginDate}" readonly="readonly" />
 		</td>
 		<th>到：</th>
 		<td>
-			 <input type="text" class="Wdate" id="beginDate" name="beginDate" readonly="readonly" onclick="WdatePicker()"/>
+			 <input type="text" class="easyui-datetimebox"  name="periodEndDate" value="${peroidEndDate}" readonly="readonly"/>
 		</td>
    	</tr>
    	<tr>
    		<th>结算金额：</th>
 		<td>
-			 <input type="text" class="easyui-textbox" name="staffID" id= "staffID"   data-options="required:true"/>
+			 <input type="text" class="easyui-textbox" name="amountOfCurrentPeriod" id= "amountOfCurrentPeriod"   data-options="required:true"/>
 		</td>
    	</tr>
    	<tr>

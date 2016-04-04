@@ -13,11 +13,21 @@ var tenantClearingRecord_manager_tool = {
 			    	iconCls:'icon-save',
 					handler:function(){
 						var validate = $('#addTenantClearingRecord_form').form('validate');
+						var rows = $('#clearingCarServiceRecord-table-list').datagrid('getRows');
+						if(rows.length == 0){
+							$.messager.alert(message("csh.clearingCarServiceRecord.no"));  
+							return false;
+						}
+						var ids = [];
+						for(var i =0; i<rows.length;i++){
+							ids.push(rows[i].id);
+						}
+						$('#applyClearingRecordForm').append("<input type='hidden' name='ids' value="+ids+">")
 						if(validate){
 							$.ajax({
-								url:"../carService/add.jhtml",
+								url:"../tenantClearingRecord/add.jhtml",
 								type:"post",
-								data:$("#addCarService_form").serialize(),
+								data:$("#applyClearingRecordForm").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -27,8 +37,8 @@ var tenantClearingRecord_manager_tool = {
 									$.messager.progress('close');
 									if(response == "success"){
 										showSuccessMsg(result.content);
-										$('#addTenantClearingRecord').dialog("close")
-										$("#addTenantClearingRecord_form").form("reset");
+										$('#applyClearingRecord').dialog("close")
+										$("#applyClearingRecordForm").form("reset");
 										$("#tenantClearingRecord-table-list").datagrid('reload');
 									}else{
 										alertErrorMsg();
@@ -46,6 +56,8 @@ var tenantClearingRecord_manager_tool = {
 					}
 			    }],
 				onLoad:function(){
+					//总金额
+					var totalMoney = 0;
 					//结算账单清单
 					$("#clearingCarServiceRecord-table-list").datagrid({
 						title:message("csh.carServiceRecord.list"),
@@ -55,7 +67,6 @@ var tenantClearingRecord_manager_tool = {
 						striped:true,
 						columns:[
 						   [
-						      {field:'ck',checkbox:true},
 						      {title:message("csh.carServiceRecord.serviceName"),field:"carService",sortable:true,
 						    	  formatter: function(value,row,index){
 						    		  return value.serviceName;
@@ -85,80 +96,55 @@ var tenantClearingRecord_manager_tool = {
 						    	  formatter: function(value,row,index){
 						    		  return value.userName;
 						    	  }},
-					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"price",sortable:true},  
-						      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
+					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"price",sortable:true,
+					    		  formatter: function(value,row,index){
+					    			  if(value != null){
+					    				  totalMoney = totalMoney+value;	
+					    			  }
+						    		  return value;
+						    	  }},  
+						      {title:message("csh.carServiceRecord.paymentDate"),field:"paymentDate",width:100,sortable:true,formatter: function(value,row,index){
 									return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 								}
 						      },
 						   ]
-						]
+						],
+						onLoadSuccess:function(){
+							debugger;
+							$("#amountOfCurrentPeriod").textbox('setValue',totalMoney);
+						}
 					});
+					
 				},
 			    onClose:function(){
 			    	$('#addTenantClearingRecord').empty();
 			    }
 			});  
 		},
-		edit:function(){
-			var _edit_row = $('#tenantClearingRecord-table-list').datagrid('getSelected');
-			if( _edit_row == null ){
+		show:function(){
+			var _show_row = $('#tenantClearingRecord-table-list').datagrid('getSelected');
+			if( _show_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
-			var _dialog = $('#editTenantClearingRecord').dialog({    
-				title: message("csh.common.edit"),     
-			    width: 700,    
-			    height: 550,    
-			    modal: true,
-			    iconCls:'icon-mini-edit',
-			    href:'../tenantClearingRecord/edit.jhtml?id='+_edit_row.id,
-			    buttons:[{
-			    	text:message("csh.common.save"),
-			    	iconCls:'icon-save',
-					handler:function(){
-						var validate = $('#editTenantClearingRecord_form').form('validate');
-						if(validate){
-							$.ajax({
-								url:"../tenantClearingRecord/update.jhtml",
-								type:"post",
-								data:$("#editTenantClearingRecord_form").serialize(),
-								beforeSend:function(){
-									$.messager.progress({
-										text:message("csh.common.saving")
-									});
-								},
-								success:function(result,response,status){
-									$.messager.progress('close');
-										showSuccessMsg(result.content);
-										$('#editTenantClearingRecord').dialog("close");
-										$("#tenantClearingRecord-table-list").datagrid('reload');
-								}
-							});
-						};
-					}
-				},{
-					text:message("csh.common.close"),
-					iconCls:'icon-cancel',
-					handler:function(){
-						 $('#editTenantClearingRecord').dialog("close")
-					}
-			    }],
-			    onLoad:function(){
-			    	$("#editCarServiceCategory").combobox({    
-					    valueField:'id',
-					    textField:'categoryName',
-					    url:"../serviceCategory/findAllServiceCategory.jhtml",
-					    editable : false,
-					    required:true,
-					    prompt:message("csh.common.please.select"),
-					    onLoadSuccess:function(){
-						},
-			    	});
-			    },
-			    onClose:function(){
-			    	$('#editTenantClearingRecord').empty();
-			    }
-			});  
+				$('#tenantClearingRecordDetail').dialog({    
+				    title: message("csh.common.detail"),    
+				    width: 700,    
+				    height: 550, 
+				    cache: false,
+				    modal: true,
+				    href:'../tenantClearingRecord/details.jhtml?id='+_show_row.id,
+				    buttons:[{
+						text:message("csh.common.close"),
+						iconCls:'icon-cancel',
+						handler:function(){
+							 $('#tenantClearingRecordDetail').dialog("close");
+						}
+				    }],
+				    onClose:function(){
+				    	$('#tenantClearingRecordDetail').empty();
+				    }
+				});   
 		},
 		remove:function(){
 			listRemove('tenantClearingRecord-table-list','../tenantClearingRecord/delete.jhtml');
@@ -177,28 +163,6 @@ $(function(){
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
-		onDblClickRow : function (rowIndex, rowData){
-			$('#tenantClearingRecordDetail').dialog({    
-			    title: message("csh.common.detail"),    
-			    width: 700,    
-			    height: 550, 
-			    cache: false,
-			    modal: true,
-			    href:'../tenantClearingRecord/details.jhtml?id='+rowData.id,
-			    buttons:[{
-					text:message("csh.common.close"),
-					iconCls:'icon-cancel',
-					handler:function(){
-						 $('#tenantClearingRecordDetail').dialog("close");
-					}
-			    }],
-			    onClose:function(){
-			    	$('#tenantClearingRecordDetail').empty();
-			    },
-			    onLoad:function(){
-			    }
-			});   
-		},
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},

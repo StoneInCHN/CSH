@@ -1,6 +1,8 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -24,10 +26,13 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.CarServiceRecord;
 import com.csh.entity.TenantClearingRecord;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.CarServiceRecordService;
 import com.csh.service.TenantClearingRecordService;
 import com.csh.utils.DateTimeUtils;
 
@@ -43,6 +48,8 @@ public class TenantClearingRecordController extends BaseController
 
   @Resource (name = "tenantClearingRecordServiceImpl")
   private TenantClearingRecordService tenantClearingRecordService;
+  @Resource (name = "carServiceRecordServiceImpl")
+  private CarServiceRecordService carServiceRecordService;
   
   @RequestMapping (value = "/tenantClearingRecord", method = RequestMethod.GET)
   public String list (ModelMap model)
@@ -126,8 +133,26 @@ public class TenantClearingRecordController extends BaseController
   }
   
   @RequestMapping (value = "/applyClearing", method = RequestMethod.GET)
-  public String applyClearing ()
+  public String applyClearing (ModelMap mode)
   {
+    Map<String, Date> periodDateMap= tenantClearingRecordService.findPeriodBeginEndDate();
+    mode.putAll (periodDateMap);
     return "tenantClearingRecord/applyClearing";
+  }
+  
+  @RequestMapping (value = "/details", method = RequestMethod.GET)
+  public String detail (ModelMap mode,Long id)
+  {
+    TenantClearingRecord tenantClearingRecord= tenantClearingRecordService.find(id);
+    mode.put ("tenantClearingRecord",tenantClearingRecord);
+    return "tenantClearingRecord/details";
+  }
+  
+  @RequestMapping (value = "/add", method = RequestMethod.POST)
+  public @ResponseBody Message add (ModelMap mode,TenantClearingRecord tenantClearingRecord, Long[] ids)
+  {
+    tenantClearingRecordService.saveTenantClearingRecord(tenantClearingRecord
+        , ids);
+    return SUCCESS_MESSAGE;
   }
 }
