@@ -145,10 +145,8 @@ var tenantClearingRecord_manager_tool = {
 				    	$('#tenantClearingRecordDetail').empty();
 				    }
 				});   
-		},
-		remove:function(){
-			listRemove('tenantClearingRecord-table-list','../tenantClearingRecord/delete.jhtml');
 		}
+		
 };
 
 $(function(){
