@@ -2,6 +2,11 @@ package com.csh.utils;
 
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.JavaType;
 
 public class ToolsUtils {
 
@@ -34,7 +39,20 @@ public class ToolsUtils {
     return strBuffer.toString();
   }
 
+  public static Map<String, Object> convertStrToJson(String str) {
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      JavaType javaType =
+          mapper.getTypeFactory()
+              .constructParametricType(HashMap.class, String.class, Object.class);
+      Map<String, Object> map = mapper.readValue(str, javaType);
+      return map;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
 
+  }
 
   /**
    * 检查对象obj的成员变量是否都为null

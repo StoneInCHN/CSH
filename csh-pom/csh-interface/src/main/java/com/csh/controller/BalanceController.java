@@ -1,11 +1,15 @@
 package com.csh.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.dom4j.DocumentException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,7 @@ import com.csh.entity.EndUser;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.BalanceType;
+import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -36,7 +41,9 @@ import com.csh.service.EndUserService;
 import com.csh.service.WalletRecordService;
 import com.csh.service.WalletService;
 import com.csh.utils.FieldFilterUtils;
+import com.csh.utils.PayUtil;
 import com.csh.utils.TokenGenerator;
+import com.csh.utils.ToolsUtils;
 
 
 
@@ -55,9 +62,56 @@ public class BalanceController extends MobileBaseController {
   private WalletRecordService walletRecordService;
 
 
+  /**
+   * 充值
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/chargeIn", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> chargeIn(
+      @RequestBody WalletRequest walletReq, HttpServletRequest httpReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = walletReq.getUserId();
+    String token = walletReq.getToken();
+    PaymentType paymentType = walletReq.getPaymentType();
+    BigDecimal amount = walletReq.getAmount();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    String tradeNo = ToolsUtils.generateRecordNo("000000");
+    if (PaymentType.WECHAT.equals(paymentType)) {
+      try {
+        response =
+            PayUtil.wechat(tradeNo, "wallet charge in", httpReq.getRemoteAddr(), "0",
+                amount.toString());
+      } catch (DocumentException e) {
+        e.printStackTrace();
+      }
+    } else {
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("out_trade_no", tradeNo);
+      response.setMsg(map);
+      response.setCode(CommonAttributes.SUCCESS);
+    }
+
+    String newtoken = TokenGenerator.generateToken(walletReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    return response;
+  }
+
 
   /**
-   * 钱包充值余额
+   * 钱包充值余额call back
    * 
    * @param req
    * @return

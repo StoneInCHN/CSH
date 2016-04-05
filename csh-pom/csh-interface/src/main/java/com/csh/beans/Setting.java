@@ -140,6 +140,19 @@ public class Setting implements Serializable {
    */
   private String wechatTokenUrl;
 
+  /**
+   * obd服务器url
+   */
+  private String obdServerUrl;
+
+
+  public String getObdServerUrl() {
+    return obdServerUrl;
+  }
+
+  public void setObdServerUrl(String obdServerUrl) {
+    this.obdServerUrl = obdServerUrl;
+  }
 
   public String getWechatKey() {
     return wechatKey;

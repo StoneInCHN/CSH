@@ -32,11 +32,13 @@
 		<setting name="smtpUsername" value="tankboo@163.com" />
 		<setting name="smtpPassword" value="676397876." />
 		<setting name="defaultPageSize" value="5" />
+		<setting name="insuranceId" value="6" />
+		<setting name="obdServerUrl" value="http://localhost:8082/obd-data" />
+		
 		<!-- 极光推送Key -->
 		<setting name="appKey" value="eb1ec435f9a7e7305c51621a" />
 		<setting name="masterSecret" value="e658c652b6b824afd582ab26" />
 		
-		<setting name="insuranceId" value="6" />
 		 
 		<!-- 微信支付平台 -->
 		<!-- 秘钥 -->

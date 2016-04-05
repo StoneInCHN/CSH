@@ -2,6 +2,7 @@ package com.csh.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -106,6 +107,7 @@ public class CarServiceController extends MobileBaseController {
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
+    response.setDesc(carServiceRecord.getId().toString());
     return response;
   }
 
@@ -156,17 +158,17 @@ public class CarServiceController extends MobileBaseController {
 
 
   /**
-   * 支付(余额支付直接支付，第三方支付调用P++接口)
+   * 支付(余额支付直接支付)
    * 
    * @param req
    * @return
    */
   @RequestMapping(value = "/payService", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse payService(@RequestBody CarServiceRequest serviceReq,
-      HttpServletRequest httpReq) {
+  public @ResponseBody ResponseOne<Map<String, Object>> payService(
+      @RequestBody CarServiceRequest serviceReq, HttpServletRequest httpReq) {
 
-    BaseResponse response = new BaseResponse();
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     Long userId = serviceReq.getUserId();
     String token = serviceReq.getToken();
     PaymentType paymentType = serviceReq.getPaymentType();
@@ -208,6 +210,8 @@ public class CarServiceController extends MobileBaseController {
                 carService.getServiceName(), carServiceRecord.getPrice(),
                 carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
       }
+    } else {
+      carServiceRecord = carServiceRecordService.find(recordId);
     }
 
     if (PaymentType.WECHAT.equals(paymentType)) {
@@ -219,6 +223,10 @@ public class CarServiceController extends MobileBaseController {
         e.printStackTrace();
       }
     } else {
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("out_trade_no", carServiceRecord.getRecordNo());
+      response.setMsg(map);
+      response.setDesc(carServiceRecord.getId().toString());
       response.setCode(CommonAttributes.SUCCESS);
     }
 
@@ -317,7 +325,7 @@ public class CarServiceController extends MobileBaseController {
 
     String[] properties =
         {"id", "createDate", "chargeStatus", "price", "carService.serviceCategory",
-            "carService.serviceName", "tenantName"};
+            "carService.serviceName", "carService.id", "tenantName"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, records.getContent());
     response.setMsg(map);
