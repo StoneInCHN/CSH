@@ -192,6 +192,9 @@
     		[@shiro.hasPermission name="clearingRecord"]
     		<li><a href="#" data-url="${base}/console/tenantClearingRecord/tenantClearingRecord.jhtml">${message("csh.clearingManage.clearingRecord")}</a></li>
     		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="carServiceRecord"]
+    		<li><a href="#" data-url="${base}/console/carServiceRecord/carServiceRecord.jhtml">${message("csh.clearingManage.carServiceRecord")}</a></li>
+    		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.appActivity.config")}" id="appActivity">
     		[@shiro.hasPermission name="redPacketSend"]

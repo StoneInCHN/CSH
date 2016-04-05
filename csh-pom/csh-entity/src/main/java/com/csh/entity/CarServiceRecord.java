@@ -13,10 +13,16 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.lucene.DateBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -25,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 @Entity
+@Indexed(index="carServiceRecord")
 @Table(name = "csh_car_service_record")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_car_service_record_sequence")
 public class CarServiceRecord extends BaseEntity {
@@ -94,6 +101,7 @@ public class CarServiceRecord extends BaseEntity {
 
 
   @Column(length = 30)
+  @JsonProperty
   public String getRecordNo() {
     return recordNo;
   }
@@ -103,6 +111,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @Index(name = "carServiceRecord_tenantid")
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
   public Long getTenantID() {
     return tenantID;
   }
@@ -122,6 +131,7 @@ public class CarServiceRecord extends BaseEntity {
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JsonProperty
+  @IndexedEmbedded
   public CarService getCarService() {
     return carService;
   }
@@ -132,6 +142,7 @@ public class CarServiceRecord extends BaseEntity {
 
   @ManyToOne(fetch=FetchType.EAGER)
   @JsonProperty
+  @IndexedEmbedded
   public EndUser getEndUser() {
     return endUser;
   }
@@ -141,6 +152,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @JsonProperty
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
   public PaymentType getPaymentType() {
     return paymentType;
   }
@@ -150,6 +162,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @JsonProperty
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
   public ChargeStatus getChargeStatus() {
     return chargeStatus;
   }
@@ -220,6 +233,8 @@ public class CarServiceRecord extends BaseEntity {
 
 
   @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @FieldBridge(impl = DateBridgeImpl.class)
   public Date getPaymentDate ()
   {
     return paymentDate;

@@ -213,14 +213,22 @@ var messages = {
 	"csh.vehicleInsurance.isOwned":"是否过户",
 	"csh.vehicleInsurance.isLoaned":"是否贷款车",
 	
-	//结算记录
+	//服务记录
 	"csh.carServiceRecord.list":"服务记录列表",
 	"csh.carServiceRecord.serviceName":"服务名称",
 	"csh.carServiceRecord.endUser":"购买用户",
 	"csh.carServiceRecord.price":"价格",
 	"csh.carServiceRecord.chargeStatus":"支付状态",
+	"csh.carServiceRecord.chargeStatus.RESERVATION":"预约",
+	"csh.carServiceRecord.chargeStatus.UNPAID":"未支付",
+	"csh.carServiceRecord.chargeStatus.PAID":"已支付",
 	"csh.carServiceRecord.paymentType":"支付方式",
+	"csh.carServiceRecord.paymentType.ALIPAY":"支付宝",
+	"csh.carServiceRecord.paymentType.WECHAT":"微信",
+	"csh.carServiceRecord.paymentType.WALLET":"钱包",
 	"csh.carServiceRecord.paymentDate":"付款时间",
+	"csh.carServiceRecord.recordNo":"记录编号",
+	//结算记录
 	"csh.tenantClearingRecord.add":"添加结算单",
 	"csh.tenantClearingRecord.clearingSn":"结算单号",
 	"csh.tenantClearingRecord.clearingStatus":"结算状态",
