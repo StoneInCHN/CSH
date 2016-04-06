@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -99,10 +100,13 @@ public class ObdController extends MobileBaseController {
     try {
       String url =
           setting.getObdServerUrl() + "/appVehicleData/oneKeyDetection.jhtml?deviceId="
-              + deviceReq.getDeviceId() + "&date=" + deviceReq.getDate();
+              + deviceReq.getDeviceId() + "&date=" + deviceReq.getSearchDate();
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
-      response.setMsg((Map<String, Object>) map.get("msg"));
+      Map<String, Object> msg = (Map<String, Object>) map.get("msg");
+      BigDecimal cost = new BigDecimal(0);
+      msg.put("cost", cost);
+      response.setMsg(msg);
     } catch (Exception e) {
       e.printStackTrace();
     }

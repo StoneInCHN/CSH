@@ -1,7 +1,5 @@
 package com.csh.json.request;
 
-import java.util.Date;
-
 import com.csh.json.base.BaseRequest;
 
 public class DeviceRequest extends BaseRequest {
@@ -14,7 +12,7 @@ public class DeviceRequest extends BaseRequest {
   /**
    * 查询时间
    */
-  private Date date;
+  private String searchDate;
 
   public Long getDeviceId() {
     return deviceId;
@@ -24,12 +22,12 @@ public class DeviceRequest extends BaseRequest {
     this.deviceId = deviceId;
   }
 
-  public Date getDate() {
-    return date;
+  public String getSearchDate() {
+    return searchDate;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  public void setSearchDate(String searchDate) {
+    this.searchDate = searchDate;
   }
 
 }

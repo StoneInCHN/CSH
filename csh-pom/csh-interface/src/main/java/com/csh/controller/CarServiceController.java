@@ -2,6 +2,7 @@ package com.csh.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +136,7 @@ public class CarServiceController extends MobileBaseController {
 
     EndUser endUser = endUserService.find(userId);
     CarServiceRecord carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
-
+    carServiceRecord.setPaymentDate(new Date());
     carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
     carServiceRecordService.update(carServiceRecord);
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
@@ -324,7 +325,7 @@ public class CarServiceController extends MobileBaseController {
     response.setPage(page);
 
     String[] properties =
-        {"id", "createDate", "chargeStatus", "price", "carService.serviceCategory",
+        {"id", "createDate", "paymentDate", "chargeStatus", "price", "carService.serviceCategory",
             "carService.serviceName", "carService.id", "tenantName"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, records.getContent());
