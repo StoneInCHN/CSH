@@ -346,7 +346,7 @@ public class VehicleController extends MobileBaseController {
       LogUtil.debug(VehicleController.class, "Update",
           "set default vehicle.UserId: %s, VehicleId: %s,", userId, vehicleId);
     }
-    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon"};
+    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, endUser.getVehicles());
     response.setMsg(map);

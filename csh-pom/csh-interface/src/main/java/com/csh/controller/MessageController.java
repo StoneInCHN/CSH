@@ -30,6 +30,7 @@ import com.csh.service.EndUserService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
 import com.csh.utils.FieldFilterUtils;
+import com.csh.utils.JPushUtil;
 import com.csh.utils.TokenGenerator;
 
 
@@ -190,6 +191,28 @@ public class MessageController extends MobileBaseController {
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+
+  /**
+   * 推送消息
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/pushMsg", method = RequestMethod.POST)
+  public @ResponseBody BaseResponse pushMsg(@RequestBody MsgRequest req) {
+    BaseResponse response = new BaseResponse();
+    Long msgId = req.getMsgId();
+
+    // EndUser endUser = endUserService.find(userId);
+    MessageInfo msg = messageInfoService.find(msgId);
+    // MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
+    // msgEndUser.setIsPush(true);
+    // msgEndUserService.update(msgEndUser);
+    JPushUtil.buildPushObject_android_alias(null, null, null);
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
