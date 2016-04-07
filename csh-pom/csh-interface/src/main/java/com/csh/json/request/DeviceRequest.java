@@ -5,21 +5,21 @@ import com.csh.json.base.BaseRequest;
 public class DeviceRequest extends BaseRequest {
 
   /**
-   * 设备ID
+   * 设备号
    */
-  private Long deviceId;
+  private String deviceNo;
 
   /**
    * 查询时间
    */
   private String searchDate;
 
-  public Long getDeviceId() {
-    return deviceId;
+  public String getDeviceNo() {
+    return deviceNo;
   }
 
-  public void setDeviceId(Long deviceId) {
-    this.deviceId = deviceId;
+  public void setDeviceNo(String deviceNo) {
+    this.deviceNo = deviceNo;
   }
 
   public String getSearchDate() {

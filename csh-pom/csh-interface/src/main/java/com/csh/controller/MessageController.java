@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.MessageInfo;
 import com.csh.entity.MsgEndUser;
@@ -26,11 +28,12 @@ import com.csh.json.base.BaseResponse;
 import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.request.MsgRequest;
+import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
 import com.csh.utils.FieldFilterUtils;
-import com.csh.utils.JPushUtil;
+import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
 
 
@@ -46,6 +49,9 @@ public class MessageController extends MobileBaseController {
 
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
+
+  @Resource(name = "deviceInfoServiceImpl")
+  private DeviceInfoService deviceInfoService;
 
   @Resource(name = "messageInfoServiceImpl")
   private MessageInfoService messageInfoService;
@@ -206,13 +212,44 @@ public class MessageController extends MobileBaseController {
   public @ResponseBody BaseResponse pushMsg(@RequestBody MsgRequest req) {
     BaseResponse response = new BaseResponse();
     Long msgId = req.getMsgId();
-
+    String deviceNo = req.getDeviceNo();
     // EndUser endUser = endUserService.find(userId);
-    MessageInfo msg = messageInfoService.find(msgId);
-    // MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
-    // msgEndUser.setIsPush(true);
-    // msgEndUserService.update(msgEndUser);
-    JPushUtil.buildPushObject_android_alias(null, null, null);
+    MessageInfo msg = new MessageInfo();
+    if (msgId != null) {
+      msg = messageInfoService.find(msgId);
+    } else {
+      DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+      if (deviceInfo == null) {
+        response.setCode(CommonAttributes.FAIL_DEVICE_NOEXIST);
+        return response;
+      }
+      EndUser endUser = deviceInfo.getVehicle().getEndUser();
+      msg.setMessageType(MessageType.PERSONALMSG);
+      String msgContent =
+          Message.warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
+              TimeUtils.format("yyyy-MM-dd hh:mm:ss", new Date().getTime()), req.getMsgContent())
+              .getContent();
+      msg.setMessageContent(msgContent);
+      MsgEndUser msgEndUser = new MsgEndUser();
+      msgEndUser.setEndUser(endUser);
+      msgEndUser.setIsPush(false);
+      msgEndUser.setIsRead(false);
+      msgEndUser.setMessage(msg);
+      msg.getMsgUser().add(msgEndUser);
+      messageInfoService.save(msg);
+    }
+
+    // 推送消息
+    for (MsgEndUser msgEndUser : msg.getMsgUser()) {
+      // MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
+      msgEndUser.setIsPush(true);
+      EndUser user = msgEndUser.getEndUser();
+      // JPushUtil.buildPushObject_android_alias(msg.getMessageContent(), null, null);
+
+      msgEndUserService.update(msgEndUser);
+
+    }
+
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }

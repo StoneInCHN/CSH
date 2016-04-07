@@ -33,7 +33,7 @@
 		<setting name="smtpPassword" value="676397876." />
 		<setting name="defaultPageSize" value="5" />
 		<setting name="insuranceId" value="6" />
-		<setting name="obdServerUrl" value="http://localhost:8082/obd-data" />
+		<setting name="obdServerUrl" value="http://10.50.40.102:8080/obd-data" />
 		
 		<!-- 极光推送Key -->
 		<setting name="appKey" value="eb1ec435f9a7e7305c51621a" />

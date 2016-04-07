@@ -52,6 +52,8 @@ public final class CommonAttributes {
   public static final String FAIL_INAVAILABLE_PARAM = "0007";// 请求参数无效
   /** 绑定OBD设备失败 */
   public static final String FAIL_BIND_DEVICE = "0008";// 绑定OBD设备失败
+  /** OBD设备不存在 */
+  public static final String FAIL_DEVICE_NOEXIST = "0009";// OBD设备不存在
 
 
   /** 手机号已存在 */

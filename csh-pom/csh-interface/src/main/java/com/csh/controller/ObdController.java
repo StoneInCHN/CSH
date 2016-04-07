@@ -15,9 +15,12 @@ import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.DeviceInfo;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.DeviceRequest;
+import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
+import com.csh.service.VehicleOilService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.TokenGenerator;
 import com.csh.utils.ToolsUtils;
@@ -35,6 +38,12 @@ public class ObdController extends MobileBaseController {
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
 
+  @Resource(name = "deviceInfoServiceImpl")
+  private DeviceInfoService deviceInfoService;
+
+  @Resource(name = "vehicleOilServiceImpl")
+  private VehicleOilService vehicleOilService;
+
 
   /**
    * 车辆动态
@@ -50,6 +59,7 @@ public class ObdController extends MobileBaseController {
 
     Long userId = deviceReq.getUserId();
     String token = deviceReq.getToken();
+    String deviceNo = deviceReq.getDeviceNo();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -60,8 +70,7 @@ public class ObdController extends MobileBaseController {
 
     try {
       String url =
-          setting.getObdServerUrl() + "/appVehicleData/vehicleTrends.jhtml?deviceId="
-              + deviceReq.getDeviceId();
+          setting.getObdServerUrl() + "/appVehicleData/vehicleTrends.jhtml?deviceId=" + deviceNo;
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
       response.setMsg((Map<String, Object>) map.get("msg"));
@@ -89,6 +98,8 @@ public class ObdController extends MobileBaseController {
 
     Long userId = deviceReq.getUserId();
     String token = deviceReq.getToken();
+    String deviceNo = deviceReq.getDeviceNo();
+    String searchDate = deviceReq.getSearchDate();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -99,12 +110,17 @@ public class ObdController extends MobileBaseController {
 
     try {
       String url =
-          setting.getObdServerUrl() + "/appVehicleData/oneKeyDetection.jhtml?deviceId="
-              + deviceReq.getDeviceId() + "&date=" + deviceReq.getSearchDate();
+          setting.getObdServerUrl() + "/appVehicleData/oneKeyDetection.jhtml?deviceId=" + deviceNo
+              + "&date=" + searchDate;
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
       Map<String, Object> msg = (Map<String, Object>) map.get("msg");
+
       BigDecimal cost = new BigDecimal(0);
+      DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+      cost =
+          vehicleOilService.calOilCost(new BigDecimal((Double) msg.get("fuelConsumption")),
+              deviceInfo);
       msg.put("cost", cost);
       response.setMsg(msg);
     } catch (Exception e) {
@@ -132,6 +148,7 @@ public class ObdController extends MobileBaseController {
 
     Long userId = deviceReq.getUserId();
     String token = deviceReq.getToken();
+    String deviceNo = deviceReq.getDeviceNo();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -142,8 +159,7 @@ public class ObdController extends MobileBaseController {
 
     try {
       String url =
-          setting.getObdServerUrl() + "/appVehicleData/vehicleScan.jhtml?deviceId="
-              + deviceReq.getDeviceId();
+          setting.getObdServerUrl() + "/appVehicleData/vehicleScan.jhtml?deviceId=" + deviceNo;
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
       response.setMsg((Map<String, Object>) map.get("msg"));
