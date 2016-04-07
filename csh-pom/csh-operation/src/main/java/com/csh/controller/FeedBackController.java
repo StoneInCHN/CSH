@@ -45,9 +45,7 @@ public class FeedBackController extends BaseController {
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
   public @ResponseBody Message delete(Long[] ids) {
     if (ids != null) {
-      for (Long id : ids) {
         feedBackService.delete(ids);
-      }
 
     }
     return SUCCESS_MESSAGE;

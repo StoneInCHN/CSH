@@ -27,6 +27,7 @@
 				</div>
 			
 			<form id="listForm" action="list.jhtml" method="get">
+				<input type="hidden" id="deviceStatus" name="deviceStatus" value="${deviceStatus}" />
 				  <div class="container operation">
 					<div class="row">
 						  <div class="col-xs-9 col-md-9 col-lg-9">
@@ -42,10 +43,7 @@
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
 										<div class="btn-group operationButton">
-										  <button type="button" id="singleDeviceBinding" class="btn btn-default"><i class="fa fa-wrench"></i>&nbsp;&nbsp;${message("csh.common.singleDeviceBinding")}</button>
-										</div>
-										<div class="btn-group operationButton">
-										  <button type="button" id="batchDeviceBinding" class="btn btn-default"><i class="fa fa-cogs"></i>&nbsp;&nbsp;${message("csh.common.batchDeviceBinding")}</button>
+											<button type="button" id="deviceProvide"  class="btn btn-default"><i class="fa fa-wrench"></i>${message("csh.deviceInfo.deviceProvide")}</button>
 										</div>
 									</li>
 									  <li role="presentation" class="dropdown pull-right">
@@ -67,6 +65,31 @@
 												</li>
 										    </ul>
 									  </li>
+										<li role="presentation" class="dropdown pull-right ">
+											<a href="javascript:;" id="filterSelect" aria-expanded="false" role="button" aria-haspopup="true" data-toggle="dropdown" class="dropdown-toggle" href="#">
+													${message("csh.deviceInfo.deviceStatus.filter")}<span class="caret"></span>
+											</a>
+											<ul id="filterOption" class="dropdown-menu" role="menu" aria-labelledby="filterSelect">
+												<li>
+													<a href="javascript:;" name="deviceStatus" val="" [#if deviceStatus == null] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.all")}</a>
+												</li>
+												<li>
+													<a href="javascript:;" name="deviceStatus" val="INITED" [#if deviceStatus == "INITED"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.INITED")}</a>
+												</li>
+												<li>
+													<a href="javascript:;" name="deviceStatus" val="SENDOUT" [#if deviceStatus == "SENDOUT"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.SENDOUT")}</a>
+												</li>
+												<li>
+													<a href="javascript:;" name="deviceStatus" val="STORAGEOUT" [#if deviceStatus == "STORAGEOUT"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.STORAGEOUT")}</a>
+												</li>
+												<li>
+													<a href="javascript:;" name="deviceStatus" val="BINDED" [#if deviceStatus == "BINDED"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.BINDED")}</a>
+												</li>
+												<li>
+													<a href="javascript:;" name="deviceStatus" val="REFUNDED" [#if deviceStatus == "REFUNDED"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.REFUNDED")}</a>
+												</li>
+											</ul>
+										</li>
 									</ul>
 						  </div>
 						  <div class="col-xs-3 col-md-3 col-lg-3">
@@ -191,17 +214,68 @@
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
 <script type="text/javascript">
-	var $singleDeviceBinding = $("#singleDeviceBinding");
-	var $batchDeviceBinding = $("#batchDeviceBinding");
+$().ready(function() {
+
+	var $listForm = $("#listForm");
+	var $filterSelect = $("#filterSelect");
+	var $filterOption = $("#filterOption a");
+	var $deviceProvide = $("#deviceProvide");
+	var $deviceStatus = $("#deviceStatus");
 	
-	$singleDeviceBinding.click(function(){
+	$deviceProvide.click(function(){
+		
+		if($deviceStatus.val() != "INITED"){
+			$.dialog({
+				type: "warn",
+				content:"初始状态下才能发放",
+			})
+			return;		
+		}
+		
+		if ($("#listTable input[name='ids']:checked").size() < 1) {
+			$.dialog({
+				type: "warn",
+				content:"请选择设备"
+			})
+			return;		
+		}
+		
 		var $deviceBinding = window.parent.$('#operationModal');
 		var $operationModalIframe= window.parent.$('#operationModalIframe');
-		$deviceBinding.find(".modal-title").text("设备绑定");
+		$deviceBinding.find(".modal-title").text("设备发放");
 		$deviceBinding.modal("show");
-		$operationModalIframe.attr("src","${base}/console/deviceInfo/singleDeviceBinding.jhtml");
+		$deviceBinding.attr("data-ids","&"+$("#listTable input[name='ids']:checked").serialize());
+		$operationModalIframe.attr("src","${base}/console/deviceInfo/deviceProvide.jhtml");
+		$operationModalIframe.css("height",380);
+	
 	})
 	
+	// 筛选
+	$filterSelect.mouseover(function() {
+		var $this = $(this);
+		var offset = $this.offset();
+		var $menuWrap = $this.closest("div.menuWrap");
+		var $popupMenu = $menuWrap.children("div.popupMenu");
+		$popupMenu.css({left: offset.left - 20, top: offset.top + $this.height() + 2}).show();
+		$menuWrap.mouseleave(function() {
+			$popupMenu.hide();
+		});
+	});
+	
+	// 筛选选项
+	$filterOption.click(function() {
+		var $this = $(this);
+		var $dest = $("#" + $this.attr("name"));
+		if ($this.hasClass("checked")) {
+			$dest.val("");
+		} else {
+			$dest.val($this.attr("val"));
+		}
+		$listForm.submit();
+		return false;
+	});
+
+});
 </script>
 </body>
 </html>

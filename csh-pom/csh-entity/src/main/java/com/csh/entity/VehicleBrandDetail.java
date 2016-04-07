@@ -3,6 +3,7 @@ package com.csh.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -15,6 +16,7 @@ import org.hibernate.search.annotations.Field;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.OilType;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -88,6 +90,11 @@ public class VehicleBrandDetail extends BaseEntity
   
   private Set<Vehicle> vehicles = new HashSet<Vehicle> ();
 
+  /**
+   * 油型号
+   */
+  private OilType oilType;
+  
   public Float getAverageOil ()
   {
     return averageOil;
@@ -224,4 +231,13 @@ public class VehicleBrandDetail extends BaseEntity
     this.vehicleLine = vehicleLine;
   }
 
+  @Column(length=2)
+  public OilType getOilType() {
+    return oilType;
+  }
+
+  public void setOilType(OilType oilType) {
+    this.oilType = oilType;
+  }
+  
 }

@@ -1,13 +1,14 @@
 package com.csh.entity;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.csh.entity.base.BaseEntity;
-import com.csh.entity.commonenum.CommonEnum.Status;
-
-import java.sql.Timestamp;
+import com.csh.entity.commonenum.CommonEnum.OilType;
 
 
 /**
@@ -15,53 +16,64 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="csh_vehicle_oil")
-@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_oil_sequence")
+@Table(name = "csh_vehicle_oil")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_vehicle_oil_sequence")
 public class VehicleOil extends BaseEntity {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
 
-	/**
-	 * 油品名称 如93#汽油，0#柴油
-	 */
-	private String name;
+  /**
+   * 油品名称 如93#汽油，0#柴油
+   */
+  private OilType oilType;
 
-	/**
-	 * 状态
-	 */
-	private Status status;
 
-	private Long tenantID;
 
-  public String getName ()
-  {
-    return name;
+  /**
+   * 油价
+   */
+  private BigDecimal price;
+
+  /**
+   * 省份
+   */
+  private String province;
+
+
+  private String plate;
+
+  public BigDecimal getPrice() {
+    return price;
   }
 
-  public void setName (String name)
-  {
-    this.name = name;
+  public void setPrice(BigDecimal price) {
+    this.price = price;
   }
 
-  public Status getStatus ()
-  {
-    return status;
+  
+  public OilType getOilType() {
+    return oilType;
   }
 
-  public void setStatus (Status status)
-  {
-    this.status = status;
+  public void setOilType(OilType oilType) {
+    this.oilType = oilType;
   }
 
-  public Long getTenantID ()
-  {
-    return tenantID;
+  public String getProvince() {
+    return province;
   }
 
-  public void setTenantID (Long tenantID)
-  {
-    this.tenantID = tenantID;
+  public void setProvince(String province) {
+    this.province = province;
   }
-	
-	
+
+  @Column(length=8)
+  public String getPlate() {
+    return plate;
+  }
+
+  public void setPlate(String plate) {
+    this.plate = plate;
+  }
+
 }

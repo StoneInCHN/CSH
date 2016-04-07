@@ -200,6 +200,9 @@ public class Vehicle extends BaseEntity {
   @Transient
   public String getVehicleFullBrand() {
     VehicleLine vl = vehicleBrandDetail.getVehicleLine();
+    if (vl ==null) {
+      return null;
+    }
     vehicleFullBrand = vl.getName();
     if (vl.getParent() != null) {
       VehicleLine vl_parent = vl.getParent();

@@ -221,7 +221,20 @@ $().ready(function() {
 									</select>
 								</td>
 							</tr>
-                     		
+                     		<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.oilType")}:
+								</th>
+								<td>
+									<select name="oilType">
+										<option value="">${message("csh.vehicleBrandDetail.oilType.select")}</option>
+										<option value="P0"  [#if vehicleBrandDetail.oilType == "P0"]selected="selected"[/#if]>${message("csh.vehicleBrandDetail.oilType.P0")}</option>
+										<option value="P90" [#if vehicleBrandDetail.oilType == "P90"]selected="selected"[/#if]>${message("csh.vehicleBrandDetail.oilType.P90")}</option>
+										<option value="P93" [#if vehicleBrandDetail.oilType == "P93"]selected="selected"[/#if]>${message("csh.vehicleBrandDetail.oilType.P93")}</option>
+										<option value="P97" [#if vehicleBrandDetail.oilType == "P97"]selected="selected"[/#if]>${message("csh.vehicleBrandDetail.oilType.P97")}</option>
+									</select>
+								</td>
+							</tr>
 						</table>
 						<table class="input">
 							<tr>

@@ -93,5 +93,10 @@ public class VehicleBrandDetailController extends BaseController {
     return SUCCESS_MESSAGE;
   }
 
+  @RequestMapping(value = "/details", method = RequestMethod.GET)
+  public String details(Long id, ModelMap model) {
+    model.addAttribute("vehicleBrandDetail", vehicleBrandDetailService.find(id));
+    return "/vehicleBrandDetail/details";
+  }
 
 }

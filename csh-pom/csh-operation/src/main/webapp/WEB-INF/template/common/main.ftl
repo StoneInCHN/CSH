@@ -197,6 +197,51 @@
 				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
+		[#list ["admin:vehicle"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.vehicle")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:vehicle"]
+								<li>
+									<a href="../vehicle/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.vehicle")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
+		[#list ["admin:endUser"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.endUser")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:endUser"]
+								<li>
+									<a href="../endUser/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.endUser")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
+		[#list ["admin:clearingRecord"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.clearingRecord")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:clearingRecord"]
+								<li>
+									<a href="../clearingRecord/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.clearingRecord")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
        </ul>
       </div>
       <div class="mainbar">
@@ -211,11 +256,11 @@
 	        <h4 class="modal-title"></h4>
 	      </div>
 	      <div class="modal-body" style="margin:0;padding:0">
-	       		 <iframe  id="operationModalIframe" marginheight="0" marginwidth="0" frameborder="0" style="width:100%"scrolling="no"></iframe>
+	      	 <iframe  id="operationModalIframe" marginheight="0" marginwidth="0" frameborder="0" style="width:100%"scrolling="no"></iframe>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+	        <button id="operationModalCancle" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button id="operationModalOK" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
 	      </div>
 	    </div>
 	  </div>

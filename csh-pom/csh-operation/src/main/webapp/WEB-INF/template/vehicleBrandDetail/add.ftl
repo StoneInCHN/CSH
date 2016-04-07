@@ -59,6 +59,9 @@ $().ready(function() {
 			},
 			vehicleLineId: {
 				required: true
+			},
+			oilType: {
+				required: true
 			}
 		}
 	});
@@ -201,6 +204,20 @@ $().ready(function() {
 										<option value="">${message("csh.vehicleBrandDetail.status.select")}</option>
 										<option value="ENABLE">${message("csh.vehicleBrandDetail.status.ENABLE")}</option>
 										<option value="DISABLE">${message("csh.vehicleBrandDetail.status.DISABLE")}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.oilType")}:
+								</th>
+								<td>
+									<select name="oilType">
+										<option value="">${message("csh.vehicleBrandDetail.oilType.select")}</option>
+										<option value="P0">${message("csh.vehicleBrandDetail.oilType.P0")}</option>
+										<option value="P90">${message("csh.vehicleBrandDetail.oilType.P90")}</option>
+										<option value="P93">${message("csh.vehicleBrandDetail.oilType.P93")}</option>
+										<option value="P97">${message("csh.vehicleBrandDetail.oilType.P97")}</option>
 									</select>
 								</td>
 							</tr>

@@ -5,7 +5,6 @@ $().ready( function() {
 	var $pageTotal = $("#pageTotal");
 	var $addButton = $("#addButton");
 	var $deleteButton = $("#deleteButton");
-	//var $deleteSpecialButton = $("#deleteSpecialButton");
 	var $deleteButtonFirst = $("#deleteButtonFirst");
 	var $refreshButton = $("#refreshButton");
 	var $refreshButtonFirst =$("#refreshButtonFirst");
@@ -13,8 +12,6 @@ $().ready( function() {
 	var $pageSizeOption = $("#pageSizeOption a");
 	var $locationSelect = $("[name='locationSelect']");
 	var $locationOption = $("#locationOption a");
-//	var $sendSelectedButton = $("#sendSelectedButton");
-//	var $sendAllButton = $("#sendAllButton");
 	var $moreOperation = $("#moreOperation");
 	//var $searchPropertySelect = $("#searchPropertySelect");
 	var $searchPropertyOption = $("#searchPropertyOption li");
@@ -31,72 +28,8 @@ $().ready( function() {
 	var $orderDirection = $("#orderDirection");
 	var $pageNumber = $("#pageNumber");
 	var $promptButton = $('#promptButton');
-	var $marketButton = $("#marketButton");
-	var $unmarketButton = $("#unmarketButton");
-	var $promotionButton = $("#promotionButton");
 	var $backButton = $("#backButton");
-	var $batchAuditButton = $("#batchAuditButton");
 	
-	
-	
-	// 发送消息至所选用户
-	/*$sendSelectedButton.click( function() {
-		var $this = $(this);
-		if ($this.hasClass("disabled")) {
-			return false;
-		}
-		var $checkedIds = $("#listTable input[name='ids']:enabled:checked");
-		$.ajax({
-			url: "sendMessage.jhtml?sendType=0&msgId="+$("#messageId").val(),
-			type: "POST",
-			data: $checkedIds.serialize(),
-			dataType: "json",
-			cache: false,
-			success: function(message) {
-				$.message(message);
-				if (message.type == "success") {
-					//
-				}
-				$sendSelectedButton.addClass("disabled");
-				$ids.closest("tr").removeClass("selected");
-				$selectAll.prop("checked", false);
-				$checkedIds.prop("checked", false);
-			}
-			    
-		});
-	});*/
-
-	//发送消息至所有用户
-/*	$sendAllButton.click( function() {
-		$.dialog({
-			type: "warn",
-			content: message("admin.sendMessage.allUser"),
-			ok: message("admin.dialog.ok"),
-			cancel: message("admin.dialog.cancel"),
-			onOk: function() {
-				$.ajax({
-					url: "sendMessage.jhtml",
-					type: "POST",
-					data: 
-					{
-						"sendType":1,
-						"msgId":$("#messageId").val()
-					},
-					dataType: "json",
-					cache: false,
-					success: function(message) {
-						$.message(message);
-						if (message.type == "success") {
-								//
-							}
-							$selectAll.prop("checked", false);
-							$checkedIds.prop("checked", false);
-						}
-				});
-			}
-		});
-	});*/
-
 	//添加
 	$addButton.click(function(){
 		location.href="add.jhtml";
@@ -182,44 +115,6 @@ $().ready( function() {
 		});
 	});
 	
-	// 删除
-/*	$deleteSpecialButton.click( function() {
-		var $this = $(this);
-		if ($this.hasClass("disabled")) {
-			return false;
-		}
-		var $checkedIds = $("#listTable input[name='ids']:enabled:checked");
-		$.dialog({
-			type: "warn",
-			content: message("admin.dialog.deleteConfirm"),
-			ok: message("admin.dialog.ok"),
-			cancel: message("admin.dialog.cancel"),
-			onOk: function() {
-				$.ajax({
-					url: "relationShipDelete.jhtml",
-					type: "POST",
-					data: $checkedIds.serialize(),
-					dataType: "json",
-					cache: false,
-					success: function(message) {
-						$.message(message);
-						if (message.type == "success") {
-							$pageTotal.text(parseInt($pageTotal.text()) - $checkedIds.size());
-							$checkedIds.closest("tr").remove();
-							if ($listTable.find("tr").size() <= 1) {
-								setTimeout(function() {
-									location.reload(true);
-								}, 3000);
-							}
-						}
-						$deleteButton.addClass("disabled");
-						$selectAll.prop("checked", false);
-						$checkedIds.prop("checked", false);
-					}
-				});
-			}
-		});
-	});*/
 	
 	// 刷新
 	$refreshButton.click( function() {
@@ -324,31 +219,20 @@ $().ready( function() {
 			if ($enabledIds.filter(":checked").size() > 0) {
 				$deleteButton.removeClass("disabled");
 				$deleteButtonFirst.removeClass("disabled");
-			//	$deleteSpecialButton.removeClass("disabled");
-				$sendSelectedButton.removeClass("disabled");
+			//	$sendSelectedButton.removeClass("disabled");
 				$promptButton.removeClass("disabled");
-				$marketButton.removeClass("disabled");
-				$promotionButton.removeClass("disabled");
-				$unmarketButton.removeClass("disabled");
 				$contentRow.addClass("selected");
-				$batchAuditButton.removeClass("disabled");
 			} else {
 				$deleteButton.addClass("disabled");
 				$deleteButtonFirst.addClass("disabled");
-			//	$deleteSpecialButton.addClass("disabled");
-				$sendSelectedButton.addClass("disabled");
+			//	$sendSelectedButton.addClass("disabled");
 			}
 		} else {
 			$enabledIds.prop("checked", false);
 			$deleteButton.addClass("disabled");
-		//	$deleteSpecialButton.addClass("disabled");
-			$sendSelectedButton.addClass("disabled");
+			//$sendSelectedButton.addClass("disabled");
 			$promptButton.addClass("disabled");
-			$marketButton.addClass("disabled");
-			$promotionButton.addClass("disabled");
-			$unmarketButton.addClass("disabled");
 			$contentRow.removeClass("selected");
-			$batchAuditButton.addClass("disabled");
 		}
 	});
 	
@@ -359,35 +243,21 @@ $().ready( function() {
 			$this.closest("tr").addClass("selected");
 			$deleteButton.removeClass("disabled");
 			$deleteButtonFirst.removeClass("disabled");
-		//	$deleteSpecialButton.removeClass("disabled");
-			$sendSelectedButton.removeClass("disabled");
-			$marketButton.removeClass("disabled");
-			$promotionButton.removeClass("disabled");
-			$unmarketButton.removeClass("disabled");
+		//	$sendSelectedButton.removeClass("disabled");
 			$promptButton.removeClass("disabled");
-			$batchAuditButton.removeClass("disabled");
+		
 		} else {
 			$this.closest("tr").removeClass("selected");
 			if ($("#listTable input[name='ids']:enabled:checked").size() > 0) {
 				$deleteButton.removeClass("disabled");
 				$deleteButtonFirst.removeClass("disabled");
-			//	$deleteSpecialButton.removeClass("disabled");
-				$sendSelectedButton.removeClass("disabled");
-				$marketButton.removeClass("disabled");
-				$promotionButton.removeClass("disabled");
-				$unmarketButton.removeClass("disabled");
+			//	$sendSelectedButton.removeClass("disabled");
 				$promptButton.removeClass("disabled");
-				$batchAuditButton.removeClass("disabled");
 			} else {
 				$deleteButton.addClass("disabled");
-			//	$deleteSpecialButton.addClass("disabled");
 				$deleteButtonFirst.addClass("disabled");
-				$sendSelectedButton.addClass("disabled");
-				$marketButton.addClass("disabled");
-				$promotionButton.addClass("disabled");
-				$unmarketButton.removeClass("disabled");
+			//	$sendSelectedButton.addClass("disabled");
 				$promptButton.addClass("disabled");
-				$batchAuditButton.addClass("disabled");
 			}
 		}
 	});
@@ -451,10 +321,10 @@ $().ready( function() {
 	}
 	
 	// 列表查询
-	if (location.search != "") {
+	/*if (location.search != "") {
 		addCookie("listQuery", location.search);
 	} else {
 		removeCookie("listQuery");
-	}
+	}*/
 
 });
