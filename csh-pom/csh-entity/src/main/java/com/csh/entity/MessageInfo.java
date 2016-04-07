@@ -11,8 +11,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
+
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -41,7 +46,12 @@ public class MessageInfo extends BaseEntity {
   /** 消息、会员对应关系实体 */
   private Set<MsgEndUser> msgUser = new HashSet<MsgEndUser>();
 
-
+  /**
+   * 租户ID
+   */
+  private Long tenantID;
+  
+  @JsonProperty
   public MessageType getMessageType() {
     return messageType;
   }
@@ -50,6 +60,7 @@ public class MessageInfo extends BaseEntity {
     this.messageType = messageType;
   }
 
+  @JsonProperty
   public String getMessageTitle() {
     return messageTitle;
   }
@@ -58,6 +69,7 @@ public class MessageInfo extends BaseEntity {
     this.messageTitle = messageTitle;
   }
 
+  @JsonProperty
   public String getMessageContent() {
     return messageContent;
   }
@@ -74,6 +86,14 @@ public class MessageInfo extends BaseEntity {
   public void setMsgUser(Set<MsgEndUser> msgUser) {
     this.msgUser = msgUser;
   }
+  @org.hibernate.annotations.Index(name="messageInfo_tenantid")
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  public Long getTenantID() {
+    return tenantID;
+  }
 
+  public void setTenantID(Long tenantID) {
+    this.tenantID = tenantID;
+  }
 
 }

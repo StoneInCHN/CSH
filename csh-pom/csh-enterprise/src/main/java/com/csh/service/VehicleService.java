@@ -10,4 +10,6 @@ public interface VehicleService extends BaseService<Vehicle,Long>{
 
   List<Map<String, Object>> findVehicleUnderUser (Long userId);
 
+  List<Map<String, Object>> findVehicleUserInfoUnderTenant (String endUserFilter);
+
 }

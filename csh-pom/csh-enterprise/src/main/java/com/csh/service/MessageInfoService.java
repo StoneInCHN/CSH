@@ -5,4 +5,7 @@ import com.csh.framework.service.BaseService;
 
 public interface MessageInfoService extends BaseService<MessageInfo,Long>{
 
+
+  void saveMessage (MessageInfo messageInfo, Long[] ids);
+
 }

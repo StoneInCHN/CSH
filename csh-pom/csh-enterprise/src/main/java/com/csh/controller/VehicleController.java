@@ -339,4 +339,17 @@ public class VehicleController extends BaseController
     
     return vehicleService.findVehicleUnderUser(userId);
   }
+  
+  /**
+   * 查询用户名下所有车辆
+   * 
+   * @param model
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/findVehicleUserInfoUnderTenant", method = RequestMethod.POST)
+  public @ResponseBody List<Map<String, Object>> findVehicleUserInfoUnderTenant(ModelMap model,String endUserFilter) {
+    
+    return vehicleService.findVehicleUserInfoUnderTenant(endUserFilter);
+  }
 }

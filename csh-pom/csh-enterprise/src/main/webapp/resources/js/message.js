@@ -236,9 +236,14 @@ var messages = {
 	"csh.tenantClearingRecord.periodEndDate":"结算周期结束时间",
 	"csh.tenantClearingRecord.list":"结算记录列表",
 	"csh.tenantClearingRecord.clearingDate":"结算时间",
-	"csh.clearingCarServiceRecord.no":"没有可结算的账单"
-	
-	
+	"csh.clearingCarServiceRecord.no":"没有可结算的账单",
+	//messageInfo
+	"csh.messageInfo.title":"主题",
+	"csh.messageInfo.type":"消息类型",
+	"csh.messageInfo.type.PERSONALMSG":"个人信息",
+	"csh.messageInfo.type.NEWSMSG":"新闻信息",
+	"csh.messageInfo.type.PROMOTION":"活动信息",
+	"csh.messageInfo.list":"消息列表"
 };
 //多语言
 function message(code) {

@@ -154,10 +154,10 @@
     	</ul>
     	<ul title="${message("csh.informationManage.config")}" id="informationManage">
     		[@shiro.hasPermission name="notificationPush"]
-    		<li><a href="#" data-url="${base}/console/shortMessagePush/shortMessagePush.jhtml">${message("csh.informationManage.notificationPush")}</a></li>
+    		<li><a href="#" data-url="${base}/console/messageInfo/messageInfo.jhtml">${message("csh.informationManage.notificationPush")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="shortMessagePush"]
-    		<li><a href="#" data-url="${base}/console/shortMessagePush/shortMessagePush.jhtml">${message("csh.informationManage.shortMessagePush")}</a></li>
+    		<li><a href="#" data-url="${base}/console/messageInfo/messageInfo.jhtml">${message("csh.informationManage.shortMessagePush")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.statisticsReport.report")}" id="statisticsReport">
@@ -295,6 +295,9 @@
 	<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/webuploader.min.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/kindeditor/kindeditor-min.js"></script>
+	<script type="text/javascript" src="${base}/resources/js/multiselect.js"></script>
+	<script type="text/javascript" src="${base}/resources/js/prettify.min.js"></script>
+	
 	<script src="${base}/resources/js/jquery.bootstrap.newsbox.min.js" type="text/javascript"></script>
 	<script src="${base}/resources/js/fileUploadCommon.js"></script>
     <script type="text/javascript" src="${base}/resources/js/jquery.easing.1.3.js"></script>
