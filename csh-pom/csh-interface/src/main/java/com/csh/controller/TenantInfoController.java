@@ -19,7 +19,9 @@ import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.App;
 import com.csh.entity.CarService;
+import com.csh.entity.EndUser;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
 import com.csh.framework.paging.Page;
@@ -28,6 +30,7 @@ import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.TenantInfoRequest;
+import com.csh.service.AppService;
 import com.csh.service.EndUserService;
 import com.csh.service.TenantInfoJdbcService;
 import com.csh.service.TenantInfoService;
@@ -48,6 +51,9 @@ public class TenantInfoController extends MobileBaseController {
 
   @Resource(name = "tenantInfoServiceImpl")
   private TenantInfoService tenantInfoService;
+
+  @Resource(name = "appServiceImpl")
+  private AppService appService;
 
 
   /**
@@ -87,6 +93,15 @@ public class TenantInfoController extends MobileBaseController {
     page.setTotal((int) tenantPage.getTotal());
     response.setPage(page);
     response.setMsg(tenantPage.getContent());
+
+    EndUser user = endUserService.find(userId);
+    if (user.getDefaultVehicle() != null) {
+      App app = appService.getTenantAppById(user.getDefaultVehicle().getTenantID());
+      if (app != null) {
+        response.setDesc(app.getAppTitleName());
+      }
+    }
+
     String newtoken = TokenGenerator.generateToken(tenantInfoReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);

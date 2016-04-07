@@ -18,6 +18,7 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.App;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
@@ -29,7 +30,9 @@ import com.csh.framework.filter.Filter.Operator;
 import com.csh.json.base.BaseRequest;
 import com.csh.json.base.BaseResponse;
 import com.csh.json.base.ResponseMultiple;
+import com.csh.json.base.ResponseOne;
 import com.csh.json.request.VehicleRequest;
+import com.csh.service.AppService;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.VehicleBrandDetailService;
@@ -64,6 +67,9 @@ public class VehicleController extends MobileBaseController {
 
   @Resource(name = "vehicleBrandServiceImpl")
   private VehicleBrandService vehicleBrandService;
+
+  @Resource(name = "appServiceImpl")
+  private AppService appService;
 
 
 
@@ -216,9 +222,10 @@ public class VehicleController extends MobileBaseController {
    */
   @RequestMapping(value = "/bindTenant", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse bindTenant(@RequestBody VehicleRequest vehicleReq) {
+  public @ResponseBody ResponseOne<Map<String, Object>> bindTenant(
+      @RequestBody VehicleRequest vehicleReq) {
 
-    BaseResponse response = new BaseResponse();
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     Long userId = vehicleReq.getUserId();
     String token = vehicleReq.getToken();
     // String deviceNo = vehicleReq.getDeviceNo();
@@ -241,6 +248,10 @@ public class VehicleController extends MobileBaseController {
       LogUtil.debug(VehicleController.class, "Update",
           "bind vehicle and tenant.TenantID: %s, VehicleId: %s,", tenantId, vehicleId);
     }
+    App app = appService.getTenantAppById(tenantId);
+    String[] properties = {"appTitleName"};
+    Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, app);
+    response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -258,9 +269,10 @@ public class VehicleController extends MobileBaseController {
    */
   @RequestMapping(value = "/bindDevice", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse bindDevice(@RequestBody VehicleRequest vehicleReq) {
+  public @ResponseBody ResponseOne<Map<String, Object>> bindDevice(
+      @RequestBody VehicleRequest vehicleReq) {
 
-    BaseResponse response = new BaseResponse();
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     Long userId = vehicleReq.getUserId();
     String token = vehicleReq.getToken();
     String deviceNo = vehicleReq.getDeviceNo();
@@ -299,6 +311,11 @@ public class VehicleController extends MobileBaseController {
       LogUtil.debug(VehicleController.class, "Update",
           "bind vehicle and device.DeviceNo: %s, VehicleId: %s,", deviceNo, vehicleId);
     }
+
+    App app = appService.getTenantAppById(deviceInfo.getTenantID());
+    String[] properties = {"appTitleName"};
+    Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, app);
+    response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -333,9 +350,11 @@ public class VehicleController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
+    Long tenantId = null;
     for (Vehicle vehicle : endUser.getVehicles()) {
       if (vehicle.getId().equals(vehicleId)) {
         vehicle.setIsDefault(true);
+        tenantId = vehicle.getTenantID();
       } else {
         vehicle.setIsDefault(false);
       }
@@ -350,6 +369,13 @@ public class VehicleController extends MobileBaseController {
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, endUser.getVehicles());
     response.setMsg(map);
+
+    response.setMsg(map);
+
+    App app = appService.getTenantAppById(tenantId);
+    if (app != null) {
+      response.setDesc(app.getAppTitleName());
+    }
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
