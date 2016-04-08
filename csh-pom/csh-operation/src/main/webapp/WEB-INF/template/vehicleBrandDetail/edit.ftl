@@ -59,6 +59,9 @@ $().ready(function() {
 			},
 			vehicleLineId: {
 				required: true
+			},
+			oilType:{
+				required: true
 			}
 		}
 		

@@ -102,41 +102,38 @@
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var $distributorIds = $("#listTable input[name='ids']");
+		var $distributorIds = $("#listTable input[name='distributorIds']");
 		var $operationModalOK = window.parent.$("#operationModalOK");
 		var $deviceBinding = window.parent.$('#operationModal');
 		$distributorIds.click( function() {
 			var $this = $(this);
 			if ($this.prop("checked")) {
-				$ids.prop("checked", false);
+				$distributorIds.prop("checked", false);
 				$this.prop("checked", true);
 			} else {
-				$ids.prop("checked", false);
+				$distributorIds.prop("checked", false);
 			}
 		});
 		
 	  $operationModalOK .click(function(){
 	  	var $checkedIds = $("#listTable input[name='distributorIds']:checked");
-	  	
 	  	if($checkedIds.length <1){
 	  		return ;
 	  	}
-	  	
 	  	var $deviceIds = $deviceBinding.attr("data-ids");
 	  	var distributorIds = $($checkedIds[0]).val();
-
-	  	  	
 	  	var datas={
 	  		"distributorIds":distributorIds,
 	  		"ids":$deviceIds
 	  	};
 	  	$.post("provide.jhtml", datas,
-		   function(data){
-		     alert("Data Loaded: " + data);
-		     console.log(data);
+		   function(result){
+		    	alert(result.content)
+		    	if(result.type != "success"){
+		    		return false;
+		    	}
+		    	
 		   });
-	  	
-	  	return false;
 	  })
 	})
 </script>

@@ -126,10 +126,10 @@ $().ready(function() {
 								</td>
 							</tr>
 							<tr>
-								<th><span class="requiredField">*</span>${message("csh.apply.pisotion.point")}>:</th>
+								<th><span class="requiredField">*</span>${message("csh.apply.pisotion.point")}:</th>
 								<td>
-									<input type="hidden"  id="longitude" name="longitude" />
-									<input type="hidden"  id="latitude" name="latitude" />
+									<input type="text" class="text" style="width:100px" readonly id="longitude" name="longitude" />
+									<input type="text" class="text" style="width:100px" readonly  id="latitude" name="latitude" />
 									<button type="button" class="btn btn-info " id="selectPositionPoint">
 									  ${message("csh.apply.select.pisotion.point")}
 									</button>

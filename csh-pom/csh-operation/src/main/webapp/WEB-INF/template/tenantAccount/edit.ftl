@@ -95,14 +95,6 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.realName")}:
-								</th>
-								<td>
-									<input type="text" name="realName" class="text" maxlength="200" value="${tenantAccount.realName}" />
-								</td>
-							</tr>
-							<tr>
-								<th>
 									${message("csh.tenantAccount.accoutStatus")}:
 								</th>
 								<td>
@@ -114,6 +106,7 @@ $().ready(function() {
 									</select>
 								</td>
 							</tr>
+							<!--
 							<tr class="roles">
 								<th>
 									<span class="requiredField">*</span>${message("csh.tenantAccount.roles")}:
@@ -128,6 +121,7 @@ $().ready(function() {
 									</span>
 								</td>
 							</tr>
+							-->
 						</table>
 						<table class="input">
 							<tr>

@@ -87,6 +87,16 @@ public class Setting implements Serializable {
    */
   private Integer identifierLength4OrgCode; 
   
+  /**
+   * 今日油价百度API
+   */
+  private String vehicleOilAPIHttpUrl;
+  
+  /**
+   * 今日油价百度APIKey
+   */
+  private String vehicleOilAPIKey;
+  
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
   }
@@ -134,5 +144,23 @@ public class Setting implements Serializable {
   public void setIdentifierLength4OrgCode(Integer identifierLength4OrgCode) {
     this.identifierLength4OrgCode = identifierLength4OrgCode;
   }
+
+  public String getVehicleOilAPIHttpUrl() {
+    return vehicleOilAPIHttpUrl;
+  }
+
+  public void setVehicleOilAPIHttpUrl(String vehicleOilAPIHttpUrl) {
+    this.vehicleOilAPIHttpUrl = vehicleOilAPIHttpUrl;
+  }
+
+  public String getVehicleOilAPIKey() {
+    return vehicleOilAPIKey;
+  }
+
+  public void setVehicleOilAPIKey(String vehicleOilAPIKey) {
+    this.vehicleOilAPIKey = vehicleOilAPIKey;
+  }
+  
+  
   
 }

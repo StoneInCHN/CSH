@@ -23,7 +23,7 @@
 	      <div class="row">
 	        <div class="col-xs-4 col-md-4 col-lg-4">
 	          <div class="logo">
-	            <h1><a href="#">csh<span class="bold"></span></a></h1>
+	            <h1><a href="#">车生活<span class="bold"></span></a></h1>
 	            <p class="meta">后台管理系统</p>
 	          </div>
 	        </div>
@@ -235,6 +235,36 @@
 							 [@shiro.hasPermission name="admin:clearingRecord"]
 								<li>
 									<a href="../clearingRecord/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.clearingRecord")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
+		[#list ["admin:carServiceRecord"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.carServiceRecord")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:carServiceRecord"]
+								<li>
+									<a href="../carServiceRecord/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.carServiceRecord")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
+		[#list ["admin:walletRecord"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.walletRecord")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:walletRecord"]
+								<li>
+									<a href="../walletRecord/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.walletRecord")}</a>
 								</li>
 							 [/@shiro.hasPermission]
 				       </ul>

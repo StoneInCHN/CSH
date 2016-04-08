@@ -39,8 +39,10 @@ public class VehicleOil extends BaseEntity {
    */
   private String province;
 
-
-  private String plate;
+  /**
+   * 车牌简称
+   */
+  private String shortPlate;
 
   public BigDecimal getPrice() {
     return price;
@@ -68,12 +70,13 @@ public class VehicleOil extends BaseEntity {
   }
 
   @Column(length=8)
-  public String getPlate() {
-    return plate;
+  public String getShortPlate() {
+    return shortPlate;
   }
 
-  public void setPlate(String plate) {
-    this.plate = plate;
+  public void setShortPlate(String shortPlate) {
+    this.shortPlate = shortPlate;
   }
+ 
 
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.vehicle.list")}</title>
+<title>${message("csh.carServiceRecord.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.vehicle")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.carServiceRecord")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.vehicle.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.carServiceRecord.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -62,9 +62,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "plate" ] selected="selected" class="active" [/#if] title="plate"><a href="#">${message("csh.vehicle.plate")}</a></li>
-										  <li [#if page.searchProperty == "tenant" ] selected="selected" class="active" [/#if] title="plate"><a href="#">${message("csh.vehicle.tenant")}</a></li>
-										   <li [#if page.searchProperty == "mobileNum" ] selected="selected" class="active" [/#if] title="mobileNum"><a href="#">${message("csh.vehicle.mobileNum")}</a></li>
+								          <li [#if page.searchProperty == "recordNo" ] selected="selected" class="active" [/#if] title="recordNo"><a href="#">${message("csh.carServiceRecord.recordNo")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -79,7 +77,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.vehicle")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.carServiceRecord")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -90,21 +88,38 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
-													
 													<th>
-														<a href="javascript:;" class="sort" name="vehicleNo">${message("csh.vehicle.vehicleNo")}</a>
+														<a href="javascript:;" class="sort" name="recordNo">${message("csh.carServiceRecord.recordNo")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="color">${message("csh.vehicle.color")}</a>
+														${message("csh.carServiceRecord.carService")}
 													</th>
 													<th>
-														${message("csh.vehicle.device")}
+														${message("csh.carServiceRecord.endUser")}
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="vin">${message("csh.vehicle.vin")}</a>
+														${message("csh.carServiceRecord.paymentType")}
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="produceDate">${message("csh.vehicle.produceDate")}</a>
+														<a href="javascript:;" class="sort" name="paymentDate">${message("csh.carServiceRecord.paymentDate")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="chargeStatus">${message("csh.carServiceRecord.chargeStatus")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="price">${message("csh.carServiceRecord.price")}</a>
+													</th>
+													<th>
+														${message("csh.carServiceRecord.maintainReservation")}
+													</th>
+													<th>
+														${message("csh.carServiceRecord.repareReservation")}
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="tenantName">${message("csh.carServiceRecord.tenantName")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="clearingDate">${message("csh.carServiceRecord.clearingDate")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -112,30 +127,62 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as vehicle]
+												[#list page.content as carServiceRecord]
 												<tr>
-													
 													<td>
-														${vehicle.vehicleNo}
+														${carServiceRecord.recordNo}
 													</td>
 													<td>
-														${vehicle.color}
-													</td>
-													<td>
-														${vehicle.device}
-													</td>
-													<td>
-														${vehicle.vin}
-													</td>
-													<td>
-														[#if vehicle.produceDate??]
-															<span title="${vehicle.produceDate?string("yyyy-MM-dd HH:mm:ss")}">${vehicle.produceDate}</span>
+														[#if carServiceRecord.carService??]
+															${carServiceRecord.carService.serviceName}
 														[#else]
 															-
 														[/#if]
 													</td>
 													<td>
-														<a href="details.jhtml?id=${vehicle.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>
+														[#if carServiceRecord.endUser??]
+															${carServiceRecord.endUser.userName}
+														[#else]
+															-
+														[/#if]
+													</td>
+													<td>
+														${carServiceRecord.paymentType}
+													</td>
+													<td>
+														[#if carServiceRecord.paymentDate??]
+															<span title="${carServiceRecord.paymentDate?string("yyyy-MM-dd HH:mm:ss")}">${carServiceRecord.paymentDate}</span>
+														[#else]
+															-
+														[/#if]
+													</td>
+													<td>
+														${carServiceRecord.paymentType}
+													</td>
+													<td>
+														${carServiceRecord.chargeStatus}
+													</td>
+													<td>
+														${carServiceRecord.price}
+													</td>
+													<td>
+														${carServiceRecord.maintainReservation}
+													</td>
+													<td>
+														${carServiceRecord.repareReservation}
+													</td>
+													<td>
+														${carServiceRecord.tenantName}
+													</td>
+													<td>
+														[#if carServiceRecord.clearingDate??]
+															<span title="${carServiceRecord.clearingDate?string("yyyy-MM-dd HH:mm:ss")}">${carServiceRecord.clearingDate}</span>
+														[#else]
+															-
+														[/#if]
+													</td>
+													<td>
+														<a href="details.jhtml?id=${carServiceRecord.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>
 													</td>
 												</tr>
 											</tbody>

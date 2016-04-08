@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.vehicle.list")}</title>
+<title>${message("csh.walletRecord.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.vehicle")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.walletRecord")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.vehicle.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.walletRecord.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -62,9 +62,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "plate" ] selected="selected" class="active" [/#if] title="plate"><a href="#">${message("csh.vehicle.plate")}</a></li>
-										  <li [#if page.searchProperty == "tenant" ] selected="selected" class="active" [/#if] title="plate"><a href="#">${message("csh.vehicle.tenant")}</a></li>
-										   <li [#if page.searchProperty == "mobileNum" ] selected="selected" class="active" [/#if] title="mobileNum"><a href="#">${message("csh.vehicle.mobileNum")}</a></li>
+								          <li [#if page.searchProperty == "orgCode" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="orgCode"><a href="#">${message("csh.walletRecord.orgCode")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -79,7 +77,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.vehicle")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.walletRecord")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -90,56 +88,34 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
-													
 													<th>
-														<a href="javascript:;" class="sort" name="vehicleNo">${message("csh.vehicle.vehicleNo")}</a>
+														${message("csh.walletRecord.wallet")}
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="color">${message("csh.vehicle.color")}</a>
+														<a href="javascript:;" class="sort" name="money">${message("csh.walletRecord.money")}</a>
 													</th>
+											
 													<th>
-														${message("csh.vehicle.device")}
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="vin">${message("csh.vehicle.vin")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="produceDate">${message("csh.vehicle.produceDate")}</a>
-													</th>
-													<th>
-														<span>${message("csh.common.handle")}</span>
+														${message("csh.walletRecord.remark")}
 													</th>
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as vehicle]
+												[#list page.content as walletRecord]
 												<tr>
-													
 													<td>
-														${vehicle.vehicleNo}
+														${walletRecord.wallet.endUser.userName}
 													</td>
 													<td>
-														${vehicle.color}
+														${walletRecord.money}
 													</td>
+											
 													<td>
-														${vehicle.device}
-													</td>
-													<td>
-														${vehicle.vin}
-													</td>
-													<td>
-														[#if vehicle.produceDate??]
-															<span title="${vehicle.produceDate?string("yyyy-MM-dd HH:mm:ss")}">${vehicle.produceDate}</span>
-														[#else]
-															-
-														[/#if]
-													</td>
-													<td>
-														<a href="details.jhtml?id=${vehicle.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>
+														${walletRecord.remark}
 													</td>
 												</tr>
+												[/#list]
 											</tbody>
-											[/#list]
 										</table>
 										<div class="widget-foot">
 					                       [@pagination pageNumber = page.pageNumber totalPages = page.totalPages]

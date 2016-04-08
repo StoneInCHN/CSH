@@ -149,6 +149,7 @@ public class DeviceInfoController extends BaseController {
       if (string.length() > 0) {
         Long id = Long.valueOf(string);
         DeviceInfo deviceInfo = deviceInfoService.find(id);
+        if(DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus()) )
         deviceInfo.setDistributorId(distributorId);
         deviceInfo.setDeviceStatus(DeviceStatus.SENDOUT);
         deviceInfoService.update(deviceInfo);

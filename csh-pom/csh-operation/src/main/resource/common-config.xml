@@ -7,5 +7,7 @@
 		value="adminLogin,adminApply,findPassword,resetPassword,other" />
 	<setting name="identifierLastvalue4OrgCode" value="000020" />
 	<setting name="identifierLength4OrgCode" value="6" />
+	<setting name="vehicleOilAPIHttpUrl" value="http://apis.baidu.com/showapi_open_bus/oil_price/find"/>
+	<setting name="vehicleOilAPIKey" value="7bb8ed487692b2c2dd290d477d879236"/>
 </csh>	
 	

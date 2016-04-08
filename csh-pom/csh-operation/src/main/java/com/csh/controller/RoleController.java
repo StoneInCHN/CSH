@@ -1,5 +1,8 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -11,7 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Role;
+import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.RoleService;
 
@@ -78,6 +84,13 @@ public class RoleController extends BaseController {
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String list(Pageable pageable, ModelMap model) {
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter();
+    filter.setProperty("systemType");
+    filter.setValue(SystemType.OPERATION);
+    filter.setOperator(Operator.eq);
+    filters.add(filter);
+    pageable.setFilters(filters);
     model.addAttribute("page", roleService.findPage(pageable));
     return "/role/list";
   }

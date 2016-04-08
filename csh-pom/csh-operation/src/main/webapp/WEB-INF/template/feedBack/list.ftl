@@ -29,7 +29,7 @@
 			<form id="listForm" action="list.jhtml" method="get">
 				  <div class="container operation">
 					<div class="row">
-						  <div class="col-xs-9 col-md-9 col-lg-9">
+						  <div class="col-xs-12 col-md-12 col-lg-12">
 						  		<ul class="nav">
 									 <li class="pull-left">
 										<div class="btn-group operationButton">
@@ -57,17 +57,6 @@
 									  </li>
 									</ul>
 						  </div>
-						  <div class="col-xs-3 col-md-3 col-lg-3">
-						  		<div class="input-group">
-								      <div class="input-group-btn">
-								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
-								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "categoryName" ] selected="selected" class="active" [/#if] title="categoryName"><a href="#">${message("csh.feedBack.categoryName")}</a></li>
-								        </ul>
-								      </div>
-								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
-							    </div>
-						  </div>
 					</div>
 				</div>
 				
@@ -88,9 +77,7 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
-													<th class="check">
-														<input type="checkbox" id="selectAll" />
-													</th>
+												
 													<th>
 														<a href="javascript:;" class="sort" name="content">${message("csh.feedBack.content")}</a>
 													</th>
@@ -108,9 +95,7 @@
 											<tbody>
 												[#list page.content as feedBack]
 												<tr>
-													<td>
-														<input type="checkbox"  name="ids" value="${feedBack.id}" />
-													</td>
+													
 													<td>
 														${feedBack.content}
 													</td>
