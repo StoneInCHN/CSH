@@ -12,13 +12,13 @@ import com.csh.entity.base.BaseEntity;
 
 
 /**
- * 手机app注册用户统计
+ * 设备绑定统计
  * 
  */
 @Entity
-@Table(name = "csh_report_user_reg_statistics")
+@Table(name = "csh_report_device_bind_statistics")
 @SequenceGenerator(name = "sequenceGenerator",
-    sequenceName = "csh_report_user_reg_statistics_sequence")
+    sequenceName = "csh_report_device_bind_statistics_sequence")
 public class ReportDeviceBindStatistics extends BaseEntity {
 
   private static final long serialVersionUID = 1L;
