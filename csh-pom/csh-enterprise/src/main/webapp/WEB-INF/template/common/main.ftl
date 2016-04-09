@@ -121,12 +121,14 @@
     		[@shiro.hasPermission name="vehicle"]
     		<li><a href="#" data-url="${base}/console/vehicle/vehicle.jhtml">${message("csh.vehicle.vehicle")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="vehicleStatusRT"]
-    		<li><a href="#" data-url="${base}/console/vehicle/vehicleStatusRT.jhtml">${message("csh.vehicle.vehicleStatusRT")}</a></li>
+    		
+    		<!--[@shiro.hasPermission name="realTimeCarCondition"]
+    		<li><a href="#" data-url="${base}/console/vehicle/realTimeCarCondition.jhtml">${message("csh.vehicle.realTimeCarCondition")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="vehicleDailyData"]
-    		<li><a href="#" data-url="${base}/console/vehicleDailyData/vehicleDailyData.jhtml">${message("csh.vehicle.vehicleDailyData")}</a></li>
+    		[@shiro.hasPermission name="vehicleDailyReport"]
+    		<li><a href="#" data-url="${base}/console/vehicle/vehicleDailyReport.jhtml">${message("csh.vehicle.vehicleDailyReport")}</a></li>
     		[/@shiro.hasPermission]
+    		-->
     		[@shiro.hasPermission name="vehicleMaintain"]
     		<li><a href="#" data-url="${base}/console/vehicleMaintain/vehicleMaintain.jhtml">${message("csh.vehicle.vehicleMaintain")}</a></li>
     		[/@shiro.hasPermission]

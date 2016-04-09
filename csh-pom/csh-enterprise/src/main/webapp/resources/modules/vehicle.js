@@ -216,7 +216,60 @@ var vehicle_manager_tool = {
 		},
 		remove:function(){
 			listRemove('vehicle-table-list','../vehicle/delete.jhtml');
+		},
+		realTimeCarCondition:function(){
+			var _select_row = $('#vehicle-table-list').datagrid('getSelected');
+			if( _select_row == null ){
+				$.messager.alert(message("csh.common.select.editRow"));  
+				return false;
+			}
+			$('#realTimeCarCondition').dialog({
+			    title: message("csh.vehicle.realTimeCarCondition"),    
+			    width: 600,    
+			    height: 350,
+			    iconCls:'icon-mini-add',
+			    cache: false,
+			    href:'../vehicle/realTimeCarCondition.jhtml?id='+_select_row.id,
+			    buttons:[{
+					text:message("csh.common.cancel"),
+					iconCls:'icon-cancel',
+					handler:function(){
+						 $('#realTimeCarCondition').dialog("close");
+						 $("#realTimeCarCondition_form").form("reset");
+					}
+			    }],
+			    onOpen:function(){
+			    	$('#realTimeCarCondition_form').show();
+			    },
+			});  
+		},
+		vehicleDailyReport:function(){
+			var _select_row = $('#vehicle-table-list').datagrid('getSelected');
+			if( _select_row == null ){
+				$.messager.alert(message("csh.common.select.editRow"));  
+				return false;
+			}
+			$('#vehicleDailyReport').dialog({
+			    title: message("csh.vehicle.vehicleDailyReport"),    
+			    width: 600,    
+			    height: 350,
+			    href:'../vehicle/vehicleDailyReport.jhtml?id='+_select_row.id,
+			    iconCls:'icon-mini-add',
+			    cache: false, 
+			    buttons:[{
+					text:message("csh.common.cancel"),
+					iconCls:'icon-cancel',
+					handler:function(){
+						 $('#vehicleDailyReport').dialog("close");
+						 $("#vehicleDailyReport_form").form("reset");
+					}
+			    }],
+			    onOpen:function(){
+			    	$('#vehicleDailyReport_form').show();
+			    },
+			});  
 		}
+		
 };
 
 $(function(){

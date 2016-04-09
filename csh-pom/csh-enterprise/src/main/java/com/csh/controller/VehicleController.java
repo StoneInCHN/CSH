@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
+import com.csh.beans.Setting;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
@@ -34,11 +35,15 @@ import com.csh.entity.VehicleBrandDetail;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.json.response.RealTimeCarCondition;
+import com.csh.json.response.VehicleDailyReport;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.VehicleBrandDetailService;
 import com.csh.service.VehicleService;
+import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.SettingUtils;
 
 /**
  * 车辆管理
@@ -58,6 +63,8 @@ public class VehicleController extends BaseController
   private EndUserService endUserService;
   @Resource (name = "vehicleBrandDetailServiceImpl")
   private VehicleBrandDetailService vehicleBrandDetailService;
+  private Setting setting = SettingUtils.get();
+  
   @RequestMapping (value = "/vehicle", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
@@ -351,5 +358,50 @@ public class VehicleController extends BaseController
   public @ResponseBody List<Map<String, Object>> findVehicleUserInfoUnderTenant(ModelMap model,String endUserFilter) {
     
     return vehicleService.findVehicleUserInfoUnderTenant(endUserFilter);
+  }
+  
+  /**
+   * 查询车辆实时数据
+   * 
+   * @param model
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/realTimeCarCondition", method = RequestMethod.GET)
+  public  String getRealTimeCarCondition(ModelMap model,Long deviceId) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put ("deviceId", deviceId);
+    try
+    {
+      ApiUtils.post (setting.getRtCarConditionUrl (), params);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return "vehicle/realTimeCarCondition";
+  }
+  
+  /**
+   * 查询车辆实时数据
+   * 
+   * @param model
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/vehicleDailyReport", method = RequestMethod.GET)
+  public String getVehicleDailyReport(ModelMap model,Date date,Long deviceId) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put ("date", date);
+    params.put ("deviceId", deviceId);
+    try
+    {
+      ApiUtils.post (setting.getRtCarConditionUrl (), params);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return "vehicle/vehicleDailyReport";
   }
 }

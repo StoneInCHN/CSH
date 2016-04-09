@@ -25,8 +25,12 @@
 		<setting name="albumUploadPath" value="/upload/image/${orgCode}/${identifier}/album/${albumName}/" />
 		<setting name="notifyPictureUploadPath" value="/upload/image/${orgCode}/${identifier}/notify picture/" />
 		<setting name="qrImageUrl" value="" />
+		<!-- 消息推送接口 -->
 		<setting name="msgPushUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
-		
+		<!-- 实时车况接口 -->
+		<setting name="rtCarConditionUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
+		<!-- 车辆每日数据 -->
+		<setting name="dailyVehicleStatusUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
 		<!-- 短信平台URL -->
 		<setting name="ucpaasUrl" value="https://api.ucpaas.com" />
 		<!-- 短信平台AccountId -->
