@@ -277,6 +277,26 @@
 				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
+		[#list ["admin:reportUserReg","admin:reportDeviceBind"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.report")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:reportUserReg"]
+								<li>
+									<a href="../reportUserReg/reportUserReg.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.report.reportUserReg")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+							 [@shiro.hasPermission name="admin:reportDeviceBind"]
+								<li>
+									<a href="../reportDeviceBind/reportDeviceBind.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.report.reportDeviceBind")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
        </ul>
       </div>
       <div class="mainbar">

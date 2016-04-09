@@ -9,6 +9,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.csh.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -26,7 +27,7 @@ public class ReportDeviceBindStatistics extends BaseEntity {
 
 
   /**
-   * 注册用户数
+   * 设备绑定数
    */
   private Integer bindDeviceNum;
 
@@ -36,6 +37,7 @@ public class ReportDeviceBindStatistics extends BaseEntity {
   private Date statisticsDate;
 
 
+  @JsonProperty
   public Integer getBindDeviceNum() {
     return bindDeviceNum;
   }
@@ -44,6 +46,7 @@ public class ReportDeviceBindStatistics extends BaseEntity {
     this.bindDeviceNum = bindDeviceNum;
   }
 
+  @JsonProperty
   @Temporal(TemporalType.DATE)
   public Date getStatisticsDate() {
     return statisticsDate;

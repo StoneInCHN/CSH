@@ -184,6 +184,12 @@ $().ready(function() {
 											<label>
 												<input type="checkbox" name="authorities" value="admin:deviceProvide4distributor" /><span>${message("csh.main.deviceInfo.list4distributor")}</span>
 											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:reportUserReg" /><span>${message("csh.report.reportUserReg")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:reportDeviceBind" /><span>${message("csh.report.reportDeviceBind")}</span>
+											</label>
 										</span>
 									</td>
 								</tr>

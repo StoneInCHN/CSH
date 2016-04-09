@@ -186,6 +186,12 @@ $().ready(function() {
 											<label>
 												<input type="checkbox" name="authorities" value="admin:deviceProvide4distributor" [#if role.authorities?seq_contains("admin:deviceProvide4distributor")] checked="checked"[/#if]/><span>${message("csh.main.deviceInfo.list4distributor")}</span>
 											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:reportUserReg" [#if role.authorities?seq_contains("admin:reportUserReg")] checked="checked"[/#if]/><span>${message("csh.report.reportUserReg")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:reportDeviceBind" [#if role.authorities?seq_contains("admin:reportDeviceBind")] checked="checked"[/#if] /><span>${message("csh.report.reportDeviceBind")}</span>
+											</label>
 										</span>
 									</td>
 								</tr>

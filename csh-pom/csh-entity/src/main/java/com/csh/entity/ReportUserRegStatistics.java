@@ -9,6 +9,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.csh.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -36,7 +37,7 @@ public class ReportUserRegStatistics extends BaseEntity {
   private Date statisticsDate;
 
 
-
+  @JsonProperty
   public Integer getRegNum() {
     return regNum;
   }
@@ -45,6 +46,7 @@ public class ReportUserRegStatistics extends BaseEntity {
     this.regNum = regNum;
   }
 
+  @JsonProperty
   @Temporal(TemporalType.DATE)
   public Date getStatisticsDate() {
     return statisticsDate;

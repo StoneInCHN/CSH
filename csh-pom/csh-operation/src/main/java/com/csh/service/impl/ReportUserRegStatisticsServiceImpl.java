@@ -1,19 +1,34 @@
-package com.csh.service.impl; 
+package com.csh.service.impl;
 
-import javax.annotation.Resource; 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
-import org.springframework.stereotype.Service; 
+import javax.annotation.Resource;
 
-import com.csh.entity.ReportUserRegStatistics;
+import org.springframework.stereotype.Service;
+
 import com.csh.dao.ReportUserRegStatisticsDao;
-import com.csh.service.ReportUserRegStatisticsService;
+import com.csh.entity.ReportUserRegStatistics;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.service.ReportUserRegStatisticsService;
+import com.csh.utils.DateUtils;
 
 @Service("reportUserRegStatisticsServiceImpl")
-public class ReportUserRegStatisticsServiceImpl extends BaseServiceImpl<ReportUserRegStatistics,Long> implements ReportUserRegStatisticsService {
+public class ReportUserRegStatisticsServiceImpl extends
+    BaseServiceImpl<ReportUserRegStatistics, Long> implements ReportUserRegStatisticsService {
 
-      @Resource(name="reportUserRegStatisticsDaoImpl")
-      public void setBaseDao(ReportUserRegStatisticsDao reportUserRegStatisticsDao) {
-         super.setBaseDao(reportUserRegStatisticsDao);
+  @Resource(name = "reportUserRegStatisticsDaoImpl")
+  private ReportUserRegStatisticsDao reportUserRegStatisticsDao;
+  
+  @Resource(name = "reportUserRegStatisticsDaoImpl")
+  public void setBaseDao(ReportUserRegStatisticsDao reportUserRegStatisticsDao) {
+    super.setBaseDao(reportUserRegStatisticsDao);
+  }
+
+  @Override
+  public List<ReportUserRegStatistics> findList(Date startDate, Date endDate) {
+    
+    return reportUserRegStatisticsDao.findList(startDate, endDate);
   }
 }
