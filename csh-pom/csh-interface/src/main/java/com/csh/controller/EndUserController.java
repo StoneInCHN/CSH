@@ -179,10 +179,14 @@ public class EndUserController extends MobileBaseController {
 
     String[] properties = {"id", "userName", "nickName", "photo", "signature"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
-    map.put("defaultVehiclePlate", loginUser.getDefaultVehicle().getPlate());
-    map.put("defaultVehicle", loginUser.getDefaultVehicle().getVehicleFullBrand());
-    map.put("defaultDeviceNo", loginUser.getDefaultVehicle().getDeviceNo());
-    map.put("defaultVehicleIcon", loginUser.getDefaultVehicle().getBrandIcon());
+    map.put("defaultVehiclePlate", loginUser.getDefaultVehicle() != null ? loginUser
+        .getDefaultVehicle().getPlate() : null);
+    map.put("defaultVehicle", loginUser.getDefaultVehicle() != null ? loginUser.getDefaultVehicle()
+        .getVehicleFullBrand() : null);
+    map.put("defaultDeviceNo", loginUser.getDefaultVehicle() != null ? loginUser
+        .getDefaultVehicle().getDeviceNo() : null);
+    map.put("defaultVehicleIcon", loginUser.getDefaultVehicle() != null ? loginUser
+        .getDefaultVehicle().getBrandIcon() : null);
     response.setMsg(map);
     String token = TokenGenerator.generateToken();
     endUserService.createEndUserToken(token, loginUser.getId());

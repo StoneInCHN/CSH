@@ -30,18 +30,19 @@ import com.csh.utils.TokenGenerator;
  *
  */
 @Controller("illegalRecordController")
-public class IllegalRecordController extends BaseController{
-  
+public class IllegalRecordController extends BaseController {
+
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
-  
+
   @Resource(name = "illegalRecordServiceImpl")
-  private  IllegalRecordService illegalRecordService;
-  
+  private IllegalRecordService illegalRecordService;
+
   @RequestMapping(value = "/getIllegalRecords", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseMultiple<Map<String, Object>> getIllegalRecords(@RequestBody IllegalRecordRequest illegalRecordRequest) { 
-    
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getIllegalRecords(
+      @RequestBody IllegalRecordRequest illegalRecordRequest) {
+
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Long userId = illegalRecordRequest.getUserId();
     String token = illegalRecordRequest.getToken();
@@ -52,32 +53,32 @@ public class IllegalRecordController extends BaseController{
       response.setDesc(Message.error("csh.user.token.timeout").getContent());
       return response;
     }
-    
-    List<IllegalRecord> illegalRecords  = null;
-    
-    if(illegalRecordRequest.getPlate() != null){
+
+    List<IllegalRecord> illegalRecords = null;
+
+    if (illegalRecordRequest.getPlate() != null) {
       illegalRecords = illegalRecordService.getIllegalRecords(illegalRecordRequest.getPlate());
     }
-    
-    if(illegalRecords != null && illegalRecords.size() > 0){
-      
+
+    if (illegalRecords != null && illegalRecords.size() > 0) {
+
       String[] properties =
-        {"id", "createDate", "processingSite", "score", "finesAmount", "illegalContent",
-            "illegalAddress", "plate", "illegalDate"};
+          {"id", "processingSite", "score", "finesAmount", "illegalContent", "illegalAddress",
+              "plate", "illegalDate"};
       List<Map<String, Object>> map =
-        FieldFilterUtils.filterCollectionMap(properties, illegalRecords);
-      
+          FieldFilterUtils.filterCollectionMap(properties, illegalRecords);
+
       response.setMsg(map);
-      
+
     }
-    
+
     String newtoken = TokenGenerator.generateToken(illegalRecordRequest.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
-    
+
     return response;
-    
+
   }
 
 }

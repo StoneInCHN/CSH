@@ -5,10 +5,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.data.redis.core.TimeoutUtils;
 import org.springframework.stereotype.Service;
 
-import com.csh.beans.Setting;
 import com.csh.dao.IllegalRecordDao;
 import com.csh.entity.IllegalRecord;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -77,12 +75,12 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
            * 查数据库
            */
           return illegalRecords;
-          
+
         } else {
           /**
            * 请求第三方数据并插入自己数据库
            */
-          
+
         }
       }
 
