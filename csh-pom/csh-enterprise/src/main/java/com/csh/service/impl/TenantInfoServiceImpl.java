@@ -11,7 +11,6 @@ import com.csh.dao.TenantInfoDao;
 import com.csh.entity.ConfigMeta;
 import com.csh.entity.TenantInfo;
 import com.csh.framework.service.impl.BaseServiceImpl;
-import com.csh.service.SystemConfigService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantInfoService;
 
@@ -40,8 +39,7 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
   @Resource(name = "threadPoolExecutor")
   private Executor threadPoolExecutor;
 
-  @Resource(name = "systemConfigServiceImpl")
-  private SystemConfigService systemConfigService;
+ 
 
 
 

@@ -12,7 +12,6 @@ import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
-import com.csh.entity.commonenum.CommonEnum.ConfigKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -34,10 +33,6 @@ public class SystemConfig extends BaseEntity {
    */
   private Long tenantID;
 
-  /**
-   * 配置项
-   */
-  private ConfigKey configKey;
 
   /**
    * 配置项值
@@ -69,15 +64,6 @@ public class SystemConfig extends BaseEntity {
 
   public void setConfigOrder(Integer configOrder) {
     this.configOrder = configOrder;
-  }
-
-  @Index(name = "system_config_configKey")
-  public ConfigKey getConfigKey() {
-    return configKey;
-  }
-
-  public void setConfigKey(ConfigKey configKey) {
-    this.configKey = configKey;
   }
 
   @JsonProperty
