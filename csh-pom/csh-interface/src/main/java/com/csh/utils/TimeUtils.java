@@ -48,4 +48,17 @@ public class TimeUtils {
     return calendar.getTime();
   }
 
+  /**
+   * 加天数
+   * 
+   * @return
+   */
+  public static Date addDays(Integer days , Date date) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    cal.add(Calendar.DATE, days);
+    
+    return cal.getTime();
+  }
+
 }

@@ -55,5 +55,11 @@
 		<setting name="wechatAddOrderUrl" value="https://api.mch.weixin.qq.com/pay/unifiedorder" />
 		<!-- 微信Token接口 -->
 		<setting name="wechatTokenUrl" value="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET" />
+		
+		<!-- 违章查询 -->
+		<setting name="illegalSearchPeriod" value="7"/>
+		<setting name="illegalSearchURL" value="http://api.jisuapi.com/illegal/query"/>
+		<setting name="illegalSearchAppKey" value="76ee56b0fec1c4e2"/>
+		
 	</csh>	
 	

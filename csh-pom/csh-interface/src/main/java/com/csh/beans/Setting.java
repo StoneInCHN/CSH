@@ -145,6 +145,21 @@ public class Setting implements Serializable {
    */
   private String obdServerUrl;
 
+  /**
+   * 违章查询周期
+   */
+  private String illegalSearchPeriod;
+  
+  /**
+   * 违章查询URL
+   */
+  private String illegalSearchURL;
+  
+  /**
+   * 违章查询app key
+   */
+  private String illegalSearchAppKey;
+
 
   public String getObdServerUrl() {
     return obdServerUrl;
@@ -477,5 +492,27 @@ public class Setting implements Serializable {
     this.siteUrl = siteUrl;
   }
 
+  public String getIllegalSearchPeriod() {
+    return illegalSearchPeriod;
+  }
 
+  public void setIllegalSearchPeriod(String illegalSearchPeriod) {
+    this.illegalSearchPeriod = illegalSearchPeriod;
+  }
+
+  public String getIllegalSearchURL() {
+    return illegalSearchURL;
+  }
+
+  public void setIllegalSearchURL(String illegalSearchURL) {
+    this.illegalSearchURL = illegalSearchURL;
+  }
+
+  public String getIllegalSearchAppKey() {
+    return illegalSearchAppKey;
+  }
+
+  public void setIllegalSearchAppKey(String illegalSearchAppKey) {
+    this.illegalSearchAppKey = illegalSearchAppKey;
+  }
 }
