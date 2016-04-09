@@ -60,6 +60,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setChargeStatus(chargeStatus);
     carServiceRecord.setPrice(price);
     carServiceRecord.setTenantName(carService.getTenantInfo().getTenantName());
+    carServiceRecord.setTenantPhoto(carService.getTenantInfo().getPhoto());
     carServiceRecordDao.persist(carServiceRecord);
     if (PaymentType.WALLET.equals(paymentType)) {
       Wallet wallet = endUser.getWallet();

@@ -15,6 +15,8 @@ import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.EndUser;
+import com.csh.entity.MsgEndUser;
 import com.csh.json.base.BaseRequest;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.service.AdvertisementService;
@@ -62,6 +64,18 @@ public class AdvertisementController extends MobileBaseController {
 
     List<Map<String, Object>> advMap = advertisementService.getAdvBanner(userId);
     response.setMsg(advMap);
+
+    Integer count = 0; // 未读消息数
+    EndUser endUser = endUserService.find(userId);
+    if (endUser != null) {
+      for (MsgEndUser msgEndUser : endUser.getMsgEndUsers()) {
+        if (!msgEndUser.getIsRead()) {
+          count++;
+        }
+      }
+    }
+
+    response.setDesc(count.toString());
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);

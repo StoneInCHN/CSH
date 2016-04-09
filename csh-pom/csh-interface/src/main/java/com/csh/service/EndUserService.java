@@ -37,4 +37,13 @@ public interface EndUserService extends BaseService<EndUser, Long> {
    */
   void deleteEndUserToken(Long id);
 
+  /**
+   * 用户注册
+   * 
+   * @param userName
+   * @param password
+   * @return
+   */
+  EndUser userReg(String userName, String password);
+
 }

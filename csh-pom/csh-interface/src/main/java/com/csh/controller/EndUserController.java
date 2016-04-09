@@ -23,7 +23,6 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.EndUser;
 import com.csh.entity.LoginStatistics;
 import com.csh.entity.SmsToken;
-import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.SmsTokenType;
@@ -37,6 +36,7 @@ import com.csh.json.request.UserLoginRequest;
 import com.csh.json.request.UserRegRequest;
 import com.csh.service.EndUserService;
 import com.csh.service.FileService;
+import com.csh.service.ReportUserRegStatisticsService;
 import com.csh.service.SmsTokenService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.KeyGenerator;
@@ -58,6 +58,23 @@ public class EndUserController extends MobileBaseController {
 
   @Resource(name = "fileServiceImpl")
   private FileService fileService;
+
+  @Resource(name = "reportUserRegStatisticsServiceImpl")
+  private ReportUserRegStatisticsService reportUserRegStatisticsService;
+
+
+  // /**
+  // * 测试
+  // *
+  // * @return
+  // */
+  // @RequestMapping(value = "/test", method = RequestMethod.POST)
+  // public @ResponseBody BaseResponse test(@RequestBody BaseRequest req) {
+  // BaseResponse response = new BaseResponse();
+  // ReportUserRegStatistics aRegStatistics =
+  // reportUserRegStatisticsService.getReportByDate(TimeUtils.formatDate2Day(new Date()));
+  // return response;
+  // }
 
   /**
    * 用户注销
@@ -368,16 +385,8 @@ public class EndUserController extends MobileBaseController {
         response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
         return response;
       }
-      EndUser regUser = new EndUser();
-      regUser.setMobileNum(userName);
-      regUser.setUserName(userName);
-      regUser.setPassword(DigestUtils.md5Hex(password));
-      regUser.setAccountStatus(AccountStatus.ACTIVED);
-      Wallet wallet = new Wallet();
-      wallet.setEndUser(regUser);
-      regUser.setWallet(wallet);
-      endUserService.save(regUser);
 
+      EndUser regUser = endUserService.userReg(userName, password);
       if (LogUtil.isDebugEnabled(EndUserController.class)) {
         LogUtil.debug(EndUserController.class, "save", "EndUser Reg. UserName: %s,id: %s",
             userName, regUser.getId());

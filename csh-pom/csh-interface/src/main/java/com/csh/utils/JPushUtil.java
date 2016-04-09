@@ -1,5 +1,6 @@
 package com.csh.utils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import cn.jpush.api.JPushClient;
@@ -134,12 +135,32 @@ public class JPushUtil {
         .setNotification(Notification.android(alert, null, extras)).build();
   }
 
+  /**
+   * 推送到别名为alias的Android设备，附带数据为extras
+   * 
+   * @param alert 内容
+   * @param extras Map对象
+   * @param alias 别名
+   * @return
+   */
+  public static PushPayload buildPushObject_android_registerId(String alert,
+      Map<String, String> extras, String... registrationIds) {
+    return PushPayload.newBuilder().setPlatform(Platform.android())
+        .setAudience(Audience.registrationId(registrationIds))
+        .setNotification(Notification.android(alert, null, extras)).build();
+  }
 
   public static void main(String[] args) throws Exception {
     // PushPayload payload = JPushUtil.buildPushObject("推送广播，推送到所有客户端");
     // PushPayload payload = JPushUtil.buildPushObject_android("推送广播，推送到Android客户端");
     // // PushPayload payload = JPushUtil.buildPushObject_android_tag("推送广播，推送到指定Tag客户端", "重庆");
-    PushPayload payload = JPushUtil.buildPushObject_android_alias("推送广播，推送到指定Alias设备", "111111");// 864981026401782
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("id", "我是ID");
+    map.put("title", "我是title");
+    PushPayload payload =
+        JPushUtil.buildPushObject_android_registerId("推送广播，推送到指定Alias设备", map,
+            "100d85590944b10139b", "11", "11");// 864981026401782
+
     JPushUtil.sendPush(payload);
 
   }

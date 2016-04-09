@@ -35,8 +35,9 @@ public class TenantEvaluateController extends MobileBaseController {
   @Resource(name = "tenantEvaluateServiceImpl")
   private TenantEvaluateService tenantEvaluateService;
 
+
   /**
-   * 获取广告
+   * 评价
    * 
    * @return
    */

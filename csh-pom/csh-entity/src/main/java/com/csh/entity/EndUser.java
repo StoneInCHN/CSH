@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -136,6 +137,20 @@ public class EndUser extends BaseEntity {
    */
   private Set<TenantEvaluate> tenantEvalutes = new HashSet<TenantEvaluate>();
 
+  /**
+   * 极光push注册ID
+   */
+  private String jpushRegId;
+
+
+  @Column(length = 100)
+  public String getjpushRegId() {
+    return jpushRegId;
+  }
+
+  public void setjpushRegId(String jPushRegId) {
+    this.jpushRegId = jPushRegId;
+  }
 
   @OneToMany(mappedBy = "endUser")
   public Set<TenantEvaluate> getTenantEvalutes() {

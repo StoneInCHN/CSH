@@ -3,6 +3,7 @@ package com.csh.utils;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -52,6 +53,11 @@ public class ToolsUtils {
     }
     return null;
 
+  }
+
+  public static String[] convertList2String(List<String> list) {
+    String[] arr = (String[]) list.toArray(new String[list.size()]);
+    return arr;
   }
 
   /**

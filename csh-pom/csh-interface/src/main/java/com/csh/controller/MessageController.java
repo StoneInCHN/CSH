@@ -1,6 +1,8 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.jpush.api.push.model.PushPayload;
 
 import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
@@ -33,8 +37,10 @@ import com.csh.service.EndUserService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
 import com.csh.utils.FieldFilterUtils;
+import com.csh.utils.JPushUtil;
 import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
+import com.csh.utils.ToolsUtils;
 
 
 /**
@@ -240,16 +246,36 @@ public class MessageController extends MobileBaseController {
     }
 
     // 推送消息
+    List<String> regIds = new ArrayList<String>();
+    Integer unread_count = 0;
     for (MsgEndUser msgEndUser : msg.getMsgUser()) {
       // MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
-      msgEndUser.setIsPush(true);
-      EndUser user = msgEndUser.getEndUser();
-      // JPushUtil.buildPushObject_android_alias(msg.getMessageContent(), null, null);
-
-      msgEndUserService.update(msgEndUser);
+      if (!msgEndUser.getIsPush()) {
+        msgEndUser.setIsPush(true);
+        EndUser user = msgEndUser.getEndUser();
+        regIds.add(user.getjpushRegId());
+        msgEndUserService.update(msgEndUser);
+      }
+      if (!msgEndUser.getIsRead()) {
+        unread_count++;
+      }
 
     }
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("msgId", msg.getId().toString());
+    map.put("title", msg.getMessageTitle());
+    map.put("content", msg.getMessageContent());
+    map.put("time", String.valueOf(msg.getModifyDate().getTime()));
+    map.put("unreadCount", unread_count.toString());
 
+    try {
+      PushPayload payload =
+          JPushUtil.buildPushObject_android_registerId(msg.getMessageContent(), map,
+              ToolsUtils.convertList2String(regIds));
+      JPushUtil.sendPush(payload);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }

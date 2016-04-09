@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 @Entity
-@Indexed(index="carServiceRecord")
+@Indexed(index = "carServiceRecord")
 @Table(name = "csh_car_service_record")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_car_service_record_sequence")
 public class CarServiceRecord extends BaseEntity {
@@ -79,6 +79,10 @@ public class CarServiceRecord extends BaseEntity {
    * 商家名称
    */
   private String tenantName;
+  /**
+   * 商家图片
+   */
+  private String tenantPhoto;
 
   /**
    * 结算时间
@@ -99,6 +103,14 @@ public class CarServiceRecord extends BaseEntity {
    */
   private String recordNo;
 
+  @Column(length = 200)
+  public String getTenantPhoto() {
+    return tenantPhoto;
+  }
+
+  public void setTenantPhoto(String tenantPhoto) {
+    this.tenantPhoto = tenantPhoto;
+  }
 
   @Column(length = 30)
   @JsonProperty
@@ -129,7 +141,7 @@ public class CarServiceRecord extends BaseEntity {
     this.tenantName = tenantName;
   }
 
-  @ManyToOne(fetch=FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JsonProperty
   @IndexedEmbedded
   public CarService getCarService() {
@@ -140,7 +152,7 @@ public class CarServiceRecord extends BaseEntity {
     this.carService = carService;
   }
 
-  @ManyToOne(fetch=FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JsonProperty
   @IndexedEmbedded
   public EndUser getEndUser() {
@@ -190,10 +202,9 @@ public class CarServiceRecord extends BaseEntity {
   }
 
 
-  @Column (scale = 2, precision = 10, nullable = false)
+  @Column(scale = 2, precision = 10, nullable = false)
   @JsonProperty
-  public BigDecimal getPrice ()
-  {
+  public BigDecimal getPrice() {
     return price;
   }
 
@@ -201,17 +212,16 @@ public class CarServiceRecord extends BaseEntity {
     this.price = price;
   }
 
-  
-  public Date getClearingDate ()
-  {
+
+  public Date getClearingDate() {
     return clearingDate;
   }
 
-  public void setClearingDate (Date clearingDate)
-  {
+  public void setClearingDate(Date clearingDate) {
     this.clearingDate = clearingDate;
 
   }
+
   @ManyToOne
   public TenantClearingRecord getTenantClearingRecord() {
     return tenantClearingRecord;
@@ -235,16 +245,14 @@ public class CarServiceRecord extends BaseEntity {
   @JsonProperty
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
   @FieldBridge(impl = DateBridgeImpl.class)
-  public Date getPaymentDate ()
-  {
+  public Date getPaymentDate() {
     return paymentDate;
   }
 
-  public void setPaymentDate (Date paymentDate)
-  {
+  public void setPaymentDate(Date paymentDate) {
     this.paymentDate = paymentDate;
   }
 
-  
+
 
 }

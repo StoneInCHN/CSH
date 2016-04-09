@@ -71,7 +71,7 @@ public class CarServiceController extends MobileBaseController {
    */
   @RequestMapping(value = "/subscribeService", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse buyService(@RequestBody CarServiceRequest serviceReq) {
+  public @ResponseBody BaseResponse subscribeService(@RequestBody CarServiceRequest serviceReq) {
 
     BaseResponse response = new BaseResponse();
     Long userId = serviceReq.getUserId();
@@ -326,7 +326,7 @@ public class CarServiceController extends MobileBaseController {
 
     String[] properties =
         {"id", "createDate", "paymentDate", "chargeStatus", "price", "carService.serviceCategory",
-            "carService.serviceName", "carService.id", "tenantName"};
+            "carService.serviceName", "carService.id", "tenantName", "tenantID", "tenantPhoto"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, records.getContent());
     response.setMsg(map);
