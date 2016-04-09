@@ -1,7 +1,6 @@
 package com.csh.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -298,14 +297,10 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
     DeviceInfo deviceInfo = deviceInfos.get(0);
+
     Vehicle vehicle = vehicleService.find(vehicleId);
-    vehicle.setDeviceNo(deviceNo);
-    deviceInfo.setVehicle(vehicle);
-    deviceInfo.setBindTime(new Date());
-    deviceInfo.setBindStatus(BindStatus.BINDED);
-    vehicle.setDevice(deviceInfo);
-    vehicle.setTenantID(deviceInfo.getTenantID());
-    vehicleService.update(vehicle);
+
+    vehicleService.bindDevice(vehicle, deviceInfo);
 
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
       LogUtil.debug(VehicleController.class, "Update",

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>${message("admin.apply.title")}</title>
+<title>${message("csh.apply.title")}</title>
 <link href="${base}/resources/style/apply.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/login.css" rel="stylesheet" type="text/css" />
 <link rel="shortcut icon" type="image/x-icon" href="${base}/resources/images/carlife.ico" media="screen" /> 

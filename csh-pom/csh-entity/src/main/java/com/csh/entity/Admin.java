@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
@@ -69,7 +70,16 @@ public class Admin extends BaseEntity {
    */
   private Boolean isSystem;
 
+  /**
+   * 是否是分销商
+   */
+  private Boolean isDistributor;
 
+  /**
+   * 关联的分销商
+   */
+  private Distributor distributor;
+  
   /**
    * 获取用户名
    * 
@@ -233,6 +243,7 @@ public class Admin extends BaseEntity {
     this.roles = roles;
   }
 
+  @Column(length=4)
   public Boolean getIsSystem() {
     return isSystem;
   }
@@ -241,4 +252,24 @@ public class Admin extends BaseEntity {
     this.isSystem = isSystem;
   }
 
+  @Column(length=4)
+  public Boolean getIsDistributor() {
+    return isDistributor;
+  }
+
+  public void setIsDistributor(Boolean isDistributor) {
+    this.isDistributor = isDistributor;
+  }
+
+  @OneToOne(fetch = FetchType.LAZY)
+  public Distributor getDistributor() {
+    return distributor;
+  }
+
+  public void setDistributor(Distributor distributor) {
+    this.distributor = distributor;
+  }
+
+  
+  
 }

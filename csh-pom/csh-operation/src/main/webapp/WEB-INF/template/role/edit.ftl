@@ -50,23 +50,12 @@ $().ready(function() {
 	$inputForm.validate({
 		rules: {
 			name:{
-				required: true,
-				remote: {
-					url: "checkName.jhtml",
-					cache: false,
-					data:{
-						id:${role.id}
-					}
-				}
+				required: true
+			
 			},
 			authorities: "required",
 			description:{
 				maxlength:200
-			}
-		},
-		messages: {
-			name: {
-				remote: "${message("role.name.validate.exist")}"
 			}
 		}
 	});
@@ -140,7 +129,63 @@ $().ready(function() {
 											<label>
 												<input type="checkbox" name="authorities" value="admin:account" [#if role.authorities?seq_contains("admin:account")] checked="checked"[/#if]/><span>${message("csh.account.settingGroup")}</span>
 											</label>
-											
+											<label>
+												<input type="checkbox" name="authorities" value="admin:apply" [#if role.authorities?seq_contains("admin:apply")] checked="checked"[/#if] /><span>${message("csh.main.apply")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:area" [#if role.authorities?seq_contains("admin:area")] checked="checked"[/#if]/><span>${message("csh.main.area")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:tenantAccount" [#if role.authorities?seq_contains("admin:tenantAccount")] checked="checked"[/#if]/><span>${message("csh.main.tenantAccount")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:tenantInfo" [#if role.authorities?seq_contains("admin:tenantInfo")] checked="checked"[/#if]/><span>${message("csh.main.tenantInfo")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:deviceType" [#if role.authorities?seq_contains("admin:deviceType")] checked="checked"[/#if]/><span>${message("csh.main.deviceType")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:deviceInfo" [#if role.authorities?seq_contains("admin:deviceInfo")] checked="checked"[/#if]/><span>${message("csh.main.deviceInfo")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:advertisement" [#if role.authorities?seq_contains("admin:advertisement")] checked="checked"[/#if]/><span>${message("csh.main.advertisement")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:distributor" [#if role.authorities?seq_contains("admin:distributor")] checked="checked"[/#if]/><span>${message("csh.main.distributor")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:vehicleBrand" [#if role.authorities?seq_contains("admin:vehicleBrand")] checked="checked"[/#if]/><span>${message("csh.main.vehicleBrand")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:vehicleLine" [#if role.authorities?seq_contains("admin:vehicleLine")] checked="checked"[/#if]/><span>${message("csh.main.vehicleLine")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:vehicleBrandDetail" [#if role.authorities?seq_contains("admin:vehicleBrandDetail")] checked="checked"[/#if]/><span>${message("csh.main.vehicleBrandDetail")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:serviceCategory" [#if role.authorities?seq_contains("admin:serviceCategory")] checked="checked"[/#if]/><span>${message("csh.main.serviceCategory")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:feedBack" [#if role.authorities?seq_contains("admin:feedBack")] checked="checked"[/#if]/><span>${message("csh.main.feedBack")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:vehicle" [#if role.authorities?seq_contains("admin:vehicle")] checked="checked"[/#if] /><span>${message("csh.main.vehicle")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:endUser" [#if role.authorities?seq_contains("admin:endUser")] checked="checked"[/#if]/><span>${message("csh.main.endUser")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:clearingRecord"[#if role.authorities?seq_contains("admin:clearingRecord")] checked="checked"[/#if] /><span>${message("csh.main.clearingRecord")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:carServiceRecord" [#if role.authorities?seq_contains("admin:carServiceRecord")] checked="checked"[/#if]/><span>${message("csh.main.carServiceRecord")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:walletRecord"[#if role.authorities?seq_contains("admin:walletRecord")] checked="checked"[/#if] /><span>${message("csh.main.walletRecord")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:deviceProvide4distributor" [#if role.authorities?seq_contains("admin:deviceProvide4distributor")] checked="checked"[/#if]/><span>${message("csh.main.deviceInfo.list4distributor")}</span>
+											</label>
 										</span>
 									</td>
 								</tr>

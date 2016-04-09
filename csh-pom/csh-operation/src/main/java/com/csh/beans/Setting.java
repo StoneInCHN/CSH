@@ -97,6 +97,25 @@ public class Setting implements Serializable {
    */
   private String vehicleOilAPIKey;
   
+  
+  /** 网站名称 */
+  private String siteName;
+
+  /** 发件人邮箱 */
+  private String smtpFromMail;
+
+  /** SMTP服务器地址 */
+  private String smtpHost;
+
+  /** SMTP服务器端口 */
+  private Integer smtpPort;
+
+  /** SMTP用户名 */
+  private String smtpUsername;
+
+  /** SMTP密码 */
+  private String smtpPassword;
+  
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
   }
@@ -160,7 +179,54 @@ public class Setting implements Serializable {
   public void setVehicleOilAPIKey(String vehicleOilAPIKey) {
     this.vehicleOilAPIKey = vehicleOilAPIKey;
   }
-  
+
+  public String getSiteName() {
+    return siteName;
+  }
+
+  public void setSiteName(String siteName) {
+    this.siteName = siteName;
+  }
+
+  public String getSmtpFromMail() {
+    return smtpFromMail;
+  }
+
+  public void setSmtpFromMail(String smtpFromMail) {
+    this.smtpFromMail = smtpFromMail;
+  }
+
+  public String getSmtpHost() {
+    return smtpHost;
+  }
+
+  public void setSmtpHost(String smtpHost) {
+    this.smtpHost = smtpHost;
+  }
+
+  public Integer getSmtpPort() {
+    return smtpPort;
+  }
+
+  public void setSmtpPort(Integer smtpPort) {
+    this.smtpPort = smtpPort;
+  }
+
+  public String getSmtpUsername() {
+    return smtpUsername;
+  }
+
+  public void setSmtpUsername(String smtpUsername) {
+    this.smtpUsername = smtpUsername;
+  }
+
+  public String getSmtpPassword() {
+    return smtpPassword;
+  }
+
+  public void setSmtpPassword(String smtpPassword) {
+    this.smtpPassword = smtpPassword;
+  }
   
   
 }

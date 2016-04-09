@@ -38,6 +38,8 @@
 	<div class="tool-button">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="vehicle_manager_tool.add();">添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="vehicle_manager_tool.edit();">修改</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="vehicle_manager_tool.vehicleDailyReport();">车辆每日数据</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="vehicle_manager_tool.realTimeCarCondition();">实时车况</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="vehicle_manager_tool.remove();">删除</a>
 		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true" onclick="exportExcel('vehicle','vehicle-search-form','totalRecord');">导出</a>
 	</div>
@@ -90,6 +92,8 @@
 </div>
 <div id="editVehicle"></div>
 <div id="vehicleDetail"></div>
+<div id="realTimeCarCondition"></div>
+<div id="vehicleDailyReport"></div>
 
 
 

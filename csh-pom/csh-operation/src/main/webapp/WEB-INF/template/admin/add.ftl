@@ -13,11 +13,17 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<style type="text/css">
+	#selectDistributor_tr{
+		display:none;
+	}
+</style>
 <script type="text/javascript">
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	
+	var $isDistributor=$(':input[name="isDistributor"]'); 
+	var $selectDistributor_tr = $("#selectDistributor_tr");
 	// 表单验证
 	$inputForm.validate({
 		rules: {
@@ -46,7 +52,7 @@ $().ready(function() {
 			},
 			name: "required",
 			roleIds: "required",
-			adminStatus: "required"
+			adminStatus: "required",
 		},
 		messages: {
 			username: {
@@ -57,6 +63,19 @@ $().ready(function() {
 			}
 		}
 	});
+
+	$isDistributor.change(function(){
+		var val=$(this).children('option:selected').val();
+		if(val == "true"){
+			$selectDistributor_tr.show();
+			$("#distributorId").rules("add",{
+			  required:true
+			});
+		}else{
+			$selectDistributor_tr.hide();
+			$("#distributorId").rules("remove");
+		}
+	})
 	
 });
 </script>
@@ -130,6 +149,25 @@ $().ready(function() {
 									<input type="text" name="email" class="text" maxlength="200" />
 								</td>
 							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.admin.isDistributor")}:
+								</th>
+								<td>
+									<select name="isDistributor">
+										<option value="false" selected="selected">不是</option>
+										<option value="true">是</option>
+									</select>
+								</td>
+							</tr>
+							<tr id="selectDistributor_tr">
+								<th>
+									<span class="requiredField">*</span>请选择分销商:
+								</th>
+								<td>
+									<input type="hidden" class="text" id="distributorId" name="distributorId"><span id="distributorName" style="margin-right:30px"></span><button id="selectDistributor"  class="btn btn-default">选择分销商</button>
+								</td>
+							</tr>
 							<tr class="roles">
 								<th>
 									<span class="requiredField">*</span>${message("csh.admin.roles")}:
@@ -175,5 +213,22 @@ $().ready(function() {
 	   </div>
 	</div>
 	<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+	<script type="text/javascript">
+		$(function(){
+				var $selectDistributor = $("#selectDistributor");
+				
+				$selectDistributor.click(function(){
+					var $deviceBinding = window.parent.$('#operationModal');
+					var $operationModalIframe= window.parent.$('#operationModalIframe');
+					$deviceBinding.find(".modal-title").text("选择分销商");
+					$deviceBinding.modal("show");
+					$deviceBinding.attr("data-ids","&"+$("#listTable input[name='ids']:checked").serialize());
+					$operationModalIframe.attr("src","${base}/console/admin/selectDistributor.jhtml");
+					$operationModalIframe.css("height",380);
+				})
+		
+		})
+	
+	</script>
 </body>
 </html>

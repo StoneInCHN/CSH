@@ -121,6 +121,9 @@ public class Setting implements Serializable {
     /** 短信平台语音回拨号码 */
     private String ucpaasCallDisplay;
     
+    private String rtCarConditionUrl;
+    
+    private String dailyVehicleStatusUrl;
     /**
      * 获取相册上传路径
      * 
@@ -774,6 +777,26 @@ public class Setting implements Serializable {
     public void setUcpaasCallDisplay (String ucpaasCallDisplay)
     {
       this.ucpaasCallDisplay = ucpaasCallDisplay;
+    }
+
+    public String getRtCarConditionUrl ()
+    {
+      return rtCarConditionUrl;
+    }
+
+    public void setRtCarConditionUrl (String rtCarConditionUrl)
+    {
+      this.rtCarConditionUrl = rtCarConditionUrl;
+    }
+
+    public String getDailyVehicleStatusUrl ()
+    {
+      return dailyVehicleStatusUrl;
+    }
+
+    public void setDailyVehicleStatusUrl (String dailyVehicleStatusUrl)
+    {
+      this.dailyVehicleStatusUrl = dailyVehicleStatusUrl;
     }
     
     

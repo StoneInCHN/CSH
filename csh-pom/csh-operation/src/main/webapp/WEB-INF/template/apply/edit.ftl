@@ -24,7 +24,8 @@ $().ready(function() {
 		rules: {
 			notes: "required",
 			applyStatus: "required",
-			versionConfig:"required"
+			versionConfig:"required",
+			distributorId:"required"
 		},
 		submitHandler:function(form){
 			$submit.attr("disabled",true);
@@ -134,6 +135,14 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
+									${message("csh.apply.distributor")}:
+								</th>
+								<td>
+									<input type="hidden" class="text" id="distributorId" name="distributorId"><span id="distributorName" style="margin-right:30px"></span><button id="selectDistributor"  class="btn btn-default">选择分销商</button>
+								</td>
+							</tr>
+							<tr>
+								<th>
 									${message("csh.apply.versionConfig")}:
 								</th>
 								<td>
@@ -185,5 +194,23 @@ $().ready(function() {
 	   </div>
 	</div>
 	<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+	<script type="text/javascript">
+		$(function(){
+				var $selectDistributor = $("#selectDistributor");
+				
+				$selectDistributor.click(function(){
+					var $deviceBinding = window.parent.$('#operationModal');
+					var $operationModalIframe= window.parent.$('#operationModalIframe');
+					$deviceBinding.find(".modal-title").text("选择分销商");
+					$deviceBinding.modal("show");
+					$deviceBinding.attr("data-ids","&"+$("#listTable input[name='ids']:checked").serialize());
+					$operationModalIframe.attr("src","${base}/console/apply/selectDistributor.jhtml");
+					$operationModalIframe.css("height",380);
+				})
+		
+		})
+	
+	</script>
+
 </body>
 </html>
