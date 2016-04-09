@@ -1,16 +1,27 @@
 package com.csh.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.beans.Setting;
 import com.csh.dao.IllegalRecordDao;
+import com.csh.dao.ProvinceDao;
+import com.csh.dao.VehicleDao;
 import com.csh.entity.IllegalRecord;
+import com.csh.entity.Province;
+import com.csh.entity.Vehicle;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.IllegalRecordService;
+import com.csh.utils.ApiUtils;
 import com.csh.utils.SettingUtils;
 import com.csh.utils.TimeUtils;
 
@@ -27,6 +38,12 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
   @Resource(name = "illegalRecordDaoImpl")
   private IllegalRecordDao illegalRecordDao;
 
+  @Resource(name = "vehicleDaoImpl")
+  private VehicleDao vehicleDao;
+
+  @Resource(name = "provinceDaoImpl")
+  private ProvinceDao provinceDao;
+
 
   @Resource(name = "illegalRecordDaoImpl")
   public void setBaseDao(IllegalRecordDao illegalRecordDao) {
@@ -39,7 +56,9 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
    * @param plate
    * @return
    */
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public List<IllegalRecord> getIllegalRecords(String plate) {
+    Setting setting = SettingUtils.get();
 
     List<IllegalRecord> illegalRecords = illegalRecordDao.getIllegalRecords(plate);
 
@@ -81,12 +100,53 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
            * 请求第三方数据并插入自己数据库
            */
 
+          // 删除原有数据
+          for (IllegalRecord record : illegalRecords) {
+            illegalRecordDao.remove(record);
+          }
+          // insert新数据
+          String lsPrefix = plate.substring(0, 1);
+          String lsNum = plate.substring(1);
+          Vehicle vehicle = vehicleDao.getVehicleByPlate(plate);
+          Province province = provinceDao.getProvinceByShortName(lsPrefix);
+          if (vehicle == null || province == null) {
+            return null;
+          }
+          String url =
+              setting.getIllegalSearchURL() + "?appkey=" + setting.getIllegalSearchAppKey()
+                  + "&carorg=" + province.getPinyinName() + "&lsprefix=" + lsPrefix + "&lsnum="
+                  + lsNum + "&lstype=02&frameno=" + vehicle.getVehicleNo();
+          String res = ApiUtils.get(url);
+          System.out.println(res);
+
+          try {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
+            Map<String, Object> resultMap = (Map<String, Object>) resMap.get("result");
+            List<Map<String, Object>> listMap = (List<Map<String, Object>>) resultMap.get("list");
+            List<IllegalRecord> list = new ArrayList<IllegalRecord>();
+            for (Map<String, Object> map : listMap) {
+              IllegalRecord illegalRecord = new IllegalRecord();
+              illegalRecord.setPlate(plate);
+              illegalRecord.setIllegalAddress(map.get("address").toString());
+              illegalRecord.setIllegalContent(map.get("content").toString());
+              illegalRecord.setIllegalDate(map.get("time").toString());
+              illegalRecord.setIllegalId(map.get("illegalid").toString());
+              illegalRecord.setProcessingSite(map.get("agency").toString());
+              illegalRecord.setScore(Integer.parseInt(map.get("score").toString()));
+              illegalRecord.setFinesAmount(Double.parseDouble(map.get("price").toString()));
+              illegalRecordDao.persist(illegalRecord);
+              list.add(illegalRecord);
+            }
+            return list;
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+
         }
       }
 
     }
-
-
 
     return illegalRecordDao.getIllegalRecords(plate);
   }

@@ -58,4 +58,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
 
     return vehicle;
   }
+
+  @Override
+  public Vehicle getVehicleByPlate(String plate) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

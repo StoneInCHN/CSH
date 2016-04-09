@@ -30,6 +30,7 @@ import com.csh.utils.TokenGenerator;
  *
  */
 @Controller("illegalRecordController")
+@RequestMapping("/illegalRecord")
 public class IllegalRecordController extends BaseController {
 
   @Resource(name = "endUserServiceImpl")
@@ -80,5 +81,4 @@ public class IllegalRecordController extends BaseController {
     return response;
 
   }
-
 }

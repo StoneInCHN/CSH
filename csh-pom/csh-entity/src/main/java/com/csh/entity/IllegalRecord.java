@@ -1,7 +1,5 @@
 package com.csh.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
@@ -18,8 +16,8 @@ import com.csh.entity.base.BaseEntity;
  *
  */
 @Entity
-@Table(name = "illegalRecord")
-@SequenceGenerator(name = "sequenceGenerator", sequenceName = "illegal_record_sequence")
+@Table(name = "csh_illegalRecord")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_illegal_record_sequence")
 public class IllegalRecord extends BaseEntity {
 
   /**
@@ -65,7 +63,7 @@ public class IllegalRecord extends BaseEntity {
   /**
    * 违章时间
    */
-  private Date illegalDate;
+  private String illegalDate;
 
   public String getIllegalId() {
     return illegalId;
@@ -118,7 +116,7 @@ public class IllegalRecord extends BaseEntity {
     this.illegalAddress = illegalAddress;
   }
 
-  @Column(length = 2)
+  @Column(length = 20)
   @Index(name = "index_illegal_plate")
   public String getPlate() {
     return plate;
@@ -128,11 +126,12 @@ public class IllegalRecord extends BaseEntity {
     this.plate = plate;
   }
 
-  public Date getIllegalDate() {
+  @Column(length = 30)
+  public String getIllegalDate() {
     return illegalDate;
   }
 
-  public void setIllegalDate(Date illegalDate) {
+  public void setIllegalDate(String illegalDate) {
     this.illegalDate = illegalDate;
   }
 

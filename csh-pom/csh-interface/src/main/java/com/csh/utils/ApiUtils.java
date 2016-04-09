@@ -207,9 +207,21 @@ public final class ApiUtils {
    * @return
    */
   public static String get(String url) {
-    return get(url, "UTF-8", "UTF-8", null);
+    return get(url, "UTF-8", "UTF-8", "");
   }
 
+  /**
+   * 按照charset格式编码读取
+   * 
+   * @param url
+   * @param p_charset 发送编码
+   * @param r_charset 接收编码
+   * @param params 参数：id=1&type=0
+   * @return
+   */
+  public static String get(String url, String p_charset, String r_charset, String params) {
+    return get(url, p_charset, r_charset, params.getBytes());
+  }
 
   /**
    * 按照charset格式编码读取

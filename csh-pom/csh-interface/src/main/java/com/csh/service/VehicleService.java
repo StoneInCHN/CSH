@@ -14,4 +14,12 @@ public interface VehicleService extends BaseService<Vehicle, Long> {
    * @return
    */
   Vehicle bindDevice(Vehicle vehicle, DeviceInfo deviceInfo);
+
+  /**
+   * 根据车票号查询车辆
+   * 
+   * @param plate
+   * @return
+   */
+  Vehicle getVehicleByPlate(String plate);
 }

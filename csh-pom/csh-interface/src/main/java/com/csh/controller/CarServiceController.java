@@ -189,9 +189,10 @@ public class CarServiceController extends MobileBaseController {
     EndUser endUser = endUserService.find(userId);
     Wallet wallet = endUser.getWallet();
     if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
-      if (serviceReq.getPrice().compareTo(wallet.getBalanceAmount()) < 0) {
+      if (serviceReq.getPrice().compareTo(wallet.getBalanceAmount()) > 0) {
         response.setCode(CommonAttributes.FAIL_COMMON);
         response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+        return response;
       }
     }
 
