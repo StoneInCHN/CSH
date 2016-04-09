@@ -31,18 +31,27 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo,Long> im
          super.setBaseDao(messageInfoDao);
   }
 
-      @Override
-      @Transactional(propagation = Propagation.REQUIRED)
-      public void saveMessage (MessageInfo messageInfo, Long[] ids)
+  @Override
+  @Transactional (propagation = Propagation.REQUIRED)
+  public boolean saveMessage (MessageInfo messageInfo, Long[] ids)
+  {
+    try
+    {
+
+      messageInfo.setTenantID (tenantAccountService.getCurrentTenantID ());
+      for (Long id : ids)
       {
-        messageInfo.setTenantID (tenantAccountService.getCurrentTenantID ());
-        for (Long id : ids)
-        {
-          MsgEndUser msgEndUser = new MsgEndUser ();
-          msgEndUser.setMessage (messageInfo);
-          msgEndUser.setEndUser (endUserDao.find (id));
-          msgEndUserDao.persist (msgEndUser);
-        }
-        messageInfoDao.persist (messageInfo);
+        MsgEndUser msgEndUser = new MsgEndUser ();
+        msgEndUser.setMessage (messageInfo);
+        msgEndUser.setEndUser (endUserDao.find (id));
+        msgEndUserDao.persist (msgEndUser);
       }
+      messageInfoDao.persist (messageInfo);
+    }
+    catch (Exception e)
+    {
+      return false;
+    }
+    return true;
+  }
 }

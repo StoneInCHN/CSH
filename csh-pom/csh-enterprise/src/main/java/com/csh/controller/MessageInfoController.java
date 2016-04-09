@@ -2,7 +2,9 @@ package com.csh.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -24,16 +26,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
+import com.csh.beans.Setting;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.MessageInfo;
+import com.csh.entity.MsgEndUser;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.SendType;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.MessageInfoService;
+import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.SettingUtils;
+import com.csh.utils.UcpaasUtil;
 
 /**
  * 设备管理
@@ -183,7 +190,26 @@ public class MessageInfoController extends BaseController
   public @ResponseBody Message add (MessageInfo messageInfo, Long[] ids)
   {
 
-    messageInfoService.saveMessage (messageInfo, ids);
+    boolean success = messageInfoService.saveMessage (messageInfo, ids);
+    if (success && messageInfo.getSendType () == SendType.PUSH)
+    {
+      Setting setting = SettingUtils.get();
+      
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put ("msgId", messageInfo.getId ());
+      ApiUtils.post (setting.getMsgPushUrl ());
+    }else if(success && messageInfo.getSendType () == SendType.SMS){
+      String content = messageInfo.getMessageContent ();
+      for (MsgEndUser msgEndUser : messageInfo.getMsgUser ())
+      {
+        String response = UcpaasUtil.SendCodeBySms (msgEndUser.getEndUser ().getMobileNum (), content);
+        LogUtil.debug (MessageInfo.class, "send msg", response);
+      }
+      
+     
+    }else {
+      return ERROR_MESSAGE;
+    }
     return SUCCESS_MESSAGE;
   }
 

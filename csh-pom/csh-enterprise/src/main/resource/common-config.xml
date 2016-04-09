@@ -25,6 +25,23 @@
 		<setting name="albumUploadPath" value="/upload/image/${orgCode}/${identifier}/album/${albumName}/" />
 		<setting name="notifyPictureUploadPath" value="/upload/image/${orgCode}/${identifier}/notify picture/" />
 		<setting name="qrImageUrl" value="" />
+		<setting name="msgPushUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
+		
+		<!-- 短信平台URL -->
+		<setting name="ucpaasUrl" value="https://api.ucpaas.com" />
+		<!-- 短信平台AccountId -->
+		<setting name="ucpaasSid" value="0f6224e13d9e6db1b6865597d882110c" />
+		<!-- 短信平台AppId -->
+		<setting name="ucpaasAppId" value="df85e93baacd4ae4aba1f55e9acb5130" />
+		<!-- 短信平台Token -->
+		<setting name="ucpaasToken" value="e345eb6f22e3dfbb159af16ffd76a98d" />
+		<!-- 短信平台SoftVersion -->
+		<setting name="ucpaasVersion" value="2014-06-30" />
+		<!-- 短信平台短信模板ID -->
+		<!-- <setting name="ucpaasTemplate" value="18130" /> -->
+		<setting name="ucpaasTemplate" value="22544" />
+		<!-- 短信平台语音回拨号码 -->
+		<setting name="ucpaasCallDisplay" value="4007930888" />
 		<!-- cookie相关配置 -->
 		<setting name="cookiePath" value="/" />
 		<setting name="cookieDomain" value="" />
