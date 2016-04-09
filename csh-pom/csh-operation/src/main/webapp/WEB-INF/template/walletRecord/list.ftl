@@ -29,7 +29,7 @@
 			<form id="listForm" action="list.jhtml" method="get">
 				  <div class="container operation">
 					<div class="row">
-						  <div class="col-xs-9 col-md-9 col-lg-9">
+						  <div class="col-xs-12 col-md-12 col-lg-12">
 						  		<ul class="nav">
 									 <li class="pull-left">
 										<div class="btn-group operationButton">
@@ -55,19 +55,13 @@
 												</li>
 										    </ul>
 									  </li>
+									 	 <li class="dateClass pull-right">
+											${message("csh.operate.log.date")}: <input type="text" id="beginDate" name="beginDate" class="text Wdate" value="${(beginDate?string('yyyy-MM-dd'))!}" onfocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+											~~ <input type="text"  id="endDate" name="endDate" class="text Wdate" value="${(endDate?string('yyyy-MM-dd'))!}" onfocus="WdatePicker({minDate: '#F{$dp.$D(\'beginDate\')}'});" />
+										</li>
 									</ul>
 						  </div>
-						  <div class="col-xs-3 col-md-3 col-lg-3">
-						  		<div class="input-group">
-								      <div class="input-group-btn">
-								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
-								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "orgCode" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="orgCode"><a href="#">${message("csh.walletRecord.orgCode")}</a></li>
-								        </ul>
-								      </div>
-								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
-							    </div>
-						  </div>
+				
 					</div>
 				</div>
 				
@@ -98,6 +92,9 @@
 													<th>
 														${message("csh.walletRecord.remark")}
 													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="createDate">${message("csh.common.createDate")}</a>
+													</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -113,6 +110,11 @@
 													<td>
 														${walletRecord.remark}
 													</td>
+													<td>
+														[#if walletRecord.createDate??]
+														<span title="${walletRecord.createDate?string("yyyy-MM-dd HH:mm:ss")}">${walletRecord.createDate}</span>
+														[/#if]	
+												</td>
 												</tr>
 												[/#list]
 											</tbody>
@@ -135,5 +137,6 @@
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 </body>
 </html>

@@ -55,6 +55,10 @@
 												</li>
 										    </ul>
 									  </li>
+									  <li class="dateClass pull-right">
+											${message("csh.operate.log.date")}: <input type="text" id="beginDate" name="beginDate" class="text Wdate" value="${(beginDate?string('yyyy-MM-dd'))!}" onfocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+											~~ <input type="text"  id="endDate" name="endDate" class="text Wdate" value="${(endDate?string('yyyy-MM-dd'))!}" onfocus="WdatePicker({minDate: '#F{$dp.$D(\'beginDate\')}'});" />
+										</li>
 									</ul>
 						  </div>
 						  <div class="col-xs-3 col-md-3 col-lg-3">
@@ -109,21 +113,14 @@
 													<th>
 														<a href="javascript:;" class="sort" name="price">${message("csh.carServiceRecord.price")}</a>
 													</th>
-													<th>
-														${message("csh.carServiceRecord.maintainReservation")}
-													</th>
-													<th>
-														${message("csh.carServiceRecord.repareReservation")}
-													</th>
+												
 													<th>
 														<a href="javascript:;" class="sort" name="tenantName">${message("csh.carServiceRecord.tenantName")}</a>
 													</th>
 													<th>
 														<a href="javascript:;" class="sort" name="clearingDate">${message("csh.carServiceRecord.clearingDate")}</a>
 													</th>
-													<th>
-														<span>${message("csh.common.handle")}</span>
-													</th>
+												
 												</tr>
 											</thead>
 											<tbody>
@@ -165,12 +162,7 @@
 													<td>
 														${carServiceRecord.price}
 													</td>
-													<td>
-														${carServiceRecord.maintainReservation}
-													</td>
-													<td>
-														${carServiceRecord.repareReservation}
-													</td>
+										
 													<td>
 														${carServiceRecord.tenantName}
 													</td>
@@ -181,9 +173,7 @@
 															-
 														[/#if]
 													</td>
-													<td>
-														<a href="details.jhtml?id=${carServiceRecord.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>
-													</td>
+												
 												</tr>
 											</tbody>
 											[/#list]
@@ -206,5 +196,6 @@
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 </body>
 </html>

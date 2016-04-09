@@ -49,22 +49,14 @@ $().ready(function() {
 	$inputForm.validate({
 		rules: {
 			name:{
-				required: true,
-				remote: {
-					url: "checkName.jhtml",
-					cache: false
-				}
+				required: true
 			},
 			authorities: "required",
 			description:{
 				maxlength:200
 			}
-		},
-		messages: {
-			name: {
-				remote: "${message("role.name.validate.exist")}"
-			}
 		}
+	
 	});
 	
 });
@@ -134,6 +126,63 @@ $().ready(function() {
 											</label>
 											<label>
 												<input type="checkbox" name="authorities" value="admin:account" /><span>${message("csh.account.settingGroup")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:apply" /><span>${message("csh.main.apply")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:area" /><span>${message("csh.main.area")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:tenantAccount" /><span>${message("csh.main.tenantAccount")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:tenantInfo" /><span>${message("csh.main.tenantInfo")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:deviceType" /><span>${message("csh.main.deviceType")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:deviceInfo" /><span>${message("csh.main.deviceInfo")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:advertisement" /><span>${message("csh.main.advertisement")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:distributor" /><span>${message("csh.main.distributor")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:vehicleBrand" /><span>${message("csh.main.vehicleBrand")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:vehicleLine" /><span>${message("csh.main.vehicleLine")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:vehicleBrandDetail" /><span>${message("csh.main.vehicleBrandDetail")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:serviceCategory" /><span>${message("csh.main.serviceCategory")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:feedBack" /><span>${message("csh.main.feedBack")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:vehicle" /><span>${message("csh.main.vehicle")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:endUser" /><span>${message("csh.main.endUser")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:clearingRecord" /><span>${message("csh.main.clearingRecord")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:carServiceRecord" /><span>${message("csh.main.carServiceRecord")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:walletRecord" /><span>${message("csh.main.walletRecord")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:deviceProvide4distributor" /><span>${message("csh.main.deviceInfo.list4distributor")}</span>
 											</label>
 										</span>
 									</td>

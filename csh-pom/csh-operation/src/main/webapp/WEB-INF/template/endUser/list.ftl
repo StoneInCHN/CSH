@@ -131,7 +131,7 @@
 														[/#if]
 													</td>
 													<td>
-														<a href="details.jhtml?id=${endUser.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														<a href="details.jhtml?id=${endUser.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>
 													</td>
 												</tr>
 											</tbody>

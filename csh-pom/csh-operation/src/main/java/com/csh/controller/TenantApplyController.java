@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Message;
 import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.Distributor;
 import com.csh.entity.TenantApply;
 import com.csh.entity.VersionConfig;
 import com.csh.entity.commonenum.CommonEnum.ApplyStatus;
@@ -21,6 +22,7 @@ import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AreaService;
+import com.csh.service.DistributorService;
 import com.csh.service.FileService;
 import com.csh.service.TenantApplyService;
 import com.csh.service.TenantInfoService;
@@ -47,6 +49,8 @@ public class TenantApplyController extends BaseController {
   @Resource(name = "versionConfigServiceImpl")
   private VersionConfigService versionConfigService;
   
+  @Resource(name = "distributorServiceImpl")
+  private DistributorService distributorService;
 
   @RequestMapping(value = "/submit", method = RequestMethod.POST)
   public String submit(TenantApply tenantApply, Long areaId, ModelMap map) {
@@ -118,13 +122,14 @@ public class TenantApplyController extends BaseController {
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update(TenantApply tenantApply) {
+  public @ResponseBody Message update(TenantApply tenantApply,Long distributorId) {
     TenantApply applyTemp = tenantApplyService.find(tenantApply.getId());
     applyTemp.setApplyStatus(tenantApply.getApplyStatus());
     applyTemp.setNotes(tenantApply.getNotes());
     applyTemp.setVersionConfig(tenantApply.getVersionConfig());
     if (ApplyStatus.AUDIT_PASSED.equals(tenantApply.getApplyStatus())) {
-      tenantApplyService.auditPassed(applyTemp);
+     Distributor distributor =  distributorService.find(distributorId);
+      tenantApplyService.auditPassed(applyTemp ,distributor);
     } else {
       tenantApplyService.update(applyTemp);
     }
@@ -140,4 +145,12 @@ public class TenantApplyController extends BaseController {
     model.addAttribute("apply", tenantApplyService.find(id));
     return "/apply/details";
   }
+  
+  @RequestMapping(value = "/selectDistributor", method = RequestMethod.GET)
+  public String selectDistributor(ModelMap modelMap, Pageable pageable) {
+    pageable.setPageSize(5);;
+    modelMap.addAttribute("page", distributorService.findPage(pageable));
+    return "/apply/selectDistributor";
+  }
+  
 }

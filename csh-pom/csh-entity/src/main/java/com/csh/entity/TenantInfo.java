@@ -137,6 +137,11 @@ public class TenantInfo extends BaseEntity {
    * 是否已开管理员账号
    */
   private Boolean isHaveAccount;
+  
+  /**
+   * 所属分销商
+   */
+  private Distributor distributor;
 
   @OneToMany(mappedBy = "tenantInfo")
   public Set<CarService> getCarServices() {
@@ -350,4 +355,15 @@ public class TenantInfo extends BaseEntity {
     this.isHaveAccount = isHaveAccount;
   }
 
+  @ManyToOne
+  public Distributor getDistributor() {
+    return distributor;
+  }
+
+  public void setDistributor(Distributor distributor) {
+    this.distributor = distributor;
+  }
+
+  
+  
 }

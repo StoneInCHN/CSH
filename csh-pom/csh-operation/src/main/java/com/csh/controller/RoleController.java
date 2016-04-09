@@ -45,9 +45,6 @@ public class RoleController extends BaseController {
    */
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public String save(Role role) {
-    if (!isValid(role)) {
-      return ERROR_VIEW;
-    }
     role.setIsSystem(false);
     role.setSystemType(SystemType.OPERATION);
     roleService.save(role);
@@ -68,9 +65,6 @@ public class RoleController extends BaseController {
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
   public String update(Role role) {
-    if (!isValid(role)) {
-      return ERROR_VIEW;
-    }
     Role pRole = roleService.find(role.getId());
     if (pRole == null || pRole.getIsSystem()) {
       return ERROR_VIEW;

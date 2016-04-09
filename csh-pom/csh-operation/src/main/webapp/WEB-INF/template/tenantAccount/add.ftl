@@ -38,7 +38,7 @@ $().ready(function() {
 			}
 		},
 		messages: {
-			username: {
+			userName: {
 				remote: "${message("username.validate.exist")}"
 			}
 		}

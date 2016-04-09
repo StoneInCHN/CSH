@@ -121,9 +121,11 @@
 													<th>
 														<a href="javascript:;" class="sort" name="accountStatus">${message("csh.tenantInfo.accountStatus")}</a>
 													</th>
+													<!--
 													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
+													-->
 												</tr>
 											</thead>
 											<tbody>

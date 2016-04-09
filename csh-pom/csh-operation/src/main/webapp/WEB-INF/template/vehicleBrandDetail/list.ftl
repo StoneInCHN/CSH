@@ -151,10 +151,14 @@
 														${vehicleBrandDetail.disp}
 													</td>
 													<td>
-														${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canGetmileage?string('yes','no'))} 
+														[#if vehicleBrandDetail.canGetmileage??]
+															${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canGetmileage?string('yes','no'))} 
+														[/#if]
 													</td>
 													<td>
-														${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canGetoil?string('yes','no'))} 
+														[#if vehicleBrandDetail.canGetoil??]
+															${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canGetoil?string('yes','no'))} 
+														[/#if]
 													</td>
 													<td>
 														${vehicleBrandDetail.maxbv}
@@ -166,7 +170,9 @@
 														${vehicleBrandDetail.name}
 													</td>
 													<td>
-														${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canOBD?string('yes','no'))} 
+														[#if vehicleBrandDetail.canGetmileage??]
+															${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canOBD?string('yes','no'))} 
+														[/#if]
 													</td>
 													<td>
 														${vehicleBrandDetail.oilPerHundred}

@@ -1,5 +1,9 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -8,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.csh.controller.base.BaseController;
+import com.csh.entity.commonenum.CommonEnum.Status;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.WalletRecordService;
 
@@ -23,7 +30,20 @@ public class WalletRecordController extends BaseController{
    * 列表
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
-  public String list(Pageable pageable, ModelMap model) {
+  public String list(Pageable pageable, ModelMap model,Date beginDate, Date endDate) {
+    
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter beginDateFilter = new Filter();
+    beginDateFilter.setProperty("createDate");
+    beginDateFilter.setValue(beginDate);
+    beginDateFilter.setOperator(Operator.ge);
+    filters.add(beginDateFilter);
+    Filter endDateFilter = new Filter();
+    endDateFilter.setProperty("createDate");
+    endDateFilter.setValue(endDateFilter);
+    endDateFilter.setOperator(Operator.le);
+    filters.add(endDateFilter);
+   // pageable.setFilters(filters);
     model.addAttribute("page", walletRecordService.findPage(pageable));
     return "/walletRecord/list";
   }

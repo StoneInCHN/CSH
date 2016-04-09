@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csh.dao.TenantApplyDao;
 import com.csh.dao.TenantInfoDao;
 import com.csh.dao.VersionConfigDao;
+import com.csh.entity.Distributor;
 import com.csh.entity.TenantApply;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.VersionConfig;
@@ -42,7 +43,7 @@ public class TenantApplyServiceImpl extends BaseServiceImpl<TenantApply, Long> i
   
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public void auditPassed(TenantApply tenantApply) {
+  public void auditPassed(TenantApply tenantApply ,Distributor distributor) {
     tenantApplyDao.merge(tenantApply);
     TenantInfo tenantInfo = new TenantInfo();
     tenantInfo.setAddress(tenantApply.getAddress());
@@ -59,6 +60,7 @@ public class TenantApplyServiceImpl extends BaseServiceImpl<TenantApply, Long> i
     tenantInfo.setContactPhone(tenantApply.getContactPhone());
     tenantInfo.setTenantName(tenantApply.getTenantName());
     tenantInfo.setEmail(tenantApply.getEmail());
+    tenantInfo.setDistributor(distributor);
     VersionConfig versionConfig = versionConfigDao.find(tenantApply.getVersionConfig());
     if (versionConfig!=null) {
       tenantInfo.setVersionConfig(versionConfig);

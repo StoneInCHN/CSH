@@ -107,7 +107,7 @@
 					[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
-		[#list ["admin:deviceType", "admin:deviceInfo"] as permission]
+		[#list ["admin:deviceType", "admin:deviceInfo" ,"admin:deviceProvide4distributor"] as permission]
 					[@shiro.hasPermission name = permission]
 						<li class="has_sub" >
 							<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.device")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
@@ -120,6 +120,11 @@
 							 	[@shiro.hasPermission name="admin:deviceInfo"]
 								<li>
 									<a href="../deviceInfo/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.deviceInfo")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:deviceProvide4distributor"]
+								<li>
+									<a href="../deviceInfo/list4distributor.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.deviceInfo.list4distributor")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
 				            </ul>
@@ -142,7 +147,7 @@
 					[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
-		[#list ["admin:vehicleBrand" ,"admin:vehicleLine"] as permission]
+		[#list ["admin:vehicleBrand" ,"admin:vehicleLine","admin:vehicleBrandDetail"] as permission]
 			[@shiro.hasPermission name = permission]
 				<li class="has_sub" >
 					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.vehicleBrand")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
