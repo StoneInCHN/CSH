@@ -1,12 +1,13 @@
 <script src="${base}/resources/js/common.js"></script>
-<script src="${base}/resources/modules/messageInfo.js"></script>
+<script src="${base}/resources/modules/smsMessageInfo.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 
 <div>
 	  <fieldset>
 	    <legend>${message("csh.vehicle.search")}</legend>
-	    <form id="messageInfo-search-form" class="search-form">
+	    <form id="smsMessageInfo-search-form" class="search-form">
 	    <input type="hidden" name="totalRecord" id="totalRecord"/>
+	    <input type="hidden" name="sendType" value=${sendType}"/>
 	    	<div class="search-item">
 			    <label> ${message("csh.vehicle.plate")}:</label>
 			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
@@ -45,17 +46,17 @@
 	    </div>
 	  </fieldset>
 </div>
-<table id="messageInfo-table-list"></table>
-<div id="messageInfo_manager_tool">
+<table id="smsMessageInfo-table-list"></table>
+<div id="smsMessageInfo_manager_tool">
 	<div class="tool-button">
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="messageInfo_manager_tool.add();">添加</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="messageInfo_manager_tool.details();">查看详情</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="messageInfo_manager_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="smsMessageInfo_manager_tool.add();">添加</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="smsMessageInfo_manager_tool.details();">查看详情</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="smsMessageInfo_manager_tool.remove();">删除</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>
-<div id="addMessageInfo"></div>
-<div id="messageInfoDetail"></div>
+<div id="addSmsMessageInfo"></div>
+<div id="smsMessageInfoDetail"></div>
 
 
 

@@ -17,6 +17,7 @@ import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
+import com.csh.entity.commonenum.CommonEnum.SendType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -43,6 +44,7 @@ public class MessageInfo extends BaseEntity {
   /** 消息内容 */
   private String messageContent;
 
+  private SendType sendType;
   /** 消息、会员对应关系实体 */
   private Set<MsgEndUser> msgUser = new HashSet<MsgEndUser>();
 
@@ -94,6 +96,18 @@ public class MessageInfo extends BaseEntity {
 
   public void setTenantID(Long tenantID) {
     this.tenantID = tenantID;
+  }
+
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @JsonProperty
+  public SendType getSendType ()
+  {
+    return sendType;
+  }
+
+  public void setSendType (SendType sendType)
+  {
+    this.sendType = sendType;
   }
 
 }

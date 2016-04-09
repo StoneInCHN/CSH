@@ -5,6 +5,11 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.JavaType;
 
 public class ToolsUtils implements Serializable {
 
@@ -100,5 +105,20 @@ public class ToolsUtils implements Serializable {
     }
     sb.append("\n}");
     return sb.toString();
+  }
+  
+  public static Map<String, Object> convertStrToJson(String str) {
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      JavaType javaType =
+          mapper.getTypeFactory()
+              .constructParametricType(HashMap.class, String.class, Object.class);
+      Map<String, Object> map = mapper.readValue(str, javaType);
+      return map;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+
   }
 }

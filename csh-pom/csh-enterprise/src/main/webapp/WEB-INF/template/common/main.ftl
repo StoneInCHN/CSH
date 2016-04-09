@@ -154,10 +154,10 @@
     	</ul>
     	<ul title="${message("csh.informationManage.config")}" id="informationManage">
     		[@shiro.hasPermission name="notificationPush"]
-    		<li><a href="#" data-url="${base}/console/messageInfo/messageInfo.jhtml">${message("csh.informationManage.notificationPush")}</a></li>
+    		<li><a href="#" data-url="${base}/console/messageInfo/notificationPush.jhtml">${message("csh.informationManage.notificationPush")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="shortMessagePush"]
-    		<li><a href="#" data-url="${base}/console/messageInfo/messageInfo.jhtml">${message("csh.informationManage.shortMessagePush")}</a></li>
+    		<li><a href="#" data-url="${base}/console/messageInfo/shortMessagePush.jhtml">${message("csh.informationManage.shortMessagePush")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.statisticsReport.report")}" id="statisticsReport">

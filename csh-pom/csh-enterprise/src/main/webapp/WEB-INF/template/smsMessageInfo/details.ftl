@@ -34,7 +34,7 @@
     	<tr>
     		<th >发送用户:</th>
     		<td colspan="5">
-    			<select name="from"  disabled="disabled" id="endUserMultiselect" class="js-multiselect form-control" size="8" multiple="multiple">
+    			<select name="from"  disabled="disabled" id="endUserSmsMultiselect" class="js-multiselect form-control" size="8" multiple="multiple">
     				[#list messageInfo.msgUser as user]
 	    				<option>${user.endUser.userName} ${user.endUser.mobileNum}</option>
 	    			[/#list]

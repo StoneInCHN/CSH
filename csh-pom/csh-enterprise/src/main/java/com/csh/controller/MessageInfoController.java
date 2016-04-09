@@ -1,6 +1,8 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -25,8 +27,9 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.MessageInfo;
-import com.csh.entity.MsgEndUser;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.entity.commonenum.CommonEnum.SendType;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.MessageInfoService;
@@ -44,15 +47,25 @@ public class MessageInfoController extends BaseController
 
   @Resource (name = "messageInfoServiceImpl")
   private MessageInfoService messageInfoService;
-  
-  @RequestMapping (value = "/messageInfo", method = RequestMethod.GET)
-  public String list (ModelMap model)
+
+  @RequestMapping (value = "/shortMessagePush", method = RequestMethod.GET)
+  public String shortMessagePush (ModelMap model)
   {
-    return "messageInfo/messageInfo";
+    model.put ("sendType", SendType.SMS);
+    return "smsMessageInfo/messageInfo";
   }
+
+  @RequestMapping (value = "/notificationPush", method = RequestMethod.GET)
+  public String notificationPush (ModelMap model)
+  {
+    model.put ("sendType", SendType.PUSH);
+    return "pushMessageInfo/messageInfo";
+  }
+
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<MessageInfo> list (Pageable pageable, ModelMap model,
-      Date beginDate, Date endDate, String deviceNoSearch,String deviceTpyeSearch,BindStatus bindStatusSearch)
+  public @ResponseBody Page<MessageInfo> list (Pageable pageable,
+      ModelMap model, Date beginDate, Date endDate, String deviceNoSearch,
+      String deviceTpyeSearch, BindStatus bindStatusSearch,SendType sendType)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -66,8 +79,9 @@ public class MessageInfoController extends BaseController
     Query nameQuery = null;
     TermRangeQuery rangeQuery = null;
     TermQuery statusQuery = null;
-    TermQuery typeqQuery =null;
-   
+    TermQuery typeqQuery = null;
+    TermQuery sendTypeQuery = null;
+    
     Filter filter = null;
     if (beginDate != null)
     {
@@ -80,50 +94,68 @@ public class MessageInfoController extends BaseController
     if (deviceNoSearch != null)
     {
       String text = QueryParser.escape (deviceNoSearch);
-        try
+      try
+      {
+        nameParser.setAllowLeadingWildcard (true);
+        nameQuery = nameParser.parse ("*" + text + "*");
+        query.add (nameQuery, Occur.MUST);
+
+        if (LogUtil.isDebugEnabled (MessageInfoController.class))
         {
-          nameParser.setAllowLeadingWildcard (true);
-          nameQuery = nameParser.parse ("*"+text+"*");
-          query.add (nameQuery, Occur.MUST);
-          
-          if (LogUtil.isDebugEnabled (MessageInfoController.class))
-          {
-            LogUtil.debug (MessageInfoController.class, "search", "Search device NO: "
-                + deviceNoSearch );
-          }
+          LogUtil.debug (MessageInfoController.class, "search",
+              "Search device NO: " + deviceNoSearch);
         }
-        catch (ParseException e)
-        {
-          e.printStackTrace();
-        }
+      }
+      catch (ParseException e)
+      {
+        e.printStackTrace ();
+      }
     }
     if (bindStatusSearch != null)
     {
-      statusQuery = new TermQuery (new Term ("bindStatus",bindStatusSearch.toString ()));
-      query.add (statusQuery,Occur.MUST);
+      statusQuery = new TermQuery (new Term ("bindStatus",
+          bindStatusSearch.toString ()));
+      query.add (statusQuery, Occur.MUST);
+    }
+    if (sendType != null)
+    {
+      sendTypeQuery = new TermQuery (new Term ("sendType",
+          sendType.toString ()));
+      query.add (sendTypeQuery, Occur.MUST);
     }
     if (deviceTpyeSearch != null)
     {
-      typeqQuery = new TermQuery (new Term ("type.name",deviceTpyeSearch.toString ()));
-      query.add (typeqQuery,Occur.MUST);
+      typeqQuery = new TermQuery (new Term ("type.name",
+          deviceTpyeSearch.toString ()));
+      query.add (typeqQuery, Occur.MUST);
     }
     if (startDateStr != null || endDateStr != null)
     {
-      rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr, true, true);
-      query.add (rangeQuery,Occur.MUST);
-      
+      rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr,
+          true, true);
+      query.add (rangeQuery, Occur.MUST);
+
       if (LogUtil.isDebugEnabled (MessageInfoController.class))
       {
-        LogUtil.debug (MessageInfoController.class, "search", "Search start date: "+startDateStr
-            +" end date: "+endDateStr);
+        LogUtil.debug (MessageInfoController.class, "search",
+            "Search start date: " + startDateStr + " end date: " + endDateStr);
       }
     }
-    if (nameQuery != null || rangeQuery != null || typeqQuery != null || statusQuery != null)
+    if (nameQuery != null || rangeQuery != null || typeqQuery != null
+        || statusQuery != null)
     {
-      return messageInfoService.search (query, pageable, analyzer,filter,true);
-    }
+      return messageInfoService
+          .search (query, pageable, analyzer, filter, true);
+    }else {
+      List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter>();
+      com.csh.framework.filter.Filter sendTypeFilter = new com.csh.framework.filter.Filter("sendType",Operator.eq,sendType);
+      filters.add (sendTypeFilter);
+      pageable.setFilters (filters);
+      
       return messageInfoService.findPage (pageable, true);
+    }
     
+
   }
 
   /**
@@ -138,35 +170,41 @@ public class MessageInfoController extends BaseController
   {
     MessageInfo messageInfo = messageInfoService.find (id);
     model.put ("messageInfo", messageInfo);
-    return "messageInfo/edit";
+    if (messageInfo.getSendType () == SendType.SMS)
+    {
+      return "smsMessageInfo/edit";
+    }else {
+      return "pushMessageInfo/edit";
+    }
+    
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (MessageInfo messageInfo,Long[] ids)
+  public @ResponseBody Message add (MessageInfo messageInfo, Long[] ids)
   {
-    
-    messageInfoService.saveMessage (messageInfo,ids);
+
+    messageInfoService.saveMessage (messageInfo, ids);
     return SUCCESS_MESSAGE;
   }
-  
+
   @RequestMapping (value = "/add", method = RequestMethod.GET)
-  public String add ()
+  public String add (ModelMap modelMap,SendType sendType)
   {
-    return "messageInfo/add";
+    modelMap.put ("sendType", sendType);
+    if (sendType == SendType.SMS)
+    {
+      return "smsMessageInfo/add";
+    }else {
+      return "pushMessageInfo/add";
+    }
   }
-  
-  @RequestMapping (value = "/notificationPush", method = RequestMethod.GET)
-  public String notificationPush ()
-  {
-    return "messageInfo/notificationPush";
-  }
+
   @RequestMapping (value = "/update", method = RequestMethod.POST)
   public @ResponseBody Message update (MessageInfo messageInfo)
-  { 
+  {
     messageInfoService.update (messageInfo);
     return SUCCESS_MESSAGE;
   }
- 
 
   /**
    * 删除
@@ -182,6 +220,7 @@ public class MessageInfoController extends BaseController
     }
     return SUCCESS_MESSAGE;
   }
+
   /**
    * 获取数据进入详情页面
    * 
@@ -189,10 +228,16 @@ public class MessageInfoController extends BaseController
    * @param id
    * @return
    */
-  @RequestMapping(value = "/details", method = RequestMethod.GET)
-  public String details(ModelMap model, Long id) {
-    MessageInfo messageInfo = messageInfoService.find(id);
-    model.addAttribute("messageInfo", messageInfo);
-    return "messageInfo/details";
+  @RequestMapping (value = "/details", method = RequestMethod.GET)
+  public String details (ModelMap model, Long id)
+  {
+    MessageInfo messageInfo = messageInfoService.find (id);
+    model.addAttribute ("messageInfo", messageInfo);
+    if (messageInfo.getSendType () == SendType.SMS)
+    {
+      return "smsMessageInfo/details";
+    }else {
+      return "pushMessageInfo/details";
+    }
   }
 }

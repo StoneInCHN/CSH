@@ -784,6 +784,14 @@ public class CommonEnum {
 
   }
 
+  public enum SendType{
+    /** 推送消息*/
+    PUSH,
+    /**
+     * 短信消息
+     */
+    SMS
+  }
   public enum BalanceType {
     /** 收入 */
     INCOME,

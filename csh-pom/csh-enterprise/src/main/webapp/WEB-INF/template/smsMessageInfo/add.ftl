@@ -1,4 +1,5 @@
-<form id="addMessageInfo_form" method="post" >
+<form id="addSmsMessageInfo_form" method="post" >
+	<input type="hidden" name="sendType" value="${sendType}">
 	  <table class="table table-striped"  border="0">
 	    <tr>
     		<th>${message("csh.messageInfo.title")}:</th>
@@ -25,12 +26,12 @@
     	<tr>
     		<th >筛选用户:</th>
     		<td>
-    			 <input  class="easyui-textbox" id= "endUserFilter" />
+    			 <input  class="easyui-textbox" id= "endUserSmsFilter" />
     		</td>
     	</tr>
     	<tr>
     		<td colspan="2">
-    			<select name="from" id="endUserMultiselect" class="js-multiselect form-control" size="8" multiple="multiple">
+    			<select name="from" id="endUserSmsMultiselect" class="js-multiselect form-control" size="8" multiple="multiple">
 				</select>
     		</td>
     		<td>
@@ -40,7 +41,7 @@
 				<button type="button" id="js_left_All_1" class="btn btn-block btn-primary"><i class="glyphicon glyphicon-backward"></i></button>
     		</td>
     		<td colspan="2">
-    			<select id="endUserMultiselect_to" class="form-control" size="8" multiple="multiple"></select>
+    			<select id="endUserSmsMultiselect_to" class="form-control" size="8" multiple="multiple"></select>
     		</td>
     	</tr>
     	<tr>

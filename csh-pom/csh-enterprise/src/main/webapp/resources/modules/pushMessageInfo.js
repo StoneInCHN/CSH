@@ -1,10 +1,10 @@
-var messageInfo_manager_tool = {
+var pushMessageInfo_manager_tool = {
 		add:function(){
-			$('#addMessageInfo').dialog({
+			$('#addPushMessageInfo').dialog({
 			    title: message("csh.endUser.add"),    
 			    width: 700,    
 			    height: 550,
-			    href:'../messageInfo/add.jhtml',
+			    href:'../messageInfo/add.jhtml?sendType=PUSH',
 			    method:"get",
 			    iconCls:'icon-mini-add',
 			    cache: false, 
@@ -12,19 +12,19 @@ var messageInfo_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#addMessageInfo_form').form('validate');
-						var options = $("#endUserMultiselect_to").children();
+						var validate = $('#addPushMessageInfo_form').form('validate');
+						var options = $("#endUserPushMultiselect_to").children();
 						var ids=[];
 						debugger;
 						for(var i=0;i<options.length;i++){
 							ids.push($(options[i]).val());
 						}
-						$("#addMessageInfo_form").append("<input type='hidden' name='ids' value="+ids+"></input>")
+						$("#addPushMessageInfo_form").append("<input type='hidden' name='ids' value="+ids+"></input>")
 						if(validate){
 								$.ajax({
 									url:"../messageInfo/add.jhtml",
 									type:"post",
-									data:$("#addMessageInfo_form").serialize(),
+									data:$("#addPushMessageInfo_form").serialize(),
 									beforeSend:function(){
 										$.messager.progress({
 											text:message("csh.common.saving")
@@ -34,9 +34,9 @@ var messageInfo_manager_tool = {
 										$.messager.progress('close');
 										if(response == "success"){
 											showSuccessMsg(result.content);
-											$('#addMessageInfo').dialog("close")
-											$("#addMessageInfo_form").form("reset");
-											$("#messageInfo-table-list").datagrid('reload');
+											$('#addPushMessageInfo').dialog("close")
+											$("#addPushMessageInfo_form").form("reset");
+											$("#pushMessageInfo-table-list").datagrid('reload');
 										}else{
 											alertErrorMsg();
 										}
@@ -48,23 +48,23 @@ var messageInfo_manager_tool = {
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#addMessageInfo').dialog("close");
-						 $("#addMessageInfo_form").form("reset");
+						 $('#addPushMessageInfo').dialog("close");
+						 $("#addPushMessageInfo_form").form("reset");
 					}
 			    }],
 			    onLoad:function(){
-			    	$('#endUserFilter').textbox({
+			    	$('#endUserPushFilter').textbox({
 			    		onChange:function(){
 				    		$.ajax({
 								url:"../vehicle/findVehicleUserInfoUnderTenant.jhtml",
 								type:"post",
-								data:{endUserFilter:$("#endUserFilter").val()},
+								data:{endUserFilter:$("#endUserPushFilter").val()},
 								beforeSend:function(){
 								},
 								success:function(result,response,status){
-									$('#endUserMultiselect').empty();
+									$('#endUserPushMultiselect').empty();
 									for(var i=0; i< result.length;i++){
-										$('#endUserMultiselect').append("<option value='"+result[i].endUser.id+"'>"+result[i].plate+"("+result[i].endUser.userName+":"+result[i].endUser.mobileNum+")</option>")
+										$('#endUserPushMultiselect').append("<option value='"+result[i].endUser.id+"'>"+result[i].plate+"("+result[i].endUser.userName+":"+result[i].endUser.mobileNum+")</option>")
 									}
 								}
 							});
@@ -73,71 +73,74 @@ var messageInfo_manager_tool = {
 			    	$.ajax({
 						url:"../vehicle/findVehicleUserInfoUnderTenant.jhtml",
 						type:"post",
-						data:{endUserFilter:$("#endUserFilter").val()},
+						data:{endUserFilter:$("#endUserPushFilter").val()},
 						beforeSend:function(){
 						},
 						success:function(result,response,status){
-							$('#endUserMultiselect').empty();
+							$('#endUserPushMultiselect').empty();
 							for(var i=0; i< result.length;i++){
-								$('#endUserMultiselect').append("<option value='"+result[i].endUser.id+"'>"+result[i].plate+"("+result[i].endUser.userName+":"+result[i].endUser.mobileNum+")</option>")
+								$('#endUserPushMultiselect').append("<option value='"+result[i].endUser.id+"'>"+result[i].plate+"("+result[i].endUser.userName+":"+result[i].endUser.mobileNum+")</option>")
 							}
 						}
 					});
-			    	$('#endUserMultiselect').multiselect({
-			    		right:'#endUserMultiselect_to',
+			    	$('#endUserPushMultiselect').multiselect({
+			    		right:'#endUserPushMultiselect_to',
 			    		rightAll:'#js_right_All_1',
 			    		rightSelected:'#js_right_Selected_1',
 			    		leftSelected:'#js_left_Selected_1',
 			    		leftAll:'#js_left_All_1'
 			    	});
-			    	$('#addMessageInfo_form').show();
+			    	$('#addPushMessageInfo_form').show();
 			    },
 			    onClose:function(){
-			    	$('#addMessageInfo').empty();
+			    	$('#addPushMessageInfo').empty();
 			    }
 			});  
 		},
 		details:function(){
-			var _details_row = $('#messageInfo-table-list').datagrid('getSelected');
+			var _details_row = $('#pushMessageInfo-table-list').datagrid('getSelected');
 			if( _details_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
 			
-			$('#messageInfoDetail').dialog({    
+			$('#pushMessageInfoDetail').dialog({    
 			    title: message("csh.common.detail"),    
 			    width: 600,    
 			    height: 450, 
 			    cache: false,
 			    modal: true,
-			    href:'../messageInfo/details.jhtml?id='+_details_row.id,
+			    href:'../messageInfo/details.jhtml?id='+_details_row.id+'&sendType="PUSH"',
 			    buttons:[{
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#messageInfoDetail').dialog("close");
+						 $('#pushMessageInfoDetail').dialog("close");
 					}
 			    }],
 			    onClose:function(){
-			    	$('#messageInfoDetail').empty();
+			    	$('#pushMessageInfoDetail').empty();
 			    }
 			});   
 		
 		},
 		remove:function(){
-			listRemove('maintainReservation-table-list','../maintainReservation/delete.jhtml');
+			listRemove('pushMessageInfo-table-list','../pushMessageInfo/delete.jhtml');
 		}
 };
 
 $(function(){
-	$("#messageInfo-table-list").datagrid({
+	$("#pushMessageInfo-table-list").datagrid({
 		title:message("csh.messageInfo.list"),
 		fitColumns:true,
-		toolbar:"#messageInfo_manager_tool",
+		toolbar:"#pushMessageInfo_manager_tool",
 		url:'../messageInfo/list.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
+		queryParams: {
+			sendType: 'PUSH'
+		},
 		onDblClickRow : function (rowIndex, rowData){},
 		columns:[
 		   [
@@ -161,10 +164,10 @@ $(function(){
 		]
 	});
 	
-	$("#messageInfo-search-btn").click(function(){
-	  var _queryParams = $("#messageInfo-search-form").serializeJSON();
-	  $('#messageInfo-table-list').datagrid('options').queryParams = _queryParams;  
-	  $("#messageInfo-table-list").datagrid('reload');
+	$("#pushMessageInfo-search-btn").click(function(){
+	  var _queryParams = $("#pushMessageInfo-search-form").serializeJSON();
+	  $('#pushMessageInfo-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#pushMessageInfo-table-list").datagrid('reload');
 	});
 	
 })
