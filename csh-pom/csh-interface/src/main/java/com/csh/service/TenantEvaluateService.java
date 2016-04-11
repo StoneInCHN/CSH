@@ -12,6 +12,7 @@ public interface TenantEvaluateService extends BaseService<TenantEvaluate, Long>
    * @param endUser
    * @param tenantId
    * @param score
+   * @param recordId
    */
-  public void doRateForTenant(EndUser endUser, Long tenantId, Integer score);
+  public void doRateForTenant(EndUser endUser, Long tenantId, Integer score, Long recordId);
 }

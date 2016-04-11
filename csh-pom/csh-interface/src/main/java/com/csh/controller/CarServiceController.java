@@ -272,6 +272,11 @@ public class CarServiceController extends MobileBaseController {
         FieldFilterUtils.filterEntityMap(tenant_properties, carServiceRecord.getCarService()
             .getTenantInfo());
     map.put("tenantInfo", tenant_map);
+    if (carServiceRecord.getTenantEvaluate() != null) {
+      map.put("isRate", true);
+    } else {
+      map.put("isRate", false);
+    }
 
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());

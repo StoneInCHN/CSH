@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.dao.CarServiceRecordDao;
 import com.csh.dao.TenantEvaluateDao;
 import com.csh.dao.TenantInfoDao;
+import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
 import com.csh.entity.TenantEvaluate;
 import com.csh.entity.TenantInfo;
@@ -29,6 +31,9 @@ public class TenantEvaluateServiceImpl extends BaseServiceImpl<TenantEvaluate, L
   @Resource(name = "tenantInfoDaoImpl")
   private TenantInfoDao tenantInfoDao;
 
+  @Resource(name = "carServiceRecordDaoImpl")
+  private CarServiceRecordDao carServiceRecordDao;
+
   @Resource(name = "tenantEvaluateDaoImpl")
   public void setBaseDao(TenantEvaluateDao tenantEvaluateDao) {
     super.setBaseDao(tenantEvaluateDao);
@@ -36,8 +41,10 @@ public class TenantEvaluateServiceImpl extends BaseServiceImpl<TenantEvaluate, L
 
 
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public void doRateForTenant(EndUser endUser, Long tenantId, Integer score) {
+  public void doRateForTenant(EndUser endUser, Long tenantId, Integer score, Long recordId) {
     TenantEvaluate tenantEvaluate = new TenantEvaluate();
+    CarServiceRecord carServiceRecord = carServiceRecordDao.find(recordId);
+    tenantEvaluate.setCarServiceRecord(carServiceRecord);
     tenantEvaluate.setScore(score);
     tenantEvaluate.setEndUser(endUser);
     tenantEvaluate.setTenantId(tenantId);

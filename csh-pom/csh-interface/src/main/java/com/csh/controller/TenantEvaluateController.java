@@ -51,6 +51,7 @@ public class TenantEvaluateController extends MobileBaseController {
     String token = renantReq.getToken();
     Long tenantId = renantReq.getTenantId();
     Integer score = renantReq.getScore();
+    Long recordId = renantReq.getRecordId();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -60,7 +61,7 @@ public class TenantEvaluateController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
-    tenantEvaluateService.doRateForTenant(endUser, tenantId, score);
+    tenantEvaluateService.doRateForTenant(endUser, tenantId, score, recordId);
 
     String newtoken = TokenGenerator.generateToken(renantReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
