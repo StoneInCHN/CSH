@@ -13,6 +13,11 @@ public class TenantInfoRequest extends BaseRequest {
    * 用户对租户评分（1-5星）
    */
   private Integer score;
+
+  /**
+   * 评价对应的消费记录
+   */
+  private Long recordId;
   /**
    * 纬度
    */
@@ -28,6 +33,14 @@ public class TenantInfoRequest extends BaseRequest {
    */
   private Long serviceCategoryId;
 
+
+  public Long getRecordId() {
+    return recordId;
+  }
+
+  public void setRecordId(Long recordId) {
+    this.recordId = recordId;
+  }
 
   public Integer getScore() {
     return score;

@@ -3,6 +3,7 @@ package com.csh.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -45,6 +46,20 @@ public class TenantEvaluate extends BaseEntity {
    * 租户ID
    */
   private Long tenantId;
+
+  /**
+   * 评价的记录
+   */
+  private CarServiceRecord carServiceRecord;
+
+  @OneToOne
+  public CarServiceRecord getCarServiceRecord() {
+    return carServiceRecord;
+  }
+
+  public void setCarServiceRecord(CarServiceRecord carServiceRecord) {
+    this.carServiceRecord = carServiceRecord;
+  }
 
   @ManyToOne
   public EndUser getEndUser() {

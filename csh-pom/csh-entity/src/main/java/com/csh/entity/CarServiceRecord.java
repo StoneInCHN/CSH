@@ -103,6 +103,21 @@ public class CarServiceRecord extends BaseEntity {
    */
   private String recordNo;
 
+  /**
+   * 用户评价
+   */
+  private TenantEvaluate tenantEvaluate;
+
+
+  @OneToOne(mappedBy = "carServiceRecord")
+  public TenantEvaluate getTenantEvaluate() {
+    return tenantEvaluate;
+  }
+
+  public void setTenantEvaluate(TenantEvaluate tenantEvaluate) {
+    this.tenantEvaluate = tenantEvaluate;
+  }
+
   @Column(length = 200)
   public String getTenantPhoto() {
     return tenantPhoto;

@@ -1,5 +1,7 @@
 package com.csh.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -13,10 +15,13 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.ApkVersion;
 import com.csh.entity.EndUser;
-import com.csh.json.base.BaseResponse;
+import com.csh.json.base.ResponseOne;
 import com.csh.json.request.JpushRequest;
+import com.csh.service.ApkVersionService;
 import com.csh.service.EndUserService;
+import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
 
 
@@ -29,6 +34,9 @@ public class JpushController extends MobileBaseController {
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
 
+  @Resource(name = "apkVersionServiceImpl")
+  private ApkVersionService apkVersionService;
+
 
 
   /**
@@ -39,11 +47,12 @@ public class JpushController extends MobileBaseController {
    */
   @RequestMapping(value = "/setRegId", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse setRegId(@RequestBody JpushRequest req) {
+  public @ResponseBody ResponseOne<Map<String, Object>> setRegId(@RequestBody JpushRequest req) {
 
-    BaseResponse response = new BaseResponse();
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     Long userId = req.getUserId();
     String token = req.getToken();
+    Integer versionCode = req.getVersionCode();
     String jPushRegId = req.getRegId();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
@@ -62,6 +71,12 @@ public class JpushController extends MobileBaseController {
           "init User Jpush reg ID.UserName: %s, regId: %s,", endUser.getUserName(), jPushRegId);
     }
 
+    ApkVersion version = apkVersionService.getNewVersion(versionCode);
+    if (version != null) {
+      String[] properties = {"id", "versionName", "versionCode", "apkPath", "updateContent"};
+      Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, version);
+      response.setMsg(map);
+    }
     String newtoken = TokenGenerator.generateToken(req.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);

@@ -9,6 +9,33 @@ public class JpushRequest extends BaseRequest {
    */
   private String regId;
 
+  /**
+   * 版本名称
+   */
+  private String versionName;
+
+  /**
+   * 版本序列号
+   */
+  private Integer versionCode;
+
+
+  public String getVersionName() {
+    return versionName;
+  }
+
+  public void setVersionName(String versionName) {
+    this.versionName = versionName;
+  }
+
+  public Integer getVersionCode() {
+    return versionCode;
+  }
+
+  public void setVersionCode(Integer versionCode) {
+    this.versionCode = versionCode;
+  }
+
   public String getRegId() {
     return regId;
   }
