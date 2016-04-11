@@ -1,6 +1,9 @@
 package com.csh.service.impl; 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,12 +22,17 @@ import com.csh.dao.EndUserDao;
 import com.csh.dao.VehicleDao;
 import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
+import com.csh.entity.commonenum.CommonEnum.OilType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.json.response.VehicleDailyReport;
 import com.csh.service.TenantAccountService;
+import com.csh.service.VehicleOilService;
 import com.csh.service.VehicleService;
 import com.csh.utils.FieldFilterUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service("vehicleServiceImpl")
 public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements VehicleService {
@@ -35,6 +43,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
       EndUserDao endUserDao;
       @Resource(name = "tenantAccountServiceImpl")
       TenantAccountService tenantAccountService;
+      @Resource (name = "vehicleOilServiceImpl")
+      private VehicleOilService vehicleOilService;
       @Resource
       public void setBaseDao(VehicleDao vehicleDao) {
          super.setBaseDao(vehicleDao);
@@ -111,5 +121,46 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
         
         String[] propertys = {"endUser.id", "plate","endUser.userName","endUser.mobileNum"};
         return FieldFilterUtils.filterCollectionMap(propertys, vehicleList);
+      }
+
+      @Override
+      public VehicleDailyReport callVehicleDailyData (Date date, Long vehicleId)
+      {
+        Vehicle vehicle = vehicleDao.find (vehicleId);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put ("date", date);
+        params.put ("deviceId", vehicle.getDevice ().getId ());
+        VehicleDailyReport vehicleDailyReport = new VehicleDailyReport ();
+        try
+        {
+//          String response = ApiUtils.post (setting.getRtCarConditionUrl (), params);
+          
+          String response = "{\"msg\":{\"dailyMileage\":10.0,\"averageFuelConsumption\":10.0,\"fuelConsumption\":0.0,\"cost\":null,\"averageSpeed\":0.0,\"emergencybrakecount\":0,\"suddenturncount\":0,\"rapidlyspeedupcount\":0}}";
+          if (response != null)
+          {
+            OilType oilType = vehicle.getVehicleBrandDetail ().getOilType ();
+            String shortPlate = vehicle.getPlate ().substring (0,1);
+            
+            BigDecimal oilPrice = vehicleOilService.getOidPrice(oilType,shortPlate);
+            
+            ObjectMapper objectMapper = new ObjectMapper();
+           
+            JsonNode rootNode = objectMapper.readTree(response);
+            JsonNode msgNode = rootNode.path ("msg");
+            String msg = objectMapper.writeValueAsString(msgNode);
+            vehicleDailyReport = objectMapper.readValue (msg, VehicleDailyReport.class);
+            
+            BigDecimal dailMile = new BigDecimal(vehicleDailyReport.getDailyMileage ().toString ());
+            
+            vehicleDailyReport.setDeviceId (vehicle.getDevice ().getId ());
+            vehicleDailyReport.setReportDate (date);
+            vehicleDailyReport.setCost (oilPrice.multiply (dailMile).doubleValue ());
+          }
+        }
+        catch (Exception e)
+        {
+          e.printStackTrace();
+        }
+        return vehicleDailyReport;
       }
 }

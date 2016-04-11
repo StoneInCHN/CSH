@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,9 +31,12 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
+import com.csh.entity.IllegalRecord;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleBrandDetail;
+import com.csh.entity.VehicleOil;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
+import com.csh.entity.commonenum.CommonEnum.OilType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.response.RealTimeCarCondition;
@@ -40,10 +44,13 @@ import com.csh.json.response.VehicleDailyReport;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.VehicleBrandDetailService;
+import com.csh.service.VehicleOilService;
 import com.csh.service.VehicleService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
 import com.csh.utils.SettingUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 车辆管理
@@ -63,6 +70,8 @@ public class VehicleController extends BaseController
   private EndUserService endUserService;
   @Resource (name = "vehicleBrandDetailServiceImpl")
   private VehicleBrandDetailService vehicleBrandDetailService;
+  @Resource (name = "vehicleOilServiceImpl")
+  private VehicleOilService vehicleOilService;
   private Setting setting = SettingUtils.get();
   
   @RequestMapping (value = "/vehicle", method = RequestMethod.GET)
@@ -373,7 +382,16 @@ public class VehicleController extends BaseController
     params.put ("deviceId", deviceId);
     try
     {
-      ApiUtils.post (setting.getRtCarConditionUrl (), params);
+      String response = "{\"msg\":{\"mileAge\":100,\"engineRuntime\":12,\"averageOil\":10,\"speed\":60,\"lon\":104.0637,\"lat\":30.6338,\"azimuth\":null,\"acc\":1}}";
+//      String resopnse = ApiUtils.post (setting.getRtCarConditionUrl (), params);
+      ObjectMapper objectMapper = new ObjectMapper();
+     
+      JsonNode rootNode = objectMapper.readTree(response);
+      JsonNode msgNode = rootNode.path ("msg");
+      String msg = objectMapper.writeValueAsString(msgNode);
+      RealTimeCarCondition realTimeCarCondition = objectMapper.readValue (msg, RealTimeCarCondition.class);
+      
+      model.put ("realTimeCarCondition", realTimeCarCondition);
     }
     catch (Exception e)
     {
@@ -390,18 +408,15 @@ public class VehicleController extends BaseController
    * @return
    */
   @RequestMapping(value = "/vehicleDailyReport", method = RequestMethod.GET)
-  public String getVehicleDailyReport(ModelMap model,Date date,Long deviceId) {
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put ("date", date);
-    params.put ("deviceId", deviceId);
-    try
-    {
-      ApiUtils.post (setting.getRtCarConditionUrl (), params);
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
+  public String getVehicleDailyReport(ModelMap model,Long vehicleId) {
+   VehicleDailyReport report= vehicleService.callVehicleDailyData(new Date (),vehicleId);
+   model.put ("vehicleDailyReport", report);
     return "vehicle/vehicleDailyReport";
+  }
+  @RequestMapping(value = "/getVehicleDailyData", method = RequestMethod.POST)
+  public @ResponseBody VehicleDailyReport getVehicleDailyData(ModelMap model,Date date, Long vehicleId){
+    
+    return vehicleService.callVehicleDailyData(date,vehicleId);
+   
   }
 }

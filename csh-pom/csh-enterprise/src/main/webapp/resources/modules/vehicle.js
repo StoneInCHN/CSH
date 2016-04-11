@@ -229,7 +229,7 @@ var vehicle_manager_tool = {
 			    height: 350,
 			    iconCls:'icon-mini-add',
 			    cache: false,
-			    href:'../vehicle/realTimeCarCondition.jhtml?id='+_select_row.id,
+			    href:'../vehicle/realTimeCarCondition.jhtml?deviceId='+_select_row.id,
 			    buttons:[{
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
@@ -249,11 +249,20 @@ var vehicle_manager_tool = {
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
+			var params=new Object();
+				params.vehicleId=_select_row.id;
+				debugger;
+			
+			if($('#queryReportDate').length){
+				params.date = $('#queryReportDate').datebox('getValue');
+			}
 			$('#vehicleDailyReport').dialog({
 			    title: message("csh.vehicle.vehicleDailyReport"),    
 			    width: 600,    
 			    height: 350,
-			    href:'../vehicle/vehicleDailyReport.jhtml?id='+_select_row.id,
+			    href:'../vehicle/vehicleDailyReport.jhtml?vehicleId='+_select_row.id,
+			    method:"get",
+			    queryParams:params,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{
@@ -264,7 +273,42 @@ var vehicle_manager_tool = {
 						 $("#vehicleDailyReport_form").form("reset");
 					}
 			    }],
-			    onOpen:function(){
+			    onLoad:function(){
+			    	$('#reportVehicleId').val(_select_row.id);
+			    	$('#queryReportDate').datebox({
+			    	    onSelect: function(date){
+			    	    	$.ajax({
+								url:"../vehicle/getVehicleDailyData.jhtml",
+								type:"post",
+								data:{
+									vehicleId:$('#reportVehicleId').val(),
+									date:date
+								},
+								beforeSend:function(){
+									$.messager.progress({
+										text:message("csh.common.saving")
+									});
+								},
+								success:function(result,response,status){
+									$.messager.progress('close');
+									if(response == "success"){
+										$('reportDailyMileage').textbox('setValue',result.dailyMileage);
+										$('reportAverageFuelConsumption').textbox('setValue',result.averageFuelConsumption);
+										$('reportFuelConsumption').textbox('setValue',result.fuelConsumption);
+										$('reportCost').textbox('setValue',result.cost);
+										$('reportAverageSpeed').textbox('setValue',result.averageSpeed);
+										$('reportEmergencybrakecount').textbox('setValue',result.emergencybrakecount);
+										$('reportSuddenturncount').textbox('setValue',result.suddenturncount);
+										$('reportRapidlyspeedupcount').textbox('setValue',result.rapidlyspeedupcount);
+									}else{
+										alertErrorMsg();
+									}
+								}
+							});
+			    	    }
+			    	});
+
+
 			    	$('#vehicleDailyReport_form').show();
 			    },
 			});  

@@ -2,86 +2,33 @@ package com.csh.json.response;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-import com.csh.entity.base.BaseEntity;
-
-/**
- * 车辆日常报表数据
- * 
- * @author shijun
- *
- */
-public class VehicleDailyReport extends BaseEntity {
+public class VehicleDailyReport {
 
   /**
-   * 
+   * 每天的行驶公里数
    */
-  private static final long serialVersionUID = -1793383543779831531L;
+  private Float dailyMileage;
 
   /**
-   * 设备id
+   * 平均油耗
    */
-  private String deviceid;
+  private Float averageFuelConsumption;
 
   /**
-   * 百公里油耗
+   * 当日油耗
    */
-  private Float fuelconsumption;
+  private Float fuelConsumption;
 
   /**
-   * 速度
-   */
-  private Float speed;
-
-  /**
-   * 第一次里程
-   */
-  private Float firstmileage;
-
-  /**
-   * 最后一次里程
-   */
-  private Float lastmileage;
-
-  /**
-   * 运行时间(驾驶时间)
-   */
-  private Integer runningtime;
-
-  /**
-   * 花费
+   * 当日油费
    */
   private Double cost;
 
   /**
-   * 记录创建时间
+   * 平均速度
    */
-  private Date createdate;
-
-  /**
-   * 记录更新时间
-   */
-  private Date modifydate;
-
-
-  /**
-   * 第一次剩余油量
-   */
-  private Float firstremaininggas;
-
-  /**
-   * 最后一次剩余油量
-   */
-  private Float lastremaininggas;
-
-  /**
-   * 更新次数
-   */
-  private Integer updatecount;
-
+  private Float averageSpeed;
+  
   /**
    * 急刹车次数
    */
@@ -98,123 +45,115 @@ public class VehicleDailyReport extends BaseEntity {
    */
   private Integer rapidlyspeedupcount;
 
-  public String getDeviceid() {
-    return deviceid;
+  /**
+   * 时间
+   */
+  private Date reportDate;
+  
+  private Long deviceId;
+  
+  public Float getDailyMileage() {
+    return dailyMileage;
   }
 
-  public void setDeviceid(String deviceid) {
-    this.deviceid = deviceid;
+
+  public void setDailyMileage(Float dailyMileage) {
+    this.dailyMileage = dailyMileage;
   }
 
-  public Float getFuelconsumption() {
-    return fuelconsumption;
+
+  public Float getAverageFuelConsumption() {
+    return averageFuelConsumption;
   }
 
-  public void setFuelconsumption(Float fuelconsumption) {
-    this.fuelconsumption = fuelconsumption;
+
+  public void setAverageFuelConsumption(Float averageFuelConsumption) {
+    this.averageFuelConsumption = averageFuelConsumption;
   }
 
-  public Float getSpeed() {
-    return speed;
+
+  public Float getFuelConsumption() {
+    return fuelConsumption;
   }
 
-  public void setSpeed(Float speed) {
-    this.speed = speed;
+
+  public void setFuelConsumption(Float fuelConsumption) {
+    this.fuelConsumption = fuelConsumption;
   }
 
-  public Float getFirstmileage() {
-    return firstmileage;
-  }
-
-  public void setFirstmileage(Float firstmileage) {
-    this.firstmileage = firstmileage;
-  }
-
-  public Float getLastmileage() {
-    return lastmileage;
-  }
-
-  public void setLastmileage(Float lastmileage) {
-    this.lastmileage = lastmileage;
-  }
-
-  public Integer getRunningtime() {
-    return runningtime;
-  }
-
-  public void setRunningtime(Integer runningtime) {
-    this.runningtime = runningtime;
-  }
 
   public Double getCost() {
     return cost;
   }
 
+
   public void setCost(Double cost) {
     this.cost = cost;
   }
 
-  public Date getCreatedate() {
-    return createdate;
+
+  public Float getAverageSpeed() {
+    return averageSpeed;
   }
 
-  public void setCreatedate(Date createdate) {
-    this.createdate = createdate;
+
+  public void setAverageSpeed(Float averageSpeed) {
+    this.averageSpeed = averageSpeed;
   }
 
-  public Date getModifydate() {
-    return modifydate;
-  }
-
-  public void setModifydate(Date modifydate) {
-    this.modifydate = modifydate;
-  }
-
-  public Float getFirstremaininggas() {
-    return firstremaininggas;
-  }
-
-  public void setFirstremaininggas(Float firstremaininggas) {
-    this.firstremaininggas = firstremaininggas;
-  }
-
-  public Float getLastremaininggas() {
-    return lastremaininggas;
-  }
-
-  public void setLastremaininggas(Float lastremaininggas) {
-    this.lastremaininggas = lastremaininggas;
-  }
-
-  public Integer getUpdatecount() {
-    return updatecount;
-  }
-
-  public void setUpdatecount(Integer updatecount) {
-    this.updatecount = updatecount;
-  }
 
   public Integer getEmergencybrakecount() {
     return emergencybrakecount;
   }
 
+
   public void setEmergencybrakecount(Integer emergencybrakecount) {
     this.emergencybrakecount = emergencybrakecount;
   }
+
 
   public Integer getSuddenturncount() {
     return suddenturncount;
   }
 
+
   public void setSuddenturncount(Integer suddenturncount) {
     this.suddenturncount = suddenturncount;
   }
+
 
   public Integer getRapidlyspeedupcount() {
     return rapidlyspeedupcount;
   }
 
+
   public void setRapidlyspeedupcount(Integer rapidlyspeedupcount) {
     this.rapidlyspeedupcount = rapidlyspeedupcount;
   }
+
+
+  public Date getReportDate ()
+  {
+    return reportDate;
+  }
+
+
+  public void setReportDate (Date reportDate)
+  {
+    this.reportDate = reportDate;
+  }
+
+
+  public Long getDeviceId ()
+  {
+    return deviceId;
+  }
+
+
+  public void setDeviceId (Long deviceId)
+  {
+    this.deviceId = deviceId;
+  }
+  
+  
 }
