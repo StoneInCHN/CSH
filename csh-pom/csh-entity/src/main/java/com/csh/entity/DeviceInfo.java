@@ -59,6 +59,7 @@ public class DeviceInfo extends BaseEntity {
    * 绑定状态
    */
   private BindStatus bindStatus;
+  
 
   /**
    * sim 卡号
@@ -182,6 +183,4 @@ public class DeviceInfo extends BaseEntity {
     this.distributorId = distributorId;
   }
 
-  
-  
 }

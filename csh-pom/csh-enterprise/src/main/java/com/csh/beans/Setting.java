@@ -120,10 +120,19 @@ public class Setting implements Serializable {
 
     /** 短信平台语音回拨号码 */
     private String ucpaasCallDisplay;
-    
+    /**
+     * 实时车况URL
+     */
     private String rtCarConditionUrl;
-    
+    /**
+     * 每日车辆情况URL
+     */
     private String dailyVehicleStatusUrl;
+    
+    /**
+     * 车辆动态URL
+     */
+    private String vehicleStatusUrl;
     /**
      * 获取相册上传路径
      * 
@@ -797,6 +806,16 @@ public class Setting implements Serializable {
     public void setDailyVehicleStatusUrl (String dailyVehicleStatusUrl)
     {
       this.dailyVehicleStatusUrl = dailyVehicleStatusUrl;
+    }
+
+    public String getVehicleStatusUrl ()
+    {
+      return vehicleStatusUrl;
+    }
+
+    public void setVehicleStatusUrl (String vehicleStatusUrl)
+    {
+      this.vehicleStatusUrl = vehicleStatusUrl;
     }
     
     

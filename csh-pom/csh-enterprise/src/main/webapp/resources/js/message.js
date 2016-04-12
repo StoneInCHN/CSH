@@ -169,6 +169,11 @@ var messages = {
 	"csh.vehicle.vehicleNo":"车架号",
 	"csh.vehicle.dashboardBV":"电瓶电压",
 	"csh.vehicle.dashboardMileage":"仪表盘里程",
+	"csh.vehicle.deviceOnLine":"是否在线",
+	"csh.vehicle.deviceOnLine.offline":"离线",
+	"csh.vehicle.deviceOnLine.online":"在线",
+	"csh.vehicle.vehicleDailyReport":"每日车辆数据",
+	"csh.vehicle.realTimeCarCondition":"实时车况",
 	//车辆品牌
 	"csh.vehicleBrand.list":"车辆品牌列表",
 	"csh.vehicleBrand.name":"品牌名称",

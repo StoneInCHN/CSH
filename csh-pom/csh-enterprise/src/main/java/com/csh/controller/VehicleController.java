@@ -41,6 +41,7 @@ import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.response.RealTimeCarCondition;
 import com.csh.json.response.VehicleDailyReport;
+import com.csh.json.response.VehicleStatus;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.VehicleBrandDetailService;
@@ -49,6 +50,7 @@ import com.csh.service.VehicleService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
 import com.csh.utils.SettingUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -211,6 +213,7 @@ public class VehicleController extends BaseController
     }else {
       vehiclePage= vehicleService.findPage (pageable, true);
     }
+    prepareVehicleList (vehiclePage.getRows ());
     return vehiclePage;
   
   }
@@ -418,5 +421,52 @@ public class VehicleController extends BaseController
     
     return vehicleService.callVehicleDailyData(date,vehicleId);
    
+  }
+  
+  private List<Vehicle> prepareVehicleList(List<Vehicle> vehicleList){
+    ObjectMapper objectMapper = new ObjectMapper ();
+    List<Map<String, Object>> paramList = new ArrayList<Map<String,Object>> ();
+    for (Vehicle vehicle : vehicleList)
+    {
+      DeviceInfo deviceInfo = vehicle.getDevice ();
+      if (deviceInfo != null)
+      {
+        Map<String, Object> map =new HashMap<String, Object> ();
+        map.put ("deviceId", deviceInfo.getDeviceNo ());
+        map.put ("rowId", deviceInfo.getId ());
+        paramList.add (map);
+      }
+     
+    }
+    try
+    {
+      String params = objectMapper.writeValueAsString(paramList);
+    
+      String response= ApiUtils.postJson (setting.getVehicleStatusUrl (), "UTF-8", "UTF-8", params);
+//      String response = "{\"msg\": [{\"deviceId\": \"1\",\"rowId\": \"1\",\"mileage\": 100,\"online\": true,\"remaininggas\": 10, \"bv\": 12.5},{\"deviceId\": \"2\",\"rowId\": \"1\",\"mileage\": 20,\"online\": true,\"remaininggas\": 20,\"bv\": 10.5}]}";
+      JsonNode rootNode = objectMapper.readTree(response);
+      JsonNode msgNode = rootNode.path ("msg");
+      String msg = objectMapper.writeValueAsString(msgNode);
+      List<VehicleStatus> vehicleStatusList = objectMapper.readValue (msg, new TypeReference<List<VehicleStatus>>() {});
+      for (Vehicle vehicle : vehicleList)
+      {
+        for (VehicleStatus vehicleStatus : vehicleStatusList)
+        {
+          if (vehicle.getDevice ()!= null && vehicle.getDevice ().getId ().toString ().equals (vehicleStatus.getRowId ()))
+          {
+            vehicle.setDashboardBV (vehicleStatus.getBv ());
+            vehicle.setDashboardMileage (vehicleStatus.getMileage ());
+            vehicle.setDashboradOil (vehicleStatus.getRemaininggas ());
+            vehicle.setIsOnline (vehicleStatus.getOnline ());
+          }
+        }
+      }
+    }
+    
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return vehicleList;
   }
 }

@@ -145,7 +145,10 @@ public class Vehicle extends BaseEntity {
    */
   private Long lastMaintainMileage;
 
-
+  /**
+   * 绑定的设备是否在线
+   */
+  private Boolean isOnline;
   @Column(length = 200)
   public String getBrandIcon() {
     return brandIcon;
@@ -374,6 +377,16 @@ public class Vehicle extends BaseEntity {
     this.plateDate = plateDate;
   }
 
+  @Transient
+  @JsonProperty
+  public Boolean getIsOnline ()
+  {
+    return isOnline;
+  }
 
+  public void setIsOnline (Boolean isOnline)
+  {
+    this.isOnline = isOnline;
+  }
 
 }

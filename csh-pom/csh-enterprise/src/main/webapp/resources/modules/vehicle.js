@@ -251,7 +251,6 @@ var vehicle_manager_tool = {
 			}
 			var params=new Object();
 				params.vehicleId=_select_row.id;
-				debugger;
 			
 			if($('#queryReportDate').length){
 				params.date = $('#queryReportDate').datebox('getValue');
@@ -414,6 +413,22 @@ $(function(){
 	      	  {title:message("csh.vehicle.dashboardMileage"),field:"dashboardMileage",sortable:true},
 	      	  {title:message("csh.vehicle.dashboardBV"),field:"dashboardBV",sortable:true},
 		      {title:message("csh.vehicle.device"),field:"deviceNo",width:100,sortable:false},
+		      {title:message("csh.vehicle.deviceOnLine"),field:"isOnline",width:100,sortable:false,
+		    	  formatter: function(value,row,index){
+			    	  if(value ){
+			    		  return message("csh.vehicle.deviceOnLine.online");
+			    	  }else{
+			    		  return message("csh.vehicle.deviceOnLine.offline");
+			    	  }
+		      	  },
+		      	  styler: function(value,row,index){
+						if (value){
+							return 'color:#008000;';
+						}else{
+							return 'color:#FF0000;';
+						}
+					}  
+		      },
 		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}
