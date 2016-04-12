@@ -2,6 +2,9 @@ package com.csh.beans;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.validator.constraints.Length;
+
 /**
  * 系统设置
  * 
@@ -116,6 +119,11 @@ public class Setting implements Serializable {
   /** SMTP密码 */
   private String smtpPassword;
   
+  private String fileUploadPath;
+  
+  /** 允许上传文件扩展名 */
+  private String uploadFileExtension;
+  
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
   }
@@ -227,6 +235,45 @@ public class Setting implements Serializable {
   public void setSmtpPassword(String smtpPassword) {
     this.smtpPassword = smtpPassword;
   }
+
+  public String getFileUploadPath() {
+    return fileUploadPath;
+  }
+
+  public void setFileUploadPath(String fileUploadPath) {
+    this.fileUploadPath = fileUploadPath;
+  }
+
+  /**
+   * 获取允许上传文件扩展名
+   * 
+   * @return 允许上传文件扩展名
+   */
+  @Length(max = 200)
+  public String getUploadFileExtension() {
+      return uploadFileExtension;
+  }
+
+  /**
+   * 设置允许上传文件扩展名
+   * 
+   * @param uploadFileExtension
+   *            允许上传文件扩展名
+   */
+  public void setUploadFileExtension(String uploadFileExtension) {
+      if (uploadFileExtension != null) {
+          uploadFileExtension = uploadFileExtension.replaceAll("[,\\s]*,[,\\s]*", ",").replaceAll("^,|,$", "").toLowerCase();
+      }
+      this.uploadFileExtension = uploadFileExtension;
+  }
   
+  /**
+   * 获取允许上传文件扩展名
+   * 
+   * @return 允许上传文件扩展名
+   */
+  public String[] getUploadFileExtensions() {
+      return StringUtils.split(uploadFileExtension, SEPARATOR);
+  }
   
 }

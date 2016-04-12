@@ -5,15 +5,22 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.csh.beans.Setting;
 import com.csh.beans.Setting.ImageType;
+import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.service.FileService;
 import com.csh.utils.ImageUtils;
+import com.csh.utils.SettingUtils;
 import com.ibm.icu.text.SimpleDateFormat;
 
 @Service("fileServiceImpl")
@@ -21,6 +28,12 @@ public class FileServiceImpl implements FileService {
 
   private static final String DEST_EXTENSION = "jpg";
 
+  @Resource(name = "taskExecutor")
+  private TaskExecutor taskExecutor;
+  
+  
+  @Value("${ProjectUploadPath}")
+  private String projectUploadPath;
   @Value("${ImageUploadPath}")
   private String uploadPath;
   @Value("${ImageMaxSize}")
@@ -106,25 +119,28 @@ public class FileServiceImpl implements FileService {
       }
       String uuid = UUID.randomUUID().toString();
       if (imageType == ImageType.LICENSE) {
-        subPath =  File.separator + "license";
+        subPath = File.separator + "license";
       }
       if (imageType == ImageType.STOREPICTURE) {
-        subPath =  File.separator + "storePicture";
+        subPath = File.separator + "storePicture";
       }
       if (imageType == ImageType.ADVERTISEMENT) {
-        subPath =  File.separator + "advertisement";
+        subPath = File.separator + "advertisement";
       }
       if (imageType == ImageType.VEHICLEICON) {
-        subPath =  File.separator + "vehicleIcon";
+        subPath = File.separator + "vehicleIcon";
       }
-      
-      imgUploadPath =uploadPath + subPath;
-      
+
+      imgUploadPath = uploadPath + subPath;
+
       String sourcePath =
-          imgUploadPath+File.separator+date+ File.separator + "src_" + uuid + "."
+          imgUploadPath + File.separator + date + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      webPath =File.separator+"upload"+ subPath+ File.separator+date+ File.separator + "src_" + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      String storePath = imgUploadPath +File.separator+date+ File.separator + uuid + "." + DEST_EXTENSION;;
+      webPath =
+          File.separator + "upload" + subPath + File.separator + date + File.separator + "src_"
+              + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+      String storePath =
+          imgUploadPath + File.separator + date + File.separator + uuid + "." + DEST_EXTENSION;;
 
       File tempFile =
           new File(System.getProperty("java.io.tmpdir") + File.separator + "upload_"
@@ -142,5 +158,91 @@ public class FileServiceImpl implements FileService {
     }
     return webPath;
   }
+
+  public boolean isValid(FileType fileType, MultipartFile multipartFile) {
+    if (multipartFile == null) {
+      return false;
+    }
+    Setting setting = SettingUtils.get();
+    String[] uploadExtensions = null;
+    if (fileType == FileType.file) {
+      uploadExtensions = setting.getUploadFileExtensions();
+    }
+    if (!ArrayUtils.isEmpty(uploadExtensions)) {
+      return FilenameUtils.isExtension(multipartFile.getOriginalFilename(), uploadExtensions);
+    }
+    return false;
+  }
+
+  public String upload(FileType fileType, MultipartFile multipartFile, boolean async) {
+    String webPath = null;
+    String fileUploadPath = "";
+    String projectPath = "";
+    if (multipartFile == null) {
+      return null;
+    }
+    if (fileType == FileType.file) {
+      fileUploadPath = uploadPath + File.separator + "apk";
+      projectPath = projectUploadPath + File.separator + "apk";
+    }
+    try {
+      String destPath = fileUploadPath + File.separator + multipartFile.getOriginalFilename();
+      webPath = projectPath + File.separator + multipartFile.getOriginalFilename();
+      File tempFile =
+          new File(System.getProperty("java.io.tmpdir") + "/upload_" + UUID.randomUUID() + ".tmp");
+      if (!tempFile.getParentFile().exists()) {
+        tempFile.getParentFile().mkdirs();
+      }
+      multipartFile.transferTo(tempFile);
+      if (async) {
+        addTask(destPath, tempFile);
+      } else {
+        try {
+          File destFile = new File(destPath);
+          try {
+            FileUtils.moveFile(tempFile, destFile);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        } finally {
+          FileUtils.deleteQuietly(tempFile);
+        }
+      }
+      return webPath;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  public String upload(FileType fileType, MultipartFile multipartFile) {
+    return upload(fileType, multipartFile, false);
+  }
+
+  /**
+   * 添加上传任务
+   * 
+   * @param storagePlugin 存储插件
+   * @param path 上传路径
+   * @param tempFile 临时文件
+   * @param contentType 文件类型
+   */
+  private void addTask(final String path, final File tempFile) {
+    taskExecutor.execute(new Runnable() {
+      public void run() {
+        try {
+          File destFile = new File(path);
+          try {
+            FileUtils.moveFile(tempFile, destFile);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        } finally {
+          FileUtils.deleteQuietly(tempFile);
+        }
+      }
+    });
+  }
+
 
 }

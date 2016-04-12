@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.clearingRecord.list")}</title>
+<title>${message("csh.appVersion.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.clearingRecord")}</a> 
+						<a ><i class="fa fa-android"></i> ${message("csh.main.appVersion")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.clearingRecord.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.appVersion.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -29,9 +29,15 @@
 			<form id="listForm" action="list.jhtml" method="get">
 				  <div class="container operation">
 					<div class="row">
-						  <div class="col-xs-9 col-md-9 col-lg-9">
+						  <div class="col-xs-12 col-md-12 col-lg-12">
 						  		<ul class="nav">
 									 <li class="pull-left">
+										<div class="btn-group operationButton">
+										  <button type="button" id="addButton" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;&nbsp;${message("csh.common.add")}</button>
+										</div>
+										<div class="btn-group operationButton">
+										  <button type="button" id="deleteButton" class="btn btn-default disabled"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;${message("csh.common.delete")}</button>
+										</div>
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
@@ -57,17 +63,6 @@
 									  </li>
 									</ul>
 						  </div>
-						  <div class="col-xs-3 col-md-3 col-lg-3">
-						  		<div class="input-group">
-								      <div class="input-group-btn">
-								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
-								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "clearingSn" ] selected="selected" class="active" [/#if] title="clearingSn"><a href="#">${message("csh.clearingRecord.clearingSn")}</a></li>
-								        </ul>
-								      </div>
-								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
-							    </div>
-						  </div>
 					</div>
 				</div>
 				
@@ -77,7 +72,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.clearingRecord")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.appVersion.list")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -88,32 +83,23 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
-													<th>
-														<a href="javascript:;" class="sort" name="clearingSn">${message("csh.clearingRecord.clearingSn")}</a>
+													<th class="check">
+														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="clearingStatus">${message("csh.clearingRecord.clearingStatus")}</a>
+														<a href="javascript:;" class="sort" name="version">${message("csh.appVersion.version")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="periodBeginDate">${message("csh.clearingRecord.periodBeginDate")}</a>
+														<span>${message("csh.appVersion.versionCode")}</span>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="periodEndDate">${message("csh.clearingRecord.periodEndDate")}</a>
+														<span>${message("csh.appVersion.apkPath")}</span>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="amountOfCurrentPeriod">${message("csh.clearingRecord.amountOfCurrentPeriod")}</a>
+														<span>${message("csh.appVersion.updateContent")}</span>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="reduce">${message("csh.clearingRecord.reduce")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="comments">${message("csh.clearingRecord.comments")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="amountOutOfCurrentPeriod">${message("csh.clearingRecord.amountOutOfCurrentPeriod")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="tenantID">${message("csh.clearingRecord.tenantID")}</a>
+														<a href="javascript:;" class="sort" name="createDate">${message("csh.common.createDate")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -121,45 +107,30 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as clearingRecord]
+												[#list page.content as apkersion]
 												<tr>
 													<td>
-														${clearingRecord.clearingSn}
+														<input type="checkbox"  name="ids" value="${apkersion.id}" />
 													</td>
 													<td>
-														[#if clearingRecord.clearingStatus??]
-															${message("csh.commonEnum.ClearingStatus."+clearingRecord.clearingStatus)}
-														[#else]
-															-
-														[/#if]	
+														${apkersion.versionName}
 													</td>
 													<td>
-														${clearingRecord.periodBeginDate}
+														${apkersion.versionCode}
 													</td>
 													<td>
-														${clearingRecord.periodEndDate}
+														<a href="${apkersion.apkPath}" target="_blank" title="${apkersion.apkPath}"><i class="fa fa-android"></i></a>
 													</td>
 													<td>
-														[#if clearingRecord.amountOfCurrentPeriod??]
-															${clearingRecord.amountOfCurrentPeriod}
-														[#else]
-															-
-														[/#if]
+															[#if apkersion.updateContent??]
+											             		<span data-toggle="tooltip" data-placement="top" title="${apkersion.updateContent}">${abbreviate(apkersion.updateContent, 50, "...")}</span>
+															[/#if]	
 													</td>
 													<td>
-														${clearingRecord.reduce}
+														<span title="${apkersion.createDate?string("yyyy-MM-dd HH:mm:ss")}">${apkersion.createDate}</span>
 													</td>
 													<td>
-														${clearingRecord.comments}
-													</td>
-													<td>
-														${clearingRecord.amountOutOfCurrentPeriod}
-													</td>
-													<td>
-														${clearingRecord.tenantID}
-													</td>
-													<td>
-														<a href="details.jhtml?id=${clearingRecord.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														<a href="edit.jhtml?id=${apkersion.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
 												</tr>
 											</tbody>
@@ -183,5 +154,10 @@
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script>
+$(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 </body>
 </html>

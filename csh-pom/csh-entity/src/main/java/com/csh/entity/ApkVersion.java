@@ -52,6 +52,7 @@ public class ApkVersion extends BaseEntity {
     this.versionName = versionName;
   }
 
+  @Column(length = 20)
   public Integer getVersionCode() {
     return versionCode;
   }
