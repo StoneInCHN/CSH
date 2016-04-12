@@ -150,28 +150,28 @@ var carServiceRecord_manager_tool = {
 			});  
 		},
 		edit:function(){
-			var _edit_row = $('#carService-table-list').datagrid('getSelected');
+			var _edit_row = $('#carServiceRecord-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
-			var _dialog = $('#editCarService').dialog({    
+			var _dialog = $('#editCarServiceRecord').dialog({    
 				title: message("csh.common.edit"),     
 			    width: 700,    
 			    height: 550,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
-			    href:'../carService/edit.jhtml?id='+_edit_row.id,
+			    href:'../carServiceRecord/edit.jhtml?id='+_edit_row.id,
 			    buttons:[{
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#editCarService_form').form('validate');
+						var validate = $('#editCarServiceRecord_form').form('validate');
 						if(validate){
 							$.ajax({
-								url:"../carService/update.jhtml",
+								url:"../carServiceRecord/update.jhtml",
 								type:"post",
-								data:$("#editCarService_form").serialize(),
+								data:$("#editCarServiceRecord_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -180,8 +180,8 @@ var carServiceRecord_manager_tool = {
 								success:function(result,response,status){
 									$.messager.progress('close');
 										showSuccessMsg(result.content);
-										$('#editCarService').dialog("close");
-										$("#carService-table-list").datagrid('reload');
+										$('#editCarServiceRecord').dialog("close");
+										$("#carServiceRecord-table-list").datagrid('reload');
 								}
 							});
 						};
@@ -190,17 +190,17 @@ var carServiceRecord_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editCarService').dialog("close")
+						 $('#editCarServiceRecord').dialog("close")
 					}
 			    }],
 			    onLoad:function(){},
 			    onClose:function(){
-			    	$('#editCarService').empty();
+			    	$('#editCarServiceRecord').empty();
 			    }
 			});  
 		},
 		remove:function(){
-			listRemove('carService-table-list','../carService/delete.jhtml');
+			listRemove('carServiceRecord-table-list','../carServiceRecord/delete.jhtml');
 		}
 };
 
@@ -265,6 +265,7 @@ $(function(){
 		    			  return "";
 		    		  }
 		    	  }},
+		    	  {title:message("csh.carServiceRecord.price"),field:"price",width:100,sortable:true},
 		      {title:message("csh.carServiceRecord.paymentType"),field:"paymentType",width:100,sortable:true,
 		    		  formatter:function(value,row,index){
 		    			if(value=="ALIPAY"){

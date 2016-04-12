@@ -133,7 +133,7 @@ $(function(){
 		   [
 		      {field:'ck',checkbox:true},
 		      {title:message("csh.endUser.userName"),field:"userName",width:100,sortable:true},
-		      {title:message("csh.endUser.realName"),field:"realName",width:100,sortable:true   },
+//		      {title:message("csh.endUser.realName"),field:"realName",width:100,sortable:true   },
 		      {title:message("csh.endUser.mobileNum"),field:"mobileNum",width:100,sortable:true},
 		      {title:message("csh.endUser.qq"),field:"qq",width:100,sortable:true},
 		      {title:message("csh.endUser.accoutStatus"),field:"accoutStatus",width:100,sortable:true,

@@ -71,6 +71,13 @@
 	  </fieldset>
 </div>
 <table id="carServiceRecord-table-list"></table>
+<div id="carServiceRecord_manager_tool">
+	<div class="tool-button">
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="carServiceRecord_manager_tool.edit();">修改</a>
+	</div>
+	<div class="tool-filter"></div>
+</div>
+<div id="editCarServiceRecord"></div>
 <div id="carServiceRecordDetail"></div>
 
 

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.CarServiceRecord;
@@ -212,5 +213,33 @@ public class CarServiceRecordController extends BaseController
     CarServiceRecord carServiceRecord = carServiceRecordService.find (id);
     model.put ("carServiceRecord", carServiceRecord);
     return "/carServiceRecord/details";
+  }
+  /**
+   * get data for vendor edit page
+   * 
+   * @param model
+   * @param vendorId
+   * @return
+   */
+  @RequestMapping(value = "/edit", method = RequestMethod.GET)
+  public String edit(ModelMap model, Long id) {
+    model.addAttribute("carServiceRecord", carServiceRecordService.find(id));
+    return "carServiceRecord/edit";
+  }
+  /**
+   * get data for vendor edit page
+   * 
+   * @param model
+   * @param vendorId
+   * @return
+   */
+  @RequestMapping(value = "/update", method = RequestMethod.POST)
+  public @ResponseBody Message update(ModelMap model, CarServiceRecord carServiceRecord) {
+    CarServiceRecord newCarServiceRecord =carServiceRecordService.find (carServiceRecord.getId ());
+    newCarServiceRecord.setPrice (carServiceRecord.getPrice ());
+    newCarServiceRecord.setChargeStatus (carServiceRecord.getChargeStatus ());
+    carServiceRecordService.update (newCarServiceRecord);
+
+    return SUCCESS_MESSAGE;
   }
 }
