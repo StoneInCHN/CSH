@@ -174,6 +174,7 @@ var messages = {
 	"csh.vehicle.deviceOnLine.online":"在线",
 	"csh.vehicle.vehicleDailyReport":"每日车辆数据",
 	"csh.vehicle.realTimeCarCondition":"实时车况",
+	"csh.vehicle.vehicleFullBrand":"车型",
 	//车辆品牌
 	"csh.vehicleBrand.list":"车辆品牌列表",
 	"csh.vehicleBrand.name":"品牌名称",

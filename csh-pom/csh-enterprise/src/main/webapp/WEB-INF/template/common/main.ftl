@@ -129,6 +129,9 @@
     		<li><a href="#" data-url="${base}/console/vehicle/vehicleDailyReport.jhtml">${message("csh.vehicle.vehicleDailyReport")}</a></li>
     		[/@shiro.hasPermission]
     		-->
+    		[@shiro.hasPermission name="vehicleMileageReport"]
+    		<li><a href="#" data-url="${base}/console/vehicleMileageReport/vehicleMileageReport.jhtml">车辆里程统计</a></li>
+    		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="vehicleMaintain"]
     		<li><a href="#" data-url="${base}/console/vehicleMaintain/vehicleMaintain.jhtml">${message("csh.vehicle.vehicleMaintain")}</a></li>
     		[/@shiro.hasPermission]

@@ -444,20 +444,23 @@ public class VehicleController extends BaseController
     
       String response= ApiUtils.postJson (setting.getVehicleStatusUrl (), "UTF-8", "UTF-8", params);
 //      String response = "{\"msg\": [{\"deviceId\": \"1\",\"rowId\": \"1\",\"mileage\": 100,\"online\": true,\"remaininggas\": 10, \"bv\": 12.5},{\"deviceId\": \"2\",\"rowId\": \"1\",\"mileage\": 20,\"online\": true,\"remaininggas\": 20,\"bv\": 10.5}]}";
-      JsonNode rootNode = objectMapper.readTree(response);
-      JsonNode msgNode = rootNode.path ("msg");
-      String msg = objectMapper.writeValueAsString(msgNode);
-      List<VehicleStatus> vehicleStatusList = objectMapper.readValue (msg, new TypeReference<List<VehicleStatus>>() {});
-      for (Vehicle vehicle : vehicleList)
+      if (response != null && !response.equals (""))
       {
-        for (VehicleStatus vehicleStatus : vehicleStatusList)
+        JsonNode rootNode = objectMapper.readTree(response);
+        JsonNode msgNode = rootNode.path ("msg");
+        String msg = objectMapper.writeValueAsString(msgNode);
+        List<VehicleStatus> vehicleStatusList = objectMapper.readValue (msg, new TypeReference<List<VehicleStatus>>() {});
+        for (Vehicle vehicle : vehicleList)
         {
-          if (vehicle.getDevice ()!= null && vehicle.getDevice ().getId ().toString ().equals (vehicleStatus.getRowId ()))
+          for (VehicleStatus vehicleStatus : vehicleStatusList)
           {
-            vehicle.setDashboardBV (vehicleStatus.getBv ());
-            vehicle.setDashboardMileage (vehicleStatus.getMileage ());
-            vehicle.setDashboradOil (vehicleStatus.getRemaininggas ());
-            vehicle.setIsOnline (vehicleStatus.getOnline ());
+            if (vehicle.getDevice ()!= null && vehicle.getDevice ().getId ().toString ().equals (vehicleStatus.getRowId ()))
+            {
+              vehicle.setDashboardBV (vehicleStatus.getBv ());
+              vehicle.setDashboardMileage (vehicleStatus.getMileage ());
+              vehicle.setDashboradOil (vehicleStatus.getRemaininggas ());
+              vehicle.setIsOnline (vehicleStatus.getOnline ());
+            }
           }
         }
       }
