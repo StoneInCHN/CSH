@@ -144,7 +144,11 @@
 														[/#if]
 													</td>
 													<td>
-														${carServiceRecord.paymentType}
+														[#if carServiceRecord.paymentType??]
+															${message("csh.commonEnum.paymentType."+carServiceRecord.paymentType)}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
 														[#if carServiceRecord.paymentDate??]
@@ -154,10 +158,11 @@
 														[/#if]
 													</td>
 													<td>
-														${carServiceRecord.paymentType}
-													</td>
-													<td>
-														${carServiceRecord.chargeStatus}
+														[#if carServiceRecord.chargeStatus??]
+															${message("csh.commonEnum.ChargeStatus."+carServiceRecord.chargeStatus)}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
 														${carServiceRecord.price}

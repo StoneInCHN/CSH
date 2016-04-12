@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.endUser.details")}</title>
+<title>${message("csh.clearingRecord.details")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -18,11 +18,11 @@
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.endUser")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.clearingRecord")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.endUser.list")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.clearingRecord.list")}</a>
 				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.endUser.details")}</a>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.clearingRecord.details")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -32,7 +32,7 @@
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.endUser.details")}</div>
+                  <div class="pull-left">${message("csh.clearingRecord.details")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -42,126 +42,146 @@
                 <div class="widget-content">
                   <div class="padd">
 						<table class="input tabContent">
-                     		<tr>
-								<th>
-									${message("csh.endUser.realName")}:
-								</th>
+							<tr>
+								<td>${message("csh.clearingRecord.clearingSn")}</td>
 								<td>
-									${endUser.realName}
+									${clearingRecord.clearingSn}
+								</td>
+								<td>${message("csh.clearingRecord.clearingStatus")}</td>
+								<td>
+									[#if clearingRecord.clearingStatus??]
+										${message("csh.commonEnum.ClearingStatus."+clearingRecord.clearingStatus)}
+									[#else]
+										-
+									[/#if]	
+								</td>
+								<td>${message("csh.clearingRecord.amountOfCurrentPeriod")}</td>
+								<td>
+									${clearingRecord.amountOfCurrentPeriod}
 								</td>
 							</tr>
 							<tr>
-								<th>
-									${message("csh.endUser.userName")}:
-								</th>
+								<td>${message("csh.clearingRecord.reduce")}</td>
 								<td>
-									${endUser.userName}
+									${clearingRecord.reduce}
 								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.nickName")}:
-								</th>
+								<td>${message("csh.clearingRecord.periodBeginDate")}</td>
 								<td>
-									${endUser.nickName}
+									[#if clearingRecord.periodBeginDate??]
+										${clearingRecord.periodBeginDate}
+									[#else]
+										-
+									[/#if]
 								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.age")}:
-								</th>
+								<td>${message("csh.clearingRecord.periodEndDate")}</td>
 								<td>
-									${endUser.age}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.gender")}:
-								</th>
-								<td>
-									${endUser.gender}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.mobileNum")}:
-								</th>
-								<td>
-									${endUser.mobileNum}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.photo")}:
-								</th>
-								<td>
-									${endUser.photo}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.birthDay")}:
-								</th>
-								<td>
-									${endUser.birthDay}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.endUser.address")}:
-								</th>
-								<td>
-									${endUser.address}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.qq")}:
-								</th>
-								<td>
-									${endUser.qq}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.endUser.signature")}:
-								</th>
-								<td>
-									[#if endUser.signature??]
-										${endUser.signature}
+									[#if clearingRecord.periodEndDate??]
+										${clearingRecord.periodEndDate}
+									[#else]
+										-
 									[/#if]
 								</td>
 							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.endUser.vipLevel")}:
-								</th>
+								<tr>
+								<td>${message("csh.clearingRecord.comments")}</td>
 								<td>
-									[#if endUser.vipLevel??]
-										${endUser.vipLevel}
-									[/#if]
+									${clearingRecord.comments}
 								</td>
 							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.defaultVehicle")}:
-								</th>
-								<td>
-									[#if endUser.defaultVehicle??]
-										${endUser.defaultVehicle.plate}
-									[/#if]
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.endUser.driverLicense")}:
-								</th>
-								<td>
-									[#if endUser.driverLicense??]
-										<a href="../driverLicense/details.jhtml?id=${endUser.driverLicense.id}" target="3">${endUser.driverLicense.sn_no}</a>
-									[/#if]
-								</td>
-							</tr>
+						</table>
+						<hr/>
+						<table id="listTable" class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+									<th>
+										${message("csh.carServiceRecord.recordNo")}
+									</th>
+									<th>
+										${message("csh.carServiceRecord.carService")}
+									</th>
+									<th>
+										${message("csh.carServiceRecord.endUser")}
+									</th>
+									<th>
+										${message("csh.carServiceRecord.paymentType")}
+									</th>
+									<th>
+										${message("csh.carServiceRecord.paymentDate")}
+									</th>
+									<th>
+										${message("csh.carServiceRecord.chargeStatus")}
+									</th>
+									<th>
+										${message("csh.carServiceRecord.price")}
+									</th>
+												
+									<th>
+										${message("csh.carServiceRecord.tenantName")}
+									</th>
+									<th>
+										${message("csh.carServiceRecord.clearingDate")}
+									</th>
+												
+									</tr>
+								</thead>
+								<tbody>
+									[#list clearingRecord.carServiceRecords as carServiceRecord]
+									<tr>
+										<td>
+											${carServiceRecord.recordNo}
+										</td>
+									<td>
+										[#if carServiceRecord.carService??]
+											${carServiceRecord.carService.serviceName}
+										[#else]
+											-
+										[/#if]
+									</td>
+									<td>
+										[#if carServiceRecord.endUser??]
+											${carServiceRecord.endUser.userName}
+										[#else]
+											-
+										[/#if]
+									</td>
+									<td>
+										[#if carServiceRecord.paymentType??]
+											${message("csh.commonEnum.paymentType."+carServiceRecord.paymentType)}
+										[#else]
+											-
+										[/#if]
+									</td>
+									<td>
+										[#if carServiceRecord.paymentDate??]
+											<span title="${carServiceRecord.paymentDate?string("yyyy-MM-dd HH:mm:ss")}">${carServiceRecord.paymentDate}</span>
+										[#else]
+											-
+										[/#if]
+									</td>
+									<td>
+										[#if carServiceRecord.chargeStatus??]
+											${message("csh.commonEnum.ChargeStatus."+carServiceRecord.chargeStatus)}
+										[#else]
+											-
+										[/#if]
+									</td>
+									<td>
+										${carServiceRecord.price}
+									</td>
+									<td>
+										${carServiceRecord.tenantName}
+									</td>
+									<td>
+										[#if carServiceRecord.clearingDate??]
+										<span title="${carServiceRecord.clearingDate?string("yyyy-MM-dd HH:mm:ss")}">${carServiceRecord.clearingDate}</span>
+										[#else]
+											-
+										[/#if]
+									</td>
+												
+								</tr>
+							</tbody>
+							[/#list]
 						</table>
                   </div>
                 </div>

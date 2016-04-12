@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.advertisement.edit")}</title>
+<title>${message("csh.appVersion.add")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -17,26 +17,41 @@
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	
-	
+
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			advName: {
+			versionName: {
+				required: true,
+				minlength: 2,
+				maxlength: 50,
+				remote: {
+					url: "checkVersion.jhtml",
+					cache: false
+				}
+			},
+			file: {
+				required: true,
+				nameEndWith:".apk"
+			},
+			versionCode:{
 				required: true
 			},
-			advContentLink: {
+			updateContent: {
 				required: true
+			}
+		},
+		messages: {
+			version: {
+				remote: "${message("apkVersion.version.validate.exist")}"
 			},
-			remark: {
-				required: true
-			},
-			status: {
-				required: true
+			file:{
+				nameEndWith:"${message("apkVersion.file.name.error")}"
 			}
 		}
 	});
-
+	
+	
 });
 </script>
 </head>
@@ -44,11 +59,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.advertisement")}</a> 
+				<a ><i class="fa fa-android"></i> ${message("csh.main.appVersion")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.advertisement.list")}</a>
-				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.advertisement.edit")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.appVersion.list")}</a>
+				<span class="divider">/</span> 
+				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.appVersion.add")}</span>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -58,7 +73,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.advertisement.edit")}</div>
+                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.appVersion.add")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -67,67 +82,38 @@ $().ready(function() {
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                    <form id="inputForm" action="update.jhtml" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="id" value="${advertisement.id}" />
-						<input type="hidden" name="advImageUrl" value="${advertisement.advImageUrl}" />
-						<table class="input tabContent">
+                     <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" enctype="multipart/form-data" role="form">
+                     	<table class="input tabContent">
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.advName")}:
+									<span class="requiredField">*</span>${message("csh.appVersion.version")}:
 								</th>
 								<td>
-									<input type="text" name="advName" class="text" maxlength="20" value="${advertisement.advName}"/>
+									<input type="text" id="versionName" name="versionName" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									${message("csh.advertisement.advImageUrl")}:
+									<span class="requiredField">*</span>${message("csh.appVersion.versionCode")}:
 								</th>
 								<td>
-									<a href="${base}/${advertisement.advImageUrl}" target="1024"><img src="${base}/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
+									<input type="text" id="versionCode" name="versionCode" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.advImage")}:
+									<span class="requiredField">*</span>${message("csh.appVersion.file")}:
 								</th>
 								<td>
-									<input type="file" name="advImage" />
+									<input type="file" id="file" name="file" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.advContentLink")}:
+									<span class="requiredField">*</span>${message("csh.appVersion.updateContent")}:
 								</th>
 								<td>
-									<input type="text" name="advContentLink" class="text" value="${advertisement.advContentLink}"/>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.remark")}:
-								</th>
-								<td>
-									<input type="text" name="remark" class="text" value="${advertisement.remark}"/>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.order")}:
-								</th>
-								<td>
-									<input type="text" name="order" class="text" value="${advertisement.order}"/>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.advertisement.status")}:
-								</th>
-								<td>
-									<select name="status" class="text">
-										<option value="ENABLE" [#if advertisement.status== "ENABLE" ] selected="selected" [/#if]>${message("csh.advertisement.status.ENABLE")}</option>
-										<option value="DISABLE" [#if advertisement.status== "DISABLE" ]selected="selected"[/#if]>${message("csh.advertisement.status.DISABLE")}</option>
-									</select>
+									<textarea name="updateContent" class="text" maxlength="500"></textarea>
 								</td>
 							</tr>
 						</table>
@@ -141,8 +127,8 @@ $().ready(function() {
 									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 								</td>
 							</tr>
-						</table>
-					</form>
+						</table>                                     
+                     </form>
                   </div>
                 </div>
               </div>  

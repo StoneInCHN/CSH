@@ -77,6 +77,11 @@
 									<a href="../account/accountInfo.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.account.settingGroup")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:apkVersion"]
+								<li>
+									<a href="../apkVersion/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.appVersion")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
 				            </ul>
 						</li>
 					[#break /]

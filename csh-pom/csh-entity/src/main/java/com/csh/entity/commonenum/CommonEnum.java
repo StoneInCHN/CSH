@@ -530,5 +530,16 @@ public class CommonEnum {
      */
     P97
   }
+  
+  /**
+   * 文件类型
+   */
+  public enum FileType {
+
+      /** 图片 */
+      image,
+      /** 文件 */
+      file
+  }
 
 }
