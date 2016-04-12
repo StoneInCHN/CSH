@@ -272,11 +272,6 @@ public class CarServiceController extends MobileBaseController {
         FieldFilterUtils.filterEntityMap(tenant_properties, carServiceRecord.getCarService()
             .getTenantInfo());
     map.put("tenantInfo", tenant_map);
-    if (carServiceRecord.getTenantEvaluate() != null) {
-      map.put("isRate", true);
-    } else {
-      map.put("isRate", false);
-    }
 
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
@@ -332,7 +327,8 @@ public class CarServiceController extends MobileBaseController {
 
     String[] properties =
         {"id", "createDate", "paymentDate", "chargeStatus", "price", "carService.serviceCategory",
-            "carService.serviceName", "carService.id", "tenantName", "tenantID", "tenantPhoto"};
+            "carService.serviceName", "carService.id", "tenantName", "tenantID", "tenantPhoto",
+            "tenantEvaluate"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, records.getContent());
     response.setMsg(map);
