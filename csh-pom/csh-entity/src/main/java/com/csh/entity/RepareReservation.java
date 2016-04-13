@@ -24,7 +24,7 @@ import com.csh.lucene.DateBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * 预约中心
+ * 维修预约
  * 
  */
 @Indexed(index="repareReservation")
