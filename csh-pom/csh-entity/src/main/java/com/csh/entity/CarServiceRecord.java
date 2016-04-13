@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Field;
@@ -75,7 +76,7 @@ public class CarServiceRecord extends BaseEntity {
    * 维修预约
    */
   private RepareReservation repareReservation;
-  
+
   /**
    * 美容预约
    */
@@ -100,9 +101,14 @@ public class CarServiceRecord extends BaseEntity {
   private Date payDate;
 
   /**
+   * 预约到店时间
+   */
+  private Date subscribeDate;
+
+  /**
    * 订单完成时间
    */
-  private Date complateDate;
+  private Date finishDate;
 
 
   private TenantClearingRecord tenantClearingRecord;
@@ -123,6 +129,25 @@ public class CarServiceRecord extends BaseEntity {
    */
   private TenantEvaluate tenantEvaluate;
 
+  /**
+   * 是否为预约服务类型，控制手机端图标显示(1:预约类型 0：非预约类型)
+   */
+  private Integer serviceFlag;
+
+
+  @Transient
+  public Integer getServiceFlag() {
+    if (subscribeDate != null) {
+      serviceFlag = 1;
+    } else {
+      serviceFlag = 0;
+    }
+    return serviceFlag;
+  }
+
+  public void setServiceFlag(Integer serviceFlag) {
+    this.serviceFlag = serviceFlag;
+  }
 
   public Date getPayDate() {
     return payDate;
@@ -132,12 +157,20 @@ public class CarServiceRecord extends BaseEntity {
     this.payDate = payDate;
   }
 
-  public Date getComplateDate() {
-    return complateDate;
+  public Date getSubscribeDate() {
+    return subscribeDate;
   }
 
-  public void setComplateDate(Date complateDate) {
-    this.complateDate = complateDate;
+  public void setSubscribeDate(Date subscribeDate) {
+    this.subscribeDate = subscribeDate;
+  }
+
+  public Date getFinishDate() {
+    return finishDate;
+  }
+
+  public void setFinishDate(Date finishDate) {
+    this.finishDate = finishDate;
   }
 
   @OneToOne(mappedBy = "carServiceRecord")
@@ -300,13 +333,11 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @OneToOne(mappedBy = "carServiceRecord")
-  public BeautifyReservation getBeautifyReservation ()
-  {
+  public BeautifyReservation getBeautifyReservation() {
     return beautifyReservation;
   }
 
-  public void setBeautifyReservation (BeautifyReservation beautifyReservation)
-  {
+  public void setBeautifyReservation(BeautifyReservation beautifyReservation) {
     this.beautifyReservation = beautifyReservation;
   }
 

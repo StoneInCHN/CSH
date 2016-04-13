@@ -98,7 +98,7 @@ public class CarServiceController extends MobileBaseController {
     }
     CarServiceRecord carServiceRecord =
         carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.RESERVATION,
-            price, null);
+            price, null, serviceReq.getSubscribeDate());
 
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
       LogUtil
@@ -207,7 +207,7 @@ public class CarServiceController extends MobileBaseController {
     if (recordId == null) {
       carServiceRecord =
           carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
-              price, paymentType);
+              price, paymentType, null);
       if (LogUtil.isDebugEnabled(CarServiceController.class)) {
         LogUtil
             .debug(
@@ -268,7 +268,9 @@ public class CarServiceController extends MobileBaseController {
 
 
     CarServiceRecord carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
-    String[] properties = {"id", "createDate", "price", "recordNo"};
+    String[] properties =
+        {"id", "createDate", "price", "recordNo", "payDate", "subscribeDate", "finishDate",
+            "serviceFlag"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, carServiceRecord);
     map.put("serviceName", carServiceRecord.getCarService().getServiceName());
     String[] tenant_properties =

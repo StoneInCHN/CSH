@@ -61,5 +61,9 @@
 		<setting name="illegalSearchURL" value="http://api.jisuapi.com/illegal/query"/>
 		<setting name="illegalSearchAppKey" value="76ee56b0fec1c4e2"/>
 		
+		<setting name="serviceCateMaintain" value="1"/>
+		<setting name="serviceCateWash" value="2"/>
+		<setting name="serviceCateBeautify" value="5"/>
+		
 	</csh>	
 	

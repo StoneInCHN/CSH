@@ -149,17 +149,57 @@ public class Setting implements Serializable {
    * 违章查询周期
    */
   private String illegalSearchPeriod;
-  
+
   /**
    * 违章查询URL
    */
   private String illegalSearchURL;
-  
+
   /**
    * 违章查询app key
    */
   private String illegalSearchAppKey;
 
+  /**
+   * 服务类别ID:保养
+   */
+  private Long serviceCateMaintain;
+
+  /**
+   * 服务类别ID:洗车
+   */
+  private Long serviceCateWash;
+
+  /**
+   * 服务类别ID:美容
+   */
+  private Long serviceCateBeautify;
+
+
+
+  public Long getServiceCateMaintain() {
+    return serviceCateMaintain;
+  }
+
+  public void setServiceCateMaintain(Long serviceCateMaintain) {
+    this.serviceCateMaintain = serviceCateMaintain;
+  }
+
+  public Long getServiceCateWash() {
+    return serviceCateWash;
+  }
+
+  public void setServiceCateWash(Long serviceCateWash) {
+    this.serviceCateWash = serviceCateWash;
+  }
+
+  public Long getServiceCateBeautify() {
+    return serviceCateBeautify;
+  }
+
+  public void setServiceCateBeautify(Long serviceCateBeautify) {
+    this.serviceCateBeautify = serviceCateBeautify;
+  }
 
   public String getObdServerUrl() {
     return obdServerUrl;
