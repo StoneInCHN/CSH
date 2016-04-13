@@ -177,79 +177,79 @@ public class CommonEnum {
    *
    */
   public enum IllegalArea {
-    
+
     BEIJINGSHI("beijing"),
-    
+
     TIANJIN("tianjin"),
-    
+
     HEBEI("hebei"),
-    
+
     SHANXI1("shanxi"),
-    
+
     NEIMENGGU("neimenggu"),
-    
+
     LIAONING("liaoning"),
-    
+
     JILIN("jilin"),
-    
+
     HEILONGJIANG("heilongjiang"),
-    
+
     SHANGHAI("shanghai"),
-    
+
     JIANGSU("jiangsu"),
-    
+
     ZHEJIANG("zhejiang"),
-    
+
     ANHUI("anhui"),
-    
+
     FUJIAN("fujian"),
-    
+
     JIANGXI("jiangxi"),
-    
+
     SHANDONG("shandong"),
-    
+
     HENAN("henan"),
-    
+
     HUBEI("hubei"),
-    
+
     HUNAN("hunan"),
-    
+
     GUANGDONG("guangdong"),
-    
+
     GUANGXI("guangxi"),
-    
+
     HAINAN("hainan"),
-    
+
     CHONGQING("chongqing"),
-    
+
     SICHUAN("sichuan"),
-    
+
     GUIZHOU("guizhou"),
-    
+
     YUNNAN("yunnan"),
-    
+
     XIZANG("xizang"),
-    
-    SHANXI("shanxi"),    
-    
+
+    SHANXI("shanxi"),
+
     GANSU("gansu"),
-    
+
     QINGHAI("qinghai"),
-    
+
     NINGXIA("ningxia"),
-    
+
     XINJIANG("xinjiang"),
-    
+
     XIANGGANG("xianggang"),
-    
+
     AOMEN("aomen"),
-    
+
     TAIWAN("taiwan");
 
-    private IllegalArea(String provienceShortName){
+    private IllegalArea(String provienceShortName) {
       this.provienceShortName = provienceShortName;
     }
-    
+
     private String provienceShortName;
 
     public String getProvienceShortName() {
@@ -436,9 +436,9 @@ public class CommonEnum {
     PROMOTION
 
   }
-  
- public enum SendType{
-    /** 推送消息*/
+
+  public enum SendType {
+    /** 推送消息 */
     PUSH,
     /**
      * 短信消息
@@ -473,12 +473,20 @@ public class CommonEnum {
   }
 
   public enum ChargeStatus {
-    /*** 预约 */
+    /*** 预约中 */
     RESERVATION,
+    /*** 预约成功 */
+    RESERVATION_SUCCESS,
+    /*** 预约失败 */
+    RESERVATION_FAIL,
     /** 未支付 */
     UNPAID,
     /** 已支付 */
-    PAID
+    PAID,
+    /** 完成 */
+    FINISH,
+    /** 过期 */
+    OVERDUE,
   }
   /**
    * 结算状态
@@ -530,16 +538,16 @@ public class CommonEnum {
      */
     P97
   }
-  
+
   /**
    * 文件类型
    */
   public enum FileType {
 
-      /** 图片 */
-      image,
-      /** 文件 */
-      file
+    /** 图片 */
+    image,
+    /** 文件 */
+    file
   }
 
 }
