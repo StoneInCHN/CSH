@@ -36,10 +36,6 @@
 				     }],
 				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="serviceStatus" style="width:110px;" required=true/>
     		</td>
-    		<th>${message("csh.carService.rate")}:</th>
-    		<td>
-    			 <input  class="easyui-textbox" id= "rate"  name="rate"  />
-    		</td>
     	</tr>
     	<tr rowspan="4">
     		

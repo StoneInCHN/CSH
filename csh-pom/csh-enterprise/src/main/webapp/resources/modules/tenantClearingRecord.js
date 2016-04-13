@@ -73,13 +73,21 @@ var tenantClearingRecord_manager_tool = {
 						    	  }},
 					    	  {title:message("csh.carServiceRecord.chargeStatus"),width:50,field:"chargeStatus",sortable:true,
 						    	  formatter: function(value,row,index){
-						    		  if(value == "RESERVATION"){
-						    			  return "预约"
-						    		  }else if(value == "UNPAID"){
-						    			  return "未支付"
-						    		  }else if(value == "PAID"){
-						    			  return "已支付"
-						    		  }
+						    		  if(value=="RESERVATION"){
+						    				return message("csh.carServiceRecord.chargeStatus.RESERVATION");
+						    			}else if(value == "UNPAID"){
+						    				return message("csh.carServiceRecord.chargeStatus.UNPAID");
+						    			}else if (value == "PAID"){
+						    				return message("csh.carServiceRecord.chargeStatus.PAID");
+						    			}else if (value == "RESERVATION_SUCCESS"){
+						    				return message("csh.carServiceRecord.chargeStatus.RESERVATION_SUCCESS");
+						    			}else if (value == "RESERVATION_FAIL"){
+						    				return message("csh.carServiceRecord.chargeStatus.RESERVATION_FAIL");
+						    			}else if (value == "FINISH"){
+						    				return message("csh.carServiceRecord.chargeStatus.FINISH");
+						    			}else if (value == "OVERDUE"){
+						    				return message("csh.carServiceRecord.chargeStatus.OVERDUE");
+						    			}
 						    	  }},
 						    	  
 						    	  {title:message("csh.carServiceRecord.paymentType"),width:50,field:"paymentType",sortable:true,
@@ -110,7 +118,6 @@ var tenantClearingRecord_manager_tool = {
 						   ]
 						],
 						onLoadSuccess:function(){
-							debugger;
 							$("#amountOfCurrentPeriod").textbox('setValue',totalMoney);
 						}
 					});

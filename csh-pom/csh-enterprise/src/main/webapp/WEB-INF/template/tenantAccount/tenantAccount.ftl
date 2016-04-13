@@ -82,7 +82,7 @@
 	    	<tr>
 	    		<th>${message("csh.tenantAccount.tenantUser")}:</th>
 	    		<td>
-	    			 <input type="text" class="easyui-textbox" name="addTenantAccountUser" id= "addTenantAccountUser"  />
+	    			 <input type="text" class="easyui-textbox" data-options="required:true,editable:false" name="addTenantAccountUser" id= "addTenantAccountUser"  />
 	    		</td>
 	    		<td>
 	    			<a href="#" id="tenant_user_search_btn" class="easyui-linkbutton" onclick="searchTenantUser('addTenantAccountUser')" iconCls="icon-search" plain=true"></a>
@@ -91,7 +91,7 @@
 	    	<tr>
 	    	<th>${message("csh.tenantAccount.role")}:</th>
 	    		<td>
-	    			 <input type="text" class="easyui-textbox" name="addTenantAccountRole" id= "addTenantAccountRole"  />
+	    			 <input type="text" class="easyui-textbox" name="addTenantAccountRole" data-options="required:true,editable:false" id= "addTenantAccountRole"  />
 	    		</td>
 	    		<td>
 	    			<a href="#" id="role_search_btn" class="easyui-linkbutton" onclick="searchRoles('addTenantAccountRole')" iconCls="icon-search" plain=true"></a>

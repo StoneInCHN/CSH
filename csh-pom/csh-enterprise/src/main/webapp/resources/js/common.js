@@ -276,7 +276,7 @@ function listRemove(id, url) {
 
 // 查询用户
 function searchTenantUser(id) {
-	$('#searchTenantUser')
+	$('#commonMainDialog')
 			.dialog(
 					{
 						title : message("csh.tenantUser.search"),
@@ -289,7 +289,7 @@ function searchTenantUser(id) {
 							text : message("csh.common.cancel"),
 							iconCls : 'icon-cancel',
 							handler : function() {
-								$('#searchTenantUser').dialog("close");
+								$('#commonMainDialog').dialog("close");
 							}
 						} ],
 						onLoad : function() {
@@ -299,7 +299,7 @@ function searchTenantUser(id) {
 							$("#common-tenantUser-table-list")
 									.datagrid(
 											{
-												title : message("csh.elderlyinfo"),
+												title : message("csh.tenantUser.list"),
 												fitColumns : true,
 												url : '../tenantUser/list.jhtml',
 												pagination : true,
@@ -307,18 +307,7 @@ function searchTenantUser(id) {
 												striped : true,
 												onDblClickRow : function(
 														rowIndex, rowData) {
-													if(id.indexOf("NurseArrangement") != -1){//护理员安排
-														if(id.indexOf("add")==0){//以add开头
-															$("#addNurseArrangement_nurseAssistantID").val(rowData.id); // 隐藏域 护理员id
-															$("#addNurseArrangement_nurseAssistantName").textbox('setValue',rowData.realName); 
-														}
-														if(id.indexOf("edit")==0){//以edit开头
-															$("#editNurseArrangement_nurseAssistantID").val(rowData.id); // 隐藏域 护理员id
-															$("#editNurseArrangement_nurseAssistantName").textbox('setValue',rowData.realName); 
-														}
-														$('#searchTenantUser').dialog("close");
-														return false;
-													}
+													debugger;
 													$("#" + id + "ID").val(
 															rowData.id);
 													$("#" + id).textbox(
@@ -329,7 +318,7 @@ function searchTenantUser(id) {
 																.val(
 																		rowData.identifier);
 													}
-													$('#searchTenantUser')
+													$('#commonMainDialog')
 															.dialog("close");
 												},
 												columns : [ [
@@ -413,17 +402,17 @@ function searchTenantUser(id) {
 
 											});
 
-							$("#common_elderlyinfo_search_btn")
+							$("#common_tenantUserSearch-search-btn")
 									.click(
 											function() {
 												var _queryParams = $(
-														"#common_elderlyinfo_search_form")
+														"#common_tenantUser_search_form")
 														.serializeJSON();
 												$(
-														'#common_elderlyInfoSearch-table-list')
+														'#common-tenantUser-table-list')
 														.datagrid('options').queryParams = _queryParams;
 												$(
-														"#common_elderlyInfoSearch-table-list")
+														"#common-tenantUser-table-list")
 														.datagrid('reload');
 											})
 						}
@@ -431,7 +420,7 @@ function searchTenantUser(id) {
 
 }
 function searchRoles(id) {
-	$('#searchRoles')
+	$('#commonMainDialog')
 			.dialog(
 					{
 						title : message("csh.role.search"),
@@ -444,7 +433,7 @@ function searchRoles(id) {
 							text : message("csh.common.cancel"),
 							iconCls : 'icon-cancel',
 							handler : function() {
-								$('#searchRoles').dialog("close");
+								$('#commonMainDialog').dialog("close");
 							}
 						} ],
 						onLoad : function() {
@@ -472,7 +461,7 @@ function searchRoles(id) {
 																.val(
 																		rowData.identifier);
 													}
-													$('#searchRoles').dialog(
+													$('#commonMainDialog').dialog(
 															"close");
 												},
 												columns : [ [
@@ -501,17 +490,17 @@ function searchRoles(id) {
 
 											});
 
-							$("#common_elderlyinfo_search_btn")
+							$("#common_role_search_btn")
 									.click(
 											function() {
 												var _queryParams = $(
-														"#common_elderlyinfo_search_form")
+														"#common_role_search_form")
 														.serializeJSON();
 												$(
-														'#common_elderlyInfoSearch-table-list')
+														'#common-roles-table-list')
 														.datagrid('options').queryParams = _queryParams;
 												$(
-														"#common_elderlyInfoSearch-table-list")
+														"#common-roles-table")
 														.datagrid('reload');
 											})
 						}
