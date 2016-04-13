@@ -18,7 +18,22 @@ function clickNotificationNews(event) {
 		}); 
 	}
 };
-
+function generateQrcode(){
+	$.ajax({
+		url : "../../console/common/generateQrImage.jhtml",
+		type : "get",
+		cache : false,
+		success:function(result,response,status){
+			if(response == "success"){
+				showSuccessMsg(result.content);
+				$('#generateQrcodeButton').attr('disabled',"true");
+				$('#generateQrcodeButton').attr('text',"生成成功");
+			}else{
+				alertErrorMsg();
+			}
+		}
+	});
+}
 /**
  *绑定流程点击事件 
  */
@@ -433,6 +448,7 @@ var maintainReservationStatistics ={
 				 }
 			}
 		});
+		
 		/**
 		 * 修改密码事件
 		 */

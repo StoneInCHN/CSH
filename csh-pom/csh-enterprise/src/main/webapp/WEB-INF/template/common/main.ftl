@@ -244,7 +244,12 @@
 					<div class="main-content-right">
 						<div class="row">
 							<div class="">
+							[#if generateQrCode == true]
+								
+								<button type="button" id="generateQrcodeButton" onclick="generateQrcode()" class="btn btn-primary">生成二维码</button>
+							[#else]
 								<img id="qrCodeImage" style="width:120px;height:120px" src="${base}/console/common/showQrCode.jhtml" title="扫码加入"/>
+							[/#if]	
 							</div>
 						
 							<div class = "">

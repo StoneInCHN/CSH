@@ -111,7 +111,11 @@ public class CommonController extends BaseController {
 public String main(ModelMap model,  HttpSession session) {
     TenantAccount tenantAccount = tenantAccountService.getCurrent();
     ReportMainResponse response = new ReportMainResponse ();
-    
+    TenantInfo tenantInfo = tenantInfoService.find (tenantAccountService.getCurrentTenantInfo ().getId ());
+    if (tenantInfo.getQrImage () == null)
+    {
+      model.addAttribute("generateQrCode", true);
+    }
     Filter bindFilter = new Filter ("bindStatus", Operator.eq, BindStatus.BINDED);
     Filter unbindFilter = new Filter ("bindStatus", Operator.eq, BindStatus.UNBINDED);
     Filter tenantIdFilter = new Filter ("tenantID", Operator.eq, tenantAccount.getTenantID ());
@@ -122,6 +126,7 @@ public String main(ModelMap model,  HttpSession session) {
     response.setEndUserCount (endUserService.countUserByTenantID (tenantAccount.getTenantID ()));
     model.addAttribute ("response",response);
     model.addAttribute("tenantAccount", tenantAccount);
+    
   return "/common/main";
 }
 
@@ -228,6 +233,7 @@ public String main(ModelMap model,  HttpSession session) {
   @RequestMapping(value = "/showQrCode", method = RequestMethod.GET)
   public void getQrCode(HttpServletResponse response) {
     TenantInfo tenantInfo = tenantAccountService.getCurrentTenantInfo ();
+    tenantInfo = tenantInfoService.find (tenantInfo.getId ());
     ServletOutputStream sos = null;
     try {
       if(null != tenantInfo.getQrImage()) {
