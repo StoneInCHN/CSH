@@ -75,6 +75,11 @@ public class CarServiceRecord extends BaseEntity {
    * 维修预约
    */
   private RepareReservation repareReservation;
+  
+  /**
+   * 美容预约
+   */
+  private BeautifyReservation beautifyReservation;
   /**
    * 商家名称
    */
@@ -292,6 +297,17 @@ public class CarServiceRecord extends BaseEntity {
 
   public void setPaymentDate(Date paymentDate) {
     this.paymentDate = paymentDate;
+  }
+
+  @OneToOne(mappedBy = "carServiceRecord")
+  public BeautifyReservation getBeautifyReservation ()
+  {
+    return beautifyReservation;
+  }
+
+  public void setBeautifyReservation (BeautifyReservation beautifyReservation)
+  {
+    this.beautifyReservation = beautifyReservation;
   }
 
 
