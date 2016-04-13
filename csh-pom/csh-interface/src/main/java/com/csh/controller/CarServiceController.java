@@ -89,6 +89,13 @@ public class CarServiceController extends MobileBaseController {
     EndUser endUser = endUserService.find(userId);
     CarService carService = carServiceService.find(serviceReq.getServiceId());
 
+    Boolean existRecord =
+        carServiceRecordService.existRecordByUser(endUser, carService, ChargeStatus.RESERVATION);
+    if (existRecord) {
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc(Message.error("csh.subscribe.duplicate").getContent());
+      return response;
+    }
     CarServiceRecord carServiceRecord =
         carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.RESERVATION,
             price, null);
@@ -111,7 +118,6 @@ public class CarServiceController extends MobileBaseController {
     response.setDesc(carServiceRecord.getId().toString());
     return response;
   }
-
 
   /**
    * 更新支付状态

@@ -89,6 +89,16 @@ public class CarServiceRecord extends BaseEntity {
    */
   private Date clearingDate;
 
+  /**
+   * 付款时间
+   */
+  private Date payDate;
+
+  /**
+   * 订单完成时间
+   */
+  private Date complateDate;
+
 
   private TenantClearingRecord tenantClearingRecord;
 
@@ -108,6 +118,22 @@ public class CarServiceRecord extends BaseEntity {
    */
   private TenantEvaluate tenantEvaluate;
 
+
+  public Date getPayDate() {
+    return payDate;
+  }
+
+  public void setPayDate(Date payDate) {
+    this.payDate = payDate;
+  }
+
+  public Date getComplateDate() {
+    return complateDate;
+  }
+
+  public void setComplateDate(Date complateDate) {
+    this.complateDate = complateDate;
+  }
 
   @OneToOne(mappedBy = "carServiceRecord")
   public TenantEvaluate getTenantEvaluate() {

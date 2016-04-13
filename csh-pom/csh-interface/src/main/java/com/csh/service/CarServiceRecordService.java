@@ -54,5 +54,13 @@ public interface CarServiceRecordService extends BaseService<CarServiceRecord, L
       BigDecimal price, String company, String IDphoto, String drivingLicensePhoto,
       String driverLicensePhoto, Boolean isOwned, Boolean isLoaned);
 
-
+  /**
+   * 根据用户查询是否存在正处于某种状态的消费记录
+   * 
+   * @param user
+   * @param carService
+   * @param chargeStatus
+   * @return
+   */
+  public Boolean existRecordByUser(EndUser user, CarService carService, ChargeStatus chargeStatus);
 }

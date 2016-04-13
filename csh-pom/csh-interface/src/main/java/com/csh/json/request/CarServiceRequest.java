@@ -1,6 +1,7 @@
 package com.csh.json.request;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
@@ -32,6 +33,20 @@ public class CarServiceRequest extends BaseRequest {
    * 服务单价
    */
   private BigDecimal price;
+
+  /**
+   * 预约时间
+   */
+  private Date subscribeDate;
+
+
+  public Date getSubscribeDate() {
+    return subscribeDate;
+  }
+
+  public void setSubscribeDate(Date subscribeDate) {
+    this.subscribeDate = subscribeDate;
+  }
 
   public Long getRecordId() {
     return recordId;

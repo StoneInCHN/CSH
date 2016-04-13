@@ -1,6 +1,8 @@
 package com.csh.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -20,6 +22,8 @@ import com.csh.entity.commonenum.CommonEnum.BalanceType;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -103,5 +107,21 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setVehicleInsurance(vehicleInsurance);
     carServiceRecordDao.persist(carServiceRecord);
     return carServiceRecord;
+  }
+
+  @Override
+  public Boolean existRecordByUser(EndUser user, CarService carService, ChargeStatus chargeStatus) {
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter userFilter = new Filter("endUser", Operator.eq, user);
+    Filter serviceFilter = new Filter("carService", Operator.eq, carService);
+    Filter statusFilter = new Filter("chargeStatus", Operator.eq, chargeStatus);
+    filters.add(userFilter);
+    filters.add(serviceFilter);
+    filters.add(statusFilter);
+    List<CarServiceRecord> records = carServiceRecordDao.findList(null, null, filters, null);
+    if (records != null && records.size() > 0) {
+      return true;
+    }
+    return false;
   }
 }
