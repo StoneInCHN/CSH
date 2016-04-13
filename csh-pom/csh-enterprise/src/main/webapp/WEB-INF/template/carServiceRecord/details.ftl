@@ -39,8 +39,20 @@
     			 	[#if carServiceRecord.chargeStatus == 'PAID']
     			  		value="${message('csh.carServiceRecord.chargeStatus.PAID')}"
     			  	[/#if]
+    			  	[#if carServiceRecord.chargeStatus == 'RESERVATION_SUCCESS']
+    			  		value="${message('csh.carServiceRecord.chargeStatus.RESERVATION_SUCCESS')}"
+    			  	[/#if]
+    			  	[#if carServiceRecord.chargeStatus == 'RESERVATION_FAIL']
+    			  		value="${message('csh.carServiceRecord.chargeStatus.RESERVATION_FAIL')}"
+    			  	[/#if]
     			  	[#if carServiceRecord.chargeStatus == 'UNPAID']
     			  		value="${message('csh.carServiceRecord.chargeStatus.UNPAID')}"
+    			  	[/#if]
+    			  	[#if carServiceRecord.chargeStatus == 'FINISH']
+    			  		value="${message('csh.carServiceRecord.chargeStatus.FINISH')}"
+    			  	[/#if]
+    			  	[#if carServiceRecord.chargeStatus == 'OVERDUE']
+    			  		value="${message('csh.carServiceRecord.chargeStatus.OVERDUE')}"
     			  	[/#if]
     			  	[#if carServiceRecord.chargeStatus == 'RESERVATION']
     			  		value="${message('csh.carServiceRecord.chargeStatus.RESERVATION')}"

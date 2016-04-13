@@ -47,6 +47,7 @@ import com.csh.service.ServiceCategoryService;
 import com.csh.service.VehicleInsuranceService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.ToolsUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -226,8 +227,9 @@ public class VehicleInsuranceController extends BaseController {
 //    {
 //      return ERROR_MESSAGE;
 //    }
-    
+    String recordNo = ToolsUtils.generateRecordNo(carServiceList.get (0).getTenantInfo().getOrgCode());
     CarServiceRecord record = new CarServiceRecord ();
+    record.setRecordNo (recordNo);
     record.setCarService (carServiceList.get (0));
     record.setChargeStatus (ChargeStatus.RESERVATION);
     record.setEndUser (endUser);

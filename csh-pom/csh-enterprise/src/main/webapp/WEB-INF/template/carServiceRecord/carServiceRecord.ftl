@@ -47,8 +47,20 @@
 				      label: 'RESERVATION',
 				      value: '${message("csh.carServiceRecord.chargeStatus.RESERVATION")}'
 				     },{
+				      label: 'RESERVATION_SUCCESS',
+				      value: '${message("csh.carServiceRecord.chargeStatus.RESERVATION_SUCCESS")}'
+				     },{
+				      label: 'RESERVATION_FAIL',
+				     },{
+				      value: '${message("csh.carServiceRecord.chargeStatus.RESERVATION_FAIL")}'
 				      label: 'UNPAID',
 				      value: '${message("csh.carServiceRecord.chargeStatus.UNPAID")}'
+				     },{
+				      label: 'FINISH',
+				      value: '${message("csh.carServiceRecord.chargeStatus.FINISH")}'
+				     },{
+				      label: 'OVERDUE',
+				      value: '${message("csh.carServiceRecord.chargeStatus.OVERDUE")}'
 				     },{
 				      label: 'PAID',
 				      value: '${message("csh.carServiceRecord.chargeStatus.PAID")}'

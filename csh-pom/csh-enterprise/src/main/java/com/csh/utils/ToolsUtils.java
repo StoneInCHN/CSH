@@ -121,4 +121,29 @@ public class ToolsUtils implements Serializable {
     return null;
 
   }
+
+  /**
+   * 生成账单号 格式 yyMMddHHmmss-组织机构代码-随机4位数-(1-1000累加)
+   * 
+   * @return
+   */
+  public synchronized static String generateRecordNo(String orgCode) {
+    StringBuffer strBuffer = new StringBuffer();
+    String strDate = DateTimeUtils.convertDateToString (new Date (), "yyyyMMddHHmmss");
+    strBuffer.append(strDate);
+    strBuffer.append(orgCode);
+    strBuffer.append((int) ((Math.random() * 9 + 1) * 1000));
+    // 订单尾号增自999时重置
+    if (baseNo == 999) {
+      baseNo = 1;
+    }
+    if (baseNo.toString().length() == 1) {
+      strBuffer.append("00");
+    }
+    if (baseNo.toString().length() == 2) {
+      strBuffer.append("0");
+    }
+    strBuffer.append(baseNo++);
+    return strBuffer.toString();
+  }
 }

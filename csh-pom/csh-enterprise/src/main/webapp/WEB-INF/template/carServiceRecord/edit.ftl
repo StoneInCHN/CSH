@@ -46,15 +46,39 @@
     			  		, selected:true
     			  	  [/#if]
 				     },{
+				      label: 'RESERVATION_SUCCESS',
+				      value: '${message("csh.carServiceRecord.chargeStatus.RESERVATION_SUCCESS")}'
+				      [#if carServiceRecord.chargeStatus == 'RESERVATION_SUCCESS']
+    			  		, selected:true
+    			  	  [/#if]
+				     },{
+				      label: 'RESERVATION_FAIL',
+				      value: '${message("csh.carServiceRecord.chargeStatus.RESERVATION_FAIL")}'
+				      [#if carServiceRecord.chargeStatus == 'RESERVATION_FAIL']
+    			  		, selected:true
+    			  	  [/#if]
+				     },{
 				      label: 'UNPAID',
 				      value: '${message("csh.carServiceRecord.chargeStatus.UNPAID")}'
 				      [#if carServiceRecord.chargeStatus == 'UNPAID']
     			  		, selected:true
     			  	  [/#if]
 				     },{
+				      label: 'FINISH',
+				      value: '${message("csh.carServiceRecord.chargeStatus.FINISH")}'
+				      [#if carServiceRecord.chargeStatus == 'FINISH']
+    			  		, selected:true
+    			  	  [/#if]
+				     },{
 				      label: 'PAID',
 				      value: '${message("csh.carServiceRecord.chargeStatus.PAID")}'
 				      [#if carServiceRecord.chargeStatus == 'PAID']
+    			  		, selected:true
+    			  	  [/#if]
+				     },{
+				      label: 'OVERDUE',
+				      value: '${message("csh.carServiceRecord.chargeStatus.OVERDUE")}'
+				      [#if carServiceRecord.chargeStatus == 'OVERDUE']
     			  		, selected:true
     			  	  [/#if]
 				     }],

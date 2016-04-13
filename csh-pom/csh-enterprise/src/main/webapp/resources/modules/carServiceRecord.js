@@ -285,7 +285,17 @@ $(function(){
 		    				return message("csh.carServiceRecord.chargeStatus.UNPAID");
 		    			}else if (value == "PAID"){
 		    				return message("csh.carServiceRecord.chargeStatus.PAID");
+		    			}else if (value == "RESERVATION_SUCCESS"){
+		    				return message("csh.carServiceRecord.chargeStatus.RESERVATION_SUCCESS");
+		    			}else if (value == "RESERVATION_FAIL"){
+		    				return message("csh.carServiceRecord.chargeStatus.RESERVATION_FAIL");
+		    			}else if (value == "FINISH"){
+		    				return message("csh.carServiceRecord.chargeStatus.FINISH");
+		    			}else if (value == "OVERDUE"){
+		    				return message("csh.carServiceRecord.chargeStatus.OVERDUE");
 		    			}
+		    			
+		    			
 		    	  }},
 	    	  {title:message("csh.carServiceRecord.paymentDate"),field:"paymentDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
