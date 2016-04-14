@@ -1,7 +1,6 @@
 package com.csh.json.request;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
@@ -37,14 +36,14 @@ public class CarServiceRequest extends BaseRequest {
   /**
    * 预约时间
    */
-  private Date subscribeDate;
+  private String subscribeDate;
 
 
-  public Date getSubscribeDate() {
+  public String getSubscribeDate() {
     return subscribeDate;
   }
 
-  public void setSubscribeDate(Date subscribeDate) {
+  public void setSubscribeDate(String subscribeDate) {
     this.subscribeDate = subscribeDate;
   }
 

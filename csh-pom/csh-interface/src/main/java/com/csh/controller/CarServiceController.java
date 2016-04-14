@@ -45,6 +45,7 @@ import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.PayUtil;
+import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
 
 
@@ -77,7 +78,8 @@ public class CarServiceController extends MobileBaseController {
     Long userId = serviceReq.getUserId();
     String token = serviceReq.getToken();
     // ChargeStatus chargeStatus = serviceReq.getChargeStatus();
-    BigDecimal price = serviceReq.getPrice();
+    // BigDecimal price = serviceReq.getPrice();
+    String dateStr = serviceReq.getSubscribeDate();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -96,9 +98,11 @@ public class CarServiceController extends MobileBaseController {
       response.setDesc(Message.error("csh.subscribe.duplicate").getContent());
       return response;
     }
+
+    Date subscribeDate = TimeUtils.convertStr2Date(dateStr);
     CarServiceRecord carServiceRecord =
         carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.RESERVATION,
-            price, null, serviceReq.getSubscribeDate());
+            new BigDecimal(-1), null, subscribeDate);
 
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
       LogUtil

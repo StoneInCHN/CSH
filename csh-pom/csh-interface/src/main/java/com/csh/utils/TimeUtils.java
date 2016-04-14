@@ -1,5 +1,6 @@
 package com.csh.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +29,16 @@ public class TimeUtils {
   }
 
 
+  public static Date convertStr2Date(String dateStr) {
+    try {
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+      return sdf.parse(dateStr);
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   public static String getLongDateStr(Date date) {
     return longDateFormat.format(date);
   }
@@ -53,11 +64,11 @@ public class TimeUtils {
    * 
    * @return
    */
-  public static Date addDays(Integer days , Date date) {
+  public static Date addDays(Integer days, Date date) {
     Calendar cal = Calendar.getInstance();
     cal.setTime(date);
     cal.add(Calendar.DATE, days);
-    
+
     return cal.getTime();
   }
 
