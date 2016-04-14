@@ -56,6 +56,7 @@ public class TenantApplyServiceImpl extends BaseServiceImpl<TenantApply, Long> i
     tenantInfo.setLatitude(tenantApply.getLatitude());
     tenantInfo.setLongitude(tenantApply.getLongitude());
     tenantInfo.setStoreLogo(tenantApply.getPhoto());
+    tenantInfo.setPhoto(tenantApply.getPhoto());
     tenantInfo.setContactPerson(tenantApply.getContactPerson());
     tenantInfo.setContactPhone(tenantApply.getContactPhone());
     tenantInfo.setTenantName(tenantApply.getTenantName());

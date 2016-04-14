@@ -114,7 +114,7 @@ $().ready(function() {
 									${message("csh.apply.license")}:
 								</th>
 								<td>
-									<a href="${base}/upload/license/${apply.license}" target="1024"><img src="${base}/upload/license/${apply.license}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.license")}"></a>
+									<a href="${base}${apply.license}" target="1024"><img src="${base}${apply.license}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.license")}"></a>
 								</td>
 							</tr>
 							<tr>
@@ -122,7 +122,7 @@ $().ready(function() {
 									${message("csh.apply.photo")}:
 								</th>
 								<td>
-									<a href="${base}/upload/license/${apply.photo}" target="1024"><img src="${base}/upload/license/${apply.photo}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.photo")}"></a>
+									<a href="${base}${apply.photo}" target="1024"><img src="${base}${apply.photo}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.photo")}"></a>
 								</td>
 							</tr>
 							<tr>

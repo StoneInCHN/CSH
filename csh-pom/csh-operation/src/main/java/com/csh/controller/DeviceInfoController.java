@@ -223,10 +223,11 @@ public class DeviceInfoController extends BaseController {
       if (string.length() > 0) {
         Long id = Long.valueOf(string);
         DeviceInfo deviceInfo = deviceInfoService.find(id);
-        if(DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus()) )
+        if(DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus())){
           deviceInfo.setTenantID(tenantInfoId);
-        deviceInfo.setDeviceStatus(DeviceStatus.STORAGEOUT);
-        deviceInfoService.update(deviceInfo);
+          deviceInfo.setDeviceStatus(DeviceStatus.STORAGEOUT);
+          deviceInfoService.update(deviceInfo);
+        }
       }
     }
     return SUCCESS_MESSAGE;

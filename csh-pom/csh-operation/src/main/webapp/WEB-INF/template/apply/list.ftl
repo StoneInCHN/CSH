@@ -168,10 +168,10 @@
 														${tenantApply.area}
 													</td>
 													<td>
-														<a href="${tenantApply.license}" target="1024"><img src="${tenantApply.license}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.license")}"></a>
+														<a href="${base}${tenantApply.license}" target="1024"><img src="${base}${tenantApply.license}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.license")}"></a>
 													</td>
 													<td>
-														<a href="${tenantApply.photo}" target="1024"><img src="${tenantApply.photo}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.photo")}"></a>
+														<a href="${base}${tenantApply.photo}" target="1024"><img src="${base}${tenantApply.photo}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.apply.photo")}"></a>
 													</td>
 													<td>
 														<span title="${tenantApply.createDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantApply.createDate}</span>
