@@ -62,69 +62,8 @@ public class EndUserController extends BaseController
   public @ResponseBody Page<EndUser> list (Pageable pageable, ModelMap model,
       Date beginDate, Date endDate, String userNameSearch,AccountStatus accountStatusSearch)
   {
-    String startDateStr = null;
-    String endDateStr = null;
-
-    IKAnalyzer analyzer = new IKAnalyzer ();
-    analyzer.setMaxWordLength (true);
-    BooleanQuery query = new BooleanQuery ();
-
-    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "userName",
-        analyzer);
-    Query nameQuery = null;
-    TermRangeQuery rangeQuery = null;
-    TermQuery statusQuery = null;
     
-    Filter filter = null;
-    if (beginDate != null)
-    {
-      startDateStr = DateTimeUtils.convertDateToString (beginDate, null);
-    }
-    if (endDate != null)
-    {
-      endDateStr = DateTimeUtils.convertDateToString (endDate, null);
-    }
-    if (userNameSearch != null)
-    {
-      String text = QueryParser.escape (userNameSearch);
-        try
-        {
-          nameQuery = nameParser.parse (text);
-          query.add (nameQuery, Occur.MUST);
-          
-          if (LogUtil.isDebugEnabled (EndUserController.class))
-          {
-            LogUtil.debug (EndUserController.class, "search", "Search real name: "
-                + userNameSearch );
-          }
-        }
-        catch (ParseException e)
-        {
-          e.printStackTrace();
-        }
-    }
-    if (accountStatusSearch != null)
-    {
-      statusQuery = new TermQuery (new Term ("accoutStatus",accountStatusSearch.toString ()));
-      query.add (statusQuery,Occur.MUST);
-    }
-    if (startDateStr != null || endDateStr != null)
-    {
-      rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr, true, true);
-      query.add (rangeQuery,Occur.MUST);
-      
-      if (LogUtil.isDebugEnabled (EndUserController.class))
-      {
-        LogUtil.debug (EndUserController.class, "search", "Search start date: "+startDateStr
-            +" end date: "+endDateStr);
-      }
-    }
-    if (nameQuery != null || rangeQuery != null || statusQuery != null)
-    {
-      return endUserService.search (query, pageable, analyzer,filter);
-    }
-      return endUserService.findPage (pageable);
-    
+     return endUserService.findEndUser (pageable, model, beginDate, endDate, userNameSearch, accountStatusSearch);
   }
 
   /**

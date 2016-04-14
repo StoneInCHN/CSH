@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.beans.Setting;
 import com.csh.dao.CarServiceRecordDao;
 import com.csh.dao.TenantClearingRecordDao;
 import com.csh.entity.CarServiceRecord;
@@ -22,6 +23,7 @@ import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.SnService;
 import com.csh.service.TenantClearingRecordService;
 import com.csh.utils.FieldFilterUtils;
+import com.csh.utils.SettingUtils;
 
 /**
  * 结算记录
@@ -41,7 +43,7 @@ TenantClearingRecordService {
   private CarServiceRecordDao carServiceRecordDao;
   @Resource (name = "snServiceImpl")
   private SnService snService;
-  
+  private Setting setting = SettingUtils.get();
   @Resource()
   public void setBaseDao(TenantClearingRecordDao tenantClearingRecordDao) {
     super.setBaseDao(tenantClearingRecordDao);
@@ -54,10 +56,13 @@ TenantClearingRecordService {
     Map<String, Date> peroidDate = new HashMap<String, Date>();
     Date peroidBeginDate =  tenantClearingRecordDao.findLastPeriodEndDate ();
     Date now = new Date ();
-    
+    Integer cycle = setting.getClearingRecordCycle ();
     int days = (int) ((now.getTime() - peroidBeginDate.getTime())
-        / (24 * 60 * 60 * 1000)/7*7);
-    
+        / (24 * 60 * 60 * 1000)/cycle*cycle);
+    if (days - cycle < 0)
+    {
+      return peroidDate;
+    }
     Calendar rightNow = Calendar.getInstance();
     rightNow.setTime(peroidBeginDate);
     rightNow.add(Calendar.DATE,days);

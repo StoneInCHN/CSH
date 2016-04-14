@@ -33,6 +33,7 @@
 		<setting name="dailyVehicleStatusUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
 		<!-- 车辆动态接口 -->
 		<setting name="vehicleStatusUrl" value="http://localhost:8083/obd-data/tenantVehicleData/vehicleOnlineStatus.jhtml" />
+		<setting name="clearingRecordCycle" value="7" />
 		
 		<!-- 短信平台URL -->
 		<setting name="ucpaasUrl" value="https://api.ucpaas.com" />

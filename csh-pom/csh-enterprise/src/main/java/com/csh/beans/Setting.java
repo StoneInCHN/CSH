@@ -185,6 +185,11 @@ public class Setting implements Serializable {
 
     /** Cookie作用域 */
     private String cookieDomain;
+    
+    /**
+     * 结算周期
+     */
+    private Integer clearingRecordCycle;
 
     /**
      * 获取网站网址
@@ -816,6 +821,16 @@ public class Setting implements Serializable {
     public void setVehicleStatusUrl (String vehicleStatusUrl)
     {
       this.vehicleStatusUrl = vehicleStatusUrl;
+    }
+
+    public Integer getClearingRecordCycle ()
+    {
+      return clearingRecordCycle;
+    }
+
+    public void setClearingRecordCycle (Integer clearingRecordCycle)
+    {
+      this.clearingRecordCycle = clearingRecordCycle;
     }
     
     
