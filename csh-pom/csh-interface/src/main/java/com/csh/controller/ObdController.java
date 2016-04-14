@@ -22,6 +22,7 @@ import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.VehicleOilService;
 import com.csh.utils.ApiUtils;
+import com.csh.utils.LatLonUtil;
 import com.csh.utils.TokenGenerator;
 import com.csh.utils.ToolsUtils;
 
@@ -73,7 +74,11 @@ public class ObdController extends MobileBaseController {
           setting.getObdServerUrl() + "/appVehicleData/vehicleTrends.jhtml?deviceId=" + deviceNo;
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
-      response.setMsg((Map<String, Object>) map.get("msg"));
+      Map<String, Object> msg = (Map<String, Object>) map.get("msg");
+      Map<String, Object> xy =
+          LatLonUtil.convertCoordinate(msg.get("lon").toString(), msg.get("lat").toString());
+      msg.putAll(xy);
+      response.setMsg(msg);
     } catch (Exception e) {
       e.printStackTrace();
     }

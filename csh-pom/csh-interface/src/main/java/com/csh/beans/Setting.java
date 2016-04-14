@@ -175,7 +175,19 @@ public class Setting implements Serializable {
    */
   private Long serviceCateBeautify;
 
+  /**
+   * 百度API坐标转换
+   */
+  private String convertMapUrl;
 
+
+  public String getConvertMapUrl() {
+    return convertMapUrl;
+  }
+
+  public void setConvertMapUrl(String convertMapUrl) {
+    this.convertMapUrl = convertMapUrl;
+  }
 
   public Long getServiceCateMaintain() {
     return serviceCateMaintain;

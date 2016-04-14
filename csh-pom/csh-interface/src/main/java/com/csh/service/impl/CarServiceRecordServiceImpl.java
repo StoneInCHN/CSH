@@ -1,8 +1,8 @@
 package com.csh.service.impl;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.beans.Message;
 import com.csh.beans.Setting;
 import com.csh.dao.BeautifyReservationDao;
 import com.csh.dao.CarServiceRecordDao;
@@ -21,12 +22,15 @@ import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
 import com.csh.entity.MaintainReservation;
+import com.csh.entity.MessageInfo;
+import com.csh.entity.MsgEndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleInsurance;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.BalanceType;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
+import com.csh.entity.commonenum.CommonEnum.MessageType;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
@@ -36,7 +40,9 @@ import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CarServiceRecordService;
+import com.csh.service.MessageInfoService;
 import com.csh.utils.SettingUtils;
+import com.csh.utils.TimeUtils;
 import com.csh.utils.ToolsUtils;
 
 @Service("carServiceRecordServiceImpl")
@@ -48,6 +54,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
 
   @Resource(name = "walletDaoImpl")
   private WalletDao walletDao;
+
+  @Resource(name = "messageInfoServiceImpl")
+  private MessageInfoService messageInfoService;
 
   @Resource(name = "maintainReservationDaoImpl")
   private MaintainReservationDao maintainReservationDao;
@@ -82,7 +91,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setTenantName(carService.getTenantInfo().getTenantName());
     carServiceRecord.setTenantPhoto(carService.getTenantInfo().getPhoto());
     carServiceRecord.setSubscribeDate(subscribeDate);
-    if (carService.getServiceCategory().getId() == setting.getServiceCateMaintain()) {
+    if (carService.getServiceCategory().getId().equals(setting.getServiceCateMaintain())) {
       MaintainReservation maintainReservation = new MaintainReservation();
       maintainReservation.setCarServiceRecord(carServiceRecord);
       maintainReservation.setEndUser(endUser);
@@ -95,7 +104,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       carServiceRecord.setMaintainReservation(maintainReservation);
       maintainReservationDao.persist(maintainReservation);
 
-    } else if (carService.getServiceCategory().getId() == setting.getServiceCateMaintain()) {
+    } else if (carService.getServiceCategory().getId().equals(setting.getServiceCateBeautify())) {
       BeautifyReservation beautifyReservation = new BeautifyReservation();
       beautifyReservation.setCarServiceRecord(carServiceRecord);
       beautifyReservation.setEndUser(endUser);
@@ -171,7 +180,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
 
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord) {
-
+    Setting setting = SettingUtils.get();
     // 消费兑换积分.规则 1元=1积分
     Wallet wallet = carServiceRecord.getEndUser().getWallet();
     WalletRecord walletRecord = new WalletRecord();
@@ -184,6 +193,29 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     walletDao.merge(wallet);
 
     carServiceRecordDao.merge(carServiceRecord);
+    if (setting.getServiceCateWash().equals(
+        carServiceRecord.getCarService().getServiceCategory().getId())) {
+      Integer tokenNo = (int) ((Math.random() * 9 + 1) * 100000);
+      EndUser endUser = carServiceRecord.getEndUser();
+      MessageInfo msg = new MessageInfo();
+      msg.setMessageType(MessageType.PERSONALMSG);
+      String msgContent =
+          Message.success("csh.buyService.reminder",
+              TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
+              carServiceRecord.getTenantName(), carServiceRecord.getCarService().getServiceName(),
+              carServiceRecord.getCarService().getTenantInfo().getAddress(), tokenNo.toString())
+              .getContent();
+      msg.setMessageContent(msgContent);
+      MsgEndUser msgEndUser = new MsgEndUser();
+      msgEndUser.setEndUser(endUser);
+      msgEndUser.setIsPush(false);
+      msgEndUser.setIsRead(false);
+      msgEndUser.setMessage(msg);
+      msg.getMsgUser().add(msgEndUser);
+      messageInfoService.save(msg);
+      messageInfoService.jpushMsg(msg);
+
+    }
 
     return carServiceRecord;
   }

@@ -1,7 +1,6 @@
 package com.csh.controller;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import cn.jpush.api.push.model.PushPayload;
 
 import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
@@ -36,7 +33,6 @@ import com.csh.service.EndUserService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
 import com.csh.utils.FieldFilterUtils;
-import com.csh.utils.JPushUtil;
 import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
 
@@ -231,7 +227,7 @@ public class MessageController extends MobileBaseController {
       msg.setMessageType(MessageType.PERSONALMSG);
       String msgContent =
           Message.warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
-              TimeUtils.format("yyyy-MM-dd hh:mm:ss", new Date().getTime()), req.getMsgContent())
+              TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()), req.getMsgContent())
               .getContent();
       msg.setMessageContent(msgContent);
       MsgEndUser msgEndUser = new MsgEndUser();
@@ -243,42 +239,8 @@ public class MessageController extends MobileBaseController {
       messageInfoService.save(msg);
     }
 
-    // 推送消息
-    // List<String> regIds = new ArrayList<String>();
-    Integer unread_count = 0;
-
-    for (MsgEndUser msgEndUser : msg.getMsgUser()) {
-      // MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
-      if (!msgEndUser.getIsPush()) {
-        msgEndUser.setIsPush(true);
-        EndUser user = msgEndUser.getEndUser();
-        String regId = user.getjpushRegId();
-        // regIds.add(user.getjpushRegId());
-        msgEndUserService.update(msgEndUser);
-        for (MsgEndUser msgUser : user.getMsgEndUsers()) {
-          if (!msgUser.getIsRead()) {
-            unread_count++;
-          }
-        }
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("msgId", msg.getId().toString());
-        map.put("title", msg.getMessageTitle());
-        map.put("content", msg.getMessageContent());
-        map.put("time", String.valueOf(msgEndUser.getModifyDate().getTime()));
-        map.put("unreadCount", unread_count.toString());
-        try {
-          PushPayload payload =
-              JPushUtil.buildPushObject_android_registerId(msg.getMessageContent(), map, regId);
-          JPushUtil.sendPush(payload);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-
-    }
-
-
+    // 极光推送消息
+    messageInfoService.jpushMsg(msg);
 
     response.setCode(CommonAttributes.SUCCESS);
     return response;

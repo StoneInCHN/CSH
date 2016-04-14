@@ -65,5 +65,9 @@
 		<setting name="serviceCateWash" value="2"/>
 		<setting name="serviceCateBeautify" value="5"/>
 		
+		<!-- 百度API:GPS坐标转百度坐标 -->
+		<setting name="convertMapUrl" value="http://api.map.baidu.com/ag/coord/convert"/>
+		
+		
 	</csh>	
 	

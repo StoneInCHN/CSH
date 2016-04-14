@@ -1,7 +1,7 @@
 package com.csh.service;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;

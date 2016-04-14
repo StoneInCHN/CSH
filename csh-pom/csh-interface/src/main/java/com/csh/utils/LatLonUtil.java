@@ -1,5 +1,13 @@
 package com.csh.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.codec.binary.Base64;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.csh.beans.Setting;
+
 
 public class LatLonUtil {
 
@@ -108,4 +116,23 @@ public class LatLonUtil {
       *//*
          * }
          */
+
+  public static Map<String, Object> convertCoordinate(String lon, String lat) {
+    try {
+      Map<String, Object> map = new HashMap<String, Object>();
+      Setting setting = SettingUtils.get();
+      String url = setting.getConvertMapUrl() + "?from=0&to=4&x=" + lon + "&y=" + lat;
+      String res = ApiUtils.get(url);
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
+      String x = resMap.get("x").toString();
+      String y = resMap.get("y").toString();
+      map.put("lon", new String(Base64.decodeBase64(x), "UTF-8"));
+      map.put("lat", new String(Base64.decodeBase64(y), "UTF-8"));
+      return map;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 }

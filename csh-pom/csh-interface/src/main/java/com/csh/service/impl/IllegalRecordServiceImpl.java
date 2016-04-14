@@ -58,7 +58,6 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
    */
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public List<IllegalRecord> getIllegalRecords(String plate) {
-    Setting setting = SettingUtils.get();
 
     List<IllegalRecord> illegalRecords = illegalRecordDao.getIllegalRecords(plate);
 
@@ -104,50 +103,60 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
           for (IllegalRecord record : illegalRecords) {
             illegalRecordDao.remove(record);
           }
-          // insert新数据
-          String lsPrefix = plate.substring(0, 1);
-          String lsNum = plate.substring(1);
-          Vehicle vehicle = vehicleDao.getVehicleByPlate(plate);
-          Province province = provinceDao.getProvinceByShortName(lsPrefix);
-          if (vehicle == null || province == null) {
-            return null;
-          }
-          String url =
-              setting.getIllegalSearchURL() + "?appkey=" + setting.getIllegalSearchAppKey()
-                  + "&carorg=" + province.getPinyinName() + "&lsprefix=" + lsPrefix + "&lsnum="
-                  + lsNum + "&lstype=02&frameno=" + vehicle.getVehicleNo();
-          String res = ApiUtils.get(url);
-          System.out.println(res);
 
-          try {
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
-            Map<String, Object> resultMap = (Map<String, Object>) resMap.get("result");
-            List<Map<String, Object>> listMap = (List<Map<String, Object>>) resultMap.get("list");
-            List<IllegalRecord> list = new ArrayList<IllegalRecord>();
-            for (Map<String, Object> map : listMap) {
-              IllegalRecord illegalRecord = new IllegalRecord();
-              illegalRecord.setPlate(plate);
-              illegalRecord.setIllegalAddress(map.get("address").toString());
-              illegalRecord.setIllegalContent(map.get("content").toString());
-              illegalRecord.setIllegalDate(map.get("time").toString());
-              illegalRecord.setIllegalId(map.get("illegalid").toString());
-              illegalRecord.setProcessingSite(map.get("agency").toString());
-              illegalRecord.setScore(Integer.parseInt(map.get("score").toString()));
-              illegalRecord.setFinesAmount(Double.parseDouble(map.get("price").toString()));
-              illegalRecordDao.persist(illegalRecord);
-              list.add(illegalRecord);
-            }
-            return list;
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-
+          return insertRecord(plate);
         }
       }
 
+    } else {
+      return insertRecord(plate);
     }
 
     return illegalRecordDao.getIllegalRecords(plate);
+  }
+
+
+  private List<IllegalRecord> insertRecord(String plate) {
+
+    Setting setting = SettingUtils.get();
+    // insert新数据
+    String lsPrefix = plate.substring(0, 1);
+    String lsNum = plate.substring(1);
+    Vehicle vehicle = vehicleDao.getVehicleByPlate(plate);
+    Province province = provinceDao.getProvinceByShortName(lsPrefix);
+    if (vehicle == null || province == null) {
+      return null;
+    }
+
+    String url =
+        setting.getIllegalSearchURL() + "?appkey=" + setting.getIllegalSearchAppKey() + "&carorg="
+            + province.getPinyinName() + "&lsprefix=" + lsPrefix + "&lsnum=" + lsNum
+            + "&lstype=02&frameno=" + vehicle.getVehicleNo();
+    String res = ApiUtils.get(url);
+
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
+      Map<String, Object> resultMap = (Map<String, Object>) resMap.get("result");
+      List<Map<String, Object>> listMap = (List<Map<String, Object>>) resultMap.get("list");
+      List<IllegalRecord> list = new ArrayList<IllegalRecord>();
+      for (Map<String, Object> map : listMap) {
+        IllegalRecord illegalRecord = new IllegalRecord();
+        illegalRecord.setPlate(plate);
+        illegalRecord.setIllegalAddress(map.get("address").toString());
+        illegalRecord.setIllegalContent(map.get("content").toString());
+        illegalRecord.setIllegalDate(map.get("time").toString());
+        illegalRecord.setIllegalId(map.get("illegalid").toString());
+        illegalRecord.setProcessingSite(map.get("agency").toString());
+        illegalRecord.setScore(Integer.parseInt(map.get("score").toString()));
+        illegalRecord.setFinesAmount(Double.parseDouble(map.get("price").toString()));
+        illegalRecordDao.persist(illegalRecord);
+        list.add(illegalRecord);
+      }
+      return list;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }
