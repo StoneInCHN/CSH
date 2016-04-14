@@ -95,10 +95,6 @@ public class CarServiceRecord extends BaseEntity {
    */
   private Date clearingDate;
 
-  /**
-   * 付款时间
-   */
-  private Date payDate;
 
   /**
    * 预约到店时间
@@ -147,14 +143,6 @@ public class CarServiceRecord extends BaseEntity {
 
   public void setServiceFlag(Integer serviceFlag) {
     this.serviceFlag = serviceFlag;
-  }
-
-  public Date getPayDate() {
-    return payDate;
-  }
-
-  public void setPayDate(Date payDate) {
-    this.payDate = payDate;
   }
 
   public Date getSubscribeDate() {

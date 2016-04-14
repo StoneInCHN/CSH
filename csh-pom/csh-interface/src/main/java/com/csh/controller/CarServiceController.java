@@ -269,13 +269,13 @@ public class CarServiceController extends MobileBaseController {
 
     CarServiceRecord carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
     String[] properties =
-        {"id", "createDate", "price", "recordNo", "payDate", "subscribeDate", "finishDate",
-            "serviceFlag"};
+        {"id", "createDate", "price", "chargeStatus", "recordNo", "paymentDate", "subscribeDate",
+            "finishDate", "serviceFlag"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, carServiceRecord);
     map.put("serviceName", carServiceRecord.getCarService().getServiceName());
     String[] tenant_properties =
-        {"id", "chargeStatus", "praiseRate", "tenantName", "contactPhone", "address",
-            "businessTime", "photo", "latitude", "longitude"};
+        {"id", "praiseRate", "tenantName", "contactPhone", "address", "businessTime", "photo",
+            "latitude", "longitude"};
     Map<String, Object> tenant_map =
         FieldFilterUtils.filterEntityMap(tenant_properties, carServiceRecord.getCarService()
             .getTenantInfo());
