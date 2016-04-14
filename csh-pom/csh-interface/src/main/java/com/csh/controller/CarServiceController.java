@@ -144,7 +144,7 @@ public class CarServiceController extends MobileBaseController {
     CarServiceRecord carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
     carServiceRecord.setPaymentDate(new Date());
     carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
-    carServiceRecordService.update(carServiceRecord);
+    carServiceRecordService.updatePayStatus(carServiceRecord);
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
       LogUtil
           .debug(

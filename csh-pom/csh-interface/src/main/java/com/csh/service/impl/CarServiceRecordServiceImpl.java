@@ -167,4 +167,24 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     }
     return false;
   }
+
+
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord) {
+
+    // 消费兑换积分.规则 1元=1积分
+    Wallet wallet = carServiceRecord.getEndUser().getWallet();
+    WalletRecord walletRecord = new WalletRecord();
+    walletRecord.setWallet(wallet);
+    walletRecord.setBalanceType(BalanceType.INCOME);
+    walletRecord.setWalletType(WalletType.SCORE);
+    walletRecord.setScore(carServiceRecord.getPrice());
+    wallet.getWalletRecords().add(walletRecord);
+    wallet.setScore(wallet.getScore().add(walletRecord.getScore()));
+    walletDao.merge(wallet);
+
+    carServiceRecordDao.merge(carServiceRecord);
+
+    return carServiceRecord;
+  }
 }

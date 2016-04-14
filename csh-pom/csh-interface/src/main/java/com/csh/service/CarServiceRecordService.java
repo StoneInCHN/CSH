@@ -64,4 +64,12 @@ public interface CarServiceRecordService extends BaseService<CarServiceRecord, L
    * @return
    */
   public Boolean existRecordByUser(EndUser user, CarService carService, ChargeStatus chargeStatus);
+
+  /**
+   * 支付后更新记录状态并计算积分
+   * 
+   * @param carServiceRecord
+   * @return
+   */
+  public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord);
 }
