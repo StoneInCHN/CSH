@@ -31,6 +31,7 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
+import com.csh.entity.MaintainReservation;
 import com.csh.entity.RepareReservation;
 import com.csh.entity.ServiceCategory;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
@@ -283,5 +284,20 @@ public class RepareReservationController extends BaseController
     RepareReservation repareReservation = repareReservationService.find(id);
     model.addAttribute("repareReservation", repareReservation);
     return "repareReservation/details";
+  }
+  
+  @RequestMapping(value = "/approve", method = RequestMethod.GET)
+  public @ResponseBody Message approve(Long id) {
+    RepareReservation repareReservation = repareReservationService.find(id);
+    repareReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.RESERVATION_SUCCESS);
+    repareReservationService.save (repareReservation);
+    return SUCCESS_MESSAGE;
+  }
+  @RequestMapping(value = "/reject", method = RequestMethod.GET)
+  public @ResponseBody Message reject(Long id) {
+    RepareReservation repareReservation = repareReservationService.find(id);
+    repareReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.RESERVATION_FAIL);
+    repareReservationService.save (repareReservation);
+    return SUCCESS_MESSAGE;
   }
 }

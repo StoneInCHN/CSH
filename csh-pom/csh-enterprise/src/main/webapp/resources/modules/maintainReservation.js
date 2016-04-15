@@ -176,6 +176,7 @@ $(function(){
 		    	  }},
 		      {title:message("csh.reservation.plate"),field:"plate",width:100,sortable:true},
 		      {title:message("csh.reservation.vehicleBrand"),field:"vehicleBrand",width:100,sortable:true},
+		      
 		      {title:message("csh.reservation.reservationInfoFrom"),field:"reservationInfoFrom",width:100,sortable:true,
 		    	  formatter:function(value,row,index){
 		    		  if(value =="APP"){
@@ -187,9 +188,66 @@ $(function(){
 		      {title:message("csh.reservation.reservationDate"),field:"reservationDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}
-		      },
+		      },{title:message("csh.reservation.operate"),field:"button",width:100,sortable:true,
+		    	  formatter:function(value,row,index){
+		    		  if(row.carServiceRecord.chargeStatus == 'RESERVATION'){
+		    			  return '<button class="btn btn-primary btn-maintain-approve" data-value='+row.id+'>确认</button><button class="btn btn-danger btn-maintain-reject" data-value='+row.id+'>拒绝</button>'  
+		    		  }else{
+		    			  return ""
+		    		  }
+		    	  } 
+		      }
 		   ]
-		]
+		],
+		onLoadSuccess:function(data){
+			$('.btn-maintain-approve').click(function(){
+				var $this=$(this);
+				var id = $this.attr('data-value');
+				
+				$.ajax({
+					url:"../maintainReservation/approve.jhtml?id="+id,
+					type:"get",
+					beforeSend:function(){
+						$.messager.progress({
+							text:message("csh.common.saving")
+						});
+					},
+					success:function(result,response,status){
+						$.messager.progress('close');
+						if(response == "success"){
+							showSuccessMsg("确认预约");
+							$("#maintainReservation-table-list").datagrid('reload');
+						}else{
+							alertErrorMsg();
+						}
+					}
+				});
+			});
+
+			$('.btn-maintain-reject').click(function(){
+				var $this=$(this);
+				var id = $this.attr('data-value');
+				
+				$.ajax({
+					url:"../maintainReservation/reject.jhtml?id="+id,
+					type:"get",
+					beforeSend:function(){
+						$.messager.progress({
+							text:message("csh.common.saving")
+						});
+					},
+					success:function(result,response,status){
+						$.messager.progress('close');
+						if(response == "success"){
+							showSuccessMsg("拒绝");
+						}else{
+							alertErrorMsg();
+						}
+					}
+				});
+			});
+		
+		}
 	});
 
 	

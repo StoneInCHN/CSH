@@ -1,6 +1,5 @@
 package com.csh.controller;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,14 +30,12 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
-import com.csh.entity.IllegalRecord;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleBrandDetail;
-import com.csh.entity.VehicleOil;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
-import com.csh.entity.commonenum.CommonEnum.OilType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.json.request.MsgRequest;
 import com.csh.json.response.RealTimeCarCondition;
 import com.csh.json.response.VehicleDailyReport;
 import com.csh.json.response.VehicleStatus;
@@ -477,9 +474,9 @@ public class VehicleController extends BaseController
    * @return
    */
   @RequestMapping(value = "/pushVehicleWainingInfo", method = RequestMethod.POST)
-  public void pushVehicleWainingInfo(String wainingInfo,Long deviceId){
-    Vehicle vehicle = vehicleService.findVehicleByDeviceId (deviceId);
-    vehicle.setWainingInfo (wainingInfo);
+  public void pushVehicleWainingInfo(MsgRequest msgRequest){
+    Vehicle vehicle = vehicleService.findVehicleByDeviceId (Long.parseLong (msgRequest.getDeviceNo ()));
+    vehicle.setWainingInfo (msgRequest.getMsgContent ());
     vehicleService.update (vehicle);
   }
 }

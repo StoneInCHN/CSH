@@ -198,6 +198,7 @@ var messages = {
 	"csh.reservation.reservationInfoFrom":"预约信息来源",
 	"csh.reservation.reservationInfoFrom.app":"手机APP预约",
 	"csh.reservation.reservationInfoFrom.call":"电话预约",
+	"csh.reservation.operate":"预约操作",
 	//汽车服务
 	"csh.carService.add":"添加服务",
 	"csh.carService.serviceName":"服务名称",
@@ -239,6 +240,8 @@ var messages = {
 	"csh.carServiceRecord.paymentType.WALLET":"钱包",
 	"csh.carServiceRecord.paymentDate":"付款时间",
 	"csh.carServiceRecord.recordNo":"记录编号",
+	"csh.carServiceRecord.clearingDate":"结算时间",
+	"csh.carServiceRecord.unClearinged":"未结算",
 	//结算记录
 	"csh.tenantClearingRecord.add":"添加结算单",
 	"csh.tenantClearingRecord.clearingSn":"结算单号",
