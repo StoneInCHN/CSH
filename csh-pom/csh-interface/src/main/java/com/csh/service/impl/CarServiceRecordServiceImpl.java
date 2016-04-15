@@ -44,6 +44,7 @@ import com.csh.service.MessageInfoService;
 import com.csh.utils.SettingUtils;
 import com.csh.utils.TimeUtils;
 import com.csh.utils.ToolsUtils;
+import com.csh.utils.UcpaasUtil;
 
 @Service("carServiceRecordServiceImpl")
 public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecord, Long> implements
@@ -201,7 +202,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       msg.setMessageType(MessageType.PERSONALMSG);
       String msgContent =
           Message.success("csh.buyService.reminder",
-              TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
+              TimeUtils.format("yyyy-MM-dd HH:mm:ss", carServiceRecord.getCreateDate().getTime()),
               carServiceRecord.getTenantName(), carServiceRecord.getCarService().getServiceName(),
               carServiceRecord.getCarService().getTenantInfo().getAddress(), tokenNo.toString())
               .getContent();
@@ -213,7 +214,18 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       msgEndUser.setMessage(msg);
       msg.getMsgUser().add(msgEndUser);
       messageInfoService.save(msg);
+      /**
+       * jpush推送消息
+       */
       messageInfoService.jpushMsg(msg);
+      /**
+       * 发送短信通知
+       */
+      String purDate =
+          TimeUtils.format("yyyy-MM-dd HH:mm:ss", carServiceRecord.getCreateDate().getTime());
+      UcpaasUtil.SendPurchaseInfoBySms(endUser.getUserName(), purDate,
+          carServiceRecord.getTenantName(), carServiceRecord.getCarService().getServiceName(),
+          carServiceRecord.getCarService().getTenantInfo().getAddress(), tokenNo.toString());
 
     }
 

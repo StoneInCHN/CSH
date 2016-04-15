@@ -19,8 +19,10 @@
 		<setting name="ucpaasToken" value="e345eb6f22e3dfbb159af16ffd76a98d" />
 		<!-- 短信平台SoftVersion -->
 		<setting name="ucpaasVersion" value="2014-06-30" />
-		<!-- 短信平台短信模板ID -->
+		<!-- 短信平台验证码短信模板ID -->
 		<setting name="ucpaasTemplate" value="18130" />
+		<!-- 短信平台购买服务短信模板ID -->
+		<setting name="ucpaasServiceTemplate" value="22544" />
 		<!-- 短信平台语音回拨号码 -->
 		<setting name="ucpaasCallDisplay" value="4007930888" />
 		

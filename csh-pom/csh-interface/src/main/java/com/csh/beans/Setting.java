@@ -55,8 +55,11 @@ public class Setting implements Serializable {
   /** 短信平台APPID */
   private String ucpaasAppId;
 
-  /** 短信平台软件版本 */
+  /** 短信平台验证码短信模板 */
   private String ucpaasTemplate;
+
+  /** 短信平台购买服务短信模板 */
+  private String ucpaasServiceTemplate;
 
   /** 短信平台语音回拨号码 */
   private String ucpaasCallDisplay;
@@ -180,6 +183,14 @@ public class Setting implements Serializable {
    */
   private String convertMapUrl;
 
+
+  public String getUcpaasServiceTemplate() {
+    return ucpaasServiceTemplate;
+  }
+
+  public void setUcpaasServiceTemplate(String ucpaasServiceTemplate) {
+    this.ucpaasServiceTemplate = ucpaasServiceTemplate;
+  }
 
   public String getConvertMapUrl() {
     return convertMapUrl;
