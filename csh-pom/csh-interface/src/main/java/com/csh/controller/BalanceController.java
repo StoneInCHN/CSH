@@ -90,9 +90,10 @@ public class BalanceController extends MobileBaseController {
     String tradeNo = ToolsUtils.generateRecordNo("000000");
     if (PaymentType.WECHAT.equals(paymentType)) {
       try {
+        BigDecimal weChatAmount = amount.multiply(new BigDecimal(100));
         response =
             PayUtil.wechat(tradeNo, "wallet charge in", httpReq.getRemoteAddr(), "0",
-                amount.toString());
+                weChatAmount.toString());
       } catch (DocumentException e) {
         e.printStackTrace();
       }

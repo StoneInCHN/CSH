@@ -240,6 +240,11 @@ public class VehicleController extends MobileBaseController {
     }
 
     Vehicle vehicle = vehicleService.find(vehicleId);
+    if (vehicle.getTenantID() != null) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.vehicle.binded").getContent());
+      return response;
+    }
     vehicle.setTenantID(tenantId);
     vehicleService.update(vehicle);
 

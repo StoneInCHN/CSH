@@ -228,9 +228,10 @@ public class CarServiceController extends MobileBaseController {
 
     if (PaymentType.WECHAT.equals(paymentType)) {
       try {
+        BigDecimal weChatPrice = price.multiply(new BigDecimal(100));
         response =
             PayUtil.wechat(carServiceRecord.getRecordNo(), carService.getServiceName(),
-                httpReq.getRemoteAddr(), serviceId.toString(), price.toString());
+                httpReq.getRemoteAddr(), serviceId.toString(), weChatPrice.toString());
       } catch (DocumentException e) {
         e.printStackTrace();
       }
@@ -337,12 +338,17 @@ public class CarServiceController extends MobileBaseController {
     page.setTotal((int) records.getTotal());
     response.setPage(page);
 
+    /**
+     * 检测订单是否过期
+     */
+    List<CarServiceRecord> list = records.getContent();
+    checkOverDue(list);
+
     String[] properties =
         {"id", "createDate", "paymentDate", "chargeStatus", "price", "carService.serviceCategory",
             "carService.serviceName", "carService.id", "tenantName", "tenantID", "tenantPhoto",
             "tenantEvaluate"};
-    List<Map<String, Object>> map =
-        FieldFilterUtils.filterCollectionMap(properties, records.getContent());
+    List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, list);
     response.setMsg(map);
 
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
@@ -483,4 +489,17 @@ public class CarServiceController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
+
+  private void checkOverDue(List<CarServiceRecord> recordList) {
+    for (CarServiceRecord carServiceRecord : recordList) {
+      Date currentDate = new Date();
+      if ((carServiceRecord.getChargeStatus() == ChargeStatus.RESERVATION || carServiceRecord
+          .getChargeStatus() == ChargeStatus.RESERVATION_SUCCESS)
+          && carServiceRecord.getSubscribeDate() != null
+          && TimeUtils.daysBetween(currentDate, carServiceRecord.getSubscribeDate()) > 1) {
+        carServiceRecord.setChargeStatus(ChargeStatus.OVERDUE);
+      }
+    }
+  }
+
 }

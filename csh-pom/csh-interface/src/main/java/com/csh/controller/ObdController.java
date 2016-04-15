@@ -75,6 +75,15 @@ public class ObdController extends MobileBaseController {
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
       Map<String, Object> msg = (Map<String, Object>) map.get("msg");
+      Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
+      if (flag) {
+        DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+        Float mileAge = (Float) msg.get("mileAge");
+        if (deviceInfo.getVehicle() != null && deviceInfo.getVehicle().getDriveMileage() != null) {
+          msg.put("mileAge", mileAge + deviceInfo.getVehicle().getDriveMileage());
+        }
+
+      }
       Map<String, Object> xy =
           LatLonUtil.convertCoordinate(msg.get("lon").toString(), msg.get("lat").toString());
       msg.putAll(xy);
