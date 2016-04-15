@@ -4,4 +4,6 @@ import com.csh.framework.dao.BaseDao;
 
 public interface VehicleDao extends  BaseDao<Vehicle,Long>{
 
+  Vehicle findVehicleByDeviceId (Long deviceId);
+
 }

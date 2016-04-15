@@ -122,13 +122,12 @@
     		<li><a href="#" data-url="${base}/console/vehicle/vehicle.jhtml">${message("csh.vehicle.vehicle")}</a></li>
     		[/@shiro.hasPermission]
     		
-    		<!--[@shiro.hasPermission name="realTimeCarCondition"]
+    		[@shiro.hasPermission name="realTimeCarCondition"]
     		<li><a href="#" data-url="${base}/console/vehicle/realTimeCarCondition.jhtml">${message("csh.vehicle.realTimeCarCondition")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="vehicleDailyReport"]
     		<li><a href="#" data-url="${base}/console/vehicle/vehicleDailyReport.jhtml">${message("csh.vehicle.vehicleDailyReport")}</a></li>
     		[/@shiro.hasPermission]
-    		-->
     		[@shiro.hasPermission name="vehicleMileageReport"]
     		<li><a href="#" data-url="${base}/console/vehicleMileageReport/vehicleMileageReport.jhtml">车辆里程统计</a></li>
     		[/@shiro.hasPermission]

@@ -410,6 +410,7 @@ $(function(){
 			    	  }
 		      	  }},
 		      {title:message("csh.vehicle.vehicleNo"),field:"vehicleNo",sortable:true},
+		      {title:message("csh.vehicle.wainingInfo"),field:"wainingInfo",sortable:true},
 	      	  {title:message("csh.vehicle.dashboardMileage"),field:"dashboardMileage",sortable:true},
 	      	  {title:message("csh.vehicle.dashboardBV"),field:"dashboardBV",sortable:true},
 		      {title:message("csh.vehicle.device"),field:"deviceNo",width:100,sortable:false},

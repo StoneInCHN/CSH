@@ -146,6 +146,10 @@ public class Vehicle extends BaseEntity {
   private Long lastMaintainMileage;
 
   /**
+   * 警告信息
+   */
+  private String wainingInfo;
+  /**
    * 绑定的设备是否在线
    */
   private Boolean isOnline;
@@ -387,6 +391,17 @@ public class Vehicle extends BaseEntity {
   public void setIsOnline (Boolean isOnline)
   {
     this.isOnline = isOnline;
+  }
+
+  @JsonProperty
+  public String getWainingInfo ()
+  {
+    return wainingInfo;
+  }
+
+  public void setWainingInfo (String wainingInfo)
+  {
+    this.wainingInfo = wainingInfo;
   }
 
 }

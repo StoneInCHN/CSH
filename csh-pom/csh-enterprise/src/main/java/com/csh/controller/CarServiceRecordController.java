@@ -76,6 +76,7 @@ public class CarServiceRecordController extends BaseController
       String serviceNameSearch,String endUserSearch, ChargeStatus chargeStatusSearch,
       PaymentType paymentTypeSearch)
   {
+    Page<CarServiceRecord> carServiceRecordPage;
     String startDateStr = null;
     String endDateStr = null;
 
@@ -184,13 +185,14 @@ public class CarServiceRecordController extends BaseController
     if (serviceNameQuery != null || userNameQuery != null || rangeQuery != null
         || categoryTermQuery != null || statusTermQuery != null || typeTermQuery != null)
     {
-      return carServiceRecordService.search (query, pageable, analyzer, filter, true);
+      carServiceRecordPage= carServiceRecordService.search (query, pageable, analyzer, filter, true);
     }
     else
     {
-      return carServiceRecordService.findPage (pageable,true);
+      carServiceRecordPage= carServiceRecordService.findPage (pageable,true);
     }
-
+    checkOverDue (carServiceRecordPage.getRows ());
+    return carServiceRecordPage;
   }
   /**
    * 获取当前周期的账单
@@ -241,5 +243,17 @@ public class CarServiceRecordController extends BaseController
     carServiceRecordService.update (newCarServiceRecord);
 
     return SUCCESS_MESSAGE;
+  }
+  
+  private void checkOverDue(List<CarServiceRecord> recordList){
+    for (CarServiceRecord carServiceRecord : recordList)
+    {
+      Date currentDate= new Date ();
+      if ((carServiceRecord.getChargeStatus () == ChargeStatus.RESERVATION || carServiceRecord.getChargeStatus () == ChargeStatus.RESERVATION_SUCCESS)
+          &&carServiceRecord.getSubscribeDate () != null && DateTimeUtils.daysBetween (currentDate, carServiceRecord.getSubscribeDate ()) > 1)
+      {
+        carServiceRecord.setChargeStatus (ChargeStatus.OVERDUE);
+      }
+    }
   }
 }

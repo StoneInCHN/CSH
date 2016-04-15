@@ -232,6 +232,7 @@ public class RepareReservationController extends BaseController
     EndUser endUser = endUserService.find (endUserID);
     String recordNo = ToolsUtils.generateRecordNo(carServiceList.get (0).getTenantInfo().getOrgCode());
     CarServiceRecord record = new CarServiceRecord ();
+    record.setSubscribeDate (new Date ());
     record.setRecordNo (recordNo);
     record.setCarService (carServiceList.get (0));
     record.setChargeStatus (ChargeStatus.RESERVATION);

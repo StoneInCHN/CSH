@@ -233,6 +233,7 @@ public class MaintainReservationController extends BaseController
     String recordNo = ToolsUtils.generateRecordNo(carServiceList.get (0).getTenantInfo().getOrgCode());
     CarServiceRecord record = new CarServiceRecord ();
     record.setRecordNo (recordNo);
+    record.setSubscribeDate (new Date ());
     record.setCarService (carServiceList.get (0));
     record.setChargeStatus (ChargeStatus.RESERVATION);
     record.setEndUser (endUser);

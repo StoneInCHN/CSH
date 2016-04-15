@@ -472,4 +472,14 @@ public class VehicleController extends BaseController
     }
     return vehicleList;
   }
+  /**
+   * 接受警告消息
+   * @return
+   */
+  @RequestMapping(value = "/pushVehicleWainingInfo", method = RequestMethod.POST)
+  public void pushVehicleWainingInfo(String wainingInfo,Long deviceId){
+    Vehicle vehicle = vehicleService.findVehicleByDeviceId (deviceId);
+    vehicle.setWainingInfo (wainingInfo);
+    vehicleService.update (vehicle);
+  }
 }

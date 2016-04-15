@@ -51,8 +51,8 @@
 				      value: '${message("csh.carServiceRecord.chargeStatus.RESERVATION_SUCCESS")}'
 				     },{
 				      label: 'RESERVATION_FAIL',
-				     },{
 				      value: '${message("csh.carServiceRecord.chargeStatus.RESERVATION_FAIL")}'
+				     },{
 				      label: 'UNPAID',
 				      value: '${message("csh.carServiceRecord.chargeStatus.UNPAID")}'
 				     },{

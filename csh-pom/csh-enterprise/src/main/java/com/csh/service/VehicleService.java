@@ -16,6 +16,7 @@ public interface VehicleService extends BaseService<Vehicle,Long>{
 
   VehicleDailyReport callVehicleDailyData (Date date, Long vehicleId);
 
+  Vehicle findVehicleByDeviceId(Long deviceId);
 //  VehicleDailyReport callVehicleStatus (Long[] ids);
 
 }

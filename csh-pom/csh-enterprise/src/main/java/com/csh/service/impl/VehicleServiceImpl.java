@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.persistence.FlushModeType;
+import javax.persistence.TypedQuery;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -20,6 +22,8 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.dao.EndUserDao;
 import com.csh.dao.VehicleDao;
+import com.csh.entity.Department;
+import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.OilType;
@@ -27,6 +31,7 @@ import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.json.response.VehicleDailyReport;
+import com.csh.service.DeviceInfoService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleOilService;
 import com.csh.service.VehicleService;
@@ -45,6 +50,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
       TenantAccountService tenantAccountService;
       @Resource (name = "vehicleOilServiceImpl")
       private VehicleOilService vehicleOilService;
+      @Resource(name = "deviceInfoServiceImpl")
+      private DeviceInfoService deviceInfoService;
       @Resource
       public void setBaseDao(VehicleDao vehicleDao) {
          super.setBaseDao(vehicleDao);
@@ -162,5 +169,12 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
           e.printStackTrace();
         }
         return vehicleDailyReport;
+      }
+
+      @Override
+      public Vehicle findVehicleByDeviceId (Long deviceId)
+      {
+        return vehicleDao.findVehicleByDeviceId(deviceId);
+        
       }
 }
