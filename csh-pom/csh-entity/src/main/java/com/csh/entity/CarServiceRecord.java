@@ -133,6 +133,19 @@ public class CarServiceRecord extends BaseEntity {
    */
   private Integer serviceFlag;
 
+  /**
+   * 支付验证码
+   */
+  private String payCode;
+
+  @Column(length = 10)
+  public String getPayCode() {
+    return payCode;
+  }
+
+  public void setPayCode(String payCode) {
+    this.payCode = payCode;
+  }
 
   @Transient
   public Integer getServiceFlag() {
@@ -334,24 +347,20 @@ public class CarServiceRecord extends BaseEntity {
 
   @Transient
   @JsonProperty
-  public String getVehiclePlate ()
-  {
-    if (maintainReservation != null)
-    {
-      return maintainReservation.getPlate ();
+  public String getVehiclePlate() {
+    if (maintainReservation != null) {
+      return maintainReservation.getPlate();
     }
-    if (repareReservation != null)
-    {
-      return repareReservation.getPlate ();
+    if (repareReservation != null) {
+      return repareReservation.getPlate();
     }
     return vehiclePlate;
   }
 
-  public void setVehiclePlate (String vehiclePlate)
-  {
+  public void setVehiclePlate(String vehiclePlate) {
     this.vehiclePlate = vehiclePlate;
   }
 
-  
+
 
 }

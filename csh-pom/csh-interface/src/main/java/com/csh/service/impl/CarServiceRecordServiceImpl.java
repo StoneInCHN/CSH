@@ -193,10 +193,10 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     wallet.setScore(wallet.getScore().add(walletRecord.getScore()));
     walletDao.merge(wallet);
 
-    carServiceRecordDao.merge(carServiceRecord);
     if (setting.getServiceCateWash().equals(
         carServiceRecord.getCarService().getServiceCategory().getId())) {
       Integer tokenNo = (int) ((Math.random() * 9 + 1) * 100000);
+      carServiceRecord.setPayCode(tokenNo.toString());
       EndUser endUser = carServiceRecord.getEndUser();
       MessageInfo msg = new MessageInfo();
       msg.setMessageType(MessageType.PERSONALMSG);
@@ -228,7 +228,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
           carServiceRecord.getCarService().getTenantInfo().getAddress(), tokenNo.toString());
 
     }
-
+    carServiceRecordDao.merge(carServiceRecord);
     return carServiceRecord;
   }
 }
