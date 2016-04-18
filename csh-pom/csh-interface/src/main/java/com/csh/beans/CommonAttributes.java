@@ -55,6 +55,9 @@ public final class CommonAttributes {
   /** OBD设备不存在 */
   public static final String FAIL_DEVICE_NOEXIST = "0009";// OBD设备不存在
 
+  /** OBD设备未绑定车辆 */
+  public static final String FAIL_DEVICE_NOBIND = "0010";// OBD设备不存在
+
 
   /** 手机号已存在 */
   public static final String FAIL_MOBILENUM_EXIST = "0012"; // 手机号已存在

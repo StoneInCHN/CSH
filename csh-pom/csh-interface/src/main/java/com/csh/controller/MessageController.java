@@ -223,6 +223,10 @@ public class MessageController extends MobileBaseController {
         response.setCode(CommonAttributes.FAIL_DEVICE_NOEXIST);
         return response;
       }
+      if (deviceInfo.getVehicle() == null) {
+        response.setCode(CommonAttributes.FAIL_DEVICE_NOBIND);
+        return response;
+      }
       EndUser endUser = deviceInfo.getVehicle().getEndUser();
       msg.setMessageType(MessageType.PERSONALMSG);
       String msgContent =
