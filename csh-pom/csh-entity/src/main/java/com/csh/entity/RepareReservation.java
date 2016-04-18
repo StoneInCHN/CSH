@@ -141,6 +141,7 @@ public class RepareReservation extends BaseEntity
   }
 
   @OneToOne(cascade = CascadeType.PERSIST)
+  @JsonProperty
   public CarServiceRecord getCarServiceRecord ()
   {
     return carServiceRecord;

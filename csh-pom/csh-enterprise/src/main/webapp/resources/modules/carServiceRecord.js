@@ -298,7 +298,20 @@ $(function(){
 		    			
 		    	  }},
 	    	  {title:message("csh.carServiceRecord.paymentDate"),field:"paymentDate",width:100,sortable:true,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					if(value != null){
+						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					}else{
+						return "";
+					}
+					
+				}
+		      },{title:message("csh.carServiceRecord.clearingDate"),field:"clearingDate",width:100,sortable:true,formatter: function(value,row,index){
+					if(value != null){
+						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					}else{
+						return message('csh.carServiceRecord.unClearinged');
+					}
+					
 				}
 		      },
 		   ]

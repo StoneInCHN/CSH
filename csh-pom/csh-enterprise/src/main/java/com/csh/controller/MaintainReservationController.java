@@ -284,4 +284,18 @@ public class MaintainReservationController extends BaseController
     model.addAttribute("maintainReservation", maintainReservation);
     return "maintainReservation/details";
   }
+  @RequestMapping(value = "/approve", method = RequestMethod.GET)
+  public @ResponseBody Message approve(Long id) {
+    MaintainReservation maintainReservation = maintainReservationService.find(id);
+    maintainReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.RESERVATION_SUCCESS);
+    maintainReservationService.save (maintainReservation);
+    return SUCCESS_MESSAGE;
+  }
+  @RequestMapping(value = "/reject", method = RequestMethod.GET)
+  public @ResponseBody Message reject(Long id) {
+    MaintainReservation maintainReservation = maintainReservationService.find(id);
+    maintainReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.RESERVATION_FAIL);
+    maintainReservationService.save (maintainReservation);
+    return SUCCESS_MESSAGE;
+  }
 }

@@ -186,9 +186,67 @@ $(function(){
 		      {title:message("csh.reservation.reservationDate"),field:"reservationDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}
-		      },
+		      },{title:message("csh.reservation.operate"),field:"button",width:100,sortable:true,
+		    	  formatter:function(value,row,index){
+		    		  if(row.carServiceRecord.chargeStatus == 'RESERVATION'){
+		    			  return '<button class="btn btn-primary btn-repare-approve" data-value='+row.id+'>确认</button><button class="btn btn-danger btn-repare-reject" data-value='+row.id+'>拒绝</button>'  
+		    		  }else{
+		    			  return ""
+		    		  }
+		    	  } 
+		      }
 		   ]
-		]
+		],
+		onLoadSuccess:function(data){
+			$('.btn-repare-approve').click(function(){
+				var $this=$(this);
+				var id = $this.attr('data-value');
+				
+				$.ajax({
+					url:"../repareReservation/approve.jhtml?id="+id,
+					type:"get",
+					beforeSend:function(){
+						$.messager.progress({
+							text:message("csh.common.saving")
+						});
+					},
+					success:function(result,response,status){
+						$.messager.progress('close');
+						if(response == "success"){
+							showSuccessMsg("确认预约");
+							$("#repareReservation-table-list").datagrid('reload');
+						}else{
+							alertErrorMsg();
+						}
+					}
+				});
+			});
+
+			$('.btn-repare-reject').click(function(){
+				var $this=$(this);
+				var id = $this.attr('data-value');
+				
+				$.ajax({
+					url:"../repareReservation/reject.jhtml?id="+id,
+					type:"get",
+					beforeSend:function(){
+						$.messager.progress({
+							text:message("csh.common.saving")
+						});
+					},
+					success:function(result,response,status){
+						$.messager.progress('close');
+						if(response == "success"){
+							showSuccessMsg("拒绝");
+							$("#repareReservation-table-list").datagrid('reload');
+						}else{
+							alertErrorMsg();
+						}
+					}
+				});
+			});
+		
+		}
 	});
 
 	
