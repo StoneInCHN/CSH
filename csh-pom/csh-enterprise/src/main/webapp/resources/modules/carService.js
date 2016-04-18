@@ -58,6 +58,31 @@ var carService_manager_tool = {
 					    editable : false,
 					    required:true,
 					    prompt:message("csh.common.please.select"),
+					    onSelect:function(record){
+					    	if(record.id != 2){
+					    		$("#addCarServicePrice").textbox('setValue',-1);
+					    		$("#addCarServicePrice").textbox({
+					    			readonly:true,
+					    			min:-1
+					    		});
+					    		$("#addCarServicePromotionPrice").textbox('setValue',-1);
+					    		$("#addCarServicePromotionPrice").textbox({
+					    			readonly:true,
+					    			min:-1
+					    		})
+					    	}else{
+					    		$("#addCarServicePrice").textbox({
+					    			readonly:false,
+					    			min:0
+					    		});
+					    		$("#addCarServicePrice").textbox('setValue',0);
+					    		$("#addCarServicePromotionPrice").textbox({
+					    			readonly:false,
+					    			min:0
+					    		});
+					    		$("#addCarServicePromotionPrice").textbox('setValue',0);
+					    	}
+					    }
 				    	});
 					//头像上传
 			     	var options ={
@@ -204,6 +229,31 @@ var carService_manager_tool = {
 					    onLoadSuccess:function(){
 							$('#editCarServiceCategory').combobox("setValue",$("#editCarServiceCategory").attr("data-value"));
 						},
+						 onSelect:function(record){
+						    	if(record.id != 2){
+						    		$("#editCarServicePrice").textbox('setValue',-1);
+						    		$("#editCarServicePrice").textbox({
+						    			readonly:true,
+						    			min:-1
+						    		});
+						    		$("#editCarServicePromotionPrice").textbox('setValue',-1);
+						    		$("#editCarServicePromotionPrice").textbox({
+						    			readonly:true,
+						    			min:-1
+						    		})
+						    	}else{
+						    		$("#editCarServicePrice").textbox({
+						    			readonly:false,
+						    			min:0
+						    		});
+						    		$("#editCarServicePrice").textbox('setValue',0);
+						    		$("#editCarServicePromotionPrice").textbox({
+						    			readonly:false,
+						    			min:0
+						    		});
+						    		$("#editCarServicePromotionPrice").textbox('setValue',0);
+						    	}
+						    }
 			    	});
 			    	var editOptions ={
 			     			createOption:{

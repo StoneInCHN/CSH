@@ -27,12 +27,8 @@
 		<setting name="qrImageUrl" value="" />
 		<!-- 消息推送接口 -->
 		<setting name="msgPushUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
-		<!-- 实时车况接口 -->
-		<setting name="rtCarConditionUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
-		<!-- 车辆每日数据 -->
-		<setting name="dailyVehicleStatusUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
-		<!-- 车辆动态接口 -->
-		<setting name="vehicleStatusUrl" value="http://localhost:8083/obd-data/tenantVehicleData/vehicleOnlineStatus.jhtml" />
+		<!-- obd server接口 -->
+		<setting name="obdServiceUrl" value="http://139.129.5.114:10000/obd-data/tenantVehicleData/" />
 		<setting name="clearingRecordCycle" value="7" />
 		
 		<!-- 短信平台URL -->

@@ -121,18 +121,9 @@ public class Setting implements Serializable {
     /** 短信平台语音回拨号码 */
     private String ucpaasCallDisplay;
     /**
-     * 实时车况URL
+     * odb Servier url
      */
-    private String rtCarConditionUrl;
-    /**
-     * 每日车辆情况URL
-     */
-    private String dailyVehicleStatusUrl;
-    
-    /**
-     * 车辆动态URL
-     */
-    private String vehicleStatusUrl;
+    private String obdServiceUrl;
     /**
      * 获取相册上传路径
      * 
@@ -793,34 +784,14 @@ public class Setting implements Serializable {
       this.ucpaasCallDisplay = ucpaasCallDisplay;
     }
 
-    public String getRtCarConditionUrl ()
+    public String getObdServiceUrl ()
     {
-      return rtCarConditionUrl;
+      return obdServiceUrl;
     }
 
-    public void setRtCarConditionUrl (String rtCarConditionUrl)
+    public void setObdServiceUrl (String obdServiceUrl)
     {
-      this.rtCarConditionUrl = rtCarConditionUrl;
-    }
-
-    public String getDailyVehicleStatusUrl ()
-    {
-      return dailyVehicleStatusUrl;
-    }
-
-    public void setDailyVehicleStatusUrl (String dailyVehicleStatusUrl)
-    {
-      this.dailyVehicleStatusUrl = dailyVehicleStatusUrl;
-    }
-
-    public String getVehicleStatusUrl ()
-    {
-      return vehicleStatusUrl;
-    }
-
-    public void setVehicleStatusUrl (String vehicleStatusUrl)
-    {
-      this.vehicleStatusUrl = vehicleStatusUrl;
+      this.obdServiceUrl = obdServiceUrl;
     }
 
     public Integer getClearingRecordCycle ()
@@ -832,6 +803,7 @@ public class Setting implements Serializable {
     {
       this.clearingRecordCycle = clearingRecordCycle;
     }
+
     
     
 }

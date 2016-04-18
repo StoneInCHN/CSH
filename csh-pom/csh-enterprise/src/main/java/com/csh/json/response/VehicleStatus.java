@@ -37,7 +37,11 @@ public class VehicleStatus {
    * 电瓶电压
    */
   private Float bv;
-
+  /**
+   * gps里程
+   */
+  private Float gpsMileage;
+  
   public Long getDeviceId() {
     return deviceId;
   }
@@ -85,4 +89,15 @@ public class VehicleStatus {
   public void setBv(Float bv) {
     this.bv = bv;
   }
+
+  public Float getGpsMileage ()
+  {
+    return gpsMileage;
+  }
+
+  public void setGpsMileage (Float gpsMileage)
+  {
+    this.gpsMileage = gpsMileage;
+  }
+  
 }

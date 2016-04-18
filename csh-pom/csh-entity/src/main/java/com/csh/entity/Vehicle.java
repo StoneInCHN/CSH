@@ -153,6 +153,11 @@ public class Vehicle extends BaseEntity {
    * 绑定的设备是否在线
    */
   private Boolean isOnline;
+  /**
+   * 初始设备里程
+   */
+  private Long initMileage;
+  
   @Column(length = 200)
   public String getBrandIcon() {
     return brandIcon;
@@ -402,6 +407,16 @@ public class Vehicle extends BaseEntity {
   public void setWainingInfo (String wainingInfo)
   {
     this.wainingInfo = wainingInfo;
+  }
+
+  public Long getInitMileage ()
+  {
+    return initMileage;
+  }
+
+  public void setInitMileage (Long initMileage)
+  {
+    this.initMileage = initMileage;
   }
 
 }

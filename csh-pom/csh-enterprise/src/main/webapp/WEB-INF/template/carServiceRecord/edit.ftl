@@ -36,6 +36,26 @@
     		</td>
     		<th>${message("csh.carServiceRecord.chargeStatus")}:</th>
     		<td>
+    			[#if carServiceRecord.chargeStatus == 'PAID']
+    				<input class="easyui-combobox" data-options="
+				     valueField: 'label',
+				     textField: 'value',
+				     data: [{
+				      label: 'PAID',
+				      value: '${message("csh.carServiceRecord.chargeStatus.PAID")}'
+				      [#if carServiceRecord.chargeStatus == 'PAID']
+    			  		, selected:true
+    			  	  [/#if]
+				     },{
+				      label: 'FINISH',
+				      value: '${message("csh.carServiceRecord.chargeStatus.FINISH")}'
+				      [#if carServiceRecord.chargeStatus == 'FINISH']
+    			  		, selected:true
+    			  	  [/#if]
+				     }],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="chargeStatus" style="width:110px;"/>
+				[#else]
+    			
     			    <input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',
@@ -82,7 +102,8 @@
     			  		, selected:true
     			  	  [/#if]
 				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="chargeStatus" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="chargeStatus" disabled='disabled' style="width:110px;"/>
+    			[/#if]
     		</td>
     	</tr>
     	<tr>
@@ -92,7 +113,7 @@
     		</td>
     		<th>${message("csh.carServiceRecord.price")}:</th>
     		<td>
-    			 <input  class="easyui-textbox" name="price" value="${carServiceRecord.price}"/>
+    			 <input  class="easyui-textbox" name="price"  [#if carServiceRecord.chargeStatus != 'UNPAID'] disabled="disabled"[/#if] value="${carServiceRecord.price}"/>
     		</td>
     		<th>${message("csh.carServiceRecord.recordNo")}:</th>
     		<td>

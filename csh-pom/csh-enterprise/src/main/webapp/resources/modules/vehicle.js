@@ -229,7 +229,7 @@ var vehicle_manager_tool = {
 			    height: 350,
 			    iconCls:'icon-mini-add',
 			    cache: false,
-			    href:'../vehicle/realTimeCarCondition.jhtml?deviceId='+_select_row.id,
+			    href:'../vehicle/realTimeCarCondition.jhtml?deviceId='+_select_row.deviceNo,
 			    buttons:[{
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',

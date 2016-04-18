@@ -48,7 +48,7 @@ public class RealTimeCarCondition {
    */
   private String acc;
   
-
+  private Boolean isNeedToAddInitMileAge;
   public Float getMileAge() {
     return mileAge;
   }
@@ -111,6 +111,16 @@ public class RealTimeCarCondition {
 
   public void setAcc(String acc) {
     this.acc = acc;
+  }
+
+  public Boolean getIsNeedToAddInitMileAge ()
+  {
+    return isNeedToAddInitMileAge;
+  }
+
+  public void setIsNeedToAddInitMileAge (Boolean isNeedToAddInitMileAge)
+  {
+    this.isNeedToAddInitMileAge = isNeedToAddInitMileAge;
   }
   
 }

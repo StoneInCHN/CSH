@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.persistence.FlushModeType;
-import javax.persistence.TypedQuery;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -20,10 +18,9 @@ import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Service;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+import com.csh.beans.Setting;
 import com.csh.dao.EndUserDao;
 import com.csh.dao.VehicleDao;
-import com.csh.entity.Department;
-import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.OilType;
@@ -35,7 +32,10 @@ import com.csh.service.DeviceInfoService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleOilService;
 import com.csh.service.VehicleService;
+import com.csh.utils.ApiUtils;
+import com.csh.utils.DateTimeUtils;
 import com.csh.utils.FieldFilterUtils;
+import com.csh.utils.SettingUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -52,6 +52,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
       private VehicleOilService vehicleOilService;
       @Resource(name = "deviceInfoServiceImpl")
       private DeviceInfoService deviceInfoService;
+      private Setting setting = SettingUtils.get();
       @Resource
       public void setBaseDao(VehicleDao vehicleDao) {
          super.setBaseDao(vehicleDao);
@@ -135,14 +136,14 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
       {
         Vehicle vehicle = vehicleDao.find (vehicleId);
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put ("date", date);
-        params.put ("deviceId", vehicle.getDevice ().getId ());
+        params.put ("date", DateTimeUtils.convertDateToString (date, "yyyy-MM-dd"));
+        params.put ("deviceId", vehicle.getDevice ().getDeviceNo ());
         VehicleDailyReport vehicleDailyReport = new VehicleDailyReport ();
         try
         {
-//          String response = ApiUtils.post (setting.getRtCarConditionUrl (), params);
+          String response = ApiUtils.post (setting.getObdServiceUrl ()+"dailyVehicleStatus.jhtml" , params);
           
-          String response = "{\"msg\":{\"dailyMileage\":10.0,\"averageFuelConsumption\":10.0,\"fuelConsumption\":0.0,\"cost\":null,\"averageSpeed\":0.0,\"emergencybrakecount\":0,\"suddenturncount\":0,\"rapidlyspeedupcount\":0}}";
+//          String response = "{\"msg\":{\"dailyMileage\":10.0,\"averageFuelConsumption\":10.0,\"fuelConsumption\":0.0,\"cost\":null,\"averageSpeed\":0.0,\"emergencybrakecount\":0,\"suddenturncount\":0,\"rapidlyspeedupcount\":0}}";
           if (response != null)
           {
             OilType oilType = vehicle.getVehicleBrandDetail ().getOilType ();
