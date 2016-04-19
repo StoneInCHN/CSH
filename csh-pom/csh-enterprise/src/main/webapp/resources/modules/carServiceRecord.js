@@ -167,7 +167,18 @@ var carServiceRecord_manager_tool = {
 			    	iconCls:'icon-save',
 					handler:function(){
 						var validate = $('#editCarServiceRecord_form').form('validate');
-						if(validate){
+						var payCodeFlageCheck = true;
+						debugger;
+						if($('#carServiceEditChargeStatus').combobox('getValue') == 'FINISH' && !$('#payCodeValidFlag').val()){
+							payCodeFlageCheck = false;
+							$.messager.show({
+								title : message("csh.common.prompt"),
+								msg :'支付验证码有误',
+								timeout : 3000,
+								showType : 'slide'
+							});
+						}
+						if(validate && payCodeFlageCheck){
 							$.ajax({
 								url:"../carServiceRecord/update.jhtml",
 								type:"post",
@@ -193,7 +204,57 @@ var carServiceRecord_manager_tool = {
 						 $('#editCarServiceRecord').dialog("close")
 					}
 			    }],
-			    onLoad:function(){},
+			    onLoad:function(){
+			    	
+			    	if($('#carServiceEditChargeStatus').combobox('getValue') == 'FINISH'){
+			    		$('.payCodeValid').show();
+	    				$('#validPayCode').textbox({
+	    					required:true,
+//	    					validType:'payCodeEqual['+$("#payCode").val()+']'
+	    				});
+	    			}else{
+	    				$('#validPayCode').textbox({
+	    					required:false,
+	    				});
+	    				$('.payCodeValid').hide();
+			    	}
+			    	$('#carServiceEditChargeStatus').combobox({
+			    		onSelect:function(record){
+			    			if(record.label == 'FINISH'){
+			    				$('.payCodeValid').show();
+			    				$('#validPayCode').textbox({
+			    					required:true,
+			    				});
+			    			}else{
+			    				$('#validPayCode').textbox({
+			    					required:false,
+			    				});
+			    				$('.payCodeValid').hide();
+			    			}
+			    		}
+			    			
+			    	});
+			    	$('#confirmPayCode').click(function(){
+			    		var payCode=$('#validPayCode').val();
+			    		var carServiceRecordId=$('#carServiceRecordId').val();
+			    		$.ajax({
+							url:"../carServiceRecord/payCodeCheck.jhtml?carServiceRecordId="+carServiceRecordId+"&payCode="+payCode,
+							type:"post",
+							success:function(result,response,status){
+								if(result )
+								$('#payCodeValidFlag').val(result);
+								else{
+									$.messager.show({
+										title : message("csh.common.prompt"),
+										msg :'支付验证码有误',
+										timeout : 3000,
+										showType : 'slide'
+									});
+								}
+							}
+						});
+			    	});
+			    },
 			    onClose:function(){
 			    	$('#editCarServiceRecord').empty();
 			    }

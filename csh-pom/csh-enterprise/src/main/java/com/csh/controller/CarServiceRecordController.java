@@ -245,6 +245,18 @@ public class CarServiceRecordController extends BaseController
     return SUCCESS_MESSAGE;
   }
   
+  @RequestMapping(value = "/payCodeCheck", method = RequestMethod.POST)
+  public @ResponseBody Boolean payCodeCheck(ModelMap model, Long carServiceRecordId,String payCode) {
+    CarServiceRecord carServiceRecord =carServiceRecordService.find (carServiceRecordId);
+    
+    if (carServiceRecord.getPayCode ().equals (payCode))
+    {
+      return true;
+    }else {
+      return false;
+    }
+    
+  }
   private void checkOverDue(List<CarServiceRecord> recordList){
     for (CarServiceRecord carServiceRecord : recordList)
     {

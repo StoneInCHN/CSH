@@ -24,7 +24,7 @@ $.extend($.fn.validatebox.defaults.rules, {
         validator: function(value, param){    
             return value.length >= param[0];    
         },    
-        message: '最少输入{0}为'   
+        message: '最少输入{0}位'   
     }    
 }); 
 
@@ -38,11 +38,21 @@ $.extend($.fn.validatebox.defaults.rules, {
     }    
 });
 
+//支付验证码匹配
 $.extend($.fn.validatebox.defaults.rules, {    
-    passwordEequals: {    
-        validator: function(value,param){    
-            return value == $(param[0]).val();    
+    payCodeEqual: {    
+        validator: function(value,param){
+            return value ==param[0];    
         },    
-        message: '密码不一致'   
+        message: '验证码有误'   
     }    
 });
+
+$.extend($.fn.validatebox.defaults.rules, {    
+    minLength: {    
+        validator: function(value, param){    
+            return value.length >= param[0];    
+        },    
+        message: '最少输入{0}为'   
+    }    
+}); 

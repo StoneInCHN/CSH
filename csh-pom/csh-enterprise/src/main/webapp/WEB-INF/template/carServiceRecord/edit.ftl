@@ -1,6 +1,12 @@
 <form id="editCarServiceRecord_form" method="post">
-	<input type="hidden" value="${carServiceRecord.id}" name="id"/>   
+	<input type="hidden" id="carServiceRecordId" value="${carServiceRecord.id}" name="id"/>   
 	 <table class="table table-striped"  border="0">
+	 	<tr>
+	 		<th>${message("csh.carServiceRecord.recordNo")}:</th>
+    		<td colspan="5">
+    			 <input  class="easyui-textbox" disabled="disabled"  value="${carServiceRecord.recordNo}" data-options="width:250,required:true"/>
+    		</td>
+	 	</tr>
 	    <tr>
     		<th>${message("csh.carService.serviceName")}:</th>
     		<td >
@@ -9,10 +15,6 @@
     		<th>${message("csh.carServiceRecord.endUser")}:</th>
     		<td>
     			 <input  class="easyui-textbox" disabled="disabled"  value="${carServiceRecord.endUser.userName}"/>
-    		</td>
-    		<th>${message("csh.carService.serviceCategory")}:</th>
-    		<td>
-    			 <input  class="easyui-textbox" disabled="disabled" id= "carServiceCategoryDetail" value="${carServiceRecord.carService.serviceCategory.categoryName}" name="serviceCategoryId"  data-options="required:true"/>
     		</td>
     	</tr>
     	<tr>
@@ -32,11 +34,29 @@
     		</td>
     		<th>${message("csh.carServiceRecord.paymentDate")}:</th>
     		<td>
-    			 <input  class="easyui-textbox" disabled="disabled" value="${carServiceRecord.paymentDate}"/>
+    			 <input  class="easyui-textbox" name = "paymentDate" disabled="disabled" value="${carServiceRecord.paymentDate}"/>
     		</td>
+    	</tr>
+    	<tr>
+    		<th>${message("csh.carService.serviceCategory")}:</th>
+    		<td>
+    			<input  class="easyui-textbox" disabled="disabled" id= "carServiceCategoryDetail" value="${carServiceRecord.carService.serviceCategory.categoryName}" name="serviceCategoryId"  data-options="required:true"/>
+    		</td>
+    		<th>${message("csh.carServiceRecord.clearingDate")}:</th>
+    		<td >
+    			 <input  class="easyui-textbox" value="${carServiceRecord.clearingDate}" disabled="disabled" id= "serviceName" name="serviceName"  data-options="required:true"/>
+    		</td>
+    	</tr>
+    	<tr>
+    		<th>${message("csh.carServiceRecord.price")}:</th>
+    		<td>
+    			 <input  class="easyui-textbox" name="price"  [#if carServiceRecord.chargeStatus != 'UNPAID'] readonly="true"[/#if] value="${carServiceRecord.price}"/>
+    		</td>
+    		
     		<th>${message("csh.carServiceRecord.chargeStatus")}:</th>
     		<td>
-    			[#if carServiceRecord.chargeStatus == 'PAID']
+    			 
+    			 [#if carServiceRecord.chargeStatus == 'PAID']
     				<input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',
@@ -53,7 +73,7 @@
     			  		, selected:true
     			  	  [/#if]
 				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="chargeStatus" style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100" id="carServiceEditChargeStatus" name="chargeStatus" style="width:110px;"/>
 				[#else]
     			
     			    <input class="easyui-combobox" data-options="
@@ -102,22 +122,16 @@
     			  		, selected:true
     			  	  [/#if]
 				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="chargeStatus" disabled='disabled' style="width:110px;"/>
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100" id="carServiceEditChargeStatus" name="chargeStatus" disabled='disabled' style="width:110px;"/>
     			[/#if]
     		</td>
     	</tr>
-    	<tr>
-    		<th>${message("csh.carServiceRecord.clearingDate")}:</th>
-    		<td >
-    			 <input  class="easyui-textbox" value="${carServiceRecord.clearingDate}" disabled="disabled" id= "serviceName" name="serviceName"  data-options="required:true"/>
-    		</td>
-    		<th>${message("csh.carServiceRecord.price")}:</th>
+    	<tr class="payCodeValid">
+    		<th>支付验证码：</th>
     		<td>
-    			 <input  class="easyui-textbox" name="price"  [#if carServiceRecord.chargeStatus != 'UNPAID'] disabled="disabled"[/#if] value="${carServiceRecord.price}"/>
-    		</td>
-    		<th>${message("csh.carServiceRecord.recordNo")}:</th>
-    		<td>
-    			 <input  class="easyui-textbox" disabled="disabled"  value="${carServiceRecord.recordNo}" data-options="required:true"/>
+    			<input  class="easyui-textbox"  id="validPayCode"  />
+    			<input type="button" class="btn btn-primary" id="confirmPayCode" value="确认" />
+    			<input type="hidden" id="payCodeValidFlag">
     		</td>
     	</tr>
     </table>
