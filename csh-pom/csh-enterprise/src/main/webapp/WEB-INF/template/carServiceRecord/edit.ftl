@@ -126,6 +126,7 @@
     			[/#if]
     		</td>
     	</tr>
+    	[#if carServiceRecord.carService.serviceCategory.id == 2]
     	<tr class="payCodeValid">
     		<th>支付验证码：</th>
     		<td>
@@ -134,6 +135,7 @@
     			<input type="hidden" id="payCodeValidFlag">
     		</td>
     	</tr>
+    	[/#if]
     </table>
 </form>
 

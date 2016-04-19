@@ -168,7 +168,15 @@ var carServiceRecord_manager_tool = {
 					handler:function(){
 						var validate = $('#editCarServiceRecord_form').form('validate');
 						var payCodeFlageCheck = true;
-						debugger;
+						if(!$('#confirmPayCode').is(":hidden")){
+							$.messager.show({
+								title : message("csh.common.prompt"),
+								msg :'输入验证码后请确认',
+								timeout : 3000,
+								showType : 'slide'
+							});
+							return;
+						}
 						if($('#carServiceEditChargeStatus').combobox('getValue') == 'FINISH' && !$('#payCodeValidFlag').val()){
 							payCodeFlageCheck = false;
 							$.messager.show({
@@ -241,8 +249,10 @@ var carServiceRecord_manager_tool = {
 							url:"../carServiceRecord/payCodeCheck.jhtml?carServiceRecordId="+carServiceRecordId+"&payCode="+payCode,
 							type:"post",
 							success:function(result,response,status){
-								if(result )
-								$('#payCodeValidFlag').val(result);
+								if(result ){
+									$('#payCodeValidFlag').val(result);
+									$('#confirmPayCode').hide();
+								}
 								else{
 									$.messager.show({
 										title : message("csh.common.prompt"),
