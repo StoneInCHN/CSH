@@ -147,7 +147,9 @@
 														${tenantInfo.contactPerson}
 													</td>
 													<td>
-														${message("csh.tenantInfo.isHaveAccount."+tenantInfo.isHaveAccount?string('yes','no'))} 
+														[#if tenantInfo.isHaveAccount??]
+															${message("csh.tenantInfo.isHaveAccount."+tenantInfo.isHaveAccount?string('yes','no'))} 
+														[/#if]
 													</td>
 													<td>
 														${tenantInfo.businessTime}
@@ -156,7 +158,9 @@
 														${tenantInfo.area}
 													</td>
 													<td>
-														${message("csh.tenantInfo.accoutStatus."+tenantInfo.accountStatus)}
+														[#if tenantInfo.accountStatus??]
+															${message("csh.tenantInfo.accoutStatus."+tenantInfo.accountStatus)}
+														[/#if]
 													</td>
 													<td>
 														<!--

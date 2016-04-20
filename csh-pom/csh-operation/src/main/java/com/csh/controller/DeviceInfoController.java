@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.Message;
+import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Admin;
 import com.csh.entity.DeviceInfo;
@@ -27,6 +29,7 @@ import com.csh.service.DeviceInfoService;
 import com.csh.service.DeviceTypeService;
 import com.csh.service.DistributorService;
 import com.csh.service.TenantInfoService;
+import com.csh.utils.ExcelUtils;
 
 @RequestMapping("console/deviceInfo")
 @Controller("deviceInfoController")
@@ -223,7 +226,7 @@ public class DeviceInfoController extends BaseController {
       if (string.length() > 0) {
         Long id = Long.valueOf(string);
         DeviceInfo deviceInfo = deviceInfoService.find(id);
-        if(DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus())){
+        if(DeviceStatus.SENDOUT.equals(deviceInfo.getDeviceStatus())){
           deviceInfo.setTenantID(tenantInfoId);
           deviceInfo.setDeviceStatus(DeviceStatus.STORAGEOUT);
           deviceInfoService.update(deviceInfo);
@@ -253,4 +256,105 @@ public class DeviceInfoController extends BaseController {
     return SUCCESS_MESSAGE;
   }
 
+  
+  /**
+   * 跳转到批量上传页面
+   * 
+   */
+  @RequestMapping(value = "/batchAdd", method = RequestMethod.GET)
+  public String batchAdd(DeviceInfo device, ModelMap model) {
+    return "/deviceInfo/batch_add";
+  }
+  
+  /**
+   * 批量上传
+   * 
+   * @param pageable
+   * @param model
+   * @return
+   */
+  @RequestMapping(value = "/batchAddSave", method = RequestMethod.POST)
+  public String batchAddSave(DeviceInfo device, ModelMap model, HttpSession session) {
+    Message message = new Message();
+    int successCount = 0;// 成功条数
+    int faileCount = 0;// 失败条数
+    List<String> dupfailDeviceIds = new ArrayList<String>();
+    List<String> formatFailDeviceIds = new ArrayList<String>();
+    try {
+      String fileSuffix = device.getFile().getOriginalFilename().split("\\.")[1];
+      List<DeviceInfo> devices = null;
+
+      if (fileSuffix.toUpperCase().equals("XLS")) {
+        devices = ExcelUtils.processingExcel_XLS(device.getFile().getInputStream());
+      } else if (fileSuffix.toUpperCase().equals("XLSX")) {
+        devices = ExcelUtils.processingExcel_XLSX(device.getFile().getInputStream());
+      }
+
+      model.addAttribute("device", device);
+
+      if (LogUtil.isDebugEnabled(DeviceInfoController.class)) {
+        LogUtil.debug(DeviceInfoController.class, "batchAddSave",
+            "Load data from excel successful and count is : %s", devices.size());
+      }
+
+      if (devices.size() > 3000) {
+        if (LogUtil.isDebugEnabled(DeviceInfoController.class)) {
+          LogUtil.debug(DeviceInfoController.class, "batchAddSave", "batchAddSave",
+              "Rows exceed 3000 : %s", devices.size());
+        }
+        message.setType(Message.Type.error);
+        message.setContent("gutid.batch.upload.err");
+        model.addAttribute("resMessage", message);
+        return "/deviceInfo/batch_add";
+      }
+
+
+      for (DeviceInfo deviceTemp : devices) {
+        try {
+          if (deviceTemp.getDeviceNo() != null && deviceTemp.getSimNo() != null) {
+            if (deviceTemp.getDeviceNo().length() != 8) {
+              formatFailDeviceIds.add(deviceTemp.getDeviceNo());
+              faileCount++;
+            } else {
+
+              deviceTemp.setDeviceStatus(DeviceStatus.INITED);
+              deviceTemp.setBindStatus(BindStatus.UNBINDED);
+              deviceInfoService.save(deviceTemp);
+              if (LogUtil.isDebugEnabled(DeviceInfoController.class)) {
+                LogUtil.debug(DeviceInfoController.class, "batchAddSave",
+                    "DeviceInfo saved , Sn : %s , simNo : %s", deviceTemp.getDeviceNo(),
+                    deviceTemp.getSimNo());
+              }
+              successCount++;
+            }
+          } else {
+            formatFailDeviceIds.add(deviceTemp.getDeviceNo() + "\n");
+            faileCount++;
+          }
+        } catch (Exception e) {
+          faileCount++;
+          dupfailDeviceIds.add(deviceTemp.getDeviceNo());
+        }
+      }
+      if (successCount>0) {
+        message.setType(Message.Type.success);
+        message.setContent(message("gutid.batch.upload.success"));
+        model.addAttribute("resMessage", message);
+      }
+      else {
+        message.setType(Message.Type.error);
+        message.setContent("gutid.batch.upload.fail");
+        model.addAttribute("resMessage", message);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    model.addAttribute("successCount", successCount);
+    model.addAttribute("faileCount", faileCount);
+    model.addAttribute("dupfailDeviceIds", dupfailDeviceIds);
+    model.addAttribute("formatFailDeviceIds", formatFailDeviceIds);
+    return "/deviceInfo/batch_add";
+  }
+
+  
 }

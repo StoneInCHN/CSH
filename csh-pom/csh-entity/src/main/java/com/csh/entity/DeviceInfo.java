@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
@@ -15,6 +16,7 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
+import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
@@ -86,6 +88,8 @@ public class DeviceInfo extends BaseEntity {
    */
   private Long distributorId;
   
+  /** 文件 */
+  private MultipartFile file;
   
   @JsonProperty
   public Date getBindTime() {
@@ -183,4 +187,13 @@ public class DeviceInfo extends BaseEntity {
     this.distributorId = distributorId;
   }
 
+  @Transient
+  public MultipartFile getFile() {
+    return file;
+  }
+
+  public void setFile(MultipartFile file) {
+    this.file = file;
+  }
+  
 }
