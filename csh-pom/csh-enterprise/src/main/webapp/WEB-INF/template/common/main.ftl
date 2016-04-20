@@ -81,6 +81,7 @@
 				  </a>
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 				     <li><a href="#" id="changePasswordHref">修改密码</a></li>
+				     <li><a href="#" id="tenantInfoConfigHref">店铺管理</a></li>
 				    <li role="separator" class="divider"></li>
 				    <li class="pull-right"><a href="${base}/console/common/logout.jhtml">退出</a></li>
 				  </ul>

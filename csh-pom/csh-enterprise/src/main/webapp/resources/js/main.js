@@ -121,7 +121,7 @@ $(function(){
 		 * 修改密码事件
 		 */
 		$("#changePasswordHref").click(function(){
-			$('#changePassword').dialog({
+			$('#commonMainDialog').dialog({
 			    title: "修改密码",//message("yly.drugsInfo.add"),    
 			    width: 500,    
 			    height: 480,
@@ -165,6 +165,59 @@ $(function(){
 			    }],
 			    onOpen:function(){
 			    	$('#changePassword').show();
+			    },
+			
+			});
+		});
+		
+		/**
+		 * 店铺管理中心
+		 */
+		$("#tenantInfoConfigHref").click(function(){
+			$('#commonMainDialog').dialog({
+			    title: "店铺管理",//message("yly.drugsInfo.add"),    
+			    width: 500,    
+			    height: 480,
+			    iconCls:'icon-mini-add',
+			    href:'../common/tenantInfoConfig.jhtml',
+			    cache: false, 
+			    buttons:[{
+			    	text:message("csh.common.save"),
+			    	iconCls:'icon-save',
+					handler:function(){
+						debugger;
+						var validate = $('#tenantInfoConfig_form').form('validate');
+						if(validate){
+							$.ajax({
+								url:"../common/saveTenantInfoConfig.jhtml",
+								type:"post",
+								data:$("#tenantInfoConfig_form").serialize(),
+								beforeSend:function(){
+									$.messager.progress({
+										text:message("csh.common.saving")
+									});
+								},
+								success:function(result,response,status){
+									$.messager.progress('close');
+									if(response == "success"){
+										showSuccessMsg(result.content);
+										$('#commonMainDialog').dialog("close");
+									}else{
+										alertErrorMsg();
+									}
+								}
+							});
+						};
+					}
+				},{
+					text:message("csh.common.cancel"),
+					iconCls:'icon-cancel',
+					handler:function(){
+						 $('#commonMainDialog').dialog("close");
+					}
+			    }],
+			    onLoad:function(){
+			    	$('#commonMainDialog').show();
 			    },
 			
 			});

@@ -5,7 +5,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -29,12 +31,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.Area;
 import com.csh.entity.TenantAccount;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.json.response.ReportMainResponse;
+import com.csh.service.AreaService;
 import com.csh.service.CaptchaService;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
@@ -67,6 +71,8 @@ public class CommonController extends BaseController {
   private EndUserService endUserService;
   @Resource(name ="vehicleServiceImpl")
   private VehicleService vehicleService;
+  @Resource(name="areaServiceImpl")
+  private AreaService areaService;
 
   /**
    * 验证码
@@ -186,7 +192,14 @@ public String main(ModelMap model,  HttpSession session) {
   public String changePassword(){
     return "common/changePassword";
   }
-  
+  @RequestMapping(value ="/tenantInfoConfig",method = RequestMethod.GET)
+  public String tenantInfoConfig(ModelMap modelMap){
+    
+    TenantInfo tenantInfo = tenantInfoService.find (tenantAccountService.getCurrentTenantInfo ().getId ());
+    modelMap.addAttribute ("tenantInfo",tenantInfo);
+    modelMap.addAttribute ("areaName",tenantInfo.getArea ().getFullName ());
+    return "common/tenantInfoConfig";
+  }
   @RequestMapping(value ="/savePassword",method = RequestMethod.POST)
   public @ResponseBody Message savePassword(String oldPassword, String newPassword){
     TenantAccount tenantAccount = tenantAccountService.getCurrent();
@@ -197,6 +210,14 @@ public String main(ModelMap model,  HttpSession session) {
     }
     tenantAccount.setPassword (newEnPassword);
     tenantAccountService.update (tenantAccount);
+    return SUCCESS_MESSAGE;
+  }
+  
+  @RequestMapping(value ="/saveTenantInfoConfig",method = RequestMethod.POST)
+  public @ResponseBody Message saveTenantInfoConfig(TenantInfo tenantInfo){
+   
+    tenantInfoService.update (tenantInfo, "createDate","orgCode","accountStatus",
+          "versionConfig","praiseRate","isHaveAccount","distributor","qrImage");
     return SUCCESS_MESSAGE;
   }
   /**
@@ -271,24 +292,24 @@ public String main(ModelMap model,  HttpSession session) {
 //    return captchaService.isValid(captchaType, captchaId, captcha);
 //  }
   
-//  /**
-//   * 地区
-//   */
-//  @RequestMapping(value = "/area", method = RequestMethod.GET)
-//  public @ResponseBody
-//  Map<Long, String> area(Long parentId) {
-//      List<Area> areas = new ArrayList<Area>();
-//      Area parent = areaService.find(parentId);
-//      if (parent != null) {
-//          areas = new ArrayList<Area>(parent.getChildren());
-//      } else {
-//          areas = areaService.findRoots();
-//      }
-//      Map<Long, String> options = new HashMap<Long, String>();
-//      for (Area area : areas) {
-//          options.put(area.getId(), area.getName());
-//      }
-//      return options;
-//  }
+  /**
+   * 地区
+   */
+  @RequestMapping(value = "/area", method = RequestMethod.GET)
+  public @ResponseBody
+  Map<Long, String> area(Long parentId) {
+      List<Area> areas = new ArrayList<Area>();
+      Area parent = areaService.find(parentId);
+      if (parent != null) {
+          areas = new ArrayList<Area>(parent.getChildren());
+      } else {
+          areas = areaService.findRoots();
+      }
+      Map<Long, String> options = new HashMap<Long, String>();
+      for (Area area : areas) {
+          options.put(area.getId(), area.getName());
+      }
+      return options;
+  }
 
 }
