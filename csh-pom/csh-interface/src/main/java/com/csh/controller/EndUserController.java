@@ -115,6 +115,40 @@ public class EndUserController extends MobileBaseController {
   }
 
   /**
+   * 更新缓存信息
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/updateLoginCacheInfo", method = RequestMethod.POST)
+  public @ResponseBody ResponseOne<Map<String, Object>> updateLoginCacheInfo(
+      @RequestBody UserLoginRequest userLoginReq) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = userLoginReq.getUserId();
+
+    EndUser loginUser = endUserService.find(userId);
+
+    response.setCode(CommonAttributes.SUCCESS);
+    response.setDesc(loginUser.getId().toString());
+
+    String[] properties = {"id", "userName", "nickName", "photo", "signature"};
+    Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, loginUser);
+    map.put("defaultVehiclePlate", loginUser.getDefaultVehicle() != null ? loginUser
+        .getDefaultVehicle().getPlate() : null);
+    map.put("defaultVehicle", loginUser.getDefaultVehicle() != null ? loginUser.getDefaultVehicle()
+        .getVehicleFullBrand() : null);
+    map.put("defaultDeviceNo", loginUser.getDefaultVehicle() != null ? loginUser
+        .getDefaultVehicle().getDeviceNo() : null);
+    map.put("defaultVehicleIcon", loginUser.getDefaultVehicle() != null ? loginUser
+        .getDefaultVehicle().getBrandIcon() : null);
+    response.setMsg(map);
+    String token = TokenGenerator.generateToken();
+    endUserService.createEndUserToken(token, loginUser.getId());
+    response.setToken(token);
+    return response;
+  }
+
+  /**
    * 用户登录
    * 
    * @param req
