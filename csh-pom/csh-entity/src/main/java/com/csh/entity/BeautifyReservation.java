@@ -24,7 +24,7 @@ import com.csh.lucene.DateBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * 维修预约
+ * 美容预约
  * 
  */
 @Indexed(index="beautifyReservation")
@@ -67,6 +67,8 @@ public class BeautifyReservation extends BaseEntity
   private CarServiceRecord carServiceRecord;
   private Long tenantID;
 
+  private String remark;
+  
   @ManyToOne
   @JsonProperty
   @IndexedEmbedded
@@ -141,6 +143,7 @@ public class BeautifyReservation extends BaseEntity
   }
 
   @OneToOne(cascade = CascadeType.PERSIST)
+  @JsonProperty
   public CarServiceRecord getCarServiceRecord ()
   {
     return carServiceRecord;
@@ -149,6 +152,16 @@ public class BeautifyReservation extends BaseEntity
   public void setCarServiceRecord (CarServiceRecord carServiceRecord)
   {
     this.carServiceRecord = carServiceRecord;
+  }
+
+  public String getRemark ()
+  {
+    return remark;
+  }
+
+  public void setRemark (String remark)
+  {
+    this.remark = remark;
   }
 
 }

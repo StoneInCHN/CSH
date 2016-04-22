@@ -1,7 +1,7 @@
 <form id="editRepareReservation_form" method="post">   
 		<input type="hidden" name="id" value="${repareReservation.id}"/>
 		<input type="hidden" name="endUserID"  value="${repareReservation.endUser.id}" id="editRepareReservation_tenantUserID">
-		<input type="hidden" id="vehicleListMap" value= '${vehicleListMap}'/>  
+		<input type="hidden" id="editRepareVehicleListMap" value= '${vehicleListMap}'/>  
 	    <table class="table table-striped"  border="0">
 	    	<table class="table table-striped"  border="0">
 		    <tr>
@@ -18,7 +18,7 @@
 	    	<tr>
 	    		<th>${message("csh.vehicle.plate")}:</th>
 	    		<td >
-	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${repareReservation.plate}"  id= "vehiclePlate"  data-options="required:true"/>
+	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${repareReservation.plate}"  id= "editRepareVehiclePlate"  data-options="required:true"/>
 	    		</td>
 	    		<th>${message("csh.vehicle.vehicleBrand")}:</th>
 	    		<td >

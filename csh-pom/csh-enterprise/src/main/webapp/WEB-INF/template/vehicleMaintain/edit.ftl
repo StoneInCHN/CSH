@@ -27,7 +27,7 @@
 	    	<tr>
 	    		<th>${message("csh.vehicleMaintain.lastMaintainDate")}:</th>
 	    		<td colspan="3">
-	    			 <input type="text" class="easyui-datebox" name="lastMaintainDate" value="${vehicleMaintain.lastMaintainDate}" data-options="required:true,editable:false"/>   
+	    			 <input type="text" class="Wdate" name="lastMaintainDate" id="editNextMaintainDateStart" value="${vehicleMaintain.lastMaintainDate}" data-options="required:true,editable:false" onclick="WdatePicker({maxDate: '#F{$dp.$D(\'editNextMaintainDateEnd\')}'});"/>   
 	    		</td>
 	    		<th>${message("csh.vehicleMaintain.lastMaintainMileage")}:</th>
 	    		<td >
@@ -37,7 +37,7 @@
 	    	<tr>
 	    		<th>${message("csh.vehicleMaintain.nextMaintainDate")}:</th>
 	    		<td colspan="3">
-	    			 <input type="text" class="easyui-datebox" name="nextMaintainDate" value="${vehicleMaintain.nextMaintainDate}" data-options="required:true,editable:false"/>   
+	    			 <input type="text" class="Wdate" id="editNextMaintainDateEnd" class="easyui-datebox" name="nextMaintainDate" value="${vehicleMaintain.nextMaintainDate}" data-options="required:true,editable:false" onclick="WdatePicker({minDate: '#F{$dp.$D(\'editNextMaintainDateStart\')}'});"/>   
 	    		</td>
 	    		<th>${message("csh.vehicleMaintain.nextMaintainMileage")}:</th>
 	    		<td >

@@ -485,7 +485,11 @@ public class VehicleController extends BaseController
   @RequestMapping(value = "/pushVehicleWainingInfo", method = RequestMethod.POST)
   public void pushVehicleWainingInfo(MsgRequest msgRequest){
     Vehicle vehicle = vehicleService.findVehicleByDeviceId (Long.parseLong (msgRequest.getDeviceNo ()));
-    vehicle.setWainingInfo (msgRequest.getMsgContent ());
-    vehicleService.update (vehicle);
+    
+    if (vehicle != null)
+    {
+      vehicle.setWainingInfo (msgRequest.getMsgContent ());
+      vehicleService.update (vehicle);
+    }
   }
 }

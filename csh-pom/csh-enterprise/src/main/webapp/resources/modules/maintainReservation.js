@@ -12,7 +12,6 @@ var maintainReservation_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						debugger;
 						var validate = $('#addMaintainReservation_form').form('validate');
 						var plate=$("#vehiclePlate").combobox('getText');
 						$('#addMaintainReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')
@@ -73,12 +72,14 @@ var maintainReservation_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#maintainReservation_form').form('validate');
+						var plate=$("#vehiclePlate").combobox('getText');
+						$('#editMaintainReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')
+						var validate = $('#editMaintainReservation_form').form('validate');
 						if(validate){
 							$.ajax({
 								url:"../maintainReservation/update.jhtml",
 								type:"post",
-								data:$("#editEndUser_form").serialize(),
+								data:$("#editMaintainReservation_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -107,7 +108,7 @@ var maintainReservation_manager_tool = {
 				    textField:'plate',
 				    editable : false,
 				    required:true,
-				    data:$.parseJSON($("#vehicleListMap").val()),
+				    data:$.parseJSON($("#vehicleMaintainListMap").val()),
 				    prompt:message("csh.common.please.select"),
 					onLoadSuccess:function(){
 					    	$("#vehiclePlate").combobox("setValue",$("#vehiclePlate").attr("data-value"))    	
@@ -192,6 +193,8 @@ $(function(){
 		    	  formatter:function(value,row,index){
 		    		  if(row.carServiceRecord.chargeStatus == 'RESERVATION'){
 		    			  return '<button class="btn btn-primary btn-maintain-approve" data-value='+row.id+'>确认</button><button class="btn btn-danger btn-maintain-reject" data-value='+row.id+'>拒绝</button>'  
+		    		  }else if(row.carServiceRecord.chargeStatus == 'RESERVATION_SUCCESS'){
+		    			  return '<button class="btn btn-primary btn-maintain-arrival" data-value='+row.id+'>到店确认</button>'  
 		    		  }else{
 		    			  return ""
 		    		  }
@@ -240,13 +243,37 @@ $(function(){
 						$.messager.progress('close');
 						if(response == "success"){
 							showSuccessMsg("拒绝");
+							$("#maintainReservation-table-list").datagrid('reload');
 						}else{
 							alertErrorMsg();
 						}
 					}
 				});
 			});
-		
+			
+			$('.btn-maintain-arrival').click(function(){
+				var $this=$(this);
+				var id = $this.attr('data-value');
+				
+				$.ajax({
+					url:"../maintainReservation/arrival.jhtml?id="+id,
+					type:"get",
+					beforeSend:function(){
+						$.messager.progress({
+							text:message("csh.common.saving")
+						});
+					},
+					success:function(result,response,status){
+						$.messager.progress('close');
+						if(response == "success"){
+							showSuccessMsg("到店");
+							$("#maintainReservation-table-list").datagrid('reload');
+						}else{
+							alertErrorMsg();
+						}
+					}
+				});
+			});
 		}
 	});
 

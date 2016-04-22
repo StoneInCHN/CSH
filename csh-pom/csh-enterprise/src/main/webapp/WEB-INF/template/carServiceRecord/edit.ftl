@@ -61,7 +61,7 @@
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
-				      label: 'PAID',
+				      label: 'RESERVATION_SUCCESS',
 				      value: '${message("csh.carServiceRecord.chargeStatus.PAID")}'
 				      [#if carServiceRecord.chargeStatus == 'PAID']
     			  		, selected:true
@@ -75,7 +75,6 @@
 				     }],
 				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100" id="carServiceEditChargeStatus" name="chargeStatus" style="width:110px;"/>
 				[#else]
-    			
     			    <input class="easyui-combobox" data-options="
 				     valueField: 'label',
 				     textField: 'value',

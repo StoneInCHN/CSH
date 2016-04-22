@@ -1,10 +1,10 @@
-var repareReservation_manager_tool = {
+var beautifyReservation_manager_tool = {
 		add:function(){
-			$('#addRepareReservation').dialog({
+			$('#addBeautifyReservation').dialog({
 			    title: message("csh.endUser.add"),    
 			    width: 600,    
 			    height: 450,
-			    href:'../repareReservation/add.jhtml',
+			    href:'../beautifyReservation/add.jhtml',
 			    method:"get",
 			    iconCls:'icon-mini-add',
 			    cache: false, 
@@ -12,14 +12,14 @@ var repareReservation_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#addRepareReservation_form').form('validate');
-						var plate=$("#addRepareVehiclePlate").combobox('getText');
-						$('#addRepareReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')
+						var validate = $('#addBeautifyReservation_form').form('validate');
+						var plate=$("#vehiclePlate").combobox('getText');
+						$('#addBeautifyReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')
 						if(validate){
 								$.ajax({
-									url:"../repareReservation/add.jhtml",
+									url:"../beautifyReservation/add.jhtml",
 									type:"post",
-									data:$("#addRepareReservation_form").serialize(),
+									data:$("#addBeautifyReservation_form").serialize(),
 									beforeSend:function(){
 										$.messager.progress({
 											text:message("csh.common.saving")
@@ -29,9 +29,9 @@ var repareReservation_manager_tool = {
 										$.messager.progress('close');
 										if(response == "success"){
 											showSuccessMsg(result.content);
-											$('#addRepareReservation').dialog("close")
-											$("#addRepareReservation_form").form("reset");
-											$("#repareReservation-table-list").datagrid('reload');
+											$('#addBeautifyReservation').dialog("close")
+											$("#addBeautifyReservation_form").form("reset");
+											$("#beautifyReservation-table-list").datagrid('reload');
 										}else{
 											alertErrorMsg();
 										}
@@ -43,42 +43,42 @@ var repareReservation_manager_tool = {
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						$('#addRepareReservation').empty();
+						$('#addBeautifyReservation').empty();
 					}
 			    }],
 			    onOpen:function(){
 			    	$('#addRepareReservation_form').show();
 			    },
 			    onClose:function(){
-			    	$('#addRepareReservation').empty();
+			    	$('#addBeautifyReservation').empty();
 			    }
 			});  
 		},
 		edit:function(){
-			var _edit_row = $('#repareReservation-table-list').datagrid('getSelected');
+			var _edit_row = $('#beautifyReservation-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
 			}
-			var _dialog = $('#editRepareReservation').dialog({    
+			var _dialog = $('#editBeautifyReservation').dialog({    
 				title: message("csh.common.edit"),     
 			    width: 600,    
 			    height: 450,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
-			    href:'../repareReservation/edit.jhtml?id='+_edit_row.id,
+			    href:'../beautifyReservation/edit.jhtml?id='+_edit_row.id,
 			    buttons:[{
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#editRepareReservation_form').form('validate');
-						var plate=$("#editRepareVehiclePlate").combobox('getText');
-						$('#editRepareReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')
+						var validate = $('#beautifyReservation_form').form('validate');
+						var plate=$("#vehiclePlate").combobox('getText');
+						$('#editBeautifyReservation_form').append('<input type="hidden" name="plate" value="'+plate+'"/>')
 						if(validate){
 							$.ajax({
-								url:"../repareReservation/update.jhtml",
+								url:"../beautifyReservation/update.jhtml",
 								type:"post",
-								data:$("#editRepareReservation_form").serialize(),
+								data:$("#editBeautifyReservation_form").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -87,8 +87,8 @@ var repareReservation_manager_tool = {
 								success:function(result,response,status){
 									$.messager.progress('close');
 										showSuccessMsg(result.content);
-										$('#editRepareReservation').dialog("close");
-										$("#repareReservation-table-list").datagrid('reload');
+										$('#editBeautifyReservation').dialog("close");
+										$("#beautifyReservation-table-list").datagrid('reload');
 								}
 							});
 						};
@@ -106,10 +106,10 @@ var repareReservation_manager_tool = {
 					    textField:'plate',
 					    editable : false,
 					    required:true,
-					    data:$.parseJSON($("#editRepareVehicleListMap").val()),
+					    data:$.parseJSON($("#vehicleListMap").val()),
 					    prompt:message("csh.common.please.select"),
 					    onLoadSuccess:function(){
-					    	$("#editRepareVehiclePlate").combobox("setValue",$("#editRepareVehiclePlate").attr("data-value"))    	
+					    	$("#vehiclePlate").combobox("setValue",$("#vehiclePlate").attr("data-value"))    	
 					    }
 					});
 			    },
@@ -119,36 +119,36 @@ var repareReservation_manager_tool = {
 			});  
 		},
 		remove:function(){
-			listRemove('repareReservation-table-list','../repareReservation/delete.jhtml');
+			listRemove('beautifyReservation-table-list','../beautifyReservation/delete.jhtml');
 		}
 };
 
 $(function(){
-	$("#repareReservation-table-list").datagrid({
-		title:message("csh.repareReservation.list"),
+	$("#beautifyReservation-table-list").datagrid({
+		title:message("csh.beautifyReservation.list"),
 		fitColumns:true,
-		toolbar:"#repareReservation_manager_tool",
-		url:'../repareReservation/list.jhtml',  
+		toolbar:"#beautifyReservation_manager_tool",
+		url:'../beautifyReservation/list.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
 		onDblClickRow : function (rowIndex, rowData){
-			$('#repareReservationDetail').dialog({    
+			$('#beautifyReservationDetail').dialog({    
 			    title: message("csh.common.detail"),    
 			    width: 600,    
 			    height: 450, 
 			    cache: false,
 			    modal: true,
-			    href:'../repareReservation/details.jhtml?id='+rowData.id,
+			    href:'../beautifyReservation/details.jhtml?id='+rowData.id,
 			    buttons:[{
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#repareReservationDetail').dialog("close");
+						 $('#beautifyReservationDetail').dialog("close");
 					}
 			    }],
 			    onClose:function(){
-			    	$('#repareReservationDetail').empty();
+			    	$('#beautifyReservationDetail').empty();
 			    }
 			});   
 		},
@@ -189,7 +189,9 @@ $(function(){
 		      },{title:message("csh.reservation.operate"),field:"button",width:100,sortable:true,
 		    	  formatter:function(value,row,index){
 		    		  if(row.carServiceRecord.chargeStatus == 'RESERVATION'){
-		    			  return '<button class="btn btn-primary btn-repare-approve" data-value='+row.id+'>确认</button><button class="btn btn-danger btn-repare-reject" data-value='+row.id+'>拒绝</button>'  
+		    			  return '<button class="btn btn-primary btn-beautify-approve" data-value='+row.id+'>确认</button><button class="btn btn-danger btn-beautify-reject" data-value='+row.id+'>拒绝</button>'  
+		    		  }else if(row.carServiceRecord.chargeStatus == 'RESERVATION_SUCCESS'){
+		    			  return '<button class="btn btn-primary btn-beautify-arrival" data-value='+row.id+'>到店确认</button>'  
 		    		  }else{
 		    			  return ""
 		    		  }
@@ -198,12 +200,12 @@ $(function(){
 		   ]
 		],
 		onLoadSuccess:function(data){
-			$('.btn-repare-approve').click(function(){
+			$('.btn-beautify-approve').click(function(){
 				var $this=$(this);
 				var id = $this.attr('data-value');
 				
 				$.ajax({
-					url:"../repareReservation/approve.jhtml?id="+id,
+					url:"../beautifyReservation/approve.jhtml?id="+id,
 					type:"get",
 					beforeSend:function(){
 						$.messager.progress({
@@ -214,7 +216,7 @@ $(function(){
 						$.messager.progress('close');
 						if(response == "success"){
 							showSuccessMsg("确认预约");
-							$("#repareReservation-table-list").datagrid('reload');
+							$("#beautifyReservation-table-list").datagrid('reload');
 						}else{
 							alertErrorMsg();
 						}
@@ -222,12 +224,12 @@ $(function(){
 				});
 			});
 
-			$('.btn-repare-reject').click(function(){
+			$('.btn-beautify-reject').click(function(){
 				var $this=$(this);
 				var id = $this.attr('data-value');
 				
 				$.ajax({
-					url:"../repareReservation/reject.jhtml?id="+id,
+					url:"../beautifyReservation/reject.jhtml?id="+id,
 					type:"get",
 					beforeSend:function(){
 						$.messager.progress({
@@ -238,21 +240,43 @@ $(function(){
 						$.messager.progress('close');
 						if(response == "success"){
 							showSuccessMsg("拒绝");
-							$("#repareReservation-table-list").datagrid('reload');
+							$("#beautifyReservation-table-list").datagrid('reload');
 						}else{
 							alertErrorMsg();
 						}
 					}
 				});
 			});
-		
+			$('.btn-beautify-arrival').click(function(){
+				var $this=$(this);
+				var id = $this.attr('data-value');
+				
+				$.ajax({
+					url:"../beautifyReservation/arrival.jhtml?id="+id,
+					type:"get",
+					beforeSend:function(){
+						$.messager.progress({
+							text:message("csh.common.saving")
+						});
+					},
+					success:function(result,response,status){
+						$.messager.progress('close');
+						if(response == "success"){
+							showSuccessMsg("到店");
+							$("#beautifyReservation-table-list").datagrid('reload');
+						}else{
+							alertErrorMsg();
+						}
+					}
+				});
+			});
 		}
 	});
 
 	
-	$("#repareReservation-search-btn").click(function(){
-	  var _queryParams = $("#repareReservation-search-form").serializeJSON();
-	  $('#repareReservation-table-list').datagrid('options').queryParams = _queryParams;  
-	  $("#repareReservation-table-list").datagrid('reload');
+	$("#beautifyReservation-search-btn").click(function(){
+	  var _queryParams = $("#beautifyReservation-search-form").serializeJSON();
+	  $('#beautifyReservation-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#beautifyReservation-table-list").datagrid('reload');
 	})
 })

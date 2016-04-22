@@ -19,6 +19,7 @@
 	    		<th>${message("csh.vehicle.plate")}:</th>
 	    		<td >
 	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${maintainReservation.plate}"  id= "vehiclePlate"  data-options="required:true"/>
+	    			 <input type="hidden" name="plate" value="'+plate+'"/>
 	    		</td>
 	    		<th>${message("csh.vehicle.vehicleBrand")}:</th>
 	    		<td >

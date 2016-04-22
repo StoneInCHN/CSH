@@ -69,6 +69,8 @@ public class MaintainReservation extends BaseEntity
   
   private Long tenantID;
 
+  private String remark;
+  
   @JsonProperty
   @IndexedEmbedded
   @ManyToOne
@@ -153,4 +155,15 @@ public class MaintainReservation extends BaseEntity
     this.carServiceRecord = carServiceRecord;
   }
 
+  public String getRemark ()
+  {
+    return remark;
+  }
+
+  public void setRemark (String remark)
+  {
+    this.remark = remark;
+  }
+  
+  
 }

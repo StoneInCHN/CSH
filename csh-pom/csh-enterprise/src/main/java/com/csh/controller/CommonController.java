@@ -217,7 +217,7 @@ public String main(ModelMap model,  HttpSession session) {
   public @ResponseBody Message saveTenantInfoConfig(TenantInfo tenantInfo){
    
     tenantInfoService.update (tenantInfo, "createDate","orgCode","accountStatus",
-          "versionConfig","praiseRate","isHaveAccount","distributor","qrImage");
+          "versionConfig","area","praiseRate","isHaveAccount","distributor","qrImage");
     return SUCCESS_MESSAGE;
   }
   /**

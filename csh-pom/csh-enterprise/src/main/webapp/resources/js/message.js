@@ -257,7 +257,8 @@ var messages = {
 	"csh.messageInfo.type.PERSONALMSG":"个人信息",
 	"csh.messageInfo.type.NEWSMSG":"新闻信息",
 	"csh.messageInfo.type.PROMOTION":"活动信息",
-	"csh.messageInfo.list":"消息列表"
+	"csh.messageInfo.list":"消息列表",
+	"csh.beautifyReservation.list":"保养预约列表"
 };
 //多语言
 function message(code) {

@@ -14,11 +14,11 @@
 	    	<tr>
 	    		<th>${message("csh.vehicle.plate")}:</th>
 	    		<td >
-	    			 <input  class="easyui-combobox" name="vehicleId" value="${repareReservation.plate}"  data-options="required:true" disabled="disabled"/>
+	    			 <input  class="easyui-combobox" name="vehicleId" value="${repareReservation.plate}"  id= "vehiclePlate"  data-options="required:true" disabled="disabled"/>
 	    		</td>
 	    		<th>${message("csh.vehicle.vehicleBrand")}:</th>
 	    		<td >
-	    			 <input  class="easyui-textbox" value="${repareReservation.vehicleBrand}" name="vehicleBrand" data-options="required:true" disabled="disabled"/>
+	    			 <input  class="easyui-textbox" value="${repareReservation.vehicleBrand}" name="vehicleBrand" id= "vehicleBrand"  data-options="required:true" disabled="disabled"/>
 	    		</td>
 	    	</tr>
 	    	<tr>

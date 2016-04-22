@@ -145,10 +145,10 @@ $(function(){
 			    	  }
 		      	  }  
 		      },
-		      {title:message("csh.endUser.loginDate"),field:"loginDate",width:100,sortable:true,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
-				}
-		      },
+//		      {title:message("csh.endUser.loginDate"),field:"loginDate",width:100,sortable:true,formatter: function(value,row,index){
+//					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+//				}
+//		      },
 		   ]
 		]
 	});

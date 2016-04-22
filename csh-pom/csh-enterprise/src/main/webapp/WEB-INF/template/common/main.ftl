@@ -122,13 +122,14 @@
     		[@shiro.hasPermission name="vehicle"]
     		<li><a href="#" data-url="${base}/console/vehicle/vehicle.jhtml">${message("csh.vehicle.vehicle")}</a></li>
     		[/@shiro.hasPermission]
-    		
+    		<!--
     		[@shiro.hasPermission name="realTimeCarCondition"]
     		<li><a href="#" data-url="${base}/console/vehicle/realTimeCarCondition.jhtml">${message("csh.vehicle.realTimeCarCondition")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="vehicleDailyReport"]
     		<li><a href="#" data-url="${base}/console/vehicle/vehicleDailyReport.jhtml">${message("csh.vehicle.vehicleDailyReport")}</a></li>
     		[/@shiro.hasPermission]
+    		-->
     		[@shiro.hasPermission name="vehicleMileageReport"]
     		<li><a href="#" data-url="${base}/console/vehicleMileageReport/vehicleMileageReport.jhtml">车辆里程统计</a></li>
     		[/@shiro.hasPermission]
@@ -150,12 +151,17 @@
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.reservationManage.config")}" id="reservationManage">
-    		[@shiro.hasPermission name="repareReservation"]
+    		<!--[@shiro.hasPermission name="repareReservation"]
     		<li><a href="#" data-url="${base}/console/repareReservation/repareReservation.jhtml">${message("csh.repareReservation.repareReservation")}</a></li>
     		[/@shiro.hasPermission]
+    		-->
     		[@shiro.hasPermission name="maintainReservation"]
     		<li><a href="#" data-url="${base}/console/maintainReservation/maintainReservation.jhtml">${message("csh.maintainReservation.maintainReservation")}</a></li>
     		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="beautifyReservation"]
+    		<li><a href="#" data-url="${base}/console/beautifyReservation/beautifyReservation.jhtml">${message("csh.beautifyReservation.beautifyReservation")}</a></li>
+    		[/@shiro.hasPermission]
+    		
     	</ul>
     	<ul title="${message("csh.informationManage.config")}" id="informationManage">
     		[@shiro.hasPermission name="notificationPush"]

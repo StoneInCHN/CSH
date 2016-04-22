@@ -298,4 +298,11 @@ public class MaintainReservationController extends BaseController
     maintainReservationService.save (maintainReservation);
     return SUCCESS_MESSAGE;
   }
+  @RequestMapping(value = "/arrival", method = RequestMethod.GET)
+  public @ResponseBody Message arrival(Long id) {
+    MaintainReservation maintainReservation = maintainReservationService.find(id);
+    maintainReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.UNPAID);
+    maintainReservationService.save (maintainReservation);
+    return SUCCESS_MESSAGE;
+  }
 }
