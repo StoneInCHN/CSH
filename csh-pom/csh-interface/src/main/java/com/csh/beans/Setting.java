@@ -183,6 +183,32 @@ public class Setting implements Serializable {
    */
   private String convertMapUrl;
 
+  /**
+   * 百度API地址转坐标
+   */
+  private String convertAddressUrl;
+
+  /**
+   * 百度地图api key
+   */
+  private String mapAk;
+
+
+  public String getMapAk() {
+    return mapAk;
+  }
+
+  public void setMapAk(String mapAk) {
+    this.mapAk = mapAk;
+  }
+
+  public String getConvertAddressUrl() {
+    return convertAddressUrl;
+  }
+
+  public void setConvertAddressUrl(String convertAddressUrl) {
+    this.convertAddressUrl = convertAddressUrl;
+  }
 
   public String getUcpaasServiceTemplate() {
     return ucpaasServiceTemplate;

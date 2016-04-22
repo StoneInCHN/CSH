@@ -22,6 +22,7 @@ import com.csh.entity.Vehicle;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.IllegalRecordService;
 import com.csh.utils.ApiUtils;
+import com.csh.utils.LatLonUtil;
 import com.csh.utils.SettingUtils;
 import com.csh.utils.TimeUtils;
 
@@ -144,6 +145,9 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
         IllegalRecord illegalRecord = new IllegalRecord();
         illegalRecord.setPlate(plate);
         illegalRecord.setIllegalAddress(map.get("address").toString());
+        Map<String, Object> locMap = LatLonUtil.convertAddress(illegalRecord.getIllegalAddress());
+        illegalRecord.setLng(Double.parseDouble(locMap.get("lng").toString()));
+        illegalRecord.setLat(Double.parseDouble(locMap.get("lat").toString()));
         illegalRecord.setIllegalContent(map.get("content").toString());
         illegalRecord.setIllegalDate(map.get("time").toString());
         illegalRecord.setIllegalId(map.get("illegalid").toString());

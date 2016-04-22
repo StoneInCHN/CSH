@@ -65,7 +65,7 @@ public class IllegalRecordController extends BaseController {
 
       String[] properties =
           {"id", "processingSite", "score", "finesAmount", "illegalContent", "illegalAddress",
-              "plate", "illegalDate"};
+              "plate", "illegalDate", "lng", "lat"};
       List<Map<String, Object>> map =
           FieldFilterUtils.filterCollectionMap(properties, illegalRecords);
 

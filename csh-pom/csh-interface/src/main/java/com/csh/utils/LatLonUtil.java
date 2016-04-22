@@ -135,4 +135,23 @@ public class LatLonUtil {
     }
     return null;
   }
+
+  public static Map<String, Object> convertAddress(String address) {
+    try {
+      Map<String, Object> map = new HashMap<String, Object>();
+      Setting setting = SettingUtils.get();
+      String url =
+          setting.getConvertAddressUrl() + "?address=" + address + "&output=json&ak="
+              + setting.getMapAk();
+      String res = ApiUtils.get(url);
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
+      Map<String, Object> resultMap = (Map<String, Object>) resMap.get("result");
+      Map<String, Object> locMap = (Map<String, Object>) resultMap.get("location");
+      return locMap;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 }

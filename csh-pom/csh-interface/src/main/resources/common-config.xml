@@ -27,7 +27,7 @@
 		<setting name="ucpaasCallDisplay" value="4007930888" />
 		
 		<setting name="siteName" value="车生活App" />
-		<setting name="siteUrl" value="http://10.50.20.71:10004/csh-interface" />
+		<setting name="siteUrl" value="http://120.27.92.247:10001/csh-interface" />
 		<setting name="smtpFromMail" value="tankboo@163.com" />
 		<setting name="smtpHost" value="smtp.163.com" />
 		<setting name="smtpPort" value="25" />
@@ -35,7 +35,7 @@
 		<setting name="smtpPassword" value="676397876." />
 		<setting name="defaultPageSize" value="5" />
 		<setting name="insuranceId" value="6" />
-		<setting name="obdServerUrl" value="http://139.129.5.114:10000/obd-data" />
+		<setting name="obdServerUrl" value="http://10.45.153.26:20001/obd-data" />
 		
 		<!-- 极光推送Key -->
 		<setting name="appKey" value="eb1ec435f9a7e7305c51621a" />
@@ -52,7 +52,7 @@
 		<!-- 交易类型 -->
 		<setting name="wechatTradeType" value="APP" />
 		<!-- 通知地址 -->
-		<setting name="wechatNotifyUrl" value="http://139.129.5.114:8080/csh-interface/wechat/pay_notify.jhtml" />
+		<setting name="wechatNotifyUrl" value="http://120.27.92.247:10001/csh-interface/wechat/pay_notify.jhtml" />
 		<!-- 微信下订单接口 -->
 		<setting name="wechatAddOrderUrl" value="https://api.mch.weixin.qq.com/pay/unifiedorder" />
 		<!-- 微信Token接口 -->
@@ -69,6 +69,10 @@
 		
 		<!-- 百度API:GPS坐标转百度坐标 -->
 		<setting name="convertMapUrl" value="http://api.map.baidu.com/ag/coord/convert"/>
+		<!-- 百度API:地址转坐标 -->
+		<setting name="convertAddressUrl" value="http://api.map.baidu.com/geocoder/v2/"/>
+		<!-- 百度API ak -->
+		<setting name="mapAk" value="ulsOtfMZcNc4D6aQnBwwnOTt6ZKohflO"/>
 		
 		
 	</csh>	
