@@ -12,7 +12,7 @@
 	    		</td>
 	    		<th>${message("csh.mobile")}:</th>
 	    		<td>
-	    			 <input  class="easyui-textbox" id= "endUserMobileNum" value="${beautifyReservation.endUser.mobileNum}"  data-options="required:true"/>
+	    			 <input  class="easyui-textbox" id= "endUserMobileNum" value="${beautifyReservation.endUser.mobileNum}"  data-options="required:true"  validtype="mobile"/>
 	    		</td>
 	    	</tr>
 	    	<tr>

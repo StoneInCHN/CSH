@@ -17,6 +17,7 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table (name = "csh_tenant_clearing_record")
+@Indexed(index="tenantClearingRecord")
 @SequenceGenerator (name = "sequenceGenerator", sequenceName = "tenant_clearing_record_sequence")
 public class TenantClearingRecord extends BaseEntity
 {
@@ -91,7 +93,7 @@ public class TenantClearingRecord extends BaseEntity
 
 
   @JsonProperty
-  @Field(store = Store.YES, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
   @Pattern(regexp = "^[0-9a-zA-Z_-]+$")
   @Length(max = 100)
   @Column(nullable = false, unique = true, length = 100)
@@ -190,6 +192,7 @@ public class TenantClearingRecord extends BaseEntity
   }
 
   @org.hibernate.annotations.Index(name="tenantClearingRecord_tenantid")
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
   public Long getTenantID ()
   {
     return tenantID;

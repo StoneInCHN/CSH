@@ -7,6 +7,10 @@
 	    <legend>${message("csh.vehicle.search")}</legend>
 	    <form id="carServiceRecord-search-form" class="search-form">
 	    	<div class="search-item">
+			    <label> ${message("csh.carServiceRecord.recordNo")}:</label>
+			    <input type="text" class="easyui-textbox" style="width:80px" id="recordNoSearch" name="recordNoSearch" validtype="length[0,20]"/>
+			</div>
+	    	<div class="search-item">
 			    <label> ${message("csh.carService.serviceName")}:</label>
 			    <input type="text" class="easyui-textbox" style="width:80px" id="serviceNameSearch" name="serviceNameSearch" validtype="length[0,20]"/>
 			</div>
@@ -69,7 +73,7 @@
 			    
 			</div>
 			<div class="search-item">
-			    <label> 创建时间:</label>
+			    <label> 付款时间:</label>
 			    <input type="text" class="Wdate" id="beginDate" name="beginDate"  onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 			</div>
 			<div class="search-item">

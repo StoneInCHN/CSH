@@ -296,6 +296,8 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @JsonProperty
+//  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+//  @FieldBridge(impl = DateBridgeImpl.class)
   public Date getClearingDate() {
     return clearingDate;
   }

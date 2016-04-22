@@ -5,33 +5,13 @@
 <div>
 	  <fieldset>
 	    <legend>${message("csh.vehicle.search")}</legend>
-	    <form id="carService-search-form" class="search-form">
+	    <form id="tenantClearingRecord-search-form" class="search-form">
 	    	<div class="search-item">
-			    <label> ${message("csh.carService.serviceName")}:</label>
-			    <input type="text" class="easyui-textbox" id="serviceNameSearch" name="serviceNameSearch" validtype="length[0,20]"/>
+			    <label> ${message("csh.tenantClearingRecord.clearingSn")}:</label>
+			    <input type="text" class="easyui-textbox" id="clearingSnSearch" name="clearingSnSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.carService.serviceCategory")}:</label>
-			    <input type="text" class="easyui-textbox" id="serviceCategorySearch" name="serviceCategorySearch" validtype="length[0,20]"/>
-			</div>
-			<div class="search-item">
-			    <label> ${message("csh.carService.serviceStatus")}:</label>
-			    
-			    <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'ENABLED',
-				      value: '${message("csh.common.enable")}'
-				     },{
-				      label: 'DISABLED',
-				      value: '${message("csh.common.disable")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="serviceStatusSearch" style="width:110px;"/>
-			    
-			</div>
-			<div class="search-item">
-			    <label> 创建时间:</label>
+			    <label> 结算时间:</label>
 			    <input type="text" class="Wdate" id="beginDate" name="beginDate"  onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 			</div>
 			<div class="search-item">
@@ -40,7 +20,7 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="carService-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="tenantClearingRecord-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 </div>

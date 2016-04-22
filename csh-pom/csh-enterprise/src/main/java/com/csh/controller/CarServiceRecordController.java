@@ -72,7 +72,7 @@ public class CarServiceRecordController extends BaseController
    */
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<CarServiceRecord> list (Model model, Pageable pageable,
-      Date beginDate, Date endDate, String serviceCategorySearch,
+      Date beginDate, Date endDate,String recordNoSearch, String serviceCategorySearch,
       String serviceNameSearch,String endUserSearch, ChargeStatus chargeStatusSearch,
       PaymentType paymentTypeSearch)
   {
@@ -88,7 +88,10 @@ public class CarServiceRecordController extends BaseController
         "carService.serviceName", analyzer);
     QueryParser userNameParser = new QueryParser (Version.LUCENE_35,
         "endUser.userName", analyzer);
+    QueryParser recordNoParser = new QueryParser (Version.LUCENE_35,
+        "recordNo", analyzer);
     Query serviceNameQuery = null;
+    Query recordNoQuery = null;
     Query userNameQuery = null;
     TermRangeQuery rangeQuery = null;
     TermQuery categoryTermQuery = null;
@@ -105,6 +108,31 @@ public class CarServiceRecordController extends BaseController
     {
       endDateStr = DateTimeUtils.convertDateToString (endDate, null);
     }
+    
+    if (recordNoSearch != null)
+    {
+      String text = QueryParser.escape (recordNoSearch);
+      try
+      {
+        //通配符查询，开启*开头，但影响效率
+        recordNoParser.setAllowLeadingWildcard (true);
+
+        recordNoQuery = recordNoParser.parse ("*" + text + "*");
+
+        query.add (recordNoQuery, Occur.MUST);
+
+        if (LogUtil.isDebugEnabled (VehicleController.class))
+        {
+          LogUtil.debug (VehicleController.class, "search",
+              "Search service name: " + recordNoSearch);
+        }
+      }
+      catch (ParseException e)
+      {
+        e.printStackTrace ();
+      }
+    }
+    
     if (serviceNameSearch != null)
     {
       String text = QueryParser.escape (serviceNameSearch);
@@ -182,7 +210,7 @@ public class CarServiceRecordController extends BaseController
       query.add (categoryTermQuery, Occur.MUST);
     }
     
-    if (serviceNameQuery != null || userNameQuery != null || rangeQuery != null
+    if (serviceNameQuery != null || recordNoQuery != null || userNameQuery != null || rangeQuery != null
         || categoryTermQuery != null || statusTermQuery != null || typeTermQuery != null)
     {
       carServiceRecordPage= carServiceRecordService.search (query, pageable, analyzer, filter, true);

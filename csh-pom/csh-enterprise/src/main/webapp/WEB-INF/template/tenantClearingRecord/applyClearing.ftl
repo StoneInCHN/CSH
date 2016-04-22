@@ -1,6 +1,7 @@
 <form id="applyClearingRecordForm" method="post" >
    <table class="table table-striped"  border="0">
-   	[#if periodBeginDate != "" ]
+   
+   	[#if peroidBeginDate != "" &&  peroidEndDate !=""]
    	<tr>
 		<th>结算周期从：</th>
 		<td>
@@ -22,7 +23,7 @@
    	</tr>
    	[#else]
    		<tr>
-		<th>结算周期未到,请耐心等待</th>
+			结算周期未到,请耐心等待
 		
    		</tr>
    	[/#if]

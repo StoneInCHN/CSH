@@ -102,15 +102,17 @@ var maintainReservation_manager_tool = {
 					}
 			    }],
 			    onLoad:function(){
+			    	
 			    	$("#vehiclePlate").combobox('clear');
 			    	$("#vehiclePlate").combobox({    
 				    valueField:'id',    
 				    textField:'plate',
 				    editable : false,
 				    required:true,
-				    data:$.parseJSON($("#vehicleMaintainListMap").val()),
+				    data:$.parseJSON($("#vehicleListMap").val()),
 				    prompt:message("csh.common.please.select"),
 					onLoadSuccess:function(){
+							debugger;
 					    	$("#vehiclePlate").combobox("setValue",$("#vehiclePlate").attr("data-value"))    	
 					},
 			    	});

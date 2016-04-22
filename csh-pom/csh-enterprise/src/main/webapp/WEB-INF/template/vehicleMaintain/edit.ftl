@@ -11,17 +11,17 @@
 	    		</td>
 	    		<th>${message("csh.mobile")}:</th>
 	    		<td>
-	    			 <input  class="easyui-textbox" id= "endUserMobileNum" value="${vehicleMaintain.vehicle.endUser.mobileNum}"  data-options="required:true"/>
+	    			 <input  class="easyui-textbox" id= "endUserMobileNum" value="${vehicleMaintain.vehicle.endUser.mobileNum}"  data-options="required:true"  validtype="mobile"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
 	    		<th>${message("csh.vehicle.plate")}:</th>
 	    		<td colspan="3">
-	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${vehicleMaintain.vehicle.id}" id= "vehiclePlate"  data-options="required:true"/>
+	    			 <input  class="easyui-combobox" name="vehicleId" data-value="${vehicleMaintain.vehicle.id}" id= "vehiclePlate" readOnly="readOnly" data-options="required:true"/>
 	    		</td>
 	    		<th>${message("csh.vehicleMaintain.dashboardMileage")}:</th>
 	    		<td >
-	    			 <input  class="easyui-textbox" name="dashboardMileage" id= "dashboardMileage" value="${vehicleMaintain.vehicle.dashboardMileage}" data-options="required:true"/>
+	    			 <input  class="easyui-numberbox" name="dashboardMileage" id= "dashboardMileage" value="${vehicleMaintain.vehicle.dashboardMileage}" data-options="min:0,required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
@@ -31,7 +31,7 @@
 	    		</td>
 	    		<th>${message("csh.vehicleMaintain.lastMaintainMileage")}:</th>
 	    		<td >
-	    			 <input  class="easyui-textbox" name="lastMaintainMileage" id= "lastMaintainMileage" value="${vehicleMaintain.lastMaintainMileage}" data-options="required:true"/>
+	    			 <input  class="easyui-numberbox" name="lastMaintainMileage" id= "lastMaintainMileage" value="${vehicleMaintain.lastMaintainMileage}" data-options="min:0,required:true"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
@@ -41,7 +41,7 @@
 	    		</td>
 	    		<th>${message("csh.vehicleMaintain.nextMaintainMileage")}:</th>
 	    		<td >
-	    			 <input  class="easyui-textbox" name="nextMaintainMileage" id= "nextMaintainMileage" value="${vehicleMaintain.nextMaintainMileage}" data-options="required:true"/>
+	    			 <input  class="easyui-numberbox" name="nextMaintainMileage" id= "nextMaintainMileage" value="${vehicleMaintain.nextMaintainMileage}" data-options="required:true,min:0"/>
 	    		</td>
 	    	</tr>
 	    </table>

@@ -541,7 +541,7 @@ function searchEndUser(id) {
 															rowData.id);
 													$("#" + id).textbox(
 															'setValue',
-															rowData.realName);
+															rowData.realName?rowData.realName:rowData.userName);
 													if($("#endUserMobileNum")!=undefined){
 														
 														$("#endUserMobileNum").textbox('setValue',rowData.mobileNum);
@@ -587,7 +587,7 @@ function searchEndUser(id) {
 															    	  }
 														      	  }  
 														      },
-														      {title:message("csh.common.create"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
+														      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 																	return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 																}
 														      },

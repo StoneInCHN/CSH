@@ -41,7 +41,7 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="repareReservation-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="beautifyReservation-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	    
 	  </fieldset>
