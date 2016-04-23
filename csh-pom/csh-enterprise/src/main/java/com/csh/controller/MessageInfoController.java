@@ -71,8 +71,8 @@ public class MessageInfoController extends BaseController
 
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<MessageInfo> list (Pageable pageable,
-      ModelMap model, Date beginDate, Date endDate, String deviceNoSearch,
-      String deviceTpyeSearch, BindStatus bindStatusSearch,SendType sendType)
+      ModelMap model, Date beginDate, Date endDate, String titleSearch,
+      String messageTypeSearch)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -81,13 +81,11 @@ public class MessageInfoController extends BaseController
     analyzer.setMaxWordLength (true);
     BooleanQuery query = new BooleanQuery ();
 
-    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "deviceNo",
+    QueryParser titleParser = new QueryParser (Version.LUCENE_35, "title",
         analyzer);
-    Query nameQuery = null;
+    Query titleQuery = null;
     TermRangeQuery rangeQuery = null;
-    TermQuery statusQuery = null;
-    TermQuery typeqQuery = null;
-    TermQuery sendTypeQuery = null;
+    TermQuery messageTypeQuery = null;
     
     Filter filter = null;
     if (beginDate != null)
@@ -98,19 +96,19 @@ public class MessageInfoController extends BaseController
     {
       endDateStr = DateTimeUtils.convertDateToString (endDate, null);
     }
-    if (deviceNoSearch != null)
+    if (titleSearch != null)
     {
-      String text = QueryParser.escape (deviceNoSearch);
+      String text = QueryParser.escape (titleSearch);
       try
       {
-        nameParser.setAllowLeadingWildcard (true);
-        nameQuery = nameParser.parse ("*" + text + "*");
-        query.add (nameQuery, Occur.MUST);
+        titleParser.setAllowLeadingWildcard (true);
+        titleQuery = titleParser.parse ("*" + text + "*");
+        query.add (titleQuery, Occur.MUST);
 
         if (LogUtil.isDebugEnabled (MessageInfoController.class))
         {
           LogUtil.debug (MessageInfoController.class, "search",
-              "Search device NO: " + deviceNoSearch);
+              "Search device NO: " + titleSearch);
         }
       }
       catch (ParseException e)
@@ -118,24 +116,13 @@ public class MessageInfoController extends BaseController
         e.printStackTrace ();
       }
     }
-    if (bindStatusSearch != null)
+    if (messageTypeSearch != null)
     {
-      statusQuery = new TermQuery (new Term ("bindStatus",
-          bindStatusSearch.toString ()));
-      query.add (statusQuery, Occur.MUST);
+      messageTypeQuery = new TermQuery (new Term ("messageType",
+          messageTypeSearch.toString ()));
+      query.add (messageTypeQuery, Occur.MUST);
     }
-    if (sendType != null)
-    {
-      sendTypeQuery = new TermQuery (new Term ("sendType",
-          sendType.toString ()));
-      query.add (sendTypeQuery, Occur.MUST);
-    }
-    if (deviceTpyeSearch != null)
-    {
-      typeqQuery = new TermQuery (new Term ("type.name",
-          deviceTpyeSearch.toString ()));
-      query.add (typeqQuery, Occur.MUST);
-    }
+    
     if (startDateStr != null || endDateStr != null)
     {
       rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr,
@@ -148,17 +135,10 @@ public class MessageInfoController extends BaseController
             "Search start date: " + startDateStr + " end date: " + endDateStr);
       }
     }
-    if (nameQuery != null || rangeQuery != null || typeqQuery != null
-        || statusQuery != null)
+    if (titleQuery != null || rangeQuery != null || messageTypeQuery != null)
     {
-      return messageInfoService
-          .search (query, pageable, analyzer, filter, true);
+      return messageInfoService.search (query, pageable, analyzer, filter, true);
     }else {
-      List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter>();
-      com.csh.framework.filter.Filter sendTypeFilter = new com.csh.framework.filter.Filter("sendType",Operator.eq,sendType);
-      filters.add (sendTypeFilter);
-      pageable.setFilters (filters);
-      
       return messageInfoService.findPage (pageable, true);
     }
     

@@ -142,17 +142,25 @@ $(function(){
 			    	  }
 		      	  }    
 		      },
-		      {title:message("csh.tenantAccount.isSystem"),field:"isSystem",width:100,sortable:true},
+		      {title:message("csh.tenantAccount.isSystem"),field:"isSystem",width:100,sortable:true,
+		    	  formatter: function(value,row,index){
+			    	  if(value == true){
+			    		  return  message("csh.common.yes");
+			    	  }else if (value == false){
+			    		  return  message("csh.common.no");
+			    	  }
+		      	  }},
 		      {title:message("csh.tenantAccount.accoutStatus"),field:"accoutStatus",width:100,sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(value == "ACTIVED"){
 			    		  return  message("csh.tenantAccount.active");
-			    	  }else if (value = "LOCKED"){
+			    	  }else if (value == "LOCKED"){
 			    		  return  message("csh.tenantAccount.locked");
 			    	  }
 		      	  }  
 		      },
 		      {title:message("csh.tenantAccount.loginDate"),field:"loginDate",width:100,sortable:true,formatter: function(value,row,index){
+				if(value != null)
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}
 		      },

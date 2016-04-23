@@ -69,7 +69,11 @@ var carService_manager_tool = {
 					    		$("#addCarServicePromotionPrice").textbox({
 					    			readonly:true,
 					    			min:-1
-					    		})
+					    		});
+					    		$('.car-service').hide();
+					    		$('#addServiceName').textbox({
+					    			required:false
+					    		});
 					    	}else{
 					    		$("#addCarServicePrice").textbox({
 					    			readonly:false,
@@ -81,6 +85,10 @@ var carService_manager_tool = {
 					    			min:0
 					    		});
 					    		$("#addCarServicePromotionPrice").textbox('setValue',0);
+					    		$('.car-service').show();
+					    		$('#addServiceName').textbox({
+					    			required:true
+					    		});
 					    	}
 					    }
 				    	});
@@ -240,7 +248,11 @@ var carService_manager_tool = {
 						    		$("#editCarServicePromotionPrice").textbox({
 						    			readonly:true,
 						    			min:-1
-						    		})
+						    		});
+						    		$('.car-service').hide();
+						    		$('#editServiceName').textbox({
+						    			required:false
+						    		});
 						    	}else{
 						    		$("#editCarServicePrice").textbox({
 						    			readonly:false,
@@ -252,6 +264,10 @@ var carService_manager_tool = {
 						    			min:0
 						    		});
 						    		$("#editCarServicePromotionPrice").textbox('setValue',0);
+						    		$('.car-service').show();
+						    		$('#editServiceName').textbox({
+						    			required:true
+						    		});
 						    	}
 						    }
 			    	});

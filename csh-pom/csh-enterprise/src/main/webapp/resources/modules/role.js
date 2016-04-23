@@ -71,7 +71,7 @@ var role_manager_tool = {
 			$('#addrole').dialog({    
 			    title: message("csh.role.add"),    
 			    width: 370,    
-			    height: 370,
+			    height: 270,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
 			    buttons:[{
@@ -126,7 +126,7 @@ var role_manager_tool = {
 			var _dialog = $('#editRole').dialog({
 			    title: message("csh.common.edit"),     
 			    width: 370,    
-			    height: 370,    
+			    height: 270,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
 			    href:'../role/edit.jhtml?id='+_edit_row.id,
@@ -187,8 +187,8 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#roleDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 500,    
-			    height: 510, 
+			    width: 370,    
+			    height: 270, 
 			    cache: false,   
 			    href:'../role/details.jhtml?id='+rowData.id,
 			    buttons:[{

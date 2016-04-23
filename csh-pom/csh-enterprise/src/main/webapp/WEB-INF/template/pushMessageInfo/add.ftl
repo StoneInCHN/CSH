@@ -47,7 +47,7 @@
     	<tr>
     		<th >内容:</th>
     		<td colspan="4">
-    			 <input  class="easyui-textbox" name="messageContent" id= "messageContent"  data-options="multiline:true,height:120,width:500"/>
+    			 <input  class="easyui-textbox" name="messageContent" id= "messageContent" validType="maxLength[500]" data-options="multiline:true,height:120,width:500"/>
     		</td>
     	</tr>
     </table>

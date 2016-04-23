@@ -4,36 +4,33 @@
 
 <div>
 	  <fieldset>
-	    <legend>${message("csh.vehicle.search")}</legend>
+	    <legend>${message("csh.messageInfo.search")}</legend>
 	    <form id="pushMessageInfo-search-form" class="search-form">
 	    <input type="hidden" name="totalRecord" id="totalRecord"/>
 	    
-	    	<div class="search-item">
-			    <label> ${message("csh.vehicle.plate")}:</label>
-			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
+			<div class="search-item">
+			    <label> ${message("csh.messageInfo.title")}:</label>
+			    <input type="text" class="easyui-textbox" id="titleSearch" name="titleSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.reservation.userName")}:</label>
-			    <input type="text" class="easyui-textbox" id="userNameSearch" name="userNameSearch" validtype="length[0,20]"/>
-			</div>
-			<div class="search-item">
-			    <label> ${message("csh.reservation.infoFrom")}:</label>
+			    <label> ${message("csh.messageInfo.type")}:</label>
 			    
-			    <input class="easyui-combobox" data-options="
+    			 <input class="easyui-combobox" data-options="required:true,
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
-				      label: 'APP',
-				      value: '${message("csh.reservation.infoFrom.app")}'
+				      label: 'PERSONALMSG',
+				      value: '${message("csh.messageInfo.type.PERSONALMSG")}'
 				     },{
-				      label: 'CALL',
-				      value: '${message("csh.reservation.infoFrom.call")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="infoFromSearch" style="width:110px;"/>
-			    
+				      label: 'NEWSMSG',
+				      value: '${message("csh.messageInfo.type.NEWSMSG")}'
+				     },{
+				      label: 'PROMOTION',
+				      value: '${message("csh.messageInfo.type.PROMOTION")}'}],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="messageTypeSearch" style="width:110px;"/>
 			</div>
 			<div class="search-item">
-			    <label> 预约时间:</label>
+			    <label>创建时间:</label>
 			    <input type="text" class="Wdate" id="beginDate" name="beginDate"  onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 			</div>
 			<div class="search-item">

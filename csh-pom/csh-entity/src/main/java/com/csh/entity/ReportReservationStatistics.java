@@ -47,6 +47,13 @@ public class ReportReservationStatistics extends BaseEntity {
    */
   private Integer paidMaintainCount;
 
+  public ReportReservationStatistics ()
+  {
+    this.reservationMaitainCount = 0;
+    this.reservationRepareCount = 0;
+    this.paidMaintainCount = 0;
+    this.paidRepareCount = 0;
+  }
   @Index(name="reportReservation_tenantid")
   public Long getTenantID ()
   {

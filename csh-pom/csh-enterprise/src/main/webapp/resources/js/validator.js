@@ -53,6 +53,30 @@ $.extend($.fn.validatebox.defaults.rules, {
         validator: function(value, param){    
             return value.length >= param[0];    
         },    
-        message: '最少输入{0}为'   
+        message: '最少输入{0}位'   
+    }    
+});
+$.extend($.fn.validatebox.defaults.rules, {    
+    max: {    
+        validator: function(value, param){
+            return value <= param[0];    
+        },    
+        message: '最大值不能超过{0}'   
+    }    
+});
+$.extend($.fn.validatebox.defaults.rules, {    
+    moreThan: {    
+        validator: function(value, param){
+        	return value >= $('#'+param[0]).val();
+        },    
+        message: '值必须大于{1}'   
+    }    
+});
+$.extend($.fn.validatebox.defaults.rules, {    
+    lessThan: {    
+        validator: function(value, param){
+        	return value <= $('#'+param[0]).val();
+        },    
+        message: '值必须小于{1}'   
     }    
 }); 

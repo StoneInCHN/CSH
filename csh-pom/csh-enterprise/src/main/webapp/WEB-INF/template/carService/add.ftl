@@ -2,23 +2,23 @@
 	<input type="hidden" id="addCarService_form_file_input" name="imgPath">  
 	  <table class="table table-striped"  border="0">
 	    <tr>
-    		<th>${message("csh.carService.serviceName")}:</th>
-    		<td >
-    			 <input  class="easyui-textbox"  id= "serviceName" name="serviceName"  data-options="required:true"/>
-    		</td>
     		<th>${message("csh.carService.serviceCategory")}:</th>
     		<td>
     			 <input  class="easyui-combobox" id= "addCarServiceCategory" name="serviceCategoryId"  data-options="required:true"/>
     		</td>
+    		<th class="car-service">${message("csh.carService.serviceName")}:</th>
+    		<td class="car-service">
+    			 <input  class="easyui-textbox"  id= "serviceName" name="serviceName"/>
+    		</td>
     	</tr>
-    	<tr>
+    	<tr class='car-service'>
     		<th>${message("csh.carService.price")}:</th>
     		<td >
-    			 <input  class="easyui-numberbox"  id= "addCarServicePrice" name="price"  data-options="required:true,min:-1,precision:2"/>
+    			 <input  class="easyui-numberbox"  id= "addCarServicePrice" name="price" validType="moreThan['addCarServicePromotionPrice','优惠价']"  data-options="required:true,min:-1,precision:2"/>
     		</td>
     		<th>${message("csh.carService.promotionPrice")}:</th>
     		<td>
-    			 <input  class="easyui-numberbox" name="promotionPrice" id= "addCarServicePromotionPrice" data-options="required:true,min:-1,precision:2"/>
+    			 <input  class="easyui-numberbox" name="promotionPrice" id= "addCarServicePromotionPrice" validType="lessThan['addCarServicePrice','原价']" data-options="required:true,min:-1,precision:2"/>
     		</td>
     	</tr>
     	<tr>

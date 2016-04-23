@@ -33,6 +33,11 @@ public class ReportReservationStatisticsController extends BaseController
    */
   @RequestMapping(value = "/report", method = RequestMethod.GET)
   public @ResponseBody ReportReservationStatistics report(ModelMap model) {
-    return reportReservationStatisticsService.findEntityByTenantID ();
+    ReportReservationStatistics reportReservationStatistics =  reportReservationStatisticsService.findEntityByTenantID ();
+    if (reportReservationStatistics == null)
+    {
+      reportReservationStatistics = new ReportReservationStatistics ();
+    }
+    return reportReservationStatistics;
   }
 }

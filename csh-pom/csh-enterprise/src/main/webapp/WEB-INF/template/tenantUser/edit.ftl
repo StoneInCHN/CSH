@@ -101,7 +101,7 @@
 	    		</td>
 	    		<th>${message("csh.tenantUser.age")}:</th>
 	    		<td>
-	    			 <input class="easyui-numberbox" type="text" name="age" data-options="required:true" value="${tenantUser.age}"/>
+	    			 <input class="easyui-numberbox" type="text" name="age" data-options="required:true" value="${tenantUser.age}" validType="max[200]"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
@@ -111,7 +111,7 @@
 	    		</td>
 	    		<th>${message("csh.tenantUser.workingYear")}:</th>
 	    		<td>
-	    			 <input class="easyui-numberbox" type="text" name="workingYear" data-options="required:true" value="${tenantUser.workingYear}"/>
+	    			 <input class="easyui-numberbox" type="text" name="workingYear" data-options="required:true" value="${tenantUser.workingYear}" validType="max[200]"/>
 	    		</td>
 	    	</tr>
 	    	<tr>

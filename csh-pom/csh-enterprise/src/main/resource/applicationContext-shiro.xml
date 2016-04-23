@@ -34,6 +34,7 @@
 				<!-- 车辆管理 -->
 				/console/vehicle/** = perms["vehicle"]
 				/console/vehicleMaintain/** = perms["vehicleMaintain"]
+				/console/vehicleMileageReport/** = perms["vehicleMileageReport"]
 				
 				<!-- 设备管理 -->
 				/console/deviceInfo/** = perms["device"]
@@ -44,6 +45,7 @@
 				<!-- 预约中心-->
 				/console/repareReservation/** = perms["repareReservation"]
 				/console/maintainReservation/** = perms["maintainReservation"]
+				/console/beautifyReservation/** = perms["beautifyReservation"]
 				
 				<!-- 消息中心-->
 				/console/notificationPush/** = perms["notificationPush"]
@@ -53,6 +55,21 @@
 				/console/reportRepareStatistics/** = perms["shortMessagePush"]
 				/console/reportMaintainStatistics/** = perms["maintainReport"]
 				/console/reportWashStatistics/** = perms["washReport"]
+				<!-- 车辆保险 -->
+				/console/vehicleInsurance/** = perms["vehicleInsurance"]
+				
+				<!-- 网上商店 -->
+				/console/product/** = perms["product"]
+				/console/order/** = perms["order"]
+				/console/marketingCenter/** = perms["marketingCenter"]
+				
+				<!-- 结算中心 -->
+				/console/clearingRecord/** = perms["clearingRecord"]
+				/console/carServiceRecord/** = perms["carServiceRecord"]
+				
+				<!-- 活动中心 -->
+				/console/redPacketSend/** = perms["redPacketSend"]
+				/console/joyDraw/** = perms["joyDraw"]
 			</value>
 		</property>
 		<property name="filters">

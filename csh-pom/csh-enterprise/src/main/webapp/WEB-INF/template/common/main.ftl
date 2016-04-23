@@ -68,7 +68,7 @@
 				[/@shiro.hasPermission]
 				
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
-				<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>
+				<!--<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>-->
 			</ul>
 		</div>
 		<div class="welcome pull-right">
@@ -131,14 +131,14 @@
     		[/@shiro.hasPermission]
     		-->
     		[@shiro.hasPermission name="vehicleMileageReport"]
-    		<li><a href="#" data-url="${base}/console/vehicleMileageReport/vehicleMileageReport.jhtml">车辆里程统计</a></li>
+    		<li><a href="#" data-url="${base}/console/vehicleMileageReport/vehicleMileageReport.jhtml">车辆数据统计</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="vehicleMaintain"]
     		<li><a href="#" data-url="${base}/console/vehicleMaintain/vehicleMaintain.jhtml">${message("csh.vehicle.vehicleMaintain")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="vehicleTrack"]
+    		<!--[@shiro.hasPermission name="vehicleTrack"]
     		<li><a href="#" data-url="${base}/console/vehicleTrack/vehicleTrack.jhtml">${message("csh.vehicle.vehicleTrack")}</a></li>
-    		[/@shiro.hasPermission]
+    		[/@shiro.hasPermission]-->
     	</ul>
     	<ul title="${message("csh.device.config")}" id="device">
     		[@shiro.hasPermission name="device"]
@@ -167,9 +167,10 @@
     		[@shiro.hasPermission name="notificationPush"]
     		<li><a href="#" data-url="${base}/console/messageInfo/notificationPush.jhtml">${message("csh.informationManage.notificationPush")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="shortMessagePush"]
+    		<!--[@shiro.hasPermission name="shortMessagePush"]
     		<li><a href="#" data-url="${base}/console/messageInfo/shortMessagePush.jhtml">${message("csh.informationManage.shortMessagePush")}</a></li>
     		[/@shiro.hasPermission]
+    		-->
     	</ul>
     	<ul title="${message("csh.statisticsReport.report")}" id="statisticsReport">
     		[@shiro.hasPermission name="repareReport"]

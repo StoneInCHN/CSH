@@ -1,7 +1,7 @@
 var pushMessageInfo_manager_tool = {
 		add:function(){
 			$('#addPushMessageInfo').dialog({
-			    title: message("csh.endUser.add"),    
+			    title: message("csh.pushMessageInfo.add"),    
 			    width: 700,    
 			    height: 550,
 			    href:'../messageInfo/add.jhtml?sendType=PUSH',

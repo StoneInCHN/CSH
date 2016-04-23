@@ -2,16 +2,17 @@
 		<input type="hidden" name="id" value="${carService.id}">  
 	  <table class="table table-striped"  border="0">
 	    <tr>
-    		<th>${message("csh.carService.serviceName")}:</th>
-    		<td >
-    			 <input  class="easyui-textbox" value="${carService.serviceName}" id= "serviceName" name="serviceName"  data-options="required:true"/>
-    		</td>
-    		<th>${message("csh.carService.serviceCategory")}:</th>
+    		
+    		<th >${message("csh.carService.serviceCategory")}:</th>
     		<td>
     			 <input  class="easyui-textbox" id= "editCarServiceCategory" data-value="${carService.serviceCategory.id}" name="serviceCategoryId"  data-options="required:true"/>
     		</td>
+    		<th class='car-service'>${message("csh.carService.serviceName")}:</th>
+    		<td class='car-service'>
+    			 <input  class="easyui-textbox" value="${carService.serviceName}" id= "addServiceName" name="serviceName"  data-options="required:true"/>
+    		</td>
     	</tr>
-    	<tr>
+    	<tr class='car-service'>
     		<th>${message("csh.carService.price")}:</th>
     		<td >
     			 <input  class="easyui-numberbox"  id= "editCarServicePrice" value="${carService.price}" name="price"  data-options="required:true,min:0,precision:2"/>

@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Entity
 @Table(name = "csh_message_info")
+@Indexed(index = "messageInfo")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_message_info_sequence")
 public class MessageInfo extends BaseEntity {
 
@@ -54,6 +56,7 @@ public class MessageInfo extends BaseEntity {
   private Long tenantID;
   
   @JsonProperty
+  @Field(store = Store.NO,index = Index.UN_TOKENIZED)
   public MessageType getMessageType() {
     return messageType;
   }

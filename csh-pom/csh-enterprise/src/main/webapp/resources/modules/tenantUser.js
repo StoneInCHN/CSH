@@ -144,7 +144,6 @@ var tenantUser_manager_tool = {
 										$.messager.progress('close');
 										showSuccessMsg(result.content);
 										$('#addTenantUser_form').form('reset');
-										$('#addTenantUser').dialog("close");
 										$("#tenantUser-table-list").datagrid('reload');
 										
 									},

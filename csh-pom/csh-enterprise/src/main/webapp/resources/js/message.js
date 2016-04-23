@@ -164,6 +164,7 @@ var messages = {
 	"csh.vehicle.endUser":"车辆所有者",
 	"csh.vehicle.device":"绑定的设备",
 	"csh.vehicle.status":"车辆状态",
+	"csh.vehicle.search":"车辆搜索",
 	"csh.vehicle.list":"车辆列表",
 	"csh.vehicle.bindTime":"绑定时间",
 	"csh.vehicle.vehicleNo":"车架号",
@@ -258,7 +259,9 @@ var messages = {
 	"csh.messageInfo.type.NEWSMSG":"新闻信息",
 	"csh.messageInfo.type.PROMOTION":"活动信息",
 	"csh.messageInfo.list":"消息列表",
-	"csh.beautifyReservation.list":"保养预约列表"
+	"csh.beautifyReservation.list":"保养预约列表",
+	"csh.pushMessageInfo.add":"添加推送消息",
+	"csh.messageInfo.search":"消息搜索"
 };
 //多语言
 function message(code) {

@@ -328,8 +328,8 @@ var deviceInfoStatistics ={
              type: 'pie',
              name:'占比',
              data: [
-                    ['已绑定', Number($("#unbindedDeviceCount").val())],
-                    ['未绑定', Number($("#bindedDeviceCount").val())],
+                    ['未绑定', Number($("#unbindedDeviceCount").val())],
+                    ['已绑定', Number($("#bindedDeviceCount").val())],
                     ]
     }]
 };

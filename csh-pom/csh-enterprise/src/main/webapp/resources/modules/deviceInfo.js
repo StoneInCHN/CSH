@@ -49,8 +49,8 @@ var deviceInfo_manager_tool = {
 				}
 				$('#bindDevice').dialog({
 				    title: message("csh.deviceInfo.bindVehicle"),    
-				    width: 600,    
-				    height: 350,
+				    width: 300,    
+				    height: 250,
 				    iconCls:'icon-mini-add',
 				    cache: false, 
 				    buttons:[{
@@ -91,8 +91,8 @@ var deviceInfo_manager_tool = {
 						text:message("csh.common.cancel"),
 						iconCls:'icon-cancel',
 						handler:function(){
-							 $('#addVehicle').dialog("close");
-							 $("#addVehicle_form").form("reset");
+							 $('#bindDevice').dialog("close");
+							 $("#bindDevice_form").form("reset");
 						}
 				    }],
 				    onOpen:function(){
