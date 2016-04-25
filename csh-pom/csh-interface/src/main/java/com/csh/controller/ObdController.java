@@ -176,7 +176,18 @@ public class ObdController extends MobileBaseController {
           setting.getObdServerUrl() + "/appVehicleData/vehicleScan.jhtml?deviceId=" + deviceNo;
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
-      response.setMsg((Map<String, Object>) map.get("msg"));
+      Map<String, Object> msg = (Map<String, Object>) map.get("msg");
+      Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
+      if (flag) {
+        DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+        Double mileAge = (Double) msg.get("totalMileAge");
+        if (deviceInfo.getVehicle() != null && deviceInfo.getVehicle().getDriveMileage() != null) {
+          msg.put("totalMileAge", mileAge + deviceInfo.getVehicle().getDriveMileage());
+        }
+
+      }
+
+      response.setMsg(msg);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -187,6 +198,4 @@ public class ObdController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
-
 }
