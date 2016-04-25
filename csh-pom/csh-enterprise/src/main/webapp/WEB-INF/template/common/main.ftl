@@ -88,7 +88,7 @@
 		    </li>
 		</ul>
 	</div>   
-    <div class="footer" data-options="region:'south',split:true,noheader:true" ></div>   
+    <div class="footer" data-options="region:'south',split:false,noheader:true" ></div>   
     <div class="left-content" data-options="region:'west',title:'导航菜单',split:true,width:115" >
     	<ul title="${message("csh.system.config")}" id="system">
     		[@shiro.hasPermission name="tenantAccount"]

@@ -44,6 +44,8 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo,Long> im
         MsgEndUser msgEndUser = new MsgEndUser ();
         msgEndUser.setMessage (messageInfo);
         msgEndUser.setEndUser (endUserDao.find (id));
+        msgEndUser.setIsPush (false);
+        msgEndUser.setIsRead (false);
         msgEndUserDao.persist (msgEndUser);
       }
       messageInfoDao.persist (messageInfo);

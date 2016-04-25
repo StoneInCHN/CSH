@@ -191,8 +191,8 @@ $(function(){
 		},
 		columns:[[
 			{field : 'ck',checkbox : true},
-			{title : message("csh.vehicle.plate"),field : "plate",width :"47%",align : 'center',sortable : true},
-			 {title:message("csh.vehicle.vehicleBrand"),width:100,field:"vehicleBrand",sortable:true,
+			{title : message("csh.vehicle.plate"),field : "plate",width:120,align : 'center',sortable : true},
+			 {title:message("csh.vehicle.vehicleBrand"),width:80,field:"vehicleBrand",align:'right',sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(row != null){
 			    		  return  row.vehicleBrandDetail.vehicleLine.vehicleBrand.name;

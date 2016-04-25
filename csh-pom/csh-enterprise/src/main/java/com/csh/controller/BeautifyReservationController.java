@@ -239,12 +239,11 @@ public class BeautifyReservationController extends BaseController
     categoryFilter.setValue (category);
     filters.add (categoryFilter);
 
-    List<CarService> carServiceList = carServiceService.findList (null,
-        filters, null);
-    //    if (carServiceList == null || carServiceList.size () != 1)
-    //    {
-    //      return ERROR_MESSAGE;
-    //    }
+    List<CarService> carServiceList = carServiceService.findList (null, filters,null,true,null);
+    if (carServiceList == null)
+    {
+      return ERROR_MESSAGE;
+    }
     EndUser endUser = endUserService.find (endUserID);
     String recordNo = ToolsUtils.generateRecordNo (carServiceList.get (0)
         .getTenantInfo ().getOrgCode ());

@@ -1,6 +1,6 @@
 <script src="${base}/resources/modules/vehicleMileageReport.js"></script>
-<div class="easyui-layout" data-options="fit:true">
-		<div data-options="region:'west',split:true" style="width:250px" title="车辆查询">
+	<div class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'west',split:false" style="width:250px" title="车辆查询">
 			<fieldset style="padding:5px 0px 4px 4px;margin:0px">
 			        <form id="vehicleMileage_vehicle_search_form" class="search-form">
 						<div class="search-item">

@@ -56,6 +56,11 @@ TenantClearingRecordService {
     Map<String, Date> peroidDate = new HashMap<String, Date>();
     Date peroidBeginDate =  tenantClearingRecordDao.findLastPeriodEndDate ();
     Date now = new Date ();
+    //第一次记录以1970年1月1日为起点
+    if (peroidBeginDate == null)
+    {
+      peroidBeginDate = new Date (0L);
+    }
     Integer cycle = setting.getClearingRecordCycle ();
     int days = (int) ((now.getTime() - peroidBeginDate.getTime())
         / (24 * 60 * 60 * 1000)/cycle*cycle);
