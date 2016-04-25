@@ -67,20 +67,20 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
    */
   private BigDecimal price;
 
-  /**
-   * 保养预约
-   */
-  private MaintainReservation maintainReservation;
-
-  /**
-   * 维修预约
-   */
-  private RepareReservation repareReservation;
-
-  /**
-   * 美容预约
-   */
-  private BeautifyReservation beautifyReservation;
+//  /**
+//   * 保养预约
+//   */
+//  private MaintainReservation maintainReservation;
+//
+//  /**
+//   * 维修预约
+//   */
+//  private RepareReservation repareReservation;
+//
+//  /**
+//   * 美容预约
+//   */
+//  private BeautifyReservation beautifyReservation;
   /**
    * 商家名称
    */
@@ -97,11 +97,6 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
 
 
   /**
-   * 预约到店时间
-   */
-  private Date subscribeDate;
-
-  /**
    * 订单完成时间
    */
   private Date finishDate;
@@ -109,10 +104,10 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
   /**
    * 车牌
    */
-  private String vehiclePlate;
+  private Vehicle vehicle;
+  
   private TenantClearingRecord tenantClearingRecord;
 
-  private VehicleInsurance vehicleInsurance;
   /**
    * 租户ID
    */
@@ -123,51 +118,6 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
    */
   private String recordNo;
 
-  /**
-   * 用户评价
-   */
-  private TenantEvaluate tenantEvaluate;
-
-  /**
-   * 是否为预约服务类型，控制手机端图标显示(1:预约类型 0：非预约类型)
-   */
-  private Integer serviceFlag;
-
-  /**
-   * 支付验证码
-   */
-  private String payCode;
-
-  @Column(length = 10)
-  public String getPayCode() {
-    return payCode;
-  }
-
-  public void setPayCode(String payCode) {
-    this.payCode = payCode;
-  }
-
-  @Transient
-  public Integer getServiceFlag() {
-    if (subscribeDate != null) {
-      serviceFlag = 1;
-    } else {
-      serviceFlag = 0;
-    }
-    return serviceFlag;
-  }
-
-  public void setServiceFlag(Integer serviceFlag) {
-    this.serviceFlag = serviceFlag;
-  }
-
-  public Date getSubscribeDate() {
-    return subscribeDate;
-  }
-
-  public void setSubscribeDate(Date subscribeDate) {
-    this.subscribeDate = subscribeDate;
-  }
 
   public Date getFinishDate() {
     return finishDate;
@@ -177,14 +127,6 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
     this.finishDate = finishDate;
   }
 
-  @OneToOne(mappedBy = "carServiceRecord")
-  public TenantEvaluate getTenantEvaluate() {
-    return tenantEvaluate;
-  }
-
-  public void setTenantEvaluate(TenantEvaluate tenantEvaluate) {
-    this.tenantEvaluate = tenantEvaluate;
-  }
 
   @Column(length = 200)
   public String getTenantPhoto() {
@@ -266,23 +208,23 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
     this.chargeStatus = chargeStatus;
   }
 
-  @OneToOne(mappedBy = "carServiceRecord")
-  public MaintainReservation getMaintainReservation() {
-    return maintainReservation;
-  }
-
-  public void setMaintainReservation(MaintainReservation maintainReservation) {
-    this.maintainReservation = maintainReservation;
-  }
-
-  @OneToOne(mappedBy = "carServiceRecord")
-  public RepareReservation getRepareReservation() {
-    return repareReservation;
-  }
-
-  public void setRepareReservation(RepareReservation repareReservation) {
-    this.repareReservation = repareReservation;
-  }
+//  @OneToOne(mappedBy = "carServiceRecord")
+//  public MaintainReservation getMaintainReservation() {
+//    return maintainReservation;
+//  }
+//
+//  public void setMaintainReservation(MaintainReservation maintainReservation) {
+//    this.maintainReservation = maintainReservation;
+//  }
+//
+//  @OneToOne(mappedBy = "carServiceRecord")
+//  public RepareReservation getRepareReservation() {
+//    return repareReservation;
+//  }
+//
+//  public void setRepareReservation(RepareReservation repareReservation) {
+//    this.repareReservation = repareReservation;
+//  }
 
 
   @Column(scale = 2, precision = 10, nullable = false)
@@ -317,16 +259,6 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
   }
 
 
-  @OneToOne(mappedBy = "carServiceRecord", cascade = CascadeType.ALL)
-  public VehicleInsurance getVehicleInsurance() {
-    return vehicleInsurance;
-  }
-
-  public void setVehicleInsurance(VehicleInsurance vehicleInsurance) {
-    this.vehicleInsurance = vehicleInsurance;
-  }
-
-
   @JsonProperty
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
   @FieldBridge(impl = DateBridgeImpl.class)
@@ -338,29 +270,15 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
     this.paymentDate = paymentDate;
   }
 
-  @OneToOne(mappedBy = "carServiceRecord")
-  public BeautifyReservation getBeautifyReservation() {
-    return beautifyReservation;
+  @ManyToOne
+  public Vehicle getVehicle ()
+  {
+    return vehicle;
   }
 
-  public void setBeautifyReservation(BeautifyReservation beautifyReservation) {
-    this.beautifyReservation = beautifyReservation;
-  }
-
-  @Transient
-  @JsonProperty
-  public String getVehiclePlate() {
-    if (maintainReservation != null) {
-      return maintainReservation.getPlate();
-    }
-    if (repareReservation != null) {
-      return repareReservation.getPlate();
-    }
-    return vehiclePlate;
-  }
-
-  public void setVehiclePlate(String vehiclePlate) {
-    this.vehiclePlate = vehiclePlate;
+  public void setVehicle (Vehicle vehicle)
+  {
+    this.vehicle = vehicle;
   }
 
 }

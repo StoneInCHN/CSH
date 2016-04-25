@@ -3,15 +3,12 @@ package com.csh.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Field;
@@ -68,20 +65,6 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
   private BigDecimal price;
 
   /**
-   * 保养预约
-   */
-  private MaintainReservation maintainReservation;
-
-  /**
-   * 维修预约
-   */
-  private RepareReservation repareReservation;
-
-  /**
-   * 美容预约
-   */
-  private BeautifyReservation beautifyReservation;
-  /**
    * 商家名称
    */
   private String tenantName;
@@ -95,11 +78,10 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
    */
   private Date clearingDate;
 
-
   /**
-   * 预约到店时间
+   * 提成金额
    */
-  private Date subscribeDate;
+  private BigDecimal deductMoney;
 
   /**
    * 订单完成时间
@@ -109,10 +91,9 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
   /**
    * 车牌
    */
-  private String vehiclePlate;
+  private Vehicle vehicle;
   private TenantClearingRecord tenantClearingRecord;
 
-  private VehicleInsurance vehicleInsurance;
   /**
    * 租户ID
    */
@@ -123,51 +104,7 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
    */
   private String recordNo;
 
-  /**
-   * 用户评价
-   */
-  private TenantEvaluate tenantEvaluate;
 
-  /**
-   * 是否为预约服务类型，控制手机端图标显示(1:预约类型 0：非预约类型)
-   */
-  private Integer serviceFlag;
-
-  /**
-   * 支付验证码
-   */
-  private String payCode;
-
-  @Column(length = 10)
-  public String getPayCode() {
-    return payCode;
-  }
-
-  public void setPayCode(String payCode) {
-    this.payCode = payCode;
-  }
-
-  @Transient
-  public Integer getServiceFlag() {
-    if (subscribeDate != null) {
-      serviceFlag = 1;
-    } else {
-      serviceFlag = 0;
-    }
-    return serviceFlag;
-  }
-
-  public void setServiceFlag(Integer serviceFlag) {
-    this.serviceFlag = serviceFlag;
-  }
-
-  public Date getSubscribeDate() {
-    return subscribeDate;
-  }
-
-  public void setSubscribeDate(Date subscribeDate) {
-    this.subscribeDate = subscribeDate;
-  }
 
   public Date getFinishDate() {
     return finishDate;
@@ -177,14 +114,6 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
     this.finishDate = finishDate;
   }
 
-  @OneToOne(mappedBy = "carServiceRecord")
-  public TenantEvaluate getTenantEvaluate() {
-    return tenantEvaluate;
-  }
-
-  public void setTenantEvaluate(TenantEvaluate tenantEvaluate) {
-    this.tenantEvaluate = tenantEvaluate;
-  }
 
   @Column(length = 200)
   public String getTenantPhoto() {
@@ -268,23 +197,6 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
     this.chargeStatus = chargeStatus;
   }
 
-  @OneToOne(mappedBy = "carServiceRecord")
-  public MaintainReservation getMaintainReservation() {
-    return maintainReservation;
-  }
-
-  public void setMaintainReservation(MaintainReservation maintainReservation) {
-    this.maintainReservation = maintainReservation;
-  }
-
-  @OneToOne(mappedBy = "carServiceRecord")
-  public RepareReservation getRepareReservation() {
-    return repareReservation;
-  }
-
-  public void setRepareReservation(RepareReservation repareReservation) {
-    this.repareReservation = repareReservation;
-  }
 
 
   @Column(scale = 2, precision = 10, nullable = false)
@@ -319,14 +231,6 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
   }
 
 
-  @OneToOne(mappedBy = "carServiceRecord", cascade = CascadeType.ALL)
-  public VehicleInsurance getVehicleInsurance() {
-    return vehicleInsurance;
-  }
-
-  public void setVehicleInsurance(VehicleInsurance vehicleInsurance) {
-    this.vehicleInsurance = vehicleInsurance;
-  }
 
 
   @JsonProperty
@@ -340,31 +244,26 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
     this.paymentDate = paymentDate;
   }
 
-  @OneToOne(mappedBy = "carServiceRecord")
-  public BeautifyReservation getBeautifyReservation() {
-    return beautifyReservation;
+  @ManyToOne
+  public Vehicle getVehicle ()
+  {
+    return vehicle;
   }
 
-  public void setBeautifyReservation(BeautifyReservation beautifyReservation) {
-    this.beautifyReservation = beautifyReservation;
+  public void setVehicle (Vehicle vehicle)
+  {
+    this.vehicle = vehicle;
   }
 
-  @Transient
-  @JsonProperty
-  public String getVehiclePlate() {
-    if (maintainReservation != null) {
-      return maintainReservation.getPlate();
-    }
-    if (repareReservation != null) {
-      return repareReservation.getPlate();
-    }
-    return vehiclePlate;
+  public BigDecimal getDeductMoney ()
+  {
+    return deductMoney;
   }
 
-  public void setVehiclePlate(String vehiclePlate) {
-    this.vehiclePlate = vehiclePlate;
+  public void setDeductMoney (BigDecimal deductMoney)
+  {
+    this.deductMoney = deductMoney;
   }
-
 
 
 }

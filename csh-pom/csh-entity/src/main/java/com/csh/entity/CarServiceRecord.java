@@ -109,7 +109,8 @@ public class CarServiceRecord extends BaseEntity {
   /**
    * 车牌
    */
-  private String vehiclePlate;
+  private Vehicle vehicle;
+  
   private TenantClearingRecord tenantClearingRecord;
 
   private VehicleInsurance vehicleInsurance;
@@ -347,22 +348,16 @@ public class CarServiceRecord extends BaseEntity {
     this.beautifyReservation = beautifyReservation;
   }
 
-  @Transient
-  @JsonProperty
-  public String getVehiclePlate() {
-    if (maintainReservation != null) {
-      return maintainReservation.getPlate();
-    }
-    if (repareReservation != null) {
-      return repareReservation.getPlate();
-    }
-    return vehiclePlate;
+  @ManyToOne
+  public Vehicle getVehicle ()
+  {
+    return vehicle;
   }
 
-  public void setVehiclePlate(String vehiclePlate) {
-    this.vehiclePlate = vehiclePlate;
+  public void setVehicle (Vehicle vehicle)
+  {
+    this.vehicle = vehicle;
   }
-
 
 
 }
