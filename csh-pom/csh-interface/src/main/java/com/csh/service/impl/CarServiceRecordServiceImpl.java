@@ -87,11 +87,13 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setRecordNo(recordNo);
     carServiceRecord.setCarService(carService);
     carServiceRecord.setEndUser(endUser);
+    carServiceRecord.setVehicle(endUser.getDefaultVehicle());
     carServiceRecord.setChargeStatus(chargeStatus);
     carServiceRecord.setPrice(price);
     carServiceRecord.setTenantName(carService.getTenantInfo().getTenantName());
     carServiceRecord.setTenantPhoto(carService.getTenantInfo().getPhoto());
     carServiceRecord.setSubscribeDate(subscribeDate);
+
     if (carService.getServiceCategory().getId().equals(setting.getServiceCateMaintain())) {
       MaintainReservation maintainReservation = new MaintainReservation();
       maintainReservation.setCarServiceRecord(carServiceRecord);
