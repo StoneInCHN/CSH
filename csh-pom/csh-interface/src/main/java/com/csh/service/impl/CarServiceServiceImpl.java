@@ -1,19 +1,31 @@
-package com.csh.service.impl; 
+package com.csh.service.impl;
 
-import javax.annotation.Resource; 
+import java.util.List;
 
-import org.springframework.stereotype.Service; 
+import javax.annotation.Resource;
 
-import com.csh.entity.CarService;
+import org.springframework.stereotype.Service;
+
 import com.csh.dao.CarServiceDao;
-import com.csh.service.CarServiceService;
+import com.csh.entity.CarService;
+import com.csh.entity.TenantInfo;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.service.CarServiceService;
 
 @Service("carServiceServiceImpl")
-public class CarServiceServiceImpl extends BaseServiceImpl<CarService,Long> implements CarServiceService {
+public class CarServiceServiceImpl extends BaseServiceImpl<CarService, Long> implements
+    CarServiceService {
 
-      @Resource(name="carServiceDaoImpl")
-      public void setBaseDao(CarServiceDao carServiceDao) {
-         super.setBaseDao(carServiceDao);
+  @Resource(name = "carServiceDaoImpl")
+  private CarServiceDao carServiceDao;
+
+  @Resource(name = "carServiceDaoImpl")
+  public void setBaseDao(CarServiceDao carServiceDao) {
+    super.setBaseDao(carServiceDao);
+  }
+
+  @Override
+  public List<CarService> getServicesByTenantAndCategory(TenantInfo tenantInfo, Long categoryId) {
+    return carServiceDao.getServicesByTenantAndCategory(tenantInfo, categoryId);
   }
 }
