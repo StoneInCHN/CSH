@@ -33,17 +33,23 @@ public class WalletRecordController extends BaseController{
   public String list(Pageable pageable, ModelMap model,Date beginDate, Date endDate) {
     
     List<Filter> filters = new ArrayList<Filter>();
-    Filter beginDateFilter = new Filter();
-    beginDateFilter.setProperty("createDate");
-    beginDateFilter.setValue(beginDate);
-    beginDateFilter.setOperator(Operator.ge);
-    filters.add(beginDateFilter);
-    Filter endDateFilter = new Filter();
-    endDateFilter.setProperty("createDate");
-    endDateFilter.setValue(endDateFilter);
-    endDateFilter.setOperator(Operator.le);
-    filters.add(endDateFilter);
-   // pageable.setFilters(filters);
+    if (beginDate !=null) {
+      Filter beginDateFilter = new Filter();
+      beginDateFilter.setProperty("createDate");
+      beginDateFilter.setValue(beginDate);
+      beginDateFilter.setOperator(Operator.ge);
+      filters.add(beginDateFilter);
+    }
+    if (endDate !=null) {
+      Filter endDateFilter = new Filter();
+      endDateFilter.setProperty("createDate");
+      endDateFilter.setValue(endDate);
+      endDateFilter.setOperator(Operator.le);
+      filters.add(endDateFilter);
+      pageable.setFilters(filters);
+    }
+    model.addAttribute("beginDate", beginDate);
+    model.addAttribute("endDate", endDate);
     model.addAttribute("page", walletRecordService.findPage(pageable));
     return "/walletRecord/list";
   }

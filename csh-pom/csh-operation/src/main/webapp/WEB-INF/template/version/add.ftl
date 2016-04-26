@@ -35,7 +35,8 @@ $().ready(function() {
 				nameEndWith:".apk"
 			},
 			versionCode:{
-				required: true
+				required: true,
+				number:true
 			},
 			updateContent: {
 				required: true

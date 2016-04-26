@@ -35,7 +35,8 @@ $().ready(function() {
 				required: true
 			},
 			distributorPhone: {
-				required: true
+				required: true,
+				isMobile:true
 			},
 			distributorAddress: {
 				required: true

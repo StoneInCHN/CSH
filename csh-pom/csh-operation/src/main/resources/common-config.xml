@@ -11,11 +11,11 @@
 		value="http://apis.baidu.com/showapi_open_bus/oil_price/find" />
 	<setting name="vehicleOilAPIKey" value="7bb8ed487692b2c2dd290d477d879236" />
 	<setting name="siteName" value="车生活" />
-	<setting name="smtpFromMail" value="changhongcws@163.com" />
+	<setting name="smtpFromMail" value="microctrllife@163.com" />
 	<setting name="smtpHost" value="smtp.163.com" />
 	<setting name="smtpPort" value="25" />
-	<setting name="smtpUsername" value="changhongcws@163.com" />
-	<setting name="smtpPassword" value="cwsxxzx707" />
+	<setting name="smtpUsername" value="microctrllife@163.com" />
+	<setting name="smtpPassword" value="o123456" />
 	<setting name="uploadFileExtension" value="apk" />
 </csh>	
 	
