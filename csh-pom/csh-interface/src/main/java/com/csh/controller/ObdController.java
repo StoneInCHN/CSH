@@ -78,7 +78,7 @@ public class ObdController extends MobileBaseController {
       Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
       if (flag) {
         DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
-        Float mileAge = (Float) msg.get("mileAge");
+        Double mileAge = (Double) msg.get("mileAge");
         if (deviceInfo.getVehicle() != null && deviceInfo.getVehicle().getDriveMileage() != null) {
           msg.put("mileAge", mileAge + deviceInfo.getVehicle().getDriveMileage());
         }
