@@ -86,7 +86,7 @@ public class DeviceInfo extends BaseEntity {
   /**
    * 所属代理商
    */
-  private Long distributorId;
+  private Distributor distributor;
   
   /** 文件 */
   private MultipartFile file;
@@ -178,13 +178,16 @@ public class DeviceInfo extends BaseEntity {
     this.bindStatus = bindStatus;
   }
 
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
-  public Long getDistributorId() {
-    return distributorId;
+//  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @ManyToOne
+  public Distributor getDistributor ()
+  {
+    return distributor;
   }
 
-  public void setDistributorId(Long distributorId) {
-    this.distributorId = distributorId;
+  public void setDistributor (Distributor distributor)
+  {
+    this.distributor = distributor;
   }
 
   @Transient
