@@ -1,5 +1,8 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -10,8 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.Admin;
 import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.AdminService;
 import com.csh.service.AreaService;
 import com.csh.service.IdentifierService;
 import com.csh.service.TenantInfoService;
@@ -32,6 +40,9 @@ public class TenantInfoController extends BaseController {
   
   @Resource(name = "versionConfigServiceImpl")
   private VersionConfigService versionConfigService;
+  
+  @Resource(name = "adminServiceImpl")
+  private AdminService adminService;
   
   /**
    * 添加
@@ -96,6 +107,26 @@ public class TenantInfoController extends BaseController {
       tenantInfoService.delete(ids);
     }
     return SUCCESS_MESSAGE;
+  }
+  
+  /**
+   * 列表
+   */
+  @RequestMapping(value = "/list4distributor", method = RequestMethod.GET)
+  public String list4distributor(Pageable pageable, ModelMap model) {
+    Admin admin = adminService.getCurrent();
+    List<Filter> filters = new ArrayList<Filter>();
+    if (admin.getIsDistributor() != null && admin.getIsDistributor()
+        && admin.getDistributor() != null) {
+      Filter distributorFilter = new Filter();
+      distributorFilter.setProperty("distributorId");
+      distributorFilter.setValue(admin.getDistributor().getId());
+      distributorFilter.setOperator(Operator.eq);
+      filters.add(distributorFilter);
+    }
+    pageable.setFilters(filters);
+    model.addAttribute("page", tenantInfoService.findPage(pageable));
+    return "/tenantInfo/list4distributor";
   }
 
 }

@@ -43,10 +43,10 @@ public class DeviceInfoController extends BaseController {
 
   @Resource(name = "distributorServiceImpl")
   private DistributorService distributorService;
-  
+
   @Resource(name = "adminServiceImpl")
   private AdminService adminService;
-  
+
   @Resource(name = "tenantInfoServiceImpl")
   private TenantInfoService tenantInfoService;
 
@@ -128,41 +128,42 @@ public class DeviceInfoController extends BaseController {
     model.addAttribute("page", deviceInfoService.findPage(pageable));
     return "/deviceInfo/list";
   }
-  
-  
+
+
   /**
    * 列表
    */
   @RequestMapping(value = "/list4distributor", method = RequestMethod.GET)
-  public String list4distributor(Pageable pageable,DeviceStatus deviceStatus, ModelMap model) {
+  public String list4distributor(Pageable pageable, DeviceStatus deviceStatus, ModelMap model) {
     model.addAttribute("deviceStatus", deviceStatus);
-      Admin admin =  adminService.getCurrent();
-      List<Filter> filters = new ArrayList<Filter>();
-      if (deviceStatus == null) {
-        Filter filter = new Filter();
-        filter.setProperty("deviceStatus");
-        filter.setValue(DeviceStatus.INITED);
-        filter.setOperator(Operator.ne);
-        filters.add(filter);
-      }else{
-        Filter filter = new Filter();
-        filter.setProperty("deviceStatus");
-        filter.setValue(deviceStatus);
-        filter.setOperator(Operator.eq);
-        filters.add(filter);
-      }
-      if (admin.getIsDistributor()!=null && admin.getIsDistributor() && admin.getDistributor()!=null) {
-        Filter distributorFilter = new Filter();
-        distributorFilter.setProperty("distributorId");
-        distributorFilter.setValue(admin.getDistributor().getId());
-        distributorFilter.setOperator(Operator.eq);
-        filters.add(distributorFilter);
-      }
-      pageable.setFilters(filters);
-      model.addAttribute("page", deviceInfoService.findPage(pageable));
+    Admin admin = adminService.getCurrent();
+    List<Filter> filters = new ArrayList<Filter>();
+    if (deviceStatus == null) {
+      Filter filter = new Filter();
+      filter.setProperty("deviceStatus");
+      filter.setValue(DeviceStatus.INITED);
+      filter.setOperator(Operator.ne);
+      filters.add(filter);
+    } else {
+      Filter filter = new Filter();
+      filter.setProperty("deviceStatus");
+      filter.setValue(deviceStatus);
+      filter.setOperator(Operator.eq);
+      filters.add(filter);
+    }
+    if (admin.getIsDistributor() != null && admin.getIsDistributor()
+        && admin.getDistributor() != null) {
+      Filter distributorFilter = new Filter();
+      distributorFilter.setProperty("distributorId");
+      distributorFilter.setValue(admin.getDistributor().getId());
+      distributorFilter.setOperator(Operator.eq);
+      filters.add(distributorFilter);
+    }
+    pageable.setFilters(filters);
+    model.addAttribute("page", deviceInfoService.findPage(pageable));
     return "/deviceInfo/list4distributor";
   }
-  
+
 
   /**
    * 删除
@@ -175,27 +176,12 @@ public class DeviceInfoController extends BaseController {
     return SUCCESS_MESSAGE;
   }
 
-
- /* @RequestMapping(value = "/deviceProvide4distributor", method = RequestMethod.GET)
-  public String deviceProvide4distributor(ModelMap modelMap, Pageable pageable) {
-    List<Filter> filters = new ArrayList<Filter>();
-    Filter filter = new Filter();
-    filter.setProperty("deviceStatus");
-    filter.setValue(DeviceStatus.SENDOUT);
-    filter.setOperator(Operator.eq);
-    filters.add(filter);
-    
-    pageable.setPageSize(5);;
-    modelMap.addAttribute("page", distributorService.findPage(pageable));
-    return "/deviceInfo/deviceProvide4distributor";
-  }*/
-  
-  
   @RequestMapping(value = "/tenantInfoList4distributor", method = RequestMethod.GET)
   public String tenantInfo4distributor(Pageable pageable, ModelMap model) {
-    Admin admin =  adminService.getCurrent();
+    Admin admin = adminService.getCurrent();
     List<Filter> filters = new ArrayList<Filter>();
-    if (admin.getIsDistributor()!=null && admin.getIsDistributor() && admin.getDistributor()!=null) {
+    if (admin.getIsDistributor() != null && admin.getIsDistributor()
+        && admin.getDistributor() != null) {
       Filter distributorFilter = new Filter();
       distributorFilter.setProperty("distributorId");
       distributorFilter.setValue(admin.getDistributor().getId());
@@ -206,8 +192,8 @@ public class DeviceInfoController extends BaseController {
     model.addAttribute("page", tenantInfoService.findPage(pageable));
     return "/deviceInfo/tenantInfo4distributor";
   }
-  
-  
+
+
   @RequestMapping(value = "/deviceProvide", method = RequestMethod.GET)
   public String deviceProvide(ModelMap modelMap, Pageable pageable) {
     pageable.setPageSize(5);;
@@ -226,7 +212,7 @@ public class DeviceInfoController extends BaseController {
       if (string.length() > 0) {
         Long id = Long.valueOf(string);
         DeviceInfo deviceInfo = deviceInfoService.find(id);
-        if(DeviceStatus.SENDOUT.equals(deviceInfo.getDeviceStatus())){
+        if (DeviceStatus.SENDOUT.equals(deviceInfo.getDeviceStatus())) {
           deviceInfo.setTenantID(tenantInfoId);
           deviceInfo.setDeviceStatus(DeviceStatus.STORAGEOUT);
           deviceInfoService.update(deviceInfo);
@@ -235,7 +221,7 @@ public class DeviceInfoController extends BaseController {
     }
     return SUCCESS_MESSAGE;
   }
-  
+
   @RequestMapping(value = "/provide", method = RequestMethod.POST)
   public @ResponseBody Message provide(String ids, Long[] distributorIds) {
     if (distributorIds.length != 1) {
@@ -247,8 +233,8 @@ public class DeviceInfoController extends BaseController {
       if (string.length() > 0) {
         Long id = Long.valueOf(string);
         DeviceInfo deviceInfo = deviceInfoService.find(id);
-        if(DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus()) )
-        deviceInfo.setDistributorId(distributorId);
+        if (DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus()))
+          deviceInfo.setDistributorId(distributorId);
         deviceInfo.setDeviceStatus(DeviceStatus.SENDOUT);
         deviceInfoService.update(deviceInfo);
       }
@@ -256,7 +242,7 @@ public class DeviceInfoController extends BaseController {
     return SUCCESS_MESSAGE;
   }
 
-  
+
   /**
    * 跳转到批量上传页面
    * 
@@ -265,7 +251,7 @@ public class DeviceInfoController extends BaseController {
   public String batchAdd(DeviceInfo device, ModelMap model) {
     return "/deviceInfo/batch_add";
   }
-  
+
   /**
    * 批量上传
    * 
@@ -312,20 +298,26 @@ public class DeviceInfoController extends BaseController {
       for (DeviceInfo deviceTemp : devices) {
         try {
           if (deviceTemp.getDeviceNo() != null && deviceTemp.getSimNo() != null) {
-            if (deviceTemp.getDeviceNo().length() != 8) {
+            if (deviceTemp.getDeviceNo().length() != 10) {
               formatFailDeviceIds.add(deviceTemp.getDeviceNo());
               faileCount++;
             } else {
-
-              deviceTemp.setDeviceStatus(DeviceStatus.INITED);
-              deviceTemp.setBindStatus(BindStatus.UNBINDED);
-              deviceInfoService.save(deviceTemp);
-              if (LogUtil.isDebugEnabled(DeviceInfoController.class)) {
-                LogUtil.debug(DeviceInfoController.class, "batchAddSave",
-                    "DeviceInfo saved , Sn : %s , simNo : %s", deviceTemp.getDeviceNo(),
-                    deviceTemp.getSimNo());
+              DeviceInfo info = deviceInfoService.findByDeviceNo(deviceTemp.getDeviceNo());
+              if (info != null) {
+                formatFailDeviceIds.add(deviceTemp.getDeviceNo() + "\n");
+                faileCount++;
+              } else {
+                deviceTemp.setDeviceStatus(DeviceStatus.INITED);
+                deviceTemp.setBindStatus(BindStatus.UNBINDED);
+                deviceInfoService.save(deviceTemp);
+                if (LogUtil.isDebugEnabled(DeviceInfoController.class)) {
+                  LogUtil.debug(DeviceInfoController.class, "batchAddSave",
+                      "DeviceInfo saved , Sn : %s , simNo : %s", deviceTemp.getDeviceNo(),
+                      deviceTemp.getSimNo());
+                }
+                successCount++;
               }
-              successCount++;
+
             }
           } else {
             formatFailDeviceIds.add(deviceTemp.getDeviceNo() + "\n");
@@ -336,12 +328,11 @@ public class DeviceInfoController extends BaseController {
           dupfailDeviceIds.add(deviceTemp.getDeviceNo());
         }
       }
-      if (successCount>0) {
+      if (successCount > 0) {
         message.setType(Message.Type.success);
         message.setContent(message("gutid.batch.upload.success"));
         model.addAttribute("resMessage", message);
-      }
-      else {
+      } else {
         message.setType(Message.Type.error);
         message.setContent("gutid.batch.upload.fail");
         model.addAttribute("resMessage", message);
@@ -356,5 +347,5 @@ public class DeviceInfoController extends BaseController {
     return "/deviceInfo/batch_add";
   }
 
-  
+
 }

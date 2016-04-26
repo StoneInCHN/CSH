@@ -60,11 +60,12 @@
 		$applyForm.validate({
 			rules: {
 				tenantName:{
-					required:true
+					required:true,
+					maxlength:6
 				},
 				contactPhone: {
 					required:true,
-					pattern:/^[0-9]{1,20}$/
+					isMobile:true
 				},
 				contactPerson:{
 					required:true
@@ -86,7 +87,8 @@
 				
 			messages: {
 				tenantName:{
-					required:"<%=SpringUtils.getMessage("csh.apply.tenantNameRequired")%>"
+					required:"<%=SpringUtils.getMessage("csh.apply.tenantNameRequired")%>",
+					maxlength:"<%=SpringUtils.getMessage("csh.apply.tenantNameMaxlength")%>"
 				},
 				contactPhone:{
 					required:"<%=SpringUtils.getMessage("csh.apply.contactPhoneRequired")%>",

@@ -97,8 +97,7 @@ public class APKVersionController extends BaseController {
       return ERROR_VIEW;
     }
     if (apkVersion.getFile().getSize() > 0) {
-      String apkPath = "123";
-      // fileService.
+      String apkPath = fileService.upload(FileType.file, apkVersion.getFile(), true);
       apkVersion.setApkPath(apkPath);
     }
     apkVersionService.update(apkVersion);
