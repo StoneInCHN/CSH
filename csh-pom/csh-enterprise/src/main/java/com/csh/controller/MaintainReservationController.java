@@ -42,6 +42,7 @@ import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.MaintainReservationService;
 import com.csh.service.ServiceCategoryService;
+import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
 import com.csh.utils.ToolsUtils;
@@ -72,6 +73,8 @@ public class MaintainReservationController extends BaseController
   
   @Resource (name = "serviceCategoryServiceImpl")
   private ServiceCategoryService serviceCategoryService;
+  @Resource(name= "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
   /**
    * 界面展示
    * 
@@ -224,7 +227,13 @@ public class MaintainReservationController extends BaseController
     categoryFilter.setValue (category);
     filters.add (categoryFilter);
     
-    List<CarService> carServiceList = carServiceService.findList (null, filters,null,true,null);
+    com.csh.framework.filter.Filter tenantInfoFilter = new com.csh.framework.filter.Filter();
+    tenantInfoFilter.setProperty ("tenantInfo");
+    tenantInfoFilter.setOperator (Operator.eq);
+    tenantInfoFilter.setValue (tenantAccountService.getCurrentTenantInfo ());
+    filters.add (tenantInfoFilter);
+    
+    List<CarService> carServiceList = carServiceService.findList (null, filters,null);
     if (carServiceList == null)
     {
       return ERROR_MESSAGE;

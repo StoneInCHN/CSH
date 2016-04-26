@@ -1,5 +1,5 @@
 <script src="${base}/resources/js/common.js"></script>
-<script src="${base}/resources/modules/carServiceRecord.js"></script>
+<script src="${base}/resources/modules/carServiceTenantDeductRecord.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 
 <div>
@@ -82,19 +82,12 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="carServiceRecord-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="carServiceTenantDeductRecord-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 </div>
-<table id="carServiceRecord-table-list"></table>
-<div id="carServiceRecord_manager_tool">
-	<div class="tool-button">
-	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="carServiceRecord_manager_tool.edit();">修改</a>
-	</div>
-	<div class="tool-filter"></div>
-</div>
-<div id="editCarServiceRecord"></div>
-<div id="carServiceRecordDetail"></div>
+<table id="carServiceTenantDeductRecord-table-list"></table>
+
 
 
 

@@ -33,6 +33,7 @@ import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
 import com.csh.entity.ServiceCategory;
+import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
 import com.csh.framework.filter.Filter.Operator;
@@ -42,6 +43,7 @@ import com.csh.service.BeautifyReservationService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.ServiceCategoryService;
+import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleService;
 import com.csh.utils.DateTimeUtils;
 import com.csh.utils.ToolsUtils;
@@ -73,6 +75,8 @@ public class BeautifyReservationController extends BaseController
   @Resource (name = "serviceCategoryServiceImpl")
   private ServiceCategoryService serviceCategoryService;
 
+  @Resource(name= "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
   /**
    * 界面展示
    * 
@@ -227,7 +231,7 @@ public class BeautifyReservationController extends BaseController
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
   public @ResponseBody Message add (BeautifyReservation beautifyReservation,
-      Long endUserID)
+      Long endUserID,Long vehicleId)
   {
     //查询出服务的类型
     ServiceCategory category = serviceCategoryService.find (5L);
@@ -239,12 +243,19 @@ public class BeautifyReservationController extends BaseController
     categoryFilter.setValue (category);
     filters.add (categoryFilter);
 
-    List<CarService> carServiceList = carServiceService.findList (null, filters,null,true,null);
+    com.csh.framework.filter.Filter tenantInfoFilter = new com.csh.framework.filter.Filter();
+    tenantInfoFilter.setProperty ("tenantInfo");
+    tenantInfoFilter.setOperator (Operator.eq);
+    tenantInfoFilter.setValue (tenantAccountService.getCurrentTenantInfo ());
+    filters.add (tenantInfoFilter);
+    
+    List<CarService> carServiceList = carServiceService.findList (null, filters,null);
     if (carServiceList == null)
     {
       return ERROR_MESSAGE;
     }
     EndUser endUser = endUserService.find (endUserID);
+    Vehicle vehicle = vehicleService.find (vehicleId);
     String recordNo = ToolsUtils.generateRecordNo (carServiceList.get (0)
         .getTenantInfo ().getOrgCode ());
     CarServiceRecord record = new CarServiceRecord ();
@@ -255,6 +266,7 @@ public class BeautifyReservationController extends BaseController
     record.setEndUser (endUser);
     record.setPrice (carServiceList.get (0).getPrice ());
     record.setTenantID (carServiceList.get (0).getTenantInfo ().getId ());
+    record.setVehicle (vehicle);
     beautifyReservation.setEndUser (endUser);
     beautifyReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
     beautifyReservation.setCarServiceRecord (record);

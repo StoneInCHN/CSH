@@ -14,7 +14,11 @@ public class MsgRequest {
    */
   private String deviceNo;
 
-
+  /**
+   * 设备类型，
+   */
+  private String msgType;
+  
   public String getMsgContent() {
     return msgContent;
   }
@@ -31,7 +35,14 @@ public class MsgRequest {
     this.deviceNo = deviceNo;
   }
 
-  
+  public String getMsgType ()
+  {
+    return msgType;
+  }
 
+  public void setMsgType (String msgType)
+  {
+    this.msgType = msgType;
+  }
 
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.TenantClearingRecord;
+import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
 import com.csh.framework.service.BaseService;
 
@@ -17,9 +18,9 @@ import com.csh.framework.service.BaseService;
  */
 public interface TenantClearingRecordService extends BaseService<TenantClearingRecord, Long> {
 
-  Map<String, Date> findPeriodBeginEndDate ();
-
   void saveTenantClearingRecord (TenantClearingRecord tenantClearingRecord,
       Long[] ids);
+
+  Map<String, Date> findPeriodBeginEndDate (TenantInfo tenantInfo);
   
 }

@@ -1,5 +1,5 @@
 <script src="${base}/resources/js/common.js"></script>
-<script src="${base}/resources/modules/tenantClearingRecord.js"></script>
+<script src="${base}/resources/modules/tenantDeductClearingRecord.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 
 <div>
@@ -20,23 +20,23 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="tenantClearingRecord-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="tenantDeductClearingRecord-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 </div>
-<table id="tenantClearingRecord-table-list"></table>
-<div id="tenantClearingRecord_manager_tool">
+<table id="tenantDeductClearingRecord-table-list"></table>
+<div id="tenantDeductClearingRecord_manager_tool">
 	<div class="tool-button">
 		[#if allowClearing]
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="tenantClearingRecord_manager_tool.applyClearingRecord();">申请结算</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="tenantDeductClearingRecord_manager_tool.applyDeductClearingRecord();">申请结算</a>
 		[/#if]
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="tenantClearingRecord_manager_tool.show();">查看详情</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="tenantDeductClearingRecord_manager_tool.show();">查看详情</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>
-<div id="applyClearingRecord"></div>
-<div id="editTenantClearingRecord"></div>
-<div id="tenantClearingRecordDetail"></div>
+<div id="applyDeductClearingRecord"></div>
+<div id="editTenantDeductClearingRecord"></div>
+<div id="tenantDeductClearingRecordDetail"></div>
 
 
 

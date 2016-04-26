@@ -23,15 +23,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.CarServiceRecord;
+import com.csh.entity.CarServiceTenantDeductRecord;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
-import com.csh.service.CarServiceRecordService;
+import com.csh.service.CarServiceTenantDeductRecordService;
 import com.csh.service.TenantAccountService;
 import com.csh.utils.DateTimeUtils;
 
@@ -40,13 +39,13 @@ import com.csh.utils.DateTimeUtils;
  * @author huyong
  *
  */
-@Controller ("CarServiceRecordController")
-@RequestMapping ("console/carServiceRecord")
-public class CarServiceRecordController extends BaseController
+@Controller ("carServiceTenantDeductRecordController")
+@RequestMapping ("console/carServiceTenantDeductRecord")
+public class CarServiceTenantDeductRecordController extends BaseController
 {
 
-  @Resource (name = "carServiceRecordServiceImpl")
-  private CarServiceRecordService carServiceRecordService;
+  @Resource (name = "carServiceTenantDeductRecordServiceImpl")
+  private CarServiceTenantDeductRecordService carServiceTenantDeductRecordService;
  
   @Resource(name="tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
@@ -57,10 +56,10 @@ public class CarServiceRecordController extends BaseController
    * @param model
    * @return
    */
-  @RequestMapping (value = "/carServiceRecord", method = RequestMethod.GET)
+  @RequestMapping (value = "/carServiceTenantDeductRecord", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "/carServiceRecord/carServiceRecord";
+    return "/carServiceTenantDeductRecord/carServiceTenantDeductRecord";
   }
 
   /**
@@ -71,12 +70,11 @@ public class CarServiceRecordController extends BaseController
    * @return
    */
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<CarServiceRecord> list (Model model, Pageable pageable,
+  public @ResponseBody Page<CarServiceTenantDeductRecord> list (Model model, Pageable pageable,
       Date beginDate, Date endDate,String recordNoSearch, String serviceCategorySearch,
       String serviceNameSearch,String endUserSearch, ChargeStatus chargeStatusSearch,
       PaymentType paymentTypeSearch)
   {
-    Page<CarServiceRecord> carServiceRecordPage;
     String startDateStr = null;
     String endDateStr = null;
 
@@ -213,14 +211,12 @@ public class CarServiceRecordController extends BaseController
     if (serviceNameQuery != null || recordNoQuery != null || userNameQuery != null || rangeQuery != null
         || categoryTermQuery != null || statusTermQuery != null || typeTermQuery != null)
     {
-      carServiceRecordPage= carServiceRecordService.search (query, pageable, analyzer, filter, true);
+      return carServiceTenantDeductRecordService.search (query, pageable, analyzer, filter, true);
     }
     else
     {
-      carServiceRecordPage= carServiceRecordService.findPage (pageable,true);
+      return  carServiceTenantDeductRecordService.findPage (pageable,true);
     }
-    checkOverDue (carServiceRecordPage.getRows ());
-    return carServiceRecordPage;
   }
   /**
    * 获取当前周期的账单
@@ -228,9 +224,9 @@ public class CarServiceRecordController extends BaseController
    * @return
    */
   @RequestMapping (value = "/showCurrentClearingRecord", method = RequestMethod.POST)
-  public @ResponseBody List<CarServiceRecord> showCurrentClearingRecord (Model model)
+  public @ResponseBody List<CarServiceTenantDeductRecord> showCurrentClearingRecord (Model model)
   {
-    return carServiceRecordService.findCurrentClearingRecords ();
+    return carServiceTenantDeductRecordService.findCurrentClearingRecords ();
   }
   /**
    * 获取当前周期的账单
@@ -240,59 +236,8 @@ public class CarServiceRecordController extends BaseController
   @RequestMapping (value = "/details", method = RequestMethod.GET)
   public String details (ModelMap model,Long id)
   {
-    CarServiceRecord carServiceRecord = carServiceRecordService.find (id);
-    model.put ("carServiceRecord", carServiceRecord);
-    return "/carServiceRecord/details";
-  }
-  /**
-   * get data for vendor edit page
-   * 
-   * @param model
-   * @param vendorId
-   * @return
-   */
-  @RequestMapping(value = "/edit", method = RequestMethod.GET)
-  public String edit(ModelMap model, Long id) {
-    model.addAttribute("carServiceRecord", carServiceRecordService.find(id));
-    return "carServiceRecord/edit";
-  }
-  /**
-   * get data for vendor edit page
-   * 
-   * @param model
-   * @param vendorId
-   * @return
-   */
-  @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update(ModelMap model, CarServiceRecord newCarServiceRecord) {
-    CarServiceRecord oldCarServiceRecord =carServiceRecordService.find (newCarServiceRecord.getId ());
-    
-    carServiceRecordService.updateCarServiceRecord (oldCarServiceRecord,newCarServiceRecord);
-
-    return SUCCESS_MESSAGE;
-  }
-  
-  @RequestMapping(value = "/payCodeCheck", method = RequestMethod.POST)
-  public @ResponseBody Boolean payCodeCheck(ModelMap model, Long carServiceRecordId,String payCode) {
-    CarServiceRecord carServiceRecord =carServiceRecordService.find (carServiceRecordId);
-    
-    if (carServiceRecord.getPayCode ().equals (payCode))
-    {
-      return true;
-    }else {
-      return false;
-    }
-    
-  }
-  private void checkOverDue(List<CarServiceRecord> recordList){
-    for (CarServiceRecord carServiceRecord : recordList)
-    {
-      Date currentDate= new Date ();
-      if ((carServiceRecord.getChargeStatus () == ChargeStatus.RESERVATION || carServiceRecord.getChargeStatus () == ChargeStatus.RESERVATION_SUCCESS)
-          &&carServiceRecord.getSubscribeDate () != null && DateTimeUtils.daysBetween (currentDate, carServiceRecord.getSubscribeDate ()) > 1)
-      {
-        carServiceRecord.setChargeStatus (ChargeStatus.OVERDUE);
-      }
-    }
+    CarServiceTenantDeductRecord carServiceTenantDeductRecord = carServiceTenantDeductRecordService.find (id);
+    model.put ("carServiceTenantDeductRecord", carServiceTenantDeductRecord);
+    return "/carServiceTenantDeductRecord/details";
   }
 }

@@ -279,22 +279,22 @@ var carServiceRecord_manager_tool = {
 $(function(){
 	
 	
-	$("#carServiceRecord-table-list").datagrid({
+	$("#carServiceTenantDeductRecord-table-list").datagrid({
 		title:message("csh.carServiceRecord.list"),
 		fitColumns:true,
 		toolbar:"#carServiceRecord_manager_tool",
-		url:'../carServiceRecord/list.jhtml',  
+		url:'../carServiceTenantDeductRecord/list.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
 		onDblClickRow : function (rowIndex, rowData){
-			$('#carServiceRecordDetail').dialog({    
+			$('#carServiceTenantDeductRecordDetail').dialog({    
 			    title: message("csh.common.detail"),    
 			    width: 700,    
 			    height: 350, 
 			    cache: false,
 			    modal: true,
-			    href:'../carServiceRecord/details.jhtml?id='+rowData.id,
+			    href:'../carServiceTenantDeductRecord/details.jhtml?id='+rowData.id,
 			    buttons:[{
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
@@ -303,7 +303,7 @@ $(function(){
 					}
 			    }],
 			    onClose:function(){
-			    	$('#carServiceRecordDetail').empty();
+			    	$('#carServiceTenantDeductRecordDetail').empty();
 			    },
 			    onLoad:function(){
 			    }
@@ -391,9 +391,9 @@ $(function(){
 	});
 
 	
-	$("#carServiceRecord-search-btn").click(function(){
-	  var _queryParams = $("#carServiceRecord-search-form").serializeJSON();
-	  $('#carServiceRecord-table-list').datagrid('options').queryParams = _queryParams;  
-	  $("#carServiceRecord-table-list").datagrid('reload');
+	$("#carServiceTenantDeductRecord-search-btn").click(function(){
+	  var _queryParams = $("#carServiceTenantDeductRecord-search-form").serializeJSON();
+	  $('#carServiceTenantDeductRecord-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#carServiceTenantDeductRecord-table-list").datagrid('reload');
 	})
 })

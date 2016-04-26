@@ -202,11 +202,7 @@ public class DeviceInfoController extends BaseController
   @RequestMapping(value = "/unBind", method = RequestMethod.GET)
   public @ResponseBody Message unBind(ModelMap model, Long id) {
     DeviceInfo deviceInfo = deviceInfoService.find(id);
-    deviceInfo.setBindStatus (BindStatus.UNBINDED);
-    deviceInfo.setVehicle (null);
-    deviceInfo.setBindTime (null);
-    
-    deviceInfoService.update (deviceInfo);
+    deviceInfoService.unBind (deviceInfo);
     return SUCCESS_MESSAGE;
   }
   
@@ -234,6 +230,7 @@ public class DeviceInfoController extends BaseController
     Vehicle vehicle = vehicleService.find (vehicleId);
     deviceInfo.setBindStatus (BindStatus.BINDED);
     deviceInfo.setVehicle (vehicle);
+    vehicle.setTenantID (deviceInfo.getTenantID ());
     deviceInfo.setBindTime (new Date ());
     
     deviceInfoService.update (deviceInfo);

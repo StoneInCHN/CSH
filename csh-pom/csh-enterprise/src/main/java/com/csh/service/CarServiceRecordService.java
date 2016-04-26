@@ -7,4 +7,6 @@ import com.csh.framework.service.BaseService;
 
 public interface CarServiceRecordService extends BaseService<CarServiceRecord,Long>{
   List<CarServiceRecord> findCurrentClearingRecords();
+
+  void updateCarServiceRecord (CarServiceRecord oldCarServiceRecord, CarServiceRecord newCarServiceRecord2);
 }

@@ -2,7 +2,6 @@ package com.csh.controller;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -24,12 +23,12 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.TenantClearingRecord;
+import com.csh.entity.TenantDeductClearingRecord;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.TenantAccountService;
-import com.csh.service.TenantClearingRecordService;
+import com.csh.service.TenantDeductClearingRecordService;
 import com.csh.utils.DateTimeUtils;
 
 /**
@@ -37,19 +36,19 @@ import com.csh.utils.DateTimeUtils;
  * @author huyong
  *
  */
-@Controller ("tenantClearingRecordController")
-@RequestMapping ("console/tenantClearingRecord")
-public class TenantClearingRecordController extends BaseController
+@Controller ("tenantDeductClearingRecordController")
+@RequestMapping ("console/tenantDeductClearingRecord")
+public class TenantDeductClearingRecordController extends BaseController
 {
 
-  @Resource (name = "tenantClearingRecordServiceImpl")
-  private TenantClearingRecordService tenantClearingRecordService;
+  @Resource (name = "tenantDeductClearingRecordServiceImpl")
+  private TenantDeductClearingRecordService tenantDeductClearingRecordService;
   @Resource (name = "carServiceRecordServiceImpl")
   private CarServiceRecordService carServiceRecordService;
   @Resource(name = "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
   
-  @RequestMapping (value = "/tenantClearingRecord", method = RequestMethod.GET)
+  @RequestMapping (value = "/tenantDeductClearingRecord", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
     Calendar current = Calendar.getInstance ();
@@ -61,10 +60,10 @@ public class TenantClearingRecordController extends BaseController
     }else {
       model.put ("allowClearing", false);
     }
-    return "tenantClearingRecord/tenantClearingRecord";
+    return "tenantDeductClearingRecord/tenantDeductClearingRecord";
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<TenantClearingRecord> list (Pageable pageable, ModelMap model,
+  public @ResponseBody Page<TenantDeductClearingRecord> list (Pageable pageable, ModelMap model,
       Date beginDate, Date endDate, String clearingSnSearch)
   {
     String startDateStr = null;
@@ -97,9 +96,9 @@ public class TenantClearingRecordController extends BaseController
           nameQuery = nameParser.parse ("*"+text+"*");
           query.add (nameQuery, Occur.MUST);
           
-          if (LogUtil.isDebugEnabled (TenantClearingRecordController.class))
+          if (LogUtil.isDebugEnabled (TenantDeductClearingRecordController.class))
           {
-            LogUtil.debug (TenantClearingRecordController.class, "search", "Search device NO: "
+            LogUtil.debug (TenantDeductClearingRecordController.class, "search", "Search device NO: "
                 + clearingSnSearch );
           }
         }
@@ -113,43 +112,42 @@ public class TenantClearingRecordController extends BaseController
       rangeQuery = new TermRangeQuery ("createDate", startDateStr, endDateStr, true, true);
       query.add (rangeQuery,Occur.MUST);
       
-      if (LogUtil.isDebugEnabled (TenantClearingRecordController.class))
+      if (LogUtil.isDebugEnabled (TenantDeductClearingRecordController.class))
       {
-        LogUtil.debug (TenantClearingRecordController.class, "search", "Search start date: "+startDateStr
+        LogUtil.debug (TenantDeductClearingRecordController.class, "search", "Search start date: "+startDateStr
             +" end date: "+endDateStr);
       }
     }
     
     if (nameQuery != null || rangeQuery != null)
     {
-      return tenantClearingRecordService.search (query, pageable, analyzer,filter,true);
+      return tenantDeductClearingRecordService.search (query, pageable, analyzer,filter,true);
     }
-      return tenantClearingRecordService.findPage (pageable, true);
+      return tenantDeductClearingRecordService.findPage (pageable, true);
     
   }
   
-  @RequestMapping (value = "/applyClearing", method = RequestMethod.GET)
-  public String applyClearing (ModelMap mode)
+  @RequestMapping (value = "/applyDeductClearing", method = RequestMethod.GET)
+  public String applyDeductClearing (ModelMap mode)
   {
 //    Map<String, Date> periodDateMap= tenantClearingRecordService.findPeriodBeginEndDate(tenantAccountService.getCurrentTenantInfo ());
 //    mode.putAll (periodDateMap);
     
-    return "tenantClearingRecord/applyClearing";
+    return "tenantDeductClearingRecord/applyDeductClearing";
   }
   
   @RequestMapping (value = "/details", method = RequestMethod.GET)
   public String detail (ModelMap mode,Long id)
   {
-    TenantClearingRecord tenantClearingRecord= tenantClearingRecordService.find(id);
-    mode.put ("tenantClearingRecord",tenantClearingRecord);
-    return "tenantClearingRecord/details";
+    TenantDeductClearingRecord tenantDeductClearingRecord= tenantDeductClearingRecordService.find(id);
+    mode.put ("tenantDeductClearingRecord",tenantDeductClearingRecord);
+    return "tenantDeductClearingRecord/details";
   }
   
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (ModelMap mode,TenantClearingRecord tenantClearingRecord, Long[] ids)
-  {
-    tenantClearingRecordService.saveTenantClearingRecord(tenantClearingRecord
-        , ids);
+  public @ResponseBody Message add (ModelMap mode,TenantDeductClearingRecord tenantDeductClearingRecord, Long[] ids)  {
+    
+    tenantDeductClearingRecordService.saveTenantDeductClearingRecord (tenantDeductClearingRecord, ids);
     return SUCCESS_MESSAGE;
   }
 }

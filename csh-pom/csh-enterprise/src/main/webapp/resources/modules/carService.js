@@ -412,8 +412,21 @@ $(function(){
 		    			  return "";
 		    		  }
 		    	  }},
-		      {title:message("csh.carService.price"),field:"price",width:100,sortable:true},
-		      {title:message("csh.carService.promotionPrice"),field:"promotionPrice",width:100,sortable:true},
+		      {title:message("csh.carService.price"),field:"price",width:100,sortable:true,formatter:function(value,row,index){
+	    		  if(value =="-1"){
+	    			  return message("csh.carService.price.postpaid")
+	    		  }else{
+	    			  return value;
+	    		  }
+	    			  
+	    	  }},
+		      {title:message("csh.carService.promotionPrice"),field:"promotionPrice",width:100,sortable:true,formatter:function(value,row,index){
+	    		  if(value =="-1"){
+	    			  return message("csh.carService.price.postpaid")
+	    		  }else{
+	    			  return value;
+	    		  }
+	    	  }},
 		      {title:message("csh.carService.rate"),field:"rate",width:100,sortable:true},
 		      {title:message("csh.carService.serviceStatus"),field:"serviceStatus",width:100,sortable:true,
 		    	  formatter:function(value,row,index){

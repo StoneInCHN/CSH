@@ -207,7 +207,13 @@
     		[@shiro.hasPermission name="carServiceRecord"]
     		<li><a href="#" data-url="${base}/console/carServiceRecord/carServiceRecord.jhtml">${message("csh.clearingManage.carServiceRecord")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul>
+
+			[@shiro.hasPermission name="carServiceTenantDeductRecord"]
+    		<li><a href="#" data-url="${base}/console/carServiceTenantDeductRecord/carServiceTenantDeductRecord.jhtml">${message("csh.clearingManage.carServiceTenantDeductRecord")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="tenantDeductClearingRecord"]
+    		<li><a href="#" data-url="${base}/console/tenantDeductClearingRecord/tenantDeductClearingRecord.jhtml">${message("csh.clearingManage.tenantDeductClearingRecord")}</a></li>
+    		[/@shiro.hasPermission]    	</ul>
     	<ul title="${message("csh.appActivity.config")}" id="appActivity">
     		[@shiro.hasPermission name="redPacketSend"]
     		<li><a href="#" data-url="${base}/console/redPacketSend/redPacketSend.jhtml">${message("csh.appActivity.redPacketSend")}</a></li>

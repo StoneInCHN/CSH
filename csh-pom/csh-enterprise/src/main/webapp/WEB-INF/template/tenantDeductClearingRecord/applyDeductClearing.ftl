@@ -1,4 +1,4 @@
-<form id="applyClearingRecordForm" method="post" >
+<form id="applyDeductClearingRecordForm" method="post" >
    <table class="table table-striped"  border="0">
    
    	<tr>
@@ -8,7 +8,7 @@
 		</td>
    	</tr>
    	<tr>
-   		<table id="clearingCarServiceRecord-table-list"></table>
+   		<table id="deductClearingCarServiceRecord-table-list"></table>
    	</tr>
    </table>
 </form>

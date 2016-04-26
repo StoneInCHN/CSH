@@ -700,7 +700,6 @@ $('#commonMainDialog')
 									var _queryParams = $(
 											"#vehicle-search-form")
 											.serializeJSON();
-									debugger;
 									$('#common-vehicle-table-list')
 											.datagrid('options').queryParams = _queryParams;
 									$("#common-vehicle-table-list")

@@ -1,10 +1,10 @@
-var tenantClearingRecord_manager_tool = {
-		applyClearingRecord:function(){
-			$('#applyClearingRecord').dialog({
-			    title: message("csh.tenantClearingRecord.add"),    
+var tenantDeductClearingRecord_manager_tool = {
+		applyDeductClearingRecord:function(){
+			$('#applyDeductClearingRecord').dialog({
+			    title: message("csh.tenantDeductClearingRecord.add"),    
 			    width: 700,    
 			    height: 550,
-			    href:'../tenantClearingRecord/applyClearing.jhtml',
+			    href:'../tenantDeductClearingRecord/applyDeductClearing.jhtml',
 			    method:"get",
 			    iconCls:'icon-mini-add',
 			    cache: false, 
@@ -12,8 +12,8 @@ var tenantClearingRecord_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#addTenantClearingRecord_form').form('validate');
-						var rows = $('#clearingCarServiceRecord-table-list').datagrid('getRows');
+						var validate = $('#applyDeductClearingRecordForm').form('validate');
+						var rows = $('#deductClearingCarServiceRecord-table-list').datagrid('getRows');
 						if(rows.length == 0){
 							$.messager.alert(message("csh.clearingCarServiceRecord.no"));  
 							return false;
@@ -22,12 +22,12 @@ var tenantClearingRecord_manager_tool = {
 						for(var i =0; i<rows.length;i++){
 							ids.push(rows[i].id);
 						}
-						$('#applyClearingRecordForm').append("<input type='hidden' name='ids' value="+ids+">")
+						$('#applyDeductClearingRecordForm').append("<input type='hidden' name='ids' value="+ids+">")
 						if(validate){
 							$.ajax({
-								url:"../tenantClearingRecord/add.jhtml",
+								url:"../tenantDeductClearingRecord/add.jhtml",
 								type:"post",
-								data:$("#applyClearingRecordForm").serialize(),
+								data:$("#applyDeductClearingRecordForm").serialize(),
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -37,9 +37,9 @@ var tenantClearingRecord_manager_tool = {
 									$.messager.progress('close');
 									if(response == "success"){
 										showSuccessMsg(result.content);
-										$('#applyClearingRecord').dialog("close")
-										$("#applyClearingRecordForm").form("reset");
-										$("#tenantClearingRecord-table-list").datagrid('reload');
+										$('#applyDeductClearingRecord').dialog("close")
+										$("#applyDeductClearingRecordForm").form("reset");
+										$("#deductClearingCarServiceRecord-table-list").datagrid('reload');
 									}else{
 										alertErrorMsg();
 									}
@@ -51,18 +51,18 @@ var tenantClearingRecord_manager_tool = {
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#applyClearingRecord').dialog("close");
-						 $("#applyClearingRecordForm").form("reset");
+						 $('#applyDeductClearingRecord').dialog("close");
+						 $("#applyDeductClearingRecordForm").form("reset");
 					}
 			    }],
 				onLoad:function(){
 					//总金额
 					var totalMoney = 0;
 					//结算账单清单
-					$("#clearingCarServiceRecord-table-list").datagrid({
+					$("#deductClearingCarServiceRecord-table-list").datagrid({
 						title:message("csh.carServiceRecord.list"),
 						fitColumns:true,
-						url:'../carServiceRecord/showCurrentClearingRecord.jhtml',  
+						url:'../carServiceTenantDeductRecord/showCurrentClearingRecord.jhtml',  
 						loadMsg:message("csh.common.loading"),
 						striped:true,
 						columns:[
@@ -89,17 +89,6 @@ var tenantClearingRecord_manager_tool = {
 						    				return message("csh.carServiceRecord.chargeStatus.OVERDUE");
 						    			}
 						    	  }},
-						    	  
-						    	  {title:message("csh.carServiceRecord.paymentType"),width:50,field:"paymentType",sortable:true,
-							    	  formatter: function(value,row,index){
-							    		  if(value == "ALIPAY"){
-							    			  return "支付宝"
-							    		  }else if(value == "WECHAT"){
-							    			  return "微信"
-							    		  }else if(value == "WALLET"){
-							    			  return "钱包"
-							    		  }
-							    	  }},
 					    	  {title:message("csh.carServiceRecord.endUser"),field:"endUser",sortable:true,
 						    	  formatter: function(value,row,index){
 						    		  return value.userName;
@@ -129,7 +118,7 @@ var tenantClearingRecord_manager_tool = {
 			});  
 		},
 		show:function(){
-			var _show_row = $('#tenantClearingRecord-table-list').datagrid('getSelected');
+			var _show_row = $('#tenantDeductClearingRecord-table-list').datagrid('getSelected');
 			if( _show_row == null ){
 				$.messager.alert(message("csh.common.select.editRow"));  
 				return false;
@@ -160,11 +149,11 @@ $(function(){
 	
 	
 	
-	$("#tenantClearingRecord-table-list").datagrid({
-		title:message("csh.tenantClearingRecord.list"),
+	$("#tenantDeductClearingRecord-table-list").datagrid({
+		title:message("csh.tenantDeductClearingRecord.list"),
 		fitColumns:true,
-		toolbar:"#tenantClearingRecord_manager_tool",
-		url:'../tenantClearingRecord/list.jhtml',  
+		toolbar:"#tenantDeductClearingRecord_manager_tool",
+		url:'../tenantDeductClearingRecord/list.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
@@ -173,7 +162,6 @@ $(function(){
 		      {field:'ck',checkbox:true},
 		      {title:message("csh.tenantClearingRecord.clearingSn"),field:"clearingSn",sortable:true},
 		      {title:message("csh.tenantClearingRecord.amountOfCurrentPeriod"),field:"amountOfCurrentPeriod",width:100,sortable:true},
-		      
 		      {title:message("csh.tenantClearingRecord.clearingDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 				}

@@ -30,7 +30,11 @@ public class Sn extends BaseEntity {
 		/**
 		 * 结算单
 		 */
-		clearing
+		clearing,
+		/**
+		 * 提成结算单
+		 */
+		deductClearing
 	}
 
 	/** 类型 */

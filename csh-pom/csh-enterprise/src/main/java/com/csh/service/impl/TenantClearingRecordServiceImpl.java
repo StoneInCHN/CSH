@@ -18,6 +18,7 @@ import com.csh.dao.TenantClearingRecordDao;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.Sn.Type;
 import com.csh.entity.TenantClearingRecord;
+import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.SnService;
@@ -50,16 +51,16 @@ TenantClearingRecordService {
   }
 
   @Override
-  public Map<String, Date> findPeriodBeginEndDate ()
+  public Map<String, Date> findPeriodBeginEndDate (TenantInfo tenantInfo)
   {
     
     Map<String, Date> peroidDate = new HashMap<String, Date>();
     Date peroidBeginDate =  tenantClearingRecordDao.findLastPeriodEndDate ();
     Date now = new Date ();
-    //第一次记录以1970年1月1日为起点
+    //第一次记录以租户创建时间开始
     if (peroidBeginDate == null)
     {
-      peroidBeginDate = new Date (0L);
+      peroidBeginDate = tenantInfo.getCreateDate ();
     }
     Integer cycle = setting.getClearingRecordCycle ();
     int days = (int) ((now.getTime() - peroidBeginDate.getTime())

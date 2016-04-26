@@ -137,6 +137,7 @@ public class TenantDeductClearingRecord extends BaseEntity
     this.periodEndDate = periodEndDate;
   }
 
+  @JsonProperty
   public BigDecimal getAmountOfCurrentPeriod ()
   {
     return amountOfCurrentPeriod;

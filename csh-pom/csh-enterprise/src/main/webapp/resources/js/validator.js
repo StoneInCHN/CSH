@@ -67,7 +67,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 $.extend($.fn.validatebox.defaults.rules, {    
     moreThan: {    
         validator: function(value, param){
-        	return value >= $('#'+param[0]).val();
+        	return parseInt(value) >= parseInt($('#'+param[0]).val());
         },    
         message: '值必须大于{1}'   
     }    
@@ -75,7 +75,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 $.extend($.fn.validatebox.defaults.rules, {    
     lessThan: {    
         validator: function(value, param){
-        	return value <= $('#'+param[0]).val();
+        	return parseInt(value) <= parseInt($('#'+param[0]).val());
         },    
         message: '值必须小于{1}'   
     }    
