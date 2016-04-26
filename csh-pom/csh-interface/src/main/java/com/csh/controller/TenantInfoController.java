@@ -87,6 +87,12 @@ public class TenantInfoController extends MobileBaseController {
         tenantInfoJdbcService.getTenantInfos(longitude, latitude, pageable, radius,
             serviceCategoryId);
 
+    for (Map<String, Object> map : tenantPage.getContent()) {
+      TenantInfo tenantInfo = tenantInfoService.find(Long.parseLong(map.get("id").toString()));
+      // tenantInfo.getC
+      Map<String, Object> serviceMap = new HashMap<>();
+      map.put("washCarService", serviceMap);
+    }
     PageResponse page = new PageResponse();
     page.setPageNumber(tenantInfoReq.getPageNumber());
     page.setPageSize(tenantInfoReq.getPageSize());
@@ -108,7 +114,6 @@ public class TenantInfoController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 
   /**
    * 租户详情

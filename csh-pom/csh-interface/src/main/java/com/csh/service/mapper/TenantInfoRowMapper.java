@@ -17,7 +17,7 @@ public class TenantInfoRowMapper implements RowMapper<Map<String, Object>> {
      * 数据库字段映射
      */
     tenantInfo.put("id", rs.getLong("id"));
-    tenantInfo.put("service_id", rs.getLong("service_id"));
+    // tenantInfo.put("service_id", rs.getLong("service_id"));
     tenantInfo.put("contact_phone", rs.getString("contact_phone"));
     tenantInfo.put("distance", String.format("%.1f", rs.getDouble("distance") / 1000));
     tenantInfo.put("latitude", rs.getBigDecimal("latitude"));
@@ -26,9 +26,9 @@ public class TenantInfoRowMapper implements RowMapper<Map<String, Object>> {
     tenantInfo.put("tenant_name", rs.getString("tenant_name"));
     tenantInfo.put("photo", rs.getString("photo"));
     tenantInfo.put("praiseRate", rs.getInt("praise_rate"));
-    tenantInfo.put("service_category_name", rs.getString("category_name"));
-    tenantInfo.put("price", rs.getBigDecimal("price"));
-    tenantInfo.put("promotion_price", rs.getBigDecimal("promotion_price"));
+    // tenantInfo.put("service_category_name", rs.getString("category_name"));
+    // tenantInfo.put("price", rs.getBigDecimal("price"));
+    // tenantInfo.put("promotion_price", rs.getBigDecimal("promotion_price"));
     return tenantInfo;
   }
 
