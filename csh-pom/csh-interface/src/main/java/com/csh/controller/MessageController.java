@@ -209,10 +209,11 @@ public class MessageController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/pushMsg", method = RequestMethod.POST)
-  public @ResponseBody BaseResponse pushMsg(@RequestBody MsgRequest req) {
+  public @ResponseBody BaseResponse pushMsg(@RequestBody List<MsgRequest> req) {
     BaseResponse response = new BaseResponse();
-    Long msgId = req.getMsgId();
-    String deviceNo = req.getDeviceNo();
+    MsgRequest msgReq = req.get(0);
+    Long msgId = msgReq.getMsgId();
+    String deviceNo = msgReq.getDeviceNo();
     // EndUser endUser = endUserService.find(userId);
     MessageInfo msg = new MessageInfo();
     if (msgId != null) {
@@ -230,9 +231,10 @@ public class MessageController extends MobileBaseController {
       EndUser endUser = deviceInfo.getVehicle().getEndUser();
       msg.setMessageType(MessageType.PERSONALMSG);
       String msgContent =
-          Message.warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
-              TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()), req.getMsgContent())
-              .getContent();
+          Message
+              .warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
+                  TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
+                  msgReq.getMsgContent()).getContent();
       msg.setMessageContent(msgContent);
       MsgEndUser msgEndUser = new MsgEndUser();
       msgEndUser.setEndUser(endUser);
