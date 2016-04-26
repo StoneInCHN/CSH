@@ -31,6 +31,7 @@ import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.TenantInfoRequest;
 import com.csh.service.AppService;
+import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.TenantInfoJdbcService;
 import com.csh.service.TenantInfoService;
@@ -55,6 +56,8 @@ public class TenantInfoController extends MobileBaseController {
   @Resource(name = "appServiceImpl")
   private AppService appService;
 
+  @Resource(name = "carServiceServiceImpl")
+  private CarServiceService carServiceService;
 
   /**
    * 租户列表
@@ -89,9 +92,20 @@ public class TenantInfoController extends MobileBaseController {
 
     for (Map<String, Object> map : tenantPage.getContent()) {
       TenantInfo tenantInfo = tenantInfoService.find(Long.parseLong(map.get("id").toString()));
-      // tenantInfo.getC
-      Map<String, Object> serviceMap = new HashMap<>();
-      map.put("washCarService", serviceMap);
+      List<CarService> washServices =
+          carServiceService
+              .getServicesByTenantAndCategory(tenantInfo, setting.getServiceCateWash());
+      List<Map<String, Object>> washList = new ArrayList<Map<String, Object>>();
+      for (CarService carService : washServices) {
+        Map<String, Object> serviceMap = new HashMap<>();
+        serviceMap.put("service_id", carService.getId());
+        serviceMap.put("serviceName", carService.getServiceName());
+        serviceMap.put("price", carService.getPrice());
+        serviceMap.put("promotion_price", carService.getPromotionPrice());
+        washList.add(serviceMap);
+      }
+
+      map.put("washCarService", washList);
     }
     PageResponse page = new PageResponse();
     page.setPageNumber(tenantInfoReq.getPageNumber());
