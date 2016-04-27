@@ -22,9 +22,6 @@ $().ready(function() {
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			deviceNo: {
-				required: true
-			},
 			simNo: {
 				required: true
 			},
@@ -66,13 +63,14 @@ $().ready(function() {
                   <div class="padd">
                     <form id="inputForm" action="update.jhtml" method="post">
 						<input type="hidden" name="id" value="${deviceInfo.id}" />
+						<input type="hidden" name="deviceNo" value="${deviceInfo.deviceNo}" />
 						<table class="input tabContent">
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.deviceNo")}:
+									${message("csh.deviceInfo.deviceNo")}:
 								</th>
 								<td>
-									<input type="text" name="deviceNo" class="text" maxlength="20" value="${deviceInfo.deviceNo}"/>
+									${deviceInfo.deviceNo}
 								</td>
 							</tr>
 							<tr>

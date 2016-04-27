@@ -17,5 +17,25 @@
 	<setting name="smtpUsername" value="microctrllife@163.com" />
 	<setting name="smtpPassword" value="o123456" />
 	<setting name="uploadFileExtension" value="apk" />
+	<!-- 短信平台URL -->
+		<setting name="ucpaasUrl" value="https://api.ucpaas.com" />
+		<!-- 短信平台AccountId -->
+		<setting name="ucpaasSid" value="0f6224e13d9e6db1b6865597d882110c" />
+		<!-- 短信平台AppId -->
+		<setting name="ucpaasAppId" value="df85e93baacd4ae4aba1f55e9acb5130" />
+		<!-- 短信平台Token -->
+		<setting name="ucpaasToken" value="e345eb6f22e3dfbb159af16ffd76a98d" />
+		<!-- 短信平台SoftVersion -->
+		<setting name="ucpaasVersion" value="2014-06-30" />
+		<!-- 短信平台验证码短信模板ID -->
+		<setting name="ucpaasTemplate" value="18130" />
+		<!-- 短信平台验证码短信模板ID -->
+		<setting name="ucpaasAccountTemplate" value="23350" />
+		<!-- 短信平台购买服务短信模板ID -->
+		<setting name="ucpaasServiceTemplate" value="22544" />
+		<!-- 短信平台语音回拨号码 -->
+		<setting name="ucpaasCallDisplay" value="4007930888" />
+		<!-- 商家登陆地址 -->
+		<setting name="tenantLoginUrl" value="4007930888" />	
 </csh>	
 	

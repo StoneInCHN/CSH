@@ -100,7 +100,7 @@
 														<a href="javascript:;" class="sort" name="color">${message("csh.vehicle.color")}</a>
 													</th>
 													<th>
-														${message("vehicle.endUser.mobileNum")}
+														${message("csh.endUser.mobileNum")}
 													</th>
 													<th>
 														${message("csh.vehicle.device")}

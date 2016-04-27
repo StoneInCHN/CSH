@@ -82,12 +82,17 @@
 									<a href="../apkVersion/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.appVersion")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:insurance"]
+								<li>
+									<a href="../insurance/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.insurance")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
 				            </ul>
 						</li>
 					[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
-		[#list ["admin:apply", "admin:tenantAccount","admin:tenantInfo"] as permission]
+		[#list ["admin:apply", "admin:tenantAccount","admin:tenantInfo","admin:tenantInfo4distributor"] as permission]
 					[@shiro.hasPermission name = permission]
 						<li class="has_sub" >
 							<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.tenant")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
@@ -105,6 +110,11 @@
 							 	[@shiro.hasPermission name="admin:tenantInfo"]
 								<li>
 									<a href="../tenantInfo/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.tenantInfo")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:tenantInfo4distributor"]
+								<li>
+									<a href="../tenantInfo/list4distributor.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.tenantInfo")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
 				            </ul>

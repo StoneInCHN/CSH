@@ -124,6 +124,38 @@ public class Setting implements Serializable {
   /** 允许上传文件扩展名 */
   private String uploadFileExtension;
   
+  /** 短信验证码过期时间 */
+  private Integer smsCodeTimeOut;
+
+  /** 短信服务平台地址 */
+  private String ucpaasUrl;
+
+  /** 短信平台AccountId */
+  private String ucpaasSid;
+
+  /** 短信平台Token */
+  private String ucpaasToken;
+
+  /** 短信平台软件版本 */
+  private String ucpaasVersion;
+
+  /** 短信平台APPID */
+  private String ucpaasAppId;
+
+  /** 短信平台验证码短信模板 */
+  private String ucpaasTemplate;
+  
+  /** 短信平台商家账户短信模板 */
+  private String ucpaasAccountTemplate;
+
+  /** 短信平台购买服务短信模板 */
+  private String ucpaasServiceTemplate;
+
+  /** 短信平台语音回拨号码 */
+  private String ucpaasCallDisplay;
+  
+  private String tenantLoginUrl;
+  
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
   }
@@ -275,5 +307,95 @@ public class Setting implements Serializable {
   public String[] getUploadFileExtensions() {
       return StringUtils.split(uploadFileExtension, SEPARATOR);
   }
+
+  public Integer getSmsCodeTimeOut() {
+    return smsCodeTimeOut;
+  }
+
+  public void setSmsCodeTimeOut(Integer smsCodeTimeOut) {
+    this.smsCodeTimeOut = smsCodeTimeOut;
+  }
+
+  public String getUcpaasUrl() {
+    return ucpaasUrl;
+  }
+
+  public void setUcpaasUrl(String ucpaasUrl) {
+    this.ucpaasUrl = ucpaasUrl;
+  }
+
+  public String getUcpaasSid() {
+    return ucpaasSid;
+  }
+
+  public void setUcpaasSid(String ucpaasSid) {
+    this.ucpaasSid = ucpaasSid;
+  }
+
+  public String getUcpaasToken() {
+    return ucpaasToken;
+  }
+
+  public void setUcpaasToken(String ucpaasToken) {
+    this.ucpaasToken = ucpaasToken;
+  }
+
+  public String getUcpaasVersion() {
+    return ucpaasVersion;
+  }
+
+  public void setUcpaasVersion(String ucpaasVersion) {
+    this.ucpaasVersion = ucpaasVersion;
+  }
+
+  public String getUcpaasAppId() {
+    return ucpaasAppId;
+  }
+
+  public void setUcpaasAppId(String ucpaasAppId) {
+    this.ucpaasAppId = ucpaasAppId;
+  }
+
+  public String getUcpaasTemplate() {
+    return ucpaasTemplate;
+  }
+
+  public void setUcpaasTemplate(String ucpaasTemplate) {
+    this.ucpaasTemplate = ucpaasTemplate;
+  }
+
+  public String getUcpaasServiceTemplate() {
+    return ucpaasServiceTemplate;
+  }
+
+  public void setUcpaasServiceTemplate(String ucpaasServiceTemplate) {
+    this.ucpaasServiceTemplate = ucpaasServiceTemplate;
+  }
+
+  public String getUcpaasCallDisplay() {
+    return ucpaasCallDisplay;
+  }
+
+  public void setUcpaasCallDisplay(String ucpaasCallDisplay) {
+    this.ucpaasCallDisplay = ucpaasCallDisplay;
+  }
+
+  public String getUcpaasAccountTemplate() {
+    return ucpaasAccountTemplate;
+  }
+
+  public void setUcpaasAccountTemplate(String ucpaasAccountTemplate) {
+    this.ucpaasAccountTemplate = ucpaasAccountTemplate;
+  }
+
+  public String getTenantLoginUrl() {
+    return tenantLoginUrl;
+  }
+
+  public void setTenantLoginUrl(String tenantLoginUrl) {
+    this.tenantLoginUrl = tenantLoginUrl;
+  }
+  
+  
   
 }

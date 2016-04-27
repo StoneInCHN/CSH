@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.tenantInfo.list")}</title>
+<title>${message("csh.insurance.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,19 +19,25 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.tenantInfo")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.insurance")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantInfo.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.insurance.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 			
-			<form id="listForm" action="list4distributor.jhtml" method="get">
+			<form id="listForm" action="list.jhtml" method="get">
 				  <div class="container operation">
 					<div class="row">
 						  <div class="col-xs-9 col-md-9 col-lg-9">
 						  		<ul class="nav">
 									 <li class="pull-left">
+										<div class="btn-group operationButton">
+										  <button type="button" id="addButton" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;&nbsp;${message("csh.common.add")}</button>
+										</div>
+										<div class="btn-group operationButton">
+										  <button type="button" id="deleteButton" class="btn btn-default disabled"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;${message("csh.common.delete")}</button>
+										</div>
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
@@ -62,7 +68,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "tenantName" ] selected="selected" class="active" [/#if] title="tenantName"><a href="#">${message("csh.tenantInfo.tenantName")}</a></li>
+								          <li [#if page.searchProperty == "name"] selected="selected" class="active" [/#if] title="name"><a href="#">${message("csh.insurance.name")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -77,7 +83,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.tenantInfo")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.insurance")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -88,61 +94,47 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
-													
-													<th>
-														<a href="javascript:;" class="sort" name="tenantName">${message("csh.tenantInfo.tenantName")}</a>
+													<th class="check">
+														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="contactPhone">${message("csh.tenantInfo.contactPhone")}</a>
+														<a href="javascript:;" class="sort" name="name">${message("csh.insurance.name")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="contactPerson">${message("csh.tenantInfo.contactPerson")}</a>
+														<a href="javascript:;" class="sort" name="area">${message("csh.insurance.area")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="isHaveAccount">${message("csh.tenantInfo.isHaveAccount")}</a>
+														<a href="javascript:;" class="sort" name="address">${message("csh.insurance.address")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="businessTime">${message("csh.tenantInfo.businessTime")}</a>
+														<a href="javascript:;" class="sort" name="phoneNo">${message("csh.insurance.phoneNo")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="area">${message("csh.tenantInfo.area")}</a>
+														<span>${message("csh.common.handle")}</span>
 													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="accountStatus">${message("csh.tenantInfo.accountStatus")}</a>
-													</th>
-													
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as tenantInfo]
+												[#list page.content as insurance]
 												<tr>
-													
 													<td>
-														${tenantInfo.tenantName}
+														<input type="checkbox"  name="ids" value="${insurance.id}" />
 													</td>
 													<td>
-														${tenantInfo.contactPhone}
+														${insurance.name}
 													</td>
 													<td>
-														${tenantInfo.contactPerson}
+														${insurance.area}
 													</td>
 													<td>
-														[#if tenantInfo.isHaveAccount??]
-															${message("csh.tenantInfo.isHaveAccount."+tenantInfo.isHaveAccount?string('yes','no'))} 
-														[/#if]
+														${insurance.address}
 													</td>
 													<td>
-														${tenantInfo.businessTime}
+														${insurance.phoneNo}
 													</td>
 													<td>
-														${tenantInfo.area}
+														<a href="edit.jhtml?id=${insurance.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
-													<td>
-														[#if tenantInfo.accountStatus??]
-															${message("csh.tenantInfo.accoutStatus."+tenantInfo.accountStatus)}
-														[/#if]
-													</td>
-													
 												</tr>
 												[/#list]
 											</tbody>

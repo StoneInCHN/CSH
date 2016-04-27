@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.deviceInfo.add")}</title>
+<title>${message("csh.insurance.add")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -13,34 +13,40 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
-<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${base}/resources/js/jquery.lSelect.js"></script>
+<script type="text/javascript" src="${base}/resources/js/bootstrap-modal.js"></script>
+<style  type="text/css" >
+	#allmap {width: 550px;height: 400px;overflow: hidden;margin:0}
+</style>
 <script type="text/javascript">
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	
+	var $areaId = $("#areaId");
+		
+	// 地区选择
+	$areaId.lSelect({
+		url: "${base}/console/common/area.jhtml"
+	});
+
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			deviceNo: {
-				required: true,
-				remote: {
-					url: "check_deviceNo.jhtml",
-					cache: false
-				}
-			},
-			simNo: {
+			name: {
 				required: true
 			},
-			typeId: {
-				required: true
+			phoneNo:{
+				required :true,
+				isMobile:true
+			},
+			areaId:{
+				required:true
+			},
+			address:{
+				required:true
 			}
-		},
-		messages:{
-			deviceNo:{
-				remote:"设备号重复"
-			}
-		}	
+		}
+		
 	});
 	
 });
@@ -50,11 +56,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.deviceInfo")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.insurance")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.deviceInfo.list")}</a>
+				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.insurance.list")}</a>
 				<span class="divider">/</span> 
-				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.deviceInfo.add")}</span>
+				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.insurance.add")}</span>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -64,7 +70,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.deviceInfo.add")}</div>
+                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.insurance.add")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -75,33 +81,36 @@ $().ready(function() {
                   <div class="padd">
                      <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" role="form">
                      	<table class="input tabContent">
-							<tr>
+                     		<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.deviceNo")}:
+									<span class="requiredField">*</span>${message("csh.insurance.name")}:
 								</th>
 								<td>
-									<input type="text" name="deviceNo" class="text" maxlength="20" />
+									<input type="text" id="name" name="name" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.simNo")}:
+									<span class="requiredField">*</span>${message("csh.insurance.phoneNo")}:
 								</th>
 								<td>
-									<input type="text" name="simNo" class="text" maxlength="20" />
+									<input type="text" name="phoneNo" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.deviceInfo.type")}:
+									<span class="requiredField">*</span>${message("csh.insurance.area")}:
 								</th>
 								<td>
-									<select name="typeId">
-										<option value="">${message("csh.deviceInfo.type.select")}</option>
-										[#list types as type]
-										<option value="${type.id}">${type.name}</option>
-										[/#list]
-									</select>
+									<input type="hidden" id="areaId"  name="areaId"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.insurance.address")}:
+								</th>
+								<td>
+									<input type="text" name="address" class="text" maxlength="20" />
 								</td>
 							</tr>
 						</table>

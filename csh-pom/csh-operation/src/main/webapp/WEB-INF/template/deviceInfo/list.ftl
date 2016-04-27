@@ -151,6 +151,9 @@
 														<a href="javascript:;" class="sort" name="bindStatus">${message("csh.deviceInfo.bindStatus")}</a>
 													</th>
 													<th>
+														<a href="javascript:;" class="sort" name="distributor">${message("csh.deviceInfo.distributorId")}</a>
+													</th>
+													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
 												</tr>
@@ -185,13 +188,25 @@
 														${deviceInfo.type.name}
 													</td>
 													<td>
-														${message("csh.deviceInfo.deviceStatus."+deviceInfo.deviceStatus)}
+														[#if deviceInfo.deviceStatus??]
+														   ${message("csh.deviceInfo.deviceStatus."+deviceInfo.deviceStatus)}
+														[/#if]
 													</td>
 													<td>
-														${message("csh.deviceInfo.bindStatus."+deviceInfo.bindStatus)}
+														[#if deviceInfo.bindStatus??]
+														   ${message("csh.deviceInfo.bindStatus."+deviceInfo.bindStatus)}
+														[/#if]
+													</td>
+													<td>
+														[#if deviceInfo.distributor ??]
+															${deviceInfo.distributor.distributorName}
+														[#else]
+															--
+														[/#if]
 													</td>
 													<td>
 														<a href="edit.jhtml?id=${deviceInfo.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														<a href="details.jhtml?id=${deviceInfo.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>
 													</td>
 												</tr>
 											</tbody>
