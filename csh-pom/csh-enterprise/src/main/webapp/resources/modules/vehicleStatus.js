@@ -2,7 +2,7 @@ var vehicleStatus_manager_tool = {
 		realTimeCarCondition:function(){
 			var _select_row = $('#vehicleStatus-table-list').datagrid('getSelected');
 			if( _select_row == null ){
-				$.messager.alert(message("csh.common.select.editRow"));  
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
 				return false;
 			}
 			$('#realTimeCarCondition').dialog({
@@ -28,7 +28,7 @@ var vehicleStatus_manager_tool = {
 		vehicleDailyReport:function(){
 			var _select_row = $('#vehicleStatus-table-list').datagrid('getSelected');
 			if( _select_row == null ){
-				$.messager.alert(message("csh.common.select.editRow"));  
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
 				return false;
 			}
 			var params=new Object();
@@ -133,7 +133,11 @@ $(function(){
 	      	  {title:message("csh.vehicle.dashboardBV"),field:"dashboardBV",sortable:true},
 		      {title:message("csh.vehicle.device"),field:"deviceNo",width:100,sortable:false},
 		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+		    	  if(value != null){
+						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					}else{
+						return "";
+					}
 				}
 		      },
 		   ]

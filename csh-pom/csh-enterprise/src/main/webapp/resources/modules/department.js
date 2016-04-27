@@ -198,10 +198,18 @@ $(function(){
 			      {title:message("csh.department.name"),field:"name",width:100,sortable:true},
 			      {title:message("csh.department.grade"),field:"grade",width:100,sortable:true},
 			      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
-						return new Date(value).Format("yyyy-MM-dd");
+			    	  if(value != null){
+							return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+						}else{
+							return "";
+						}
 					}},
 			      {title:message("csh.common.modifyDate"),field:"modifyDate",width:100,sortable:true,formatter: function(value,row,index){
-						return new Date(value).Format("yyyy-MM-dd");
+			    	  if(value != null){
+							return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+						}else{
+							return "";
+						}
 					}}
 			   ]
 			]

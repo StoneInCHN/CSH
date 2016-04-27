@@ -58,7 +58,7 @@ var maintainReservation_manager_tool = {
 		edit:function(){
 			var _edit_row = $('#maintainReservation-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
-				$.messager.alert(message("csh.common.select.editRow"));  
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
 				return false;
 			}
 			var _dialog = $('#editMaintainReservation').dialog({    
@@ -189,7 +189,11 @@ $(function(){
 		    		  }
 		    	  }},
 		      {title:message("csh.reservation.reservationDate"),field:"reservationDate",width:100,sortable:true,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+		    	  if(value != null){
+						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					}else{
+						return "";
+					}
 				}
 		      },{title:message("csh.reservation.operate"),field:"button",width:100,sortable:true,
 		    	  formatter:function(value,row,index){

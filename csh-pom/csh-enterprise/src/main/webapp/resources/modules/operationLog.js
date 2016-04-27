@@ -17,7 +17,11 @@ $(function(){
 		      {title:"操作内容",field:"content",width:100,sortable:true},
 		      {title:"操作IP",field:"ip",width:100,sortable:true},
 	    	  {title:"操作时间",field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd");
+	    		  if(value != null){
+						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					}else{
+						return "";
+					}
 				}
 		      },
 		     

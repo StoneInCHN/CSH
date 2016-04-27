@@ -112,7 +112,11 @@ var tenantClearingRecord_manager_tool = {
 						    		  return value;
 						    	  }},  
 						      {title:message("csh.carServiceRecord.paymentDate"),field:"paymentDate",width:100,sortable:true,formatter: function(value,row,index){
-									return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+						    	  if(value != null){
+										return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+									}else{
+										return "";
+									}
 								}
 						      },
 						   ]
@@ -131,7 +135,7 @@ var tenantClearingRecord_manager_tool = {
 		show:function(){
 			var _show_row = $('#tenantClearingRecord-table-list').datagrid('getSelected');
 			if( _show_row == null ){
-				$.messager.alert(message("csh.common.select.editRow"));  
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
 				return false;
 			}
 				$('#tenantClearingRecordDetail').dialog({    
@@ -175,7 +179,11 @@ $(function(){
 		      {title:message("csh.tenantClearingRecord.amountOfCurrentPeriod"),field:"amountOfCurrentPeriod",width:100,sortable:true},
 		      
 		      {title:message("csh.tenantClearingRecord.clearingDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+		    	  if(value != null){
+						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					}else{
+						return "";
+					}
 				}
 		      },
 		   ]

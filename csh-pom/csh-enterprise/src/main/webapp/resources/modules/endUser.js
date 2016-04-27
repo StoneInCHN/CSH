@@ -52,7 +52,7 @@ var endUser_manager_tool = {
 		edit:function(){
 			var _edit_row = $('#endUser-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
-				$.messager.alert(message("csh.common.select.editRow"));  
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
 				return false;
 			}
 			var _dialog = $('#editEndUser').dialog({    

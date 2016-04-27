@@ -100,7 +100,7 @@ var pushMessageInfo_manager_tool = {
 		details:function(){
 			var _details_row = $('#pushMessageInfo-table-list').datagrid('getSelected');
 			if( _details_row == null ){
-				$.messager.alert(message("csh.common.select.editRow"));  
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
 				return false;
 			}
 			
@@ -158,7 +158,11 @@ $(function(){
 		    	  }},
 	    	  {title:message("csh.common.createDate"),width:100,field:"createDate",sortable:true,
 		    	  formatter:function(value,row,index){
-		    		 return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+		    		  if(value != null){
+							return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+						}else{
+							return "";
+						}
 		    	  }},
 		   ]
 		]

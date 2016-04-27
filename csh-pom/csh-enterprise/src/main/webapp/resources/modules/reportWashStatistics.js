@@ -71,10 +71,11 @@ $("#reportWashStatistics-table-list").datagrid({
 		     {title:"收入",field:"totalIncome",width:100,sortable:true},
 		     {title:"统计周期",field:"statisticsDate",width:100,sortable:true,
 		    	 formatter: function(value,row,index){
-	    			if(value != null){
-	    				
-		    	  		return new Date(value).Format("yyyy年MM月");
-		    	  	}
+		    		 if(value != null){
+							return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+						}else{
+							return "";
+						}
 		    	  }
 		     }
 		 

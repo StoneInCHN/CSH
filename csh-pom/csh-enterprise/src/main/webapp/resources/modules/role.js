@@ -210,7 +210,11 @@ $(function(){
 		    	  return row.description;
 		      }},
 		      {title:message("csh.role.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd");
+		    	  if(value != null){
+						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					}else{
+						return "";
+					}
 				}
 		      }
 		   ]
