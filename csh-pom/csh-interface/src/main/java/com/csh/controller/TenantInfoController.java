@@ -92,20 +92,19 @@ public class TenantInfoController extends MobileBaseController {
 
     for (Map<String, Object> map : tenantPage.getContent()) {
       TenantInfo tenantInfo = tenantInfoService.find(Long.parseLong(map.get("id").toString()));
-      List<CarService> washServices =
-          carServiceService
-              .getServicesByTenantAndCategory(tenantInfo, setting.getServiceCateWash());
-      List<Map<String, Object>> washList = new ArrayList<Map<String, Object>>();
-      for (CarService carService : washServices) {
+      List<CarService> services =
+          carServiceService.getServicesByTenantAndCategory(tenantInfo, serviceCategoryId);
+      List<Map<String, Object>> serviceList = new ArrayList<Map<String, Object>>();
+      for (CarService carService : services) {
         Map<String, Object> serviceMap = new HashMap<>();
         serviceMap.put("service_id", carService.getId());
         serviceMap.put("serviceName", carService.getServiceName());
         serviceMap.put("price", carService.getPrice());
         serviceMap.put("promotion_price", carService.getPromotionPrice());
-        washList.add(serviceMap);
+        serviceList.add(serviceMap);
       }
 
-      map.put("washCarService", washList);
+      map.put("carService", serviceList);
     }
     PageResponse page = new PageResponse();
     page.setPageNumber(tenantInfoReq.getPageNumber());

@@ -214,6 +214,7 @@ public class MessageController extends MobileBaseController {
     MsgRequest msgReq = req.get(0);
     Long msgId = msgReq.getMsgId();
     String deviceNo = msgReq.getDeviceNo();
+    String msgType = msgReq.getMsgType();
     // EndUser endUser = endUserService.find(userId);
     MessageInfo msg = new MessageInfo();
     if (msgId != null) {
@@ -230,11 +231,23 @@ public class MessageController extends MobileBaseController {
       }
       EndUser endUser = deviceInfo.getVehicle().getEndUser();
       msg.setMessageType(MessageType.PERSONALMSG);
-      String msgContent =
-          Message
-              .warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
-                  TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
-                  msgReq.getMsgContent()).getContent();
+      String msgContent = null;
+      if (msgType.equals("3")) {
+        msgContent =
+            Message.warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
+                TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
+                msgReq.getMsgContent()).getContent();
+      } else if (msgType.equals("2")) {
+        msgContent =
+            Message.warn("csh.obd.shutdown.message",
+                TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
+                msgReq.getTravelTime(), msgReq.getGpsMileage()).getContent();
+      } else if (msgType.equals("1")) {
+        msgContent =
+            Message.warn("csh.obd.fire.message",
+                TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime())).getContent();
+      }
+
       msg.setMessageContent(msgContent);
       MsgEndUser msgEndUser = new MsgEndUser();
       msgEndUser.setEndUser(endUser);
