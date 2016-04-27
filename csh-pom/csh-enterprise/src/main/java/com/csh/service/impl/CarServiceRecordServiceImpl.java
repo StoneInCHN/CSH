@@ -1,5 +1,6 @@
 package com.csh.service.impl; 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csh.entity.CarServiceDistributorDeductRecord;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.CarServiceTenantDeductRecord;
+import com.csh.entity.CommissionRate;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.Distributor;
 import com.csh.entity.Vehicle;
@@ -20,6 +22,7 @@ import com.csh.dao.CarServiceDistributorDeductRecordDao;
 import com.csh.dao.CarServiceRecordDao;
 import com.csh.dao.CarServiceTenantDeductRecordDao;
 import com.csh.service.CarServiceRecordService;
+import com.csh.service.CommissionRateService;
 import com.csh.service.DistributorService;
 import com.csh.service.TenantAccountService;
 import com.csh.framework.filter.Filter;
@@ -36,10 +39,12 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       @Resource(name="distributorServiceImpl")
       private DistributorService distributorService;
       
-      @Resource(name="carServiceTenantDeductRecordDaoImpl")
+      @Resource(name= "carServiceTenantDeductRecordDaoImpl")
       private CarServiceTenantDeductRecordDao carServiceTenantDeductRecordDao;
-      @Resource(name="carServiceDistributorDeductRecordDaoImpl")
+      @Resource(name= "carServiceDistributorDeductRecordDaoImpl")
       private CarServiceDistributorDeductRecordDao carServiceDistributorDeductRecordDao;
+      @Resource(name = "commissionRateServiceImpl")
+      private CommissionRateService commissionRateService;
       @Resource
       public void setBaseDao(CarServiceRecordDao carServiceRecordDao) {
          super.setBaseDao(carServiceRecordDao);
@@ -67,30 +72,16 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       public void updateCarServiceRecord (CarServiceRecord oldCarServiceRecord,
           CarServiceRecord newCarServiceRecord)
       {
+        List<CommissionRate> commissionRateList = commissionRateService.findAll ();
+        if (commissionRateList == null || commissionRateList.size () != 1)
+        {
+          return;
+        }
+        CommissionRate rate = commissionRateList.get (0);
         if (oldCarServiceRecord.getChargeStatus () == ChargeStatus.PAID
             && newCarServiceRecord.getChargeStatus () == ChargeStatus.FINISH)
       {
-          Vehicle vehicle = newCarServiceRecord.getVehicle ();
-          if (vehicle.getTenantID () != oldCarServiceRecord.getTenantID ())
-          {
-          //生成租户提成订单
-            CarServiceTenantDeductRecord tenantDeductRecord = new CarServiceTenantDeductRecord ();
-            tenantDeductRecord.setCarService (oldCarServiceRecord.getCarService ());
-            tenantDeductRecord.setChargeStatus (ChargeStatus.FINISH);
-            tenantDeductRecord.setEndUser (oldCarServiceRecord.getEndUser ());
-            tenantDeductRecord.setFinishDate (oldCarServiceRecord.getFinishDate ());
-            tenantDeductRecord.setPaymentDate (oldCarServiceRecord.getPaymentDate ());
-            tenantDeductRecord.setPaymentType (oldCarServiceRecord.getPaymentType ());
-            tenantDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
-            tenantDeductRecord.setRecordNo (oldCarServiceRecord.getRecordNo ());
-            tenantDeductRecord.setTenantID (oldCarServiceRecord.getVehicle ().getTenantID ());
-            tenantDeductRecord.setTenantName (oldCarServiceRecord.getTenantName ());
-            tenantDeductRecord.setVehicle (oldCarServiceRecord.getVehicle ());
-            
-            carServiceTenantDeductRecordDao.persist (tenantDeductRecord);
-          }
-          
-          //生成分销商提成订单
+        //生成分销商提成订单
           Distributor distributor = null;
           DeviceInfo deviceInfo = oldCarServiceRecord.getVehicle ().getDevice ();
           if (deviceInfo != null)
@@ -113,12 +104,37 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
             
             distributorDeductRecord.setTenantName (oldCarServiceRecord.getTenantName ());
             distributorDeductRecord.setVehicle (oldCarServiceRecord.getVehicle ());
+            BigDecimal deductMoney = new BigDecimal(rate.getDistributorRate ()*oldCarServiceRecord.getPrice ().doubleValue ());
+            distributorDeductRecord.setDeductMoney (deductMoney);
             carServiceDistributorDeductRecordDao.persist (distributorDeductRecord);
           
           }
+          
+          Vehicle vehicle = oldCarServiceRecord.getVehicle ();
+          if (vehicle.getTenantID () != oldCarServiceRecord.getTenantID ())
+          {
+          //生成租户提成订单
+            CarServiceTenantDeductRecord tenantDeductRecord = new CarServiceTenantDeductRecord ();
+            tenantDeductRecord.setCarService (oldCarServiceRecord.getCarService ());
+            tenantDeductRecord.setChargeStatus (ChargeStatus.FINISH);
+            tenantDeductRecord.setEndUser (oldCarServiceRecord.getEndUser ());
+            tenantDeductRecord.setFinishDate (oldCarServiceRecord.getFinishDate ());
+            tenantDeductRecord.setPaymentDate (oldCarServiceRecord.getPaymentDate ());
+            tenantDeductRecord.setPaymentType (oldCarServiceRecord.getPaymentType ());
+            tenantDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
+            tenantDeductRecord.setRecordNo (oldCarServiceRecord.getRecordNo ());
+            tenantDeductRecord.setTenantID (oldCarServiceRecord.getVehicle ().getTenantID ());
+            tenantDeductRecord.setTenantName (oldCarServiceRecord.getTenantName ());
+            tenantDeductRecord.setVehicle (oldCarServiceRecord.getVehicle ());
+            BigDecimal deductMoney = new BigDecimal(rate.getTenantRate ()*oldCarServiceRecord.getPrice ().doubleValue ());
+            tenantDeductRecord.setDeductMoney (deductMoney);
+            carServiceTenantDeductRecordDao.persist (tenantDeductRecord);
+          }
+          
+          
       }
-      oldCarServiceRecord.setPrice (newCarServiceRecord.getPrice ());
-      oldCarServiceRecord.setChargeStatus (newCarServiceRecord.getChargeStatus ());
-        
+        oldCarServiceRecord.setPrice (newCarServiceRecord.getPrice ());
+        oldCarServiceRecord.setChargeStatus (newCarServiceRecord.getChargeStatus ());
+        carServiceRecordDao.merge (oldCarServiceRecord);
       }
 }

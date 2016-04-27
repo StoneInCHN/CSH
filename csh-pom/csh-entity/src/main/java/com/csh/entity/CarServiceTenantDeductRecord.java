@@ -117,7 +117,10 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
    * 记录编号，自动生成
    */
   private String recordNo;
-
+  /**
+   * 提成金额
+   */
+  private BigDecimal deductMoney;
 
   public Date getFinishDate() {
     return finishDate;
@@ -281,6 +284,17 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
   public void setVehicle (Vehicle vehicle)
   {
     this.vehicle = vehicle;
+  }
+
+  @JsonProperty
+  public BigDecimal getDeductMoney ()
+  {
+    return deductMoney;
+  }
+
+  public void setDeductMoney (BigDecimal deductMoney)
+  {
+    this.deductMoney = deductMoney;
   }
 
 }

@@ -34,11 +34,11 @@ public class DeviceInfoServiceImpl extends BaseServiceImpl<DeviceInfo,Long> impl
       {
         Vehicle vehicle = deviceInfo.getVehicle ();
         deviceInfo.setBindStatus (BindStatus.UNBINDED);
-        vehicle.setTenantID (null);
+//        vehicle.setTenantID (null);
         deviceInfo.setVehicle (null);
         deviceInfo.setBindTime (null);
         deviceInfo.setUnBindTime (new Date ());
-        vehicleDao.merge (vehicle);
+//        vehicleDao.merge (vehicle);
         
         deviceInfoDao.merge (deviceInfo);
         

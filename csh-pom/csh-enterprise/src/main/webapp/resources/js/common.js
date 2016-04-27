@@ -613,7 +613,7 @@ function searchEndUser(id) {
 }
 
 //查询车辆信息
-function searchVehicle(id) {
+function searchVehicle(id,unbind) {
 $('#commonMainDialog')
 .dialog(
 		{
@@ -631,18 +631,21 @@ $('#commonMainDialog')
 				}
 			} ],
 			onLoad : function() {
+				var url ='../vehicle/list.jhtml';
+				if(unbind){
+					url = '../vehicle/listUnBuindVehicle.jhtml';
+				}
 				$("#common-vehicle-table-list")
 						.datagrid(
 								{
 									title : message("csh.vehicle.list"),
 									fitColumns : true,
-									url : '../vehicle/list.jhtml',
+									url : url,
 									pagination : true,
 									loadMsg : message("csh.common.loading"),
 									striped : true,
 									onDblClickRow : function(
 											rowIndex, rowData) {
-										debugger;
 										$("#" + id + "ID").val(
 												rowData.id);
 										$("#" + id).textbox(

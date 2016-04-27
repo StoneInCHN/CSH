@@ -93,7 +93,7 @@ var tenantDeductClearingRecord_manager_tool = {
 						    	  formatter: function(value,row,index){
 						    		  return value.userName;
 						    	  }},
-					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"price",sortable:true,
+					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"deductMoney",sortable:true,
 					    		  formatter: function(value,row,index){
 					    			  if(value != null){
 					    				  totalMoney = totalMoney+value;	
@@ -171,9 +171,9 @@ $(function(){
 	});
 
 	
-	$("#tenantClearingRecord-search-btn").click(function(){
-	  var _queryParams = $("#tenantClearingRecord-search-form").serializeJSON();
-	  $('#tenantClearingRecord-table-list').datagrid('options').queryParams = _queryParams;  
-	  $("#tenantClearingRecord-table-list").datagrid('reload');
+	$("#tenantDeductClearingRecord-search-btn").click(function(){
+	  var _queryParams = $("#tenantDeductClearingRecord-search-form").serializeJSON();
+	  $('#tenantDeductClearingRecord-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#tenantDeductClearingRecord-table-list").datagrid('reload');
 	})
 })

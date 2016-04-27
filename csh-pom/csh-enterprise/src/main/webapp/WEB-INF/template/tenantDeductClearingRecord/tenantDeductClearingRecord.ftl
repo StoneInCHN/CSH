@@ -5,7 +5,7 @@
 <div>
 	  <fieldset>
 	    <legend>${message("csh.vehicle.search")}</legend>
-	    <form id="tenantClearingRecord-search-form" class="search-form">
+	    <form id="tenantDeductClearingRecord-search-form" class="search-form">
 	    	<div class="search-item">
 			    <label> ${message("csh.tenantClearingRecord.clearingSn")}:</label>
 			    <input type="text" class="easyui-textbox" id="clearingSnSearch" name="clearingSnSearch" validtype="length[0,20]"/>

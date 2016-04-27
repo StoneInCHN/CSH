@@ -24,7 +24,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!-- **** File name must match SAPILOGNAME value in Install.properties 
 			**** -->
-		<File>${LOG_PATH}/csh-operation.log</File>
+		<File>${LOG_PATH}/csh-enterprise.log</File>
 		<Append>true</Append>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<!-- <pattern>%d | [%.-1level] | %c | %X{DisplayUserName} | %X{userName} 

@@ -211,7 +211,7 @@ var messages = {
 	"csh.carService.serviceStatus.DISABLED":"禁用",
 	"csh.carService.list":"服务列表",
 	"csh.carService.serviceCategory":"服务类型",
-	"csh.carService.price.postpaid":"价格面议",
+	"csh.carService.price.postpaid":"价格待定",
 	//车辆保险
 	"csh.vehicleInsurance.add":"保险添加",
 	"csh.vehicleInsurance.userName":"投保人",
@@ -245,6 +245,7 @@ var messages = {
 	"csh.carServiceRecord.clearingDate":"结算时间",
 	"csh.carServiceRecord.unClearinged":"未结算",
 	"csh.tenantDeductClearingRecord.list":"提成结算列表",
+	"csh.tenantDeductClearingRecord.add":"提成结算单生成",
 	"csh.tenantClearingRecord.amountOfCurrentPeriod":"结算金额",
 	//结算记录
 	"csh.tenantClearingRecord.add":"添加结算单",

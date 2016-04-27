@@ -26,6 +26,8 @@ import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.OilType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.paging.Page;
+import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.json.response.VehicleDailyReport;
 import com.csh.service.DeviceInfoService;
@@ -177,5 +179,14 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
       {
         return vehicleDao.findVehicleByDeviceId(deviceId);
         
+      }
+      
+      @Override
+      public Page<Vehicle> listUnBuindVehicle (String vehiclePlateSearch,
+          String motorcadeSearch, String vehicleFullBrandSearch,
+          Pageable pageable)
+      {
+        return vehicleDao.listUnBuindVehicle(vehiclePlateSearch,motorcadeSearch,
+              vehicleFullBrandSearch,pageable);
       }
 }

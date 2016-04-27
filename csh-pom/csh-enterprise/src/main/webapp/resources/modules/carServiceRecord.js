@@ -337,7 +337,14 @@ $(function(){
 		    			  return "";
 		    		  }
 		    	  }},
-		    	  {title:message("csh.carServiceRecord.price"),field:"price",width:100,sortable:true},
+		    	  {title:message("csh.carServiceRecord.price"),field:"price",width:100,sortable:true,
+		    		  formatter:function(value,row,index){
+			    			if(value=="-1"){
+			    				return message("csh.carService.price.postpaid");
+			    			}else{
+			    				return value
+			    			}
+			    	  }},
 		      {title:message("csh.carServiceRecord.paymentType"),field:"paymentType",width:100,sortable:true,
 		    		  formatter:function(value,row,index){
 		    			if(value=="ALIPAY"){

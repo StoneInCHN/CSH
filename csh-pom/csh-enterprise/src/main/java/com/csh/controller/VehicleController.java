@@ -495,4 +495,14 @@ public class VehicleController extends BaseController
     }
     return "success";
   }
+  
+  @RequestMapping (value = "/listUnBuindVehicle", method = RequestMethod.POST)
+  public @ResponseBody Page<Vehicle> listUnBuindVehicle (
+      String vehicleFullBrandSearch, String motorcadeSearch,
+      String vehiclePlateSearch, Pageable pageable)
+  {
+
+    return vehicleService.listUnBuindVehicle (vehiclePlateSearch,
+        motorcadeSearch, vehicleFullBrandSearch, pageable);
+  }
 }

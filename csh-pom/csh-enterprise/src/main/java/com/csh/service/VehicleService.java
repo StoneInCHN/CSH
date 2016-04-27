@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.csh.entity.Vehicle;
+import com.csh.framework.paging.Page;
+import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.BaseService;
 import com.csh.json.response.VehicleDailyReport;
 
@@ -19,4 +21,6 @@ public interface VehicleService extends BaseService<Vehicle,Long>{
   Vehicle findVehicleByDeviceId(Long deviceId);
 //  VehicleDailyReport callVehicleStatus (Long[] ids);
 
+  Page<Vehicle> listUnBuindVehicle (String vehiclePlateSearch,
+      String motorcadeSearch, String vehicleFullBrandSearch, Pageable pageable);
 }
