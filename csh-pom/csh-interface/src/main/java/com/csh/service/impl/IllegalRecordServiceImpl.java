@@ -138,6 +138,9 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
     try {
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
+      if (resMap.get("result") == null || resMap.get("result").equals("")) {
+        return null;
+      }
       Map<String, Object> resultMap = (Map<String, Object>) resMap.get("result");
       List<Map<String, Object>> listMap = (List<Map<String, Object>>) resultMap.get("list");
       List<IllegalRecord> list = new ArrayList<IllegalRecord>();

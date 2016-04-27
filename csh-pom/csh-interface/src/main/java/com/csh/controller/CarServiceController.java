@@ -77,7 +77,10 @@ public class CarServiceController extends MobileBaseController {
     BaseResponse response = new BaseResponse();
     Long userId = serviceReq.getUserId();
     String token = serviceReq.getToken();
-    // ChargeStatus chargeStatus = serviceReq.getChargeStatus();
+    ChargeStatus chargeStatus = serviceReq.getChargeStatus();
+    if (chargeStatus == null) {
+      chargeStatus = ChargeStatus.RESERVATION;
+    }
     // BigDecimal price = serviceReq.getPrice();
     String dateStr = serviceReq.getSubscribeDate();
     // 验证登录token
@@ -92,7 +95,7 @@ public class CarServiceController extends MobileBaseController {
     CarService carService = carServiceService.find(serviceReq.getServiceId());
 
     Boolean existRecord =
-        carServiceRecordService.existRecordByUser(endUser, carService, ChargeStatus.RESERVATION);
+        carServiceRecordService.existRecordByUser(endUser, carService, chargeStatus);
     if (existRecord) {
       response.setCode(CommonAttributes.FAIL_COMMON);
       response.setDesc(Message.error("csh.subscribe.duplicate").getContent());
@@ -101,7 +104,7 @@ public class CarServiceController extends MobileBaseController {
 
     Date subscribeDate = TimeUtils.convertStr2Date(dateStr);
     CarServiceRecord carServiceRecord =
-        carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.RESERVATION,
+        carServiceRecordService.createServiceRecord(endUser, carService, chargeStatus,
             new BigDecimal(-1), null, subscribeDate);
 
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
