@@ -34,21 +34,21 @@ public class VehicleDaoImpl extends  BaseDaoImpl<Vehicle,Long> implements Vehicl
     return null;
   }
   @Override
-  public Page<Vehicle> listUnBuindVehicle (String vehiclePlateSearch,
+  public Page<Vehicle> listUnBuindVehicle (Long tenantId ,String vehiclePlateSearch,
       String motorcadeSearch, String vehicleFullBrandSearch, Pageable pageable)
   {
     
-    Map<String, String> paramMap  = new HashMap<String, String> ();
+    Map<String, Object> paramMap  = new HashMap<String, Object> ();
     
     String jpql =
         "select vehicle from DeviceInfo deviceInfo right join  deviceInfo.vehicle vehicle"
-        + " where deviceInfo.id is null";
+        + " where vehicle.tenantID=:tenantID and deviceInfo.id is null";
     if (vehiclePlateSearch != null)
     {
       jpql= jpql+ " and vehicle.plate like :plate";
       paramMap.put ("plate", "%"+vehiclePlateSearch+"%");
     }
-
+    paramMap.put ("tenantID", tenantId);
     return findPageCustomized (pageable, jpql, paramMap);
         
   }

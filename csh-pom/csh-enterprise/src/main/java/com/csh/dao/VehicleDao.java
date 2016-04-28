@@ -7,6 +7,6 @@ import com.csh.framework.paging.Pageable;
 public interface VehicleDao extends  BaseDao<Vehicle,Long>{
 
   Vehicle findVehicleByDeviceId (Long deviceId);
-  Page<Vehicle> listUnBuindVehicle (String vehiclePlateSearch,
+  Page<Vehicle> listUnBuindVehicle (Long tenantId ,String vehiclePlateSearch,
       String motorcadeSearch, String vehicleFullBrandSearch, Pageable pageable);
 }

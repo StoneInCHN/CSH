@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Department;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.service.DepartmentService;
+import com.csh.service.TenantAccountService;
 
 /**
  * 部门管理
@@ -28,6 +31,8 @@ public class DepartmentController extends BaseController {
 
   @Resource(name = "departmentServiceImpl")
   private DepartmentService departmentService;
+  @Resource(name = "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
 
   @RequestMapping(value = "/department", method = RequestMethod.GET)
   public String list(ModelMap model) {
@@ -114,4 +119,30 @@ public class DepartmentController extends BaseController {
     return departmentService.findAllDepartments();
   }
 
+  /**
+   * 
+   * @param name
+   * @param grade
+   * @return
+   * true: 存在相同的名称
+   * false:不存在相同的名称
+   */
+  @RequestMapping(value = "/checkUniqueName", method = RequestMethod.POST)
+  public @ResponseBody Boolean checkUniqueName(String name,Long parentId,Long departmentId) {
+    
+    Department parentDepartment = departmentService.find (parentId);
+    Filter tenantFilter = new Filter("tenantID",Operator.eq,tenantAccountService.getCurrentTenantID ());
+    Filter nameFilter = new Filter("name",Operator.eq,name);
+    Filter parentDepartmentFilter = new Filter ("parent",Operator.eq,parentDepartment);
+    if (departmentId != null)
+    {
+      Filter departmentIdFilter = new Filter("id",Operator.ne,departmentId);
+      return !departmentService.exists (tenantFilter,nameFilter,parentDepartmentFilter,departmentIdFilter);
+    }else {
+      return !departmentService.exists (tenantFilter,nameFilter,parentDepartmentFilter);
+    }
+    
+    
+    
+  }
 }

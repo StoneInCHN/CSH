@@ -69,9 +69,19 @@ $(function(){
 						    	    formatter:function(node){
 						    	    	node.text = node.name;
 						    			return node.name;
+						    		},
+						    		onChange:function(newValue, oldValue){
+						    			var parentId=$('#addDepartment_form_parentName').textbox('getValue');
+						    			$('#addDepartmentName').textbox({
+						    				validType:"remote['../department/checkUniqueName.jhtml?parentId="+parentId+"','name']"
+						    			});
 						    		}
 									
-						    	});  
+						    	}); 
+						    	var parentId=$('#addDepartment_form_parentName').textbox('getValue');
+				    			$('#addDepartmentName').textbox({
+				    				validType:"remote['../department/checkUniqueName.jhtml?parentId="+parentId+"','name']"
+				    			});
 						},
 						onClose:function(){
 						    	$('#addDepartment_form').form('reset');
@@ -131,6 +141,7 @@ $(function(){
 							}
 						}],
 						onLoad:function(){
+							
 				    	$("#editDepartment_form_parentName").combotree({    
 				    	    url: '../department/list.jhtml',    
 				    	    method:"get",
@@ -144,6 +155,13 @@ $(function(){
 				    		onLoadSuccess:function(){
 								$('#editDepartment_form_parentName').combotree("setValue",$("#editDepartment_form_parentName").attr("data-value"));
 							},
+							onChange:function(newValue, oldValue){
+				    			var parentId=$('#editDepartment_form_parentName').textbox('getValue');
+				    			var departmentId = $('#editDeparementId').val();
+				    			$('#editDeparementName').textbox({
+				    				validType:"remote['../department/checkUniqueName.jhtml?isUpdate=true&parentId="+parentId+"&departmentId="+departmentId+"','name']"
+				    			});
+				    		}
 				    	});  
 				},
 					})

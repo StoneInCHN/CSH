@@ -186,7 +186,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
           String motorcadeSearch, String vehicleFullBrandSearch,
           Pageable pageable)
       {
-        return vehicleDao.listUnBuindVehicle(vehiclePlateSearch,motorcadeSearch,
+        return vehicleDao.listUnBuindVehicle(tenantAccountService.getCurrentTenantID (),vehiclePlateSearch,motorcadeSearch,
               vehicleFullBrandSearch,pageable);
       }
 }

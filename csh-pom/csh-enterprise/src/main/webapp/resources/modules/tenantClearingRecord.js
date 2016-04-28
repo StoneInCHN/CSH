@@ -2,8 +2,8 @@ var tenantClearingRecord_manager_tool = {
 		applyClearingRecord:function(){
 			$('#applyClearingRecord').dialog({
 			    title: message("csh.tenantClearingRecord.add"),    
-			    width: 700,    
-			    height: 550,
+			    width: 800,    
+			    height: 450,
 			    href:'../tenantClearingRecord/applyClearing.jhtml',
 			    method:"get",
 			    iconCls:'icon-mini-add',
@@ -110,7 +110,7 @@ var tenantClearingRecord_manager_tool = {
 					    				  totalMoney = totalMoney+value;	
 					    			  }
 						    		  return value;
-						    	  }},  
+						    	  }},
 						      {title:message("csh.carServiceRecord.paymentDate"),field:"paymentDate",width:100,sortable:true,formatter: function(value,row,index){
 						    	  if(value != null){
 										return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
@@ -123,6 +123,8 @@ var tenantClearingRecord_manager_tool = {
 						],
 						onLoadSuccess:function(){
 							$("#amountOfCurrentPeriod").textbox('setValue',totalMoney);
+							var rate = $('#platformRate').val();
+							$("#amountRealIncome").textbox('setValue',totalMoney*parseFloat(1-rate));
 						}
 					});
 					

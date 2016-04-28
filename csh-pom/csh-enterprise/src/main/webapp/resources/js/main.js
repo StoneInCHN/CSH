@@ -1,3 +1,13 @@
+$.ajaxSetup({
+    complete:function(XMLHttpRequest,textStatus){
+          if(XMLHttpRequest.status == 403){
+               $.messager.alert('提示信息', "登陆超时！请重新登陆！", 'info',function(){
+                   window.location.href = '../../login.jsp';
+               });
+          } 
+    }
+});
+
 /**
  *绑定右侧点击事件 
  */

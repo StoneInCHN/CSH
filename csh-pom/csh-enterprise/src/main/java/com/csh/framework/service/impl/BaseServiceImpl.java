@@ -119,7 +119,8 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
   public boolean exists(Filter... filters) {
     return baseDao.count(filters) > 0;
   }
-
+  
+  
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public void save(T entity) {
     baseDao.persist(entity);

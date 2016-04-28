@@ -81,6 +81,15 @@ public class TenantClearingRecord extends BaseEntity
   private BigDecimal amountOutOfCurrentPeriod = new BigDecimal (0);
 
   /**
+   * 扣除提成后实得收益
+   */
+  private BigDecimal amountRealIncome;
+  
+  /**
+   * 平台提成比例
+   */
+  private Double platformRate;
+  /**
    *关联的CarServiceRecord 
    */
   private List<CarServiceRecord> carServiceRecords = new ArrayList<CarServiceRecord> ();
@@ -204,15 +213,30 @@ public class TenantClearingRecord extends BaseEntity
     this.tenantID = tenantID;
   }
 
+  @JsonProperty
+  public BigDecimal getAmountRealIncome ()
+  {
+    return amountRealIncome;
+  }
+
+  public void setAmountRealIncome (BigDecimal amountRealIncome)
+  {
+    this.amountRealIncome = amountRealIncome;
+  }
   
-//  @Transient
-//  public List<OrderRebateRecord> getOrderRebateRecordsOutOfCurrentPeriod ()
-//  {
-//    return orderRebateRecordsOutOfCurrentPeriod;
-//  }
-//
-//  public void setOrderRebateRecordsOutOfCurrentPeriod (List<OrderRebateRecord> orderRebateRecordsOutOfCurrentPeriod)
-//  {
-//    this.orderRebateRecordsOutOfCurrentPeriod = orderRebateRecordsOutOfCurrentPeriod;
-//  }
+  @JsonProperty
+  public Double getPlatformRate ()
+  {
+    return platformRate;
+  }
+
+  public void setPlatformRate (Double platformRate)
+  {
+    this.platformRate = platformRate;
+  }
+
+
+  
+
+  
 }

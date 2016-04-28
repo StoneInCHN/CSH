@@ -2,7 +2,7 @@ package com.csh.controller;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -24,10 +24,12 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.CommissionRate;
 import com.csh.entity.TenantClearingRecord;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.CarServiceRecordService;
+import com.csh.service.CommissionRateService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantClearingRecordService;
 import com.csh.utils.DateTimeUtils;
@@ -48,6 +50,9 @@ public class TenantClearingRecordController extends BaseController
   private CarServiceRecordService carServiceRecordService;
   @Resource(name = "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
+  @Resource(name = "commissionRateServiceImpl")
+  private CommissionRateService commissionRateService;
+  
   
   @RequestMapping (value = "/tenantClearingRecord", method = RequestMethod.GET)
   public String list (ModelMap model)
@@ -59,8 +64,9 @@ public class TenantClearingRecordController extends BaseController
     {
       model.put ("allowClearing", true);
     }else {
-      model.put ("allowClearing", false);
+      model.put ("allowClearing", true);
     }
+    
     return "tenantClearingRecord/tenantClearingRecord";
   }
   @RequestMapping (value = "/list", method = RequestMethod.POST)
@@ -133,7 +139,8 @@ public class TenantClearingRecordController extends BaseController
   {
 //    Map<String, Date> periodDateMap= tenantClearingRecordService.findPeriodBeginEndDate(tenantAccountService.getCurrentTenantInfo ());
 //    mode.putAll (periodDateMap);
-    
+    List<CommissionRate> commissionRateList = commissionRateService.findAll ();
+    mode.put ("commissionRate", commissionRateList.get (0));
     return "tenantClearingRecord/applyClearing";
   }
   
