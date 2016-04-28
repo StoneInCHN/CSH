@@ -73,7 +73,7 @@ public class TenantAccountController extends BaseController {
   public String edit(Long id, ModelMap model) {
     TenantAccount tenantAccount = tenantAccountService.find(id);
     model.addAttribute("tenantAccount", tenantAccount);
-    List<Filter> filters = new ArrayList<Filter>();
+    /*List<Filter> filters = new ArrayList<Filter>();
     Filter tenantIDFilter = new Filter();
     tenantIDFilter.setProperty("tenantID");
     tenantIDFilter.setValue(tenantAccount.getTenantID());
@@ -84,7 +84,7 @@ public class TenantAccountController extends BaseController {
     typeFilter.setValue(SystemType.ENTERPRISE);
     typeFilter.setOperator(Operator.eq);
     filters.add(typeFilter);
-    model.addAttribute("roles", roleService.findList(null, filters, null));
+    model.addAttribute("roles", roleService.findList(null, filters, null));*/
     return "/tenantAccount/edit";
   }
 
@@ -92,9 +92,8 @@ public class TenantAccountController extends BaseController {
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(TenantAccount tenantAccount,Long[] roleIds) {
+  public String update(TenantAccount tenantAccount) {
     TenantAccount temp = tenantAccountService.find(tenantAccount.getId());
-    temp.setRoles(new HashSet<Role>(roleService.findList(roleIds)));
     temp.setAccoutStatus(tenantAccount.getAccoutStatus());
     tenantAccountService.update(temp);
     return "redirect:list.jhtml";

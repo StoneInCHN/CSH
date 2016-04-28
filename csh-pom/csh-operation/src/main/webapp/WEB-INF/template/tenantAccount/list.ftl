@@ -35,9 +35,11 @@
 										<div class="btn-group operationButton">
 										  <button type="button" id="addButton" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;&nbsp;${message("csh.common.add")}</button>
 										</div>
+										<!--
 										<div class="btn-group operationButton">
 										  <button type="button" id="deleteButton" class="btn btn-default disabled"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;${message("csh.common.delete")}</button>
 										</div>
+										-->
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
@@ -149,10 +151,14 @@
 														${(tenantAccount.loginIp)!"-"}
 													</td>
 													<td>
-														<span title="${tenantAccount.createDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.createDate}</span>
+														[#if tenantAccount.createDate??]
+															<span title="${tenantAccount.createDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantAccount.createDate}</span>
+														[/#if]
 													</td>
 													<td>
-														${message("csh.tenantAccount.accoutStatus."+tenantAccount.accoutStatus)}
+														[#if tenantAccount.accoutStatus??]
+															${message("csh.tenantAccount.accoutStatus."+tenantAccount.accoutStatus)}
+														[/#if]
 													</td>
 													<td>
 														<a href="edit.jhtml?id=${tenantAccount.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>

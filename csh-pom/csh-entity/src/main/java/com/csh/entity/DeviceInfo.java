@@ -2,6 +2,7 @@ package com.csh.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -9,6 +10,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
@@ -110,6 +112,7 @@ public class DeviceInfo extends BaseEntity {
   }
 
   @JsonProperty
+  @Column(unique = true,nullable=false,length=10)
   @Field(store = Store.NO, index = Index.TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getDeviceNo() {
     return deviceNo;
@@ -130,6 +133,7 @@ public class DeviceInfo extends BaseEntity {
   }
 
   @JsonProperty
+  @Column(nullable=false,length=15)
   public String getSimNo() {
     return simNo;
   }

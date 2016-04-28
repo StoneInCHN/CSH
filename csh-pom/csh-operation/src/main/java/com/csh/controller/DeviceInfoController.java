@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.Admin;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.DeviceType;
+import com.csh.entity.Distributor;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.entity.commonenum.CommonEnum.Status;
@@ -154,7 +156,7 @@ public class DeviceInfoController extends BaseController {
     if (admin.getIsDistributor() != null && admin.getIsDistributor()
         && admin.getDistributor() != null) {
       Filter distributorFilter = new Filter();
-      distributorFilter.setProperty("distributorId");
+      distributorFilter.setProperty("distributor");
       distributorFilter.setValue(admin.getDistributor().getId());
       distributorFilter.setOperator(Operator.eq);
       filters.add(distributorFilter);
@@ -180,14 +182,17 @@ public class DeviceInfoController extends BaseController {
   public String tenantInfo4distributor(Pageable pageable, ModelMap model) {
     Admin admin = adminService.getCurrent();
     List<Filter> filters = new ArrayList<Filter>();
+    Filter distributorFilter = new Filter();
+    distributorFilter.setProperty("distributor");
     if (admin.getIsDistributor() != null && admin.getIsDistributor()
         && admin.getDistributor() != null) {
-      Filter distributorFilter = new Filter();
-      distributorFilter.setProperty("distributorId");
       distributorFilter.setValue(admin.getDistributor().getId());
-      distributorFilter.setOperator(Operator.eq);
-      filters.add(distributorFilter);
+    }else{
+      distributorFilter.setValue(0);
     }
+    distributorFilter.setOperator(Operator.eq);
+    filters.add(distributorFilter);
+    pageable.setFilters(filters);
     pageable.setPageSize(5);;
     model.addAttribute("page", tenantInfoService.findPage(pageable));
     return "/deviceInfo/tenantInfo4distributor";
@@ -233,13 +238,26 @@ public class DeviceInfoController extends BaseController {
       if (string.length() > 0) {
         Long id = Long.valueOf(string);
         DeviceInfo deviceInfo = deviceInfoService.find(id);
-        if (DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus()))
-          deviceInfo.setDistributorId(distributorId);
-        deviceInfo.setDeviceStatus(DeviceStatus.SENDOUT);
-        deviceInfoService.update(deviceInfo);
+        if (DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus())){
+          Distributor distributor = distributorService.find(distributorId);
+          deviceInfo.setDistributor(distributor);
+          deviceInfo.setDeviceStatus(DeviceStatus.SENDOUT);
+          deviceInfoService.update(deviceInfo);
+        }
+        
       }
     }
     return SUCCESS_MESSAGE;
+  }
+
+  
+  /**
+   * 详情
+   */
+  @RequestMapping(value = "/details", method = RequestMethod.GET)
+  public String details(Long id, ModelMap model) {
+    model.addAttribute("deviceInfo", deviceInfoService.find(id));
+    return "/deviceInfo/details";
   }
 
 
@@ -302,11 +320,6 @@ public class DeviceInfoController extends BaseController {
               formatFailDeviceIds.add(deviceTemp.getDeviceNo());
               faileCount++;
             } else {
-              DeviceInfo info = deviceInfoService.findByDeviceNo(deviceTemp.getDeviceNo());
-              if (info != null) {
-                formatFailDeviceIds.add(deviceTemp.getDeviceNo() + "\n");
-                faileCount++;
-              } else {
                 deviceTemp.setDeviceStatus(DeviceStatus.INITED);
                 deviceTemp.setBindStatus(BindStatus.UNBINDED);
                 deviceInfoService.save(deviceTemp);
@@ -316,8 +329,6 @@ public class DeviceInfoController extends BaseController {
                       deviceTemp.getSimNo());
                 }
                 successCount++;
-              }
-
             }
           } else {
             formatFailDeviceIds.add(deviceTemp.getDeviceNo() + "\n");
@@ -347,5 +358,19 @@ public class DeviceInfoController extends BaseController {
     return "/deviceInfo/batch_add";
   }
 
-
+  /**
+   * 检查用户名是否存在
+   */
+  @RequestMapping(value = "/check_deviceNo", method = RequestMethod.GET)
+  public @ResponseBody boolean checkUsername(String deviceNo) {
+    if (StringUtils.isEmpty(deviceNo)) {
+      return false;
+    }
+    DeviceInfo deviceInfo = deviceInfoService.findByDeviceNo(deviceNo);
+    if (deviceInfo!=null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

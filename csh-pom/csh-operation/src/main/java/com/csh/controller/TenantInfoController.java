@@ -119,7 +119,7 @@ public class TenantInfoController extends BaseController {
     if (admin.getIsDistributor() != null && admin.getIsDistributor()
         && admin.getDistributor() != null) {
       Filter distributorFilter = new Filter();
-      distributorFilter.setProperty("distributorId");
+      distributorFilter.setProperty("distributor");
       distributorFilter.setValue(admin.getDistributor().getId());
       distributorFilter.setOperator(Operator.eq);
       filters.add(distributorFilter);

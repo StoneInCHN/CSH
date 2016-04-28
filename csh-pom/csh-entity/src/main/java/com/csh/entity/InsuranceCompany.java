@@ -1,12 +1,28 @@
 package com.csh.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
 import com.csh.entity.base.BaseEntity;
 
 /**
  * 保险公司信息
+ * 
  * @author tanbiao
  *
  */
+@Entity
+@Table(name = "csh_insurance_company")
+@Indexed(index = "insuranceCompany")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_insurance_company_sequence")
 public class InsuranceCompany extends BaseEntity {
 
   /**
@@ -21,7 +37,15 @@ public class InsuranceCompany extends BaseEntity {
 
   private Long parentId;
 
+  /**
+   * 公司所在地区
+   */
   private Area area;
+
+  /**
+   * 详细地址
+   */
+  private String address;
 
   /**
    * 省
@@ -43,6 +67,7 @@ public class InsuranceCompany extends BaseEntity {
    */
   private String phoneNo;
 
+  @Field(store = Store.NO,index = Index.UN_TOKENIZED)
   public String getName() {
     return name;
   }
@@ -59,6 +84,7 @@ public class InsuranceCompany extends BaseEntity {
     this.parentId = parentId;
   }
 
+  @ManyToOne(fetch = FetchType.LAZY)
   public Area getArea() {
     return area;
   }
@@ -98,5 +124,15 @@ public class InsuranceCompany extends BaseEntity {
   public void setPhoneNo(String phoneNo) {
     this.phoneNo = phoneNo;
   }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+
 
 }
