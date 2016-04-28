@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * 时间工具类
  * 
@@ -30,6 +32,9 @@ public class TimeUtils {
 
 
   public static Date convertStr2Date(String dateStr) {
+    if (StringUtils.isEmpty(dateStr)) {
+      return null;
+    }
     try {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
       return sdf.parse(dateStr);

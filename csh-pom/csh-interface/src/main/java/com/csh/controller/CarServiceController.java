@@ -103,6 +103,9 @@ public class CarServiceController extends MobileBaseController {
     }
 
     Date subscribeDate = TimeUtils.convertStr2Date(dateStr);
+    if (subscribeDate == null) {
+      subscribeDate = new Date();
+    }
     CarServiceRecord carServiceRecord =
         carServiceRecordService.createServiceRecord(endUser, carService, chargeStatus,
             new BigDecimal(-1), null, subscribeDate);
@@ -234,7 +237,7 @@ public class CarServiceController extends MobileBaseController {
         BigDecimal weChatPrice = price.multiply(new BigDecimal(100));
         response =
             PayUtil.wechat(carServiceRecord.getRecordNo(), carService.getServiceName(),
-                httpReq.getRemoteAddr(), serviceId.toString(), weChatPrice.toString());
+                httpReq.getRemoteAddr(), serviceId.toString(), weChatPrice.intValue() + "");
       } catch (DocumentException e) {
         e.printStackTrace();
       }

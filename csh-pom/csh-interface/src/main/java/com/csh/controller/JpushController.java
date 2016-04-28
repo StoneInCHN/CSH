@@ -1,10 +1,13 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +20,8 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.ApkVersion;
 import com.csh.entity.EndUser;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.JpushRequest;
 import com.csh.service.ApkVersionService;
@@ -63,8 +68,23 @@ public class JpushController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter("jpushRegId", Operator.eq, jPushRegId);
+    filters.add(filter);
+    List<EndUser> updateUsers = new ArrayList<EndUser>();
+    List<EndUser> users = endUserService.findList(null, filters, null);
+    if (!CollectionUtils.isEmpty(users)) {
+      for (EndUser user : users) {
+        if (!user.getId().equals(endUser.getId()) && jPushRegId.equals(user.getjpushRegId())) {
+          user.setjpushRegId(null);
+          updateUsers.add(user);
+        }
+      }
+    }
+
     endUser.setjpushRegId(jPushRegId);
-    endUserService.update(endUser);
+    updateUsers.add(endUser);
+    endUserService.update(updateUsers);
 
     if (LogUtil.isDebugEnabled(JpushController.class)) {
       LogUtil.debug(JpushController.class, "Update",

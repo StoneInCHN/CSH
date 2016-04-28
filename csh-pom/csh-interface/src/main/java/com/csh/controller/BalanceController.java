@@ -93,7 +93,7 @@ public class BalanceController extends MobileBaseController {
         BigDecimal weChatAmount = amount.multiply(new BigDecimal(100));
         response =
             PayUtil.wechat(tradeNo, "wallet charge in", httpReq.getRemoteAddr(), "0",
-                weChatAmount.toString());
+                weChatAmount.intValue() + "");
       } catch (DocumentException e) {
         e.printStackTrace();
       }
