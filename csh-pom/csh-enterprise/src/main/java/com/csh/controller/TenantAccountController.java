@@ -31,6 +31,7 @@ import com.csh.entity.Role;
 import com.csh.entity.TenantAccount;
 import com.csh.entity.TenantUser;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.RSAService;
@@ -213,4 +214,23 @@ public class TenantAccountController extends BaseController
     model.addAttribute("tenantAccount", tenantAccount);
     return "tenantAccount/details";
   }
+  
+  @RequestMapping (value = "/uniqueFieldCheck", method = RequestMethod.POST)
+  public @ResponseBody Boolean uniqueFieldCheck (Long id,String filedName, String value)
+  {
+
+    com.csh.framework.filter.Filter tenantFilter = new com.csh.framework.filter.Filter (
+        "tenantID", Operator.eq, tenantAccountService.getCurrentTenantID ());
+    com.csh.framework.filter.Filter fieldFilter = new com.csh.framework.filter.Filter (
+        filedName, Operator.eq, value);
+    if (id != null)
+    { 
+      com.csh.framework.filter.Filter idFilter = new com.csh.framework.filter.Filter (
+        "id", Operator.ne, id);
+      return !tenantAccountService.exists (tenantFilter,fieldFilter,idFilter);
+    }else {
+      return !tenantAccountService.exists (tenantFilter,fieldFilter);
+    }
+  }
+    
 }

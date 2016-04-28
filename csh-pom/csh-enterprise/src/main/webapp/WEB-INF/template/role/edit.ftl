@@ -5,7 +5,7 @@
 	    	<tr>
 	    		<th>${message("csh.role.name")}:</th>
 	    		<td>
-	    			  <input class="easyui-textbox" type="text" value="${role.name}" name="name" validtype="length[0,150]" data-options="required:true"/> 
+	    			  <input class="easyui-textbox" type="text" value="${role.name}" name="name" data-options="required:true,delay:3000" validType="length[0,150],remote['../role/uniqueFieldCheck.jhtml?filedName=name&id=${role.id}','value']" invalidMessage="${message("csh.common.nameAleradyUsed")}"/> 
 	    		</td>
 	    	</tr>
 	    	<tr>

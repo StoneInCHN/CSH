@@ -14,7 +14,7 @@
 	    	<tr>
 	    		<th>${message("csh.tenantAccount.userName")}:</th>
 	    		<td colspan="2">
-	    			 <input type="text" class="easyui-textbox" name="userName" value="${tenantAccount.userName}" id= "userName"  data-options="required:true"/>
+	    			 <input type="text" class="easyui-textbox" name="userName" value="${tenantAccount.userName}" id= "userName"  data-options="required:true,delay:3000" validType="remote['../tenantAccount/uniqueFieldCheck.jhtml?filedName=userName&id=${tenantAccount.id}','value']" invalidMessage="${message("csh.common.nameAleradyUsed")}"/>
 	    		</td>
 	    	</tr>
 	    	<tr>

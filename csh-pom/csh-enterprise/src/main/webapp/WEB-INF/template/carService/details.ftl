@@ -10,6 +10,7 @@
     			 <input  class="easyui-textbox" disabled="disabled" id= "carServiceCategoryDetail" data-value="${carService.serviceCategory.id}" name="serviceCategoryId"  data-options="required:true"/>
     		</td>
     	</tr>
+    	[#if carService.serviceCategory.id ==2]
     	<tr>
     		<th>${message("csh.carService.price")}:</th>
     		<td >
@@ -20,6 +21,7 @@
     			 <input  class="easyui-textbox" disabled="disabled" name="promotionPrice" value="${carService.promotionPrice}"  id= "promotionPrice" />
     		</td>
     	</tr>
+    	[/#if]
     	<tr>
     		<th>${message("csh.carService.serviceStatus")}:</th>
     		<td >

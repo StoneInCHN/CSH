@@ -41,7 +41,7 @@ var tenantAccount_manager_tool = {
 					iconCls:'icon-cancel',
 					handler:function(){
 						 $('#addTenantAccount').dialog("close");
-						 $("#addTenantAccount_form").form("reset");
+//						 $("#addTenantAccount_form").form("reset");
 					}
 			    }],
 			    onOpen:function(){
@@ -90,7 +90,7 @@ var tenantAccount_manager_tool = {
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
 					handler:function(){
-						 $('#editTenantAccount').dialog("close").form("reset");
+						 $('#editTenantAccount').dialog("close");
 					}
 			    }],
 			    onLoad:function(){

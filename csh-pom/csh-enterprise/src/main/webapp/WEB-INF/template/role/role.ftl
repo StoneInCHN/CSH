@@ -37,7 +37,7 @@
 	    	<tr>
 	    		<th>${message("csh.role.name")}:</th>
 	    		<td>
-	    			  <input class="easyui-textbox" type="text" name="name" validtype="length[0,150]" data-options="required:true"/> 
+	    			  <input class="easyui-textbox" type="text" name="name" data-options="required:true,delay:3000" validType="remote['../role/uniqueFieldCheck.jhtml?filedName=name','value']" invalidMessage="${message("csh.common.nameAleradyUsed")}"/> 
 	    		</td>
 	    	</tr>
 	    	<tr>

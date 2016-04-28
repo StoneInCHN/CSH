@@ -48,13 +48,13 @@
 	    	<tr>
 	    		<th>${message("csh.tenantAccount.staffID")}:</th>
 	    		<td colspan='2'>
-	    			 <input type="text" class="easyui-textbox" name="staffID" id= "staffID"   data-options="required:true"/>
+	    			 <input type="text" class="easyui-textbox" name="staffID" id= "staffID"   data-options="required:true,delay:3000" validType="remote['../tenantAccount/uniqueFieldCheck.jhtml?filedName=staffID','value']" invalidMessage="${message("csh.common.nameAleradyUsed")}"/>
 	    		</td>
 	    	</tr>
 	    	<tr>
 	    		<th>${message("csh.tenantAccount.userName")}:</th>
 	    		<td colspan='2'>
-	    			 <input type="text" class="easyui-textbox" name="userName" id= "userName"  data-options="required:true"/>
+	    			 <input type="text" class="easyui-textbox" name="userName" id= "userName"  data-options="required:true,delay:3000" validType="remote['../tenantAccount/uniqueFieldCheck.jhtml?filedName=userName','value']" invalidMessage="${message("csh.common.nameAleradyUsed")}"/>
 	    		</td>
 	    	</tr>
 	    	<tr>

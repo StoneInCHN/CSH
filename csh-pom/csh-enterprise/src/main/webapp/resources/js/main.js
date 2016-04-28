@@ -1,6 +1,7 @@
 $.ajaxSetup({
     complete:function(XMLHttpRequest,textStatus){
           if(XMLHttpRequest.status == 403){
+        	  debugger;
                $.messager.alert('提示信息', "登陆超时！请重新登陆！", 'info',function(){
                    window.location.href = '../../login.jsp';
                });

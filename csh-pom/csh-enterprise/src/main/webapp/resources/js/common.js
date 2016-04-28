@@ -443,7 +443,7 @@ function searchRoles(id) {
 							$("#common-roles-table-list")
 									.datagrid(
 											{
-												title : message("csh.elderlyinfo"),
+												title : message("csh.role.list"),
 												fitColumns : true,
 												url : '../role/list.jhtml',
 												pagination : true,
@@ -500,7 +500,7 @@ function searchRoles(id) {
 														'#common-roles-table-list')
 														.datagrid('options').queryParams = _queryParams;
 												$(
-														"#common-roles-table")
+														"#common-roles-table-list")
 														.datagrid('reload');
 											})
 						}

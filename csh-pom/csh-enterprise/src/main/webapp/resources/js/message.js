@@ -107,6 +107,8 @@ var messages = {
 	"csh.role.name":"角色名称",
 	"csh.role.description":"描述",
 	"csh.role.add":"添加角色",
+	"csh.role.list":"角色列表",
+	"csh.role.search":"角色查询",
 	"csh.role.auth":"授权",
 	"csh.role.auth.manange":"权限分配",
 	"csh.role.auth.name":"菜单名称",

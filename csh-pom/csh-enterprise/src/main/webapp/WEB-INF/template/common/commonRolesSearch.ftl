@@ -5,7 +5,7 @@
 	    <form id="common_role_search_form" class="search-form">
 	    	<div class="search-item">
 			    <label> 角色:</label>
-			    <input type="text" class="easyui-textbox" id="name" name="name" validtype="length[0,20]" style="width:85px;" />
+			    <input type="text" class="easyui-textbox" id="name" name="roleNameSearch" validtype="length[0,20]" style="width:85px;" />
 			</div>
 			<div class="search-item">
 			    <label> 录入时间:</label>

@@ -211,6 +211,10 @@ public class CarServiceController extends BaseController
     ServiceCategory category = serviceCategoryService.find (serviceCategoryId);
     carService.setServiceCategory (category);
     carService.setTenantInfo (tenantInfo);
+    if (carService.getServiceName () == null)
+    {
+      carService.setServiceName (category.getCategoryName ());
+    }
     carServiceService.save (carService);
     return SUCCESS_MESSAGE;
   }
@@ -222,6 +226,10 @@ public class CarServiceController extends BaseController
     ServiceCategory category = serviceCategoryService.find (serviceCategoryId);
     carService.setServiceCategory (category);
     carService.setTenantInfo (tenantInfo);
+    if (carService.getServiceName () == null)
+    {
+      carService.setServiceName (category.getCategoryName ());
+    }
     carServiceService.update (carService, "createDate", "tenantID","imgPath");
     return SUCCESS_MESSAGE;
   }

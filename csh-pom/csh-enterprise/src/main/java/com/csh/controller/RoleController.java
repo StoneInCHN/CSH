@@ -33,6 +33,7 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.ConfigMeta;
 import com.csh.entity.Role;
 import com.csh.entity.commonenum.CommonEnum.TreeNodeState;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.response.TreeNodeResponse;
@@ -301,5 +302,23 @@ public class RoleController extends BaseController {
     roleService.update (role);
 
     return SUCCESS_MESSAGE;
+  }
+  
+  @RequestMapping (value = "/uniqueFieldCheck", method = RequestMethod.POST)
+  public @ResponseBody Boolean uniqueFieldCheck (Long id,String filedName, String value)
+  {
+
+    com.csh.framework.filter.Filter tenantFilter = new com.csh.framework.filter.Filter (
+        "tenantID", Operator.eq, tenantAccountService.getCurrentTenantID ());
+    com.csh.framework.filter.Filter fieldFilter = new com.csh.framework.filter.Filter (
+        filedName, Operator.eq, value);
+    if (id != null)
+    { 
+      com.csh.framework.filter.Filter idFilter = new com.csh.framework.filter.Filter (
+        "id", Operator.ne, id);
+      return !roleService.exists (tenantFilter,fieldFilter,idFilter);
+    }else {
+      return !roleService.exists (tenantFilter,fieldFilter);
+    }
   }
 }

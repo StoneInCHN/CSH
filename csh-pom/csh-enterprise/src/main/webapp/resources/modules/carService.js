@@ -227,6 +227,7 @@ var carService_manager_tool = {
 					}
 			    }],
 			    onLoad:function(){
+			    	var serviceCategoryId = $("#editCarServiceCategory").attr("data-value");
 			    	$("#editCarServiceCategory").combobox({    
 					    valueField:'id',
 					    textField:'categoryName',
@@ -235,10 +236,10 @@ var carService_manager_tool = {
 					    required:true,
 					    prompt:message("csh.common.please.select"),
 					    onLoadSuccess:function(){
-							$('#editCarServiceCategory').combobox("setValue",$("#editCarServiceCategory").attr("data-value"));
+							$('#editCarServiceCategory').combobox("setValue",serviceCategoryId);
 						},
-						 onSelect:function(record){
-						    	if(record.id != 2){
+						 onChange:function(newValue, oldValue){
+						    	if(newValue != 2){
 						    		$("#editCarServicePrice").textbox('setValue',-1);
 						    		$("#editCarServicePrice").textbox({
 						    			readonly:true,
