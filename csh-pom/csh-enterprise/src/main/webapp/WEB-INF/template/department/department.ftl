@@ -12,7 +12,7 @@
 	    	<tr>
 	    		<th>${message("csh.department.name")}:</th>
 	    		<td>
-	    			 <input class="easyui-textbox" type="text" id="addDepartmentName" name="name" data-options="required:true,delay:3000" invalidMessage="该名称已使用"/>   
+	    			 <input class="easyui-textbox" type="text" id="addDepartmentName" name="name" data-options="required:true,delay:3000" invalidMessage="${message("csh.common.nameAleradyUsed")}"/>   
 	    		</td>
 	    	</tr>
 	    </table>

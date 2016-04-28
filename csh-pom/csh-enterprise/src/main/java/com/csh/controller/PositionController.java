@@ -15,10 +15,13 @@ import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Department;
 import com.csh.entity.Position;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DepartmentService;
 import com.csh.service.PositionService;
+import com.csh.service.TenantAccountService;
 
 /**
  * 部门管理
@@ -34,6 +37,9 @@ public class PositionController extends BaseController{
 
   @Resource (name = "positionServiceImpl")
   private PositionService positionService;
+
+  @Resource(name = "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
 
   @RequestMapping (value = "/position", method = RequestMethod.GET)
   public String list (ModelMap model)
@@ -112,6 +118,28 @@ public class PositionController extends BaseController{
       return positionService.findPositions (departmentService.find(id));
     }else{
       return null;
+    }
+    
+  }
+  /**
+   * 
+   * @param name
+   * @param grade
+   * @return
+   */
+  @RequestMapping(value = "/checkUniqueName", method = RequestMethod.POST)
+  public @ResponseBody Boolean checkUniqueName(String name,Long departmentId,Long positionId) {
+    
+    Department parentDepartment = departmentService.find (departmentId);
+    Filter tenantFilter = new Filter("tenantID",Operator.eq,tenantAccountService.getCurrentTenantID ());
+    Filter nameFilter = new Filter("name",Operator.eq,name);
+    Filter parentDepartmentFilter = new Filter ("department",Operator.eq,parentDepartment);
+    if (positionId != null)
+    {
+      Filter positionIdFilter = new Filter("id",Operator.ne,positionId);
+      return !positionService.exists (tenantFilter,nameFilter,parentDepartmentFilter,positionIdFilter);
+    }else {
+      return !positionService.exists (tenantFilter,nameFilter,parentDepartmentFilter);
     }
     
   }

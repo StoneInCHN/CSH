@@ -124,8 +124,6 @@ public class DepartmentController extends BaseController {
    * @param name
    * @param grade
    * @return
-   * true: 存在相同的名称
-   * false:不存在相同的名称
    */
   @RequestMapping(value = "/checkUniqueName", method = RequestMethod.POST)
   public @ResponseBody Boolean checkUniqueName(String name,Long parentId,Long departmentId) {
@@ -141,8 +139,6 @@ public class DepartmentController extends BaseController {
     }else {
       return !departmentService.exists (tenantFilter,nameFilter,parentDepartmentFilter);
     }
-    
-    
     
   }
 }

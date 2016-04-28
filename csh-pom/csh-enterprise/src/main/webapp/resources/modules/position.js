@@ -65,9 +65,19 @@ $(function(){
 						    	    formatter:function(node){
 						    	    	node.text = node.name;
 						    			return node.name;
+						    		},
+						    		onChange:function(newValue, oldValue){
+						    			var departmentId=$('#addPosition_form_departmentId').textbox('getValue');
+						    			$('#addPositionName').textbox({
+						    				validType:"remote['../position/checkUniqueName.jhtml?departmentId="+departmentId+"','name']"
+						    			});
 						    		}
 									
-						    	});  
+						    	});
+						    	var departmentId=$('#addPosition_form_departmentId').textbox('getValue');
+				    			$('#addPositionName').textbox({
+				    				validType:"remote['../position/checkUniqueName.jhtml?departmentId="+departmentId+"','name']"
+				    			});
 						},
 						onClose:function(){
 						    	$('#addPosition_form').form('reset');
@@ -140,6 +150,13 @@ $(function(){
 				    		onLoadSuccess:function(){
 								$('#editPosition_form_departmentId').combotree("setValue",$("#editPosition_form_departmentId").attr("data-value"));
 							},
+							onChange:function(newValue, oldValue){
+								var departmentId=$('#editPosition_form_departmentId').textbox('getValue');
+				    			var positionId = $('#editPositionId').val();
+				    			$('#editPositionName').textbox({
+				    				validType:"remote['../position/checkUniqueName.jhtml?departmentId="+departmentId+"&positionId="+positionId+"','name']"
+				    			});
+							}
 				    	});  
 				},
 					})
