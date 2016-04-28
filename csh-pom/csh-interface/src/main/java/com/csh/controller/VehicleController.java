@@ -130,6 +130,19 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
 
+    Vehicle plateVehicle = vehicleService.getVehicleByPlate(vehicleReq.getPlateNo());
+    if (plateVehicle != null) {
+      response.setCode(CommonAttributes.FAIL_VEHICLE_PLATE_EXIST);
+      response.setDesc(Message.error("csh.vehicle.plate.exist").getContent());
+      return response;
+    }
+
+    Vehicle vehicleNoVehicle = vehicleService.getVehicleByVehicleNo(vehicleReq.getVehicleNo());
+    if (vehicleNoVehicle != null) {
+      response.setCode(CommonAttributes.FAIL_VEHICLE_PLATE_EXIST);
+      response.setDesc(Message.error("csh.vehicle.num.exist").getContent());
+      return response;
+    }
     Vehicle vehicle = new Vehicle();
     VehicleBrandDetail brandDetail = vehicleBrandDetailService.find(vehicleReq.getBrandDetailId());
     vehicle.setVehicleBrandDetail(brandDetail);

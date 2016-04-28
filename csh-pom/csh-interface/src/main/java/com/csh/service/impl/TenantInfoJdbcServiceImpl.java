@@ -22,7 +22,7 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
   private JdbcTemplate jdbcTemplate;
 
   public Page<Map<String, Object>> getTenantInfos(String lng, String lat, Pageable pageable,
-      int radius, Long categoryId) {
+      int radius, Long categoryId, Long tenantId) {
 
     double[] aroundGps = LatLonUtil.getAround(Double.valueOf(lat), Double.valueOf(lng), radius);
     // todo pageable.getPageNumber() <1
@@ -44,6 +44,9 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
     tenant_sql.append(" WHERE cti.account_status = 0 AND ccs.service_status = 0");
     if (categoryId != null) {
       tenant_sql.append(" AND csc.id = " + categoryId);
+    }
+    if (tenantId != null) {
+      tenant_sql.append(" AND cti.id <> " + tenantId);
     }
     tenant_sql.append(" AND longitude > " + aroundGps[1]);
     tenant_sql.append(" AND longitude <" + aroundGps[3]);

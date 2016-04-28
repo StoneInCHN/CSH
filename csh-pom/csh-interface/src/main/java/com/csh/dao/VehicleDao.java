@@ -13,4 +13,12 @@ public interface VehicleDao extends BaseDao<Vehicle, Long> {
    * @return
    */
   Vehicle getVehicleByPlate(String plate);
+
+  /**
+   * 根据车牌架查询车辆
+   * 
+   * @param plate
+   * @return
+   */
+  Vehicle getVehicleByVehicleNo(String vehicleNo);
 }

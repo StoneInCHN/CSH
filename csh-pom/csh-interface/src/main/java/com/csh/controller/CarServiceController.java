@@ -190,7 +190,7 @@ public class CarServiceController extends MobileBaseController {
     String token = serviceReq.getToken();
     PaymentType paymentType = serviceReq.getPaymentType();
     // ChargeStatus chargeStatus = serviceReq.getChargeStatus();
-    BigDecimal price = serviceReq.getPrice();
+    // BigDecimal price = serviceReq.getPrice();
     Long serviceId = serviceReq.getServiceId();
     Long recordId = serviceReq.getRecordId();
 
@@ -213,6 +213,7 @@ public class CarServiceController extends MobileBaseController {
     }
 
     CarServiceRecord carServiceRecord = new CarServiceRecord();
+    BigDecimal price = carServiceRecord.getPrice();
     CarService carService = carServiceService.find(serviceId);
     if (recordId == null) {
       carServiceRecord =
@@ -236,8 +237,10 @@ public class CarServiceController extends MobileBaseController {
       try {
         BigDecimal weChatPrice = price.multiply(new BigDecimal(100));
         response =
-            PayUtil.wechat(carServiceRecord.getRecordNo(), carService.getServiceName(),
-                httpReq.getRemoteAddr(), serviceId.toString(), weChatPrice.intValue() + "");
+            PayUtil.wechat(
+                carServiceRecord.getRecordNo() + "_" + TimeUtils.getLongDateStr(new Date()),
+                carService.getServiceName(), httpReq.getRemoteAddr(), serviceId.toString(),
+                weChatPrice.intValue() + "");
       } catch (DocumentException e) {
         e.printStackTrace();
       }

@@ -22,4 +22,12 @@ public interface VehicleService extends BaseService<Vehicle, Long> {
    * @return
    */
   Vehicle getVehicleByPlate(String plate);
+
+  /**
+   * 根据车牌架查询车辆
+   * 
+   * @param vehicleNo
+   * @return
+   */
+  Vehicle getVehicleByVehicleNo(String vehicleNo);
 }

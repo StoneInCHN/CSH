@@ -26,4 +26,18 @@ public class VehicleDaoImpl extends BaseDaoImpl<Vehicle, Long> implements Vehicl
     }
   }
 
+  @Override
+  public Vehicle getVehicleByVehicleNo(String vehicleNo) {
+    if (vehicleNo == null) {
+      return null;
+    }
+    try {
+      String jpql = "select vehicle from Vehicle vehicle where vehicle.vehicleNo = :vehicleNo";
+      return entityManager.createQuery(jpql, Vehicle.class).setFlushMode(FlushModeType.COMMIT)
+          .setParameter("vehicleNo", vehicleNo).getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
+
 }

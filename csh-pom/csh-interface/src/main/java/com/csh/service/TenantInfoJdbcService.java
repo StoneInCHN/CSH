@@ -19,7 +19,7 @@ public interface TenantInfoJdbcService {
    * @return
    */
   public Page<Map<String, Object>> getTenantInfos(String lng, String lat, Pageable pageable,
-      int radius, Long categoryId);
+      int radius, Long categoryId, Long tenantId);
 
 
 }

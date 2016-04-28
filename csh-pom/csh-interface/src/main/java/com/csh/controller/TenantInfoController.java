@@ -85,11 +85,38 @@ public class TenantInfoController extends MobileBaseController {
     String longitude = tenantInfoReq.getLongitude();// 经度
     Long serviceCategoryId = tenantInfoReq.getServiceCategoryId();
 
+    Long tenantId = null;
+    EndUser endUser = endUserService.find(userId);
+    if (endUser.getDefaultVehicle() != null) {
+      tenantId = endUser.getDefaultVehicle().getTenantID();
+    }
+
+
     Pageable pageable = new Pageable(tenantInfoReq.getPageNumber(), tenantInfoReq.getPageSize());
     Page<Map<String, Object>> tenantPage =
         tenantInfoJdbcService.getTenantInfos(longitude, latitude, pageable, radius,
-            serviceCategoryId);
+            serviceCategoryId, tenantId);
+    if (tenantId != null) {
+      TenantInfo bindTenant = tenantInfoService.find(tenantId);
 
+      if (bindTenant != null) {
+        Boolean flag = false;
+        for (CarService service : bindTenant.getCarServices()) {
+          if (service.getServiceCategory().getId().equals(serviceCategoryId)) {
+            flag = true;
+            break;
+          }
+        }
+        if (flag) {
+          String[] properties =
+              {"id", "contactPhone", "latitude", "longitude", "address", "tenantName", "photo",
+                  "praiseRate", "distance"};
+          Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, bindTenant);
+          tenantPage.getContent().add(0, map);
+        }
+
+      }
+    }
     for (Map<String, Object> map : tenantPage.getContent()) {
       TenantInfo tenantInfo = tenantInfoService.find(Long.parseLong(map.get("id").toString()));
       List<CarService> services =
