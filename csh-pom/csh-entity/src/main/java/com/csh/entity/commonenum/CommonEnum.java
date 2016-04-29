@@ -550,4 +550,19 @@ public class CommonEnum {
     file
   }
 
+  public enum AreaRegions{
+    /**
+     * 省
+     */
+    province,
+    /**
+     * 市
+     */
+    municipality,
+    /**
+     * 区或县
+     */
+    prefecture
+  }
+  
 }

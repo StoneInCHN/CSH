@@ -83,6 +83,26 @@ $().ready(function() {
                      	<table class="input tabContent">
                      		<tr>
 								<th>
+									<span class="requiredField">*</span>${message("csh.insurance.parent")}::
+								</th>
+								<td>
+									<select name="parentId">
+										<option value="">${message("csh.insurance.root")}</option>
+										[#list categories as category]
+											<option value="${category.id}">
+												[#if category.grade != 0]
+													[#list 1..category.grade as i]
+														&nbsp;&nbsp;
+													[/#list]
+												[/#if]
+												${category.name}
+											</option>
+										[/#list]
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
 									<span class="requiredField">*</span>${message("csh.insurance.name")}:
 								</th>
 								<td>

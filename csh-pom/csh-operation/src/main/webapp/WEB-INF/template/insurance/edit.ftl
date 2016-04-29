@@ -78,6 +78,28 @@ $().ready(function() {
 						<table class="input tabContent">
 							<tr>
 								<th>
+									${message("csh.insurance.parent")}:
+								</th>
+								<td>
+									<select name="parentId">
+										<option value="">${message("csh.insurance.root")}</option>
+										[#list categorys as category]
+											[#if category != insuranceCompany && !children?seq_contains(category)]
+												<option value="${category.id}"[#if category == insuranceCompany.parent] selected="selected"[/#if]>
+													[#if category.grade != 0]
+														[#list 1..category.grade as i]
+															&nbsp;&nbsp;
+														[/#list]
+													[/#if]
+													${category.name}
+												</option>
+											[/#if]
+										[/#list]
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
 									<span class="requiredField">*</span>${message("csh.insurance.name")}:
 								</th>
 								<td>

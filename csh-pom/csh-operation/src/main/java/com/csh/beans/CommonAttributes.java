@@ -17,6 +17,7 @@ public final class CommonAttributes {
 	public static final String COMMON_CONFIG_PROPERTIES_PATH = "/common-config.properties";
 	
 	
+	
 	/**
 	 * 不可实例化
 	 */

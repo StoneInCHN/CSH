@@ -6,9 +6,15 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.csh.beans.Setting;
+import com.csh.entity.Area;
+import com.csh.entity.commonenum.CommonEnum.AreaRegions;
 
 
 /**
@@ -50,14 +56,14 @@ public class CommonUtils {
     String result = null;
     StringBuffer sbf = new StringBuffer();
     Setting setting = SettingUtils.get();
-    String httpUrl = setting.getVehicleOilAPIHttpUrl() ;
+    String httpUrl = setting.getVehicleOilAPIHttpUrl();
     try {
       URL url = new URL(httpUrl);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("GET");
       // 填入apikey到HTTP header
       connection.setRequestProperty("apikey", setting.getVehicleOilAPIKey());
-      //connection.setRequestProperty("apikey", "7bb8ed487692b2c2dd290d477d879236");
+      // connection.setRequestProperty("apikey", "7bb8ed487692b2c2dd290d477d879236");
       connection.connect();
       InputStream is = connection.getInputStream();
       reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -74,7 +80,7 @@ public class CommonUtils {
     return result;
   }
 
-  public static String getShortPlate(String prov){
+  public static String getShortPlate(String prov) {
     String shortPlate = null;
     switch (prov) {
       case "北京":
@@ -181,17 +187,53 @@ public class CommonUtils {
     }
     return shortPlate;
   }
-  
-  public static BigDecimal getOilPrice(String price,String prov){
+
+  public static BigDecimal getOilPrice(String price, String prov) {
     if (prov.equals("北京") && price.contains("京")) {
-       String p1 = price.split("京")[0];
-       price = p1.substring(0, p1.length() - 1);
-       
-    }else if(prov.equals("上海") && price.contains("沪")) {
+      String p1 = price.split("京")[0];
+      price = p1.substring(0, p1.length() - 1);
+
+    } else if (prov.equals("上海") && price.contains("沪")) {
       String p1 = price.split("沪")[0];
       price = p1.substring(0, p1.length() - 1);
     }
     return new BigDecimal(price);
   }
- 
+
+
+  public static Map<AreaRegions, String> spritArea(Area area) {
+    Map<AreaRegions, String> maps = new HashMap<AreaRegions, String>();
+    List<String> regions = new ArrayList<String>();
+    regions.add(area.getName());
+    if (area.getParent() != null) {
+      Area parent = area.getParent();
+      regions.add(parent.getName());
+      if (parent.getParent() != null) {
+        Area root = parent.getParent();
+        regions.add(root.getName());
+      }
+    }
+    switch (regions.size()) {
+      case 1:
+        maps.put(AreaRegions.province, regions.get(0));
+        maps.put(AreaRegions.municipality,null);
+        maps.put(AreaRegions.prefecture,null);
+        break;
+      case 2:
+        maps.put(AreaRegions.province, regions.get(1));
+        maps.put(AreaRegions.municipality, regions.get(0));
+        maps.put(AreaRegions.prefecture,null);
+        break;
+      case 3:
+        maps.put(AreaRegions.province, regions.get(2));
+        maps.put(AreaRegions.municipality, regions.get(1));
+        maps.put(AreaRegions.prefecture, regions.get(0));
+        break;
+      default:
+        break;
+    }
+
+    return maps;
+  }
+
 }

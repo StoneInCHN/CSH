@@ -1,11 +1,21 @@
 package com.csh.entity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -30,6 +40,9 @@ public class InsuranceCompany extends BaseEntity {
    */
   private static final long serialVersionUID = 4276670591170096994L;
 
+  /** 树路径分隔符 */
+  public static final String TREE_PATH_SEPARATOR = ",";
+  
   /**
    * 公司名字
    */
@@ -67,7 +80,20 @@ public class InsuranceCompany extends BaseEntity {
    */
   private String phoneNo;
 
-  @Field(store = Store.NO,index = Index.UN_TOKENIZED)
+  /** 树路径 */
+  private String treePath;
+
+  /** 层级 */
+  private Integer grade;
+
+  /** 上级服务 */
+  private InsuranceCompany parent;
+
+  /** 下级服务 */
+  private Set<InsuranceCompany> children = new HashSet<InsuranceCompany>();
+
+
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
   public String getName() {
     return name;
   }
@@ -133,6 +159,57 @@ public class InsuranceCompany extends BaseEntity {
     this.address = address;
   }
 
+  @Column(nullable = false, updatable = false)
+  public String getTreePath() {
+    return treePath;
+  }
 
+  public void setTreePath(String treePath) {
+    this.treePath = treePath;
+  }
+
+  @Column(nullable = false)
+  public Integer getGrade() {
+    return grade;
+  }
+
+  public void setGrade(Integer grade) {
+    this.grade = grade;
+  }
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  public InsuranceCompany getParent() {
+    return parent;
+  }
+
+  public void setParent(InsuranceCompany parent) {
+    this.parent = parent;
+  }
+
+  @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  public Set<InsuranceCompany> getChildren() {
+    return children;
+  }
+
+  public void setChildren(Set<InsuranceCompany> children) {
+    this.children = children;
+  }
+
+  /**
+   * 获取树路径
+   * 
+   * @return 树路径
+   */
+  @Transient
+  public List<Long> getTreePaths() {
+    List<Long> treePaths = new ArrayList<Long>();
+    String[] ids = StringUtils.split(getTreePath(), TREE_PATH_SEPARATOR);
+    if (ids != null) {
+      for (String id : ids) {
+        treePaths.add(Long.valueOf(id));
+      }
+    }
+    return treePaths;
+  }
 
 }

@@ -148,7 +148,9 @@ public class UcpaasUtil {
               .append(",").append("\"to\":").append("\"" + mobile + "\"").append(",")
               .append("\"templateId\":").append("\"" + template + "\"").append(",")
               .append("\"param\":").append("\"" + param + "\"").append("}}")).toString();
-      // System.out.println(body);
+       System.out.println(reqUrl);
+       System.out.println(body);
+       System.out.println(head);
       // {"resp":{"respCode":"000000","failure":1,"templateSMS":{"createDate":20140623185016,"smsId":"f96f79240e372587e9284cd580d8f953"}}}
       String response = ApiUtils.post(reqUrl, body, head);
       return response;
