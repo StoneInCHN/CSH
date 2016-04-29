@@ -250,7 +250,7 @@ public class BeautifyReservationController extends BaseController
     filters.add (tenantInfoFilter);
     
     List<CarService> carServiceList = carServiceService.findList (null, filters,null);
-    if (carServiceList == null)
+    if (carServiceList == null || carServiceList.size () ==0)
     {
       return ERROR_MESSAGE;
     }

@@ -72,8 +72,14 @@ var carService_manager_tool = {
 					    		});
 					    		$('.car-service').hide();
 					    		$('#addServiceName').textbox({
-					    			required:false
+					    			value:record.categoryName,
+					    			delay:3000,
+					    			readonly:true,
+					    			required:true,
+					    			validType:"remote['../carService/uniqueServiceNameCheck.jhtml?serviceCategoryId="+record.id+"','serviceName']",
+					    			invalidMessage:"该服务已经存在"
 					    		});
+					    		
 					    	}else{
 					    		$("#addCarServicePrice").textbox({
 					    			readonly:false,
@@ -87,7 +93,12 @@ var carService_manager_tool = {
 					    		$("#addCarServicePromotionPrice").textbox('setValue',0);
 					    		$('.car-service').show();
 					    		$('#addServiceName').textbox({
-					    			required:true
+					    			value:"",
+					    			delay:3000,
+					    			readonly:false,
+					    			required:true,
+					    			validType:"remote['../carService/uniqueServiceNameCheck.jhtml?serviceCategoryId="+record.id+"','serviceName']",
+					    			invalidMessage:"该服务已经存在"
 					    		});
 					    	}
 					    }
@@ -228,6 +239,7 @@ var carService_manager_tool = {
 			    }],
 			    onLoad:function(){
 			    	var serviceCategoryId = $("#editCarServiceCategory").attr("data-value");
+			    	var serviceId=$("#editCarServiceId").val();
 			    	$("#editCarServiceCategory").combobox({    
 					    valueField:'id',
 					    textField:'categoryName',
@@ -252,23 +264,38 @@ var carService_manager_tool = {
 						    		});
 						    		$('.car-service').hide();
 						    		$('#editServiceName').textbox({
-						    			required:false
+						    			delay:3000,
+						    			readonly:true,
+						    			required:true,
+						    			value: $('#editCarServiceCategory').combobox("getText"),
+						    			validType:"remote['../carService/uniqueServiceNameCheck.jhtml?serviceId="+serviceId+"&serviceCategoryId="+newValue+"','serviceName']",
+						    			invalidMessage:"该服务已经存在"
 						    		});
+						    		
 						    	}else{
 						    		$("#editCarServicePrice").textbox({
 						    			readonly:false,
 						    			min:0
 						    		});
-						    		$("#editCarServicePrice").textbox('setValue',0);
+						    		
 						    		$("#editCarServicePromotionPrice").textbox({
 						    			readonly:false,
 						    			min:0
 						    		});
-						    		$("#editCarServicePromotionPrice").textbox('setValue',0);
+						    		
 						    		$('.car-service').show();
 						    		$('#editServiceName').textbox({
-						    			required:true
+						    			delay:3000,
+						    			readonly:false,
+						    			required:true,
+						    			validType:"remote['../carService/uniqueServiceNameCheck.jhtml?serviceId="+serviceId+"&serviceCategoryId="+newValue+"','serviceName']",
+						    			invalidMessage:"该服务已经存在"
 						    		});
+						    		if(oldValue){
+						    			$('#editServiceName').textbox('setValue','');
+						    			$("#editCarServicePrice").textbox('setValue',0);
+						    			$("#editCarServicePromotionPrice").textbox('setValue',0);
+						    		}
 						    	}
 						    }
 			    	});

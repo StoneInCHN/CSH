@@ -92,7 +92,7 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
    * 车牌
    */
   private Vehicle vehicle;
-  private TenantClearingRecord tenantClearingRecord;
+  private DistributorDeductClearingRecord distributorDeductClearingRecord;
 
   /**
    * 租户ID
@@ -221,17 +221,7 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
 
   }
 
-  @ManyToOne
-  public TenantClearingRecord getTenantClearingRecord() {
-    return tenantClearingRecord;
-  }
-
-  public void setTenantClearingRecord(TenantClearingRecord tenantClearingRecord) {
-    this.tenantClearingRecord = tenantClearingRecord;
-  }
-
-
-
+  
 
   @JsonProperty
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
@@ -263,6 +253,18 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
   public void setDeductMoney (BigDecimal deductMoney)
   {
     this.deductMoney = deductMoney;
+  }
+
+  @ManyToOne
+  public DistributorDeductClearingRecord getDistributorDeductClearingRecord ()
+  {
+    return distributorDeductClearingRecord;
+  }
+
+  public void setDistributorDeductClearingRecord (
+      DistributorDeductClearingRecord distributorDeductClearingRecord)
+  {
+    this.distributorDeductClearingRecord = distributorDeductClearingRecord;
   }
 
 

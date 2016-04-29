@@ -1,5 +1,5 @@
 <form id="editCarService_form" method="post">   
-		<input type="hidden" name="id" value="${carService.id}">  
+		<input type="hidden" id="editCarServiceId" name="id" value="${carService.id}">  
 	  <table class="table table-striped"  border="0">
 	    <tr>
     		
@@ -7,9 +7,9 @@
     		<td>
     			 <input  class="easyui-textbox" id= "editCarServiceCategory" data-value="${carService.serviceCategory.id}" name="serviceCategoryId"  data-options="required:true"/>
     		</td>
-    		<th class='car-service'>${message("csh.carService.serviceName")}:</th>
-    		<td class='car-service'>
-    			 <input  class="easyui-textbox" value="${carService.serviceName}" id= "addServiceName" name="serviceName"  data-options="required:true"/>
+    		<th>${message("csh.carService.serviceName")}:</th>
+    		<td>
+    			 <input  class="easyui-textbox" value="${carService.serviceName}" id= "editServiceName" name="serviceName"  data-options="required:true"/>
     		</td>
     	</tr>
     	<tr class='car-service'>

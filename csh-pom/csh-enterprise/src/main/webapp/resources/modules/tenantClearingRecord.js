@@ -124,7 +124,7 @@ var tenantClearingRecord_manager_tool = {
 						onLoadSuccess:function(){
 							$("#amountOfCurrentPeriod").textbox('setValue',totalMoney);
 							var rate = $('#platformRate').val();
-							$("#amountRealIncome").textbox('setValue',totalMoney*parseFloat(1-rate));
+							$("#amountRealIncome").textbox('setValue',math.mul(totalMoney,parseFloat(1-rate)));
 						}
 					});
 					

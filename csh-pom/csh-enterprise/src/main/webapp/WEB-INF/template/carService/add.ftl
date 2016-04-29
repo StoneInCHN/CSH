@@ -6,9 +6,9 @@
     		<td>
     			 <input  class="easyui-combobox" id= "addCarServiceCategory" name="serviceCategoryId"  data-options="required:true"/>
     		</td>
-    		<th class="car-service">${message("csh.carService.serviceName")}:</th>
-    		<td class="car-service">
-    			 <input  class="easyui-textbox"  id= "serviceName" name="serviceName"/>
+    		<th>${message("csh.carService.serviceName")}:</th>
+    		<td>
+    			 <input  class="easyui-textbox"  id= "addServiceName" name="serviceName"/>
     		</td>
     	</tr>
     	<tr class='car-service'>

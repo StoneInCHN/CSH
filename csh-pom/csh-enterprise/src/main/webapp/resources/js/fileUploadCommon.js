@@ -78,7 +78,6 @@ function singleUpload(options) {
 
 	// 实例化
 	if(options.createOption){
-		debugger;
 		uploader = WebUploader.create(options.createOption);
 	}
 	

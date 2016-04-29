@@ -2,9 +2,7 @@ package com.csh.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import com.csh.beans.FileInfo.FileType;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
@@ -45,7 +42,6 @@ import com.csh.service.FileService;
 import com.csh.service.ServiceCategoryService;
 import com.csh.service.TenantAccountService;
 import com.csh.utils.DateTimeUtils;
-import com.csh.utils.FieldFilterUtils;
 
 /**
  * 服务配置
@@ -283,4 +279,37 @@ public class CarServiceController extends BaseController
     }
   }
   
+  @RequestMapping (value = "/uniqueServiceNameCheck", method = RequestMethod.POST)
+  public @ResponseBody Boolean uniqueServiceNameCheck (Long serviceId, Long serviceCategoryId,String serviceName)
+  {
+    ServiceCategory category = serviceCategoryService.find (serviceCategoryId);
+    
+    com.csh.framework.filter.Filter tenantFilter = new com.csh.framework.filter.Filter 
+        ("tenantInfo", Operator.eq, tenantAccountService.getCurrentTenantInfo ());
+    com.csh.framework.filter.Filter serviceNameFilter = new com.csh.framework.filter.Filter 
+        ("serviceName", Operator.eq, serviceName);
+    com.csh.framework.filter.Filter serviceCategoryFilter = new com.csh.framework.filter.Filter 
+        ("serviceCategory", Operator.eq, category);
+    if (serviceCategoryId == 2) //洗车服务
+    {
+      //serviceId 为空表示update方法
+      if (serviceId !=null)
+      {
+        com.csh.framework.filter.Filter idFilter = new com.csh.framework.filter.Filter 
+            ("id", Operator.ne, serviceId);
+       return  !carServiceService.exists (tenantFilter,serviceNameFilter,serviceCategoryFilter,idFilter);
+      }else {
+        return !carServiceService.exists (tenantFilter,serviceNameFilter,serviceCategoryFilter);
+      }
+    }else {                     //其他服务
+      if (serviceId !=null)
+      {
+        com.csh.framework.filter.Filter idFilter = new com.csh.framework.filter.Filter 
+            ("id", Operator.ne, serviceId);
+        return !carServiceService.exists (tenantFilter,serviceCategoryFilter,idFilter);
+      }else {
+        return !carServiceService.exists (tenantFilter,serviceCategoryFilter);
+      }
+    }
+  }
 }
