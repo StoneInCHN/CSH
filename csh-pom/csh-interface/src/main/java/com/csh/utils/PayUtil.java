@@ -86,7 +86,7 @@ public class PayUtil {
             + "&trade_type=APP&key=" + wechat_Key;
     System.out.println(stringSignTemp);
     String sign = MD5.MD5Encode(stringSignTemp).toUpperCase();
-    System.out.println(sign);
+    // System.out.println(sign);
     String xml =
         "<xml>" + "<appid>" + wechat_appid + "</appid>" + "<body>" + body + "</body>" + "<mch_id>"
             + wechat_mch_id + "</mch_id>" + "<nonce_str>" + nonce_str + "</nonce_str>"

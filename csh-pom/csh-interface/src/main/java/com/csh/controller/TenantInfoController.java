@@ -187,7 +187,8 @@ public class TenantInfoController extends MobileBaseController {
 
     List<Map<String, Object>> service_map = new ArrayList<Map<String, Object>>();
     Set<String> categoryNames = new HashSet<String>();
-    String[] service_properties = {"id", "serviceName", "price", "promotionPrice"};
+    String[] service_properties =
+        {"id", "serviceName", "price", "promotionPrice", "serviceDesc", "imgPath"};
     for (CarService carService : tenantInfo.getCarServices()) {
       List<Map<String, Object>> sub_service_maps = new ArrayList<Map<String, Object>>();
       Map<String, Object> sub_service_map = new HashMap<String, Object>();

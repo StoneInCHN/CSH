@@ -213,12 +213,12 @@ public class CarServiceController extends MobileBaseController {
     }
 
     CarServiceRecord carServiceRecord = new CarServiceRecord();
-    BigDecimal price = carServiceRecord.getPrice();
+
     CarService carService = carServiceService.find(serviceId);
     if (recordId == null) {
       carServiceRecord =
           carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
-              price, paymentType, null);
+              carService.getPromotionPrice(), paymentType, null);
       if (LogUtil.isDebugEnabled(CarServiceController.class)) {
         LogUtil
             .debug(
@@ -233,14 +233,15 @@ public class CarServiceController extends MobileBaseController {
       carServiceRecord = carServiceRecordService.find(recordId);
     }
 
+    BigDecimal price = carServiceRecord.getPrice();
     if (PaymentType.WECHAT.equals(paymentType)) {
       try {
         BigDecimal weChatPrice = price.multiply(new BigDecimal(100));
         response =
             PayUtil.wechat(
-                carServiceRecord.getRecordNo() + "_" + TimeUtils.getLongDateStr(new Date()),
-                carService.getServiceName(), httpReq.getRemoteAddr(), serviceId.toString(),
-                weChatPrice.intValue() + "");
+                carServiceRecord.getRecordNo() + "_"
+                    + TimeUtils.format("mmss", new Date().getTime()), carService.getServiceName(),
+                httpReq.getRemoteAddr(), serviceId.toString(), weChatPrice.intValue() + "");
       } catch (DocumentException e) {
         e.printStackTrace();
       }
