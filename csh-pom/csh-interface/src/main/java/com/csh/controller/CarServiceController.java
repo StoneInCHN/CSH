@@ -204,18 +204,18 @@ public class CarServiceController extends MobileBaseController {
 
     EndUser endUser = endUserService.find(userId);
     Wallet wallet = endUser.getWallet();
-    if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
-      if (serviceReq.getPrice().compareTo(wallet.getBalanceAmount()) > 0) {
-        response.setCode(CommonAttributes.FAIL_COMMON);
-        response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
-        return response;
-      }
-    }
 
     CarServiceRecord carServiceRecord = new CarServiceRecord();
 
     CarService carService = carServiceService.find(serviceId);
     if (recordId == null) {
+      if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
+        if (carService.getPromotionPrice().compareTo(wallet.getBalanceAmount()) > 0) {
+          response.setCode(CommonAttributes.FAIL_COMMON);
+          response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+          return response;
+        }
+      }
       carServiceRecord =
           carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
               carService.getPromotionPrice(), paymentType, null);
@@ -231,6 +231,13 @@ public class CarServiceController extends MobileBaseController {
       }
     } else {
       carServiceRecord = carServiceRecordService.find(recordId);
+      if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
+        if (carServiceRecord.getPrice().compareTo(wallet.getBalanceAmount()) > 0) {
+          response.setCode(CommonAttributes.FAIL_COMMON);
+          response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+          return response;
+        }
+      }
     }
 
     BigDecimal price = carServiceRecord.getPrice();
@@ -249,9 +256,9 @@ public class CarServiceController extends MobileBaseController {
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("out_trade_no", carServiceRecord.getRecordNo());
       response.setMsg(map);
-      response.setDesc(carServiceRecord.getId().toString());
       response.setCode(CommonAttributes.SUCCESS);
     }
+    response.setDesc(carServiceRecord.getId().toString());
 
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
