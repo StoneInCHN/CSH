@@ -107,8 +107,8 @@ public class DeviceInfoController extends BaseController {
     DeviceInfo info = deviceInfoService.find(deviceInfo.getId());
     DeviceType type = deviceTypeService.find(typeId);
     info.setType(type);
-    info.setDeviceNo(deviceInfo.getDeviceNo());
     info.setSimNo(deviceInfo.getSimNo());
+    deviceInfoService.update(info);
     return "redirect:list.jhtml";
   }
 

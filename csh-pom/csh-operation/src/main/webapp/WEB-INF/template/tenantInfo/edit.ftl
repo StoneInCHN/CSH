@@ -14,6 +14,10 @@
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
 <script type="text/javascript" src="${base}/resources/js/jquery.lSelect.js"></script>
+<script type="text/javascript" src="${base}/resources/js/bootstrap-modal.js"></script>
+<style  type="text/css" >
+	#allmap {width: 550px;height: 400px;overflow: hidden;margin:0}
+</style>
 <script type="text/javascript">
 $().ready(function() {
 
@@ -27,13 +31,32 @@ $().ready(function() {
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			name: "required",
-			email: {
-				required: true,
-				email: true
+			tenantName: {
+				required: true
 			},
-			roleIds: "required",
-			adminStatus: "required"
+			contactPerson: {
+				required: true
+			},
+			email:{
+				required:true,
+				email:true
+			},
+			accountStatus: {
+				required: true
+			},
+			contactPhone:{
+				required :true,
+				isMobile:true
+			},
+			versionConfigId:{
+				required :true
+			},
+			areaId:{
+				required:true
+			},
+			address:{
+				required:true
+			}
 		}
 	});
 
@@ -58,7 +81,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.tenantInfo.edit")}i</div>
+                  <div class="pull-left">${message("csh.tenantInfo.edit")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -112,6 +135,16 @@ $().ready(function() {
 								</td>
 							</tr>
 							<tr>
+								<th><span class="requiredField">*</span>${message("csh.apply.pisotion.point")}:</th>
+								<td>
+									<input type="text" class="text" style="width:100px" readonly id="longitude" value="${tenantInfo.longitude}" name="longitude" />
+									<input type="text" class="text" style="width:100px" readonly  id="latitude" value="${tenantInfo.latitude}" name="latitude" />
+									<button type="button" class="btn btn-info " id="selectPositionPoint">
+									  ${message("csh.apply.select.pisotion.point")}
+									</button>
+								</td>
+							</tr>
+							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.tenantInfo.email")}:
 								</th>
@@ -148,11 +181,10 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.tenantInfo.accoutStatus.select")}:
 								</th>
 								<td>
-									<select name="accoutStatus" class="text">
-										<option value="">${message("csh.tenantInfo.accoutStatus.select")}</option>
-										<option value="ACTIVED">${message("csh.tenantInfo.accoutStatus.ACTIVED")}</option>
-										<option value="LOCKED">${message("csh.tenantInfo.accoutStatus.LOCKED")}</option>
-										<option value="DELETE">${message("csh.tenantInfo.accoutStatus.DELETE")}</option>
+									<select name="accountStatus" class="text">
+										<option value="ACTIVED"[#if tenantInfo.accountStatus == "ACTIVED"] selected="selected" [/#if] >${message("csh.tenantInfo.accoutStatus.ACTIVED")}</option>
+										<option value="LOCKED" [#if tenantInfo.accountStatus == "LOCKED"] selected="selected" [/#if]>${message("csh.tenantInfo.accoutStatus.LOCKED")}</option>
+										<option value="DELETE" [#if tenantInfo.accountStatus == "DELETE"] selected="selected" [/#if]>${message("csh.tenantInfo.accoutStatus.DELETE")}</option>
 									</select>
 								</td>
 							</tr>
@@ -161,7 +193,7 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.tenantInfo.remark")}:
 								</th>
 								<td>
-									<input type="text" name="remark" class="text" maxlength="200" />
+									<input type="text" name="remark" class="text" maxlength="200" value="${tenantInfo.remark}"/>
 								</td>
 							</tr>
 						</table>
@@ -185,6 +217,87 @@ $().ready(function() {
         </div>
 	   </div>
 	</div>
+		<!-- Modal start -->
+	<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" >
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="mapModalLabel">
+	        	${message("csh.tenantInfo.area")}
+	        	<input type="text" readonly class="text" id="modalTitleInput">
+	        </h4>
+	      </div>
+	      <div class="modal-body">
+	       	<div id="allmap"></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Modal end -->
 	<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+	<script type="text/javascript">
+		//百度地图API功能
+		function loadJScript() {
+			var script = document.createElement("script");
+			script.type = "text/javascript";
+			script.src = "http://api.map.baidu.com/api?v=2.0&ak=D767b598a9f1e43c3cadc4fe26cdb610&callback=init";
+			document.body.appendChild(script);
+		}
+		function init() {
+			// 百度地图API功能
+			var $longitude = $("#longitude");
+			var $latitude = $("#latitude");
+			console.log($longitude.val());
+			console.log($latitude.val());
+			var address = $("select[name='areaId_select']  option:selected").text();
+			var map = new BMap.Map("allmap");
+			var point = new BMap.Point($longitude.val(),$latitude.val());
+			map.centerAndZoom(point,12);
+            map.addControl(new BMap.NavigationControl());
+            map.enableScrollWheelZoom(true);
+            map.addControl(new BMap.OverviewMapControl());              //添加默认缩略地图控件
+			map.addControl(new BMap.OverviewMapControl({isOpen:true}));   //右上角，打开
+			map.addEventListener("click", showInfo);
+			var marker = new BMap.Marker(new BMap.Point($longitude.val(), $latitude.val()));
+			map.addOverlay(marker);    
+			 function showInfo(e){
+				 if(marker){
+					map.removeOverlay(marker);
+				 }
+				$("#longitude").val(e.point.lng);
+				$("#latitude").val(e.point.lat);
+				marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注
+				map.addOverlay(marker);              // 将标注添加到地图中
+				marker.enableDragging(); 
+				marker.addEventListener("dragend", function showInfo(){
+					 var p = marker.getPosition();       //获取marker的位置
+					 $("#longitude").val(p.lng);
+					 $("#latitude").val(p.lat); 
+				});
+			};
+			$("#modalTitleInput").attr("placeholder",address);
+		}  
+		
+		var $selectPositionPoint = $("#selectPositionPoint");
+		$selectPositionPoint.click(function(){
+			
+			var val = $("#areaId").val();
+			if(!val){
+				alert("请先选择地区");
+			}else{
+				$('#mapModal').modal("show");
+			}
+			
+			
+		});
+		$('#mapModal').on('show.bs.modal', function (e) {
+			loadJScript();
+		})
+</script>
 </body>
 </html>

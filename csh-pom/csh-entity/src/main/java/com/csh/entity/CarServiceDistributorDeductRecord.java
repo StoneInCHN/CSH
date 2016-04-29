@@ -92,6 +92,7 @@ public class CarServiceDistributorDeductRecord extends BaseEntity {
    * 车牌
    */
   private Vehicle vehicle;
+  
   private DistributorDeductClearingRecord distributorDeductClearingRecord;
 
   /**

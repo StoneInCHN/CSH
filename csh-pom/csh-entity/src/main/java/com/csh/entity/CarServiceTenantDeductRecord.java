@@ -3,15 +3,12 @@ package com.csh.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Field;
@@ -34,7 +31,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Indexed(index = "carServiceTenantDeductRecord")
 @Table(name = "csh_car_service_tenant_deduct_record")
-@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_car_service_tenant_deduct_record_sequence")
+@SequenceGenerator(name = "sequenceGenerator",
+    sequenceName = "csh_car_service_tenant_deduct_record_sequence")
 public class CarServiceTenantDeductRecord extends BaseEntity {
 
   /**
@@ -67,20 +65,20 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
    */
   private BigDecimal price;
 
-//  /**
-//   * 保养预约
-//   */
-//  private MaintainReservation maintainReservation;
-//
-//  /**
-//   * 维修预约
-//   */
-//  private RepareReservation repareReservation;
-//
-//  /**
-//   * 美容预约
-//   */
-//  private BeautifyReservation beautifyReservation;
+  // /**
+  // * 保养预约
+  // */
+  // private MaintainReservation maintainReservation;
+  //
+  // /**
+  // * 维修预约
+  // */
+  // private RepareReservation repareReservation;
+  //
+  // /**
+  // * 美容预约
+  // */
+  // private BeautifyReservation beautifyReservation;
   /**
    * 商家名称
    */
@@ -105,7 +103,7 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
    * 车牌
    */
   private Vehicle vehicle;
-  
+
   private TenantDeductClearingRecord tenantDeductClearingRecord;
 
   /**
@@ -211,23 +209,23 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
     this.chargeStatus = chargeStatus;
   }
 
-//  @OneToOne(mappedBy = "carServiceRecord")
-//  public MaintainReservation getMaintainReservation() {
-//    return maintainReservation;
-//  }
-//
-//  public void setMaintainReservation(MaintainReservation maintainReservation) {
-//    this.maintainReservation = maintainReservation;
-//  }
-//
-//  @OneToOne(mappedBy = "carServiceRecord")
-//  public RepareReservation getRepareReservation() {
-//    return repareReservation;
-//  }
-//
-//  public void setRepareReservation(RepareReservation repareReservation) {
-//    this.repareReservation = repareReservation;
-//  }
+  // @OneToOne(mappedBy = "carServiceRecord")
+  // public MaintainReservation getMaintainReservation() {
+  // return maintainReservation;
+  // }
+  //
+  // public void setMaintainReservation(MaintainReservation maintainReservation) {
+  // this.maintainReservation = maintainReservation;
+  // }
+  //
+  // @OneToOne(mappedBy = "carServiceRecord")
+  // public RepareReservation getRepareReservation() {
+  // return repareReservation;
+  // }
+  //
+  // public void setRepareReservation(RepareReservation repareReservation) {
+  // this.repareReservation = repareReservation;
+  // }
 
 
   @Column(scale = 2, precision = 10, nullable = false)
@@ -241,8 +239,8 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
   }
 
   @JsonProperty
-//  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
-//  @FieldBridge(impl = DateBridgeImpl.class)
+  // @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  // @FieldBridge(impl = DateBridgeImpl.class)
   public Date getClearingDate() {
     return clearingDate;
   }
@@ -253,14 +251,11 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
   }
 
   @ManyToOne
-  public TenantDeductClearingRecord getTenantDeductClearingRecord ()
-  {
+  public TenantDeductClearingRecord getTenantDeductClearingRecord() {
     return tenantDeductClearingRecord;
   }
 
-  public void setTenantDeductClearingRecord (
-      TenantDeductClearingRecord tenantDeductClearingRecord)
-  {
+  public void setTenantDeductClearingRecord(TenantDeductClearingRecord tenantDeductClearingRecord) {
     this.tenantDeductClearingRecord = tenantDeductClearingRecord;
   }
 
@@ -276,24 +271,20 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
   }
 
   @ManyToOne
-  public Vehicle getVehicle ()
-  {
+  public Vehicle getVehicle() {
     return vehicle;
   }
 
-  public void setVehicle (Vehicle vehicle)
-  {
+  public void setVehicle(Vehicle vehicle) {
     this.vehicle = vehicle;
   }
 
   @JsonProperty
-  public BigDecimal getDeductMoney ()
-  {
+  public BigDecimal getDeductMoney() {
     return deductMoney;
   }
 
-  public void setDeductMoney (BigDecimal deductMoney)
-  {
+  public void setDeductMoney(BigDecimal deductMoney) {
     this.deductMoney = deductMoney;
   }
 

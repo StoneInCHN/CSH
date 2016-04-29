@@ -87,6 +87,11 @@
 									<a href="../insurance/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.insurance")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:commissionRate"]
+								<li>
+									<a href="../commissionRate/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.commissionRate")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
 				            </ul>
 						</li>
 					[#break /]

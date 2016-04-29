@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -95,12 +96,9 @@ public class TenantClearingRecord extends BaseEntity
   private List<CarServiceRecord> carServiceRecords = new ArrayList<CarServiceRecord> ();
 
   private Long tenantID;
-  /**
-   *非关联本次结算的OrderRebateRecord
-   */
-//  private List<OrderRebateRecord> orderRebateRecordsOutOfCurrentPeriod = new ArrayList<OrderRebateRecord> ();
 
-
+  private TenantInfo tenantInfo;
+  
   @JsonProperty
   @Field(store = Store.NO, index = Index.UN_TOKENIZED)
   @Pattern(regexp = "^[0-9a-zA-Z_-]+$")
@@ -235,8 +233,14 @@ public class TenantClearingRecord extends BaseEntity
     this.platformRate = platformRate;
   }
 
+  @ManyToOne
+  public TenantInfo getTenantInfo() {
+    return tenantInfo;
+  }
 
-  
+  public void setTenantInfo(TenantInfo tenantInfo) {
+    this.tenantInfo = tenantInfo;
+  }
 
   
 }

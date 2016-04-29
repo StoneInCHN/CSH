@@ -121,11 +121,9 @@
 													<th>
 														<a href="javascript:;" class="sort" name="accountStatus">${message("csh.tenantInfo.accountStatus")}</a>
 													</th>
-													<!--
 													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
-													-->
 												</tr>
 											</thead>
 											<tbody>
@@ -163,9 +161,7 @@
 														[/#if]
 													</td>
 													<td>
-														<!--
 														<a href="edit.jhtml?id=${tenantInfo.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
-														-->
 													</td>
 												</tr>
 												[/#list]

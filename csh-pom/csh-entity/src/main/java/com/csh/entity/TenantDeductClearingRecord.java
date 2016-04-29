@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -25,11 +26,11 @@ import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table (name = "csh_tenant_deduct_clearing_record")
-@Indexed(index="tenantDeductClearingRecord")
-@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_tenant_deduct_clearing_record_sequence")
-public class TenantDeductClearingRecord extends BaseEntity
-{
+@Table(name = "csh_tenant_deduct_clearing_record")
+@Indexed(index = "tenantDeductClearingRecord")
+@SequenceGenerator(name = "sequenceGenerator",
+    sequenceName = "csh_tenant_deduct_clearing_record_sequence")
+public class TenantDeductClearingRecord extends BaseEntity {
   /**
    * 
    */
@@ -54,151 +55,135 @@ public class TenantDeductClearingRecord extends BaseEntity
    * 本次结算周期结束时间
    */
   private Date periodEndDate;
-  
+
 
   /**
-   *本次结算周期金额 
+   * 本次结算周期金额
    */
-  private BigDecimal amountOfCurrentPeriod = new BigDecimal (0);
+  private BigDecimal amountOfCurrentPeriod = new BigDecimal(0);
 
   /**
    * 扣除金额 比如个人所得税
    */
-  private BigDecimal reduce=new BigDecimal(0);
-  
+  private BigDecimal reduce = new BigDecimal(0);
+
   /**
    * 备注，记录扣除原因
    */
   private String comments;
+
+  /**
+   * 本次结算周期以外的金额 出现本次结算周期以外的结算金额的情况有， * 每次处理当前结算时候发生了意外的不可预期 的错误导致当前周期结算单位成功生成的情况
+   */
+  private BigDecimal amountOutOfCurrentPeriod = new BigDecimal(0);
+
+  /**
+   * 关联的CarServiceTenantDeductRecord
+   */
+  private List<CarServiceTenantDeductRecord> carServiceTenantDeductRecords =
+      new ArrayList<CarServiceTenantDeductRecord>();
+
+  /**
+   * 租户
+   */
+  private TenantInfo tenantInfo;
   
-  /**
-   * 本次结算周期以外的金额
-   * 出现本次结算周期以外的结算金额的情况有，   * 每次处理当前结算时候发生了意外的不可预期
-   * 的错误导致当前周期结算单位成功生成的情况
-   */
-  private BigDecimal amountOutOfCurrentPeriod = new BigDecimal (0);
-
-  /**
-   *关联的CarServiceRecord 
-   */
-  private List<CarServiceRecord> carServiceRecords = new ArrayList<CarServiceRecord> ();
-
-  private Long tenantID;
-  /**
-   *非关联本次结算的OrderRebateRecord
-   */
-//  private List<OrderRebateRecord> orderRebateRecordsOutOfCurrentPeriod = new ArrayList<OrderRebateRecord> ();
-
 
   @JsonProperty
   @Field(store = Store.NO, index = Index.UN_TOKENIZED)
   @Pattern(regexp = "^[0-9a-zA-Z_-]+$")
   @Length(max = 100)
   @Column(nullable = false, unique = true, length = 100)
-  public String getClearingSn ()
-  {
+  public String getClearingSn() {
     return clearingSn;
   }
 
-  public void setClearingSn (String clearingSn)
-  {
+  public void setClearingSn(String clearingSn) {
     this.clearingSn = clearingSn;
   }
 
-  public ClearingStatus getClearingStatus ()
-  {
+  public ClearingStatus getClearingStatus() {
     return clearingStatus;
   }
 
-  public void setClearingStatus (ClearingStatus clearingStatus)
-  {
+  public void setClearingStatus(ClearingStatus clearingStatus) {
     this.clearingStatus = clearingStatus;
   }
-  
+
   @JsonProperty
-  public Date getPeriodBeginDate ()
-  {
+  public Date getPeriodBeginDate() {
     return periodBeginDate;
   }
 
-  public void setPeriodBeginDate (Date periodBeginDate)
-  {
+  public void setPeriodBeginDate(Date periodBeginDate) {
     this.periodBeginDate = periodBeginDate;
   }
-  
+
   @JsonProperty
-  public Date getPeriodEndDate ()
-  {
+  public Date getPeriodEndDate() {
     return periodEndDate;
   }
 
-  public void setPeriodEndDate (Date periodEndDate)
-  {
+  public void setPeriodEndDate(Date periodEndDate) {
     this.periodEndDate = periodEndDate;
   }
 
   @JsonProperty
-  public BigDecimal getAmountOfCurrentPeriod ()
-  {
+  public BigDecimal getAmountOfCurrentPeriod() {
     return amountOfCurrentPeriod;
   }
 
-  public void setAmountOfCurrentPeriod (BigDecimal amountOfCurrentPeriod)
-  
+  public void setAmountOfCurrentPeriod(BigDecimal amountOfCurrentPeriod)
+
   {
     this.amountOfCurrentPeriod = amountOfCurrentPeriod;
   }
-  
+
   public BigDecimal getReduce() {
-		return reduce;
-	}
+    return reduce;
+  }
 
-	public void setReduce(BigDecimal reduce) {
-		this.reduce = reduce;
-	}
+  public void setReduce(BigDecimal reduce) {
+    this.reduce = reduce;
+  }
 
-	public String getComments() {
-		return comments;
-	}
+  public String getComments() {
+    return comments;
+  }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
-  
-  
-  public BigDecimal getAmountOutOfCurrentPeriod ()
-  {
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
+
+
+  public BigDecimal getAmountOutOfCurrentPeriod() {
     return amountOutOfCurrentPeriod;
   }
 
-  public void setAmountOutOfCurrentPeriod (BigDecimal amountOutOfCurrentPeriod)
-  {
+  public void setAmountOutOfCurrentPeriod(BigDecimal amountOutOfCurrentPeriod) {
     this.amountOutOfCurrentPeriod = amountOutOfCurrentPeriod;
   }
-   
 
-  @OneToMany(mappedBy = "tenantClearingRecord",fetch=FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-  public List<CarServiceRecord> getCarServiceRecords ()
-  {
-    return carServiceRecords;
+  @OneToMany(mappedBy = "tenantDeductClearingRecord", fetch = FetchType.EAGER, cascade = {
+      CascadeType.MERGE, CascadeType.PERSIST})
+  public List<CarServiceTenantDeductRecord> getCarServiceTenantDeductRecords() {
+    return carServiceTenantDeductRecords;
   }
 
-  public void setCarServiceRecords (List<CarServiceRecord> carServiceRecords)
-  {
-    this.carServiceRecords = carServiceRecords;
+  public void setCarServiceTenantDeductRecords(
+      List<CarServiceTenantDeductRecord> carServiceTenantDeductRecords) {
+    this.carServiceTenantDeductRecords = carServiceTenantDeductRecords;
   }
 
-  @org.hibernate.annotations.Index(name="tenantDeductClearingRecord_tenantid")
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
-  public Long getTenantID ()
-  {
-    return tenantID;
+  @ManyToOne
+  public TenantInfo getTenantInfo() {
+    return tenantInfo;
   }
 
-  public void setTenantID (Long tenantID)
-  {
-    this.tenantID = tenantID;
+  public void setTenantInfo(TenantInfo tenantInfo) {
+    this.tenantInfo = tenantInfo;
   }
 
+  
   
 }

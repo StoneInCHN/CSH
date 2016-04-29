@@ -36,12 +36,11 @@ $().ready(function() {
 				required: true
 			},
 			contactPerson: {
-				required: true,
-				pattern:/^[0-9]{1,20}$/
+				required: true
 			},
 			email:{
-					required:true,
-					email:true
+				required:true,
+				email:true
 			},
 			accountStatus: {
 				required: true

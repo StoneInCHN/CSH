@@ -2,13 +2,13 @@ package com.csh.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -25,11 +25,11 @@ import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table (name = "csh_distributor_deduct_clearing_record")
-@Indexed(index="distributorDeductClearingRecord")
-@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_distributor_deduct_clearing_record_sequence")
-public class DistributorDeductClearingRecord extends BaseEntity
-{
+@Table(name = "csh_distributor_deduct_clearing_record")
+@Indexed(index = "distributorDeductClearingRecord")
+@SequenceGenerator(name = "sequenceGenerator",
+    sequenceName = "csh_distributor_deduct_clearing_record_sequence")
+public class DistributorDeductClearingRecord extends BaseEntity {
   /**
    * 
    */
@@ -45,49 +45,40 @@ public class DistributorDeductClearingRecord extends BaseEntity
    */
   private ClearingStatus clearingStatus;
 
-  /**
-   * 本次结算周期开始时间
-   */
-  private Date periodBeginDate;
+
 
   /**
-   * 本次结算周期结束时间
+   * 本次结算周期金额
    */
-  private Date periodEndDate;
-  
-
-  /**
-   *本次结算周期金额 
-   */
-  private BigDecimal amountOfCurrentPeriod = new BigDecimal (0);
+  private BigDecimal amountOfCurrentPeriod = new BigDecimal(0);
 
   /**
    * 扣除金额 比如个人所得税
    */
-  private BigDecimal reduce=new BigDecimal(0);
-  
+  private BigDecimal reduce = new BigDecimal(0);
+
   /**
    * 备注，记录扣除原因
    */
   private String comments;
-  
-  /**
-   * 本次结算周期以外的金额
-   * 出现本次结算周期以外的结算金额的情况有，   * 每次处理当前结算时候发生了意外的不可预期
-   * 的错误导致当前周期结算单位成功生成的情况
-   */
-  private BigDecimal amountOutOfCurrentPeriod = new BigDecimal (0);
 
   /**
-   *关联的CarServiceRecord 
+   * 本次结算周期以外的金额 出现本次结算周期以外的结算金额的情况有， * 每次处理当前结算时候发生了意外的不可预期 的错误导致当前周期结算单位成功生成的情况
    */
-  private List<CarServiceRecord> carServiceRecords = new ArrayList<CarServiceRecord> ();
+  private BigDecimal amountOutOfCurrentPeriod = new BigDecimal(0);
 
-  private Long distributorID;
   /**
-   *非关联本次结算的OrderRebateRecord
+   * 关联的CarServiceDistributorDeductRecord
    */
-//  private List<OrderRebateRecord> orderRebateRecordsOutOfCurrentPeriod = new ArrayList<OrderRebateRecord> ();
+  private List<CarServiceDistributorDeductRecord> carServiceDistributorDeductRecords =
+      new ArrayList<CarServiceDistributorDeductRecord>();
+
+
+  /**
+   * 分销商
+   */
+  private Distributor distributor;
+
 
 
   @JsonProperty
@@ -95,109 +86,75 @@ public class DistributorDeductClearingRecord extends BaseEntity
   @Pattern(regexp = "^[0-9a-zA-Z_-]+$")
   @Length(max = 100)
   @Column(nullable = false, unique = true, length = 100)
-  public String getClearingSn ()
-  {
+  public String getClearingSn() {
     return clearingSn;
   }
 
-  public void setClearingSn (String clearingSn)
-  {
+  public void setClearingSn(String clearingSn) {
     this.clearingSn = clearingSn;
   }
 
-  public ClearingStatus getClearingStatus ()
-  {
+  public ClearingStatus getClearingStatus() {
     return clearingStatus;
   }
 
-  public void setClearingStatus (ClearingStatus clearingStatus)
-  {
+  public void setClearingStatus(ClearingStatus clearingStatus) {
     this.clearingStatus = clearingStatus;
   }
-  
-  @JsonProperty
-  public Date getPeriodBeginDate ()
-  {
-    return periodBeginDate;
-  }
 
-  public void setPeriodBeginDate (Date periodBeginDate)
-  {
-    this.periodBeginDate = periodBeginDate;
-  }
-  
-  @JsonProperty
-  public Date getPeriodEndDate ()
-  {
-    return periodEndDate;
-  }
-
-  public void setPeriodEndDate (Date periodEndDate)
-  {
-    this.periodEndDate = periodEndDate;
-  }
-
-  public BigDecimal getAmountOfCurrentPeriod ()
-  {
+  public BigDecimal getAmountOfCurrentPeriod() {
     return amountOfCurrentPeriod;
   }
 
-  public void setAmountOfCurrentPeriod (BigDecimal amountOfCurrentPeriod)
-  
+  public void setAmountOfCurrentPeriod(BigDecimal amountOfCurrentPeriod)
+
   {
     this.amountOfCurrentPeriod = amountOfCurrentPeriod;
   }
-  
+
   public BigDecimal getReduce() {
-		return reduce;
-	}
+    return reduce;
+  }
 
-	public void setReduce(BigDecimal reduce) {
-		this.reduce = reduce;
-	}
+  public void setReduce(BigDecimal reduce) {
+    this.reduce = reduce;
+  }
 
-	public String getComments() {
-		return comments;
-	}
+  public String getComments() {
+    return comments;
+  }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
-  
-  
-  public BigDecimal getAmountOutOfCurrentPeriod ()
-  {
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
+
+
+  public BigDecimal getAmountOutOfCurrentPeriod() {
     return amountOutOfCurrentPeriod;
   }
 
-  public void setAmountOutOfCurrentPeriod (BigDecimal amountOutOfCurrentPeriod)
-  {
+  public void setAmountOutOfCurrentPeriod(BigDecimal amountOutOfCurrentPeriod) {
     this.amountOutOfCurrentPeriod = amountOutOfCurrentPeriod;
   }
-   
 
-  @OneToMany(mappedBy = "tenantClearingRecord",fetch=FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-  public List<CarServiceRecord> getCarServiceRecords ()
-  {
-    return carServiceRecords;
+  @ManyToOne
+  public Distributor getDistributor() {
+    return distributor;
   }
 
-  public void setCarServiceRecords (List<CarServiceRecord> carServiceRecords)
-  {
-    this.carServiceRecords = carServiceRecords;
-  }
-  
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
-  public Long getDistributorID ()
-  {
-    return distributorID;
+  public void setDistributor(Distributor distributor) {
+    this.distributor = distributor;
   }
 
-  public void setDistributorID (Long distributorID)
-  {
-    this.distributorID = distributorID;
+  @OneToMany(mappedBy = "distributorDeductClearingRecord", fetch = FetchType.EAGER, cascade = {
+      CascadeType.MERGE, CascadeType.PERSIST})
+  public List<CarServiceDistributorDeductRecord> getCarServiceDistributorDeductRecords() {
+    return carServiceDistributorDeductRecords;
   }
 
+  public void setCarServiceDistributorDeductRecords(
+      List<CarServiceDistributorDeductRecord> carServiceDistributorDeductRecords) {
+    this.carServiceDistributorDeductRecords = carServiceDistributorDeductRecords;
+  }
 
-  
 }

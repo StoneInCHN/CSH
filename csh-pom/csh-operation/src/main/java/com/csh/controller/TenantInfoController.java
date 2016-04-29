@@ -82,10 +82,13 @@ public class TenantInfoController extends BaseController {
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(TenantInfo tenantInfo) {
+  public String update(TenantInfo tenantInfo ,Long areaId) {
     if (!isValid(tenantInfo)) {
       return ERROR_VIEW;
     }
+    tenantInfo.setArea(areaService.find(areaId));
+    tenantInfoService.update(tenantInfo,"createDate","orgCode","versionConfig",
+        "praiseRate","storeLogo","license","photo","qrImage","carServices","isHaveAccount","distributor");
     return "redirect:list.jhtml";
   }
 
