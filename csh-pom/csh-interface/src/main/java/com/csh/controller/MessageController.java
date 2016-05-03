@@ -182,18 +182,35 @@ public class MessageController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
-    for (Long msgId : msgIds) {
-      MessageInfo msg = messageInfoService.find(msgId);
-      MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
-      if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
-        msgEndUserService.delete(msgEndUser);
-        messageInfoService.delete(msg);
-      } else if (MessageType.NEWSMSG.equals(msg.getMessageType())) {
-        msgEndUserService.delete(msgEndUser);
-      } else if (MessageType.PROMOTION.equals(msg.getMessageType())) {
-        msgEndUserService.delete(msgEndUser);
+    if (msgIds == null || msgIds.length == 0) {
+      for (MsgEndUser msgEndUser : endUser.getMsgEndUsers()) {
+        MessageInfo msg = msgEndUser.getMessage();
+        if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
+          msgEndUserService.delete(msgEndUser);
+          messageInfoService.delete(msg);
+        } else if (MessageType.NEWSMSG.equals(msg.getMessageType())) {
+          msgEndUserService.delete(msgEndUser);
+        } else if (MessageType.PROMOTION.equals(msg.getMessageType())) {
+          msgEndUserService.delete(msgEndUser);
+        }
+
+      }
+
+    } else {
+      for (Long msgId : msgIds) {
+        MessageInfo msg = messageInfoService.find(msgId);
+        MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
+        if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
+          msgEndUserService.delete(msgEndUser);
+          messageInfoService.delete(msg);
+        } else if (MessageType.NEWSMSG.equals(msg.getMessageType())) {
+          msgEndUserService.delete(msgEndUser);
+        } else if (MessageType.PROMOTION.equals(msg.getMessageType())) {
+          msgEndUserService.delete(msgEndUser);
+        }
       }
     }
+
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);

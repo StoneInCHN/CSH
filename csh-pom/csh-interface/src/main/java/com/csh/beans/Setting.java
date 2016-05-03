@@ -193,6 +193,71 @@ public class Setting implements Serializable {
    */
   private String mapAk;
 
+  /**
+   * 百度车联网api url
+   */
+  private String bdCarMapUrl;
+
+  /**
+   * 百度车联网api key
+   */
+  private String bdCarMapAk;
+
+  /**
+   * 百度车联网api mcode
+   */
+  private String bdCarMcode;
+
+  /**
+   * 百度车联网api 分页 每页记录数
+   */
+  private String bdNumber;
+
+  /**
+   * 百度车联网api 分页 页数
+   */
+  private String bdPage;
+
+
+  public String getBdCarMapUrl() {
+    return bdCarMapUrl;
+  }
+
+  public void setBdCarMapUrl(String bdCarMapUrl) {
+    this.bdCarMapUrl = bdCarMapUrl;
+  }
+
+  public String getBdCarMapAk() {
+    return bdCarMapAk;
+  }
+
+  public void setBdCarMapAk(String bdCarMapAk) {
+    this.bdCarMapAk = bdCarMapAk;
+  }
+
+  public String getBdCarMcode() {
+    return bdCarMcode;
+  }
+
+  public void setBdCarMcode(String bdCarMcode) {
+    this.bdCarMcode = bdCarMcode;
+  }
+
+  public String getBdNumber() {
+    return bdNumber;
+  }
+
+  public void setBdNumber(String bdNumber) {
+    this.bdNumber = bdNumber;
+  }
+
+  public String getBdPage() {
+    return bdPage;
+  }
+
+  public void setBdPage(String bdPage) {
+    this.bdPage = bdPage;
+  }
 
   public String getMapAk() {
     return mapAk;

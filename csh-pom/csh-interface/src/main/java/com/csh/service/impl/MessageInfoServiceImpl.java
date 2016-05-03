@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.jpush.api.push.model.PushPayload;
 
+import com.csh.common.log.LogUtil;
 import com.csh.dao.MessageInfoDao;
 import com.csh.dao.MsgEndUserDao;
 import com.csh.entity.EndUser;
@@ -70,6 +71,11 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
         map.put("content", msg.getMessageContent());
         map.put("time", String.valueOf(msgEndUser.getModifyDate().getTime()));
         map.put("unreadCount", unread_count.toString());
+        if (LogUtil.isDebugEnabled(MessageInfoServiceImpl.class)) {
+          LogUtil.debug(MessageInfoServiceImpl.class, "jpush message",
+              "Push Message to User with userName: %s, regJpushId: %s, msgId: %s",
+              user.getUserName(), user.getjpushRegId(), msg.getId().toString());
+        }
         try {
           PushPayload payload =
               JPushUtil.buildPushObject_android_registerId(msg.getMessageContent(), map, regId);
