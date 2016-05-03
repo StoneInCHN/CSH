@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.clearingRecord.list")}</title>
+<title>${message("csh.tenantDeductClearingRecord.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.clearingRecord")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.tenantDeductClearingRecord")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.clearingRecord.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.tenantDeductClearingRecord.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -55,7 +55,7 @@
 												</li>
 										    </ul>
 									  </li>
-									  <li class="dateClass pull-right">
+									   <li class="dateClass pull-right">
 											${message("csh.operate.log.date")}: <input type="text" id="beginDate" name="beginDate" class="text Wdate" value="${(beginDate?string('yyyy-MM-dd'))!}" onfocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 											~~ <input type="text"  id="endDate" name="endDate" class="text Wdate" value="${(endDate?string('yyyy-MM-dd'))!}" onfocus="WdatePicker({minDate: '#F{$dp.$D(\'beginDate\')}'});" />
 										</li>
@@ -66,7 +66,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "clearingSn" ] selected="selected" class="active" [/#if] title="clearingSn"><a href="#">${message("csh.clearingRecord.clearingSn")}</a></li>
+								          <li [#if page.searchProperty == "clearingSn" ] selected="selected" class="active" [/#if] title="clearingSn"><a href="#">${message("csh.tenantDeductClearingRecord.clearingSn")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -81,7 +81,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.clearingRecord")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.tenantDeductClearingRecord")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -93,17 +93,16 @@
 											<thead>
 												<tr>
 													<th>
-														<a href="javascript:;" class="sort" name="clearingSn">${message("csh.clearingRecord.clearingSn")}</a>
+														<a href="javascript:;" class="sort" name="clearingSn">${message("csh.tenantDeductClearingRecord.clearingSn")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="clearingStatus">${message("csh.clearingRecord.clearingStatus")}</a>
-													</th>
-											
-													<th>
-														<a href="javascript:;" class="sort" name="amountOfCurrentPeriod">${message("csh.clearingRecord.amountOfCurrentPeriod")}</a>
+														<a href="javascript:;" class="sort" name="tenantInfo">${message("csh.tenantDeductClearingRecord.tenantInfo")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="tenantInfo">${message("csh.clearingRecord.tenantInfo")}</a>
+														${message("csh.tenantDeductClearingRecord.clearingStatus")}
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="amountOfCurrentPeriod">${message("csh.tenantDeductClearingRecord.amountOfCurrentPeriod")}</a>
 													</th>
 													<th>
 														<a href="javascript:;" class="sort" name="createDate">${message("csh.common.createDate")}</a>
@@ -114,25 +113,10 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as clearingRecord]
+												[#list page.content as tenantDeductClearingRecord]
 												<tr>
 													<td>
-														${clearingRecord.clearingSn}
-													</td>
-													<td>
-														[#if clearingRecord.clearingStatus??]
-															${message("csh.commonEnum.ClearingStatus."+clearingRecord.clearingStatus)}
-														[#else]
-															-
-														[/#if]	
-													</td>
-													
-													<td>
-														[#if clearingRecord.amountOfCurrentPeriod??]
-															${clearingRecord.amountOfCurrentPeriod}
-														[#else]
-															-
-														[/#if]
+														${tenantDeductClearingRecord.clearingSn}
 													</td>
 													<td>
 														[#if tenantDeductClearingRecord.tenantInfo??]
@@ -142,10 +126,20 @@
 														[/#if]
 													</td>
 													<td>
-														<span title="${clearingRecord.createDate?string("yyyy-MM-dd HH:mm:ss")}">${clearingRecord.createDate}</span>
+														[#if tenantDeductClearingRecord.clearingStatus??]
+															${message("csh.commonEnum.ClearingStatus."+tenantDeductClearingRecord.clearingStatus)}
+														[#else]
+															-
+														[/#if]	
 													</td>
 													<td>
-														<a href="details.jhtml?id=${clearingRecord.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>
+														${tenantDeductClearingRecord.amountOfCurrentPeriod}
+													</td>
+													<td>
+														<span title="${tenantDeductClearingRecord.createDate?string("yyyy-MM-dd HH:mm:ss")}">${tenantDeductClearingRecord.createDate}</span>
+													</td>
+													<td>
+														<a href="details.jhtml?id=${tenantDeductClearingRecord.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>
 													</td>
 												</tr>
 											</tbody>

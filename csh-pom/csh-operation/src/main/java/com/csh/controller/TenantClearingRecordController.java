@@ -10,9 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Admin;
+import com.csh.entity.TenantClearingRecord;
+import com.csh.entity.TenantDeductClearingRecord;
+import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Pageable;
@@ -100,5 +105,18 @@ public class TenantClearingRecordController extends BaseController{
     return "/tenantInfo/list4distributor";
   }
   
-  
+  /**
+   * 修改状态
+   */
+  @RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
+  public @ResponseBody Message changeStatus(Long id) {
+    try {
+      TenantClearingRecord clearingRecord = tenantClearingRecordService.find(id);
+      clearingRecord.setClearingStatus(ClearingStatus.PAID);
+      tenantClearingRecordService.update(clearingRecord);
+      return SUCCESS_MESSAGE;
+    } catch (Exception e) {
+      return ERROR_MESSAGE;
+    }
+  }
 }

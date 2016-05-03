@@ -247,19 +247,35 @@
 									<a href="../endUser/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.endUser")}</a>
 								</li>
 							 [/@shiro.hasPermission]
+							
 				       </ul>
 				</li>
 				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
-		[#list ["admin:clearingRecord"] as permission]
+		[#list ["admin:clearingRecord","admin:tenantDeductClearingRecord","admin:distributorDeductClearingRecord","admin:clearingRecord4distributor"] as permission]
 			[@shiro.hasPermission name = permission]
 				<li class="has_sub" >
 					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.clearingRecord")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
 						<ul class="sub_ul">
 							 [@shiro.hasPermission name="admin:clearingRecord"]
 								<li>
-									<a href="../clearingRecord/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.clearingRecord")}</a>
+									<a href="../clearingRecord/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.tenantClearingRecord")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+							  [@shiro.hasPermission name="admin:tenantDeductClearingRecord"]
+								<li>
+									<a href="../tenantDeductClearingRecord/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.tenantDeductClearingRecord")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+							  [@shiro.hasPermission name="admin:distributorDeductClearingRecord"]
+								<li>
+									<a href="../distributorDeductClearingRecord/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.distributorDeductClearingRecord")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+							  [@shiro.hasPermission name="admin:clearingRecord4distributor"]
+								<li>
+									<a href="../distributorDeductClearingRecord/list4distributor.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.distributorDeductClearingRecord")}</a>
 								</li>
 							 [/@shiro.hasPermission]
 				       </ul>
