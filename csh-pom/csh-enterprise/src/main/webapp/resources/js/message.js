@@ -267,7 +267,12 @@ var messages = {
 	"csh.messageInfo.list":"消息列表",
 	"csh.beautifyReservation.list":"保养预约列表",
 	"csh.pushMessageInfo.add":"添加推送消息",
-	"csh.messageInfo.search":"消息搜索"
+	"csh.messageInfo.search":"消息搜索",
+	//广告
+	"csh.advertisement.advName":"广告名",
+	"csh.advertisement.status":"状态",
+	"csh.advertisement.add":"添加广告",
+	"csh.advertisement.list":"广告列表"
 	
 };
 //多语言

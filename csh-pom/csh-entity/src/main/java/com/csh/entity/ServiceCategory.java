@@ -12,10 +12,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.lucene.LowCaseBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -67,6 +69,7 @@ public class ServiceCategory extends BaseEntity {
 
   @JsonProperty
   @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getCategoryName() {
     return categoryName;
   }

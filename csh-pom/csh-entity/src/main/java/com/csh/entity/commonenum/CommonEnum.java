@@ -374,7 +374,11 @@ public class CommonEnum {
     /**
      * 身份证照片
      */
-    IDPHOTO
+    IDPHOTO,
+    /**
+     * 广告图片
+     */
+    ADVIMAGE
   }
 
 

@@ -5,18 +5,28 @@
 <script src="${base}/resources/modules/advertisement.js"></script>
 <div>
 	  <fieldset>
-	    <legend>${message("csh.fixedAssets.search")}</legend>
-	    <form id="notification-search-form" class="search-form">
+	    <legend>${message("csh.advertisement.search")}</legend>
+	    <form id="advertisement-search-form" class="search-form">
 	    	<div class="search-item">
-			    <label> ${message("csh.common.title")}:</label>
-			    <input type="text" class="easyui-textbox" id="title" name="title" />
+			    <label> ${message("csh.advertisement.advName")}:</label>
+			    <input type="text" class="easyui-textbox" id="searchAdvName" name="searchAdvName" />
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.elderly.name")}:</label>
-			    <input type="text" class="easyui-textbox" id="name" name="name" />
+			    <label> ${message("csh.advertisement.status")}:</label>
+			    <input class="easyui-combobox" data-options="
+				     valueField: 'label',
+				     textField: 'value',
+				     data: [{
+				      label: 'ENABLE',
+				      value: '${message("csh.common.enable")}'
+				     },{
+				      label: 'DISABLE',
+				      value: '${message("csh.common.disable")}'
+				     }],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="searchStatus" style="width:110px;"/>
 			</div>
 			<div class="search-item">
-			    <label> ${message("csh.physicalExamination.physicalExaminationDate")}:</label>
+			    <label> ${message("csh.createDate")}:</label>
 			    <input type="text" class="Wdate" id="beginDate" name="beginDate" readonly="readonly" onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 			</div>
 			<div class="search-item">
@@ -40,29 +50,57 @@
 </div>
 <div id="addAdvertisement"> 
 	<form id="addAdvertisement_form" method="post" class="form-table">
+		<input type="hidden" id="addAdvertisement_form_file_input" name="advImageUrl">
 	    <table class="table table-striped"  border="0">
 	    	<tr>
-	    		<th>${message("csh.advertisement.operator")}:</th>
+	    		<th>${message("csh.advertisement.advName")}:</th>
 	    		<td>
-	    			 <input class="easyui-textbox" name="operator" id= "operator" data-options="required:true" />
+	    			 <input class="easyui-textbox" name="advName" id= "advName" data-options="required:true" />
 	    		</td>
-	    		<th>${message("csh.common.title")}:</th>
+	    		<th>${message("csh.advertisement.status")}:</th>
 	    		<td>
-	    			 <input class="easyui-textbox" name="title" id= "title" data-options="required:true" />
+	    			  <input class="easyui-combobox" data-options="
+				     valueField: 'label',
+				     textField: 'value',
+				     data: [{
+				      label: 'ENABLE',
+				      value: '${message("csh.common.enable")}'
+				     },{
+				      label: 'DISABLE',
+				      value: '${message("csh.common.disable")}'
+				     }],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="status" style="width:110px;" required=true/>
 	    		</td>
 	    		
 	    	</tr>
-	    	<tr >
-		    	<th >${message("csh.advertisement.publishTime")}:</th>
-		    	<td colspan="3">
-		    		<input type="text" class="Wdate" id="publishTime" name="publishTime" readonly="readonly" onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />   
-		    	</td>
-	    	</tr>
 	    	<tr>
-	    		<th>${message("csh.advertisement.content")}:</th>
-	    		<td colspan="3">
-	    			 <textarea id= "add_notification_content"  
-	    			 style="height:200px;width:300px" name="content"></textarea>   
+	    		<th>${message("csh.advertisement.advContentLink")}:</th>
+	    		<td colspan="4">
+	    			 <input class="easyui-textbox" name="advContentLink" id= "advContentLink" data-options="required:true" />
+	    		</td>
+	    	</tr>
+	    	<tr rowspan="4">
+    		
+    		<th>${message("csh.advertisement.advImage")}:</th>
+    		<td  colspan="4">
+    			 <div title="图片上传" class="easyui-tooltip headWarp">
+	    				<div id="advertisementUploader-add" class="single-uploader">
+						    <div  class="queueList">
+						        <div  class="placeholder">
+						        	<div id="advertisementFilePicker-add" ></div>
+						        </div>
+						    </div>
+						    <div class="btns">
+						        <div class="uploadBtn state-pedding"></div>
+						    </div>
+						</div>
+	    			</div>
+    		</td>
+    	</tr>
+	    	<tr>
+	    		<th>${message("csh.advertisement.remark")}:</th>
+	    		<td>
+	    			 <input type="text" class="easyui-textbox" name="remark" validtype="length[0,150]" data-options="multiline:true,height:90,width:260" />   
 	    		</td>
 	    	</tr>
 	    </table>

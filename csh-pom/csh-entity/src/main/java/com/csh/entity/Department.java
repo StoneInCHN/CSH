@@ -20,10 +20,12 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.lucene.LowCaseBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -100,8 +102,8 @@ public class Department extends BaseEntity {
 
   @Column(length = 20, nullable = false)
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED,
-      analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getName() {
     return name;
   }

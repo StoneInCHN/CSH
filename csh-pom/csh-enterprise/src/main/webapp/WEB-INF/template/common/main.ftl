@@ -106,6 +106,9 @@
     		[@shiro.hasPermission name="serviceConfig"]
     		<li><a href="#" data-url="${base}/console/carService/carService.jhtml">${message("csh.system.serviceConfig")}</a></li>
     		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="advertisementConfig"]
+    		<li><a href="#" data-url="${base}/console/advertisement/advertisement.jhtml">${message("csh.system.advertisementConfig")}</a></li>
+    		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.personnel.config")}" id="personnel">
     		[@shiro.hasPermission name="department"]

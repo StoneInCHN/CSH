@@ -11,11 +11,13 @@ import javax.persistence.Transient;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.lucene.LowCaseBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -56,6 +58,7 @@ public class VehicleBrand extends BaseEntity {
   @JsonProperty
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer(
       impl = IKAnalyzer.class))
+  @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getCode() {
     return code;
   }

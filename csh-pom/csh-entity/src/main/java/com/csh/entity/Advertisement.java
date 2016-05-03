@@ -7,11 +7,16 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
+import com.csh.lucene.LowCaseBridgeImpl;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -22,6 +27,7 @@ import com.csh.entity.commonenum.CommonEnum.SystemType;
  */
 @Entity
 @Table(name = "csh_advertisement")
+@Indexed(index = "advertisement")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_advertisement_sequence")
 public class Advertisement extends OrderEntity {
 
@@ -56,7 +62,7 @@ public class Advertisement extends OrderEntity {
   /**
    * 租户ID
    */
-  private Long tenantId;
+  private Long tenantID;
   
   /**
    * 所属系统
@@ -65,12 +71,15 @@ public class Advertisement extends OrderEntity {
 
 
   @Index(name = "index_ad_tenantid")
-  public Long getTenantId() {
-    return tenantId;
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  public Long getTenantID ()
+  {
+    return tenantID;
   }
 
-  public void setTenantId(Long tenantId) {
-    this.tenantId = tenantId;
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
   }
 
   @Column(length = 400)
@@ -82,6 +91,8 @@ public class Advertisement extends OrderEntity {
     this.advImageUrl = advImageUrl;
   }
 
+  @JsonProperty
+  @Field(store = Store.NO,index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
   public Status getStatus() {
     return status;
   }
@@ -100,6 +111,9 @@ public class Advertisement extends OrderEntity {
   }
 
   @Column(length = 50)
+  @JsonProperty
+  @Field(store = Store.YES, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getAdvName() {
     return advName;
   }
@@ -107,8 +121,6 @@ public class Advertisement extends OrderEntity {
   public void setAdvName(String advName) {
     this.advName = advName;
   }
-
-
 
   @Transient
   public MultipartFile getAdvImage() {

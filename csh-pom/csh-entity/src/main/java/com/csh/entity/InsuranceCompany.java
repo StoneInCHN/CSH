@@ -17,11 +17,13 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.lucene.LowCaseBridgeImpl;
 
 /**
  * 保险公司信息
@@ -94,6 +96,7 @@ public class InsuranceCompany extends BaseEntity {
 
 
   @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getName() {
     return name;
   }

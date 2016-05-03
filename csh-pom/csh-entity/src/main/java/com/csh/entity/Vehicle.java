@@ -17,11 +17,13 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.lucene.LowCaseBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -272,6 +274,7 @@ public class Vehicle extends BaseEntity {
 
   @JsonProperty
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED,store = Store.NO)
+  @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getPlate() {
     return plate;
   }
