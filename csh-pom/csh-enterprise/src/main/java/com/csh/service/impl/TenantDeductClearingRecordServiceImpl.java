@@ -79,7 +79,7 @@ public class TenantDeductClearingRecordServiceImpl extends BaseServiceImpl<Tenan
           return false;
         }
         
-        tenantDeductClearingRecord.setClearingStatus (ClearingStatus.WAITING_FOR_INVOICE);
+        tenantDeductClearingRecord.setClearingStatus (ClearingStatus.UNPAID);
         tenantDeductClearingRecord.setClearingSn (snService.generate (Type.deductClearing));
         tenantDeductClearingRecord.setTenantInfo (tenantInfoService.find (tenantAccountService.getCurrentTenantInfo ().getId ()));
         tenantDeductClearingRecord.setTenantID (tenantAccountService.getCurrentTenantID());

@@ -125,7 +125,7 @@ TenantClearingRecordService {
     {
       return false;
     }
-    tenantClearingRecord.setClearingStatus (ClearingStatus.WAITING_FOR_INVOICE);
+    tenantClearingRecord.setClearingStatus (ClearingStatus.UNPAID);
     tenantClearingRecord.setClearingSn (snService.generate (Type.clearing));
     FieldFilterUtils.addFieldValue("tenantID", tenantAccountService.getCurrentTenantID(), tenantClearingRecord);
     tenantClearingRecordDao.persist (tenantClearingRecord);
