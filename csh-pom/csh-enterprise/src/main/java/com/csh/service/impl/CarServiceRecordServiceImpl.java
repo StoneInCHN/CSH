@@ -2,6 +2,7 @@ package com.csh.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource; 
@@ -135,6 +136,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       }
         oldCarServiceRecord.setPrice (newCarServiceRecord.getPrice ());
         oldCarServiceRecord.setChargeStatus (newCarServiceRecord.getChargeStatus ());
+        oldCarServiceRecord.setFinishDate (new Date ());
         carServiceRecordDao.merge (oldCarServiceRecord);
       }
 }

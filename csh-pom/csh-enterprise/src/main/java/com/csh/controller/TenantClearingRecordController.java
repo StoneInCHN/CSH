@@ -155,8 +155,14 @@ public class TenantClearingRecordController extends BaseController
   @RequestMapping (value = "/add", method = RequestMethod.POST)
   public @ResponseBody Message add (ModelMap mode,TenantClearingRecord tenantClearingRecord, Long[] ids)
   {
-    tenantClearingRecordService.saveTenantClearingRecord(tenantClearingRecord
+    Boolean result =tenantClearingRecordService.saveTenantClearingRecord(tenantClearingRecord
         , ids);
-    return SUCCESS_MESSAGE;
+    if (result)
+    {
+      return SUCCESS_MESSAGE;
+    }else {
+      return ERROR_MESSAGE;
+    }
+    
   }
 }

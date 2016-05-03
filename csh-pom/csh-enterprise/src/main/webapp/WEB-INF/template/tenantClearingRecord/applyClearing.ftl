@@ -4,7 +4,7 @@
    	<tr>
    		<th>结算金额：</th>
 		<td>
-			 <input type="text" class="easyui-textbox" readOnly="true" name="amountOfCurrentPeriod" id= "amountOfCurrentPeriod"   data-options="required:true"/>
+			 <input type="text" class="easyui-textbox"  name="amountOfCurrentPeriod" id= "amountOfCurrentPeriod"   data-options="required:true"/>
 		</td>
 		<th>实得金额：</th>
 		<td>

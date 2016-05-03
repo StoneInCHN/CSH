@@ -15,7 +15,7 @@ var tenantDeductClearingRecord_manager_tool = {
 						var validate = $('#applyDeductClearingRecordForm').form('validate');
 						var rows = $('#deductClearingCarServiceRecord-table-list').datagrid('getRows');
 						if(rows.length == 0){
-							$.messager.alert(message("csh.clearingCarServiceRecord.no"));  
+							$.messager.alert("提示",message("csh.clearingCarServiceRecord.no"),"warning");  
 							return false;
 						}
 						var ids = [];
@@ -39,7 +39,7 @@ var tenantDeductClearingRecord_manager_tool = {
 										showSuccessMsg(result.content);
 										$('#applyDeductClearingRecord').dialog("close")
 										$("#applyDeductClearingRecordForm").form("reset");
-										$("#deductClearingCarServiceRecord-table-list").datagrid('reload');
+										$("#tenantDeductClearingRecord-table-list").datagrid('reload');
 									}else{
 										alertErrorMsg();
 									}
@@ -127,22 +127,22 @@ var tenantDeductClearingRecord_manager_tool = {
 				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
 				return false;
 			}
-				$('#tenantClearingRecordDetail').dialog({    
+				$('#tenantDeductClearingRecordDetail').dialog({    
 				    title: message("csh.common.detail"),    
 				    width: 700,    
 				    height: 550, 
 				    cache: false,
 				    modal: true,
-				    href:'../tenantClearingRecord/details.jhtml?id='+_show_row.id,
+				    href:'../tenantDeductClearingRecord/details.jhtml?id='+_show_row.id,
 				    buttons:[{
 						text:message("csh.common.close"),
 						iconCls:'icon-cancel',
 						handler:function(){
-							 $('#tenantClearingRecordDetail').dialog("close");
+							 $('#tenantDeductClearingRecordDetail').dialog("close");
 						}
 				    }],
 				    onClose:function(){
-				    	$('#tenantClearingRecordDetail').empty();
+				    	$('#tenantDeductClearingRecordDetail').empty();
 				    }
 				});   
 		}

@@ -282,7 +282,6 @@ $(function(){
 	$("#carServiceTenantDeductRecord-table-list").datagrid({
 		title:message("csh.carServiceRecord.list"),
 		fitColumns:true,
-		toolbar:"#carServiceRecord_manager_tool",
 		url:'../carServiceTenantDeductRecord/list.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),

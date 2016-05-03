@@ -15,7 +15,7 @@ var tenantClearingRecord_manager_tool = {
 						var validate = $('#addTenantClearingRecord_form').form('validate');
 						var rows = $('#clearingCarServiceRecord-table-list').datagrid('getRows');
 						if(rows.length == 0){
-							$.messager.alert(message("csh.clearingCarServiceRecord.no"));  
+							$.messager.alert("提示",message("csh.clearingCarServiceRecord.no"),'warning');  
 							return false;
 						}
 						var ids = [];

@@ -31,6 +31,7 @@ public class SnDaoImpl implements SnDao, InitializingBean {
 
 	private HiloOptimizer productHiloOptimizer;
 	private HiloOptimizer clearingHiloOptimizer;
+	private HiloOptimizer deductClearingHiloOptimizer;
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -47,6 +48,7 @@ public class SnDaoImpl implements SnDao, InitializingBean {
 	public void afterPropertiesSet() throws Exception {
 		productHiloOptimizer = new HiloOptimizer(Type.product, productPrefix, productMaxLo);
 		clearingHiloOptimizer = new HiloOptimizer(Type.clearing, clearingPrefix, clearingMaxLo);
+		deductClearingHiloOptimizer = new HiloOptimizer(Type.clearing, clearingPrefix, clearingMaxLo);
 	}
 
 	public String generate(Type type) {
@@ -55,7 +57,9 @@ public class SnDaoImpl implements SnDao, InitializingBean {
 			return productHiloOptimizer.generate();
 		} else if (type == Type.clearing) {
 			return clearingHiloOptimizer.generate();
-		} 
+		}else if (type == Type.deductClearing) {
+      return deductClearingHiloOptimizer.generate();
+    }
 		return null;
 	}
 

@@ -88,6 +88,7 @@ public class TenantDeductClearingRecord extends BaseEntity {
    */
   private TenantInfo tenantInfo;
   
+  private Long tenantID;
 
   @JsonProperty
   @Field(store = Store.NO, index = Index.UN_TOKENIZED)
@@ -184,6 +185,16 @@ public class TenantDeductClearingRecord extends BaseEntity {
     this.tenantInfo = tenantInfo;
   }
 
-  
+  @org.hibernate.annotations.Index(name="tenantDeductClearingRecord_tenantid")
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  public Long getTenantID ()
+  {
+    return tenantID;
+  }
+
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
+  }
   
 }

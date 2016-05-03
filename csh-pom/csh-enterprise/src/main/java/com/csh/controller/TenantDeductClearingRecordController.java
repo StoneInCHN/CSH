@@ -58,7 +58,7 @@ public class TenantDeductClearingRecordController extends BaseController
     {
       model.put ("allowClearing", true);
     }else {
-      model.put ("allowClearing", false);
+      model.put ("allowClearing", true);
     }
     return "tenantDeductClearingRecord/tenantDeductClearingRecord";
   }

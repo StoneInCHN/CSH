@@ -18,7 +18,7 @@ import com.csh.framework.service.BaseService;
  */
 public interface TenantClearingRecordService extends BaseService<TenantClearingRecord, Long> {
 
-  void saveTenantClearingRecord (TenantClearingRecord tenantClearingRecord,
+  Boolean saveTenantClearingRecord (TenantClearingRecord tenantClearingRecord,
       Long[] ids);
 
   Map<String, Date> findPeriodBeginEndDate (TenantInfo tenantInfo);

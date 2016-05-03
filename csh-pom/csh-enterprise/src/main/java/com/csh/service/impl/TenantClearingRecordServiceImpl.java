@@ -1,9 +1,13 @@
 package com.csh.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,11 +20,13 @@ import com.csh.beans.Setting;
 import com.csh.dao.CarServiceRecordDao;
 import com.csh.dao.TenantClearingRecordDao;
 import com.csh.entity.CarServiceRecord;
+import com.csh.entity.CommissionRate;
 import com.csh.entity.Sn.Type;
 import com.csh.entity.TenantClearingRecord;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.service.CommissionRateService;
 import com.csh.service.SnService;
 import com.csh.service.TenantClearingRecordService;
 import com.csh.utils.FieldFilterUtils;
@@ -45,6 +51,9 @@ TenantClearingRecordService {
   @Resource (name = "snServiceImpl")
   private SnService snService;
   private Setting setting = SettingUtils.get();
+  
+  @Resource(name = "commissionRateServiceImpl")
+  private CommissionRateService commissionRateService;
   @Resource()
   public void setBaseDao(TenantClearingRecordDao tenantClearingRecordDao) {
     super.setBaseDao(tenantClearingRecordDao);
@@ -83,22 +92,51 @@ TenantClearingRecordService {
 
   @Override
   @Transactional(propagation=Propagation.REQUIRES_NEW)
-  public void saveTenantClearingRecord (
+  public Boolean saveTenantClearingRecord (
       TenantClearingRecord tenantClearingRecord, Long[] ids)
   {
+    
+    //validate before save
+    List<CommissionRate> commissionRateList = commissionRateService.findAll ();
+    if (commissionRateList == null || commissionRateList.size () == 0)
+    {
+      return false;
+    }
+    BigDecimal totalMoney = new BigDecimal (0);
+    BigDecimal totalRealIncome = new BigDecimal (0);
+    
+    List<CarServiceRecord> carServiceRecordList = new ArrayList<CarServiceRecord>();
+    for (Long id : ids)
+    {
+      
+      CarServiceRecord record = carServiceRecordDao.find (id);
+      
+      totalMoney = totalMoney.add (record.getPrice ());
+      
+      carServiceRecordList.add (record);
+    }
+    //格式化数据
+    DecimalFormat format=new DecimalFormat("0.00");
+    String str = format.format(totalMoney.doubleValue ()* (1-commissionRateList.get (0).getPlatformRate ()));    
+    totalRealIncome = new BigDecimal(str);
+    totalMoney = new BigDecimal (format.format (totalMoney));
+    if (!totalMoney.equals (new BigDecimal (format.format (tenantClearingRecord.getAmountOfCurrentPeriod ()))) 
+        || !totalRealIncome.equals (new BigDecimal (format.format (tenantClearingRecord.getAmountRealIncome ()))))
+    {
+      return false;
+    }
     tenantClearingRecord.setClearingStatus (ClearingStatus.WAITING_FOR_INVOICE);
     tenantClearingRecord.setClearingSn (snService.generate (Type.clearing));
     FieldFilterUtils.addFieldValue("tenantID", tenantAccountService.getCurrentTenantID(), tenantClearingRecord);
     tenantClearingRecordDao.persist (tenantClearingRecord);
-    for (Long id : ids)
+    for (CarServiceRecord carServiceRecord : carServiceRecordList)
     {
-      CarServiceRecord record = carServiceRecordDao.find (id);
-      record.setTenantClearingRecord (tenantClearingRecord);
-      record.setClearingDate (tenantClearingRecord.getCreateDate ());
-      carServiceRecordDao.merge (record);
-     }
+      carServiceRecord.setTenantClearingRecord (tenantClearingRecord);
+      carServiceRecord.setClearingDate (tenantClearingRecord.getCreateDate ());
+      carServiceRecordDao.merge (carServiceRecord);
+    }
     
-    
+    return true;
   }
 
 }
