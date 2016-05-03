@@ -478,19 +478,33 @@ public class CommonEnum {
 
   public enum ChargeStatus {
     /*** 预约中 */
-    RESERVATION,
+    RESERVATION("预约中"),
     /*** 预约成功 */
-    RESERVATION_SUCCESS,
+    RESERVATION_SUCCESS("预约成功"),
     /*** 预约失败 */
-    RESERVATION_FAIL,
+    RESERVATION_FAIL("预约失败"),
     /** 未支付 */
-    UNPAID,
+    UNPAID("未支付"),
     /** 已支付 */
-    PAID,
+    PAID("已支付"),
     /** 完成 */
-    FINISH,
+    FINISH("完成"),
     /** 过期 */
-    OVERDUE,
+    OVERDUE("过期");
+    
+
+    private String chargeStatusName;
+
+    private ChargeStatus (String chargeStatusName)
+    {
+      this.chargeStatusName = chargeStatusName;
+    }
+
+    public String getChargeStatusName ()
+    {
+      return chargeStatusName;
+    }
+
   }
   /**
    * 结算状态
