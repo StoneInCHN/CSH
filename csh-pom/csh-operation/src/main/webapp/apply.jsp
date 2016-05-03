@@ -60,8 +60,7 @@
 		$applyForm.validate({
 			rules: {
 				tenantName:{
-					required:true,
-					maxlength:6
+					required:true
 				},
 				contactPhone: {
 					required:true,

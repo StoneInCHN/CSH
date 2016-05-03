@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.clearingRecord.details")}</title>
+<title>${message("csh.distributorDeductClearingRecord.details")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -13,56 +13,27 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.bootstrap.min.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+
 </head>
 <body>
 	<div class="mainbar">
-		<div class="page-head">
-			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.clearingRecord")}</a> 
-				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.clearingRecord.list")}</a>
-				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.clearingRecord.details")}</a>
-			</div>
-			<div class="clearfix"></div>
-		</div>
 		<div class="matter">
         <div class="container">
           <div class="row">
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.clearingRecord.details")}</div>
-                  <div class="widget-icons pull-right">
-                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-                  </div>
+                  <div class="pull-left">${message("csh.distributorDeductClearingRecord.details")}</div>
                   <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
                   <div class="padd">
+                  		[#if distributorDeductClearingRecord.carServiceDistributorDeductRecords ??]
 						<table class="input tabContent">
-							[#if clearingRecord.clearingStatus?? && clearingRecord.clearingStatus ="UNPAID"]
 							<tr>
-								<button class="btn btn-default pull-right" id="changeStatus">修改结算状态</button>
-							</tr>
-							[/#if]	
-							<tr>
-								<td>${message("csh.clearingRecord.clearingSn")}</td>
+								<th>${message("csh.distributorDeductClearingRecord.amountOfCurrentPeriod")}:</th>
 								<td>
-									${clearingRecord.clearingSn}
-								</td>
-								<td>${message("csh.clearingRecord.clearingStatus")}</td>
-								<td>
-									[#if clearingRecord.clearingStatus??]
-										${message("csh.commonEnum.ClearingStatus."+clearingRecord.clearingStatus)}
-									[#else]
-										-
-									[/#if]	
-								</td>
-								<th>${message("csh.clearingRecord.amountOfCurrentPeriod")}:</th>
-								<td>
-									${clearingRecord.amountOfCurrentPeriod}
+									${distributorDeductClearingRecord.amountOfCurrentPeriod}
 								</td>
 							</tr>
 						</table>
@@ -89,20 +60,17 @@
 										${message("csh.carServiceRecord.chargeStatus")}
 									</th>
 									<th>
-										${message("csh.carServiceRecord.price")}
+										${message("csh.carServiceRecord.deductMoney")}
 									</th>
 												
 									<th>
 										${message("csh.carServiceRecord.tenantName")}
 									</th>
-									<th>
-										${message("csh.carServiceRecord.clearingDate")}
-									</th>
 												
-									</tr>
+								</tr>
 								</thead>
 								<tbody>
-									[#list clearingRecord.carServiceRecords as carServiceRecord]
+									[#list distributorDeductClearingRecord.carServiceDistributorDeductRecords as carServiceRecord]
 									<tr>
 										<td>
 											${carServiceRecord.recordNo}
@@ -143,23 +111,20 @@
 										[/#if]
 									</td>
 									<td>
-										${carServiceRecord.price}
+										${carServiceRecord.deductMoney}
 									</td>
 									<td>
 										${carServiceRecord.tenantName}
 									</td>
-									<td>
-										[#if carServiceRecord.clearingDate??]
-										<span title="${carServiceRecord.clearingDate?string("yyyy-MM-dd HH:mm:ss")}">${carServiceRecord.clearingDate}</span>
-										[#else]
-											-
-										[/#if]
-									</td>
+								
 												
 								</tr>
 							</tbody>
 							[/#list]
 						</table>
+						[#else]
+							你没有需要结算的订单
+						[/#if]
                   </div>
                 </div>
               </div>  
@@ -169,31 +134,5 @@
 	   </div>
 	</div>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
-[#if clearingRecord.clearingStatus?? && clearingRecord.clearingStatus ="UNPAID"]
-<script type="text/javascript">
-	var $changeStatus =$("#changeStatus");
-	$changeStatus.click(function(){
-		 $.messager.model = { 
-	        ok:{ text: "确定", classed: 'btn-default' },
-	        cancel: { text: "取消", classed: 'btn-error' }
-	      };
-	      $.messager.confirm("修改结算状态", "确定要将该结算单的状态从 [未付款] 改成 [已付款] 吗?? ", function() { 
-	        $.ajax({
-			   type: "POST",
-			   url: "changeStatus.jhtml",
-			   data:{
-			   		id:${clearingRecord.id}
-			   },
-			   success: function(result){
-			     if(result.type == "success"){
-			     	$("#clearingStatus").html("已付款")
-			     }
-			      $.messager.popup(result.content);
-			   }
-			});
-	      });
-	})
-</script>
-[/#if]	
 </body>
 </html>

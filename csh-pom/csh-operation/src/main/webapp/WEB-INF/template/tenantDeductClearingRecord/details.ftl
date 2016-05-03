@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.clearingRecord.details")}</title>
+<title>${message("csh.tenantDeductClearingRecord.details")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -13,16 +13,17 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.bootstrap.min.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+
 </head>
 <body>
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.clearingRecord")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.tenantDeductClearingRecord")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.clearingRecord.list")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.tenantDeductClearingRecord.list")}</a>
 				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.clearingRecord.details")}</a>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.tenantDeductClearingRecord.details")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -32,7 +33,7 @@
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.clearingRecord.details")}</div>
+                  <div class="pull-left">${message("csh.tenantDeductClearingRecord.details")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -42,27 +43,27 @@
                 <div class="widget-content">
                   <div class="padd">
 						<table class="input tabContent">
-							[#if clearingRecord.clearingStatus?? && clearingRecord.clearingStatus ="UNPAID"]
+							[#if tenantDeductClearingRecord.clearingStatus?? && tenantDeductClearingRecord.clearingStatus ="UNPAID"]
 							<tr>
 								<button class="btn btn-default pull-right" id="changeStatus">修改结算状态</button>
 							</tr>
 							[/#if]	
 							<tr>
-								<td>${message("csh.clearingRecord.clearingSn")}</td>
+								<th>${message("csh.tenantDeductClearingRecord.clearingSn")}:</th>
 								<td>
-									${clearingRecord.clearingSn}
+									${tenantDeductClearingRecord.clearingSn}
 								</td>
-								<td>${message("csh.clearingRecord.clearingStatus")}</td>
-								<td>
-									[#if clearingRecord.clearingStatus??]
-										${message("csh.commonEnum.ClearingStatus."+clearingRecord.clearingStatus)}
+								<th>${message("csh.tenantDeductClearingRecord.clearingStatus")}:</th>
+								<td id="clearingStatus">
+									[#if tenantDeductClearingRecord.clearingStatus??]
+										${message("csh.commonEnum.ClearingStatus."+tenantDeductClearingRecord.clearingStatus)}
 									[#else]
 										-
 									[/#if]	
 								</td>
-								<th>${message("csh.clearingRecord.amountOfCurrentPeriod")}:</th>
+								<th>${message("csh.tenantDeductClearingRecord.amountOfCurrentPeriod")}:</th>
 								<td>
-									${clearingRecord.amountOfCurrentPeriod}
+									${tenantDeductClearingRecord.amountOfCurrentPeriod}
 								</td>
 							</tr>
 						</table>
@@ -102,7 +103,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									[#list clearingRecord.carServiceRecords as carServiceRecord]
+									[#list tenantDeductClearingRecord.carServiceTenantDeductRecords as carServiceRecord]
 									<tr>
 										<td>
 											${carServiceRecord.recordNo}
@@ -169,7 +170,7 @@
 	   </div>
 	</div>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
-[#if clearingRecord.clearingStatus?? && clearingRecord.clearingStatus ="UNPAID"]
+[#if tenantDeductClearingRecord.clearingStatus?? && tenantDeductClearingRecord.clearingStatus ="UNPAID"]
 <script type="text/javascript">
 	var $changeStatus =$("#changeStatus");
 	$changeStatus.click(function(){
@@ -182,7 +183,7 @@
 			   type: "POST",
 			   url: "changeStatus.jhtml",
 			   data:{
-			   		id:${clearingRecord.id}
+			   		id:${tenantDeductClearingRecord.id}
 			   },
 			   success: function(result){
 			     if(result.type == "success"){
