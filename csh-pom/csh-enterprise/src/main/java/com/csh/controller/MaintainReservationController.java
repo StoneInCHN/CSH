@@ -33,14 +33,17 @@ import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
 import com.csh.entity.MaintainReservation;
 import com.csh.entity.ServiceCategory;
+import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.MaintainReservationService;
+import com.csh.service.MessageInfoService;
 import com.csh.service.ServiceCategoryService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleService;
@@ -75,6 +78,12 @@ public class MaintainReservationController extends BaseController
   private ServiceCategoryService serviceCategoryService;
   @Resource(name= "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
+  
+  @Resource(name = "messageInfoServiceImpl")
+  private MessageInfoService messageInfoService;
+  
+  @Resource (name = "carServiceRecordServiceImpl")
+  private CarServiceRecordService carServiceRecordService;
   /**
    * 界面展示
    * 
@@ -215,7 +224,7 @@ public class MaintainReservationController extends BaseController
     return "maintainReservation/add";
   }
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (MaintainReservation maintainReservation,Long endUserID)
+  public @ResponseBody Message add (MaintainReservation maintainReservation,Long endUserID,Long vehicleId)
   {
     //查询出保养服务
     ServiceCategory category = serviceCategoryService.find (1L);
@@ -238,6 +247,7 @@ public class MaintainReservationController extends BaseController
     {
       return ERROR_MESSAGE;
     }
+    Vehicle vehicle = vehicleService.find (vehicleId);
     EndUser endUser = endUserService.find (endUserID);
     String recordNo = ToolsUtils.generateRecordNo(carServiceList.get (0).getTenantInfo().getOrgCode());
     CarServiceRecord record = new CarServiceRecord ();
@@ -248,10 +258,13 @@ public class MaintainReservationController extends BaseController
     record.setEndUser (endUser);
     record.setPrice (carServiceList.get (0).getPrice ());
     record.setTenantID (carServiceList.get (0).getTenantInfo ().getId ());
+    record.setVehicle (vehicle);
     maintainReservation.setEndUser (endUser);
     maintainReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
     maintainReservation.setCarServiceRecord (record);
     maintainReservationService.save (maintainReservation,true);
+    
+    carServiceRecordService.sendRecordStatusUpdateMessag (record, ChargeStatus.RESERVATION);
     return SUCCESS_MESSAGE;
   }
   
@@ -298,6 +311,8 @@ public class MaintainReservationController extends BaseController
     MaintainReservation maintainReservation = maintainReservationService.find(id);
     maintainReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.RESERVATION_SUCCESS);
     maintainReservationService.save (maintainReservation);
+    
+    carServiceRecordService.sendRecordStatusUpdateMessag (maintainReservation.getCarServiceRecord (), ChargeStatus.RESERVATION_SUCCESS);
     return SUCCESS_MESSAGE;
   }
   @RequestMapping(value = "/reject", method = RequestMethod.GET)
@@ -305,6 +320,9 @@ public class MaintainReservationController extends BaseController
     MaintainReservation maintainReservation = maintainReservationService.find(id);
     maintainReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.RESERVATION_FAIL);
     maintainReservationService.save (maintainReservation);
+    
+    carServiceRecordService.sendRecordStatusUpdateMessag (maintainReservation.getCarServiceRecord (), ChargeStatus.RESERVATION_FAIL);
+    
     return SUCCESS_MESSAGE;
   }
   @RequestMapping(value = "/arrival", method = RequestMethod.GET)
@@ -312,6 +330,8 @@ public class MaintainReservationController extends BaseController
     MaintainReservation maintainReservation = maintainReservationService.find(id);
     maintainReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.UNPAID);
     maintainReservationService.save (maintainReservation);
+    
+    carServiceRecordService.sendRecordStatusUpdateMessag (maintainReservation.getCarServiceRecord (), ChargeStatus.UNPAID);
     return SUCCESS_MESSAGE;
   }
 }

@@ -40,6 +40,7 @@ import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.BeautifyReservationService;
+import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.ServiceCategoryService;
@@ -74,7 +75,8 @@ public class BeautifyReservationController extends BaseController
 
   @Resource (name = "serviceCategoryServiceImpl")
   private ServiceCategoryService serviceCategoryService;
-
+  @Resource (name = "carServiceRecordServiceImpl")
+  private CarServiceRecordService carServiceRecordService;
   @Resource(name= "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
   /**
@@ -271,6 +273,8 @@ public class BeautifyReservationController extends BaseController
     beautifyReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
     beautifyReservation.setCarServiceRecord (record);
     beautifyReservationService.save (beautifyReservation, true);
+    
+    carServiceRecordService.sendRecordStatusUpdateMessag (beautifyReservation.getCarServiceRecord (), ChargeStatus.RESERVATION);
     return SUCCESS_MESSAGE;
   }
 
@@ -325,7 +329,7 @@ public class BeautifyReservationController extends BaseController
     beautifyReservation.getCarServiceRecord ().setChargeStatus (
         ChargeStatus.RESERVATION_SUCCESS);
     beautifyReservationService.save (beautifyReservation);
-    return SUCCESS_MESSAGE;
+    carServiceRecordService.sendRecordStatusUpdateMessag (beautifyReservation.getCarServiceRecord (), ChargeStatus.RESERVATION_SUCCESS);    return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/reject", method = RequestMethod.GET)
@@ -336,6 +340,7 @@ public class BeautifyReservationController extends BaseController
     beautifyReservation.getCarServiceRecord ().setChargeStatus (
         ChargeStatus.RESERVATION_FAIL);
     beautifyReservationService.save (beautifyReservation);
+    carServiceRecordService.sendRecordStatusUpdateMessag (beautifyReservation.getCarServiceRecord (), ChargeStatus.RESERVATION_FAIL);
     return SUCCESS_MESSAGE;
   }
 
@@ -347,6 +352,8 @@ public class BeautifyReservationController extends BaseController
     beautifyReservation.getCarServiceRecord ().setChargeStatus (
         ChargeStatus.UNPAID);
     beautifyReservationService.save (beautifyReservation);
+    
+    carServiceRecordService.sendRecordStatusUpdateMessag (beautifyReservation.getCarServiceRecord (), ChargeStatus.UNPAID);
     return SUCCESS_MESSAGE;
   }
 }

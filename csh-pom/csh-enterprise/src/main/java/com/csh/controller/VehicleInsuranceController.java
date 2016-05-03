@@ -40,6 +40,7 @@ import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.FileService;
@@ -73,6 +74,9 @@ public class VehicleInsuranceController extends BaseController {
   
   @Resource (name = "serviceCategoryServiceImpl")
   private ServiceCategoryService serviceCategoryService;
+  
+  @Resource (name = "carServiceRecordServiceImpl")
+  private CarServiceRecordService carServiceRecordService;
   /**
    * 界面展示
    * 
@@ -243,6 +247,7 @@ public class VehicleInsuranceController extends BaseController {
     vehicleInsurance.setVehicle (vehicle);
     vehicleInsurance.setCarServiceRecord (record);
     vehicleInsuranceService.save (vehicleInsurance,true);
+    carServiceRecordService.sendRecordStatusUpdateMessag (vehicleInsurance.getCarServiceRecord (), ChargeStatus.RESERVATION);
     return SUCCESS_MESSAGE;
   }
   /**

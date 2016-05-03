@@ -292,6 +292,7 @@ public class CarServiceRecordController extends BaseController
           &&carServiceRecord.getSubscribeDate () != null && DateTimeUtils.daysBetween (currentDate, carServiceRecord.getSubscribeDate ()) > 1)
       {
         carServiceRecord.setChargeStatus (ChargeStatus.OVERDUE);
+        carServiceRecordService.sendRecordStatusUpdateMessag (carServiceRecord, ChargeStatus.OVERDUE);
       }
     }
   }

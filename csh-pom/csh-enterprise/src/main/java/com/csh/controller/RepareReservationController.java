@@ -31,7 +31,6 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.EndUser;
-import com.csh.entity.MaintainReservation;
 import com.csh.entity.RepareReservation;
 import com.csh.entity.ServiceCategory;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
@@ -39,6 +38,7 @@ import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.RepareReservationService;
@@ -73,6 +73,9 @@ public class RepareReservationController extends BaseController
   
   @Resource (name = "serviceCategoryServiceImpl")
   private ServiceCategoryService serviceCategoryService;
+  
+  @Resource (name = "carServiceRecordServiceImpl")
+  private CarServiceRecordService carServiceRecordService;
   /**
    * 界面展示
    * 
@@ -244,6 +247,8 @@ public class RepareReservationController extends BaseController
     repareReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
     repareReservation.setCarServiceRecord (record);
     repareReservationService.save (repareReservation,true);
+    
+    carServiceRecordService.sendRecordStatusUpdateMessag (repareReservation.getCarServiceRecord (), ChargeStatus.RESERVATION);
     return SUCCESS_MESSAGE;
   }
   
@@ -291,6 +296,7 @@ public class RepareReservationController extends BaseController
     RepareReservation repareReservation = repareReservationService.find(id);
     repareReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.RESERVATION_SUCCESS);
     repareReservationService.save (repareReservation);
+    carServiceRecordService.sendRecordStatusUpdateMessag (repareReservation.getCarServiceRecord (), ChargeStatus.RESERVATION_SUCCESS);
     return SUCCESS_MESSAGE;
   }
   @RequestMapping(value = "/reject", method = RequestMethod.GET)
@@ -298,6 +304,7 @@ public class RepareReservationController extends BaseController
     RepareReservation repareReservation = repareReservationService.find(id);
     repareReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.RESERVATION_FAIL);
     repareReservationService.save (repareReservation);
+    carServiceRecordService.sendRecordStatusUpdateMessag (repareReservation.getCarServiceRecord (), ChargeStatus.RESERVATION_FAIL);
     return SUCCESS_MESSAGE;
   }
 }

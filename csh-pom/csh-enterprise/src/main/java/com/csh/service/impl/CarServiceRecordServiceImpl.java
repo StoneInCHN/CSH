@@ -9,13 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource; 
+import javax.annotation.Resource;
 
-import org.rhq.helpers.pluginAnnotations.agent.MeasurementType;
-import org.springframework.stereotype.Service; 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.beans.Setting;
+import com.csh.dao.CarServiceDistributorDeductRecordDao;
+import com.csh.dao.CarServiceRecordDao;
+import com.csh.dao.CarServiceTenantDeductRecordDao;
 import com.csh.entity.CarServiceDistributorDeductRecord;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.CarServiceTenantDeductRecord;
@@ -27,10 +30,9 @@ import com.csh.entity.MsgEndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
-import com.csh.beans.Setting;
-import com.csh.dao.CarServiceDistributorDeductRecordDao;
-import com.csh.dao.CarServiceRecordDao;
-import com.csh.dao.CarServiceTenantDeductRecordDao;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.CommissionRateService;
 import com.csh.service.DistributorService;
@@ -38,10 +40,6 @@ import com.csh.service.MessageInfoService;
 import com.csh.service.TenantAccountService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.SettingUtils;
-import com.csh.framework.filter.Filter;
-import com.csh.framework.filter.Filter.Operator;
-import com.csh.framework.service.impl.BaseServiceImpl;
-import com.mysql.jdbc.Messages;
 
 @Service("carServiceRecordServiceImpl")
 public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecord,Long> implements CarServiceRecordService {
@@ -95,27 +93,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         }
         CommissionRate rate = commissionRateList.get (0);
         //订单状态修改，推送消息
-        if (oldCarServiceRecord.getChargeStatus () != newCarServiceRecord.getChargeStatus ())
-        {
-          MessageInfo msgInfo = new MessageInfo ();
-          msgInfo.setMessageContent ("订单状态已改为："+newCarServiceRecord.getChargeStatus ().getChargeStatusName ());
-          msgInfo.setMessageTitle ("订单修改");
-          msgInfo.setTenantID (tenantAccountService.getCurrentTenantID ());
-          msgInfo.setMessageType (MessageType.PERSONALMSG);
-          Set<MsgEndUser> msgEndUserList =new HashSet<MsgEndUser> ();
-          MsgEndUser msgEndUser = new MsgEndUser ();
-          msgEndUser.setEndUser (oldCarServiceRecord.getEndUser ());
-          msgEndUser.setIsPush (false);
-          msgEndUser.setIsRead (false);
-          
-          msgEndUserList.add (msgEndUser);
-          msgInfo.setMsgUser (msgEndUserList);
-          messageInfoService.save (msgInfo);
-          Map<String, Object> params = new HashMap<String, Object>();
-          params.put ("msgId", msgInfo.getId ());
-          Setting setting = SettingUtils.get();
-          ApiUtils.post (setting.getMsgPushUrl ());
-        }
+       
         if (oldCarServiceRecord.getChargeStatus () == ChargeStatus.PAID
             && newCarServiceRecord.getChargeStatus () == ChargeStatus.FINISH)
         {
@@ -171,9 +149,36 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
           
           
       }
+        if (oldCarServiceRecord.getChargeStatus () != newCarServiceRecord.getChargeStatus ())
+        {
+          sendRecordStatusUpdateMessag (oldCarServiceRecord,newCarServiceRecord.getChargeStatus ());
+        }
         oldCarServiceRecord.setPrice (newCarServiceRecord.getPrice ());
         oldCarServiceRecord.setChargeStatus (newCarServiceRecord.getChargeStatus ());
         oldCarServiceRecord.setFinishDate (new Date ());
         carServiceRecordDao.merge (oldCarServiceRecord);
+        
+        
+      }
+    @Override
+    public void sendRecordStatusUpdateMessag(CarServiceRecord record,ChargeStatus newChargeStatus){
+        MessageInfo msgInfo = new MessageInfo ();
+        msgInfo.setMessageContent ("订单状态已改为："+newChargeStatus.getChargeStatusName ());
+        msgInfo.setMessageTitle ("订单修改");
+        msgInfo.setTenantID (tenantAccountService.getCurrentTenantID ());
+        msgInfo.setMessageType (MessageType.PERSONALMSG);
+        Set<MsgEndUser> msgEndUserList =new HashSet<MsgEndUser> ();
+        MsgEndUser msgEndUser = new MsgEndUser ();
+        msgEndUser.setEndUser (record.getEndUser ());
+        msgEndUser.setIsPush (false);
+        msgEndUser.setIsRead (false);
+        
+        msgEndUserList.add (msgEndUser);
+        msgInfo.setMsgUser (msgEndUserList);
+        messageInfoService.save (msgInfo);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put ("msgId", msgInfo.getId ());
+        Setting setting = SettingUtils.get();
+        ApiUtils.post (setting.getMsgPushUrl ());
       }
 }
