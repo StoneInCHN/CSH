@@ -495,22 +495,15 @@ public class CommonEnum {
    *
    */
   public enum ClearingStatus {
+
     /**
-     * 待开发票
+     * 未付款
      */
-    WAITING_FOR_INVOICE,
-    /**
-     * 发票已上传
-     */
-    INVOICE_ALREADY_PROVIDED,
+    UNPAID,
     /**
      * 已付款
      */
-    PAID,
-    /**
-     * 结算完成
-     */
-    CLEARING_COMPLETE
+    PAID
 
   }
 

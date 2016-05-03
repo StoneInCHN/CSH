@@ -117,7 +117,7 @@ public class TenantAccountServiceImpl extends BaseServiceImpl<TenantAccount, Lon
      tenantAccountDao.persist(tenantAccount);
     // send password
      //短信
-    // UcpaasUtil.SendAccountBySms(tenantInfo.getContactPhone(), tenantInfo.getOrgCode(), tenantAccount.getUserName(), password);
+     UcpaasUtil.SendAccountBySms(tenantInfo.getContactPhone(), tenantInfo.getOrgCode(), tenantAccount.getUserName(), password);
     
      // 邮件
     String subject = SpringUtils.getMessage("csh.tenantAccount.password.subject");
