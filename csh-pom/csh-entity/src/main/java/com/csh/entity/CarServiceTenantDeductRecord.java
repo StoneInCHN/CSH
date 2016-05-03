@@ -65,20 +65,6 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
    */
   private BigDecimal price;
 
-  // /**
-  // * 保养预约
-  // */
-  // private MaintainReservation maintainReservation;
-  //
-  // /**
-  // * 维修预约
-  // */
-  // private RepareReservation repareReservation;
-  //
-  // /**
-  // * 美容预约
-  // */
-  // private BeautifyReservation beautifyReservation;
   /**
    * 商家名称
    */

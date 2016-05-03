@@ -2,7 +2,6 @@ package com.csh.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -47,35 +46,10 @@ public class TenantDeductClearingRecord extends BaseEntity {
   private ClearingStatus clearingStatus;
 
   /**
-   * 本次结算周期开始时间
-   */
-  private Date periodBeginDate;
-
-  /**
-   * 本次结算周期结束时间
-   */
-  private Date periodEndDate;
-
-
-  /**
    * 本次结算周期金额
    */
   private BigDecimal amountOfCurrentPeriod = new BigDecimal(0);
 
-  /**
-   * 扣除金额 比如个人所得税
-   */
-  private BigDecimal reduce = new BigDecimal(0);
-
-  /**
-   * 备注，记录扣除原因
-   */
-  private String comments;
-
-  /**
-   * 本次结算周期以外的金额 出现本次结算周期以外的结算金额的情况有， * 每次处理当前结算时候发生了意外的不可预期 的错误导致当前周期结算单位成功生成的情况
-   */
-  private BigDecimal amountOutOfCurrentPeriod = new BigDecimal(0);
 
   /**
    * 关联的CarServiceTenantDeductRecord
@@ -110,23 +84,6 @@ public class TenantDeductClearingRecord extends BaseEntity {
     this.clearingStatus = clearingStatus;
   }
 
-  @JsonProperty
-  public Date getPeriodBeginDate() {
-    return periodBeginDate;
-  }
-
-  public void setPeriodBeginDate(Date periodBeginDate) {
-    this.periodBeginDate = periodBeginDate;
-  }
-
-  @JsonProperty
-  public Date getPeriodEndDate() {
-    return periodEndDate;
-  }
-
-  public void setPeriodEndDate(Date periodEndDate) {
-    this.periodEndDate = periodEndDate;
-  }
 
   @JsonProperty
   public BigDecimal getAmountOfCurrentPeriod() {
@@ -139,30 +96,6 @@ public class TenantDeductClearingRecord extends BaseEntity {
     this.amountOfCurrentPeriod = amountOfCurrentPeriod;
   }
 
-  public BigDecimal getReduce() {
-    return reduce;
-  }
-
-  public void setReduce(BigDecimal reduce) {
-    this.reduce = reduce;
-  }
-
-  public String getComments() {
-    return comments;
-  }
-
-  public void setComments(String comments) {
-    this.comments = comments;
-  }
-
-
-  public BigDecimal getAmountOutOfCurrentPeriod() {
-    return amountOutOfCurrentPeriod;
-  }
-
-  public void setAmountOutOfCurrentPeriod(BigDecimal amountOutOfCurrentPeriod) {
-    this.amountOutOfCurrentPeriod = amountOutOfCurrentPeriod;
-  }
 
   @OneToMany(mappedBy = "tenantDeductClearingRecord", fetch = FetchType.EAGER, cascade = {
       CascadeType.MERGE, CascadeType.PERSIST})
