@@ -77,9 +77,11 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
               user.getUserName(), user.getjpushRegId(), msg.getId().toString());
         }
         try {
-          PushPayload payload =
-              JPushUtil.buildPushObject_android_registerId(msg.getMessageContent(), map, regId);
-          JPushUtil.sendPush(payload);
+          if (user.getjpushRegId() != null) {
+            PushPayload payload =
+                JPushUtil.buildPushObject_android_registerId(msg.getMessageContent(), map, regId);
+            JPushUtil.sendPush(payload);
+          }
         } catch (Exception e) {
           e.printStackTrace();
         }
