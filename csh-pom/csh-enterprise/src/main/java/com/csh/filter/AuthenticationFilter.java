@@ -122,14 +122,17 @@ public class AuthenticationFilter extends FormAuthenticationFilter {
       session.setAttribute(entry.getKey(), entry.getValue());
     }
 
-    if (url != null && !url.endsWith("main.jhtml")) {
-      ((HttpServletRequest) servletRequest).getSession().setAttribute("url", url);
-      url = null;
-    }
-
+//    if (url != null && !url.endsWith("main.jhtml")) {
+//      ((HttpServletRequest) servletRequest).getSession().setAttribute("url", url);
+//      url = null;
+//    }
+    ((HttpServletRequest) servletRequest).getSession().removeAttribute("shiroSavedRequest");
     return super.onLoginSuccess(token, subject, servletRequest, servletResponse);
+//    WebUtils.issueRedirect(servletRequest, servletResponse, "/console/common/main.jhtml", null, true);
+//
+//    return false;
   }
-
+  
   @Override
   protected String getPassword(ServletRequest servletRequest) {
     HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -137,6 +140,8 @@ public class AuthenticationFilter extends FormAuthenticationFilter {
     rsaService.removePrivateKey(request);
     return password;
   }
+
+ 
 
   /**
    * 获取机构代码

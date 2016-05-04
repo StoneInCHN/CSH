@@ -50,7 +50,7 @@
     	<tr>
     		<th>${message("csh.carServiceRecord.price")}:</th>
     		<td>
-    			 <input  class="easyui-textbox" name="price"  [#if carServiceRecord.chargeStatus != 'UNPAID'] readonly="true"[/#if] value="${carServiceRecord.price}"/>
+    			 <input  class="easyui-textbox" name="price"  [#if carServiceRecord.chargeStatus != 'UNPAID'] readonly="true"[/#if] [#if carServiceRecord.price != '-1']value="${carServiceRecord.price}"[/#if] data-options="required:true"/>
     		</td>
     		
     		<th>${message("csh.carServiceRecord.chargeStatus")}:</th>

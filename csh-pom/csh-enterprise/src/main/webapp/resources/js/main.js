@@ -1,15 +1,30 @@
 $.ajaxSetup({
     complete:function(XMLHttpRequest,textStatus){
           if(XMLHttpRequest.status == 403){
-        	  debugger;
                $.messager.alert('提示信息', "登陆超时！请重新登陆！", 'info',function(){
-                   //window.location.href = '../../login.jsp';
+                   //window.location.href = '../../main.jhtml';
+            	  
                    window.location.reload();
                });
-          } 
+          }
+          
+//          var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头,sessionstatus，   
+//          if(sessionstatus=='timeout' ||  XMLHttpRequest.status == 403){  
+//        	  debugger;
+//                //如果超时就处理 ，指定要跳转的页面    
+//	       var top = getTopWinow(); //获取当前页面的顶层窗口对象  
+//	       	alert('登录超时, 请重新登录.');   
+//	           top.location.href="../../login.jsp"; //跳转到登陆页面  
+//	       } 
     }
 });
-
+function getTopWinow(){    
+    var p = window;    
+    while(p != p.parent){    
+        p = p.parent;    
+    }    
+    return p;    
+}  
 /**
  *绑定右侧点击事件 
  */
@@ -144,7 +159,6 @@ $(function(){
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						debugger;
 						var validate = $('#changePassword_form').form('validate');
 						if(validate){
 							$.ajax({
@@ -162,7 +176,9 @@ $(function(){
 										showSuccessMsg(result.content);
 										$('#changePassword').dialog("close");
 									}else{
-										alertErrorMsg();
+//										alertErrorMsg();
+										$.messager.alert(message("csh.common.fail"),
+												message(result.content), 'error');
 									}
 								}
 							});
@@ -197,7 +213,6 @@ $(function(){
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						debugger;
 						var validate = $('#tenantInfoConfig_form').form('validate');
 						if(validate){
 							$.ajax({
@@ -347,7 +362,7 @@ var deviceInfoStatistics ={
 };
 var chart = new Highcharts.Chart(deviceInfoStatistics);
 //预约维修统计
-var repareReservationStatistics ={
+/*var repareReservationStatistics ={
 		colors: ['#50B432','#058DC7'],
 	    chart: {
 	    	backgroundColor: {
@@ -399,7 +414,7 @@ var repareReservationStatistics ={
 	             name:'数量',
 	             data: []
 	    }]
-	};
+	};*/
 //预约保养情况统计
 var maintainReservationStatistics ={
 		colors: ['#50B432','#058DC7'],
@@ -454,7 +469,62 @@ var maintainReservationStatistics ={
 	             data: []
 	    }]
 	};
+//预约美容统计情况
+var beautifyReservationStatistics={
 
+		colors: ['#50B432','#058DC7'],
+	    chart: {
+	    	backgroundColor: {
+				linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+				stops: [
+	    				[0, 'rgb(250, 250, 250)'],
+	    				[1, 'rgb(221, 221, 221)']
+	    			]
+			},
+			borderRadius: 15,
+	    	renderTo: 'beautifyReservationStatisticsId',
+	        plotBackgroundColor: null,
+	        plotBorderWidth: null,
+	        plotShadow: false,
+	        borderWidth: null,
+	        panning: false
+	        },
+	    credits:{
+	        enabled:false // 禁用版权信息
+	    },
+	    title: {
+	        text: '美容预约处理情况统计'
+	    },
+	    tooltip: {
+	    	  pointFormat:  '{series.name}: <b>{point.percentage:.1f}%</b>'
+	    },
+	    legend:{
+	    	itemMarginBottom:0,
+	        labelFormatter:function(){
+	            return this.name+':'+ this.y;
+	        },
+	        itemStyle: {
+	        	itemWidth: 100
+	        }
+	    },
+	    plotOptions: {
+	        pie: {
+	        	size:'150px',
+	            allowPointSelect: true,
+	            cursor: 'pointer',
+	            dataLabels: {
+	                enabled: false
+	            },
+	            showInLegend: true
+	        }
+	    },
+	    series: [{
+	             type: 'pie',
+	             name:'数量',
+	             data: []
+	    }]
+	
+}
 //获取服务统计数据
 		$.ajax({
 			url : "../../console/reportServiceStatistics/report.jhtml",
@@ -501,6 +571,8 @@ var maintainReservationStatistics ={
 				var chart = new Highcharts.Chart(reportMaintainStatistics);
 			}
 		});
+		
+		
 		//获取预约数据
 		$.ajax({
 			url : "../../console/reportReservationStatistics/report.jhtml",
@@ -508,8 +580,9 @@ var maintainReservationStatistics ={
 			cache : false,
 			success : function(data) {
 				 if (data != null) {
-					 refreshPie(repareReservationStatistics, data,['预约中','处理完'],['reservationRepareCount','paidRepareCount']);
+					 /*refreshPie(repareReservationStatistics, data,['预约中','处理完'],['reservationRepareCount','paidRepareCount']);*/
 					 refreshPie(maintainReservationStatistics, data,['预约中','处理完'],['reservationMaitainCount','paidMaintainCount']);
+					 refreshPie(beautifyReservationStatistics, data,['预约中','处理完'],['reservationBeautifyCount','paidBeautifyCount']);
 				 }
 			}
 		});
@@ -518,7 +591,6 @@ var maintainReservationStatistics ={
 		 * 修改密码事件
 		 */
 		$("#changePasswordHref").click(function(){
-			debugger;
 			$('#commonMainDialog').dialog({
 			    title: "修改密码",//message("yly.drugsInfo.add"),    
 			    width: 500,    
@@ -530,7 +602,6 @@ var maintainReservationStatistics ={
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						debugger;
 						var validate = $('#changePassword_form').form('validate');
 						if(validate){
 							$.ajax({

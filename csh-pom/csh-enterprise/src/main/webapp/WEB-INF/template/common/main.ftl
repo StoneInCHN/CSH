@@ -238,15 +238,18 @@
 						        	<a href ="#"><img class="imgNav" title="设备信息" onclick="shortcutNavigation('设备信息','${base}/console/deviceInfo/deviceInfo.jhtml')" src="${base}/resources/images/device.png"/></a>
 						        	<a href ="#"><img class="imgNav" title="保险管理" onclick="shortcutNavigation('车辆保险','${base}/console/vehicleInsurance/vehicleInsurance.jhtml')" src="${base}/resources/images/insurance.png"/></a>
 						        	<a href ="#"><img class="imgNav" title="保养预约" onclick="shortcutNavigation('保养预约','${base}/console/maintainReservation/maintainReservation.jhtml')" src="${base}/resources/images/maintain.png"/></a>
-						        	<a href ="#"><img class="imgNav" title="维修预约" onclick="shortcutNavigation('维修预约','${base}/console/repareReservation/repareReservation.jhtml')" src="${base}/resources/images/service.png"/></a>
+						        	<!--<a href ="#"><img class="imgNav" title="维修预约" onclick="shortcutNavigation('维修预约','${base}/console/repareReservation/repareReservation.jhtml')" src="${base}/resources/images/service.png"/></a>-->
+						        	<a href ="#"><img class="imgNav" title="美容预约" onclick="shortcutNavigation('美容预约','${base}/console/beautifyReservation/beautifyReservation.jhtml')" src="${base}/resources/images/service.png"/></a>
 						        </div>
 						    </div>
 						    <div class="row">
 								<div class="col-md-12 index-report-item">
 									<div class = "row">
 						         		<div class="col-md-4 index-report-item"><div id = "deviceInfoStatisticsId" style="height:240px"></div></div>
-						         		<div class="col-md-4 index-report-item"><div id = "repareReservationStatisticsId" style="height:240px"></div></div>
+						         		<!--<div class="col-md-4 index-report-item"><div id = "repareReservationStatisticsId" style="height:240px"></div></div>-->
+						         		<div class="col-md-4 index-report-item"><div id = "beautifyReservationStatisticsId" style="height:240px"></div></div>
 						         		<div class="col-md-4 index-report-item"><div id = "maintainReservationStatisticsId" style="height:240px"></div></div>
+						         		
 						         	</div>
 					         	</div>
 					         </div>

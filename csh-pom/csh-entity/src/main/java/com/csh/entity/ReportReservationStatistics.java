@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
- * 设备信息
+ * 预约报表数据
  * 
  */
 @Entity
@@ -37,6 +37,16 @@ public class ReportReservationStatistics extends BaseEntity {
    * 完成数
    */
   private Integer paidRepareCount;
+  
+  /**
+   * 预约维修数
+   */
+  private Integer reservationBeautifyCount;
+  
+  /**
+   * 完成数
+   */
+  private Integer paidBeautifyCount;
   /**
    * 预约维修数
    */
@@ -50,8 +60,10 @@ public class ReportReservationStatistics extends BaseEntity {
   public ReportReservationStatistics ()
   {
     this.reservationMaitainCount = 0;
+    this.reservationBeautifyCount = 0;
     this.reservationRepareCount = 0;
     this.paidMaintainCount = 0;
+    this.paidBeautifyCount = 0;
     this.paidRepareCount = 0;
   }
   @Index(name="reportReservation_tenantid")
@@ -107,6 +119,24 @@ public class ReportReservationStatistics extends BaseEntity {
   public void setPaidMaintainCount (Integer paidMaintainCount)
   {
     this.paidMaintainCount = paidMaintainCount;
+  }
+  @JsonProperty
+  public Integer getReservationBeautifyCount ()
+  {
+    return reservationBeautifyCount;
+  }
+  public void setReservationBeautifyCount (Integer reservationBeautifyCount)
+  {
+    this.reservationBeautifyCount = reservationBeautifyCount;
+  }
+  @JsonProperty
+  public Integer getPaidBeautifyCount ()
+  {
+    return paidBeautifyCount;
+  }
+  public void setPaidBeautifyCount (Integer paidBeautifyCount)
+  {
+    this.paidBeautifyCount = paidBeautifyCount;
   }
   
   

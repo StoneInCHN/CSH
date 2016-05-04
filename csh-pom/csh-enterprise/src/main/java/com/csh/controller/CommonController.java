@@ -208,9 +208,10 @@ public String main(ModelMap model,  HttpSession session) {
   public @ResponseBody Message savePassword(String oldPassword, String newPassword){
     TenantAccount tenantAccount = tenantAccountService.getCurrent();
     String newEnPassword = DigestUtils.md5Hex(newPassword);
-    if (!newEnPassword.equals (tenantAccount.getPassword ()))
+    String oldEnPassword = DigestUtils.md5Hex(oldPassword);
+    if (!oldEnPassword.equals (tenantAccount.getPassword ()))
     {
-      return Message.error ("csh.tenantAccount.oldPasswordError");
+      return Message.error ("原始密码有误");
     }
     tenantAccount.setPassword (newEnPassword);
     tenantAccountService.update (tenantAccount);

@@ -125,7 +125,7 @@ var messages = {
 	"csh.tenantAccount.active":"账号正常",
 	"csh.tenantAccount.list":"用户列表",
 	"csh.tenantAccount.locked":"账号锁定",
-	
+	"csh.tenantAccount.oldPasswordError":"原始密码错误",
 	// 终端用户
 	"csh.endUser.add":"添加用户",
 	"csh.endUser.userName":"用户名",
@@ -273,6 +273,8 @@ var messages = {
 	"csh.advertisement.status":"状态",
 	"csh.advertisement.add":"添加广告",
 	"csh.advertisement.list":"广告列表"
+	
+	
 	
 };
 //多语言
