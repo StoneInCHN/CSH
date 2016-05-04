@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -198,6 +199,9 @@ public String main(ModelMap model,  HttpSession session) {
     TenantInfo tenantInfo = tenantInfoService.find (tenantAccountService.getCurrentTenantInfo ().getId ());
     modelMap.addAttribute ("tenantInfo",tenantInfo);
     modelMap.addAttribute ("areaName",tenantInfo.getArea ().getFullName ());
+    String businessTime = tenantInfo.getBusinessTime ();
+    modelMap.addAttribute ("businessTimeStart",businessTime.split ("-")[0]);
+    modelMap.addAttribute ("businessTimeEnd",businessTime.split ("-")[1]);
     return "common/tenantInfoConfig";
   }
   @RequestMapping(value ="/savePassword",method = RequestMethod.POST)
@@ -214,9 +218,9 @@ public String main(ModelMap model,  HttpSession session) {
   }
   
   @RequestMapping(value ="/saveTenantInfoConfig",method = RequestMethod.POST)
-  public @ResponseBody Message saveTenantInfoConfig(TenantInfo tenantInfo){
-   
-    tenantInfoService.update (tenantInfo, "createDate","orgCode","accountStatus",
+  public @ResponseBody Message saveTenantInfoConfig(TenantInfo tenantInfo,String businessTimeStart,String businessTimeEnd){
+    tenantInfo.setBusinessTime (businessTimeStart+"-"+businessTimeEnd);
+    tenantInfoService.update (tenantInfo, "tenantName","ownerName","address","createDate","orgCode","accountStatus",
           "versionConfig","area","praiseRate","isHaveAccount","distributor","qrImage");
     return SUCCESS_MESSAGE;
   }

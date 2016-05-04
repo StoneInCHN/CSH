@@ -6,7 +6,7 @@
 									${message("csh.tenantInfo.tenantName")}:
 								</th>
 								<td>
-									<input class="easyui-textbox" id="tenantName" value="${tenantInfo.tenantName}" name="tenantName"  maxlength="20" />
+									<input class="easyui-textbox" disabled="disabled" id="tenantName" value="${tenantInfo.tenantName}" name="tenantName"  maxlength="20" />
 								</td>
 							</tr>
 							<tr>
@@ -30,7 +30,7 @@
 									${message("csh.tenantInfo.area")}:
 								</th>
 								<td>
-									<input type="easyui-textbox" disabled="disabled" id="areaId" value="${areaName}" name="areaId"/>
+									<input type="text"  class="easyui-textbox" disabled="disabled" id="areaId" value="${areaName}" name="areaId"/>
 								</td>
 							</tr>
 							<tr>
@@ -38,7 +38,7 @@
 									${message("csh.tenantInfo.address")}:
 								</th>
 								<td>
-									<input type="text" name="address" value="${tenantInfo.address}"  class="easyui-textbox" maxlength="20" />
+									<input type="text" name="address" value="${tenantInfo.address}" disabled="disabled" class="easyui-textbox" maxlength="20" />
 								</td>
 							</tr>
 							<!--<tr>
@@ -65,7 +65,13 @@
 									${message("csh.tenantInfo.businessTime")}:
 								</th>
 								<td>
-									<input type="text" name="businessTime" value="${tenantInfo.businessTime}" class="easyui-textbox" maxlength="20" />
+									<!--<input type="text" name="businessTime" value="${tenantInfo.businessTime}" class="easyui-textbox" maxlength="20" />-->
+									<!--<input type="text" id="businessTime" onfocus="WdatePicker({dateFmt:'HH:mm'})" class="Wdate" style="width:80px"/>-->
+									<div>
+								    <input type="text" class="Wdate" readonly="true" id="beginDate" name="businessTimeStart" value="${businessTimeStart}" onfocus="WdatePicker({dateFmt:'HH:mm',maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+								   	到
+								   	<input type="text" class="Wdate" readonly="true" id="endDate"  name="businessTimeEnd" value="${businessTimeEnd}" onfocus="WdatePicker({dateFmt:'HH:mm',minDate: '#F{$dp.$D(\'beginDate\')}'});"/>
+								   	<div>
 								</td>
 							</tr>
 							<tr>
@@ -81,7 +87,7 @@
 									${message("csh.tenantInfo.ownerName")}:
 								</th>
 								<td>
-									<input type="text" name="ownerName" value="${tenantInfo.ownerName}" class="easyui-textbox" maxlength="20" />
+									<input type="text" name="ownerName" disabled="disabled" value="${tenantInfo.ownerName}" class="easyui-textbox" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
