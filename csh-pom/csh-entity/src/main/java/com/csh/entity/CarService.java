@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -30,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 汽车服务
  *
  */
-@Indexed(index="carService")
+@Indexed(index = "carService")
 @Entity
 @Table(name = "csh_car_service")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_car_service_sequence")
@@ -85,25 +86,39 @@ public class CarService extends BaseEntity {
    * 服务状态
    */
   private ServiceStatus serviceStatus;
-  
+
   /**
    * 汽车服务购买记录
    */
   private Set<CarServiceRecord> carServiceRecords = new HashSet<CarServiceRecord>();
-  
-  
-  @OneToMany(mappedBy="carService")
+
+  /**
+   * 红包
+   */
+  private Set<RedPackage> redPackages = new HashSet<RedPackage>();
+
+
+  @ManyToMany(mappedBy = "carServices")
+  public Set<RedPackage> getRedPackages() {
+    return redPackages;
+  }
+
+  public void setRedPackages(Set<RedPackage> redPackages) {
+    this.redPackages = redPackages;
+  }
+
+  @OneToMany(mappedBy = "carService")
   public Set<CarServiceRecord> getCarServiceRecords() {
-	return carServiceRecords;
+    return carServiceRecords;
   }
 
   public void setCarServiceRecords(Set<CarServiceRecord> carServiceRecords) {
-	this.carServiceRecords = carServiceRecords;
+    this.carServiceRecords = carServiceRecords;
   }
 
   @Column(length = 50)
   @JsonProperty
-  @Field(store = Store.NO, index = Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = Index.TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getServiceName() {
     return serviceName;
   }
@@ -180,7 +195,8 @@ public class CarService extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = Index.UN_TOKENIZED,
+      analyzer = @Analyzer(impl = IKAnalyzer.class))
   public ServiceStatus getServiceStatus() {
     return serviceStatus;
   }

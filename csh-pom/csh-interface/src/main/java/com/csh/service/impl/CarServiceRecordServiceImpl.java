@@ -186,16 +186,18 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord) {
     Setting setting = SettingUtils.get();
-    // 消费兑换积分.规则 1元=1积分
-    Wallet wallet = carServiceRecord.getEndUser().getWallet();
-    WalletRecord walletRecord = new WalletRecord();
-    walletRecord.setWallet(wallet);
-    walletRecord.setBalanceType(BalanceType.INCOME);
-    walletRecord.setWalletType(WalletType.SCORE);
-    walletRecord.setScore(carServiceRecord.getPrice());
-    wallet.getWalletRecords().add(walletRecord);
-    wallet.setScore(wallet.getScore().add(walletRecord.getScore()));
-    walletDao.merge(wallet);
+    // 消费兑换积分.规则 1元=1积分(余额消费不送积分，因为余额充值时已经送了积分)
+    if (!PaymentType.WALLET.equals(carServiceRecord.getPaymentType())) {
+      Wallet wallet = carServiceRecord.getEndUser().getWallet();
+      WalletRecord walletRecord = new WalletRecord();
+      walletRecord.setWallet(wallet);
+      walletRecord.setBalanceType(BalanceType.INCOME);
+      walletRecord.setWalletType(WalletType.SCORE);
+      walletRecord.setScore(carServiceRecord.getPrice());
+      wallet.getWalletRecords().add(walletRecord);
+      wallet.setScore(wallet.getScore().add(walletRecord.getScore()));
+      walletDao.merge(wallet);
+    }
 
     if (setting.getServiceCateWash().equals(
         carServiceRecord.getCarService().getServiceCategory().getId())) {

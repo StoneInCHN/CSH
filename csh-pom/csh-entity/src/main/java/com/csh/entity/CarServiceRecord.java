@@ -110,7 +110,7 @@ public class CarServiceRecord extends BaseEntity {
    * 车牌
    */
   private Vehicle vehicle;
-  
+
   private TenantClearingRecord tenantClearingRecord;
 
   private VehicleInsurance vehicleInsurance;
@@ -138,6 +138,35 @@ public class CarServiceRecord extends BaseEntity {
    * 支付验证码
    */
   private String payCode;
+
+  /**
+   * 手机用户红包
+   */
+  private RedPackageEndUser redPackageEndUser;
+
+  /**
+   * 红包抵用后价格
+   */
+  private BigDecimal discountPrice;
+
+
+  @OneToOne
+  public RedPackageEndUser getRedPackageEndUser() {
+    return redPackageEndUser;
+  }
+
+  public void setRedPackageEndUser(RedPackageEndUser redPackageEndUser) {
+    this.redPackageEndUser = redPackageEndUser;
+  }
+
+  @Column(scale = 2, precision = 10, nullable = false)
+  public BigDecimal getDiscountPrice() {
+    return discountPrice;
+  }
+
+  public void setDiscountPrice(BigDecimal discountPrice) {
+    this.discountPrice = discountPrice;
+  }
 
   @Column(length = 10)
   public String getPayCode() {
@@ -297,8 +326,8 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @JsonProperty
-//  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
-//  @FieldBridge(impl = DateBridgeImpl.class)
+  // @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  // @FieldBridge(impl = DateBridgeImpl.class)
   public Date getClearingDate() {
     return clearingDate;
   }
@@ -349,13 +378,11 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @ManyToOne
-  public Vehicle getVehicle ()
-  {
+  public Vehicle getVehicle() {
     return vehicle;
   }
 
-  public void setVehicle (Vehicle vehicle)
-  {
+  public void setVehicle(Vehicle vehicle) {
     this.vehicle = vehicle;
   }
 

@@ -143,6 +143,21 @@ public class EndUser extends BaseEntity {
   private String jpushRegId;
 
 
+  /**
+   * 红包
+   */
+  private Set<RedPackageEndUser> redPackageEndUsers = new HashSet<RedPackageEndUser>();
+
+
+  @OneToMany(mappedBy = "endUser")
+  public Set<RedPackageEndUser> getRedPackageEndUsers() {
+    return redPackageEndUsers;
+  }
+
+  public void setRedPackageEndUsers(Set<RedPackageEndUser> redPackageEndUsers) {
+    this.redPackageEndUsers = redPackageEndUsers;
+  }
+
   @Column(length = 100)
   public String getjpushRegId() {
     return jpushRegId;

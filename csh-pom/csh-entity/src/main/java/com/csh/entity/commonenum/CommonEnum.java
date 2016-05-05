@@ -491,17 +491,15 @@ public class CommonEnum {
     FINISH("完成"),
     /** 过期 */
     OVERDUE("过期");
-    
+
 
     private String chargeStatusName;
 
-    private ChargeStatus (String chargeStatusName)
-    {
+    private ChargeStatus(String chargeStatusName) {
       this.chargeStatusName = chargeStatusName;
     }
 
-    public String getChargeStatusName ()
-    {
+    public String getChargeStatusName() {
       return chargeStatusName;
     }
 
@@ -561,7 +559,7 @@ public class CommonEnum {
     file
   }
 
-  public enum AreaRegions{
+  public enum AreaRegions {
     /**
      * 省
      */
@@ -575,5 +573,46 @@ public class CommonEnum {
      */
     prefecture
   }
-  
+
+  /**
+   * 红包类型
+   * 
+   * @author sujinxuan
+   *
+   */
+  public enum RedPackageType {
+    /** 通用红包 */
+    COMMON,
+    /** 指定红包 */
+    SPECIFY
+  }
+
+  /**
+   * 红包发送方式
+   * 
+   * @author sujinxuan
+   *
+   */
+  public enum RedPackageSendType {
+    /** 平台注册红包 (用户注册平台即发送) */
+    REG,
+    /** 租户绑定红包 (用户绑定设备即发送) */
+    BIND,
+    /** 普通红包 (主动发送给用户，需要点击领取) */
+    NORMAL
+
+  }
+  /**
+   * 红包过期方式
+   * 
+   * @author sujinxuan
+   *
+   */
+  public enum RedPackageOverDueType {
+    /** 按天数计算过期时间 */
+    BYDAY,
+    /** 指定过期时间 */
+    BYDATE
+  }
+
 }

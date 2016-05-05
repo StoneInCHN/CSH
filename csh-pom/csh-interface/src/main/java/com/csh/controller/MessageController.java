@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -182,34 +183,32 @@ public class MessageController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
-    if (msgIds == null || msgIds.length == 0) {
-      for (MsgEndUser msgEndUser : endUser.getMsgEndUsers()) {
-        MessageInfo msg = msgEndUser.getMessage();
-        if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
-          msgEndUserService.delete(msgEndUser);
-          messageInfoService.delete(msg);
-        } else if (MessageType.NEWSMSG.equals(msg.getMessageType())) {
-          msgEndUserService.delete(msgEndUser);
-        } else if (MessageType.PROMOTION.equals(msg.getMessageType())) {
-          msgEndUserService.delete(msgEndUser);
-        }
-
-      }
-
-    } else {
-      for (Long msgId : msgIds) {
-        MessageInfo msg = messageInfoService.find(msgId);
-        MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
-        if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
-          msgEndUserService.delete(msgEndUser);
-          messageInfoService.delete(msg);
-        } else if (MessageType.NEWSMSG.equals(msg.getMessageType())) {
-          msgEndUserService.delete(msgEndUser);
-        } else if (MessageType.PROMOTION.equals(msg.getMessageType())) {
-          msgEndUserService.delete(msgEndUser);
-        }
+    if ((msgIds == null || msgIds.length == 0)
+        && (endUser.getMsgEndUsers() != null && endUser.getMsgEndUsers().size() > 0)) {
+      List<MsgEndUser> msgEndUsers = new ArrayList<MsgEndUser>();
+      msgEndUsers.addAll(endUser.getMsgEndUsers());
+      msgIds = new Long[msgEndUsers.size()];
+      for (int i = 0; i < msgEndUsers.size(); i++) {
+        MessageInfo msg = msgEndUsers.get(i).getMessage();
+        msgIds[i] = msg.getId();
       }
     }
+
+    for (Long msgId : msgIds) {
+      MessageInfo msg = messageInfoService.find(msgId);
+      MsgEndUser msgEndUser = msgEndUserService.findMsgEndUserByUserAndMsg(endUser, msg);
+      endUser.getMsgEndUsers().remove(msgEndUser);
+      msg.getMsgUser().remove(msgEndUser);
+      if (MessageType.PERSONALMSG.equals(msg.getMessageType())) {
+        msgEndUserService.delete(msgEndUser);
+        messageInfoService.delete(msg);
+      } else if (MessageType.NEWSMSG.equals(msg.getMessageType())) {
+        msgEndUserService.delete(msgEndUser);
+      } else if (MessageType.PROMOTION.equals(msg.getMessageType())) {
+        msgEndUserService.delete(msgEndUser);
+      }
+    }
+
 
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
@@ -217,7 +216,6 @@ public class MessageController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 
   /**
    * 推送消息
