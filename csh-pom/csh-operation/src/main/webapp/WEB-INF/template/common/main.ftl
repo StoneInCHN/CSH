@@ -152,7 +152,7 @@
 					[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
-		[#list ["admin:distributor"] as permission]
+		[#list ["admin:distributor","admin:listDistributorAcount"] as permission]
 					[@shiro.hasPermission name = permission]
 						<li class="has_sub" >
 							<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.distributor")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
@@ -162,6 +162,11 @@
 									<a href="../distributor/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.distributor")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
+							 	 [@shiro.hasPermission name="admin:listDistributorAcount"]
+								<li >
+									<a href="../admin/list4distributor.jhtml"  target="iframe"> <i class="fa fa-user"></i>${message("csh.main.listDistributorAcount")}</a>
+								</li>
+						 	 	[/@shiro.hasPermission]
 				            </ul>
 						</li>
 					[#break /]
@@ -361,6 +366,9 @@
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
 <script type="text/javascript" src="${base}/resources/js/resize.js"></script>
 <script type="text/javascript">
+	function iframeRefresh(src){
+		$('#iframe').attr('src',src);
+	}
 	$(function(){
 		var $sub_li = $(".sub_ul li");
 		$sub_li.click(function(){

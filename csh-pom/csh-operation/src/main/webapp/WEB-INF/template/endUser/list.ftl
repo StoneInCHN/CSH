@@ -100,9 +100,9 @@
 													<th>
 														<a href="javascript:;" class="sort" name="mobileNum">${message("csh.endUser.mobileNum")}</a>
 													</th>
-													<th>
+												<!--	<th>
 														<a href="javascript:;" class="sort" name="vipLevel">${message("csh.endUser.vipLevel")}</a>
-													</th>
+													</th> -->
 													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
@@ -123,13 +123,13 @@
 													<td>
 														${endUser.mobileNum}
 													</td>
-													<td>
+									<!--				<td>
 														[#if endUser.vipLevel??]
 															${endUser.vipLevel}
 														[#else]
 															-
 														[/#if]
-													</td>
+													</td> -->
 													<td>
 														<a href="details.jhtml?id=${endUser.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>
 													</td>

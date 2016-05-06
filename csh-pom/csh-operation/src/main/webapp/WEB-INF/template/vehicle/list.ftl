@@ -106,9 +106,6 @@
 														${message("csh.vehicle.device")}
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="vin">${message("csh.vehicle.vin")}</a>
-													</th>
-													<th>
 														<a href="javascript:;" class="sort" name="produceDate">${message("csh.vehicle.produceDate")}</a>
 													</th>
 													<th>
@@ -136,10 +133,7 @@
 														[/#if]
 													</td>
 													<td>
-														${vehicle.device}
-													</td>
-													<td>
-														${vehicle.vin}
+														${vehicle.device.deviceNo}
 													</td>
 													<td>
 														[#if vehicle.produceDate??]

@@ -1751,3 +1751,7 @@ footer .copy{
 		display: none;
 	}
 }
+
+.wminimize , .wclose{
+	display:none;
+}

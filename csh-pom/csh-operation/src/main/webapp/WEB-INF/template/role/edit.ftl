@@ -82,16 +82,13 @@ $().ready(function() {
               <div class="widget wgreen">
                 <div class="widget-head">
                   <div class="pull-left">${message("csh.role.edit")}</div>
-                  <div class="widget-icons pull-right">
-                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-                  </div>
                   <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
                   <div class="padd">
                   		<form id="inputForm" action="update.jhtml" method="post">
 							<input type="hidden" name="id" value="${role.id}" />
+							<input type="hidden" id="isSystem" value="${role.isSystem}" />
 							<table class="input">
 								<tr>
 									<th>
@@ -224,6 +221,14 @@ $().ready(function() {
         </div>
 	   </div>
 	</div>
-	<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript" >
+	$(function(){
+		var $isSystem =  $("#isSystem");
+		if($isSystem.val() =="true"){
+			$(':input').attr("disabled","disabled");		
+		}
+	})
+</script>
 </body>
 </html>

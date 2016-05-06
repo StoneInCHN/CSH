@@ -308,7 +308,7 @@ input.button:disabled {
 }
 
 input.button:disabled:hover, input.button:disabled:active {
-	color: #bbbbbb;
+	color: #222222;
 	-webkit-transition: none;
 	-moz-transition: none;
 	-ms-transition: none;

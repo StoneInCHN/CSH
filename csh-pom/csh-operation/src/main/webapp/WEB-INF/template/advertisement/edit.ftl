@@ -28,8 +28,9 @@ $().ready(function() {
 			advContentLink: {
 				required: true
 			},
-			remark: {
-				required: true
+			order:{
+				number:true,
+				min:0
 			},
 			status: {
 				required: true
@@ -59,10 +60,6 @@ $().ready(function() {
               <div class="widget wgreen">
                 <div class="widget-head">
                   <div class="pull-left">${message("csh.advertisement.edit")}</div>
-                  <div class="widget-icons pull-right">
-                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-                  </div>
                   <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
@@ -84,7 +81,7 @@ $().ready(function() {
 									${message("csh.advertisement.advImageUrl")}:
 								</th>
 								<td>
-									<a href="${base}/${advertisement.advImageUrl}" target="1024"><img src="${base}/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
+									<a href="${base}${advertisement.advImageUrl}" target="1024"><img src="${base}${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
 								</td>
 							</tr>
 							<tr>
@@ -97,7 +94,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.advContentLink")}:
+									${message("csh.advertisement.advContentLink")}:
 								</th>
 								<td>
 									<input type="text" name="advContentLink" class="text" value="${advertisement.advContentLink}"/>
@@ -105,7 +102,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.remark")}:
+									${message("csh.advertisement.remark")}:
 								</th>
 								<td>
 									<input type="text" name="remark" class="text" value="${advertisement.remark}"/>
@@ -113,7 +110,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.order")}:
+									${message("csh.advertisement.order")}:
 								</th>
 								<td>
 									<input type="text" name="order" class="text" value="${advertisement.order}"/>

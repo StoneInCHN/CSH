@@ -25,7 +25,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.distributor.distributorName")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "distributorName" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="distributorName"><a href="#">${message("csh.distributor.distributorName")}</a></li>
+								          <li [#if page.searchProperty == "distributorName" ] selected="selected" class="active" [/#if] title="distributorName"><a href="#">${message("csh.distributor.distributorName")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -132,6 +132,8 @@
 		    	if(result.type != "success"){
 		    		return false;
 		    	}
+		    	
+		    	parent.iframeRefresh("../deviceInfo/list.jhtml");
 		    	
 		   });
 	  })

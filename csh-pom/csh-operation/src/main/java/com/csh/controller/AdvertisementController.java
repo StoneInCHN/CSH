@@ -1,5 +1,8 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -7,14 +10,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csh.beans.Message;
 import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Advertisement;
-import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
+import com.csh.framework.filter.Filter;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdvertisementService;
 import com.csh.service.FileService;
@@ -84,8 +87,12 @@ public class AdvertisementController extends BaseController{
    * 列表
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
-  public String list(Pageable pageable, ModelMap model) {
+  public String list(Pageable pageable,Status status, ModelMap model) {
+    List<Filter> filters = new ArrayList<Filter>();
+    filters.add(Filter.eq("status", status));
+    pageable.setFilters(filters);
     model.addAttribute("page", advertisementService.findPage(pageable));
+    model.addAttribute("status", status);
     return "/advertisement/list";
   }
 

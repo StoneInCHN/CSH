@@ -19,7 +19,7 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.admin")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.apply")}</a> 
 						<span class="divider">/</span> 
 						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.apply.list")}(${message("csh.page.total", page.total)})</span>
 					</div>

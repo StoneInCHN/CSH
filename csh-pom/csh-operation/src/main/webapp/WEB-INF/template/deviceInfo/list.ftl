@@ -39,16 +39,14 @@
 										<div class="btn-group operationButton">
 										  <button type="button" id="batchdAddButton" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;&nbsp;${message("csh.deviceInfo.batchAdd")}</button>
 										</div>
-										<!--
 										<div class="btn-group operationButton">
 										  <button type="button" id="deleteButton" class="btn btn-default disabled"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;${message("csh.common.delete")}</button>
 										</div>
-										-->
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
 										<div class="btn-group operationButton">
-											<button type="button" id="deviceProvide"  class="btn btn-default"><i class="fa fa-wrench"></i>${message("csh.deviceInfo.deviceProvide")}</button>
+											<button type="button" id="deviceProvide"  class="btn btn-default disabled"><i class="fa fa-wrench"></i>${message("csh.deviceInfo.deviceProvide")}</button>
 										</div>
 									</li>
 									  <li role="presentation" class="dropdown pull-right">
@@ -102,7 +100,8 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "deviceNo" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="deviceNo"><a href="#">${message("csh.deviceInfo.deviceNo")}</a></li>
+								          <li [#if page.searchProperty == "deviceNo" ] selected="selected" class="active" [/#if] title="deviceNo"><a href="#">${message("csh.deviceInfo.deviceNo")}</a></li>
+								           <li [#if page.searchProperty == "simNo" ] selected="selected" class="active" [/#if] title="simNo"><a href="#">${message("csh.deviceInfo.simNo")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -118,10 +117,6 @@
 			                <div class="widget">
 									 <div class="widget-head">
 						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.deviceInfo")}</div>
-						                  <div class="widget-icons pull-right">
-						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-						                  </div>  
 						                  <div class="clearfix"></div>
 						              </div>
 						              <div class="widget-content">
@@ -164,7 +159,11 @@
 												[#list page.content as deviceInfo]
 												<tr>
 													<td>
-														<input type="checkbox"  name="ids" value="${deviceInfo.id}" />
+														[#if deviceInfo.deviceStatus?? && deviceInfo.deviceStatus == "INITED"]
+														  <input type="checkbox"  name="ids"  title="${message("csh.role.deleteSystemNotAllowed")}"  value="${deviceInfo.id}" />
+														[#else]
+															<input type="checkbox"  name="ids"  title="${message("csh.role.deleteSystemNotAllowed")}" disabled="disabled" value="${deviceInfo.id}" />
+														[/#if]
 													</td>
 													<td>
 														[#if deviceInfo.bindTime??]
@@ -248,23 +247,6 @@ $().ready(function() {
 	})
 	
 	$deviceProvide.click(function(){
-		
-		if($deviceStatus.val() != "INITED"){
-			$.dialog({
-				type: "warn",
-				content:"初始状态下才能发放",
-			})
-			return;		
-		}
-		
-		if ($("#listTable input[name='ids']:checked").size() < 1) {
-			$.dialog({
-				type: "warn",
-				content:"请选择设备"
-			})
-			return;		
-		}
-		
 		var $deviceBinding = window.parent.$('#operationModal');
 		var $operationModalIframe= window.parent.$('#operationModalIframe');
 		$deviceBinding.find(".modal-title").text("设备发放");

@@ -153,8 +153,15 @@ public class Setting implements Serializable {
 
   /** 短信平台语音回拨号码 */
   private String ucpaasCallDisplay;
-  
+  /**
+   * 商家平台登录地址
+   */
   private String tenantLoginUrl;
+  
+  /**
+   * 分销商角色默认Id
+   */
+  private Long defaultDistributorRoleId;
   
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
@@ -395,7 +402,13 @@ public class Setting implements Serializable {
   public void setTenantLoginUrl(String tenantLoginUrl) {
     this.tenantLoginUrl = tenantLoginUrl;
   }
-  
-  
+
+  public Long getDefaultDistributorRoleId() {
+    return defaultDistributorRoleId;
+  }
+
+  public void setDefaultDistributorRoleId(Long defaultDistributorRoleId) {
+    this.defaultDistributorRoleId = defaultDistributorRoleId;
+  }
   
 }

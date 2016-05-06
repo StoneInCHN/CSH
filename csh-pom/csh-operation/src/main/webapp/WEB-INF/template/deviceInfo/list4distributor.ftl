@@ -37,7 +37,7 @@
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
 										<div class="btn-group operationButton">
-											<button type="button" id="deviceProvide"  class="btn btn-default"><i class="fa fa-wrench"></i>${message("csh.deviceInfo.deviceProvide")}</button>
+											<button type="button" id="deviceProvide"  class="btn btn-default disabled"><i class="fa fa-wrench"></i>${message("csh.deviceInfo.deviceProvide")}</button>
 										</div>
 									</li>
 									  <li role="presentation" class="dropdown pull-right">
@@ -104,10 +104,6 @@
 			                <div class="widget">
 									 <div class="widget-head">
 						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.deviceInfo")}</div>
-						                  <div class="widget-icons pull-right">
-						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-						                  </div>  
 						                  <div class="clearfix"></div>
 						              </div>
 						              <div class="widget-content">
@@ -147,7 +143,11 @@
 												[#list page.content as deviceInfo]
 												<tr>
 													<td>
-														<input type="checkbox"  name="ids" value="${deviceInfo.id}" />
+														[#if deviceInfo.deviceStatus?? && deviceInfo.deviceStatus == "SENDOUT"]
+														  <input type="checkbox"  name="ids"   value="${deviceInfo.id}" />
+														[#else]
+															<input type="checkbox"  name="ids"  title="${message("csh.role.deleteSystemNotAllowed")}" disabled="disabled" value="${deviceInfo.id}" />
+														[/#if]
 													</td>
 													<td>
 														[#if deviceInfo.bindTime??]
@@ -214,23 +214,6 @@ $().ready(function() {
 	var $deviceStatus = $("#deviceStatus");
 	
 	$deviceProvide.click(function(){
-		
-		if($deviceStatus.val() != "SENDOUT"){
-			$.dialog({
-				type: "warn",
-				content:"下发状态才能发放",
-			})
-			return;		
-		}
-		
-		if ($("#listTable input[name='ids']:checked").size() < 1) {
-			$.dialog({
-				type: "warn",
-				content:"请选择设备"
-			})
-			return;		
-		}
-		
 		var $deviceBinding = window.parent.$('#operationModal');
 		var $operationModalIframe= window.parent.$('#operationModalIframe');
 		$deviceBinding.find(".modal-title").text("设备发放");

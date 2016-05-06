@@ -13,10 +13,17 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<style type="text/css">
+	#selectDistributor_tr{
+		display:none;
+	}
+</style>
 <script type="text/javascript">
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
+	var $isDistributor=$(':input[name="isDistributor"]'); 
+	var $selectDistributor_tr = $("#selectDistributor_tr");
 	// 表单验证
 	$inputForm.validate({
 		rules: {
@@ -44,8 +51,8 @@ $().ready(function() {
 				email: true
 			},
 			name: "required",
-			roleIds: "required",
-			adminStatus: "required"
+			adminStatus: "required",
+			distributorId:"required"
 		},
 		messages: {
 			username: {
@@ -55,8 +62,7 @@ $().ready(function() {
 				pattern: "${message("admin.validate.illegal")}"
 			}
 		}
-	});
-
+	});	
 });
 </script>
 </head>
@@ -64,9 +70,9 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.admin")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.listDistributorAcount")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.admin.list")}</a>
+				<a href="list4distributor.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.admin.list4distributor")}</a>
 				<span class="divider">/</span> 
 				<span  class="bread-current"><i class="fa fa-plus"></i>${message("admin.admin.add")}</span>
 			</div>
@@ -78,12 +84,12 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left"><i class="fa fa-plus"></i>${message("admin.admin.base")}</div>
+                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.admin.base4distributor")}</div>
                   <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                     <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" role="form">
+                     <form id="inputForm" action="save4distributor.jhtml" method="post" class="form-horizontal" role="form">
                      	<table class="input tabContent">
 							<tr>
 								<th>
@@ -125,18 +131,13 @@ $().ready(function() {
 									<input type="text" name="email" class="text" maxlength="200" />
 								</td>
 							</tr>
-							<tr class="roles">
+							<tr >
 								<th>
-									<span class="requiredField">*</span>${message("csh.admin.roles")}:
+									<span class="requiredField">*</span>请选择分销商:
 								</th>
 								<td>
-									<span class="fieldSet">
-										[#list roles as role]
-											<label>
-												<input type="checkbox" name="roleIds" value="${role.id}" /><span>${role.name}</span>
-											</label>
-										[/#list]
-									</span>
+									<span id="distributorName" style="margin-right:30px"></span><button id="selectDistributor"  class="btn btn-default">选择分销商</button>
+									<input type="hidden" class="text" id="distributorId" name="distributorId">
 								</td>
 							</tr>
 							<tr>
@@ -156,7 +157,7 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="submit" class="button" value="${message("csh.common.submit")}" />
-									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
+									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list4distributor.jhtml'" />
 								</td>
 							</tr>
 						</table>                                     
@@ -170,5 +171,22 @@ $().ready(function() {
 	   </div>
 	</div>
 	<script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript">
+		$(function(){
+				var $selectDistributor = $("#selectDistributor");
+				
+				$selectDistributor.click(function(){
+					var $operationModal = window.parent.$('#operationModal');
+					var $operationModalIframe= window.parent.$('#operationModalIframe');
+					$operationModal.find(".modal-title").text("选择分销商");
+					$operationModal.modal("show");
+					$operationModal.attr("data-ids","&"+$("#listTable input[name='ids']:checked").serialize());
+					$operationModalIframe.attr("src","${base}/console/admin/selectDistributor.jhtml");
+					$operationModalIframe.css("height",380);
+				})
+		
+		})
+	
+	</script>
 </body>
 </html>

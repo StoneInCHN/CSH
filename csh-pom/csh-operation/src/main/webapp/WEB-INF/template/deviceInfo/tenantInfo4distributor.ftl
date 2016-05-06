@@ -132,7 +132,7 @@
 		    	if(result.type != "success"){
 		    		return false;
 		    	}
-		    	
+		    	parent.iframeRefresh("../deviceInfo/list4distributor.jhtml");
 		   });
 	  })
 	})

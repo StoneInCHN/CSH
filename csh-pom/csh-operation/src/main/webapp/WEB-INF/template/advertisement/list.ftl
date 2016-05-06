@@ -27,6 +27,7 @@
 				</div>
 			
 			<form id="listForm" action="list.jhtml" method="get">
+				<input type="hidden" id="status" name="status" value="${status}" />
 				  <div class="container operation">
 					<div class="row">
 						  <div class="col-xs-9 col-md-9 col-lg-9">
@@ -61,6 +62,22 @@
 												</li>
 										    </ul>
 									  </li>
+									  <li role="presentation" class="dropdown pull-right ">
+											<a href="javascript:;" id="filterSelect" aria-expanded="false" role="button" aria-haspopup="true" data-toggle="dropdown" class="dropdown-toggle" href="#">
+													${message("csh.advertisement.status.filter")}<span class="caret"></span>
+											</a>
+											<ul id="filterOption" class="dropdown-menu" role="menu" aria-labelledby="filterSelect">
+												<li>
+													<a href="javascript:;" name="status" val="" [#if status == null] class="checked"[/#if]>${message("csh.commonEnum.Status.ENABLE")}</a>
+												</li>
+												<li>
+													<a href="javascript:;" name="status" val="ENABLE" [#if status == "ENABLE"] class="checked"[/#if]>${message("csh.commonEnum.Status.ENABLE")}</a>
+												</li>
+												<li>
+													<a href="javascript:;" name="status" val="DISABLE" [#if status == "DISABLE"] class="checked"[/#if]>${message("csh.commonEnum.Status.DISABLE")}</a>
+												</li>
+											</ul>
+										</li>
 									</ul>
 						  </div>
 						  <div class="col-xs-3 col-md-3 col-lg-3">
@@ -68,7 +85,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "username" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="username"><a href="#">${message("csh.tenantAccount.username")}</a></li>
+								          <li [#if page.searchProperty == "advName"] selected="selected" class="active" [/#if] title="advName"><a href="#">${message("csh.advertisement.advName")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -84,10 +101,6 @@
 			                <div class="widget">
 									 <div class="widget-head">
 						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.advertisement")}</div>
-						                  <div class="widget-icons pull-right">
-						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-						                  </div>  
 						                  <div class="clearfix"></div>
 						              </div>
 						              <div class="widget-content">
@@ -133,7 +146,7 @@
 														${advertisement.advName}
 													</td>
 													<td>
-														<a href="${base}/${advertisement.advImageUrl}" target="2"><img src="${base}/${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
+														<a href="${base}${advertisement.advImageUrl}" target="2"><img src="${base}${advertisement.advImageUrl}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.advertisement.advImageUrl")}"></a>
 													</td>
 													<td>
 														[#if advertisement.advContentLink??]
@@ -177,5 +190,38 @@
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $listForm = $("#listForm");
+	var $filterSelect = $("#filterSelect");
+	var $filterOption = $("#filterOption a");
+	// 筛选
+	$filterSelect.mouseover(function() {
+		var $this = $(this);
+		var offset = $this.offset();
+		var $menuWrap = $this.closest("div.menuWrap");
+		var $popupMenu = $menuWrap.children("div.popupMenu");
+		$popupMenu.css({left: offset.left - 20, top: offset.top + $this.height() + 2}).show();
+		$menuWrap.mouseleave(function() {
+			$popupMenu.hide();
+		});
+	});
+	
+	// 筛选选项
+	$filterOption.click(function() {
+		var $this = $(this);
+		var $dest = $("#" + $this.attr("name"));
+		if ($this.hasClass("checked")) {
+			$dest.val("");
+		} else {
+			$dest.val($this.attr("val"));
+		}
+		$listForm.submit();
+		return false;
+	});
+
+});
+</script>
 </body>
 </html>

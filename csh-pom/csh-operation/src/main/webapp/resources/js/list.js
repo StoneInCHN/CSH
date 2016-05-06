@@ -29,7 +29,7 @@ $().ready( function() {
 	var $pageNumber = $("#pageNumber");
 	var $promptButton = $('#promptButton');
 	var $backButton = $("#backButton");
-	
+	var $deviceProvide = $("#deviceProvide");
 	//添加
 	$addButton.click(function(){
 		location.href="add.jhtml";
@@ -219,18 +219,18 @@ $().ready( function() {
 			if ($enabledIds.filter(":checked").size() > 0) {
 				$deleteButton.removeClass("disabled");
 				$deleteButtonFirst.removeClass("disabled");
-			//	$sendSelectedButton.removeClass("disabled");
+				$deviceProvide.removeClass("disabled");
 				$promptButton.removeClass("disabled");
 				$contentRow.addClass("selected");
 			} else {
 				$deleteButton.addClass("disabled");
 				$deleteButtonFirst.addClass("disabled");
-			//	$sendSelectedButton.addClass("disabled");
+				$deviceProvide.addClass("disabled");
 			}
 		} else {
 			$enabledIds.prop("checked", false);
 			$deleteButton.addClass("disabled");
-			//$sendSelectedButton.addClass("disabled");
+			$deviceProvide.addClass("disabled");
 			$promptButton.addClass("disabled");
 			$contentRow.removeClass("selected");
 		}
@@ -243,7 +243,7 @@ $().ready( function() {
 			$this.closest("tr").addClass("selected");
 			$deleteButton.removeClass("disabled");
 			$deleteButtonFirst.removeClass("disabled");
-		//	$sendSelectedButton.removeClass("disabled");
+			$deviceProvide.removeClass("disabled");
 			$promptButton.removeClass("disabled");
 		
 		} else {
@@ -251,12 +251,12 @@ $().ready( function() {
 			if ($("#listTable input[name='ids']:enabled:checked").size() > 0) {
 				$deleteButton.removeClass("disabled");
 				$deleteButtonFirst.removeClass("disabled");
-			//	$sendSelectedButton.removeClass("disabled");
+				$deviceProvide.removeClass("disabled");
 				$promptButton.removeClass("disabled");
 			} else {
 				$deleteButton.addClass("disabled");
 				$deleteButtonFirst.addClass("disabled");
-			//	$sendSelectedButton.addClass("disabled");
+				$deviceProvide.addClass("disabled");
 				$promptButton.addClass("disabled");
 			}
 		}

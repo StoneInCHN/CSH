@@ -362,15 +362,18 @@ public class DeviceInfoController extends BaseController {
    * 检查用户名是否存在
    */
   @RequestMapping(value = "/check_deviceNo", method = RequestMethod.GET)
-  public @ResponseBody boolean checkUsername(String deviceNo) {
+  public @ResponseBody boolean checkUsername(String deviceNo,Long id) {
     if (StringUtils.isEmpty(deviceNo)) {
       return false;
     }
     DeviceInfo deviceInfo = deviceInfoService.findByDeviceNo(deviceNo);
     if (deviceInfo!=null) {
-      return false;
-    } else {
+      if (id !=null && deviceInfo.getId() ==id) {
+        return true;
+      }else{
+        return false;
+      }
+    } 
       return true;
-    }
   }
 }

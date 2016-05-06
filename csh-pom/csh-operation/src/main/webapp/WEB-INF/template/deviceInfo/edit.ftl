@@ -22,11 +22,26 @@ $().ready(function() {
 	// 表单验证
 	$inputForm.validate({
 		rules: {
+			deviceNo: {
+				required: true,
+				remote: {
+					url: "check_deviceNo.jhtml",
+					cache: false,
+					data:{
+						id:${deviceInfo.id}
+					}
+				}
+			},
 			simNo: {
 				required: true
 			},
 			typeId: {
 				required: true
+			}
+		},
+		messages: {
+			deviceNo: {
+				remote: "设备号已存在"
 			}
 		}
 	});
@@ -53,10 +68,6 @@ $().ready(function() {
               <div class="widget wgreen">
                 <div class="widget-head">
                   <div class="pull-left">${message("csh.deviceInfo.edit")}</div>
-                  <div class="widget-icons pull-right">
-                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-                  </div>
                   <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
@@ -66,10 +77,10 @@ $().ready(function() {
 						<table class="input tabContent">
 							<tr>
 								<th>
-									${message("csh.deviceInfo.deviceNo")}:
+									<span class="requiredField">*</span>${message("csh.deviceInfo.deviceNo")}:
 								</th>
 								<td>
-									${deviceInfo.deviceNo}
+									<input type="text" name="deviceNo" class="text" maxlength="20" value="${deviceInfo.deviceNo}"/>
 								</td>
 							</tr>
 							<tr>

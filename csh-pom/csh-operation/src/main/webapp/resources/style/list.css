@@ -40,6 +40,10 @@
 	background: url(../images/common.gif) -220px -150px no-repeat;
 }
 
+.dropdown-menu li.active a:hover {
+	color: #2b2b2b !important;
+}
+
 td i{
   		font-size:17px;
   	}

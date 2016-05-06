@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.advertisement.add")}</title>
+<title>${message("admin.admin.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -18,25 +18,20 @@ $().ready(function() {
 
 	var $inputForm = $("#inputForm");
 	
+	
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			advName: {
-				required: true
+			name: "required",
+			email: {
+				required: true,
+				email: true
 			},
-			advImage: {
-				required: true
-			},
-			order:{
-				number:true,
-				min:1
-			},
-			status: {
-				required: true
-			}
-		}	
+			roleIds: "required",
+			adminStatus: "required"
+		}
 	});
-	
+
 });
 </script>
 </head>
@@ -44,11 +39,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.advertisement")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.listDistributorAcount")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.advertisement.list")}</a>
-				<span class="divider">/</span> 
-				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.advertisement.add")}</span>
+				<a href="list4distributor.jhtml" ><i class="fa fa-list"></i>${message("csh.admin.list4distributor")}</a>
+				<span class="divider">/</span>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.admin.edit4distributor")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -58,62 +53,46 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.advertisement.add")}</div>
+                  <div class="pull-left">${message("csh.admin.base4distributor")}</div>
                   <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                     <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
-                     	<table class="input tabContent">
+                    <form id="inputForm" action="update4distributor.jhtml" method="post">
+						<input type="hidden" name="id" value="${admin.id}" />
+						<input type="hidden" name="username" value="${admin.username}" />
+						<table class="input tabContent">
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.advName")}:
+									${message("csh.admin.username")}:
 								</th>
 								<td>
-									<input type="text" name="advName" class="text" maxlength="20" />
+									${admin.username}
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.advImage")}:
+									<span class="requiredField">*</span>${message("csh.admin.name")}:
 								</th>
 								<td>
-									<input type="file" name="advImage"/>
+									<input type="text" name="name" class="text" value="${admin.name}" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									${message("csh.advertisement.advContentLink")}:
+									<span class="requiredField">*</span>${message("csh.admin.email")}:
 								</th>
 								<td>
-									<input type="text" name="advContentLink" class="text" />
+									<input type="text" name="email" class="text" maxlength="200" value="${admin.email}" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									${message("csh.advertisement.order")}:								</th>
-								<td>
-									<input type="text" name="order" class="text" />
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.status")}:
+									${message("csh.admin.adminStatus")}:
 								</th>
 								<td>
-									<select name="status">
-										<option value="">${message("csh.advertisement.status.select")}</option>
-										<option value="ENABLE">${message("csh.advertisement.status.ENABLE")}</option>
-										<option value="DISABLE">${message("csh.advertisement.status.DISABLE")}</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.advertisement.remark")}:
-								</th>
-								<td>
-									<input type="text" name="remark" class="text" />
+									<input type="radio" value="actived" name="adminStatus" [#if admin.adminStatus== "actived" ]checked="checked"[/#if] />${message("csh.admin.adminStatus.actived")}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="radio" value="locked" name="adminStatus" [#if admin.adminStatus== "locked" ]checked="checked"[/#if] />${message("csh.admin.adminStatus.locked")}
 								</td>
 							</tr>
 						</table>
@@ -124,11 +103,11 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="submit" class="button" value="${message("csh.common.submit")}" />
-									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
+									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list4distributor.jhtml'" />
 								</td>
 							</tr>
-						</table>                                     
-                     </form>
+						</table>
+					</form>
                   </div>
                 </div>
               </div>  

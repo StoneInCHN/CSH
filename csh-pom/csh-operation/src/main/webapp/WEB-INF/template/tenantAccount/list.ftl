@@ -70,7 +70,8 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "userName" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="userName"><a href="#">${message("csh.tenantAccount.userName")}</a></li>
+								          <li [#if page.searchProperty == "userName"] selected="selected" class="active" [/#if] title="userName"><a href="#">${message("csh.tenantAccount.userName")}</a></li>
+										   <li [#if page.searchProperty == "realName" ] selected="selected" class="active" [/#if] title="realName"><a href="#">${message("csh.tenantAccount.realName")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -103,9 +104,6 @@
 														<a href="javascript:;" class="sort" name="username">${message("csh.tenantAccount.userName")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="tenantID">${message("csh.tenantAccount.tenantID")}</a>
-													</th>
-													<th>
 														<a href="javascript:;" class="sort" name="realName">${message("csh.tenantAccount.realName")}</a>
 													</th>
 													<th>
@@ -133,9 +131,6 @@
 													</td>
 													<td>
 														${tenantAccount.userName}
-													</td>
-													<td>
-														${tenantAccount.tenantID}
 													</td>
 													<td>
 														${tenantAccount.realName}

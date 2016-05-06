@@ -82,10 +82,6 @@
 			                <div class="widget">
 									 <div class="widget-head">
 						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.carServiceRecord")}</div>
-						                  <div class="widget-icons pull-right">
-						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
-						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
-						                  </div>  
 						                  <div class="clearfix"></div>
 						              </div>
 						              <div class="widget-content">
@@ -158,14 +154,23 @@
 														[/#if]
 													</td>
 													<td>
-														[#if carServiceRecord.chargeStatus??]
+														[#if  carServiceRecord.chargeStatus?? && carServiceRecord.price?? && carServiceRecord.price == -1 ]
+															未定价
+														[#elseif  carServiceRecord.chargeStatus?? && carServiceRecord.price?? && carServiceRecord.price != -1]
 															${message("csh.commonEnum.ChargeStatus."+carServiceRecord.chargeStatus)}
 														[#else]
 															-
 														[/#if]
+														
 													</td>
 													<td>
-														${carServiceRecord.price}
+														[#if carServiceRecord.price?? && carServiceRecord.price == -1 ]
+															0
+														[#elseif carServiceRecord.price?? && carServiceRecord.price != -1]
+															${carServiceRecord.price}
+														[#else]
+															-
+														[/#if]
 													</td>
 										
 													<td>
