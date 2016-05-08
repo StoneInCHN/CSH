@@ -258,6 +258,7 @@ var messages = {
 	"csh.tenantClearingRecord.list":"结算记录列表",
 	"csh.tenantClearingRecord.clearingDate":"结算时间",
 	"csh.clearingCarServiceRecord.no":"没有可结算的账单",
+	"csh.tenantClearingRecord.amountRealIncome":"实得金额",
 	//messageInfo
 	"csh.messageInfo.title":"主题",
 	"csh.messageInfo.type":"消息类型",
