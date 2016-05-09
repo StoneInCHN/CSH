@@ -145,6 +145,7 @@ public class CarServiceTenantDeductRecord extends BaseEntity {
   }
 
   @Column(length = 80)
+  @JsonProperty
   public String getTenantName() {
     return tenantName;
   }

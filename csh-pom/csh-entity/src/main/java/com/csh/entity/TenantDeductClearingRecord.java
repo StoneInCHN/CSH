@@ -50,7 +50,6 @@ public class TenantDeductClearingRecord extends BaseEntity {
    */
   private BigDecimal amountOfCurrentPeriod = new BigDecimal(0);
 
-
   /**
    * 关联的CarServiceTenantDeductRecord
    */
@@ -129,5 +128,5 @@ public class TenantDeductClearingRecord extends BaseEntity {
   {
     this.tenantID = tenantID;
   }
-  
+
 }

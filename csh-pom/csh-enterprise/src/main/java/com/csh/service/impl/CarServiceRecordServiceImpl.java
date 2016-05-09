@@ -109,6 +109,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
             CarServiceDistributorDeductRecord distributorDeductRecord = new CarServiceDistributorDeductRecord ();
             
             distributorDeductRecord.setCarService (oldCarServiceRecord.getCarService ());
+            distributorDeductRecord.setTenantName (oldCarServiceRecord.getTenantName ());
             distributorDeductRecord.setChargeStatus (ChargeStatus.FINISH);
             distributorDeductRecord.setEndUser (oldCarServiceRecord.getEndUser ());
             distributorDeductRecord.setFinishDate (oldCarServiceRecord.getFinishDate ());
@@ -131,6 +132,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
           {
           //生成租户提成订单
             CarServiceTenantDeductRecord tenantDeductRecord = new CarServiceTenantDeductRecord ();
+            tenantDeductRecord.setTenantName (oldCarServiceRecord.getTenantName ());
             tenantDeductRecord.setCarService (oldCarServiceRecord.getCarService ());
             tenantDeductRecord.setChargeStatus (ChargeStatus.FINISH);
             tenantDeductRecord.setEndUser (oldCarServiceRecord.getEndUser ());

@@ -328,6 +328,7 @@ $(function(){
 		    			  return "";
 		    		  }
 		    	  }},
+	    	  {title:message("csh.carServiceTenantDeduct.tenantName"),field:"tenantName",sortable:true},
 	    	  {title:message("csh.carServiceRecord.endUser"),field:"endUser",sortable:true,
 		    	  formatter:function(value,row,index){
 		    		  if(value != null){

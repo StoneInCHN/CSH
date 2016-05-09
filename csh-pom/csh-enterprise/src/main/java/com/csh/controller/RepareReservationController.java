@@ -243,6 +243,8 @@ public class RepareReservationController extends BaseController
     record.setEndUser (endUser);
     record.setPrice (carServiceList.get (0).getPrice ());
     record.setTenantID (carServiceList.get (0).getTenantInfo ().getId ());
+    record.setTenantName (carServiceList.get (0).getTenantInfo ().getTenantName ());
+    record.setDiscountPrice (carServiceList.get (0).getPrice ());
     repareReservation.setEndUser (endUser);
     repareReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
     repareReservation.setCarServiceRecord (record);

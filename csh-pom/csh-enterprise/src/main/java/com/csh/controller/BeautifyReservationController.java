@@ -269,6 +269,8 @@ public class BeautifyReservationController extends BaseController
     record.setPrice (carServiceList.get (0).getPrice ());
     record.setTenantID (carServiceList.get (0).getTenantInfo ().getId ());
     record.setVehicle (vehicle);
+    record.setTenantName (carServiceList.get (0).getTenantInfo ().getTenantName ());
+    record.setDiscountPrice (carServiceList.get (0).getPrice ());
     beautifyReservation.setEndUser (endUser);
     beautifyReservation.setReservationInfoFrom (ReservationInfoFrom.CALL);
     beautifyReservation.setCarServiceRecord (record);

@@ -249,6 +249,7 @@ var messages = {
 	"csh.tenantDeductClearingRecord.list":"提成结算列表",
 	"csh.tenantDeductClearingRecord.add":"提成结算单生成",
 	"csh.tenantClearingRecord.amountOfCurrentPeriod":"结算金额",
+	"csh.carServiceTenantDeduct.tenantName":"商家名称",
 	//结算记录
 	"csh.tenantClearingRecord.add":"添加结算单",
 	"csh.tenantClearingRecord.clearingSn":"结算单号",
