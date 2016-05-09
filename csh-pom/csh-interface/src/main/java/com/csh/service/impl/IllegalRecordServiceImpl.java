@@ -154,7 +154,8 @@ public class IllegalRecordServiceImpl extends BaseServiceImpl<IllegalRecord, Lon
         illegalRecord.setIllegalContent(map.get("content").toString());
         illegalRecord.setIllegalDate(map.get("time").toString());
         illegalRecord.setIllegalId(map.get("illegalid").toString());
-        illegalRecord.setProcessingSite(map.get("agency").toString());
+        illegalRecord.setProcessingSite(map.get("agency") != null ? map.get("agency").toString()
+            : null);
         illegalRecord.setScore(Integer.parseInt(map.get("score").toString()));
         illegalRecord.setFinesAmount(Double.parseDouble(map.get("price").toString()));
         illegalRecordDao.persist(illegalRecord);

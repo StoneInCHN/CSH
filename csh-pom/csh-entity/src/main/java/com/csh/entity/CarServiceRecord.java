@@ -159,7 +159,7 @@ public class CarServiceRecord extends BaseEntity {
     this.redPackageEndUser = redPackageEndUser;
   }
 
-  @Column(scale = 2, precision = 10, nullable = false)
+  @Column(scale = 2, precision = 10)
   public BigDecimal getDiscountPrice() {
     return discountPrice;
   }

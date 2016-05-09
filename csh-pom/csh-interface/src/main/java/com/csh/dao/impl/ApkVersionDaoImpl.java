@@ -1,5 +1,7 @@
 package com.csh.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
 
@@ -13,15 +15,15 @@ import com.csh.framework.dao.impl.BaseDaoImpl;
 public class ApkVersionDaoImpl extends BaseDaoImpl<ApkVersion, Long> implements ApkVersionDao {
 
   @Override
-  public ApkVersion getNewVersion(Integer versionCode) {
+  public List<ApkVersion> getNewVersion(Integer versionCode) {
     if (versionCode == null) {
       return null;
     }
     try {
       String jpql =
-          "select version from ApkVersion version where version.versionCode > :versionCode";
+          "select version from ApkVersion version where version.versionCode > :versionCode order by version.versionCode desc";
       return entityManager.createQuery(jpql, ApkVersion.class).setFlushMode(FlushModeType.COMMIT)
-          .setParameter("versionCode", versionCode).getSingleResult();
+          .setParameter("versionCode", versionCode).getResultList();
     } catch (NoResultException e) {
       return null;
     }

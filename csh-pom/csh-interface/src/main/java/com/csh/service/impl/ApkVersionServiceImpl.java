@@ -1,5 +1,7 @@
 package com.csh.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -23,6 +25,10 @@ public class ApkVersionServiceImpl extends BaseServiceImpl<ApkVersion, Long> imp
 
   @Override
   public ApkVersion getNewVersion(Integer versionCode) {
-    return apkVersionDao.getNewVersion(versionCode);
+    List<ApkVersion> list = apkVersionDao.getNewVersion(versionCode);
+    if (list != null && list.size() > 0) {
+      return list.get(0);
+    }
+    return null;
   }
 }
