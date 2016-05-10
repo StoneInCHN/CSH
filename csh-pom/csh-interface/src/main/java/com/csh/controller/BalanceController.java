@@ -139,7 +139,7 @@ public class BalanceController extends MobileBaseController {
     walletRecord.setBalanceType(BalanceType.INCOME);
     walletRecord.setWalletType(WalletType.MONEY);
     walletRecord.setMoney(walletRequest.getAmount());
-    walletRecord.setRemark(walletRequest.getRemark());
+    walletRecord.setRemark(Message.success("csh.wallet.chargeIn.record").getContent());
     walletRecord.setWallet(wallet);
     wallet.getWalletRecords().add(walletRecord);
     walletService.update(wallet);

@@ -16,7 +16,9 @@ import com.csh.entity.EndUser;
 import com.csh.entity.ReportUserRegStatistics;
 import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
 import com.csh.utils.TimeUtils;
 
@@ -25,6 +27,9 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
 
   @Resource(name = "endUserDaoImpl")
   private EndUserDao endUserDao;
+  
+  @Resource(name = "couponServiceImpl")
+  private CouponService couponService;
 
   @Resource(name = "reportUserRegStatisticsDaoImpl")
   private ReportUserRegStatisticsDao reportUserRegStatisticsDao;
@@ -97,6 +102,7 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
       reportUserRegStatisticsDao.persist(report);
     }
 
+    couponService.takeCouponBySendType(null, regUser, CouponSendType.REG);
     return regUser;
   }
 

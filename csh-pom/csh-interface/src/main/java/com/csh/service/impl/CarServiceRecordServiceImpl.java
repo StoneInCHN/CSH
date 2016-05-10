@@ -194,6 +194,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       walletRecord.setBalanceType(BalanceType.INCOME);
       walletRecord.setWalletType(WalletType.SCORE);
       walletRecord.setScore(carServiceRecord.getPrice());
+      walletRecord.setRemark(Message.success("csh.wallet.purService.record", carServiceRecord.getCarService().getServiceName()).getContent());
       wallet.getWalletRecords().add(walletRecord);
       wallet.setScore(wallet.getScore().add(walletRecord.getScore()));
       walletDao.merge(wallet);

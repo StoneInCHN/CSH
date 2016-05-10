@@ -14,7 +14,9 @@ import com.csh.entity.DeviceInfo;
 import com.csh.entity.ReportDeviceBindStatistics;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.service.CouponService;
 import com.csh.service.VehicleService;
 import com.csh.utils.TimeUtils;
 
@@ -24,6 +26,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   @Resource(name = "vehicleDaoImpl")
   private VehicleDao vehicleDao;
 
+  @Resource(name = "couponServiceImpl")
+  private CouponService couponService;
+  
   @Resource(name = "reportDeviceBindStatisticsDaoImpl")
   private ReportDeviceBindStatisticsDao reportDeviceBindStatisticsDao;
 
@@ -56,6 +61,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
       reportDeviceBindStatisticsDao.persist(report);
     }
 
+    couponService.takeCouponBySendType(deviceInfo.getTenantID(), vehicle.getEndUser(), CouponSendType.BIND);
     return vehicle;
   }
 
