@@ -513,7 +513,7 @@ public class CarServiceController extends MobileBaseController {
       if ((carServiceRecord.getChargeStatus() == ChargeStatus.RESERVATION || carServiceRecord
           .getChargeStatus() == ChargeStatus.RESERVATION_SUCCESS)
           && carServiceRecord.getSubscribeDate() != null
-          && TimeUtils.daysBetween(currentDate, carServiceRecord.getSubscribeDate()) > 1) {
+          && TimeUtils.daysBetween(carServiceRecord.getSubscribeDate(), currentDate) >= 1) {
         carServiceRecord.setChargeStatus(ChargeStatus.OVERDUE);
       }
     }
