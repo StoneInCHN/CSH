@@ -142,7 +142,7 @@ public class CarServiceRecord extends BaseEntity {
   /**
    * 手机用户红包
    */
-  private RedPackageEndUser redPackageEndUser;
+  private CouponEndUser couponEndUser;
 
   /**
    * 红包抵用后价格
@@ -151,12 +151,12 @@ public class CarServiceRecord extends BaseEntity {
 
 
   @OneToOne
-  public RedPackageEndUser getRedPackageEndUser() {
-    return redPackageEndUser;
+  public CouponEndUser getCouponEndUser() {
+    return couponEndUser;
   }
 
-  public void setRedPackageEndUser(RedPackageEndUser redPackageEndUser) {
-    this.redPackageEndUser = redPackageEndUser;
+  public void setCouponEndUser(CouponEndUser couponEndUser) {
+    this.couponEndUser = couponEndUser;
   }
 
   @Column(scale = 2, precision = 10)

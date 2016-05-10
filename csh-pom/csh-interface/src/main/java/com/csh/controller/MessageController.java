@@ -190,7 +190,9 @@ public class MessageController extends MobileBaseController {
       msgIds = new Long[msgEndUsers.size()];
       for (int i = 0; i < msgEndUsers.size(); i++) {
         MessageInfo msg = msgEndUsers.get(i).getMessage();
-        msgIds[i] = msg.getId();
+        if (msg != null) {
+          msgIds[i] = msg.getId();
+        }
       }
     }
 

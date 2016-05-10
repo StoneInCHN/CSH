@@ -144,18 +144,18 @@ public class EndUser extends BaseEntity {
 
 
   /**
-   * 红包
+   * 优惠劵
    */
-  private Set<RedPackageEndUser> redPackageEndUsers = new HashSet<RedPackageEndUser>();
+  private Set<CouponEndUser> couponEndUsers = new HashSet<CouponEndUser>();
 
 
   @OneToMany(mappedBy = "endUser")
-  public Set<RedPackageEndUser> getRedPackageEndUsers() {
-    return redPackageEndUsers;
+  public Set<CouponEndUser> getCouponEndUsers() {
+    return couponEndUsers;
   }
 
-  public void setRedPackageEndUsers(Set<RedPackageEndUser> redPackageEndUsers) {
-    this.redPackageEndUsers = redPackageEndUsers;
+  public void setCouponEndUsers(Set<CouponEndUser> couponEndUsers) {
+    this.couponEndUsers = couponEndUsers;
   }
 
   @Column(length = 100)

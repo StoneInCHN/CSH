@@ -12,15 +12,15 @@ import javax.persistence.Table;
 import com.csh.entity.base.BaseEntity;
 
 /**
- * 红包
+ * 优惠劵
  * 
  * @author Andrea
  *
  */
 @Entity
-@Table(name = "csh_red_package_enduser")
+@Table(name = "csh_coupon_enduser")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_red_package_enduser_sequence")
-public class RedPackageEndUser extends BaseEntity {
+public class CouponEndUser extends BaseEntity {
 
   private static final long serialVersionUID = 7282926448628904157L;
 
@@ -50,17 +50,17 @@ public class RedPackageEndUser extends BaseEntity {
   private EndUser endUser;
 
   /**
-   * 红包
+   * 优惠劵
    */
-  private RedPackage redPackage;
+  private Coupon coupon;
 
   /**
-   * 红包对应的消费服务，每个红包只能用于一次消费,一次消费只能使用一个红包
+   * 优惠劵对应的消费服务，每个优惠劵只能用于一次消费,一次消费只能使用一个优惠劵
    */
   private CarServiceRecord carServiceRecord;
 
 
-  @OneToOne(mappedBy = "redPackageEndUser")
+  @OneToOne(mappedBy = "couponEndUser")
   public CarServiceRecord getCarServiceRecord() {
     return carServiceRecord;
   }
@@ -102,15 +102,6 @@ public class RedPackageEndUser extends BaseEntity {
     this.endUser = endUser;
   }
 
-  @ManyToOne
-  public RedPackage getRedPackage() {
-    return redPackage;
-  }
-
-  public void setRedPackage(RedPackage redPackage) {
-    this.redPackage = redPackage;
-  }
-
   @Column(length = 100)
   public String getRemark() {
     return remark;
@@ -120,5 +111,13 @@ public class RedPackageEndUser extends BaseEntity {
     this.remark = remark;
   }
 
+  @ManyToOne
+  public Coupon getCoupon() {
+    return coupon;
+  }
+
+  public void setCoupon(Coupon coupon) {
+    this.coupon = coupon;
+  }
 
 }

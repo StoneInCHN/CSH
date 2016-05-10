@@ -461,7 +461,7 @@ public class CommonEnum {
   public enum WalletType {
     /** 余额 */
     MONEY,
-    /** 红包 */
+    /** 优惠劵 */
     REDPACKET,
     /** 积分 */
     SCORE
@@ -575,40 +575,40 @@ public class CommonEnum {
   }
 
   /**
-   * 红包类型
+   * 优惠劵类型
    * 
    * @author sujinxuan
    *
    */
-  public enum RedPackageType {
-    /** 通用红包 */
+  public enum CouponType {
+    /** 通用优惠劵 */
     COMMON,
-    /** 指定红包 */
+    /** 指定优惠劵 */
     SPECIFY
   }
 
   /**
-   * 红包发送方式
+   * 优惠劵发送方式
    * 
    * @author sujinxuan
    *
    */
-  public enum RedPackageSendType {
-    /** 平台注册红包 (用户注册平台即发送) */
+  public enum CouponSendType {
+    /** 平台注册优惠劵 (用户注册平台即发送) */
     REG,
-    /** 租户绑定红包 (用户绑定设备即发送) */
+    /** 租户绑定优惠劵 (用户绑定设备即发送) */
     BIND,
-    /** 普通红包 (主动发送给用户，需要点击领取) */
+    /** 普通优惠劵 (主动发送给用户，需要点击领取) */
     NORMAL
 
   }
   /**
-   * 红包过期方式
+   * 优惠劵过期方式
    * 
    * @author sujinxuan
    *
    */
-  public enum RedPackageOverDueType {
+  public enum CouponOverDueType {
     /** 按天数计算过期时间 */
     BYDAY,
     /** 指定过期时间 */

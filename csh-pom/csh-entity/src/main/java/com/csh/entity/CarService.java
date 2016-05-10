@@ -93,18 +93,18 @@ public class CarService extends BaseEntity {
   private Set<CarServiceRecord> carServiceRecords = new HashSet<CarServiceRecord>();
 
   /**
-   * 红包
+   * 优惠券
    */
-  private Set<RedPackage> redPackages = new HashSet<RedPackage>();
+  private Set<Coupon> coupons = new HashSet<Coupon>();
 
 
   @ManyToMany(mappedBy = "carServices")
-  public Set<RedPackage> getRedPackages() {
-    return redPackages;
+  public Set<Coupon> getCoupons() {
+    return coupons;
   }
 
-  public void setRedPackages(Set<RedPackage> redPackages) {
-    this.redPackages = redPackages;
+  public void setCoupons(Set<Coupon> coupons) {
+    this.coupons = coupons;
   }
 
   @OneToMany(mappedBy = "carService")
