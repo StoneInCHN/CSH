@@ -230,35 +230,35 @@ public class VehicleController extends BaseController
     return "vehicle/edit";
   }
 
-  @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (Vehicle vehicle,Long endUserID,Long deviceInfoID, Long vehicleBrandDetailId)
-  {
-    EndUser endUser = endUserService.find (endUserID);
-    DeviceInfo deviceInfo = deviceInfoService.find (deviceInfoID);
-    deviceInfo.setDeviceStatus (DeviceStatus.BINDED);
-    deviceInfo.setBindTime (new Date ());
-    VehicleBrandDetail vehicleBrandDetail = vehicleBrandDetailService.find (vehicleBrandDetailId);
-    vehicle.setDevice (deviceInfo);
-    vehicle.setEndUser (endUser);
-    vehicle.setVehicleBrandDetail (vehicleBrandDetail);
-    vehicleService.save (vehicle,true);
-    return SUCCESS_MESSAGE;
-  }
-
-  @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (Vehicle vehicle,Long endUserID,Long deviceInfoID, Long vehicleBrandDetailId)
-  { 
-    EndUser endUser = endUserService.find (endUserID);
-    DeviceInfo deviceInfo = deviceInfoService.find (deviceInfoID);
-    deviceInfo.setDeviceStatus (DeviceStatus.BINDED);
-    deviceInfo.setBindTime (new Date ());
-    VehicleBrandDetail vehicleBrandDetail = vehicleBrandDetailService.find (vehicleBrandDetailId);
-    vehicle.setDevice (deviceInfo);
-    vehicle.setEndUser (endUser);
-    vehicle.setVehicleBrandDetail (vehicleBrandDetail);
-    vehicleService.update (vehicle);
-    return SUCCESS_MESSAGE;
-  }
+//  @RequestMapping (value = "/add", method = RequestMethod.POST)
+//  public @ResponseBody Message add (Vehicle vehicle,Long endUserID,Long deviceInfoID, Long vehicleBrandDetailId)
+//  {
+//    EndUser endUser = endUserService.find (endUserID);
+//    DeviceInfo deviceInfo = deviceInfoService.find (deviceInfoID);
+//    deviceInfo.setDeviceStatus (DeviceStatus.BINDED);
+//    deviceInfo.setBindTime (new Date ());
+//    VehicleBrandDetail vehicleBrandDetail = vehicleBrandDetailService.find (vehicleBrandDetailId);
+//    vehicle.setDevice (deviceInfo);
+//    vehicle.setEndUser (endUser);
+//    vehicle.setVehicleBrandDetail (vehicleBrandDetail);
+//    vehicleService.save (vehicle,true);
+//    return SUCCESS_MESSAGE;
+//  }
+//
+//  @RequestMapping (value = "/update", method = RequestMethod.POST)
+//  public @ResponseBody Message update (Vehicle vehicle,Long endUserID,Long deviceInfoID, Long vehicleBrandDetailId)
+//  { 
+//    EndUser endUser = endUserService.find (endUserID);
+//    DeviceInfo deviceInfo = deviceInfoService.find (deviceInfoID);
+//    deviceInfo.setDeviceStatus (DeviceStatus.BINDED);
+//    deviceInfo.setBindTime (new Date ());
+//    VehicleBrandDetail vehicleBrandDetail = vehicleBrandDetailService.find (vehicleBrandDetailId);
+//    vehicle.setDevice (deviceInfo);
+//    vehicle.setEndUser (endUser);
+//    vehicle.setVehicleBrandDetail (vehicleBrandDetail);
+//    vehicleService.update (vehicle);
+//    return SUCCESS_MESSAGE;
+//  }
  
 
   /**

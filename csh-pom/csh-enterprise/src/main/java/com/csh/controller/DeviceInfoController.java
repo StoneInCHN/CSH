@@ -1,6 +1,7 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -27,6 +28,7 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DeviceInfoService;
@@ -179,6 +181,38 @@ public class DeviceInfoController extends BaseController
     }
     return SUCCESS_MESSAGE;
   }
+  
+  /**
+   * 删除
+   */
+  @RequestMapping (value = "/deviceStatusUpdate", method = RequestMethod.POST)
+  public @ResponseBody Message deviceStatusUpdate (Long[] ids,DeviceStatus deviceStatus)
+  {
+    if (ids != null)
+    {
+      // 检查是否能被删除
+      // if()
+     List<DeviceInfo> deviceInfos =  deviceInfoService.findList (ids);
+     for (DeviceInfo deviceInfo : deviceInfos)
+     {
+        if (deviceStatus == DeviceStatus.SALEOUT 
+            && deviceInfo.getDeviceStatus ()!= DeviceStatus.STORAGEOUT )
+        {
+          return ERROR_MESSAGE;
+        }
+        if (deviceStatus == DeviceStatus.REFUNDED 
+            && !(deviceInfo.getDeviceStatus () == DeviceStatus.STORAGEOUT 
+            || deviceInfo.getDeviceStatus () == DeviceStatus.SALEOUT ))
+        {
+          return ERROR_MESSAGE;
+        }
+        deviceInfo.setDeviceStatus (deviceStatus);
+     }
+     deviceInfoService.update (deviceInfos);
+    }
+    return SUCCESS_MESSAGE;
+  }
+  
   /**
    * 获取数据进入详情页面
    * 
@@ -236,4 +270,6 @@ public class DeviceInfoController extends BaseController
     deviceInfoService.update (deviceInfo);
     return SUCCESS_MESSAGE;
   }
+  
+  
 }

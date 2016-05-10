@@ -157,6 +157,10 @@ var messages = {
 	"csh.deviceInfo.bindVehicle":"绑定车辆",
 	"csh.deviceInfo.bindStatus.unBinded":"设备未绑定",
 	"csh.deviceInfo.bindStatus.binded":"设备已绑定",
+	"csh.deviceInfo.bindStatus.ONSALE":"在售",
+	"csh.deviceInfo.bindStatus.REFUNDED":"退回",
+	"csh.deviceInfo.deviceStatus.SALEOUT":"已售出",
+	"csh.deviceInfo.statusUpdate.confirm":"状态更改确认",
 	//车辆信息
 	"csh.vehicle.add":"添加车辆",
 	"csh.vehicle.plate":"车牌号",

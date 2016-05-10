@@ -1,4 +1,49 @@
 var deviceInfo_manager_tool = {
+		//售出
+		deviceStatusUpdate:function(deviceStatus){
+			var _rows = $("#deviceInfo-table-list").datagrid('getSelections');
+			if (_rows.length == 0) {
+				$.messager.alert(message("csh.common.prompt"),
+						message("csh.common.select.editRow"), 'warning');
+			} else {
+				var _ids = [];
+				for (var i = 0; i < _rows.length; i++) {
+					_ids.push(_rows[i].id);
+				}
+				if (_ids.length > 0) {
+					$.messager.confirm(message("csh.common.confirm"),
+							message("csh.deviceInfo.statusUpdate.confirm"), function(r) {
+								if (r) {
+									$.ajax({
+										url : "../deviceInfo/deviceStatusUpdate.jhtml",
+										type : "post",
+										traditional : true,
+										data : {
+											"ids" : _ids,
+											"deviceStatus":deviceStatus
+										},
+										beforeSend : function() {
+											$.messager.progress({
+												text : message("csh.common.progress")
+											});
+										},
+										success : function(result, response, status) {
+											$.messager.progress('close');
+											var resultMsg = result.content;
+											if (response == "success") {
+												showSuccessMsg(resultMsg);
+												$("#deviceInfo-table-list").datagrid('reload');
+											} else {
+												alertErrorMsg();
+											}
+										}
+									});
+								}
+							})
+				}
+
+			}
+		},
 		//解绑车辆
 		unBind:function(){
 			var _edit_row = $('#deviceInfo-table-list').datagrid('getSelected');
@@ -10,7 +55,7 @@ var deviceInfo_manager_tool = {
 				$.messager.alert(message("csh.deviceInfo.bindStatus"),message("csh.deviceInfo.bindStatus.unBinded"),'warning');  
 				return false;
 			}
-			$.messager.confirm('确认解绑', '确实解绑？', function(r){
+			$.messager.confirm('确认解绑', '确认解绑？', function(r){
 				if (!r){
 					return false;
 				}else{
@@ -152,6 +197,18 @@ $(function(){
 			    		  return  message("csh.deviceInfo.bindStatus.BINDED");
 			    	  }else if (value == "UNBINDED" || value == null){
 			    		  return  message("csh.deviceInfo.bindStatus.UNBINDED");
+			    	  }
+		      	  }  
+		      },
+		      {title:message("csh.deviceInfo.deviceStatus"),field:"deviceStatus",width:100,sortable:true,
+		      		
+		    	  formatter: function(value,row,index){
+			    	  if(value == "SALEOUT"){
+			    		  return  message("csh.deviceInfo.deviceStatus.SALEOUT");
+			    	  }else if (value == "REFUNDED"){
+			    		  return  message("csh.deviceInfo.bindStatus.REFUNDED");
+			    	  }else{
+			    		  return  message("csh.deviceInfo.bindStatus.ONSALE");
 			    	  }
 		      	  }  
 		      },
