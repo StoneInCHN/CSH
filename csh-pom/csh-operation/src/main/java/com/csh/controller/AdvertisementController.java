@@ -53,7 +53,7 @@ public class AdvertisementController extends BaseController{
       advImageUrl = fileService.saveImage(advertisement.getAdvImage(), ImageType.ADVERTISEMENT);
     }
     advertisement.setAdvImageUrl(advImageUrl);
-    advertisement.setSystemType(SystemType.ENTERPRISE);
+    advertisement.setSystemType(SystemType.OPERATION);
     advertisementService.save(advertisement);
     return "redirect:list.jhtml";
   }

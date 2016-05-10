@@ -142,9 +142,9 @@ public class CommonEnum {
      */
     STORAGEOUT,
     /**
-     * 已绑定
+     * 已售出
      */
-    BINDED,
+    SALEOUT,
 
     /**
      * 退还
