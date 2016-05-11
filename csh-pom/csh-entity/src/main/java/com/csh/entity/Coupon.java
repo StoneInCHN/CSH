@@ -70,6 +70,11 @@ public class Coupon extends BaseEntity {
   private Date overDueTime;
 
   /**
+   * 优惠劵领取截止时间
+   */
+  private Date deadlineTime;
+
+  /**
    * 租户ID
    */
   private Long tenantID;
@@ -90,6 +95,27 @@ public class Coupon extends BaseEntity {
    */
   private Set<CarService> carServices = new HashSet<CarService>();
 
+  /**
+   * 优惠券发放数量
+   */
+  private Integer counts;
+
+
+  public Integer getCounts() {
+    return counts;
+  }
+
+  public void setCounts(Integer counts) {
+    this.counts = counts;
+  }
+
+  public Date getDeadlineTime() {
+    return deadlineTime;
+  }
+
+  public void setDeadlineTime(Date deadlineTime) {
+    this.deadlineTime = deadlineTime;
+  }
 
   @Column(scale = 2, precision = 10, nullable = false)
   public BigDecimal getAmount() {

@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
+import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.App;
 import com.csh.entity.CarService;
 import com.csh.entity.EndUser;
 import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
@@ -87,11 +89,15 @@ public class TenantInfoController extends MobileBaseController {
 
     Long tenantId = null;
     EndUser endUser = endUserService.find(userId);
-    if (endUser.getDefaultVehicle() != null) {
+    if (endUser.getDefaultVehicle() != null && tenantInfoReq.getPageNumber() == 1) {
       tenantId = endUser.getDefaultVehicle().getTenantID();
     }
 
-
+    if (LogUtil.isDebugEnabled(TenantInfoController.class)) {
+      LogUtil.debug(TenantInfoController.class, "find",
+          "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s",
+          endUser.getUserName(), endUser.getId(), longitude, latitude);
+    }
     Pageable pageable = new Pageable(tenantInfoReq.getPageNumber(), tenantInfoReq.getPageSize());
     Page<Map<String, Object>> tenantPage =
         tenantInfoJdbcService.getTenantInfos(longitude, latitude, pageable, radius,
@@ -99,7 +105,7 @@ public class TenantInfoController extends MobileBaseController {
     if (tenantId != null) {
       TenantInfo bindTenant = tenantInfoService.find(tenantId);
 
-      if (bindTenant != null) {
+      if (bindTenant != null && AccountStatus.ACTIVED.equals(bindTenant.getAccountStatus())) {
         Boolean flag = false;
         for (CarService service : bindTenant.getCarServices()) {
           if (service.getServiceCategory().getId().equals(serviceCategoryId)) {
