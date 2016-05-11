@@ -70,7 +70,6 @@ public class JpushController extends MobileBaseController {
       return response;
     }
     endUserService.createEndUserAppPlatform(appPlatform, userId);
-    System.out.println(endUserService.getEndUserAppPlatform(userId));
     EndUser endUser = endUserService.find(userId);
     List<Filter> filters = new ArrayList<Filter>();
     Filter filter = new Filter("jpushRegId", Operator.eq, jPushRegId);

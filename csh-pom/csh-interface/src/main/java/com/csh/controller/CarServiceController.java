@@ -154,17 +154,18 @@ public class CarServiceController extends MobileBaseController {
     CarServiceRecord carServiceRecord = carServiceRecordService.find(serviceReq.getRecordId());
     carServiceRecord.setPaymentDate(new Date());
     carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
-    carServiceRecordService.updatePayStatus(carServiceRecord);
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
-      LogUtil
-          .debug(
-              CarServiceController.class,
-              "Update",
-              "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
-              endUser.getUserName(), carServiceRecord.getTenantName(), carServiceRecord
-                  .getCarService().getServiceName(), carServiceRecord.getPrice(), carServiceRecord
-                  .getPaymentType(), carServiceRecord.getChargeStatus());
-    }
+        LogUtil
+            .debug(
+                CarServiceController.class,
+                "Update",
+                "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+                endUser.getUserName(), carServiceRecord.getTenantName(), carServiceRecord
+                    .getCarService().getServiceName(), carServiceRecord.getPrice(), carServiceRecord
+                    .getPaymentType(), carServiceRecord.getChargeStatus());
+      }
+    carServiceRecordService.updatePayStatus(carServiceRecord);
+    
 
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);

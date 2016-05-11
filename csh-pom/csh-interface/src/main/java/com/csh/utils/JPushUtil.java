@@ -119,6 +119,21 @@ public class JPushUtil {
     return PushPayload.newBuilder().setPlatform(Platform.ios()).setAudience(Audience.alias(alias))
         .setNotification(Notification.ios(alert, extras)).build();
   }
+  
+  /**
+   * 推送到注册ID为registerId的IOS设备，附带数据为extras
+   * 
+   * @param alert 内容
+   * @param extras Map对象
+   * @param alias 别名
+   * @return
+   */
+  public static PushPayload buildPushObject_ios_registerId(String alert,
+      Map<String, String> extras, String... registrationIds) {
+    return PushPayload.newBuilder().setPlatform(Platform.ios())
+        .setAudience(Audience.registrationId(registrationIds))
+        .setNotification(Notification.ios(alert, extras)).build();
+  }
 
   /**
    * 推送到别名为alias的Android设备，附带数据为extras
@@ -136,7 +151,7 @@ public class JPushUtil {
   }
 
   /**
-   * 推送到别名为alias的Android设备，附带数据为extras
+   * 推送到注册ID为registerId的Android设备，附带数据为extras
    * 
    * @param alert 内容
    * @param extras Map对象
