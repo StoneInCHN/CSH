@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Index;
 
@@ -96,10 +98,22 @@ public class Coupon extends BaseEntity {
   private Set<CarService> carServices = new HashSet<CarService>();
 
   /**
-   * 优惠券发放数量
+   * 优惠券总数量
    */
   private Integer counts;
 
+  /**
+   * 优惠券剩余数量
+   */
+  private Integer remainNum;
+
+  public Integer getRemainNum() {
+    return remainNum;
+  }
+
+  public void setRemainNum(Integer remainNum) {
+    this.remainNum = remainNum;
+  }
 
   public Integer getCounts() {
     return counts;
@@ -109,6 +123,7 @@ public class Coupon extends BaseEntity {
     this.counts = counts;
   }
 
+  @Temporal(TemporalType.DATE)
   public Date getDeadlineTime() {
     return deadlineTime;
   }
@@ -126,13 +141,11 @@ public class Coupon extends BaseEntity {
     this.amount = amount;
   }
 
-  public Boolean getIsEnabled ()
-  {
+  public Boolean getIsEnabled() {
     return isEnabled;
   }
 
-  public void setIsEnabled (Boolean isEnabled)
-  {
+  public void setIsEnabled(Boolean isEnabled) {
     this.isEnabled = isEnabled;
   }
 
@@ -144,6 +157,7 @@ public class Coupon extends BaseEntity {
     this.overDueDay = overDueDay;
   }
 
+  @Temporal(TemporalType.DATE)
   public Date getOverDueTime() {
     return overDueTime;
   }

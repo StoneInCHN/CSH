@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.csh.entity.base.BaseEntity;
 
@@ -77,6 +79,7 @@ public class CouponEndUser extends BaseEntity {
     this.isOverDue = isOverDue;
   }
 
+  @Temporal(TemporalType.DATE)
   public Date getOverDueTime() {
     return overDueTime;
   }

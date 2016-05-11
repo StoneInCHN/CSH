@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -374,17 +375,29 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
                 criteriaBuilder.lt(root.<Number>get(filter.getProperty()),
                     (Number) filter.getValue()));
       } else if (filter.getOperator() == Operator.ge && filter.getValue() != null) {
-        restrictions =
-            criteriaBuilder.and(
-                restrictions,
-                criteriaBuilder.ge(root.<Number>get(filter.getProperty()),
-                    (Number) filter.getValue()));
+        if (filter.getValue() instanceof Number) {
+          restrictions =
+              criteriaBuilder.and(
+                  restrictions,
+                  criteriaBuilder.ge(root.<Number>get(filter.getProperty()),
+                      (Number) filter.getValue()));
+        } else if (filter.getValue() instanceof Date) {
+          restrictions =
+              criteriaBuilder.and(restrictions, criteriaBuilder.greaterThanOrEqualTo(
+                  root.<Date>get(filter.getProperty()), (Date) filter.getValue()));
+        }
       } else if (filter.getOperator() == Operator.le && filter.getValue() != null) {
-        restrictions =
-            criteriaBuilder.and(
-                restrictions,
-                criteriaBuilder.le(root.<Number>get(filter.getProperty()),
-                    (Number) filter.getValue()));
+        if (filter.getValue() instanceof Date) {
+          restrictions =
+              criteriaBuilder.and(restrictions, criteriaBuilder.lessThanOrEqualTo(
+                  root.<Date>get(filter.getProperty()), (Date) filter.getValue()));
+        } else {
+          restrictions =
+              criteriaBuilder.and(
+                  restrictions,
+                  criteriaBuilder.le(root.<Number>get(filter.getProperty()),
+                      (Number) filter.getValue()));
+        }
       } else if (filter.getOperator() == Operator.like && filter.getValue() != null
           && filter.getValue() instanceof String) {
         restrictions =
@@ -594,10 +607,15 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     }
 
     long total = countQuery.getSingleResult();
-    int totalPages = (int) Math.ceil((double) total / (double) pageable.getPageSize());
-    if (totalPages < pageable.getPageNumber()) {
-      pageable.setPageNumber(totalPages);
-    }
+    /**
+     * 注释，用于手机接口，如果传入的pageNumber大于总页数，不做处理
+     * 
+     * @author sujinxuan
+     */
+    // int totalPages = (int) Math.ceil((double) total / (double) pageable.getPageSize());
+    // if (totalPages < pageable.getPageNumber()) {
+    // pageable.setPageNumber(totalPages);
+    // }
     TypedQuery<T> queryEntity =
         entityManager.createQuery(jpql, entityClass).setFlushMode(FlushModeType.COMMIT);
     queryEntity.setFirstResult((pageable.getPageNumber() - 1) * pageable.getPageSize());
