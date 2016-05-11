@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.jpush.api.JPushClient;
 import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -130,6 +131,13 @@ public class JPushUtil {
    */
   public static PushPayload buildPushObject_ios_registerId(String alert,
       Map<String, String> extras, String... registrationIds) {
+	  //ios推送生产环境setApnsProduction(true)
+//	  return PushPayload.newBuilder().setPlatform(Platform.ios())
+//		        .setAudience(Audience.registrationId(registrationIds))
+//		        .setNotification(Notification.ios(alert, extras)).setOptions(Options.newBuilder()
+//                        .setApnsProduction(true)
+//                        .build()).build();
+	//ios推送开发环境
     return PushPayload.newBuilder().setPlatform(Platform.ios())
         .setAudience(Audience.registrationId(registrationIds))
         .setNotification(Notification.ios(alert, extras)).build();
