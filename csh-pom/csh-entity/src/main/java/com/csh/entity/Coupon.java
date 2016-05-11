@@ -55,9 +55,9 @@ public class Coupon extends BaseEntity {
   private CouponSendType sendType;
 
   /**
-   * 注册及绑定类优惠劵是否发送的开关
+   * 是否启用
    */
-  private Boolean sendFlag;
+  private Boolean isEnabled;
 
   /**
    * 过期天数
@@ -126,12 +126,14 @@ public class Coupon extends BaseEntity {
     this.amount = amount;
   }
 
-  public Boolean getSendFlag() {
-    return sendFlag;
+  public Boolean getIsEnabled ()
+  {
+    return isEnabled;
   }
 
-  public void setSendFlag(Boolean sendFlag) {
-    this.sendFlag = sendFlag;
+  public void setIsEnabled (Boolean isEnabled)
+  {
+    this.isEnabled = isEnabled;
   }
 
   public Integer getOverDueDay() {
