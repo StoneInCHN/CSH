@@ -1,6 +1,7 @@
 package com.csh.dao;
 
 import com.csh.entity.EndUser;
+import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.framework.dao.BaseDao;
 
 public interface EndUserDao extends BaseDao<EndUser, Long> {
@@ -36,4 +37,16 @@ public interface EndUserDao extends BaseDao<EndUser, Long> {
    * 删除终端用户登录token
    */
   void deleteEndUserToken(Long id);
+  
+  /**
+   * 获取终端用户登录手机平台信息
+   * 
+   * @return
+   */
+  AppPlatform getEndUserAppPlatform(Long id);
+
+  /**
+   * 创建终端用户登录手机平台信息
+   */
+  AppPlatform createEndUserAppPlatform(AppPlatform appPlatform, Long id);
 }

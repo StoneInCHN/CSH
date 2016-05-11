@@ -1,14 +1,11 @@
 package com.csh.controller;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
-import org.dom4j.DocumentException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,25 +15,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
+import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.Coupon;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
-import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.json.base.BaseResponse;
 import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
-import com.csh.json.base.ResponseOne;
 import com.csh.json.request.CouponRequest;
-import com.csh.json.request.WalletRequest;
 import com.csh.service.CouponEndUserService;
 import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
-import com.csh.utils.PayUtil;
+import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
-import com.csh.utils.ToolsUtils;
 
 
 
@@ -56,21 +52,20 @@ public class CouponController extends MobileBaseController {
 
 
   /**
-   * 充值
+   * 领取优惠券
    * 
    * @param req
    * @return
    */
-  @RequestMapping(value = "/chargeIn", method = RequestMethod.POST)
+  @RequestMapping(value = "/getCoupon", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseOne<Map<String, Object>> chargeIn(
-      @RequestBody WalletRequest walletReq, HttpServletRequest httpReq) {
+  public @ResponseBody BaseResponse getCoupon(
+      @RequestBody CouponRequest request) {
 
-    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
-    Long userId = walletReq.getUserId();
-    String token = walletReq.getToken();
-    PaymentType paymentType = walletReq.getPaymentType();
-    BigDecimal amount = walletReq.getAmount();
+	BaseResponse response = new BaseResponse();
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    Long couponId = request.getCouponId();
 
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
@@ -80,24 +75,28 @@ public class CouponController extends MobileBaseController {
       return response;
     }
 
-    String tradeNo = ToolsUtils.generateRecordNo("000000");
-    if (PaymentType.WECHAT.equals(paymentType)) {
-      try {
-        BigDecimal weChatAmount = amount.multiply(new BigDecimal(100));
-        response =
-            PayUtil.wechat(tradeNo, "wallet charge in", httpReq.getRemoteAddr(), "0",
-                weChatAmount.intValue() + "");
-      } catch (DocumentException e) {
-        e.printStackTrace();
+    Coupon coupon = couponService.find(couponId);
+    EndUser endUser = endUserService.find(userId);
+    CouponEndUser couponEndUser = new CouponEndUser();
+    couponEndUser.setEndUser(endUser);
+    couponEndUser.setCoupon(coupon);
+    couponEndUser.setIsOverDue(false);
+    couponEndUser.setIsUsed(false);
+    if (coupon.getOverDueType().equals(CouponOverDueType.BYDATE)) {
+        couponEndUser.setOverDueTime(coupon.getOverDueTime());
+      } else if (coupon.getOverDueType().equals(CouponOverDueType.BYDAY)) {
+        Date overDueTime = TimeUtils.addDays(coupon.getOverDueDay(), new Date());
+        couponEndUser.setOverDueTime(overDueTime);
       }
-    } else {
-      Map<String, Object> map = new HashMap<String, Object>();
-      map.put("out_trade_no", tradeNo);
-      response.setMsg(map);
-      response.setCode(CommonAttributes.SUCCESS);
-    }
-
-    String newtoken = TokenGenerator.generateToken(walletReq.getToken());
+    
+    if (LogUtil.isDebugEnabled(CouponController.class)) {
+        LogUtil.debug(CouponController.class, "save",
+            "take coupon for User with UserName: %s,UserId: %s,couponId: %s,couponAmount: %s",
+            endUser.getUserName(), endUser.getId(), coupon.getId(), coupon.getAmount());
+      }
+    couponEndUserService.save(couponEndUser);
+    
+    String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
     return response;
@@ -131,10 +130,17 @@ public class CouponController extends MobileBaseController {
       tenantId = endUser.getDefaultVehicle().getTenantID();
     }
 
+    
     Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
+    if (LogUtil.isDebugEnabled(CouponController.class)) {
+        LogUtil.debug(CouponController.class, "find",
+            "search my coupon list for User with UserName: %s,UserId: %s",
+            endUser.getUserName(), endUser.getId());
+      }
+    
     Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser);
 
-    String[] properties = {"id", "isOverDue", "overDueTime", "remark", "isUsed", "coupon.amount"};
+    String[] properties = {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, coupons.getContent());
 
@@ -159,9 +165,9 @@ public class CouponController extends MobileBaseController {
    * @param req
    * @return
    */
-  @RequestMapping(value = "/availableList", method = RequestMethod.POST)
+  @RequestMapping(value = "/availableCoupon", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseMultiple<Map<String, Object>> availableList(
+  public @ResponseBody ResponseMultiple<Map<String, Object>> availableCoupon(
       @RequestBody CouponRequest request) {
 
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
@@ -182,6 +188,11 @@ public class CouponController extends MobileBaseController {
     }
 
     Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
+    if (LogUtil.isDebugEnabled(CouponController.class)) {
+        LogUtil.debug(CouponController.class, "find",
+            "search available coupon list for User with UserName: %s,UserId: %s",
+            endUser.getUserName(), endUser.getId());
+      }
     Page<Coupon> coupons = couponService.getCouponList(pageable, tenantId);
 
     String[] properties = {"id", "amount", "overDueTime", "remark", "remainNum"};

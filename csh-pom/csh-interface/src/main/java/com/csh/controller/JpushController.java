@@ -20,6 +20,7 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.ApkVersion;
 import com.csh.entity.EndUser;
+import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.json.base.ResponseOne;
@@ -59,6 +60,8 @@ public class JpushController extends MobileBaseController {
     String token = req.getToken();
     Integer versionCode = req.getVersionCode();
     String jPushRegId = req.getRegId();
+    AppPlatform appPlatform = req.getAppPlatform();
+    
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -66,7 +69,8 @@ public class JpushController extends MobileBaseController {
       response.setDesc(Message.error("csh.user.token.timeout").getContent());
       return response;
     }
-
+    endUserService.createEndUserAppPlatform(appPlatform, userId);
+    System.out.println(endUserService.getEndUserAppPlatform(userId));
     EndUser endUser = endUserService.find(userId);
     List<Filter> filters = new ArrayList<Filter>();
     Filter filter = new Filter("jpushRegId", Operator.eq, jPushRegId);

@@ -1,6 +1,7 @@
 package com.csh.service;
 
 import com.csh.entity.EndUser;
+import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.framework.service.BaseService;
 
 public interface EndUserService extends BaseService<EndUser, Long> {
@@ -31,6 +32,18 @@ public interface EndUserService extends BaseService<EndUser, Long> {
    * 创建终端用户登录token
    */
   String createEndUserToken(String token, Long id);
+  
+  /**
+   * 获取终端用户登录手机平台信息
+   * 
+   * @return
+   */
+  AppPlatform getEndUserAppPlatform(Long id);
+
+  /**
+   * 创建终端用户登录手机平台信息
+   */
+  AppPlatform createEndUserAppPlatform(AppPlatform appPlatform, Long id);
 
   /**
    * 删除终端用户登录token

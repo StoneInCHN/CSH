@@ -16,6 +16,7 @@ import com.csh.entity.EndUser;
 import com.csh.entity.ReportUserRegStatistics;
 import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CouponService;
@@ -105,5 +106,17 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
     couponService.takeCouponBySendType(null, regUser, CouponSendType.REG);
     return regUser;
   }
+
+@Override
+public AppPlatform getEndUserAppPlatform(Long id) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public AppPlatform createEndUserAppPlatform(AppPlatform appPlatform, Long id) {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 }

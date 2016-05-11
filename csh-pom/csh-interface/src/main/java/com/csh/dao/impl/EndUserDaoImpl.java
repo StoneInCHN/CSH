@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.csh.dao.EndUserDao;
 import com.csh.entity.EndUser;
+import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.framework.dao.impl.BaseDaoImpl;
 
 @Repository("endUserDaoImpl")
@@ -63,4 +64,17 @@ public class EndUserDaoImpl extends BaseDaoImpl<EndUser, Long> implements EndUse
   public void deleteEndUserToken(Long id) {
 
   }
+
+@Override
+@Cacheable(value = "endUser", key = "'endUser.appPlatform='+#id")
+public AppPlatform getEndUserAppPlatform(Long id) {
+	return null;
+}
+
+@Override
+@CachePut(value = "endUser", key = "'endUser.appPlatform='+#id")
+public AppPlatform createEndUserAppPlatform(AppPlatform appPlatform, Long id) {
+	return appPlatform;
+}
+
 }

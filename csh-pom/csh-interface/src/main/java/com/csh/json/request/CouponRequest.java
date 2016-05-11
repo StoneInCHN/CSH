@@ -8,8 +8,23 @@ public class CouponRequest extends BaseRequest {
    * 是否过期
    */
   private Boolean isOverDue;
+  
+  /**
+   * 优惠券ID
+   */
+  private Long couponId;
+  
+  
 
-  public Boolean getIsOverDue() {
+  public Long getCouponId() {
+	return couponId;
+}
+
+public void setCouponId(Long couponId) {
+	this.couponId = couponId;
+}
+
+public Boolean getIsOverDue() {
     return isOverDue;
   }
 

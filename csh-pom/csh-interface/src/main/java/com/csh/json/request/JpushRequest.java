@@ -1,5 +1,6 @@
 package com.csh.json.request;
 
+import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.json.base.BaseRequest;
 
 public class JpushRequest extends BaseRequest {
@@ -18,7 +19,20 @@ public class JpushRequest extends BaseRequest {
    * 版本序列号
    */
   private Integer versionCode;
+  
+  /**
+   * 手机平台
+   */
+  private AppPlatform appPlatform;
 
+
+  public AppPlatform getAppPlatform() {
+	return appPlatform;
+  }
+
+  public void setAppPlatform(AppPlatform appPlatform) {
+	this.appPlatform = appPlatform;
+  }
 
   public String getVersionName() {
     return versionName;
@@ -43,7 +57,5 @@ public class JpushRequest extends BaseRequest {
   public void setRegId(String regId) {
     this.regId = regId;
   }
-
-
 
 }

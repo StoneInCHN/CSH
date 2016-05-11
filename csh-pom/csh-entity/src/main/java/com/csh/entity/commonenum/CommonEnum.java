@@ -614,5 +614,17 @@ public class CommonEnum {
     /** 指定过期时间 */
     BYDATE
   }
+  
+  /**
+   * app platform
+   * @author Administrator
+   *
+   */
+  public enum AppPlatform {
+	    /** android */
+	    ANDROID,
+	    /** IOS */
+	    IOS
+	  }
 
 }
