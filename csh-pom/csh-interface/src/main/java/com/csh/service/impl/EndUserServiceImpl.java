@@ -28,7 +28,7 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
 
   @Resource(name = "endUserDaoImpl")
   private EndUserDao endUserDao;
-  
+
   @Resource(name = "couponServiceImpl")
   private CouponService couponService;
 
@@ -107,16 +107,14 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
     return regUser;
   }
 
-@Override
-public AppPlatform getEndUserAppPlatform(Long id) {
-	// TODO Auto-generated method stub
-	return null;
-}
+  @Override
+  public AppPlatform getEndUserAppPlatform(Long id) {
+    return endUserDao.getEndUserAppPlatform(id);
+  }
 
-@Override
-public AppPlatform createEndUserAppPlatform(AppPlatform appPlatform, Long id) {
-	// TODO Auto-generated method stub
-	return null;
-}
+  @Override
+  public AppPlatform createEndUserAppPlatform(AppPlatform appPlatform, Long id) {
+    return endUserDao.createEndUserAppPlatform(appPlatform, id);
+  }
 
 }
