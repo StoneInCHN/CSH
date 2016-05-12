@@ -14,12 +14,15 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.CouponController;
 import com.csh.dao.CouponDao;
 import com.csh.dao.CouponEndUserDao;
+import com.csh.entity.CarService;
 import com.csh.entity.Coupon;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
+import com.csh.entity.commonenum.CommonEnum.CouponType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.ordering.Ordering;
 import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
@@ -67,9 +70,37 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
   }
 
   @Override
-  public Page<CouponEndUser> getMyCouponsForPay(Pageable pageable, EndUser endUser, Long serviceId) {
-	Page<CouponEndUser> page = couponEndUserDao.getMyCouponsForPay(pageable, endUser, serviceId);
-    return page;
+  public List<CouponEndUser> getMyCouponsForPay(Pageable pageable, EndUser endUser, Long serviceId) {
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter userFilter = new Filter("endUser", Operator.eq, endUser);
+    Filter isUsedFilter = new Filter("isUsed", Operator.eq, false);
+    Filter overDueFilter =
+        new Filter("overDueTime", Operator.ge, TimeUtils.formatDate2Day(new Date()));
+    filters.add(userFilter);
+    filters.add(isUsedFilter);
+    filters.add(overDueFilter);
+    List<Ordering> orders = new ArrayList<Ordering>();
+    Ordering ordering = new Ordering("overDueTime", Direction.asc);
+    orders.add(ordering);
+    List<CouponEndUser> list = couponEndUserDao.findList(null, null, filters, orders);
+    List<CouponEndUser> coupons = new ArrayList<CouponEndUser>();
+    for (CouponEndUser couponEndUser : list) {
+      Coupon coupon = couponEndUser.getCoupon();
+      if (coupon.getIsEnabled()) {
+        if (CouponType.COMMON.equals(coupon.getType())) {
+          coupons.add(couponEndUser);
+        } else if (CouponType.SPECIFY.equals(coupon.getType())) {
+          for (CarService carService : coupon.getCarServices()) {
+            if (serviceId.equals(carService.getId())) {
+              coupons.add(couponEndUser);
+              break;
+            }
+          }
+        }
+      }
+
+    }
+    return coupons;
   }
 
   @Override

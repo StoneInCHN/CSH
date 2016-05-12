@@ -1,5 +1,7 @@
 package com.csh.service;
 
+import java.util.List;
+
 import com.csh.entity.Coupon;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
@@ -25,7 +27,7 @@ public interface CouponEndUserService extends BaseService<CouponEndUser, Long> {
    * @param endUser
    * @return
    */
-  Page<CouponEndUser> getMyCouponsForPay(Pageable pageable, EndUser endUser, Long serviceId);
+  List<CouponEndUser> getMyCouponsForPay(Pageable pageable, EndUser endUser, Long serviceId);
 
 
   /**

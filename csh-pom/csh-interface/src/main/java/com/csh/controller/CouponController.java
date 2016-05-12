@@ -175,12 +175,7 @@ public class CouponController extends MobileBaseController {
       return response;
     }
 
-    Long tenantId = null;
     EndUser endUser = endUserService.find(userId);
-    if (endUser.getDefaultVehicle() != null) {
-      tenantId = endUser.getDefaultVehicle().getTenantID();
-    }
-
 
     Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
     if (LogUtil.isDebugEnabled(CouponController.class)) {
@@ -189,20 +184,14 @@ public class CouponController extends MobileBaseController {
           endUser.getUserName(), serviceId);
     }
 
-    Page<CouponEndUser> coupons = couponEndUserService.getMyCouponsForPay(pageable, endUser,serviceId);
+    List<CouponEndUser> coupons =
+        couponEndUserService.getMyCouponsForPay(pageable, endUser, serviceId);
 
-    String[] properties =
-        {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount"};
-    List<Map<String, Object>> map =
-        FieldFilterUtils.filterCollectionMap(properties, coupons.getContent());
+    String[] properties = {"id", "overDueTime", "coupon.remark", "coupon.amount", "coupon.type"};
+    List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, coupons);
 
     response.setMsg(map);
 
-    PageResponse page = new PageResponse();
-    page.setPageNumber(request.getPageNumber());
-    page.setPageSize(request.getPageSize());
-    page.setTotal((int) coupons.getTotal());
-    response.setPage(page);
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
