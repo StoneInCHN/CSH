@@ -31,46 +31,25 @@ public class VehicleBrandDetail extends BaseEntity
 {
   private static final long serialVersionUID = 1L;
 
-  /**
-   * 平均油耗
-   */
-  private Float averageOil;
-
 
   /**
    * 排量
    */
-  private Float disp;
+  private String disp;
 
-  /**
-   * 是否支持获取里程
-   */
-  private Boolean canGetmileage;
 
   /**
    * 是否支持获取油量
    */
   private Boolean canGetoil;
 
-  /**
-   * 最大电压
-   */
-  private float maxbv;
-
-  /**
-   * 最小电压
-   */
-  private float minbv;
 
   /**
    * 名称
    */
   private String name;
 
-  /**
-   * 是否支持OBD
-   */
-  private Boolean canOBD;
+  
   /**
    * 百公里油耗
    */
@@ -95,35 +74,7 @@ public class VehicleBrandDetail extends BaseEntity
    */
   private OilType oilType;
   
-  public Float getAverageOil ()
-  {
-    return averageOil;
-  }
 
-  public void setAverageOil (Float averageOil)
-  {
-    this.averageOil = averageOil;
-  }
-
-  public Float getDisp ()
-  {
-    return disp;
-  }
-
-  public void setDisp (Float disp)
-  {
-    this.disp = disp;
-  }
-
-  public Boolean getCanGetmileage ()
-  {
-    return canGetmileage;
-  }
-
-  public void setCanGetmileage (Boolean canGetmileage)
-  {
-    this.canGetmileage = canGetmileage;
-  }
 
   public Boolean getCanGetoil ()
   {
@@ -135,25 +86,6 @@ public class VehicleBrandDetail extends BaseEntity
     this.canGetoil = canGetoil;
   }
 
-  public float getMaxbv ()
-  {
-    return maxbv;
-  }
-
-  public void setMaxbv (float maxbv)
-  {
-    this.maxbv = maxbv;
-  }
-
-  public float getMinbv ()
-  {
-    return minbv;
-  }
-
-  public void setMinbv (float minbv)
-  {
-    this.minbv = minbv;
-  }
 
   @JsonProperty
   @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
@@ -165,16 +97,6 @@ public class VehicleBrandDetail extends BaseEntity
   public void setName (String name)
   {
     this.name = name;
-  }
-
-  public Boolean getCanOBD ()
-  {
-    return canOBD;
-  }
-
-  public void setCanOBD (Boolean canOBD)
-  {
-    this.canOBD = canOBD;
   }
 
   public Float getOilPerHundred ()
@@ -238,6 +160,16 @@ public class VehicleBrandDetail extends BaseEntity
 
   public void setOilType(OilType oilType) {
     this.oilType = oilType;
+  }
+
+  public String getDisp ()
+  {
+    return disp;
+  }
+
+  public void setDisp (String disp)
+  {
+    this.disp = disp;
   }
   
 }
