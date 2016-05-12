@@ -20,6 +20,7 @@ import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -47,6 +48,8 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
     Filter userFilter = new Filter("endUser", Operator.eq, endUser);
     filters.add(userFilter);
     pageable.setFilters(filters);
+    pageable.setOrderProperty("overDueTime");
+    pageable.setOrderDirection(Direction.desc);
     Page<CouponEndUser> page = couponEndUserDao.findPage(pageable);
     checkOverDue(page.getContent());
     return page;
@@ -90,7 +93,7 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
    */
   private synchronized Boolean updateCouponCounts(Coupon coupon, EndUser endUser) {
     Integer count = coupon.getRemainNum();
-    if (count < 1) {
+    if (count == null || count < 1) {
       return false;
     }
     coupon.setRemainNum(count - 1);

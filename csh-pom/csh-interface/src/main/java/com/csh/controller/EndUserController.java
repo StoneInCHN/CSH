@@ -1,6 +1,7 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -384,8 +385,8 @@ public class EndUserController extends MobileBaseController {
    * @return
    */
   @RequestMapping(value = "/reg", method = RequestMethod.POST)
-  public @ResponseBody BaseResponse reg(@RequestBody UserRegRequest userReg) {
-    BaseResponse response = new BaseResponse();
+  public @ResponseBody ResponseOne<Map<String, Object>> reg(@RequestBody UserRegRequest userReg) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     String serverPrivateKey = setting.getServerPrivateKey();
     String userName = userReg.getUserName();
     String smsToken = userReg.getSmsToken();
@@ -424,11 +425,13 @@ public class EndUserController extends MobileBaseController {
         return response;
       }
 
-      EndUser regUser = endUserService.userReg(userName, password);
       if (LogUtil.isDebugEnabled(EndUserController.class)) {
-        LogUtil.debug(EndUserController.class, "save", "EndUser Reg. UserName: %s,id: %s",
-            userName, regUser.getId());
+        LogUtil.debug(EndUserController.class, "save", "EndUser Reg. UserName: %s", userName);
       }
+      EndUser regUser = endUserService.userReg(userName, password);
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("isGetCoupon", regUser.getIsGetCoupon());
+      response.setMsg(map);
       response.setCode(CommonAttributes.SUCCESS);
       response.setDesc(regUser.getId().toString());
       String token = TokenGenerator.generateToken();

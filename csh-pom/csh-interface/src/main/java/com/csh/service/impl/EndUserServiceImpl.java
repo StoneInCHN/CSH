@@ -103,7 +103,8 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
       reportUserRegStatisticsDao.persist(report);
     }
 
-    couponService.takeCouponBySendType(null, regUser, CouponSendType.REG);
+    Boolean flag = couponService.takeCouponBySendType(null, regUser, CouponSendType.REG);
+    regUser.setIsGetCoupon(flag);
     return regUser;
   }
 

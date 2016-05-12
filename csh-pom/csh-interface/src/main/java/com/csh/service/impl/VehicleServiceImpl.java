@@ -28,7 +28,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
 
   @Resource(name = "couponServiceImpl")
   private CouponService couponService;
-  
+
   @Resource(name = "reportDeviceBindStatisticsDaoImpl")
   private ReportDeviceBindStatisticsDao reportDeviceBindStatisticsDao;
 
@@ -61,7 +61,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
       reportDeviceBindStatisticsDao.persist(report);
     }
 
-    couponService.takeCouponBySendType(deviceInfo.getTenantID(), vehicle.getEndUser(), CouponSendType.BIND);
+    Boolean flag =
+        couponService.takeCouponBySendType(deviceInfo.getTenantID(), vehicle.getEndUser(),
+            CouponSendType.BIND);
+    vehicle.setIsGetCoupon(flag);
     return vehicle;
   }
 

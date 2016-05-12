@@ -159,7 +159,21 @@ public class Vehicle extends BaseEntity {
    * 初始设备里程
    */
   private Long initMileage;
-  
+
+  /**
+   * 是否获取到红包
+   */
+  private Boolean isGetCoupon;
+
+  @Transient
+  public Boolean getIsGetCoupon() {
+    return isGetCoupon;
+  }
+
+  public void setIsGetCoupon(Boolean isGetCoupon) {
+    this.isGetCoupon = isGetCoupon;
+  }
+
   @Column(length = 200)
   public String getBrandIcon() {
     return brandIcon;
@@ -212,7 +226,7 @@ public class Vehicle extends BaseEntity {
   @Transient
   public String getVehicleFullBrand() {
     VehicleLine vl = vehicleBrandDetail.getVehicleLine();
-    if (vl ==null) {
+    if (vl == null) {
       return null;
     }
     vehicleFullBrand = vl.getName();
@@ -273,7 +287,7 @@ public class Vehicle extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED,store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
   @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getPlate() {
     return plate;
@@ -391,34 +405,28 @@ public class Vehicle extends BaseEntity {
 
   @Transient
   @JsonProperty
-  public Boolean getIsOnline ()
-  {
+  public Boolean getIsOnline() {
     return isOnline;
   }
 
-  public void setIsOnline (Boolean isOnline)
-  {
+  public void setIsOnline(Boolean isOnline) {
     this.isOnline = isOnline;
   }
 
   @JsonProperty
-  public String getWainingInfo ()
-  {
+  public String getWainingInfo() {
     return wainingInfo;
   }
 
-  public void setWainingInfo (String wainingInfo)
-  {
+  public void setWainingInfo(String wainingInfo) {
     this.wainingInfo = wainingInfo;
   }
 
-  public Long getInitMileage ()
-  {
+  public Long getInitMileage() {
     return initMileage;
   }
 
-  public void setInitMileage (Long initMileage)
-  {
+  public void setInitMileage(Long initMileage) {
     this.initMileage = initMileage;
   }
 

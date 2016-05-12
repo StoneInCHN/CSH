@@ -16,7 +16,7 @@ public interface CouponService extends BaseService<Coupon, Long> {
    * @param endUser
    * @param redPackageSendType
    */
-  void takeCouponBySendType(Long tenantId, EndUser endUser, CouponSendType couponSendType);
+  Boolean takeCouponBySendType(Long tenantId, EndUser endUser, CouponSendType couponSendType);
 
   /**
    * 获取可领取优惠券列表

@@ -26,9 +26,10 @@ public class CouponDaoImpl extends BaseDaoImpl<Coupon, Long> implements CouponDa
     if (tenantId == null) {
       jpql += " and coupon.tenantID is null";
     } else {
-      jpql += " and (coupon.tenantID is null or coupon.tenantID = :tenantId";
+      jpql += " and (coupon.tenantID is null or coupon.tenantID = :tenantId)";
       paramMap.put("tenantId", tenantId);
     }
+    jpql += " order by coupon.overDueTime asc";
     paramMap.put("isEnabled", true);
     paramMap.put("sendType", CouponSendType.NORMAL);
     paramMap.put("deadlineTime", TimeUtils.formatDate2Day(new Date()));

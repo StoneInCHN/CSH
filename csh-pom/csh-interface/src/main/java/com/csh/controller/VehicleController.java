@@ -318,16 +318,16 @@ public class VehicleController extends MobileBaseController {
 
     Vehicle vehicle = vehicleService.find(vehicleId);
 
-    vehicleService.bindDevice(vehicle, deviceInfo);
-
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
       LogUtil.debug(VehicleController.class, "Update",
           "bind vehicle and device.DeviceNo: %s, VehicleId: %s,", deviceNo, vehicleId);
     }
+    vehicleService.bindDevice(vehicle, deviceInfo);
 
     App app = appService.getTenantAppById(deviceInfo.getTenantID());
     String[] properties = {"appTitleName"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, app);
+    map.put("isGetCoupon", vehicle.getIsGetCoupon());
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);

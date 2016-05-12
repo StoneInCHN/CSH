@@ -148,6 +148,19 @@ public class EndUser extends BaseEntity {
    */
   private Set<CouponEndUser> couponEndUsers = new HashSet<CouponEndUser>();
 
+  /**
+   * 是否获取到红包
+   */
+  private Boolean isGetCoupon;
+
+  @Transient
+  public Boolean getIsGetCoupon() {
+    return isGetCoupon;
+  }
+
+  public void setIsGetCoupon(Boolean isGetCoupon) {
+    this.isGetCoupon = isGetCoupon;
+  }
 
   @OneToMany(mappedBy = "endUser")
   public Set<CouponEndUser> getCouponEndUsers() {

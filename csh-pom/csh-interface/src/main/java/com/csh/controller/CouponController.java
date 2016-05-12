@@ -89,6 +89,7 @@ public class CouponController extends MobileBaseController {
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
 

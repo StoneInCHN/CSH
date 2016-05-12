@@ -39,7 +39,7 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
   }
 
   @Override
-  public void takeCouponBySendType(Long tenantId, EndUser endUser, CouponSendType couponSendType) {
+  public Boolean takeCouponBySendType(Long tenantId, EndUser endUser, CouponSendType couponSendType) {
 
     List<Filter> filters = new ArrayList<Filter>();
     Filter typeFilter = new Filter("sendType", Operator.eq, couponSendType);
@@ -70,8 +70,9 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
         couponEndUser.setOverDueTime(overDueTime);
       }
       couponEndUserDao.merge(couponEndUser);
+      return true;
     }
-
+    return false;
 
   }
 

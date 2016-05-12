@@ -581,10 +581,14 @@ public class CommonEnum {
    *
    */
   public enum CouponType {
-    /** 通用优惠劵 */
+    /** 全场通用优惠劵 */
     COMMON,
     /** 指定优惠劵 */
-    SPECIFY
+    SPECIFY,
+    /** 服务通用优惠劵 */
+    SERVICES,
+    /** 商品通用优惠劵 */
+    GOODS
   }
 
   /**
@@ -614,17 +618,18 @@ public class CommonEnum {
     /** 指定过期时间 */
     BYDATE
   }
-  
+
   /**
    * app platform
+   * 
    * @author Administrator
    *
    */
   public enum AppPlatform {
-	    /** android */
-	    ANDROID,
-	    /** IOS */
-	    IOS
-	  }
+    /** android */
+    ANDROID,
+    /** IOS */
+    IOS
+  }
 
 }
