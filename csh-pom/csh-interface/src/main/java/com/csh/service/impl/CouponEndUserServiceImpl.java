@@ -7,10 +7,17 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.common.log.LogUtil;
+import com.csh.controller.CouponController;
+import com.csh.dao.CouponDao;
 import com.csh.dao.CouponEndUserDao;
+import com.csh.entity.Coupon;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
+import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
@@ -25,6 +32,9 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
 
   @Resource(name = "couponEndUserDaoImpl")
   private CouponEndUserDao couponEndUserDao;
+
+  @Resource(name = "couponDaoImpl")
+  private CouponDao couponDao;
 
   @Resource(name = "couponEndUserDaoImpl")
   public void setBaseDao(CouponEndUserDao couponEndUserDao) {
@@ -49,5 +59,47 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
         coupon.setIsOverDue(true);
       }
     }
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public Boolean getCoupon(Coupon coupon, EndUser endUser) {
+    Boolean canGet = updateCouponCounts(coupon, endUser);
+    if (!canGet) {
+      return false;
+    }
+    CouponEndUser couponEndUser = new CouponEndUser();
+    couponEndUser.setEndUser(endUser);
+    couponEndUser.setCoupon(coupon);
+    couponEndUser.setIsOverDue(false);
+    couponEndUser.setIsUsed(false);
+    if (coupon.getOverDueType().equals(CouponOverDueType.BYDATE)) {
+      couponEndUser.setOverDueTime(coupon.getOverDueTime());
+    } else if (coupon.getOverDueType().equals(CouponOverDueType.BYDAY)) {
+      Date overDueTime = TimeUtils.addDays(coupon.getOverDueDay(), new Date());
+      couponEndUser.setOverDueTime(overDueTime);
+    }
+    couponEndUserDao.persist(couponEndUser);
+    return true;
+  }
+
+  /**
+   * 更新优惠券剩余数量
+   * 
+   * @param coupon
+   */
+  private synchronized Boolean updateCouponCounts(Coupon coupon, EndUser endUser) {
+    Integer count = coupon.getRemainNum();
+    if (count < 1) {
+      return false;
+    }
+    coupon.setRemainNum(count - 1);
+    if (LogUtil.isDebugEnabled(CouponEndUserServiceImpl.class)) {
+      LogUtil.debug(CouponController.class, "updateCouponCounts",
+          "update coupon count for User with UserName: %s,UserId: %s,couponId: %s,remainNum: %s",
+          endUser.getUserName(), endUser.getId(), coupon.getId(), coupon.getRemainNum());
+    }
+    couponDao.merge(coupon);
+    return true;
   }
 }

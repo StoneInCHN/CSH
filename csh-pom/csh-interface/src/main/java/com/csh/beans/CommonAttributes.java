@@ -72,6 +72,9 @@ public final class CommonAttributes {
   /** 邮箱格式错误 */
   public static final String FAIL_EMAIL_BAD_FORMAT = "0016"; // 手机号格式错误
 
+  /** 优惠券已领完 */
+  public static final String FAIL_COUPON_NO_REMAIN = "0017"; // 优惠券已领完
+
   /** 操作失败 */
   public static final String FAIL_COMMON = "1000"; // 操作失败
   /** 没有取得任何信息 */
