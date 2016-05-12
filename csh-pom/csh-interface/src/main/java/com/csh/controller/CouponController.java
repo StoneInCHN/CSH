@@ -189,7 +189,7 @@ public class CouponController extends MobileBaseController {
           endUser.getUserName(), serviceId);
     }
 
-    Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser);
+    Page<CouponEndUser> coupons = couponEndUserService.getMyCouponsForPay(pageable, endUser,serviceId);
 
     String[] properties =
         {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount"};

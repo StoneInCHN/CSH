@@ -46,7 +46,9 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
   public Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser) {
     List<Filter> filters = new ArrayList<Filter>();
     Filter userFilter = new Filter("endUser", Operator.eq, endUser);
+    Filter isUsedFilter = new Filter("isUsed", Operator.eq, false);
     filters.add(userFilter);
+    filters.add(isUsedFilter);
     pageable.setFilters(filters);
     pageable.setOrderProperty("overDueTime");
     pageable.setOrderDirection(Direction.desc);
@@ -66,8 +68,8 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
 
   @Override
   public Page<CouponEndUser> getMyCouponsForPay(Pageable pageable, EndUser endUser, Long serviceId) {
-
-    return null;
+	Page<CouponEndUser> page = couponEndUserDao.getMyCouponsForPay(pageable, endUser, serviceId);
+    return page;
   }
 
   @Override
