@@ -92,6 +92,12 @@
 									<a href="../commissionRate/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.commissionRate")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:coupon"]
+								<li>
+									<a href="../coupon/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.coupon")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							 	
 				            </ul>
 						</li>
 					[#break /]

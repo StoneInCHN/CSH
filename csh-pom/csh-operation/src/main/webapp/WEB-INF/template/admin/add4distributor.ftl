@@ -182,7 +182,7 @@ $().ready(function() {
 					$operationModal.modal("show");
 					$operationModal.attr("data-ids","&"+$("#listTable input[name='ids']:checked").serialize());
 					$operationModalIframe.attr("src","${base}/console/admin/selectDistributor.jhtml");
-					$operationModalIframe.css("height",380);
+					$operationModalIframe.css("height",430);
 				})
 		
 		})

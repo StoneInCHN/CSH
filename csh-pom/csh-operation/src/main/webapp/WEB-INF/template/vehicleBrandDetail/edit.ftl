@@ -45,12 +45,6 @@ $().ready(function() {
 			status: {
 				required: true
 			},
-			maxbv: {
-				required: true
-			},
-			minbv: {
-				required: true
-			},
 			oilPerHundred: {
 				required: true
 			},
@@ -110,32 +104,10 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.averageOil")}:
-								</th>
-								<td>
-									<input type="text" name="averageOil" class="text" maxlength="20" value="${vehicleBrandDetail.averageOil}"/>
-								</td>
-							</tr>
-							<tr>
-								<th>
 									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.disp")}:
 								</th>
 								<td>
 									<input type="text" name="disp" class="text" maxlength="20" value="${vehicleBrandDetail.disp}"/>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.canGetmileage")}:
-								</th>
-								<td>
-									[#if vehicleBrandDetail.canGetmileage??]
-									${message("csh.vehicleBrandDetail.support.yes")}<input type="radio" name="canGetmileage"  maxlength="20" [#if vehicleBrandDetail.canGetmileage?string("yes","no") =="yes"] checked="checked"[/#if]/>
-									    ${message("csh.vehicleBrandDetail.support.no")}<input type="radio" name="canGetmileage"  maxlength="20"  [#if vehicleBrandDetail.canGetmileage?string("yes","no") =="no"] checked="checked"[/#if]/>
-									[#else]
-										${message("csh.vehicleBrandDetail.support.yes")}<input type="radio" name="canGetmileage"  maxlength="20"/>
-									    ${message("csh.vehicleBrandDetail.support.no")}<input type="radio" name="canGetmileage"  maxlength="20"/>
-									[/#if]
 								</td>
 							</tr>
 							<tr>
@@ -149,37 +121,6 @@ $().ready(function() {
 									[#else]
 										${message("csh.vehicleBrandDetail.support.yes")}<input type="radio" name="canGetoil"  maxlength="20"/>
 									    ${message("csh.vehicleBrandDetail.support.no")}<input type="radio" name="canGetoil"  maxlength="20"/>
-									[/#if]
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.maxbv")}:
-								</th>
-								<td>
-									<input type="text" name="maxbv" class="text" maxlength="20" value="${vehicleBrandDetail.maxbv}"/>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.minbv")}:
-								</th>
-								<td>
-									<input type="text" name="minbv" class="text" maxlength="20" value="${vehicleBrandDetail.minbv}"/>
-								</td>
-							</tr>
-							
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.canOBD")}:
-								</th>
-								<td>
-									[#if vehicleBrandDetail.canGetmileage??]
-									${message("csh.vehicleBrandDetail.support.yes")}<input type="radio" name="canOBD"  maxlength="20" [#if vehicleBrandDetail.canOBD?string("yes","no") =="yes"] checked="checked"[/#if]/>
-									    ${message("csh.vehicleBrandDetail.support.no")}<input type="radio" name="canOBD"  maxlength="20"  [#if vehicleBrandDetail.canOBD?string("yes","no") =="no"] checked="checked"[/#if]/>
-									[#else]
-										${message("csh.vehicleBrandDetail.support.yes")}<input type="radio" name="canOBD"  maxlength="20"/>
-									    ${message("csh.vehicleBrandDetail.support.no")}<input type="radio" name="canOBD"  maxlength="20"/>
 									[/#if]
 								</td>
 							</tr>

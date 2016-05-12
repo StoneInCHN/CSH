@@ -28,6 +28,17 @@ jQuery.validator.addMethod("decimal", function(value, element, param) {return th
 jQuery.validator.addMethod("pattern", function(value, element, param) {return this.optional(element) || param.test(value);}, "Invalid format");
 jQuery.validator.addMethod("extension", function(value, element, param) {return this.optional(element) || ($.trim(param) != "" && new RegExp("^\\S.*\\.(" + param.replace(/,/g, "|") + ")$", "i").test(value));}, "Invalid extension");
 jQuery.validator.addMethod("minRange",function(value, element,param){return this.optional(element)||  parseInt($(param).val()) <=  parseInt(value);},"不能小于最小值")
+jQuery.validator.addMethod("maxRange",function(value, element,param){return this.optional(element)||  parseInt($(param).val()) >=  parseInt(value);},"不能大于于最大值")
 jQuery.validator.addMethod("nameEndWith",function(value, element,param){return this.optional(element)||  value.endWith(param);},"名字后缀不正确");
 // 手机号码验证
 jQuery.validator.addMethod("isMobile", function(value, element){var length = value.length;var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;return this.optional(element) || (length == 11 && mobile.test(value));}, "请正确填写您的手机号码");
+
+jQuery.validator.addMethod("fileMaxSize",function(value, element,param){
+	
+	console.log(value);
+	console.log(element);
+	console.log(param);
+	
+	//return this.optional(element)||  value.endWith(param);
+	
+},"文件大小超过限制");

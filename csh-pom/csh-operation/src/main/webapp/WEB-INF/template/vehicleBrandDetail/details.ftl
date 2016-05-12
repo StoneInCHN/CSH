@@ -52,30 +52,10 @@
 							</tr>
 							<tr>
 								<th>
-									${message("csh.vehicleBrandDetail.averageOil")}:
-								</th>
-								<td>
-									${vehicleBrandDetail.averageOil}
-								</td>
-							</tr>
-							<tr>
-								<th>
 									${message("csh.vehicleBrandDetail.disp")}:
 								</th>
 								<td>
 									${vehicleBrandDetail.disp}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.vehicleBrandDetail.canGetmileage")}:
-								</th>
-								<td>
-								 	[#if vehicleBrandDetail.canGetmileage?string("yes","no") =="yes"] 
-										${message("csh.vehicleBrandDetail.support.yes")}
-									[#elseif vehicleBrandDetail.canGetmileage?string("yes","no") =="no"] 
-										${message("csh.vehicleBrandDetail.support.no")}
-									[/#if]
 								</td>
 							</tr>
 							<tr>
@@ -86,35 +66,6 @@
 									[#if vehicleBrandDetail.canGetoil?string("yes","no") =="yes"] 
 										${message("csh.vehicleBrandDetail.support.yes")}
 									[#elseif vehicleBrandDetail.canGetoil?string("yes","no") =="no"] 
-										${message("csh.vehicleBrandDetail.support.no")}
-									[/#if]
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.vehicleBrandDetail.maxbv")}:
-								</th>
-								<td>
-									${vehicleBrandDetail.maxbv}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.vehicleBrandDetail.minbv")}:
-								</th>
-								<td>
-									${vehicleBrandDetail.minbv}
-								</td>
-							</tr>
-							
-							<tr>
-								<th>
-									${message("csh.vehicleBrandDetail.canOBD")}:
-								</th>
-								<td>
-									[#if vehicleBrandDetail.canOBD?string("yes","no") =="yes"] 
-										${message("csh.vehicleBrandDetail.support.yes")}
-									[#elseif vehicleBrandDetail.canOBD?string("yes","no") =="no"] 
 										${message("csh.vehicleBrandDetail.support.no")}
 									[/#if]
 								</td>

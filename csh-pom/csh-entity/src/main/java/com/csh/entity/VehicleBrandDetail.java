@@ -75,7 +75,6 @@ public class VehicleBrandDetail extends BaseEntity
   private OilType oilType;
   
 
-
   public Boolean getCanGetoil ()
   {
     return canGetoil;

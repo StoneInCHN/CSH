@@ -21,6 +21,7 @@ import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.entity.commonenum.CommonEnum.CouponType;
+import com.csh.entity.commonenum.CommonEnum.SystemType;
 
 /**
  * 优惠劵
@@ -82,6 +83,11 @@ public class Coupon extends BaseEntity {
   private Long tenantID;
 
   /**
+   * 商家名称
+   */
+  private String tenantName;
+  
+  /**
    * 说明
    */
   private String remark;
@@ -106,6 +112,8 @@ public class Coupon extends BaseEntity {
    * 优惠券剩余数量
    */
   private Integer remainNum;
+  
+  private SystemType systemType;
 
   public Integer getRemainNum() {
     return remainNum;
@@ -227,4 +235,20 @@ public class Coupon extends BaseEntity {
     this.sendType = sendType;
   }
 
+  public String getTenantName() {
+    return tenantName;
+  }
+
+  public void setTenantName(String tenantName) {
+    this.tenantName = tenantName;
+  }
+
+  public SystemType getSystemType() {
+    return systemType;
+  }
+
+  public void setSystemType(SystemType systemType) {
+    this.systemType = systemType;
+  }
+  
 }

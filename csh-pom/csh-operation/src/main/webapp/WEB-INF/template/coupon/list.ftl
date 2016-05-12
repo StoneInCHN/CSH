@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.vehicleBrandDetail.list")}</title>
+<title>${message("csh.coupon.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.vehicleBrandDetail")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.coupon")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.vehicleBrandDetail.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.coupon.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -70,7 +70,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "name" || page.searchProperty ==null] selected="selected" class="active" [/#if] title="name"><a href="#">${message("csh.vehicleBrandDetail.name")}</a></li>
+								          <li [#if page.searchProperty == "remark" ] selected="selected" class="active" [/#if] title="remark"><a href="#">${message("csh.coupon.remark")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -85,7 +85,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.vehicleBrandDetail")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.coupon")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -100,25 +100,37 @@
 														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="disp">${message("csh.vehicleBrandDetail.disp")}</a>
+														<a href="javascript:;" class="sort" name="remark">${message("csh.coupon.remark")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="canGetoil">${message("csh.vehicleBrandDetail.canGetoil")}</a>
+														<a href="javascript:;" class="sort" name="amount">${message("csh.coupon.amount")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="name">${message("csh.vehicleBrandDetail.name")}</a>
+														<a href="javascript:;" class="sort" name="type">${message("csh.coupon.type")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="oilPerHundred">${message("csh.vehicleBrandDetail.oilPerHundred")}</a>
+														<a href="javascript:;" class="sort" name="overDueType">${message("csh.coupon.overDueType")}</a>
 													</th>
 													<th>
-														${message("csh.vehicleBrandDetail.vehicleLine")}
+														<a href="javascript:;" class="sort" name="sendType">${message("csh.coupon.sendType")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="status">${message("csh.vehicleBrandDetail.status")}</a>
+														<a href="javascript:;" class="sort" name="isEnabled">${message("csh.coupon.isEnabled")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="tank">${message("csh.vehicleBrandDetail.tank")}</a>
+														<a href="javascript:;" class="sort" name="overDueDay">${message("csh.coupon.overDueDay")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="overDueTime">${message("csh.coupon.overDueTime")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="deadlineTime">${message("csh.coupon.deadlineTime")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="counts">${message("csh.coupon.counts")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="remainNum">${message("csh.coupon.remainNum")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -126,40 +138,62 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as vehicleBrandDetail]
+												[#list page.content as coupon]
 												<tr>
 													<td>
-														<input type="checkbox"  name="ids" value="${vehicleBrandDetail.id}" />
+														<input type="checkbox"  name="ids" value="${coupon.id}" />
 													</td>
 													<td>
-														${vehicleBrandDetail.disp}
+														${coupon.remark}
 													</td>
 													<td>
-														[#if vehicleBrandDetail.canGetoil??]
-															${message("csh.vehicleBrandDetail.support."+vehicleBrandDetail.canGetoil?string('yes','no'))} 
+														${coupon.amount}
+													</td>
+													<td>
+														[#if coupon.type??]
+															${message("csh.coupon.CouponType."+coupon.type)}
+														[#else]
+															-
 														[/#if]
 													</td>
 													<td>
-														${vehicleBrandDetail.name}
+														[#if coupon.overDueType??]
+															${message("csh.coupon.CouponOverDueType."+coupon.overDueType)}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
-														${vehicleBrandDetail.oilPerHundred}
+														[#if coupon.sendType??]
+															${message("csh.coupon.CouponSendType."+coupon.sendType)}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
-														[#if vehicleBrandDetail.vehicleLine??]${vehicleBrandDetail.vehicleLine.name}[/#if]
+														${coupon.isEnabled}
 													</td>
 													<td>
-														${vehicleBrandDetail.status}
+														${coupon.overDueDay}
 													</td>
 													<td>
-														[#if vehicleBrandDetail.tank??]${vehicleBrandDetail.tank}[/#if]
+														${coupon.overDueTime}
 													</td>
 													<td>
-														<a href="edit.jhtml?id=${vehicleBrandDetail.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														${coupon.deadlineTime}
+													</td>
+													<td>
+														${coupon.counts}
+													</td>
+													<td>
+														${coupon.remainNum}
+													</td>
+													<td>
+														<a href="edit.jhtml?id=${coupon.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
 												</tr>
-												[/#list]
 											</tbody>
+											[/#list]
 										</table>
 										<div class="widget-foot">
 					                       [@pagination pageNumber = page.pageNumber totalPages = page.totalPages]
