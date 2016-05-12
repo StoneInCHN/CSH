@@ -65,6 +65,12 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
   }
 
   @Override
+  public Page<CouponEndUser> getMyCouponsForPay(Pageable pageable, EndUser endUser, Long serviceId) {
+
+    return null;
+  }
+
+  @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public Boolean getCoupon(Coupon coupon, EndUser endUser) {
     Boolean canGet = updateCouponCounts(coupon, endUser);
@@ -105,4 +111,5 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
     couponDao.merge(coupon);
     return true;
   }
+
 }

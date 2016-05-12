@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.csh.dao.CouponDao;
 import com.csh.entity.Coupon;
+import com.csh.entity.CouponEndUser;
+import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.framework.dao.impl.BaseDaoImpl;
 import com.csh.framework.paging.Page;
@@ -34,6 +36,13 @@ public class CouponDaoImpl extends BaseDaoImpl<Coupon, Long> implements CouponDa
     paramMap.put("sendType", CouponSendType.NORMAL);
     paramMap.put("deadlineTime", TimeUtils.formatDate2Day(new Date()));
     return findPageCustomized(pageable, jpql, paramMap);
+  }
+
+
+  @Override
+  public Page<CouponEndUser> getMyCouponsForPay(Pageable pageable, EndUser endUser, Long serviceId) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

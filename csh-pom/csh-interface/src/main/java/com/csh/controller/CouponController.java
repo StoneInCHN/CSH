@@ -132,6 +132,66 @@ public class CouponController extends MobileBaseController {
     Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser);
 
     String[] properties =
+        {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount",
+            "coupon.type"};
+    List<Map<String, Object>> map =
+        FieldFilterUtils.filterCollectionMap(properties, coupons.getContent());
+
+    response.setMsg(map);
+
+    PageResponse page = new PageResponse();
+    page.setPageNumber(request.getPageNumber());
+    page.setPageSize(request.getPageSize());
+    page.setTotal((int) coupons.getTotal());
+    response.setPage(page);
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+
+  /**
+   * 获取支付时可用的优惠券
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getCouponForPay", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getCouponForPay(
+      @RequestBody CouponRequest request) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    Long serviceId = request.getServiceId();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    Long tenantId = null;
+    EndUser endUser = endUserService.find(userId);
+    if (endUser.getDefaultVehicle() != null) {
+      tenantId = endUser.getDefaultVehicle().getTenantID();
+    }
+
+
+    Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
+    if (LogUtil.isDebugEnabled(CouponController.class)) {
+      LogUtil.debug(CouponController.class, "find",
+          "search my coupon list for special service. UserName: %s,CarServiceId: %s",
+          endUser.getUserName(), serviceId);
+    }
+
+    Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser);
+
+    String[] properties =
         {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, coupons.getContent());
@@ -187,7 +247,7 @@ public class CouponController extends MobileBaseController {
     }
     Page<Coupon> coupons = couponService.getCouponList(pageable, tenantId);
 
-    String[] properties = {"id", "amount", "overDueTime", "remark", "remainNum"};
+    String[] properties = {"id", "amount", "overDueTime", "remark", "remainNum", "type"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, coupons.getContent());
     for (Map<String, Object> couponMap : map) {
