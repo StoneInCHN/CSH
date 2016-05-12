@@ -1,6 +1,5 @@
 package com.csh.controller;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,6 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.Coupon;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
-import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseResponse;
@@ -31,7 +29,6 @@ import com.csh.service.CouponEndUserService;
 import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
-import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
 
 
@@ -59,10 +56,9 @@ public class CouponController extends MobileBaseController {
    */
   @RequestMapping(value = "/getCoupon", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse getCoupon(
-      @RequestBody CouponRequest request) {
+  public @ResponseBody BaseResponse getCoupon(@RequestBody CouponRequest request) {
 
-	BaseResponse response = new BaseResponse();
+    BaseResponse response = new BaseResponse();
     Long userId = request.getUserId();
     String token = request.getToken();
     Long couponId = request.getCouponId();
@@ -77,25 +73,19 @@ public class CouponController extends MobileBaseController {
 
     Coupon coupon = couponService.find(couponId);
     EndUser endUser = endUserService.find(userId);
-    CouponEndUser couponEndUser = new CouponEndUser();
-    couponEndUser.setEndUser(endUser);
-    couponEndUser.setCoupon(coupon);
-    couponEndUser.setIsOverDue(false);
-    couponEndUser.setIsUsed(false);
-    if (coupon.getOverDueType().equals(CouponOverDueType.BYDATE)) {
-        couponEndUser.setOverDueTime(coupon.getOverDueTime());
-      } else if (coupon.getOverDueType().equals(CouponOverDueType.BYDAY)) {
-        Date overDueTime = TimeUtils.addDays(coupon.getOverDueDay(), new Date());
-        couponEndUser.setOverDueTime(overDueTime);
-      }
-    
+
     if (LogUtil.isDebugEnabled(CouponController.class)) {
-        LogUtil.debug(CouponController.class, "save",
-            "take coupon for User with UserName: %s,UserId: %s,couponId: %s,couponAmount: %s",
-            endUser.getUserName(), endUser.getId(), coupon.getId(), coupon.getAmount());
-      }
-    couponEndUserService.save(couponEndUser);
-    
+      LogUtil.debug(CouponController.class, "save",
+          "take coupon for User with UserName: %s,UserId: %s,couponId: %s,couponAmount: %s",
+          endUser.getUserName(), endUser.getId(), coupon.getId(), coupon.getAmount());
+    }
+    Boolean isGet = couponEndUserService.getCoupon(coupon, endUser);
+    if (!isGet) {
+      response.setCode(CommonAttributes.FAIL_COUPON_NO_REMAIN);
+      response.setDesc(Message.error("csh.coupon.no.count").getContent());
+      return response;
+    }
+
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -130,17 +120,18 @@ public class CouponController extends MobileBaseController {
       tenantId = endUser.getDefaultVehicle().getTenantID();
     }
 
-    
+
     Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
     if (LogUtil.isDebugEnabled(CouponController.class)) {
-        LogUtil.debug(CouponController.class, "find",
-            "search my coupon list for User with UserName: %s,UserId: %s",
-            endUser.getUserName(), endUser.getId());
-      }
-    
+      LogUtil.debug(CouponController.class, "find",
+          "search my coupon list for User with UserName: %s,UserId: %s", endUser.getUserName(),
+          endUser.getId());
+    }
+
     Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser);
 
-    String[] properties = {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount"};
+    String[] properties =
+        {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, coupons.getContent());
 
@@ -189,10 +180,10 @@ public class CouponController extends MobileBaseController {
 
     Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
     if (LogUtil.isDebugEnabled(CouponController.class)) {
-        LogUtil.debug(CouponController.class, "find",
-            "search available coupon list for User with UserName: %s,UserId: %s",
-            endUser.getUserName(), endUser.getId());
-      }
+      LogUtil.debug(CouponController.class, "find",
+          "search available coupon list for User with UserName: %s,UserId: %s",
+          endUser.getUserName(), endUser.getId());
+    }
     Page<Coupon> coupons = couponService.getCouponList(pageable, tenantId);
 
     String[] properties = {"id", "amount", "overDueTime", "remark", "remainNum"};

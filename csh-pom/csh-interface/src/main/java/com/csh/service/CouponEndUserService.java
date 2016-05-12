@@ -1,5 +1,6 @@
 package com.csh.service;
 
+import com.csh.entity.Coupon;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
 import com.csh.framework.paging.Page;
@@ -16,4 +17,12 @@ public interface CouponEndUserService extends BaseService<CouponEndUser, Long> {
    * @return
    */
   Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser);
+
+  /**
+   * 手机用户领取优惠券
+   * 
+   * @param coupon
+   * @param endUser
+   */
+  Boolean getCoupon(Coupon coupon, EndUser endUser);
 }
