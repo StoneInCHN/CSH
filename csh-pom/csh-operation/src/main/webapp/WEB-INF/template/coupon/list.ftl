@@ -151,36 +151,52 @@
 													</td>
 													<td>
 														[#if coupon.type??]
-															${message("csh.coupon.CouponType."+coupon.type)}
+															${message("csh.commonEnum.CouponType."+coupon.type)}
 														[#else]
 															-
 														[/#if]
 													</td>
 													<td>
 														[#if coupon.overDueType??]
-															${message("csh.coupon.CouponOverDueType."+coupon.overDueType)}
+															${message("csh.commonEnum.CouponOverDueType."+coupon.overDueType)}
 														[#else]
 															-
 														[/#if]
 													</td>
 													<td>
 														[#if coupon.sendType??]
-															${message("csh.coupon.CouponSendType."+coupon.sendType)}
+															${message("csh.commonEnum.CouponSendType."+coupon.sendType)}
 														[#else]
 															-
 														[/#if]
 													</td>
 													<td>
-														${coupon.isEnabled}
+														[#if coupon.isEnabled?? && coupon.isEnabled]
+															启用
+														[#elseif coupon.isEnabled?? && !coupon.isEnabled]
+															禁用
+														[/#if]
 													</td>
 													<td>
-														${coupon.overDueDay}
+														[#if coupon.overDueDay??]
+															${coupon.overDueDay}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
-														${coupon.overDueTime}
+														[#if coupon.overDueTime??]
+															${coupon.overDueTime}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
-														${coupon.deadlineTime}
+														[#if coupon.deadlineTime??]
+															${coupon.deadlineTime}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
 														${coupon.counts}

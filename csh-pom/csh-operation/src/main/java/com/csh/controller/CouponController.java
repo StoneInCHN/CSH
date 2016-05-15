@@ -12,7 +12,9 @@ import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Coupon;
 import com.csh.entity.DeviceType;
+import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.entity.commonenum.CommonEnum.CouponType;
+import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.CouponService;
 
@@ -38,6 +40,10 @@ public class CouponController extends BaseController{
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public String save(Coupon coupon) {
     coupon.setType(CouponType.COMMON);
+    coupon.setRemainNum(coupon.getCounts());
+    coupon.setSendType(CouponSendType.NORMAL);
+    coupon.setSystemType(SystemType.OPERATION);
+    couponService.save(coupon);
     return "redirect:list.jhtml";
   }
 
@@ -54,11 +60,16 @@ public class CouponController extends BaseController{
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(DeviceType deviceType) {
-    if (!isValid(deviceType)) {
-      return ERROR_VIEW;
-    }
-
+  public String update(Coupon coupon) {
+	 Coupon temp = couponService.find(coupon.getId());
+	 temp.setRemainNum(coupon.getRemainNum());
+	 temp.setCounts(coupon.getCounts());
+	 temp.setIsEnabled(coupon.getIsEnabled());
+	 temp.setRemark(coupon.getRemark());
+	 temp.setDeadlineTime(coupon.getDeadlineTime());
+	 temp.setOverDueDay(coupon.getOverDueDay());
+	 temp.setOverDueTime(coupon.getOverDueTime());
+	 couponService.update(temp);
     return "redirect:list.jhtml";
   }
 

@@ -18,6 +18,9 @@
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
+	var $overDueType = $("#overDueType");
+	var $overDueDay = $("#overDueDay");
+	var $overDueTime = $("#overDueTime");
 	
 	// 表单验证
 	$inputForm.validate({
@@ -35,16 +38,40 @@ $().ready(function() {
 				number:true,
 				min:1
 			},
-			remainNum:{
-				required: true,
-				number:true,
-				min:1
-			}
+			overDueType:{
+				required: true
+			},
 			isEnabled: {
 				required: true
 			}
 		}	
 	});
+	
+	$overDueType.change(function(){
+		if("BYDAY" == $(this).val()){
+			$overDueDay.parent().parent().show();
+			$overDueDay.rules("add",{
+				 required: true,
+				 number:true,
+				min:1
+			});
+			$overDueTime.parent().parent().hide();
+			$overDueTime.rules("remove");  
+		}else if("BYDATE" == $(this).val()){
+			$overDueTime.parent().parent().show();
+			$overDueTime.rules("add",{
+				 required: true
+			});
+			$overDueDay.rules("remove");  
+			$overDueDay.parent().parent().hide();
+		}else{
+			$overDueDay.parent().parent().hide();
+			$overDueTime.parent().parent().hide();
+			$overDueDay.rules("remove"); 
+			$overDueTime.rules("remove");  
+		}
+		
+	})
 	
 });
 </script>
@@ -95,26 +122,27 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.coupon.overDueType")}:
 								</th>
 								<td>
-									<select name="overDueType">
-										<option val="BYDAY">${message("csh.commonEnum.CouponOverDueType.BYDAY")}</option>
-										<option val="BYDATE">${message("csh.commonEnum.CouponOverDueType.BYDATE")}</option>
+									<select id="overDueType" name="overDueType">
+										<option value="">请选择优惠券过期方式</option>
+										<option value="BYDAY">${message("csh.commonEnum.CouponOverDueType.BYDAY")}</option>
+										<option value="BYDATE">${message("csh.commonEnum.CouponOverDueType.BYDATE")}</option>
 									</select>
 								</td>
 							</tr>
-							<tr>
+							<tr style="display:none">
 								<th>
 									<span class="requiredField">*</span>${message("csh.coupon.overDueDay")}:
 								</th>
 								<td>
-									<input type="text" name="overDueDay" class="text" maxlength="20" />
+									<input type="text" id="overDueDay" name="overDueDay" class="text" maxlength="20" />
 								</td>
 							</tr>
-							<tr>
+							<tr style="display:none">
 								<th>
 									<span class="requiredField">*</span>${message("csh.coupon.overDueTime")}:
 								</th>
 								<td>
-									<input type="text" name="overDueTime" class="text Wdate" onfocus="WdatePicker();" readonly maxlength="20" />
+									<input type="text" id="overDueTime" name="overDueTime" class="text Wdate" onfocus="WdatePicker();" readonly maxlength="20" />
 								</td>
 							</tr>
 							<tr>
@@ -133,14 +161,14 @@ $().ready(function() {
 									<input type="text" name="counts" class="text" maxlength="20" />
 								</td>
 							</tr>
-							<tr>
+						<!--	<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.coupon.remainNum")}:
 								</th>
 								<td>
 									<input type="text" name="remainNum" class="text" maxlength="20" />
 								</td>
-							</tr>
+							</tr> -->
 							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.coupon.isEnabled")}:

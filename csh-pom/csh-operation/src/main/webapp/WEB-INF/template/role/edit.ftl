@@ -172,22 +172,37 @@ $().ready(function() {
 												<input type="checkbox" name="authorities" value="admin:endUser" [#if role.authorities?seq_contains("admin:endUser")] checked="checked"[/#if]/><span>${message("csh.main.endUser")}</span>
 											</label>
 											<label>
-												<input type="checkbox" name="authorities" value="admin:clearingRecord"[#if role.authorities?seq_contains("admin:clearingRecord")] checked="checked"[/#if] /><span>${message("csh.main.clearingRecord")}</span>
-											</label>
-											<label>
 												<input type="checkbox" name="authorities" value="admin:carServiceRecord" [#if role.authorities?seq_contains("admin:carServiceRecord")] checked="checked"[/#if]/><span>${message("csh.main.carServiceRecord")}</span>
 											</label>
 											<label>
 												<input type="checkbox" name="authorities" value="admin:walletRecord"[#if role.authorities?seq_contains("admin:walletRecord")] checked="checked"[/#if] /><span>${message("csh.main.walletRecord")}</span>
 											</label>
 											<label>
-												<input type="checkbox" name="authorities" value="admin:deviceProvide4distributor" [#if role.authorities?seq_contains("admin:deviceProvide4distributor")] checked="checked"[/#if]/><span>${message("csh.main.deviceInfo.list4distributor")}</span>
-											</label>
-											<label>
 												<input type="checkbox" name="authorities" value="admin:reportUserReg" [#if role.authorities?seq_contains("admin:reportUserReg")] checked="checked"[/#if]/><span>${message("csh.report.reportUserReg")}</span>
 											</label>
 											<label>
 												<input type="checkbox" name="authorities" value="admin:reportDeviceBind" [#if role.authorities?seq_contains("admin:reportDeviceBind")] checked="checked"[/#if] /><span>${message("csh.report.reportDeviceBind")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:apkVersion" [#if role.authorities?seq_contains("admin:apkVersion")] checked="checked"[/#if] /><span>${message("csh.main.appVersion")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:commissionRate" [#if role.authorities?seq_contains("admin:commissionRate")] checked="checked"[/#if] /><span>${message("csh.main.commissionRate")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:coupon" [#if role.authorities?seq_contains("admin:coupon")] checked="checked"[/#if] /><span>${message("csh.main.coupon")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:listDistributorAcount" [#if role.authorities?seq_contains("admin:listDistributorAcount")] checked="checked"[/#if] /><span>${message("csh.main.listDistributorAcount")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:clearingRecord" [#if role.authorities?seq_contains("admin:clearingRecord")] checked="checked"[/#if] /><span>${message("csh.main.tenantClearingRecord")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:tenantDeductClearingRecord" [#if role.authorities?seq_contains("admin:tenantDeductClearingRecord")] checked="checked"[/#if] /><span>${message("csh.main.tenantDeductClearingRecord")}</span>
+											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:distributorDeductClearingRecord" [#if role.authorities?seq_contains("admin:distributorDeductClearingRecord")] checked="checked"[/#if] /><span>${message("csh.main.distributorDeductClearingRecord")}</span>
 											</label>
 										</span>
 									</td>
@@ -208,7 +223,7 @@ $().ready(function() {
 									</th>
 									<td>
 										<input type="submit" class="button" value="${message("csh.common.submit")}"[#if role.isSystem] disabled="disabled"[/#if] />
-										<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
+										<input type="button" id="backBtn" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 									</td>
 								</tr>
 							</table>
@@ -226,7 +241,8 @@ $().ready(function() {
 	$(function(){
 		var $isSystem =  $("#isSystem");
 		if($isSystem.val() =="true"){
-			$(':input').attr("disabled","disabled");		
+			$(':input').attr("disabled","disabled");	
+			$("#backBtn").attr("disabled",false);
 		}
 	})
 </script>

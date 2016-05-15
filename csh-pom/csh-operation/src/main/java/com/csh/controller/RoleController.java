@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.Message;
+import com.csh.beans.Setting;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Role;
 import com.csh.entity.commonenum.CommonEnum.Status;
@@ -20,6 +21,8 @@ import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.RoleService;
+import com.csh.utils.SettingUtils;
+import com.csh.utils.SpringUtils;
 
 /**
  * Controller - 角色
@@ -56,8 +59,14 @@ public class RoleController extends BaseController {
    */
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
+	  Role role = roleService.find(id);
+	  Setting setting = SettingUtils.get();
     model.addAttribute("role", roleService.find(id));
-    return "/role/edit";
+    if (setting.getDefaultDistributorRoleId().equals(role.getId())) {
+    	return "/role/edit4distributor"; 
+	}else{
+		return "/role/edit";
+	}
   }
 
   /**
