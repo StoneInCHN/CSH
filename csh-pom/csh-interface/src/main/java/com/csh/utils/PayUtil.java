@@ -84,7 +84,7 @@ public class PayUtil {
             + nonce_str + "&notify_url=" + wechat_notify_url + "&out_trade_no=" + order_sn
             + "&product_id=" + product_id + "&spbill_create_ip=" + ip + "&total_fee=" + total_fee
             + "&trade_type=APP&key=" + wechat_Key;
-    System.out.println(stringSignTemp);
+    // System.out.println(stringSignTemp);
     String sign = MD5.MD5Encode(stringSignTemp).toUpperCase();
     // System.out.println(sign);
     String xml =

@@ -24,6 +24,7 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
+import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
 import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
@@ -42,6 +43,7 @@ import com.csh.json.request.CarServiceRequest;
 import com.csh.json.request.InsuranceRequest;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
+import com.csh.service.CouponEndUserService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.PayUtil;
@@ -56,6 +58,9 @@ public class CarServiceController extends MobileBaseController {
 
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
+
+  @Resource(name = "couponEndUserServiceImpl")
+  private CouponEndUserService couponEndUserService;
 
   @Resource(name = "carServiceRecordServiceImpl")
   private CarServiceRecordService carServiceRecordService;
@@ -108,7 +113,7 @@ public class CarServiceController extends MobileBaseController {
     }
     CarServiceRecord carServiceRecord =
         carServiceRecordService.createServiceRecord(endUser, carService, chargeStatus,
-            new BigDecimal(-1), null, subscribeDate);
+            new BigDecimal(-1), null, subscribeDate, null);
 
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
       LogUtil
@@ -155,17 +160,17 @@ public class CarServiceController extends MobileBaseController {
     carServiceRecord.setPaymentDate(new Date());
     carServiceRecord.setChargeStatus(serviceReq.getChargeStatus());
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
-        LogUtil
-            .debug(
-                CarServiceController.class,
-                "Update",
-                "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
-                endUser.getUserName(), carServiceRecord.getTenantName(), carServiceRecord
-                    .getCarService().getServiceName(), carServiceRecord.getPrice(), carServiceRecord
-                    .getPaymentType(), carServiceRecord.getChargeStatus());
-      }
+      LogUtil
+          .debug(
+              CarServiceController.class,
+              "updatePayStatus",
+              "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+              endUser.getUserName(), carServiceRecord.getTenantName(), carServiceRecord
+                  .getCarService().getServiceName(), carServiceRecord.getPrice(), carServiceRecord
+                  .getPaymentType(), carServiceRecord.getChargeStatus());
+    }
     carServiceRecordService.updatePayStatus(carServiceRecord);
-    
+
 
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
@@ -194,7 +199,7 @@ public class CarServiceController extends MobileBaseController {
     // BigDecimal price = serviceReq.getPrice();
     Long serviceId = serviceReq.getServiceId();
     Long recordId = serviceReq.getRecordId();
-
+    Long couponEndUserId = serviceReq.getCouponId();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -209,6 +214,19 @@ public class CarServiceController extends MobileBaseController {
     CarServiceRecord carServiceRecord = new CarServiceRecord();
 
     CarService carService = carServiceService.find(serviceId);
+    CouponEndUser couponEndUser = couponEndUserService.find(couponEndUserId);
+    if (couponEndUserId != null) {
+      if (couponEndUserService.isOverDue(couponEndUser)) {
+        response.setCode(CommonAttributes.FAIL_COMMON);
+        response.setDesc(Message.error("csh.coupon.isOverDue").getContent());
+        return response;
+      }
+      if (couponEndUser.getIsUsed()) {
+        response.setCode(CommonAttributes.FAIL_COMMON);
+        response.setDesc(Message.error("csh.coupon.isUsed").getContent());
+        return response;
+      }
+    }
     if (recordId == null) {
       if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
         if (carService.getPromotionPrice().compareTo(wallet.getBalanceAmount()) > 0) {
@@ -217,21 +235,24 @@ public class CarServiceController extends MobileBaseController {
           return response;
         }
       }
-      carServiceRecord =
-          carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
-              carService.getPromotionPrice(), paymentType, null);
+
       if (LogUtil.isDebugEnabled(CarServiceController.class)) {
         LogUtil
             .debug(
                 CarServiceController.class,
-                "Save",
-                "User buy Car Service. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+                "payService",
+                "User buy Car Service. UserName: %s, Tenant: %s, Service: %s, price: %s, couponEndUserId: %s, paymentType: %s, chargeStatus: %s",
                 endUser.getUserName(), carServiceRecord.getTenantName(),
-                carService.getServiceName(), carServiceRecord.getPrice(),
+                carService.getServiceName(), carServiceRecord.getPrice(), couponEndUserId,
                 carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
       }
+      carServiceRecord =
+          carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
+              carService.getPromotionPrice(), paymentType, null, couponEndUser);
+
     } else {
       carServiceRecord = carServiceRecordService.find(recordId);
+      carServiceRecordService.updateServiceRecord(carServiceRecord, couponEndUser);
       if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
         if (carServiceRecord.getPrice().compareTo(wallet.getBalanceAmount()) > 0) {
           response.setCode(CommonAttributes.FAIL_COMMON);
@@ -241,7 +262,7 @@ public class CarServiceController extends MobileBaseController {
       }
     }
 
-    BigDecimal price = carServiceRecord.getPrice();
+    BigDecimal price = carServiceRecord.getDiscountPrice();
     if (PaymentType.WECHAT.equals(paymentType)) {
       try {
         BigDecimal weChatPrice = price.multiply(new BigDecimal(100));

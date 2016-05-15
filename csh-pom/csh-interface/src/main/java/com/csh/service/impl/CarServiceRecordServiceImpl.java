@@ -15,11 +15,13 @@ import com.csh.beans.Message;
 import com.csh.beans.Setting;
 import com.csh.dao.BeautifyReservationDao;
 import com.csh.dao.CarServiceRecordDao;
+import com.csh.dao.CouponEndUserDao;
 import com.csh.dao.MaintainReservationDao;
 import com.csh.dao.WalletDao;
 import com.csh.entity.BeautifyReservation;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
+import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
 import com.csh.entity.MaintainReservation;
 import com.csh.entity.MessageInfo;
@@ -56,6 +58,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Resource(name = "walletDaoImpl")
   private WalletDao walletDao;
 
+  @Resource(name = "couponEndUserDaoImpl")
+  private CouponEndUserDao couponEndUserDao;
+
   @Resource(name = "messageInfoServiceImpl")
   private MessageInfoService messageInfoService;
 
@@ -79,7 +84,8 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public CarServiceRecord createServiceRecord(EndUser endUser, CarService carService,
-      ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType, Date subscribeDate) {
+      ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType, Date subscribeDate,
+      CouponEndUser couponEndUser) {
     Setting setting = SettingUtils.get();
     CarServiceRecord carServiceRecord = new CarServiceRecord();
     carServiceRecord.setTenantID(carService.getTenantInfo().getId());
@@ -95,6 +101,19 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setSubscribeDate(subscribeDate);
     carServiceRecord.setPaymentType(paymentType);
     carServiceRecord.setPaymentDate(new Date());
+
+    if (couponEndUser != null) {
+      carServiceRecord.setCouponEndUser(couponEndUser);
+      BigDecimal discountPrice =
+          carServiceRecord.getPrice().subtract(couponEndUser.getCoupon().getAmount());
+      discountPrice =
+          discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
+      carServiceRecord.setDiscountPrice(discountPrice);
+      couponEndUser.setIsUsed(true);
+      couponEndUserDao.merge(couponEndUser);
+    } else {
+      carServiceRecord.setDiscountPrice(price);
+    }
 
     if (carService.getServiceCategory().getId().equals(setting.getServiceCateMaintain())) {
       MaintainReservation maintainReservation = new MaintainReservation();
@@ -125,12 +144,15 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecordDao.persist(carServiceRecord);
     if (PaymentType.WALLET.equals(paymentType)) {
       Wallet wallet = endUser.getWallet();
-      wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(price));
+      wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(
+          carServiceRecord.getDiscountPrice()));
       WalletRecord walletRecord = new WalletRecord();
       walletRecord.setBalanceType(BalanceType.OUTCOME);
-      walletRecord.setMoney(price);
+      walletRecord.setMoney(carServiceRecord.getDiscountPrice());
       walletRecord.setWallet(wallet);
       walletRecord.setWalletType(WalletType.MONEY);
+      walletRecord.setRemark(Message.success("csh.wallet.purService.record",
+          carServiceRecord.getCarService().getServiceName()).getContent());
       wallet.getWalletRecords().add(walletRecord);
       walletDao.merge(wallet);
 
@@ -194,7 +216,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       walletRecord.setBalanceType(BalanceType.INCOME);
       walletRecord.setWalletType(WalletType.SCORE);
       walletRecord.setScore(carServiceRecord.getPrice());
-      walletRecord.setRemark(Message.success("csh.wallet.purService.record", carServiceRecord.getCarService().getServiceName()).getContent());
+      walletRecord.setRemark(Message.success("csh.wallet.score.comein.record").getContent());
       wallet.getWalletRecords().add(walletRecord);
       wallet.setScore(wallet.getScore().add(walletRecord.getScore()));
       walletDao.merge(wallet);
@@ -234,6 +256,24 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
           carServiceRecord.getTenantName(), carServiceRecord.getCarService().getServiceName(),
           carServiceRecord.getCarService().getTenantInfo().getAddress(), tokenNo.toString());
 
+    }
+    carServiceRecordDao.merge(carServiceRecord);
+    return carServiceRecord;
+  }
+
+  @Override
+  public CarServiceRecord updateServiceRecord(CarServiceRecord carServiceRecord,
+      CouponEndUser couponEndUser) {
+    if (couponEndUser != null) {
+      BigDecimal discountPrice =
+          carServiceRecord.getPrice().subtract(couponEndUser.getCoupon().getAmount());
+      discountPrice =
+          discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
+      carServiceRecord.setDiscountPrice(discountPrice);
+      couponEndUser.setIsUsed(true);
+      couponEndUserDao.merge(couponEndUser);
+    } else {
+      carServiceRecord.setDiscountPrice(carServiceRecord.getPrice());
     }
     carServiceRecordDao.merge(carServiceRecord);
     return carServiceRecord;

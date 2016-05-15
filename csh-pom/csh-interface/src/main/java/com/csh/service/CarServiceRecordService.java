@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
+import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
@@ -32,9 +33,13 @@ public interface CarServiceRecordService extends BaseService<CarServiceRecord, L
    * @param chargeStatus
    * @param price
    * @param paymentType
+   * @param subscribeDate
+   * @param couponEndUser
+   * @return
    */
   public CarServiceRecord createServiceRecord(EndUser endUser, CarService carService,
-      ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType, Date subscribeDate);
+      ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType, Date subscribeDate,
+      CouponEndUser couponEndUser);
 
 
   /**
@@ -72,4 +77,14 @@ public interface CarServiceRecordService extends BaseService<CarServiceRecord, L
    * @return
    */
   public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord);
+
+
+  /**
+   * 更新预约的支付记录
+   * 
+   * @param carServiceRecord
+   * @return
+   */
+  public CarServiceRecord updateServiceRecord(CarServiceRecord carServiceRecord,
+      CouponEndUser couponEndUser);
 }

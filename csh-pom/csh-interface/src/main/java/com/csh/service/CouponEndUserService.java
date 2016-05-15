@@ -37,4 +37,12 @@ public interface CouponEndUserService extends BaseService<CouponEndUser, Long> {
    * @param endUser
    */
   Boolean getCoupon(Coupon coupon, EndUser endUser);
+
+  /**
+   * 判断用户优惠券是否过期
+   * 
+   * @param coupon
+   * @param endUser
+   */
+  Boolean isOverDue(CouponEndUser couponEndUser);
 }

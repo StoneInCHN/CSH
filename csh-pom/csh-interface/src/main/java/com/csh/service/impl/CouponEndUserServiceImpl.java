@@ -60,6 +60,20 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
     return page;
   }
 
+  @Override
+  public Boolean isOverDue(CouponEndUser couponEndUser) {
+    if (!couponEndUser.getIsUsed() && couponEndUser.getIsOverDue()) {
+      return true;
+    }
+    if (!couponEndUser.getIsOverDue() && !couponEndUser.getIsUsed()
+        && TimeUtils.daysBetween(couponEndUser.getOverDueTime(), new Date()) >= 1) {
+      couponEndUser.setIsOverDue(true);
+      couponEndUserDao.merge(couponEndUser);
+      return true;
+    }
+    return false;
+  }
+
   private void checkOverDue(List<CouponEndUser> coupons) {
     for (CouponEndUser coupon : coupons) {
       if (!coupon.getIsOverDue() && !coupon.getIsUsed()
@@ -144,5 +158,6 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
     couponDao.merge(coupon);
     return true;
   }
+
 
 }

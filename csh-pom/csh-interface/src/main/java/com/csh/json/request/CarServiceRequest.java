@@ -38,6 +38,19 @@ public class CarServiceRequest extends BaseRequest {
    */
   private String subscribeDate;
 
+  /**
+   * 优惠券ID
+   */
+  private Long couponId;
+
+
+  public Long getCouponId() {
+    return couponId;
+  }
+
+  public void setCouponId(Long couponId) {
+    this.couponId = couponId;
+  }
 
   public String getSubscribeDate() {
     return subscribeDate;

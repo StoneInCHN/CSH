@@ -21,11 +21,14 @@ import com.csh.entity.App;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
+import com.csh.entity.VehicleBrand;
 import com.csh.entity.VehicleBrandDetail;
 import com.csh.entity.VehicleLine;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.ordering.Ordering;
+import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.json.base.BaseRequest;
 import com.csh.json.base.BaseResponse;
 import com.csh.json.base.ResponseMultiple;
@@ -397,8 +400,9 @@ public class VehicleController extends MobileBaseController {
     return response;
   }
 
+
   /**
-   * 查询车辆一级车系
+   * 查询车辆品牌
    * 
    * @param req
    * @return
@@ -422,10 +426,8 @@ public class VehicleController extends MobileBaseController {
     }
 
     List<List<Map<String, Object>>> maps = new ArrayList<List<Map<String, Object>>>();
-    List<Filter> filters = new ArrayList<Filter>();
-    Filter parentFilter = new Filter("parent", Operator.isNull, null);
-    filters.add(parentFilter);
-    List<VehicleLine> vehicleLines = vehicleLineService.findList(null, filters, null);
+
+    List<VehicleBrand> vehicleLines = vehicleBrandService.findList(null, null, null);
     String[] properties = {"id", "code", "name", "icon"};
     List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, vehicleLines);
     maps = VehicleUtil.getVehicleLineByCode(map);
@@ -439,15 +441,70 @@ public class VehicleController extends MobileBaseController {
     return response;
   }
 
+
   /**
-   * 查询车辆二级车系，车型
+   * 根据品牌查询车辆车系
    * 
    * @param req
    * @return
    */
-  @RequestMapping(value = "/getVehicleBrandById", method = RequestMethod.POST)
+  @RequestMapping(value = "/getVehicleLineByBrand", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseMultiple<Map<String, Object>> getVehicleBrand(
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getVehicleLineByBrand(
+      @RequestBody VehicleRequest vehicleReq) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = vehicleReq.getUserId();
+    String token = vehicleReq.getToken();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    VehicleBrand vehicleBrand = vehicleBrandService.find(vehicleReq.getBrandId());
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter brandFilter = new Filter("vehicleBrand", Operator.eq, vehicleBrand);
+    Filter parentFilter = new Filter("parent", Operator.isNull, null);
+    filters.add(brandFilter);
+    filters.add(parentFilter);
+    List<Ordering> orderings = new ArrayList<Ordering>();
+    Ordering ordering = new Ordering("code", Direction.asc);
+    orderings.add(ordering);
+    List<VehicleLine> vehicleLines = vehicleLineService.findList(null, filters, orderings);
+    String[] properties = {"id", "name"};
+    String[] childProperties = {"id", "name", "icon"};
+
+    List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
+    for (VehicleLine v : vehicleLines) {
+      Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, v);
+      List<Map<String, Object>> childMap =
+          FieldFilterUtils.filterCollectionMap(childProperties, v.getChildren());
+      map.put("childLine", childMap);
+      maps.add(map);
+    }
+    response.setMsg(maps);
+
+    String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+
+    return response;
+  }
+
+  /**
+   * 查询车辆车型
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getVehicleBrandDetailByLine", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getVehicleBrandDetailById(
       @RequestBody VehicleRequest vehicleReq) {
 
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
