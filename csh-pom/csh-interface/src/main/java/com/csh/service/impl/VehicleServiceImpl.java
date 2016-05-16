@@ -11,14 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csh.dao.ReportDeviceBindStatisticsDao;
 import com.csh.dao.VehicleDao;
 import com.csh.entity.DeviceInfo;
-import com.csh.entity.ReportDeviceBindStatistics;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CouponService;
 import com.csh.service.VehicleService;
-import com.csh.utils.TimeUtils;
 
 @Service("vehicleServiceImpl")
 public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implements VehicleService {
@@ -49,17 +47,17 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     vehicle.setTenantID(deviceInfo.getTenantID());
     vehicleDao.merge(vehicle);
 
-    ReportDeviceBindStatistics report =
-        reportDeviceBindStatisticsDao.getReportByDate(TimeUtils.formatDate2Day(new Date()));
-    if (report != null) {
-      report.setBindDeviceNum(report.getBindDeviceNum() + 1);
-      reportDeviceBindStatisticsDao.merge(report);
-    } else {
-      report = new ReportDeviceBindStatistics();
-      report.setStatisticsDate(new Date());
-      report.setBindDeviceNum(1);
-      reportDeviceBindStatisticsDao.persist(report);
-    }
+    // ReportDeviceBindStatistics report =
+    // reportDeviceBindStatisticsDao.getReportByDate(TimeUtils.formatDate2Day(new Date()));
+    // if (report != null) {
+    // report.setBindDeviceNum(report.getBindDeviceNum() + 1);
+    // reportDeviceBindStatisticsDao.merge(report);
+    // } else {
+    // report = new ReportDeviceBindStatistics();
+    // report.setStatisticsDate(new Date());
+    // report.setBindDeviceNum(1);
+    // reportDeviceBindStatisticsDao.persist(report);
+    // }
 
     Boolean flag =
         couponService.takeCouponBySendType(deviceInfo.getTenantID(), vehicle.getEndUser(),
