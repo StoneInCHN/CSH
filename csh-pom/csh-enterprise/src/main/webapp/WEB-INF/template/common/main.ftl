@@ -218,8 +218,8 @@
     		<li><a href="#" data-url="${base}/console/tenantDeductClearingRecord/tenantDeductClearingRecord.jhtml">${message("csh.clearingManage.tenantDeductClearingRecord")}</a></li>
     		[/@shiro.hasPermission]    	</ul>
     	<ul title="${message("csh.appActivity.config")}" id="appActivity">
-    		[@shiro.hasPermission name="redPacketSend"]
-    		<li><a href="#" data-url="${base}/console/redPacketSend/redPacketSend.jhtml">${message("csh.appActivity.redPacketSend")}</a></li>
+    		[@shiro.hasPermission name="coupon"]
+    		<li><a href="#" data-url="${base}/console/coupon/coupon.jhtml">${message("csh.appActivity.coupon")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="joyDraw"]
     		<li><a href="#" data-url="${base}/console/joyDraw/joyDraw.jhtml">${message("csh.appActivity.joyDraw")}</a></li>

@@ -54,8 +54,9 @@ public class AppController extends BaseController
   @RequestMapping (value = "/add", method = RequestMethod.POST)
   public @ResponseBody Message update (App app)
   { 
-	app.setTenantID(tenantAccountService.getCurrentTenantID());
+    app.setTenantID(tenantAccountService.getCurrentTenantID());
     appService.update (app,"createDate");
+    
     return SUCCESS_MESSAGE;
   }
   

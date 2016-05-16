@@ -4,7 +4,7 @@
 
 <div>
 	  <fieldset>
-	    <legend>${message("csh.vehicle.search")}</legend>
+	    <legend>${message("csh.carService.search")}</legend>
 	    <form id="carService-search-form" class="search-form">
 	    	<div class="search-item">
 			    <label> ${message("csh.carService.serviceName")}:</label>

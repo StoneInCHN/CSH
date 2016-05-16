@@ -13,7 +13,9 @@ $(function(){
 				},
 				success:function(result,response,status){
 					$.messager.progress('close');
-						showSuccessMsg(result.content);
+					showSuccessMsg(result.content);
+					var tab = $('#manager-tabs').tabs('getSelected');  // 获取选择的面板
+					tab.panel('refresh');
 				}
 			});
 		}
