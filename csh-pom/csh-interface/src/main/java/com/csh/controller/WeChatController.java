@@ -80,6 +80,10 @@ public class WeChatController extends MobileBaseController {
       Element temp = (Element) it.next();
       xmlMap.put(temp.getName(), temp.getStringValue());
     }
+    if (LogUtil.isDebugEnabled(WeChatController.class)) {
+      LogUtil.debug(WeChatController.class, "pay_notify",
+          "wechat pay notify callback method. response: %s", xmlMap);
+    }
     String xmlReturn = "";
     if ("SUCCESS".equals(xmlMap.get("return_code"))) {
       // 验证签名
