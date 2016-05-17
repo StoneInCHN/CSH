@@ -24,9 +24,12 @@ import com.csh.framework.paging.Pageable;
 import com.csh.service.AreaService;
 import com.csh.service.DistributorService;
 import com.csh.service.FileService;
+import com.csh.service.MailService;
 import com.csh.service.TenantApplyService;
 import com.csh.service.TenantInfoService;
 import com.csh.service.VersionConfigService;
+import com.csh.utils.SpringUtils;
+import com.csh.utils.UcpaasUtil;
 
 
 @RequestMapping("console/apply")
@@ -51,6 +54,9 @@ public class TenantApplyController extends BaseController {
   
   @Resource(name = "distributorServiceImpl")
   private DistributorService distributorService;
+  
+  @Resource(name = "mailServiceImpl")
+  private MailService mailService;
 
   @RequestMapping(value = "/submit", method = RequestMethod.POST)
   public String submit(TenantApply tenantApply, Long areaId, ModelMap map) {
@@ -132,6 +138,12 @@ public class TenantApplyController extends BaseController {
       tenantApplyService.auditPassed(applyTemp ,distributor);
     } else {
       tenantApplyService.update(applyTemp);
+      //send email
+      String subject = SpringUtils.getMessage("csh.tenantApply.audit.failed.subject");
+      String message = SpringUtils.getMessage("csh.tenantApply.audit.failed.message",tenantApply.getTenantName(),tenantApply.getNotes());
+      mailService.send(tenantApply.getEmail(), subject, message);
+     //send msg
+      
     }
 
     return SUCCESS_MESSAGE;

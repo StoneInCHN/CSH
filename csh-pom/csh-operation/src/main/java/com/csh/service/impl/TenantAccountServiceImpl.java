@@ -124,9 +124,7 @@ public class TenantAccountServiceImpl extends BaseServiceImpl<TenantAccount, Lon
     String message =
         SpringUtils.getMessage("csh.tenantAccount.password.message",tenantInfo.getTenantName() ,tenantAccount.getUserName(),
             password,tenantInfo.getOrgCode(),UcpaasUtil.setting.getTenantLoginUrl());
-
     mailService.send(tenantInfo.getEmail(), subject, message);
-    mailService.send("676397876@qq.com", subject, message);
     tenantInfo.setIsHaveAccount(true);
      tenantInfoDao.merge(tenantInfo);
   }

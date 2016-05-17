@@ -124,6 +124,11 @@ public class Setting implements Serializable {
   /** 允许上传文件扩展名 */
   private String uploadFileExtension;
   
+  /**
+   * 允许上传图片扩展名
+   */
+  private String uploadImageExtension;
+  
   /** 短信验证码过期时间 */
   private Integer smsCodeTimeOut;
 
@@ -162,6 +167,8 @@ public class Setting implements Serializable {
    * 分销商角色默认Id
    */
   private Long defaultDistributorRoleId;
+  
+  private Long imageMaxSize;
   
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
@@ -314,8 +321,23 @@ public class Setting implements Serializable {
   public String[] getUploadFileExtensions() {
       return StringUtils.split(uploadFileExtension, SEPARATOR);
   }
+  
+  public void setUploadImageExtension(String uploadImageExtension) {
+      if (uploadImageExtension != null) {
+    	  uploadImageExtension = uploadImageExtension.replaceAll("[,\\s]*,[,\\s]*", ",").replaceAll("^,|,$", "").toLowerCase();
+      }
+      this.uploadImageExtension = uploadImageExtension;
+  }
 
-  public Integer getSmsCodeTimeOut() {
+	 public String getUploadImageExtension() {
+		return uploadImageExtension;
+	}
+	
+	 public String[] getUploadImageExtensions() {
+	      return StringUtils.split(uploadImageExtension, SEPARATOR);
+	  }
+
+public Integer getSmsCodeTimeOut() {
     return smsCodeTimeOut;
   }
 
@@ -410,5 +432,15 @@ public class Setting implements Serializable {
   public void setDefaultDistributorRoleId(Long defaultDistributorRoleId) {
     this.defaultDistributorRoleId = defaultDistributorRoleId;
   }
+
+	public Long getImageMaxSize() {
+		return imageMaxSize;
+	}
+	
+	public void setImageMaxSize(Long imageMaxSize) {
+		this.imageMaxSize = imageMaxSize;
+	}
+  
+  
   
 }

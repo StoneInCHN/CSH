@@ -34,10 +34,12 @@ public class FileServiceImpl implements FileService {
   
   @Value("${ProjectUploadPath}")
   private String projectUploadPath;
-  @Value("${ImageUploadPath}")
+  @Value("${uploadPath}")
   private String uploadPath;
   @Value("${ImageMaxSize}")
   private Integer ImageMaxSize;
+  @Value("${fileMaxSize}")
+  private Integer fileMaxSize;
 
   @Value("${ListImageWidth}")
   private Integer listImageWidth;
@@ -166,7 +168,9 @@ public class FileServiceImpl implements FileService {
     String[] uploadExtensions = null;
     if (fileType == FileType.file) {
       uploadExtensions = setting.getUploadFileExtensions();
-    }
+    }else if (fileType == FileType.image) {
+      uploadExtensions = setting.getUploadImageExtensions();
+	}
     if (!ArrayUtils.isEmpty(uploadExtensions)) {
       return FilenameUtils.isExtension(multipartFile.getOriginalFilename(), uploadExtensions);
     }
@@ -221,10 +225,8 @@ public class FileServiceImpl implements FileService {
   /**
    * 添加上传任务
    * 
-   * @param storagePlugin 存储插件
    * @param path 上传路径
    * @param tempFile 临时文件
-   * @param contentType 文件类型
    */
   private void addTask(final String path, final File tempFile) {
     taskExecutor.execute(new Runnable() {
