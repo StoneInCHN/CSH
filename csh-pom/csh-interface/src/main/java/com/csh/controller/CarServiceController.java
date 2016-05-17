@@ -263,25 +263,36 @@ public class CarServiceController extends MobileBaseController {
     }
 
     BigDecimal price = carServiceRecord.getDiscountPrice();
-    if (PaymentType.WECHAT.equals(paymentType)) {
-      try {
-        BigDecimal weChatPrice = price.multiply(new BigDecimal(100));
-        response =
-            PayUtil.wechat(
-                carServiceRecord.getRecordNo() + "_"
-                    + TimeUtils.format("mmss", new Date().getTime()), carService.getServiceName(),
-                httpReq.getRemoteAddr(), serviceId.toString(), weChatPrice.intValue() + "");
-      } catch (DocumentException e) {
-        e.printStackTrace();
-      }
-    } else {
+    if (price.compareTo(new BigDecimal(0)) <= 0) {
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("out_trade_no", carServiceRecord.getRecordNo());
+      map.put("isNeedPay", false);
       response.setMsg(map);
       response.setCode(CommonAttributes.SUCCESS);
+    } else {
+      if (PaymentType.WECHAT.equals(paymentType)) {
+        try {
+          BigDecimal weChatPrice = price.multiply(new BigDecimal(100));
+          response =
+              PayUtil.wechat(
+                  carServiceRecord.getRecordNo() + "_"
+                      + TimeUtils.format("mmss", new Date().getTime()),
+                  carService.getServiceName(), httpReq.getRemoteAddr(), serviceId.toString(),
+                  weChatPrice.intValue() + "");
+          response.getMsg().put("isNeedPay", true);
+        } catch (DocumentException e) {
+          e.printStackTrace();
+        }
+      } else {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("out_trade_no", carServiceRecord.getRecordNo());
+        map.put("isNeedPay", true);
+        response.setMsg(map);
+        response.setCode(CommonAttributes.SUCCESS);
+      }
     }
-    response.setDesc(carServiceRecord.getId().toString());
 
+    response.setDesc(carServiceRecord.getId().toString());
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
