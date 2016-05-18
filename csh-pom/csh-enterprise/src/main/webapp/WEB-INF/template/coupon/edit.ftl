@@ -7,9 +7,9 @@
     		<td>
     			 <input  class="easyui-numberbox" value="${coupon.amount}" name="amount"  data-options="required:true,min:0,precision:2"  style="width:110px;"/>
     		</td>
-    		<th>${message("csh.coupon.counts")}:</th>
-    		<td>
-    			 <input  class="easyui-numberbox" name="counts" value="${coupon.counts}" data-options="required:true"  style="width:110px;"/>
+    		<th class="editCouponCountsClass">${message("csh.coupon.counts")}:</th>
+    		<td class="editCouponCountsClass">
+    			 <input  class="easyui-numberbox" name="counts" id="editCouponCounts" value="${coupon.counts}" data-options="required:true"  style="width:110px;"/>
     		</td>
     		
     	</tr>
@@ -46,11 +46,17 @@
 				      ,selected:true
 				      [/#if]
 				     },{
-				      label: 'BIND',
-				      value: '${message("csh.coupon.sendType.BIND")}'
-				       [#if coupon.sendType == 'BIND']
+				      label: 'TENANTBIND',
+				      value: '${message("csh.coupon.sendType.TENANTBIND")}'
+				       [#if coupon.sendType == 'TENANTBIND']
+					      ,selected:true
+					   [/#if]
+				     },{
+				      label: 'DEVICEBIND',
+				      value: '${message("csh.coupon.sendType.DEVICEBIND")}'
+				       [#if coupon.sendType == 'DEVICEBIND']
 				      ,selected:true
-				       [/#if]
+				      [/#if]
 				     }],
 				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:60" id="couponSendType-edit"  name="sendType" style="width:110px;" required=true/>
     		</td>
@@ -114,7 +120,7 @@
     	<tr>
     		<th>${message("csh.coupon.remark")}:</th>
     		<td colspan="5">
-    			 <input  class="easyui-textbox" id= "remark" name = "remark" value="${coupon.remark}"  style="height:100px;width:100%"/>
+    			 <input  class="easyui-textbox" id= "remark" data-options="required:true" name = "remark" value="${coupon.remark}"  style="height:100px;width:100%"/>
     		</td>
     	</tr>
     </table>

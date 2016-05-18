@@ -5,9 +5,9 @@
     		<td>
     			 <input  class="easyui-numberbox" name="amount"  data-options="required:true,min:0,precision:2"  style="width:110px;"/>
     		</td>
-    		<th>${message("csh.coupon.counts")}:</th>
-    		<td>
-    			 <input  class="easyui-numberbox" name="counts"  data-options="required:true"  style="width:110px;"/>
+    		<th class="addCouponCountsClass">${message("csh.coupon.counts")}:</th>
+    		<td class="addCouponCountsClass">
+    			 <input  class="easyui-numberbox" name="counts" id="addCouponCounts"  data-options="required:true"  style="width:110px;"/>
     		</td>
     		
     	</tr>
@@ -36,8 +36,11 @@
 				      value: '${message("csh.coupon.sendType.NORMAL")}',
 				      selected:true
 				     },{
-				      label: 'BIND',
-				      value: '${message("csh.coupon.sendType.BIND")}'
+				      label: 'TENANTBIND',
+				      value: '${message("csh.coupon.sendType.TENANTBIND")}'
+				     },{
+				      label: 'DEVICEBIND',
+				      value: '${message("csh.coupon.sendType.DEVICEBIND")}'
 				     }],
 				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:60" id="couponSendType-add"  name="sendType" style="width:110px;" required=true/>
     		</td>
@@ -91,7 +94,7 @@
     	<tr>
     		<th>${message("csh.coupon.remark")}:</th>
     		<td colspan="5">
-    			 <input  class="easyui-textbox" id= "remark" name = "remark"   style="height:100px;width:100%"/>
+    			 <input  class="easyui-textbox" id= "remark" name = "remark"   style="height:100px;width:100%" data-options="required:true"/>
     		</td>
     	</tr>
     </table>

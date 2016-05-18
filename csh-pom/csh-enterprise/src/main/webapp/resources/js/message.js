@@ -291,7 +291,8 @@ var messages = {
 	"csh.coupon.overDueType.BYDATE":"按日期",
 	"csh.coupon.type.COMMON":"通用类型",
 	"csh.coupon.type.SPECIFY":"指定类型",
-	"csh.carService.name":"服务名称"
+	"csh.carService.name":"服务名称",
+	"csh.common.select.carService":"请选择服务"
 	
 	
 	

@@ -12,39 +12,43 @@ var coupon_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
+						debugger;
 						var validate = $('#addCoupon_form').form('validate');
-						var _rows = $("#coupon-add-carService-table-list").datagrid('getSelections');
-						if (_rows.length == 0) {
-							$.messager.alert(message("csh.common.prompt"),
-									message("csh.common.select.deleteRow"), 'warning');
-						} else {
-							var _ids = [];
-							for (var i = 0; i < _rows.length; i++) {
-								_ids.push(_rows[i].id);
+						var _ids = [];
+						if($('#couponType-add').combobox('getValue') == 'SPECIFY'){
+							var _rows = $("#coupon-add-carService-table-list").datagrid('getSelections');
+							if (_rows.length == 0) {
+								$.messager.alert(message("csh.common.prompt"),
+										message("csh.common.select.carService"), 'warning');
+							} else {
+								
+								for (var i = 0; i < _rows.length; i++) {
+									_ids.push(_rows[i].id);
+								}
 							}
-							if(validate){
-								$.ajax({
-									url:"../coupon/add.jhtml?carServiceIds="+_ids,
-									type:"post",
-									data:$("#addCoupon_form").serialize(),
-									beforeSend:function(){
-										$.messager.progress({
-											text:message("csh.common.saving")
-										});
-									},
-									success:function(result,response,status){
-										$.messager.progress('close');
-										if(response == "success"){
-											showSuccessMsg(result.content);
-											$('#addCoupon').dialog("close")
-											$("#addCoupon_form").form("reset");
-											$("#coupon-table-list").datagrid('reload');
-										}else{
-											alertErrorMsg();
-										}
+						}
+						if(validate){
+							$.ajax({
+								url:"../coupon/add.jhtml?carServiceIds="+_ids,
+								type:"post",
+								data:$("#addCoupon_form").serialize(),
+								beforeSend:function(){
+									$.messager.progress({
+										text:message("csh.common.saving")
+									});
+								},
+								success:function(result,response,status){
+									$.messager.progress('close');
+									if(response == "success"){
+										showSuccessMsg(result.content);
+										$('#addCoupon').dialog("close")
+										$("#addCoupon_form").form("reset");
+										$("#coupon-table-list").datagrid('reload');
+									}else{
+										alertErrorMsg();
 									}
-								});
-							}
+								}
+							});
 						}
 					}
 				},{
@@ -110,7 +114,6 @@ var coupon_manager_tool = {
 										    valueField:'id',
 										    textField:'categoryName',
 										    url:"../serviceCategory/findAllServiceCategory.jhtml",
-										    editable : false,
 										    prompt:message("csh.common.please.select"),
 									    	});
 									}
@@ -125,27 +128,43 @@ var coupon_manager_tool = {
 							}
 						}
 					});
+					
 					$("#couponSendType-add").combobox({
 						onChange: function(newValue, oldValue){
 							if(newValue =='BIND'){
-								$('.addCouponOverDueClass').hide();
+								$('.addCouponCountsClass').hide();
+								$('#addCouponCounts').textbox({
+									required:false,
+									value:''
+								});
 								$('.addCouponDeadlineTimeClass').hide();
 								$('.couponOverDeadlineTime-add').textbox({
-									required:false
+									required:false,
+									value:''
 								});
+								$('#couponOverDeadlineTime-add').datebox('setValue', '');
+								$("#couponOverDueType-add").combobox({
+									readonly:true,
+									value:'BYDAY'
+								})
 							}else if(newValue = 'NORMAL'){
 								$('.addCouponDeadlineTimeClass').show();
 								$('.couponOverDeadlineTime-add').textbox({
 									required:true
 								});
-								$('.addCouponOverDueClass').show();
+								$('.addCouponCountsClass').show();
+								$('#addCouponCounts').textbox({
+									required:true,
+								});
 								$("#couponOverDueType-add").combobox({
+									readonly:false,
 									onChange: function(newValue, oldValue){
 										if(newValue =='BYDAY'){
 											$('.addCouponOverDueTimeClass').hide();
 											$('#addCouponOverDueTime').textbox({
 												required:false
 											});
+											$('#addCouponOverDueTime').datebox('setValue', '');
 											$('#addCouponOverDueDay').textbox({
 												required:true
 											});
@@ -154,7 +173,8 @@ var coupon_manager_tool = {
 											$('.addCouponOverDueTimeClass').show();
 											$('.addCouponOverDueDayClass').hide();
 											$('#addCouponOverDueDay').textbox({
-												required:false
+												required:false,
+												value:''
 											});
 											$('#addCouponOverDueTime').textbox({
 												required:true
@@ -166,7 +186,35 @@ var coupon_manager_tool = {
 							}
 						}
 					});
-				
+					$('#addCouponOverDueTime').datebox('calendar').calendar({
+						validator: function(date){
+							var now = new Date();
+							return now<=date ;
+						},
+						onChange:function(newValue, oldValue){
+							$('#couponOverDeadlineTime-add').datebox('calendar').calendar({
+								validator: function(date){
+									var now = new Date();
+									return newValue<=date && date>now;
+								}
+							});
+						}
+					});
+					$('#couponOverDeadlineTime-add').datebox('calendar').calendar({
+						validator: function(date){
+							var now = new Date();
+							return now<=date ;
+						},
+						onChange:function(newValue, oldValue){
+							$('#addCouponOverDueTime').datebox('calendar').calendar({
+								validator: function(date){
+									var now = new Date();
+									return newValue >=date && date>now;
+								},
+							});
+						}
+					});
+					
 				},
 			    onClose:function(){
 			    	$("#carServiceUploader-add .uploadBtn").trigger("clearFileQuene");
@@ -192,16 +240,20 @@ var coupon_manager_tool = {
 			    	iconCls:'icon-save',
 					handler:function(){
 						var validate = $('#editCoupon_form').form('validate');
-						if(validate){
+						var _ids = [];
+						if($('#couponType-edit').combobox('getValue') == 'SPECIFY'){
 							var _rows = $("#coupon-edit-carService-table-list").datagrid('getSelections');
 							if (_rows.length == 0) {
 								$.messager.alert(message("csh.common.prompt"),
-										message("csh.common.select.deleteRow"), 'warning');
+										message("csh.common.select.carService"), 'warning');
 							} else {
-								var _ids = [];
+								
 								for (var i = 0; i < _rows.length; i++) {
 									_ids.push(_rows[i].id);
 								}
+							}
+						}
+						if(validate){
 								$.ajax({
 									url:"../coupon/update.jhtml?carServiceIds="+_ids,
 									type:"post",
@@ -218,7 +270,6 @@ var coupon_manager_tool = {
 											$("#coupon-table-list").datagrid('reload');
 									}
 								});
-							}
 						};
 					}
 				},{
@@ -286,7 +337,6 @@ var coupon_manager_tool = {
 										    valueField:'id',
 										    textField:'categoryName',
 										    url:"../serviceCategory/findAllServiceCategory.jhtml",
-										    editable : false,
 										    prompt:message("csh.common.please.select"),
 									    	});
 									},
@@ -314,23 +364,33 @@ var coupon_manager_tool = {
 					$("#couponSendType-edit").combobox({
 						onChange: function(newValue, oldValue){
 							if(newValue =='BIND'){
-								$('.editCouponOverDueClass').hide();
+								$('.editCouponCountsClass').hide();
+								$('#editCouponCounts').textbox({
+									required:false,
+									value:''
+								});
 								$('.editCouponDeadlineTimeClass').hide();
 								$('.couponOverDeadlineTime-edit').textbox({
-									required:false
+									required:false,
+									value:''
 								});
+								$('#couponOverDeadlineTime-edit').datebox('setValue', '');
 							}else if(newValue = 'NORMAL'){
 								$('.editCouponDeadlineTimeClass').show();
 								$('.couponOverDeadlineTime-edit').textbox({
 									required:true
 								});
-								$('.editCouponOverDueClass').show();
+								$('.editCouponCountsClass').show();
+								$('#editCouponCounts').textbox({
+									required:true
+								});
 								$("#couponOverDueType-edit").combobox({
 									onChange: function(newValue, oldValue){
 										if(newValue =='BYDAY'){
 											$('.editCouponOverDueTimeClass').hide();
 											$('#editCouponOverDueTime').textbox({
-												required:false
+												required:false,
+												value:''
 											});
 											$('#editCouponOverDueDay').textbox({
 												required:true
@@ -340,7 +400,8 @@ var coupon_manager_tool = {
 											$('.editCouponOverDueTimeClass').show();
 											$('.editCouponOverDueDayClass').hide();
 											$('#editCouponOverDueDay').textbox({
-												required:false
+												required:false,
+												value:''
 											});
 											$('#editCouponOverDueTime').textbox({
 												required:true
@@ -352,6 +413,35 @@ var coupon_manager_tool = {
 							}
 						}
 					});
+					$('#editCouponOverDueTime').datebox('calendar').calendar({
+						validator: function(date){
+							var now = new Date();
+							return now<=date ;
+						},
+						onChange:function(newValue, oldValue){
+							$('#couponOverDeadlineTime-edit').datebox('calendar').calendar({
+								validator: function(date){
+									var now = new Date();
+									return newValue<=date && date>now;
+								}
+							});
+						}
+					});
+					$('#couponOverDeadlineTime-edit').datebox('calendar').calendar({
+						validator: function(date){
+							var now = new Date();
+							return now<=date ;
+						},
+						onChange:function(newValue, oldValue){
+							$('#editCouponOverDueTime').datebox('calendar').calendar({
+								validator: function(date){
+									var now = new Date();
+									return newValue >=date && date>now;
+								},
+							});
+						}
+					});
+					$('#couponOverDeadlineTime-edit').datebox('setValue', $('#couponOverDeadlineTime-edit').datebox('getValue'));
 			    },
 			    onClose:function(){
 			    	$('#editCoupon').empty();

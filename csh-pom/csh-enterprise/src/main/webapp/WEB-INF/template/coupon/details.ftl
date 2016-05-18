@@ -45,11 +45,17 @@
 				      ,selected:true
 				      [/#if]
 				     },{
-				      label: 'BIND',
-				      value: '${message("csh.coupon.sendType.BIND")}'
-				       [#if coupon.sendType == 'BIND']
+				      label: 'TENANTBIND',
+				      value: '${message("csh.coupon.sendType.TENANTBIND")}'
+				       [#if coupon.sendType == 'TENANTBIND']
+					      ,selected:true
+					   [/#if]
+				     },{
+				      label: 'DEVICEBIND',
+				      value: '${message("csh.coupon.sendType.DEVICEBIND")}'
+				       [#if coupon.sendType == 'DEVICEBIND']
 				      ,selected:true
-				       [/#if]
+				      [/#if]
 				     }],
 				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:60" id="couponSendType-detail"  name="sendType" style="width:110px;" required=true/>
     		</td>

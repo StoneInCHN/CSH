@@ -120,6 +120,8 @@ public class Coupon extends BaseEntity {
   
   private SystemType systemType;
 
+  private String name;
+  
   @JsonProperty
   public Integer getRemainNum() {
     return remainNum;
@@ -269,6 +271,23 @@ public class Coupon extends BaseEntity {
 
   public void setSystemType(SystemType systemType) {
     this.systemType = systemType;
+  }
+
+  @JsonProperty
+  public String getName ()
+  {
+    if (type == CouponType.COMMON)
+    {
+      name = "全场通用";
+    }else {
+      name = "指定商品优惠";
+    }
+    return name;
+  }
+
+  public void setName (String name)
+  {
+    this.name = name;
   }
   
 }
