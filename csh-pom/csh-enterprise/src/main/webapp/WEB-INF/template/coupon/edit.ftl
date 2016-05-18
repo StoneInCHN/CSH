@@ -120,7 +120,7 @@
     	<tr>
     		<th>${message("csh.coupon.remark")}:</th>
     		<td colspan="5">
-    			 <input  class="easyui-textbox" id= "remark" data-options="required:true" name = "remark" value="${coupon.remark}"  style="height:100px;width:100%"/>
+    			 <input  class="easyui-textbox" id= "remark" name = "remark" value="${coupon.remark}"  style="height:100px;width:100%"/>
     		</td>
     	</tr>
     </table>
