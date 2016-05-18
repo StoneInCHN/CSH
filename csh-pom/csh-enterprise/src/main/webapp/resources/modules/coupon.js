@@ -188,28 +188,28 @@ var coupon_manager_tool = {
 					});
 					$('#addCouponOverDueTime').datebox('calendar').calendar({
 						validator: function(date){
-							var now = new Date();
+							var now = new Date(new Date().Format("yyyy-M-d"));
 							return now<=date ;
 						},
 						onChange:function(newValue, oldValue){
 							$('#couponOverDeadlineTime-add').datebox('calendar').calendar({
 								validator: function(date){
-									var now = new Date();
-									return newValue<=date && date>now;
+									var now = new Date(new Date().Format("yyyy-M-d"));
+									return newValue<=date && date>=now;
 								}
 							});
 						}
 					});
 					$('#couponOverDeadlineTime-add').datebox('calendar').calendar({
 						validator: function(date){
-							var now = new Date();
+							var now = new Date(new Date().Format("yyyy-M-d"));
 							return now<=date ;
 						},
 						onChange:function(newValue, oldValue){
 							$('#addCouponOverDueTime').datebox('calendar').calendar({
 								validator: function(date){
-									var now = new Date();
-									return newValue >=date && date>now;
+									var now = new Date(new Date().Format("yyyy-M-d"));
+									return newValue >=date && date>=now;
 								},
 							});
 						}
@@ -415,33 +415,43 @@ var coupon_manager_tool = {
 					});
 					$('#editCouponOverDueTime').datebox('calendar').calendar({
 						validator: function(date){
-							var now = new Date();
+							var now = new Date(new Date().Format("yyyy-M-d"));
 							return now<=date ;
 						},
 						onChange:function(newValue, oldValue){
 							$('#couponOverDeadlineTime-edit').datebox('calendar').calendar({
 								validator: function(date){
-									var now = new Date();
-									return newValue<=date && date>now;
+									var now = new Date(new Date().Format("yyyy-M-d"));
+									return newValue<=date && date>=now;
 								}
 							});
 						}
 					});
 					$('#couponOverDeadlineTime-edit').datebox('calendar').calendar({
 						validator: function(date){
-							var now = new Date();
+							var now = new Date(new Date().Format("yyyy-M-d")) ;
 							return now<=date ;
 						},
 						onChange:function(newValue, oldValue){
 							$('#editCouponOverDueTime').datebox('calendar').calendar({
 								validator: function(date){
-									var now = new Date();
-									return newValue >=date && date>now;
+									var now = new Date(new Date().Format("yyyy-M-d"));
+									return newValue >=date && date>=now;
 								},
 							});
 						}
 					});
-					$('#couponOverDeadlineTime-edit').datebox('setValue', $('#couponOverDeadlineTime-edit').datebox('getValue'));
+					var deadTime = $('#couponOverDeadlineTime-edit').datebox('getValue');
+					debugger;
+					var dt = new Date(deadTime.replace(/-/,"/"))
+					if(deadTime != ''){
+						$('#editCouponOverDueTime').datebox('calendar').calendar({
+							validator: function(date){
+								var now = new Date(new Date().Format("yyyy-M-d"));
+								return now<=date && date <=dt;
+							}
+						});
+					}
 			    },
 			    onClose:function(){
 			    	$('#editCoupon').empty();
