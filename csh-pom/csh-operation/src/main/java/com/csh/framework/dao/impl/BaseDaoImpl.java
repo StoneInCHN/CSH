@@ -25,6 +25,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import org.apache.commons.lang.StringUtils;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.util.Assert;
 
 import com.csh.common.log.LogUtil;
@@ -429,11 +430,22 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
             .conjunction();
     if (StringUtils.isNotEmpty(pageable.getSearchProperty())
         && StringUtils.isNotEmpty(pageable.getSearchValue())) {
-      restrictions =
-          criteriaBuilder.and(
-              restrictions,
-              criteriaBuilder.like(root.<String>get(pageable.getSearchProperty()),
-                  "%" + pageable.getSearchValue() + "%"));
+      if(pageable.getSearchProperty().contains("&")){
+        String[] propetys = pageable.getSearchProperty().split("&"); 
+        if (propetys !=null && propetys.length == 2) {
+          restrictions =
+              criteriaBuilder.and(
+                  restrictions,
+                  criteriaBuilder.like(root.<String>get(propetys[0]).get(propetys[1]),
+                      "%" + pageable.getSearchValue() + "%"));
+        }
+      }else{
+        restrictions =
+            criteriaBuilder.and(
+                restrictions,
+                criteriaBuilder.like(root.<String>get(pageable.getSearchProperty()),
+                    "%" + pageable.getSearchValue() + "%"));
+      }
     }
     if (pageable.getFilters() != null) {
       for (Filter filter : pageable.getFilters()) {

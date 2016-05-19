@@ -61,8 +61,6 @@ public class DistributorDeductClearingRecordServiceImpl extends
         Date currentDate = new Date();
         for (CarServiceDistributorDeductRecord carServiceDistributorDeductRecord : lists) {
           amount = amount.add(carServiceDistributorDeductRecord.getDeductMoney());
-          carServiceDistributorDeductRecord.setClearingDate(currentDate);
-          carServiceDistributorDeductRecorDao.merge(carServiceDistributorDeductRecord);
         }
         clearRecord.setAmountOfCurrentPeriod(amount);
         clearRecord.setClearingStatus(ClearingStatus.UNPAID);
@@ -70,6 +68,11 @@ public class DistributorDeductClearingRecordServiceImpl extends
         clearRecord.setCarServiceDistributorDeductRecords(lists);
         clearRecord.setClearingSn(snDao.generate(Sn.Type.deductClearing));
         save(clearRecord);
+        for (CarServiceDistributorDeductRecord carServiceDistributorDeductRecord : lists) {
+          carServiceDistributorDeductRecord.setClearingDate(currentDate);
+          carServiceDistributorDeductRecord.setDistributorDeductClearingRecord(clearRecord);
+          carServiceDistributorDeductRecorDao.merge(carServiceDistributorDeductRecord);
+        }
         return Message.success("结算单生成成功");
       } else {
         return Message.warn("你没有可以结算的清单");

@@ -119,8 +119,8 @@ $().ready(function() {
 								<td>
 									<select name="parentId">
 										<option value="">${message("csh.vehicleLine.parent.root")}</option>
-										[#list vehicleLines as vehicleLine]
-											<option value="${vehicleLine.id}"[#if vehicleLine.parent.id == vehicleLine.id]selected = "selected"[/#if]>${vehicleLine.name}</option>
+										[#list vehicleLines as parent]
+											<option value="${parent.id}"[#if vehicleLine.parent.id == parent.id]selected = "selected"[/#if]>${parent.name}</option>
 										[/#list]
 									</select>
 								</td>

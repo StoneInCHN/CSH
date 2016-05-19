@@ -90,7 +90,7 @@
 										${message("csh.carServiceRecord.chargeStatus")}
 									</th>
 									<th>
-										${message("csh.carServiceRecord.price")}
+										${message("csh.carServiceRecord.deductMoney")}
 									</th>
 												
 									<th>

@@ -74,7 +74,7 @@
 													<a href="javascript:;" name="deviceStatus" val="STORAGEOUT" [#if deviceStatus == "STORAGEOUT"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.STORAGEOUT")}</a>
 												</li>
 												<li>
-													<a href="javascript:;" name="deviceStatus" val="BINDED" [#if deviceStatus == "BINDED"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.BINDED")}</a>
+													<a href="javascript:;" name="deviceStatus" val="SALEOUT" [#if deviceStatus == "SALEOUT"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.SALEOUT")}</a>
 												</li>
 												<li>
 													<a href="javascript:;" name="deviceStatus" val="REFUNDED" [#if deviceStatus == "REFUNDED"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.REFUNDED")}</a>

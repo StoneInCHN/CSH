@@ -1,5 +1,8 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,8 @@ import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.VehicleBrand;
 import com.csh.entity.VehicleLine;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.ordering.Ordering;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.FileService;
 import com.csh.service.VehicleBrandService;
@@ -37,7 +42,11 @@ public class VehicleLineController extends BaseController{
   @RequestMapping(value = "/add", method = RequestMethod.GET)
   public String add(ModelMap model) {
     model.addAttribute("vehicleBrands", vehicleBrandService.findAll());
-    model.addAttribute("vehicleLines", vehicleLineService.findAll());
+    List<Filter> filters = new ArrayList<Filter>();
+    filters.add(Filter.isNull("parent"));
+    List<Ordering> orderings = new ArrayList<Ordering>();
+    orderings.add(Ordering.asc("code"));
+    model.addAttribute("vehicleLines", vehicleLineService.findList(null, filters, orderings));
     return "/vehicleLine/add";
   }
 
@@ -81,7 +90,11 @@ public class VehicleLineController extends BaseController{
   public String edit(Long id, ModelMap model) {
     model.addAttribute("vehicleLine", vehicleLineService.find(id));
     model.addAttribute("vehicleBrands", vehicleBrandService.findAll());
-    model.addAttribute("vehicleLines", vehicleLineService.findAll());
+    List<Filter> filters = new ArrayList<Filter>();
+    filters.add(Filter.isNull("parent"));
+    List<Ordering> orderings = new ArrayList<Ordering>();
+    orderings.add(Ordering.asc("code"));
+    model.addAttribute("vehicleLines", vehicleLineService.findList(null, filters, orderings));
     return "/vehicleLine/edit";
   }
 
