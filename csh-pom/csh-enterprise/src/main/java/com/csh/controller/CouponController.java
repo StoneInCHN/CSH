@@ -19,9 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
@@ -29,16 +27,14 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.CarService;
 import com.csh.entity.Coupon;
-import com.csh.entity.ServiceCategory;
+import com.csh.entity.MessageInfo;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.entity.commonenum.CommonEnum.CouponType;
-import com.csh.entity.commonenum.CommonEnum.ImageType;
-import com.csh.entity.commonenum.CommonEnum.TreeNodeState;
+import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
-import com.csh.json.response.TreeNodeCarServiceResponse;
 import com.csh.service.CarServiceService;
 import com.csh.service.CouponService;
 import com.csh.service.FileService;
@@ -149,9 +145,9 @@ public class CouponController extends BaseController
     }
     if (typeTermQuery != null || rangeQuery != null || sendTypeTermQuery != null || overDueTypeQuery != null)
     {
-      return couponService.search (query, pageable, analyzer, filter);
+      return couponService.search (query, pageable, analyzer, filter,true);
     }else{
-      return couponService.findPage (pageable);
+      return couponService.findPage (pageable,true);
     }
 
   }
@@ -188,7 +184,11 @@ public class CouponController extends BaseController
      carServiceSet.add (carService);
     }
     coupon.setCarServices (carServiceSet);
-    couponService.save (coupon);
+    coupon.setRemainNum (coupon.getCounts ());
+    coupon.setTenantName (tenantAccountService.getCurrentTenantInfo ().getTenantName ());
+    coupon.setSystemType (SystemType.ENTERPRISE);
+    couponService.saveCoupon (coupon);
+
     return SUCCESS_MESSAGE;
   }
 
@@ -202,8 +202,9 @@ public class CouponController extends BaseController
      carServiceSet.add (carService);
     }
     coupon.setCarServices (carServiceSet);
-    
-    couponService.update (coupon, "createDate", "tenantID");
+    coupon.setSystemType (SystemType.ENTERPRISE);
+    coupon.setRemainNum (coupon.getCounts ());
+    couponService.update (coupon, "createDate", "tenantID","tenantName");
     return SUCCESS_MESSAGE;
   }
 
@@ -244,58 +245,40 @@ public class CouponController extends BaseController
     return "coupon/details";
   }
 
-  @RequestMapping (value = "/uploadPhoto", method = RequestMethod.POST)
-  public @ResponseBody Message uploadPhoto (
-      @RequestParam ("file") MultipartFile file, Long couponId)
-  {
-    //    String filePath = fileService.upload(FileType.PROFILE_PICTURE, file, identifier);
-    String filePath = fileService.saveImage (file, ImageType.CARSERVICEPICTURE);
-    if (filePath != null && couponId != null)
-    {
-      Coupon coupon = couponService.find (couponId);
-      couponService.update (coupon);
-      return Message.success (filePath);
-    }
-    else
-    {
-      return ERROR_MESSAGE;
-    }
-  }
-  
-  @RequestMapping (value = "/prepareTreeDataGrid", method = RequestMethod.POST)
-  public @ResponseBody List<TreeNodeCarServiceResponse> prepareTreeDataGrid ( Pageable pageable,
-       String serviceCategorySearch,String serviceNameSearch)
-  {
-    List<TreeNodeCarServiceResponse> treeNodeResponses = new ArrayList<TreeNodeCarServiceResponse>();
-    
-    List<ServiceCategory> categoryList = serviceCategoryService.findAll ();
-    
-    for (ServiceCategory serviceCategory : categoryList)
-    {
-      TreeNodeCarServiceResponse response = new TreeNodeCarServiceResponse ();
-     
-      response.setId (serviceCategory.getId ());
-      response.setName (serviceCategory.getCategoryName ());
-      response.setIconCls("icon-large-chart");
-      response.setState (TreeNodeState.closed);
-      Set<CarService> carServiceList = serviceCategory.getAutoServices ();
-      
-      List<TreeNodeCarServiceResponse> childList = new ArrayList<TreeNodeCarServiceResponse> ();
-      for (CarService carService : carServiceList)
-      {
-        TreeNodeCarServiceResponse child = new TreeNodeCarServiceResponse();
-        child.setIconCls("icon-large-chart");
-        child.setState (TreeNodeState.closed);
-        child.setId (carService.getId ());
-        child.setName (carService.getServiceName ());
-        child.setPrice (carService.getPrice ());
-        child.setPromotionPrice (carService.getPromotionPrice ());
-        childList.add (child);
-      }
-      response.setChildren (childList);
-      treeNodeResponses.add (response);
-    }
-    
-    return treeNodeResponses;
-  }
+//  @RequestMapping (value = "/prepareTreeDataGrid", method = RequestMethod.POST)
+//  public @ResponseBody List<TreeNodeCarServiceResponse> prepareTreeDataGrid ( Pageable pageable,
+//       String serviceCategorySearch,String serviceNameSearch)
+//  {
+//    List<TreeNodeCarServiceResponse> treeNodeResponses = new ArrayList<TreeNodeCarServiceResponse>();
+//    
+//    List<ServiceCategory> categoryList = serviceCategoryService.findAll ();
+//    
+//    for (ServiceCategory serviceCategory : categoryList)
+//    {
+//      TreeNodeCarServiceResponse response = new TreeNodeCarServiceResponse ();
+//     
+//      response.setId (serviceCategory.getId ());
+//      response.setName (serviceCategory.getCategoryName ());
+//      response.setIconCls("icon-large-chart");
+//      response.setState (TreeNodeState.closed);
+//      Set<CarService> carServiceList = serviceCategory.getAutoServices ();
+//      
+//      List<TreeNodeCarServiceResponse> childList = new ArrayList<TreeNodeCarServiceResponse> ();
+//      for (CarService carService : carServiceList)
+//      {
+//        TreeNodeCarServiceResponse child = new TreeNodeCarServiceResponse();
+//        child.setIconCls("icon-large-chart");
+//        child.setState (TreeNodeState.closed);
+//        child.setId (carService.getId ());
+//        child.setName (carService.getServiceName ());
+//        child.setPrice (carService.getPrice ());
+//        child.setPromotionPrice (carService.getPromotionPrice ());
+//        childList.add (child);
+//      }
+//      response.setChildren (childList);
+//      treeNodeResponses.add (response);
+//    }
+//    
+//    return treeNodeResponses;
+//  }
 }

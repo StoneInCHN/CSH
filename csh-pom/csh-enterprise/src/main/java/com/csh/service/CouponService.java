@@ -5,4 +5,6 @@ import com.csh.framework.service.BaseService;
 
 public interface CouponService extends BaseService<Coupon,Long>{
 
+  void saveCoupon (Coupon coupon);
+
 }

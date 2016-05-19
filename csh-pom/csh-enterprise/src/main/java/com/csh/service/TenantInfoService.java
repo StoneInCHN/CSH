@@ -1,8 +1,10 @@
 package com.csh.service;
 
+import java.util.List;
 import java.util.Set;
 
 import com.csh.entity.ConfigMeta;
+import com.csh.entity.EndUser;
 import com.csh.entity.TenantInfo;
 import com.csh.framework.service.BaseService;
 
@@ -28,6 +30,8 @@ public interface TenantInfoService extends BaseService<TenantInfo, Long> {
    * @return
    */
   Set<ConfigMeta> getCurrentTenantVersionPackage();
-
-
+  /**
+   * 查询租户的所有终端用户
+   */
+  List<EndUser> findEndUser();
 }

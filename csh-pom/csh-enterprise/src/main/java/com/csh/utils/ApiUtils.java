@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.csh.beans.Setting;
+import com.csh.common.log.LogUtil;
 
 
 
@@ -113,6 +114,7 @@ public final class ApiUtils {
    * @return
    */
   public static String post(String url, String p_charset, String r_charset, byte[] data) {
+    LogUtil.debug (ApiUtils.class, "post", "url:%s", url);
     String target = "";
     try {
       URL add = new URL(url);
@@ -149,6 +151,7 @@ public final class ApiUtils {
    * @return
    */
   public static String postJson(String url, String p_charset, String r_charset, String params) {
+    LogUtil.debug (ApiUtils.class, "post", "url:%s", url);
     String target = "";
     try {
       URL add = new URL(url);

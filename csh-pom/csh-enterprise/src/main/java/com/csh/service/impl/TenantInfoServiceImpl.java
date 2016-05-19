@@ -1,5 +1,7 @@
 package com.csh.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
@@ -9,10 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.csh.dao.TenantInfoDao;
 import com.csh.entity.ConfigMeta;
+import com.csh.entity.EndUser;
 import com.csh.entity.TenantInfo;
+import com.csh.entity.Vehicle;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantInfoService;
+import com.csh.service.VehicleService;
 
 /**
  * 租户信息
@@ -35,7 +40,9 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
 
   @Resource(name = "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
-
+  @Resource(name = "vehicleServiceImpl")
+  private VehicleService vehicleService;
+  
   @Resource(name = "threadPoolExecutor")
   private Executor threadPoolExecutor;
 
@@ -61,5 +68,24 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
       return tenantInfo.getVersionConfig().getConfigMeta();
     }
     return null;
+  }
+
+  /**
+   * 查询租户下的所有终端用户
+   */
+  @Override
+  public List<EndUser> findEndUser ()
+  {
+    List<EndUser> endUserList = new ArrayList<EndUser>();
+    List<Vehicle> vehicleList =vehicleService.findList (null, null, null, true, null);
+    for (Vehicle vehicle : vehicleList)
+    {
+      EndUser user = vehicle.getEndUser ();
+      if (endUserList.contains (user))
+      {
+        endUserList.add (user);
+      }
+    }
+    return endUserList;
   }
 }
