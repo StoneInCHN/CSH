@@ -109,6 +109,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       discountPrice =
           discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
       carServiceRecord.setDiscountPrice(discountPrice);
+      carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
       couponEndUser.setIsUsed(true);
       couponEndUserDao.merge(couponEndUser);
     } else {
@@ -271,6 +272,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       discountPrice =
           discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
       carServiceRecord.setDiscountPrice(discountPrice);
+      carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
       couponEndUser.setIsUsed(true);
       couponEndUserDao.merge(couponEndUser);
     } else {

@@ -61,7 +61,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
 
     Boolean flag =
         couponService.takeCouponBySendType(deviceInfo.getTenantID(), vehicle.getEndUser(),
-            CouponSendType.BIND);
+            CouponSendType.DEVICEBIND);
     vehicle.setIsGetCoupon(flag);
     return vehicle;
   }

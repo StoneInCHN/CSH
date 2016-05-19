@@ -23,6 +23,7 @@ import org.hibernate.search.annotations.Store;
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.lucene.DateBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -149,6 +150,19 @@ public class CarServiceRecord extends BaseEntity {
    */
   private BigDecimal discountPrice;
 
+  /**
+   * 红包来源
+   */
+  private SystemType couponSource;
+
+
+  public SystemType getCouponSource() {
+    return couponSource;
+  }
+
+  public void setCouponSource(SystemType couponSource) {
+    this.couponSource = couponSource;
+  }
 
   @OneToOne
   public CouponEndUser getCouponEndUser() {
