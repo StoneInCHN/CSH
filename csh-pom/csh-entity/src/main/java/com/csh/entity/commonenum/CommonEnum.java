@@ -600,8 +600,10 @@ public class CommonEnum {
   public enum CouponSendType {
     /** 平台注册优惠劵 (用户注册平台即发送) */
     REG,
-    /** 租户绑定优惠劵 (用户绑定设备即发送) */
-    BIND,
+    /** 租户绑定优惠劵 (用户添加车辆即发送) */
+    TENANTBIND,
+    /** 设备绑定优惠劵 (用户绑定设备即发送) */
+    DEVICEBIND,
     /** 普通优惠劵 (主动发送给用户，需要点击领取) */
     NORMAL
 

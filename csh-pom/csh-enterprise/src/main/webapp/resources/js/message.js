@@ -278,7 +278,21 @@ var messages = {
 	"csh.advertisement.advName":"广告名",
 	"csh.advertisement.status":"状态",
 	"csh.advertisement.add":"添加广告",
-	"csh.advertisement.list":"广告列表"
+	"csh.advertisement.list":"广告列表",
+	//优惠券
+	"csh.coupon.amount":"金额",
+	"csh.coupon.type":"类型",
+	"csh.coupon.overDueType":"过期方式",
+	"csh.coupon.overDueDay":"过期天数",
+	"csh.coupon.overDueTime":"过期日期",
+	"csh.coupon.list":"优惠券列表",
+	"csh.coupon.add":"添加优惠券",
+	"csh.coupon.overDueType.BYDAY":"按天数",
+	"csh.coupon.overDueType.BYDATE":"按日期",
+	"csh.coupon.type.COMMON":"通用类型",
+	"csh.coupon.type.SPECIFY":"指定类型",
+	"csh.carService.name":"服务名称",
+	"csh.common.select.carService":"请选择服务"
 	
 	
 	

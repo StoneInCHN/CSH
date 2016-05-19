@@ -35,6 +35,8 @@ import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.ordering.Ordering;
+import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.CarServiceService;
@@ -172,14 +174,17 @@ public class CarServiceController extends BaseController
     else
     {
       List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter>();
-      
+      List<Ordering> orderings = new ArrayList<Ordering>();
       com.csh.framework.filter.Filter tenantInfoFilter = new com.csh.framework.filter.Filter();
       tenantInfoFilter.setOperator (Operator.eq);
       tenantInfoFilter.setValue (tenantInfo);
       tenantInfoFilter.setProperty ("tenantInfo");
       filters.add (tenantInfoFilter);
       
+      Ordering createDate = new Ordering ("createDate", Direction.desc);
+      orderings.add (createDate);
       pageable.setFilters (filters);
+      pageable.setOrders (orderings);
       return carServiceService.findPage (pageable);
     }
 

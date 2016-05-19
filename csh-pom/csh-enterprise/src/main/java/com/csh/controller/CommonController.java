@@ -200,8 +200,11 @@ public String main(ModelMap model,  HttpSession session) {
     modelMap.addAttribute ("tenantInfo",tenantInfo);
     modelMap.addAttribute ("areaName",tenantInfo.getArea ().getFullName ());
     String businessTime = tenantInfo.getBusinessTime ();
-    modelMap.addAttribute ("businessTimeStart",businessTime.split ("-")[0]);
-    modelMap.addAttribute ("businessTimeEnd",businessTime.split ("-")[1]);
+    if (businessTime != null && businessTime.split ("-").length > 1)
+    {
+      modelMap.addAttribute ("businessTimeStart",businessTime.split ("-")[0]);
+      modelMap.addAttribute ("businessTimeEnd",businessTime.split ("-")[1]);
+    }
     return "common/tenantInfoConfig";
   }
   @RequestMapping(value ="/savePassword",method = RequestMethod.POST)

@@ -109,6 +109,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       discountPrice =
           discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
       carServiceRecord.setDiscountPrice(discountPrice);
+      carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
       couponEndUser.setIsUsed(true);
       couponEndUserDao.merge(couponEndUser);
     } else {
@@ -209,7 +210,8 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord) {
     Setting setting = SettingUtils.get();
     // 消费兑换积分.规则 1元=1积分(余额消费不送积分，因为余额充值时已经送了积分)
-    if (!PaymentType.WALLET.equals(carServiceRecord.getPaymentType())) {
+    if (carServiceRecord.getPaymentType() != null
+        && !PaymentType.WALLET.equals(carServiceRecord.getPaymentType())) {
       Wallet wallet = carServiceRecord.getEndUser().getWallet();
       WalletRecord walletRecord = new WalletRecord();
       walletRecord.setWallet(wallet);
@@ -270,6 +272,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       discountPrice =
           discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
       carServiceRecord.setDiscountPrice(discountPrice);
+      carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
       couponEndUser.setIsUsed(true);
       couponEndUserDao.merge(couponEndUser);
     } else {

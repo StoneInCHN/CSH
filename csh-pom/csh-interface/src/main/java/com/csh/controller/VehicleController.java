@@ -149,7 +149,7 @@ public class VehicleController extends MobileBaseController {
     Vehicle vehicle = new Vehicle();
     VehicleBrandDetail brandDetail = vehicleBrandDetailService.find(vehicleReq.getBrandDetailId());
     vehicle.setVehicleBrandDetail(brandDetail);
-    vehicle.setBrandIcon(brandDetail.getVehicleLine().getParent().getIcon());
+    vehicle.setBrandIcon(brandDetail.getVehicleLine().getIcon());
     vehicle.setPlate(vehicleReq.getPlateNo());
     vehicle.setVehicleNo(vehicleReq.getVehicleNo());
     vehicle.setTrafficInsuranceExpiration(vehicleReq.getTrafficInsuranceExpiration());
@@ -165,11 +165,13 @@ public class VehicleController extends MobileBaseController {
       vehicle.setIsDefault(false);
     }
     vehicle.setEndUser(endUser);
-    vehicleService.save(vehicle);
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
-      LogUtil.debug(VehicleController.class, "save", "Add vehicle for User with UserName: %s",
-          endUser.getUserName());
+      LogUtil.debug(VehicleController.class, "AddVehicle",
+          "Add vehicle for User with UserName: %s,VehiclePlate", endUser.getUserName(),
+          vehicleReq.getPlateNo());
     }
+    vehicleService.save(vehicle);
+
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -205,7 +207,7 @@ public class VehicleController extends MobileBaseController {
       VehicleBrandDetail brandDetail =
           vehicleBrandDetailService.find(vehicleReq.getBrandDetailId());
       vehicle.setVehicleBrandDetail(brandDetail);
-      vehicle.setBrandIcon(brandDetail.getVehicleLine().getParent().getIcon());
+      vehicle.setBrandIcon(brandDetail.getVehicleLine().getIcon());
     }
     vehicle.setPlate(vehicleReq.getPlateNo());
     vehicle.setVehicleNo(vehicleReq.getVehicleNo());
@@ -215,10 +217,12 @@ public class VehicleController extends MobileBaseController {
     vehicle.setDriveMileage(vehicleReq.getDriveMileage());
     vehicle.setLastMaintainMileage(vehicleReq.getLastMaintainMileage());
 
-    vehicleService.update(vehicle);
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
-      LogUtil.debug(VehicleController.class, "Update", "Update vehicle Info. UserId: %s", userId);
+      LogUtil.debug(VehicleController.class, "editVehicle",
+          "Update vehicle Info. UserId: %s,VehicleId: %s", userId, vehicleReq.getVehicleId());
     }
+    vehicleService.update(vehicle);
+
 
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);

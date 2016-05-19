@@ -88,3 +88,10 @@ $.extend($.fn.validatebox.defaults.rules, {
         message: '密码不一致'   
     }    
 });
+$.extend($.fn.validatebox.defaults.rules, {    
+    dateTimeThan: {    
+        validator: function(value,param){    
+            return value > $(param[0]).val()
+        },    
+    }    
+});

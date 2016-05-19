@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,15 +13,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.Message;
+import com.csh.beans.Setting;
 import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Advertisement;
+import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdvertisementService;
 import com.csh.service.FileService;
+import com.csh.utils.SettingUtils;
 
 @RequestMapping("console/advertisement")
 @Controller("advertisementController")
@@ -31,6 +35,7 @@ public class AdvertisementController extends BaseController{
   
   @Resource(name = "fileServiceImpl")
   private FileService fileService;
+  
   
   /**
    * 添加
@@ -49,7 +54,11 @@ public class AdvertisementController extends BaseController{
       return ERROR_VIEW;
     }
     String advImageUrl = "";
-    if (advertisement.getAdvImage() != null) {
+    if (advertisement.getAdvImage() != null && fileService.isValid(FileType.image, advertisement.getAdvImage())) {
+    	Setting setting = SettingUtils.get();
+    	if (advertisement.getAdvImage().getSize() > setting.getImageMaxSize()) {
+    		  return ERROR_VIEW;
+		}
       advImageUrl = fileService.saveImage(advertisement.getAdvImage(), ImageType.ADVERTISEMENT);
     }
     advertisement.setAdvImageUrl(advImageUrl);

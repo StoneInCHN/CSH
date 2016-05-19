@@ -41,5 +41,8 @@
 	<setting name="ucpaasCallDisplay" value="4007930888" />
 	<!-- 商家登陆地址(多租户系统地址) -->
 	<setting name="tenantLoginUrl" value="http://carlife.chcws.com/login.jsp" />	
+	
+	<setting name="imageMaxSize" value="4109996" />
+	
 </csh>	
 	

@@ -16,12 +16,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.entity.commonenum.CommonEnum.CouponType;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 优惠劵
@@ -31,6 +35,7 @@ import com.csh.entity.commonenum.CommonEnum.SystemType;
  */
 @Entity
 @Table(name = "csh_coupon")
+@Indexed(index = "coupon")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_coupon_sequence")
 public class Coupon extends BaseEntity {
 
@@ -115,6 +120,7 @@ public class Coupon extends BaseEntity {
   
   private SystemType systemType;
 
+  @JsonProperty
   public Integer getRemainNum() {
     return remainNum;
   }
@@ -123,6 +129,7 @@ public class Coupon extends BaseEntity {
     this.remainNum = remainNum;
   }
 
+  @JsonProperty
   public Integer getCounts() {
     return counts;
   }
@@ -132,6 +139,7 @@ public class Coupon extends BaseEntity {
   }
 
   @Temporal(TemporalType.DATE)
+  @JsonProperty
   public Date getDeadlineTime() {
     return deadlineTime;
   }
@@ -141,6 +149,7 @@ public class Coupon extends BaseEntity {
   }
 
   @Column(scale = 2, precision = 10, nullable = false)
+  @JsonProperty
   public BigDecimal getAmount() {
     return amount;
   }
@@ -149,6 +158,7 @@ public class Coupon extends BaseEntity {
     this.amount = amount;
   }
 
+  @JsonProperty
   public Boolean getIsEnabled() {
     return isEnabled;
   }
@@ -157,6 +167,7 @@ public class Coupon extends BaseEntity {
     this.isEnabled = isEnabled;
   }
 
+  @JsonProperty
   public Integer getOverDueDay() {
     return overDueDay;
   }
@@ -166,6 +177,7 @@ public class Coupon extends BaseEntity {
   }
 
   @Temporal(TemporalType.DATE)
+  @JsonProperty
   public Date getOverDueTime() {
     return overDueTime;
   }
@@ -175,6 +187,7 @@ public class Coupon extends BaseEntity {
   }
 
   @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
+  @JsonProperty
   public Set<CouponEndUser> getCouponEndUsers() {
     return couponEndUsers;
   }
@@ -184,6 +197,7 @@ public class Coupon extends BaseEntity {
   }
 
   @ManyToMany
+  @JsonProperty
   public Set<CarService> getCarServices() {
     return carServices;
   }
@@ -211,6 +225,8 @@ public class Coupon extends BaseEntity {
     this.remark = remark;
   }
 
+  @JsonProperty
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
   public CouponType getType() {
     return type;
   }
@@ -219,6 +235,8 @@ public class Coupon extends BaseEntity {
     this.type = type;
   }
 
+  @JsonProperty
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
   public CouponOverDueType getOverDueType() {
     return overDueType;
   }
@@ -227,6 +245,8 @@ public class Coupon extends BaseEntity {
     this.overDueType = overDueType;
   }
 
+  @JsonProperty
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
   public CouponSendType getSendType() {
     return sendType;
   }
@@ -250,5 +270,5 @@ public class Coupon extends BaseEntity {
   public void setSystemType(SystemType systemType) {
     this.systemType = systemType;
   }
-  
+
 }

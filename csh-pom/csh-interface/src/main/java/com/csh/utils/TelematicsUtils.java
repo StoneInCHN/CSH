@@ -26,6 +26,11 @@ public class TelematicsUtils {
         return null;
       }
       List<Map<String, Object>> listMap = (List<Map<String, Object>>) resMap.get("pointList");
+      for (Map<String, Object> map : listMap) {
+    	  Map<String, Object> locationMap = (Map<String, Object>)map.get("location");
+    	  locationMap = LatLonUtil.convertCoordinate(locationMap.get("lng").toString(), locationMap.get("lat").toString());
+    	  map.put("location", locationMap);
+	  }
       return listMap;
     } catch (Exception e) {
       e.printStackTrace();

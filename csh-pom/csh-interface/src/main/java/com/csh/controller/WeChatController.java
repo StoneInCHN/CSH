@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.dom4j.Element;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
@@ -56,7 +58,7 @@ public class WeChatController extends MobileBaseController {
    * @throws IOException
    */
   @RequestMapping(value = "/pay_notify", method = RequestMethod.POST)
-  public String pay_notify(HttpServletRequest request) throws Exception {
+  public @ResponseBody String pay_notify(HttpServletRequest request) throws Exception {
     // 获取支付通知xml数据
     ServletInputStream inputStream = request.getInputStream();
     InputStreamReader reader = new InputStreamReader(inputStream, "UTF-8");
@@ -80,6 +82,10 @@ public class WeChatController extends MobileBaseController {
       Element temp = (Element) it.next();
       xmlMap.put(temp.getName(), temp.getStringValue());
     }
+    if (LogUtil.isDebugEnabled(WeChatController.class)) {
+      LogUtil.debug(WeChatController.class, "pay_notify",
+          "wechat pay notify callback method. response: %s", xmlMap);
+    }
     String xmlReturn = "";
     if ("SUCCESS".equals(xmlMap.get("return_code"))) {
       // 验证签名
@@ -101,32 +107,37 @@ public class WeChatController extends MobileBaseController {
           String payment = "wx";
 
           List<Filter> filters = new ArrayList<Filter>();
-          Filter filter = new Filter("recordNo", Operator.eq, out_trade_no);
+          String recordNo = out_trade_no.split("_")[0];
+          Filter filter = new Filter("recordNo", Operator.eq, recordNo);
           filters.add(filter);
           List<CarServiceRecord> records = carServiceRecordService.findList(null, filters, null);
           if (records != null && records.size() == 1) {
             CarServiceRecord carServiceRecord = records.get(0);
             carServiceRecord.setChargeStatus(ChargeStatus.PAID);
-            carServiceRecordService.update(carServiceRecord);
+            carServiceRecord.setPaymentDate(new Date());
             if (LogUtil.isDebugEnabled(CarServiceController.class)) {
               LogUtil
                   .debug(
                       CarServiceController.class,
-                      "Update",
-                      "Update Car Service pay status. recordNo: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+                      "pay_notify",
+                      "call back method for update Car Service pay status. recordNo: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
                       carServiceRecord.getRecordNo(), carServiceRecord.getTenantName(),
                       carServiceRecord.getCarService().getServiceName(),
                       carServiceRecord.getPrice(), carServiceRecord.getPaymentType(),
                       carServiceRecord.getChargeStatus());
             }
-
+            carServiceRecordService.updatePayStatus(carServiceRecord);
           }
         } else {
-          // 交易失败情况记录
+          if (LogUtil.isDebugEnabled(CarServiceController.class)) {
+            LogUtil.debug(CarServiceController.class, "pay_notify",
+                "WeChat pay fail. recordNo: %s", xmlMap.get("out_trade_no").toString());
+          }
         }
       }
       // 返回处理结果xml
-      xmlReturn = "<xml><return_code>SUCCESS</return_code><return_msg>OK</return_msg></xml>";
+      xmlReturn =
+          "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
     } else {
       // 返回处理结果xml
       xmlReturn = "<xml><return_code>FAIL</return_code><return_msg>签名错误</return_msg></xml>";
