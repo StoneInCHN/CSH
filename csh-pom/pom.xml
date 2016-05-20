@@ -414,7 +414,7 @@
 	<modules> 
 		<module>csh-entity</module>
 		 <module>csh-interface</module>
-		<module>csh-operation</module>
-		<module>csh-enterprise</module>
+		<!-- <module>csh-operation</module>
+		<module>csh-enterprise</module> -->
   </modules>
 </project>
