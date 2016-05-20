@@ -22,6 +22,7 @@ import com.csh.entity.commonenum.CommonEnum.MessageType;
 import com.csh.entity.commonenum.CommonEnum.SendType;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CouponService;
+import com.csh.service.MessageInfoService;
 import com.csh.service.TenantInfoService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.SettingUtils;
@@ -31,6 +32,8 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon,Long> implements C
 
       @Resource(name ="tenantInfoServiceImpl")
       private TenantInfoService tenantInfoService;
+      @Resource(name ="messageInfoServiceImpl")
+      private MessageInfoService messageInfoService;
       @Resource(name="couponDaoImpl")
       public void setBaseDao(CouponDao couponDao) {
          super.setBaseDao(couponDao);
@@ -53,12 +56,13 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon,Long> implements C
         }
          this.save (coupon,true);
          MessageInfo msgInfo = new MessageInfo ();
+         msgInfo.setMessageTitle ("优惠券");
          msgInfo.setMessageType (MessageType.PROMOTION);
          msgInfo.setMessageContent ("优惠券发送，赶快前往活动中心领取");
          msgInfo.setSendType (SendType.PUSH);
          msgInfo.setTenantID (tenantID);
          msgInfo.setMsgUser (msgEndUserList);
-         
+         messageInfoService.save (msgInfo);
          Map<String, Object> params = new HashMap<String, Object>();
          params.put ("msgId", msgInfo.getId ());
          Setting setting = SettingUtils.get();

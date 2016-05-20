@@ -156,6 +156,7 @@ public class CarServiceRecord extends BaseEntity {
   private SystemType couponSource;
 
 
+  @JsonProperty
   public SystemType getCouponSource() {
     return couponSource;
   }
@@ -174,6 +175,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @Column(scale = 2, precision = 10)
+  @JsonProperty
   public BigDecimal getDiscountPrice() {
     return discountPrice;
   }

@@ -995,3 +995,6 @@ var math ={
 }
 		
 }
+Number.prototype.toPercent = function(){
+	return (Math.round(this * 10000)/100).toFixed(2) + '%';
+}

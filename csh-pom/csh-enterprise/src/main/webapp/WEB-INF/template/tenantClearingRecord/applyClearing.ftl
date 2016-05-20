@@ -4,11 +4,11 @@
    	<tr>
    		<th>结算金额：</th>
 		<td>
-			 <input type="text" class="easyui-textbox"  name="amountOfCurrentPeriod" id= "amountOfCurrentPeriod"   data-options="required:true"/>
+			 <input type="text" class="easyui-textbox"  name="amountOfCurrentPeriod" id= "amountOfCurrentPeriod"  validType="min[0]"  data-options="required:true"/>
 		</td>
 		<th>实得金额：</th>
 		<td>
-			 <input type="text" class="easyui-textbox" readOnly="true" name="amountRealIncome" id= "amountRealIncome"   data-options="required:true"/>
+			 <input type="text" class="easyui-textbox" readOnly="true" name="amountRealIncome" id= "amountRealIncome"  validType="min[0]"  data-options="required:true"/>
 		</td>
 		<th>平台提成比例：</th>
 		<td>

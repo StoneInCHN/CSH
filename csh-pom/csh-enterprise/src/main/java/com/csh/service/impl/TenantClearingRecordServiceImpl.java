@@ -25,6 +25,7 @@ import com.csh.entity.Sn.Type;
 import com.csh.entity.TenantClearingRecord;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.ClearingStatus;
+import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CommissionRateService;
 import com.csh.service.SnService;
@@ -111,8 +112,12 @@ TenantClearingRecordService {
       
       CarServiceRecord record = carServiceRecordDao.find (id);
       
-      totalMoney = totalMoney.add (record.getPrice ());
-      
+      if (record .getCouponSource () == SystemType.OPERATION)
+      {
+        totalMoney = totalMoney.add (record.getPrice ());
+      }else if(record .getCouponSource () == SystemType.ENTERPRISE){
+        totalMoney = totalMoney.add (record.getDiscountPrice ());
+      }
       carServiceRecordList.add (record);
     }
     //格式化数据

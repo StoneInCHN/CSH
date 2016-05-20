@@ -106,11 +106,27 @@ var tenantClearingRecord_manager_tool = {
 						    	  }},
 					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"price",sortable:true,
 					    		  formatter: function(value,row,index){
-					    			  if(value != null){
+					    			  if(value != null && row.couponSource == 'OPERATION'){
 					    				  totalMoney = totalMoney+value;	
 					    			  }
 						    		  return value;
-						    	  }},
+						      }},
+						      {title:message("csh.carServiceRecord.discountPrice"),width:50,field:"discountPrice",sortable:true,
+					    		  formatter: function(value,row,index){
+					    			  if(value != null && row.couponSource == 'ENTERPRISE'){
+					    				  totalMoney = totalMoney+value;	
+					    			  }
+						    		  return value;
+						      }},
+						      {title:message("csh.carServiceRecord.systemType"),width:50,field:"couponSource",sortable:true,
+					    		  formatter: function(value,row,index){
+					    			  if(value != null && value =='OPERATION'){
+					    				  return "平台优惠券"
+					    			  }else if(value != null && value =='ENTERPRISE'){
+					    				  return "店铺优惠券"
+					    			  }
+						    		  return value;
+						      }},
 						      {title:message("csh.carServiceRecord.paymentDate"),field:"paymentDate",width:100,sortable:true,formatter: function(value,row,index){
 						    	  if(value != null){
 										return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
@@ -125,6 +141,7 @@ var tenantClearingRecord_manager_tool = {
 							$("#amountOfCurrentPeriod").textbox('setValue',totalMoney);
 							var rate = $('#platformRate').val();
 							$("#amountRealIncome").textbox('setValue',math.mul(totalMoney,parseFloat(1-rate)));
+							$("#platformRate").textbox('setText',Number(rate).toPercent());
 						}
 					});
 					

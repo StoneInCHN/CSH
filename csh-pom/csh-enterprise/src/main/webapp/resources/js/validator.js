@@ -65,6 +65,14 @@ $.extend($.fn.validatebox.defaults.rules, {
     }    
 });
 $.extend($.fn.validatebox.defaults.rules, {    
+    min: {    
+        validator: function(value, param){
+            return value > param[0];    
+        },    
+        message: '最小值大于{0}'   
+    }    
+});
+$.extend($.fn.validatebox.defaults.rules, {    
     moreThan: {    
         validator: function(value, param){
         	return parseInt(value) >= parseInt($('#'+param[0]).val());

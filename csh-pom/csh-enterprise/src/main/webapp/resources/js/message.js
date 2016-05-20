@@ -250,10 +250,12 @@ var messages = {
 	"csh.carServiceRecord.recordNo":"记录编号",
 	"csh.carServiceRecord.clearingDate":"结算时间",
 	"csh.carServiceRecord.unClearinged":"未结算",
+	"csh.carServiceRecord.discountPrice":"优惠券抵用价",
 	"csh.tenantDeductClearingRecord.list":"提成结算列表",
 	"csh.tenantDeductClearingRecord.add":"提成结算单生成",
 	"csh.tenantClearingRecord.amountOfCurrentPeriod":"结算金额",
 	"csh.carServiceTenantDeduct.tenantName":"商家名称",
+	"csh.carServiceRecord.systemType":"优惠类型",
 	//结算记录
 	"csh.tenantClearingRecord.add":"添加结算单",
 	"csh.tenantClearingRecord.clearingSn":"结算单号",
