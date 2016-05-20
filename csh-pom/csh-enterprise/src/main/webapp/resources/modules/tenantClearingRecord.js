@@ -106,7 +106,8 @@ var tenantClearingRecord_manager_tool = {
 						    	  }},
 					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"price",sortable:true,
 					    		  formatter: function(value,row,index){
-					    			  if(value != null && row.couponSource == 'OPERATION'){
+					    			  if(value != null && (row.couponSource == null 
+					    					  || row.couponSource == 'OPERATION')){
 					    				  totalMoney = totalMoney+value;	
 					    			  }
 						    		  return value;

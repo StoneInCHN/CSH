@@ -112,11 +112,13 @@ TenantClearingRecordService {
       
       CarServiceRecord record = carServiceRecordDao.find (id);
       
-      if (record .getCouponSource () == SystemType.OPERATION)
+      if (record .getCouponSource ()!= null &&record .getCouponSource () == SystemType.OPERATION)
       {
         totalMoney = totalMoney.add (record.getPrice ());
-      }else if(record .getCouponSource () == SystemType.ENTERPRISE){
+      }else if(record .getCouponSource ()!= null && record .getCouponSource () == SystemType.ENTERPRISE){
         totalMoney = totalMoney.add (record.getDiscountPrice ());
+      }else {
+        totalMoney = totalMoney.add (record.getPrice ());
       }
       carServiceRecordList.add (record);
     }
