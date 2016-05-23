@@ -168,7 +168,15 @@ public class VehicleBrandDetailController extends BaseController
     {
       // 检查是否能被删除
       // if()
-      vehicleBrandDetailService.delete (ids);
+      try
+      {
+        vehicleBrandDetailService.delete (ids);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace ();
+        return Message.error ("csh.delete.fail");
+      }
     }
     return SUCCESS_MESSAGE;
   }

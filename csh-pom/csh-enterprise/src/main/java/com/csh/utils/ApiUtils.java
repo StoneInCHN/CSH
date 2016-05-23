@@ -171,7 +171,7 @@ public final class ApiUtils {
       connection.getOutputStream().close();// 关闭请求流
       // 获取响应字节流
       InputStream stream = connection.getInputStream();
-      // 将流转换成reder
+      // 将流转换成reader
       BufferedReader reader = new BufferedReader(new InputStreamReader(stream, r_charset));
       String temp = null;
       while ((temp = reader.readLine()) != null) {

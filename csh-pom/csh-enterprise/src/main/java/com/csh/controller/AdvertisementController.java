@@ -169,9 +169,15 @@ public class AdvertisementController extends BaseController
   {
     if (ids != null)
     {
-      // 检查是否能被删除
-      // if()
-      advertisementService.delete (ids);
+      try
+      {
+        advertisementService.delete (ids);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace ();
+        return Message.error ("csh.delete.fail");
+      }
     }
     return SUCCESS_MESSAGE;
   }

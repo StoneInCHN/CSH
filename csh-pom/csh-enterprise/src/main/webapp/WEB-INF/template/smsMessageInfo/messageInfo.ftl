@@ -51,7 +51,7 @@
 	<div class="tool-button">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="smsMessageInfo_manager_tool.add();">添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="smsMessageInfo_manager_tool.details();">查看详情</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="smsMessageInfo_manager_tool.remove();">删除</a>
+		<!--<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="smsMessageInfo_manager_tool.remove();">删除</a>-->
 	</div>
 	<div class="tool-filter"></div>
 </div>

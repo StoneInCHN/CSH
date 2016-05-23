@@ -275,7 +275,16 @@ public class RepareReservationController extends BaseController
     {
       // 检查是否能被删除
       // if()
-      repareReservationService.delete (ids);
+      
+      try
+      {
+        repareReservationService.delete (ids);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace ();
+        return Message.error ("csh.delete.fail");
+      }
     }
     return SUCCESS_MESSAGE;
   }

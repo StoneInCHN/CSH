@@ -57,6 +57,19 @@ function alertErrorMsg() {
 	$.messager.alert(message("csh.common.fail"),
 			message("csh.common.unknow.error"), 'error');
 }
+/**
+ * 公共提示信息 error
+ */
+function alertErrorMsg(content) {
+	if(content){
+		$.messager.alert(message("csh.common.fail"),
+				message(content), 'error');
+	}else{
+		$.messager.alert(message("csh.common.fail"),
+				message("csh.common.unknow.error"), 'error');
+	}
+	
+}
 
 // 添加Cookie
 function addCookie(name, value, options) {
@@ -264,7 +277,8 @@ function listRemove(id, url) {
 										showSuccessMsg(resultMsg);
 										$("#" + _id).datagrid('reload');
 									} else {
-										alertErrorMsg();
+										debugger;
+										alertErrorMsg(resultMsg);
 									}
 								}
 							});

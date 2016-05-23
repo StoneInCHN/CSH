@@ -174,7 +174,16 @@ public class RoleController extends BaseController {
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
   public @ResponseBody Message delete(Long[] ids) {
     if (ids != null) {
-      roleService.delete(ids);
+      
+      try
+      {
+        roleService.delete(ids);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace ();
+        return Message.error ("csh.delete.fail");
+      }
     }
     return SUCCESS_MESSAGE;
   }

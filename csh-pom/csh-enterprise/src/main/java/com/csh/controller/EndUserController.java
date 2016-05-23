@@ -109,7 +109,16 @@ public class EndUserController extends BaseController
     {
       // 检查是否能被删除
       // if()
-      endUserService.delete (ids);
+      try
+      {
+        endUserService.delete (ids);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace ();
+        return Message.error ("csh.delete.fail");
+      }
+      
     }
     return SUCCESS_MESSAGE;
   }

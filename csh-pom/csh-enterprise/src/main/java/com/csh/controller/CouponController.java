@@ -224,7 +224,16 @@ public class CouponController extends BaseController
     {
       // 检查是否能被删除
       // if()
-      couponService.delete (ids);
+      
+      try
+      {
+        couponService.delete (ids);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace ();
+        return Message.error ("csh.delete.fail");
+      }
     }
     return SUCCESS_MESSAGE;
   }

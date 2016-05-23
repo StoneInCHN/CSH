@@ -269,7 +269,15 @@ public class VehicleInsuranceController extends BaseController {
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
   public @ResponseBody Message delete(Long[] ids) {
     if (ids != null) {
-      vehicleInsuranceService.delete(ids);
+      try
+      {
+        vehicleInsuranceService.delete (ids);
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace ();
+        return Message.error ("csh.delete.fail");
+      }
     }
     return SUCCESS_MESSAGE;
   }
