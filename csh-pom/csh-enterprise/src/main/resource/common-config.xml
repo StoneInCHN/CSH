@@ -26,7 +26,7 @@
 		<setting name="notifyPictureUploadPath" value="/upload/image/${orgCode}/${identifier}/notify picture/" />
 		<setting name="qrImageUrl" value="" />
 		<!-- 消息推送接口 -->
-		<setting name="msgPushUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
+		<setting name="msgPushUrl" value="http://120.27.92.247:10001/csh-interface/message/pushMsg.jhtml" />
 		<!-- obd server接口 -->
 		<setting name="obdServiceUrl" value="http://139.129.5.114:10000/obd-data/tenantVehicleData/" />
 		<setting name="clearingRecordCycle" value="7" />

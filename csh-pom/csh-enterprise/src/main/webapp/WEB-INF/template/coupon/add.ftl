@@ -63,7 +63,7 @@
 	    	</td>
     		<th class="addCouponOverDueDayClass">${message("csh.coupon.overDueDay")}:</th>
     		<td class="addCouponOverDueDayClass">
-    			 <input  class="easyui-textbox"  style="width:110px;" id="addCouponOverDueDay" name="overDueDay"  data-options="required:true"/>
+    			 <input  class="easyui-numberbox"  style="width:110px;" id="addCouponOverDueDay" name="overDueDay"  data-options="required:true,min:0"/>
     		</td>
     		<th class="addCouponOverDueTimeClass">${message("csh.coupon.overDueTime")}:</th>
     		<td class="addCouponOverDueTimeClass">

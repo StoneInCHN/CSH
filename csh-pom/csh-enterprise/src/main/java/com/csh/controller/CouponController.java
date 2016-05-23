@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
+import com.csh.beans.Setting;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.CarService;
@@ -40,7 +41,9 @@ import com.csh.service.CouponService;
 import com.csh.service.FileService;
 import com.csh.service.ServiceCategoryService;
 import com.csh.service.TenantAccountService;
+import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.SettingUtils;
 
 /**
  * 服务配置
@@ -187,8 +190,11 @@ public class CouponController extends BaseController
     coupon.setRemainNum (coupon.getCounts ());
     coupon.setTenantName (tenantAccountService.getCurrentTenantInfo ().getTenantName ());
     coupon.setSystemType (SystemType.ENTERPRISE);
-    couponService.saveCoupon (coupon);
-
+    MessageInfo messageInfo = couponService.saveCoupon (coupon);
+    Setting setting = SettingUtils.get();
+    String params = "[{\"msgId\":"+messageInfo.getId ()+"}]";
+    ApiUtils.postJson (setting.getMsgPushUrl (),"UTF-8", "UTF-8", params);
+    
     return SUCCESS_MESSAGE;
   }
 

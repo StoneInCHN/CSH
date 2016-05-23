@@ -81,7 +81,7 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
     for (Vehicle vehicle : vehicleList)
     {
       EndUser user = vehicle.getEndUser ();
-      if (endUserList.contains (user))
+      if (!endUserList.contains (user))
       {
         endUserList.add (user);
       }

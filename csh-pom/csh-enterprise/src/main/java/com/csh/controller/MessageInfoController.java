@@ -174,10 +174,8 @@ public class MessageInfoController extends BaseController
     if (success && messageInfo.getSendType () == SendType.PUSH)
     {
       Setting setting = SettingUtils.get();
-      
-      Map<String, Object> params = new HashMap<String, Object>();
-      params.put ("msgId", messageInfo.getId ());
-      ApiUtils.post (setting.getMsgPushUrl ());
+      String params = "[{\"msgId\":"+messageInfo.getId ()+"}]";
+      ApiUtils.postJson (setting.getMsgPushUrl (),"UTF-8", "UTF-8", params);
     }else if(success && messageInfo.getSendType () == SendType.SMS){
       String content = messageInfo.getMessageContent ();
       for (MsgEndUser msgEndUser : messageInfo.getMsgUser ())

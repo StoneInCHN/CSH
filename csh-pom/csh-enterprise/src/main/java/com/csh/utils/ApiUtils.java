@@ -115,6 +115,7 @@ public final class ApiUtils {
    */
   public static String post(String url, String p_charset, String r_charset, byte[] data) {
     LogUtil.debug (ApiUtils.class, "post", "url:%s", url);
+    LogUtil.debug (ApiUtils.class, "post", "data:%s", data);
     String target = "";
     try {
       URL add = new URL(url);
@@ -152,6 +153,7 @@ public final class ApiUtils {
    */
   public static String postJson(String url, String p_charset, String r_charset, String params) {
     LogUtil.debug (ApiUtils.class, "post", "url:%s", url);
+    LogUtil.debug (ApiUtils.class, "post", "params:%s", params);
     String target = "";
     try {
       URL add = new URL(url);
