@@ -4,13 +4,12 @@
 	    <tr>
     		<th>${message("csh.coupon.amount")}:</th>
     		<td>
-    			 <input  class="easyui-numberbox" disabled="disabled" value="${coupon.amount}" name="amount"  data-options="required:true,min:0,precision:2"  style="width:110px;"/>
+    			 <input  class="easyui-numberbox" disabled="disabled" value="${coupon.amount}" name="amount"  data-options="required:true,min:0"  style="width:110px;"/>
     		</td>
     		<th>${message("csh.coupon.counts")}:</th>
     		<td>
     			 <input  class="easyui-numberbox" disabled="disabled" name="counts" value="${coupon.counts}" data-options="required:true"  style="width:110px;"/>
     		</td>
-    		
     	</tr>
     	<tr>
     		<th>${message("csh.coupon.type")}:</th>

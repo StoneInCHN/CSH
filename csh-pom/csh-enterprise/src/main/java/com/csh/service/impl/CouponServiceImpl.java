@@ -41,31 +41,80 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon,Long> implements C
       @Transactional(propagation = Propagation.REQUIRED)
       public MessageInfo saveCoupon (Coupon coupon)
       {
-         Long tenantID =tenantAccountService.getCurrentTenantID ();
-         List<EndUser> endUserList =  tenantInfoService.findEndUser ();
-         Set<MsgEndUser> msgEndUserList = new HashSet <MsgEndUser> ();
-         
-         MessageInfo msgInfo = new MessageInfo ();
-         msgInfo.setMessageTitle ("优惠券");
-         
-         msgInfo.setMessageType (MessageType.PROMOTION);
-         msgInfo.setMessageContent ("优惠券发送，赶快前往活动中心领取");
-         msgInfo.setSendType (SendType.PUSH);
-         msgInfo.setTenantID (tenantID);
-//         msgInfo.setMsgUser (msgEndUserList);
-         for (EndUser endUser : endUserList)
+        if (coupon.getIsEnabled ())
         {
-           MsgEndUser msgEndUser = new MsgEndUser ();
-           msgEndUser.setEndUser (endUser);
-           msgEndUser.setIsRead (false);
-           msgEndUser.setIsPush (false);
-           msgEndUser.setMessage (msgInfo);
-           msgEndUserService.save (msgEndUser);
-           msgEndUserList.add (msgEndUser);
+          Long tenantID =tenantAccountService.getCurrentTenantID ();
+          List<EndUser> endUserList =  tenantInfoService.findEndUser ();
+          Set<MsgEndUser> msgEndUserList = new HashSet <MsgEndUser> ();
+          
+          MessageInfo msgInfo = new MessageInfo ();
+          msgInfo.setMessageTitle ("优惠券");
+          
+          msgInfo.setMessageType (MessageType.PROMOTION);
+          msgInfo.setMessageContent ("优惠券发送，赶快前往活动中心领取");
+          msgInfo.setSendType (SendType.PUSH);
+          msgInfo.setTenantID (tenantID);
+//          msgInfo.setMsgUser (msgEndUserList);
+          for (EndUser endUser : endUserList)
+         {
+            MsgEndUser msgEndUser = new MsgEndUser ();
+            msgEndUser.setEndUser (endUser);
+            msgEndUser.setIsRead (false);
+            msgEndUser.setIsPush (false);
+            msgEndUser.setMessage (msgInfo);
+            msgEndUserService.save (msgEndUser);
+            msgEndUserList.add (msgEndUser);
+         }
+          coupon.setIsSendout (true);
+          this.save (coupon,true);
+          
+          messageInfoService.save (msgInfo);
+          return msgInfo;
+        }else {
+          coupon.setIsSendout (false);
+          this.save (coupon,true);
+          return null;
         }
-         this.save (coupon,true);
-        
-         messageInfoService.save (msgInfo);
-         return msgInfo;
+         
+         
+         
+      }
+
+      @Override
+      public MessageInfo updateCoupon (Coupon coupon)
+      {
+        if (coupon.getIsEnabled () && !coupon.getIsSendout ())
+        {
+          Long tenantID =tenantAccountService.getCurrentTenantID ();
+          List<EndUser> endUserList =  tenantInfoService.findEndUser ();
+          Set<MsgEndUser> msgEndUserList = new HashSet <MsgEndUser> ();
+          
+          MessageInfo msgInfo = new MessageInfo ();
+          msgInfo.setMessageTitle ("优惠券");
+          
+          msgInfo.setMessageType (MessageType.PROMOTION);
+          msgInfo.setMessageContent ("优惠券发送，赶快前往活动中心领取");
+          msgInfo.setSendType (SendType.PUSH);
+          msgInfo.setTenantID (tenantID);
+//          msgInfo.setMsgUser (msgEndUserList);
+          for (EndUser endUser : endUserList)
+         {
+            MsgEndUser msgEndUser = new MsgEndUser ();
+            msgEndUser.setEndUser (endUser);
+            msgEndUser.setIsRead (false);
+            msgEndUser.setIsPush (false);
+            msgEndUser.setMessage (msgInfo);
+            msgEndUserService.save (msgEndUser);
+            msgEndUserList.add (msgEndUser);
+         }
+          coupon.setIsSendout (true);
+          this.update (coupon, "createDate", "tenantID","tenantName");
+          
+          messageInfoService.save (msgInfo);
+          return msgInfo;
+        }else {
+          this.update (coupon, "createDate", "tenantID","tenantName");
+          return null;
+        }
       }
 }

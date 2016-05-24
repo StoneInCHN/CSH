@@ -294,7 +294,9 @@ var messages = {
 	"csh.coupon.type.COMMON":"通用类型",
 	"csh.coupon.type.SPECIFY":"指定类型",
 	"csh.carService.name":"服务名称",
-	"csh.common.select.carService":"请选择服务"
+	"csh.common.select.carService":"请选择服务",
+	"csh.coupon.counts":"优惠券总量",
+	"csh.coupon.remainNum":"优惠券余量"
 	
 	
 	

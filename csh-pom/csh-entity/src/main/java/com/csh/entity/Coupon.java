@@ -68,6 +68,10 @@ public class Coupon extends BaseEntity {
   private Boolean isEnabled;
 
   /**
+   * 是否已发送
+   */
+  private Boolean isSendout;
+  /**
    * 过期天数
    */
   private Integer overDueDay;
@@ -271,4 +275,14 @@ public class Coupon extends BaseEntity {
     this.systemType = systemType;
   }
 
+  public Boolean getIsSendout ()
+  {
+    return isSendout;
+  }
+
+  public void setIsSendout (Boolean isSendout)
+  {
+    this.isSendout = isSendout;
+  }
+  
 }

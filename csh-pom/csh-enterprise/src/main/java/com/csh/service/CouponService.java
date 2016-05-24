@@ -8,4 +8,6 @@ public interface CouponService extends BaseService<Coupon,Long>{
 
   MessageInfo saveCoupon (Coupon coupon);
 
+  MessageInfo updateCoupon (Coupon coupon);
+
 }

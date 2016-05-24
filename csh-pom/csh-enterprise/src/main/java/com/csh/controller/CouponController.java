@@ -191,9 +191,13 @@ public class CouponController extends BaseController
     coupon.setTenantName (tenantAccountService.getCurrentTenantInfo ().getTenantName ());
     coupon.setSystemType (SystemType.ENTERPRISE);
     MessageInfo messageInfo = couponService.saveCoupon (coupon);
-    Setting setting = SettingUtils.get();
-    String params = "[{\"msgId\":"+messageInfo.getId ()+"}]";
-    ApiUtils.postJson (setting.getMsgPushUrl (),"UTF-8", "UTF-8", params);
+    if (messageInfo != null && coupon.getIsEnabled () && !coupon.getIsSendout ())
+    {
+      Setting setting = SettingUtils.get();
+      String params = "[{\"msgId\":"+messageInfo.getId ()+"}]";
+      ApiUtils.postJson (setting.getMsgPushUrl (),"UTF-8", "UTF-8", params);
+    }
+    
     
     return SUCCESS_MESSAGE;
   }
@@ -210,7 +214,13 @@ public class CouponController extends BaseController
     coupon.setCarServices (carServiceSet);
     coupon.setSystemType (SystemType.ENTERPRISE);
     coupon.setRemainNum (coupon.getCounts ());
-    couponService.update (coupon, "createDate", "tenantID","tenantName");
+    MessageInfo messageInfo = couponService.updateCoupon (coupon);
+    if (messageInfo != null && coupon.getIsEnabled () && !coupon.getIsSendout ())
+    {
+      Setting setting = SettingUtils.get();
+      String params = "[{\"msgId\":"+messageInfo.getId ()+"}]";
+      ApiUtils.postJson (setting.getMsgPushUrl (),"UTF-8", "UTF-8", params);
+    }
     return SUCCESS_MESSAGE;
   }
 

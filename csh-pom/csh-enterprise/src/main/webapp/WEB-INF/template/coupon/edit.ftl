@@ -1,22 +1,24 @@
 <form id="editCoupon_form" method="post">   
 		<input type="hidden" name="id" value="${coupon.id}">
+		<input type="hidden" name="remainNum" value="${coupon.remainNum}">
+		<input type="hidden" name="isSendout" value="${coupon.isSendout}">
 		<input type="hidden" id="editCoupon_carServiceList" value="${carServiceIds}">  
 	  <table class="table table-striped"  border="0">
 	    <tr>
     		<th>${message("csh.coupon.amount")}:</th>
     		<td>
-    			 <input  class="easyui-numberbox" value="${coupon.amount}" name="amount"  data-options="required:true,min:0,precision:2"  style="width:110px;"/>
+    			 <input  class="easyui-numberbox" value="${coupon.amount}" name="amount" readonly="readonly" data-options="required:true,min:0"  style="width:110px;"/>
     		</td>
     		<th class="editCouponCountsClass">${message("csh.coupon.counts")}:</th>
     		<td class="editCouponCountsClass">
-    			 <input  class="easyui-numberbox" name="counts" id="editCouponCounts" value="${coupon.counts}" data-options="required:true"  style="width:110px;"/>
+    			 <input  class="easyui-numberbox" name="counts" id="editCouponCounts" readonly="readonly" value="${coupon.counts}" data-options="required:true"  style="width:110px;"/>
     		</td>
     		
     	</tr>
     	<tr>
     		<th>${message("csh.coupon.type")}:</th>
     		<td >
-    			 <input class="easyui-combobox" data-options="
+    			 <input class="easyui-combobox" readonly="readonly" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
@@ -36,7 +38,7 @@
     		</td>
     		<th >${message("csh.coupon.sendType")}:</th>
     		<td >
-    			 <input class="easyui-combobox" data-options="
+    			 <input class="easyui-combobox" readonly="readonly" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
@@ -64,7 +66,7 @@
     	 <tr class="editCouponOverDueClass">
 	    	 <th>${message("csh.coupon.overDueType")}:</th>
 	    		<td >
-	    			 <input class="easyui-combobox" id="couponOverDueType-edit" data-options="
+	    			 <input class="easyui-combobox" readonly="readonly" id="couponOverDueType-edit" data-options="
 					     valueField: 'label',
 					     textField: 'value',
 					     data: [{
