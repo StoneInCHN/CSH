@@ -20,10 +20,11 @@
 			<name>Team Nexus Repository</name>
 			<url>http://10.50.20.72:8081/nexus/content/groups/public/</url>
 		</pluginRepository>
-	</pluginRepositories>
+	</pluginRepositories> 
 
 	<properties>
 		<org.springframework.version>4.0.4.RELEASE</org.springframework.version>
+		<org.hibernate.version>4.3.11.Final</org.hibernate.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencyManagement>
@@ -179,18 +180,18 @@
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.0-api</artifactId>
-				<version>1.0.1.Final</version>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
+				<version>1.0.0.Final</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${org.hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-c3p0</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${org.hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -200,23 +201,23 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-ehcache</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${org.hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${org.hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-envers</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${org.hibernate.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-infinispan</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${org.hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -232,7 +233,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-proxool</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${org.hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -242,7 +243,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-testing</artifactId>
-				<version>3.6.10.Final</version>
+				<version>${org.hibernate.version}</version>
 			</dependency>
 
 			<!-- Cache -->
