@@ -1,5 +1,6 @@
 package com.csh.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.dao.AdvanceDepositsDao;
 import com.csh.dao.ReportDeviceBindStatisticsDao;
 import com.csh.dao.VehicleDao;
+import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
@@ -24,6 +27,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   @Resource(name = "vehicleDaoImpl")
   private VehicleDao vehicleDao;
 
+  @Resource(name = "advanceDepositsDaoImpl")
+  private AdvanceDepositsDao advanceDepositsDao;
+
   @Resource(name = "couponServiceImpl")
   private CouponService couponService;
 
@@ -37,7 +43,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public Vehicle bindDevice(Vehicle vehicle, DeviceInfo deviceInfo) {
+  public Vehicle bindDevice(Vehicle vehicle, DeviceInfo deviceInfo, BigDecimal bindPrice) {
 
     vehicle.setDeviceNo(deviceInfo.getDeviceNo());
     deviceInfo.setVehicle(vehicle);
@@ -46,6 +52,11 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     vehicle.setDevice(deviceInfo);
     vehicle.setTenantID(deviceInfo.getTenantID());
     vehicleDao.merge(vehicle);
+
+    AdvanceDeposits advanceDeposits = vehicle.getEndUser().getAdvanceDeposits();
+    BigDecimal amount = advanceDeposits.getBalanceAmount().subtract(bindPrice);
+    advanceDeposits.setBalanceAmount(amount);
+    advanceDepositsDao.merge(advanceDeposits);
 
     // ReportDeviceBindStatistics report =
     // reportDeviceBindStatisticsDao.getReportByDate(TimeUtils.formatDate2Day(new Date()));
@@ -60,8 +71,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     // }
 
     Boolean flag =
-        couponService.takeCouponBySendType(deviceInfo.getTenantID(), vehicle.getEndUser(),
-            CouponSendType.DEVICEBIND);
+        couponService.takeCouponBySendType(null, vehicle.getEndUser(), CouponSendType.DEVICEBIND);
     vehicle.setIsGetCoupon(flag);
     return vehicle;
   }
@@ -74,5 +84,16 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   @Override
   public Vehicle getVehicleByVehicleNo(String vehicleNo) {
     return vehicleDao.getVehicleByVehicleNo(vehicleNo);
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public Vehicle bindTenant(Vehicle vehicle) {
+    vehicleDao.merge(vehicle);
+    Boolean flag =
+        couponService.takeCouponBySendType(vehicle.getTenantID(), vehicle.getEndUser(),
+            CouponSendType.TENANTBIND);
+    vehicle.setIsGetCoupon(flag);
+    return vehicle;
   }
 }

@@ -3,6 +3,7 @@ package com.csh.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,9 +29,11 @@ import com.csh.entity.CarServiceRecord;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.service.AdvanceDepositsService;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
+import com.csh.service.WalletService;
 import com.csh.utils.wechat.WeixinUtil;
 
 
@@ -47,6 +50,12 @@ public class WeChatController extends MobileBaseController {
 
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
+
+  @Resource(name = "walletServiceImpl")
+  private WalletService walletService;
+
+  @Resource(name = "advanceDepositsServiceImpl")
+  private AdvanceDepositsService advanceDepositsService;
 
 
 
@@ -106,28 +115,54 @@ public class WeChatController extends MobileBaseController {
 
           String payment = "wx";
 
-          List<Filter> filters = new ArrayList<Filter>();
+
           String recordNo = out_trade_no.split("_")[0];
-          Filter filter = new Filter("recordNo", Operator.eq, recordNo);
-          filters.add(filter);
-          List<CarServiceRecord> records = carServiceRecordService.findList(null, filters, null);
-          if (records != null && records.size() == 1) {
-            CarServiceRecord carServiceRecord = records.get(0);
-            carServiceRecord.setChargeStatus(ChargeStatus.PAID);
-            carServiceRecord.setPaymentDate(new Date());
-            if (LogUtil.isDebugEnabled(CarServiceController.class)) {
-              LogUtil
-                  .debug(
-                      CarServiceController.class,
-                      "pay_notify",
-                      "call back method for update Car Service pay status. recordNo: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
-                      carServiceRecord.getRecordNo(), carServiceRecord.getTenantName(),
-                      carServiceRecord.getCarService().getServiceName(),
-                      carServiceRecord.getPrice(), carServiceRecord.getPaymentType(),
-                      carServiceRecord.getChargeStatus());
+          // 普通充值
+          if (out_trade_no.startsWith("CI")) {
+            String userId = out_trade_no.split("_")[1];
+            BigDecimal amount = new BigDecimal(total_fee).divide(new BigDecimal(100));
+            if (LogUtil.isDebugEnabled(WeChatController.class)) {
+              LogUtil.debug(BalanceController.class, "pay_notify",
+                  "User charge in call back.UserId: %s, ChargeAmount: %s,", userId, amount);
             }
-            carServiceRecordService.updatePayStatus(carServiceRecord);
+            walletService.updateWallet(new Long(userId), amount, recordNo);
           }
+          // 购买设备充值
+          else if (out_trade_no.startsWith("PD")) {
+            String userId = out_trade_no.split("_")[1];
+            BigDecimal amount = new BigDecimal(total_fee).divide(new BigDecimal(100));
+            if (LogUtil.isDebugEnabled(WeChatController.class)) {
+              LogUtil.debug(BalanceController.class, "pay_notify",
+                  "User charge in call back for purchase device. UserId: %s, ChargeAmount: %s,",
+                  userId, amount);
+            }
+            advanceDepositsService.updateAdvanceDeposit(new Long(userId), amount);
+          }
+          // 购买服务
+          else {
+            List<Filter> filters = new ArrayList<Filter>();
+            Filter filter = new Filter("recordNo", Operator.eq, recordNo);
+            filters.add(filter);
+            List<CarServiceRecord> records = carServiceRecordService.findList(null, filters, null);
+            if (records != null && records.size() == 1) {
+              CarServiceRecord carServiceRecord = records.get(0);
+              carServiceRecord.setChargeStatus(ChargeStatus.PAID);
+              carServiceRecord.setPaymentDate(new Date());
+              if (LogUtil.isDebugEnabled(CarServiceController.class)) {
+                LogUtil
+                    .debug(
+                        CarServiceController.class,
+                        "pay_notify",
+                        "call back method for update Car Service pay status. recordNo: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+                        carServiceRecord.getRecordNo(), carServiceRecord.getTenantName(),
+                        carServiceRecord.getCarService().getServiceName(),
+                        carServiceRecord.getPrice(), carServiceRecord.getPaymentType(),
+                        carServiceRecord.getChargeStatus());
+              }
+              carServiceRecordService.updatePayStatus(carServiceRecord);
+            }
+          }
+
         } else {
           if (LogUtil.isDebugEnabled(CarServiceController.class)) {
             LogUtil.debug(CarServiceController.class, "pay_notify",

@@ -634,4 +634,26 @@ public class CommonEnum {
     IOS
   }
 
+  /**
+   * 预存转款用途
+   * 
+   * @author Andrea
+   *
+   */
+  public enum AdvanceUsageType {
+    /** 购买设备 */
+    DEVICE
+  }
+
+  /**
+   * systemconfig 配置项
+   * 
+   * @author Andrea
+   *
+   */
+  public enum SystemConfigKey {
+    /** 设备定价 */
+    DEVICE_PRICE
+  }
+
 }

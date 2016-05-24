@@ -2,6 +2,7 @@ package com.csh.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +23,11 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.EndUser;
+import com.csh.entity.SystemConfig;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
-import com.csh.entity.commonenum.CommonEnum.BalanceType;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -37,13 +39,15 @@ import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.WalletRequest;
+import com.csh.service.AdvanceDepositsService;
 import com.csh.service.EndUserService;
+import com.csh.service.SystemConfigService;
 import com.csh.service.WalletRecordService;
 import com.csh.service.WalletService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.PayUtil;
+import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
-import com.csh.utils.ToolsUtils;
 
 
 
@@ -60,6 +64,12 @@ public class BalanceController extends MobileBaseController {
 
   @Resource(name = "walletRecordServiceImpl")
   private WalletRecordService walletRecordService;
+
+  @Resource(name = "systemConfigServiceImpl")
+  private SystemConfigService systemConfigService;
+
+  @Resource(name = "advanceDepositsServiceImpl")
+  private AdvanceDepositsService advanceDepositsService;
 
 
   /**
@@ -78,7 +88,7 @@ public class BalanceController extends MobileBaseController {
     String token = walletReq.getToken();
     PaymentType paymentType = walletReq.getPaymentType();
     BigDecimal amount = walletReq.getAmount();
-
+    String chargeType = walletReq.getChargeType();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -87,13 +97,13 @@ public class BalanceController extends MobileBaseController {
       return response;
     }
 
-    String tradeNo = ToolsUtils.generateRecordNo("000000");
+    String tradeNo = TimeUtils.getLongDateStr(new Date()) + "000000";
     if (PaymentType.WECHAT.equals(paymentType)) {
       try {
         BigDecimal weChatAmount = amount.multiply(new BigDecimal(100));
         response =
-            PayUtil.wechat(tradeNo, "wallet charge in", httpReq.getRemoteAddr(), "0",
-                weChatAmount.intValue() + "");
+            PayUtil.wechat(chargeType + tradeNo + "_" + userId.toString(), "wallet charge in",
+                httpReq.getRemoteAddr(), "0", weChatAmount.intValue() + "");
       } catch (DocumentException e) {
         e.printStackTrace();
       }
@@ -124,6 +134,7 @@ public class BalanceController extends MobileBaseController {
     BaseResponse response = new BaseResponse();
     Long userId = walletRequest.getUserId();
     String token = walletRequest.getToken();
+    String recordNo = walletRequest.getRecordNo();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -132,21 +143,11 @@ public class BalanceController extends MobileBaseController {
       return response;
     }
 
-    EndUser endUser = endUserService.find(userId);
-    Wallet wallet = endUser.getWallet();
-    wallet.setBalanceAmount(wallet.getBalanceAmount().add(walletRequest.getAmount()));
-    WalletRecord walletRecord = new WalletRecord();
-    walletRecord.setBalanceType(BalanceType.INCOME);
-    walletRecord.setWalletType(WalletType.MONEY);
-    walletRecord.setMoney(walletRequest.getAmount());
-    walletRecord.setRemark(Message.success("csh.wallet.chargeIn.record").getContent());
-    walletRecord.setWallet(wallet);
-    wallet.getWalletRecords().add(walletRecord);
-    walletService.update(wallet);
+    walletService.updateWallet(userId, walletRequest.getAmount(), recordNo);
 
     if (LogUtil.isDebugEnabled(BalanceController.class)) {
-      LogUtil.debug(BalanceController.class, "Update",
-          "User Charge in Wallet.UserName: %s, ChargeAmount: %s,", endUser.getUserName(),
+      LogUtil.debug(BalanceController.class, "walletCharge",
+          "User charge in call back for Wallet.UserId: %s, ChargeAmount: %s,", userId.toString(),
           walletRequest.getAmount());
     }
 
@@ -246,4 +247,86 @@ public class BalanceController extends MobileBaseController {
     return response;
   }
 
+  /**
+   * 购买设备充值页面
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/purDevicePage", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> purDevicePage(
+      @RequestBody BaseRequest walletReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = walletReq.getUserId();
+    String token = walletReq.getToken();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    SystemConfig devicePrice =
+        systemConfigService.getConfigByKey(SystemConfigKey.DEVICE_PRICE, null);
+    if (devicePrice == null || devicePrice.getConfigValue() == null) {
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc(Message.error("csh.wallet.config.error").getContent());
+      return response;
+    }
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("devicePrice", devicePrice.getConfigValue());
+    response.setMsg(map);
+    String newtoken = TokenGenerator.generateToken(walletReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+
+  /**
+   * 购买设备充值call back
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/purDeviceCharge", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody BaseResponse purDeviceCharge(@RequestBody WalletRequest request) {
+
+    BaseResponse response = new BaseResponse();
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    // PaymentType paymentType = request.getPaymentType();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+
+    SystemConfig devicePrice =
+        systemConfigService.getConfigByKey(SystemConfigKey.DEVICE_PRICE, null);
+
+    if (LogUtil.isDebugEnabled(BalanceController.class)) {
+      LogUtil.debug(BalanceController.class, "purDeviceCharge",
+          "User charge in call back for purchase device.UserId: %s, ChargeAmount: %s,", userId,
+          devicePrice.getConfigValue());
+    }
+    advanceDepositsService.updateAdvanceDeposit(userId,
+        new BigDecimal(devicePrice.getConfigValue()));
+
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 }

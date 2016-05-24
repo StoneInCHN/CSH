@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.csh.common.log.LogUtil;
 import com.csh.controller.CouponController;
+import com.csh.dao.CarServiceDao;
 import com.csh.dao.CouponDao;
 import com.csh.dao.CouponEndUserDao;
 import com.csh.entity.CarService;
@@ -40,12 +41,15 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
   @Resource(name = "couponDaoImpl")
   private CouponDao couponDao;
 
+  @Resource(name = "carServiceDaoImpl")
+  private CarServiceDao carServiceDao;
+
   @Resource(name = "couponEndUserDaoImpl")
   public void setBaseDao(CouponEndUserDao couponEndUserDao) {
     super.setBaseDao(couponEndUserDao);
   }
 
-  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser) {
     List<Filter> filters = new ArrayList<Filter>();
     Filter userFilter = new Filter("endUser", Operator.eq, endUser);
@@ -102,7 +106,14 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
       Coupon coupon = couponEndUser.getCoupon();
       if (coupon.getIsEnabled()) {
         if (CouponType.COMMON.equals(coupon.getType())) {
-          coupons.add(couponEndUser);
+          if (coupon.getTenantID() != null) {
+            CarService carService = carServiceDao.find(serviceId);
+            if (carService.getTenantInfo().getId().equals(coupon.getTenantID())) {
+              coupons.add(couponEndUser);
+            }
+          } else {
+            coupons.add(couponEndUser);
+          }
         } else if (CouponType.SPECIFY.equals(coupon.getType())) {
           for (CarService carService : coupon.getCarServices()) {
             if (serviceId.equals(carService.getId())) {

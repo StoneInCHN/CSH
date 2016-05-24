@@ -13,6 +13,7 @@ import org.hibernate.search.annotations.Store;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.lucene.LowCaseBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -35,7 +36,10 @@ public class SystemConfig extends BaseEntity {
    */
   private Long tenantID;
 
-
+  /**
+   * 配置项值
+   */
+  private SystemConfigKey configKey;
   /**
    * 配置项值
    */
@@ -45,12 +49,21 @@ public class SystemConfig extends BaseEntity {
    * 排序
    */
   private Integer configOrder;
-  
+
   /**
    * 是否启用
    */
   private Boolean isEnabled;
-  
+
+
+  public SystemConfigKey getConfigKey() {
+    return configKey;
+  }
+
+  public void setConfigKey(SystemConfigKey configKey) {
+    this.configKey = configKey;
+  }
+
   @JsonProperty
   public Boolean getIsEnabled() {
     return isEnabled;
@@ -70,7 +83,8 @@ public class SystemConfig extends BaseEntity {
 
   @JsonProperty
   @Column(length = 20)
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED,
+      analyzer = @Analyzer(impl = IKAnalyzer.class))
   @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getConfigValue() {
     return configValue;

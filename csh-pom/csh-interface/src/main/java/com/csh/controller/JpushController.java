@@ -61,7 +61,7 @@ public class JpushController extends MobileBaseController {
     Integer versionCode = req.getVersionCode();
     String jPushRegId = req.getRegId();
     AppPlatform appPlatform = req.getAppPlatform();
-    
+
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -91,7 +91,8 @@ public class JpushController extends MobileBaseController {
 
     if (LogUtil.isDebugEnabled(JpushController.class)) {
       LogUtil.debug(JpushController.class, "Update",
-          "init User Jpush reg ID.UserName: %s, regId: %s,", endUser.getUserName(), jPushRegId);
+          "init User Jpush reg ID.UserName: %s, regId: %s, appPlatform: %s", endUser.getUserName(),
+          jPushRegId, appPlatform);
     }
 
     ApkVersion version = apkVersionService.getNewVersion(versionCode);

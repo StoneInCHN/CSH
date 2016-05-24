@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +21,13 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.App;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
+import com.csh.entity.SystemConfig;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleBrand;
 import com.csh.entity.VehicleBrandDetail;
 import com.csh.entity.VehicleLine;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.ordering.Ordering;
@@ -37,6 +40,7 @@ import com.csh.json.request.VehicleRequest;
 import com.csh.service.AppService;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
+import com.csh.service.SystemConfigService;
 import com.csh.service.VehicleBrandDetailService;
 import com.csh.service.VehicleBrandService;
 import com.csh.service.VehicleLineService;
@@ -57,6 +61,9 @@ public class VehicleController extends MobileBaseController {
 
   @Resource(name = "vehicleServiceImpl")
   private VehicleService vehicleService;
+
+  @Resource(name = "systemConfigServiceImpl")
+  private SystemConfigService systemConfigService;
 
   @Resource(name = "deviceInfoServiceImpl")
   private DeviceInfoService deviceInfoService;
@@ -99,8 +106,8 @@ public class VehicleController extends MobileBaseController {
     EndUser user = endUserService.find(userId);
     String[] properties =
         {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo", "vehicleNo",
-            "trafficInsuranceExpiration", "commercialInsuranceExpiration", "nextAnnualInspection",
-            "driveMileage", "lastMaintainMileage"};
+            "trafficInsuranceExpiration", "nextAnnualInspection", "driveMileage",
+            "lastMaintainMileage"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, user.getVehicles());
     response.setMsg(map);
@@ -153,7 +160,7 @@ public class VehicleController extends MobileBaseController {
     vehicle.setPlate(vehicleReq.getPlateNo());
     vehicle.setVehicleNo(vehicleReq.getVehicleNo());
     vehicle.setTrafficInsuranceExpiration(vehicleReq.getTrafficInsuranceExpiration());
-    vehicle.setCommercialInsuranceExpiration(vehicleReq.getCommercialInsuranceExpiration());
+    // vehicle.setCommercialInsuranceExpiration(vehicleReq.getCommercialInsuranceExpiration());
     vehicle.setNextAnnualInspection(vehicleReq.getNextAnnualInspection());
     vehicle.setDriveMileage(vehicleReq.getDriveMileage());
     vehicle.setLastMaintainMileage(vehicleReq.getLastMaintainMileage());
@@ -212,7 +219,7 @@ public class VehicleController extends MobileBaseController {
     vehicle.setPlate(vehicleReq.getPlateNo());
     vehicle.setVehicleNo(vehicleReq.getVehicleNo());
     vehicle.setTrafficInsuranceExpiration(vehicleReq.getTrafficInsuranceExpiration());
-    vehicle.setCommercialInsuranceExpiration(vehicleReq.getCommercialInsuranceExpiration());
+    // vehicle.setCommercialInsuranceExpiration(vehicleReq.getCommercialInsuranceExpiration());
     vehicle.setNextAnnualInspection(vehicleReq.getNextAnnualInspection());
     vehicle.setDriveMileage(vehicleReq.getDriveMileage());
     vehicle.setLastMaintainMileage(vehicleReq.getLastMaintainMileage());
@@ -266,7 +273,7 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
     vehicle.setTenantID(tenantId);
-    vehicleService.update(vehicle);
+    vehicleService.bindTenant(vehicle);
 
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
       LogUtil.debug(VehicleController.class, "Update",
@@ -321,6 +328,22 @@ public class VehicleController extends MobileBaseController {
       response.setDesc(Message.error("csh.bind.device.invalid").getContent());
       return response;
     }
+    // 验证购买设备专款余额是否足够
+    EndUser endUser = endUserService.find(userId);
+    SystemConfig devicePrice =
+        systemConfigService.getConfigByKey(SystemConfigKey.DEVICE_PRICE, null);
+    if (devicePrice == null || devicePrice.getConfigValue() == null) {
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc(Message.error("csh.wallet.config.error").getContent());
+      return response;
+    }
+    BigDecimal bindPrice = new BigDecimal(devicePrice.getConfigValue());
+    if (bindPrice.compareTo(endUser.getAdvanceDeposits().getBalanceAmount()) > 0) {
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc(Message.error("csh.wallet.device.insufficient").getContent());
+      return response;
+    }
+
     DeviceInfo deviceInfo = deviceInfos.get(0);
 
     Vehicle vehicle = vehicleService.find(vehicleId);
@@ -329,7 +352,7 @@ public class VehicleController extends MobileBaseController {
       LogUtil.debug(VehicleController.class, "Update",
           "bind vehicle and device.DeviceNo: %s, VehicleId: %s,", deviceNo, vehicleId);
     }
-    vehicleService.bindDevice(vehicle, deviceInfo);
+    vehicleService.bindDevice(vehicle, deviceInfo, bindPrice);
 
     App app = appService.getTenantAppById(deviceInfo.getTenantID());
     String[] properties = {"appTitleName"};
@@ -343,7 +366,6 @@ public class VehicleController extends MobileBaseController {
 
     return response;
   }
-
 
   /**
    * 设置默认车辆

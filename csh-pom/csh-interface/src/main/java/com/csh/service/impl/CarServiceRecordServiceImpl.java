@@ -103,6 +103,16 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setPaymentDate(new Date());
 
     if (couponEndUser != null) {
+      List<Filter> filters = new ArrayList<Filter>();
+      Filter filter = new Filter("couponEndUser", Operator.eq, couponEndUser);
+      filters.add(filter);
+      List<CarServiceRecord> list = carServiceRecordDao.findList(null, null, filters, null);
+      for (CarServiceRecord record : list) {
+        record.setCouponEndUser(null);
+        record.setCouponSource(null);
+        record.setDiscountPrice(null);
+        carServiceRecordDao.merge(record);
+      }
       carServiceRecord.setCouponEndUser(couponEndUser);
       BigDecimal discountPrice =
           carServiceRecord.getPrice().subtract(couponEndUser.getCoupon().getAmount());
@@ -110,7 +120,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
           discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
       carServiceRecord.setDiscountPrice(discountPrice);
       carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
-      couponEndUser.setIsUsed(true);
+      // couponEndUser.setIsUsed(true);
       couponEndUserDao.merge(couponEndUser);
     } else {
       carServiceRecord.setDiscountPrice(price);
@@ -224,6 +234,11 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       walletDao.merge(wallet);
     }
 
+    if (carServiceRecord.getCouponEndUser() != null) {
+      CouponEndUser couponEndUser = carServiceRecord.getCouponEndUser();
+      couponEndUser.setIsUsed(true);
+      couponEndUserDao.merge(couponEndUser);
+    }
     if (setting.getServiceCateWash().equals(
         carServiceRecord.getCarService().getServiceCategory().getId())) {
       Integer tokenNo = (int) ((Math.random() * 9 + 1) * 100000);
@@ -267,15 +282,18 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   public CarServiceRecord updateServiceRecord(CarServiceRecord carServiceRecord,
       CouponEndUser couponEndUser) {
     if (couponEndUser != null) {
+      carServiceRecord.setCouponEndUser(couponEndUser);
       BigDecimal discountPrice =
           carServiceRecord.getPrice().subtract(couponEndUser.getCoupon().getAmount());
       discountPrice =
           discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
       carServiceRecord.setDiscountPrice(discountPrice);
       carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
-      couponEndUser.setIsUsed(true);
+      // couponEndUser.setIsUsed(true);
       couponEndUserDao.merge(couponEndUser);
     } else {
+      carServiceRecord.setCouponSource(null);
+      carServiceRecord.setCouponEndUser(null);
       carServiceRecord.setDiscountPrice(carServiceRecord.getPrice());
     }
     carServiceRecordDao.merge(carServiceRecord);

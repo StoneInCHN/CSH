@@ -128,6 +128,11 @@ public class EndUser extends BaseEntity {
   private Wallet wallet;
 
   /**
+   * 我的预存专款
+   */
+  private AdvanceDeposits advanceDeposits;
+
+  /**
    * 汽车服务购买记录
    */
   private Set<CarServiceRecord> carServiceRecords = new HashSet<CarServiceRecord>();
@@ -197,6 +202,16 @@ public class EndUser extends BaseEntity {
   public void setCarServiceRecords(Set<CarServiceRecord> carServiceRecords) {
     this.carServiceRecords = carServiceRecords;
   }
+
+  @OneToOne(mappedBy = "endUser", cascade = CascadeType.ALL)
+  public AdvanceDeposits getAdvanceDeposits() {
+    return advanceDeposits;
+  }
+
+  public void setAdvanceDeposits(AdvanceDeposits advanceDeposits) {
+    this.advanceDeposits = advanceDeposits;
+  }
+
 
   @OneToOne(mappedBy = "endUser", cascade = CascadeType.ALL)
   public Wallet getWallet() {

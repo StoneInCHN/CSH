@@ -30,6 +30,32 @@ public class WalletRequest extends BaseRequest {
    */
   private PaymentType paymentType;
 
+  /**
+   * CI:普通充值, PD:购买设备
+   */
+  private String chargeType;
+
+  /**
+   * 充值记录号
+   */
+  private String recordNo;
+
+
+  public String getRecordNo() {
+    return recordNo;
+  }
+
+  public void setRecordNo(String recordNo) {
+    this.recordNo = recordNo;
+  }
+
+  public String getChargeType() {
+    return chargeType;
+  }
+
+  public void setChargeType(String chargeType) {
+    this.chargeType = chargeType;
+  }
 
   public PaymentType getPaymentType() {
     return paymentType;

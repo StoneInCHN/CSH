@@ -21,10 +21,12 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.EndUser;
 import com.csh.entity.LoginStatistics;
 import com.csh.entity.SmsToken;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.SmsTokenType;
 import com.csh.entity.commonenum.CommonEnum.TokenSendType;
@@ -142,6 +144,8 @@ public class EndUserController extends MobileBaseController {
         .getDefaultVehicle().getDeviceNo() : null);
     map.put("defaultVehicleIcon", loginUser.getDefaultVehicle() != null ? loginUser
         .getDefaultVehicle().getBrandIcon() : null);
+    map.put("defaultVehicleId", loginUser.getDefaultVehicle() != null ? loginUser
+        .getDefaultVehicle().getId() : null);
     response.setMsg(map);
     String token = TokenGenerator.generateToken();
     endUserService.createEndUserToken(token, loginUser.getId());
@@ -204,6 +208,12 @@ public class EndUserController extends MobileBaseController {
     loginStatistics.setLoginIp(requesthttp.getRemoteAddr());
     loginStatistics.setImei(imei);
     loginUser.getLoginStatistics().add(loginStatistics);
+    if (loginUser.getAdvanceDeposits() == null) {
+      AdvanceDeposits advanceDeposits = new AdvanceDeposits();
+      advanceDeposits.setEndUser(loginUser);
+      advanceDeposits.setUsageType(AdvanceUsageType.DEVICE);
+      loginUser.setAdvanceDeposits(advanceDeposits);
+    }
     endUserService.update(loginUser);
     if (LogUtil.isDebugEnabled(EndUserController.class)) {
       LogUtil.debug(EndUserController.class, "update", "enduser login: %s", userName);
@@ -222,6 +232,8 @@ public class EndUserController extends MobileBaseController {
         .getDefaultVehicle().getDeviceNo() : null);
     map.put("defaultVehicleIcon", loginUser.getDefaultVehicle() != null ? loginUser
         .getDefaultVehicle().getBrandIcon() : null);
+    map.put("defaultVehicleId", loginUser.getDefaultVehicle() != null ? loginUser
+        .getDefaultVehicle().getId() : null);
     response.setMsg(map);
     String token = TokenGenerator.generateToken();
     endUserService.createEndUserToken(token, loginUser.getId());

@@ -16,7 +16,7 @@ public class ToolsUtils {
 
 
   /**
-   * 生成账单号 格式 yyMMddHHmmss-组织机构代码-随机4位数-(1-1000累加)
+   * 生成账单号 格式 yyyyMMddHHmmss-组织机构代码(6位)-随机4位数-(1-1000累加) 27位
    * 
    * @return
    */

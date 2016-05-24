@@ -55,6 +55,20 @@ public class WalletRecord extends BaseEntity {
    */
   private String remark;
 
+  /**
+   * 充值记录号
+   */
+  private String recordNo;
+
+
+  @Column(length = 40)
+  public String getRecordNo() {
+    return recordNo;
+  }
+
+  public void setRecordNo(String recordNo) {
+    this.recordNo = recordNo;
+  }
 
   @ManyToOne
   public Wallet getWallet() {
@@ -108,6 +122,7 @@ public class WalletRecord extends BaseEntity {
     this.walletType = walletType;
   }
 
+  @Column(length = 50)
   public String getRemark() {
     return remark;
   }

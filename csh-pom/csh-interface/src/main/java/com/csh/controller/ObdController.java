@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
+import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.DeviceInfo;
 import com.csh.json.base.ResponseOne;
@@ -75,6 +76,10 @@ public class ObdController extends MobileBaseController {
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
       Map<String, Object> msg = (Map<String, Object>) map.get("msg");
+      if (LogUtil.isDebugEnabled(ObdController.class)) {
+        LogUtil.debug(ObdController.class, "vehicleTrends",
+            "Receive the msg from obd. deviceNo: %s, Msg: %s", deviceNo, msg);
+      }
       Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
       if (flag) {
         DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);

@@ -236,7 +236,7 @@ public class CouponController extends MobileBaseController {
     }
     Page<Coupon> coupons = couponService.getCouponList(pageable, tenantId);
 
-    String[] properties = {"id", "amount", "overDueTime", "remark", "remainNum", "type"};
+    String[] properties = {"id", "amount", "deadlineTime", "remark", "remainNum", "type"};
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, coupons.getContent());
     for (Map<String, Object> couponMap : map) {
