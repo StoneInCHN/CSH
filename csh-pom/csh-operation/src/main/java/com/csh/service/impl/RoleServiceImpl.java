@@ -18,6 +18,9 @@ import com.csh.service.RoleService;
 @Service("roleServiceImpl")
 public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements RoleService {
 
+    @Resource(name = "roleDaoImpl")
+    private RoleDao roleDao;
+  
 	@Resource(name = "roleDaoImpl")
 	public void setBaseDao(RoleDao roleDao) {
 		super.setBaseDao(roleDao);
@@ -64,5 +67,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements Role
 	public void delete(Role role) {
 		super.delete(role);
 	}
+
+  @Override
+  public boolean hasContainAdmin(Role role) {
+    return roleDao.hasContainAdmin(role);
+  }
 
 }

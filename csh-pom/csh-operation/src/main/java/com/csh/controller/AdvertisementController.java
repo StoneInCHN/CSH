@@ -25,6 +25,7 @@ import com.csh.framework.paging.Pageable;
 import com.csh.service.AdvertisementService;
 import com.csh.service.FileService;
 import com.csh.utils.SettingUtils;
+import com.csh.utils.SpringUtils;
 
 @RequestMapping("console/advertisement")
 @Controller("advertisementController")
@@ -49,22 +50,27 @@ public class AdvertisementController extends BaseController{
    * 保存
    */
   @RequestMapping(value = "/save", method = RequestMethod.POST)
-  public String save(Advertisement advertisement) {
+  public@ResponseBody Message save(Advertisement advertisement) {
     if (!isValid(advertisement)) {
-      return ERROR_VIEW;
+      return ERROR_MESSAGE;
     }
     String advImageUrl = "";
     if (advertisement.getAdvImage() != null && fileService.isValid(FileType.image, advertisement.getAdvImage())) {
     	Setting setting = SettingUtils.get();
     	if (advertisement.getAdvImage().getSize() > setting.getImageMaxSize()) {
-    		  return ERROR_VIEW;
+    		  return Message.error(SpringUtils.getMessage("csh.advertisement.imageMaxSize"));
 		}
+      advImageUrl = fileService.saveImage(advertisement.getAdvImage(), ImageType.ADVERTISEMENT);
+    }else {
+      return Message.error(SpringUtils.getMessage("csh.advertisement.image.file.type.error"));
+    }
+    if (advertisement.getAdvImage() != null) {
       advImageUrl = fileService.saveImage(advertisement.getAdvImage(), ImageType.ADVERTISEMENT);
     }
     advertisement.setAdvImageUrl(advImageUrl);
     advertisement.setSystemType(SystemType.OPERATION);
     advertisementService.save(advertisement);
-    return "redirect:list.jhtml";
+    return Message.success("csh.advertisement.image.file.upload.success");
   }
 
   /**
@@ -73,23 +79,32 @@ public class AdvertisementController extends BaseController{
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
     model.addAttribute("advertisement", advertisementService.find(id));
-    return "/advertisement/edit";
+    return  "/advertisement/edit";
   }
 
   /**
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public String update(Advertisement advertisement) {
+  public @ResponseBody Message update(Advertisement advertisement) {
     if (!isValid(advertisement)) {
-      return ERROR_VIEW;
+      return ERROR_MESSAGE;
     }
     if(advertisement.getAdvImage()!=null && advertisement.getAdvImage().getSize() >0){
-     String advImageUrl = fileService.saveImage(advertisement.getAdvImage(), ImageType.ADVERTISEMENT);
-     advertisement.setAdvImageUrl(advImageUrl);
+      if (fileService.isValid(FileType.image, advertisement.getAdvImage())) {
+          Setting setting = SettingUtils.get();
+          if (advertisement.getAdvImage().getSize() > setting.getImageMaxSize()) {
+                return Message.error(SpringUtils.getMessage("csh.advertisement.imageMaxSize"));
+          }
+       String advImageUrl = fileService.saveImage(advertisement.getAdvImage(), ImageType.ADVERTISEMENT);
+       advertisement.setAdvImageUrl(advImageUrl);
+      }else {
+        return Message.error(SpringUtils.getMessage("csh.advertisement.image.file.type.error"));
+      }
     }
+   
     advertisementService.update(advertisement,"tenantId","createDate","systemType");
-    return "redirect:list.jhtml";
+    return Message.success("csh.advertisement.image.file.upload.success");
   }
 
   /**

@@ -170,6 +170,9 @@ public class Setting implements Serializable {
   
   private Long imageMaxSize;
   
+  private String msgPushUrl;
+  
+  
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
   }
@@ -440,7 +443,12 @@ public Integer getSmsCodeTimeOut() {
 	public void setImageMaxSize(Long imageMaxSize) {
 		this.imageMaxSize = imageMaxSize;
 	}
-  
-  
+
+  public String getMsgPushUrl() {
+    return msgPushUrl;
+  }
+  public void setMsgPushUrl(String msgPushUrl) {
+    this.msgPushUrl = msgPushUrl;
+  }
   
 }

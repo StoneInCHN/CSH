@@ -41,6 +41,9 @@ $().ready(function() {
 			overDueType:{
 				required: true
 			},
+			deadlineTime:{
+				required: true
+			},
 			isEnabled: {
 				required: true
 			}
@@ -142,7 +145,7 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.coupon.overDueTime")}:
 								</th>
 								<td>
-									<input type="text" id="overDueTime" name="overDueTime" class="text Wdate" onfocus="WdatePicker();" readonly maxlength="20" />
+									<input type="text" id="overDueTime" name="overDueTime" class="text Wdate" onfocus="WdatePicker();"  maxlength="20" />
 								</td>
 							</tr>
 							<tr>
@@ -150,7 +153,7 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.coupon.deadlineTime")}:
 								</th>
 								<td>
-									<input type="text" name="deadlineTime" class="text Wdate" onfocus="WdatePicker();" readonly maxlength="20" />
+									<input type="text" name="deadlineTime" class="text Wdate" onfocus="WdatePicker();"  maxlength="20" />
 								</td>
 							</tr>
 							<tr>
@@ -161,14 +164,6 @@ $().ready(function() {
 									<input type="text" name="counts" class="text" maxlength="20" />
 								</td>
 							</tr>
-						<!--	<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.coupon.remainNum")}:
-								</th>
-								<td>
-									<input type="text" name="remainNum" class="text" maxlength="20" />
-								</td>
-							</tr> -->
 							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.coupon.isEnabled")}:

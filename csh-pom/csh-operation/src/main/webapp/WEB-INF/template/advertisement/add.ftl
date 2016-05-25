@@ -13,11 +13,12 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/js/jquery.form.js"></script>
 <script type="text/javascript">
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
-	
+	var $loadingBar = $(".loadingBar");
 	// 表单验证
 	$inputForm.validate({
 		rules: {
@@ -34,7 +35,31 @@ $().ready(function() {
 			status: {
 				required: true
 			}
-		}	
+		},
+		submitHandler:function(form){
+			$inputForm.ajaxSubmit({
+			      	dataType:"json",
+			       	beforeSubmit:function(){
+			       		$('input[type="submit"]').attr("disabled","disabled");
+			       		$loadingBar.show();
+			       	},
+			       	success:function(result){
+			       		if(result.type == "error"){
+			       			$loadingBar.hide();
+			       		//	$.dialog({type:"warn",content:result.content})
+			       			alert(result.content);
+			       			$('input[type="submit"]').attr("disabled",false);
+			       		}else{
+			       			$loadingBar.hide();
+			       		//	$.dialog({type:"success",content:result.content})
+			       			alert(result.content);
+			       			location.href="list.jhtml";
+			       		}
+			       		
+			       }
+			});
+		}
+			
 	});
 	
 });
@@ -114,6 +139,11 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="text" name="remark" class="text" />
+								</td>
+							</tr>
+							<tr>
+								<td  colspan="2">
+									<span class="loadingBar" style="margin-left:120px;display:none"></span>
 								</td>
 							</tr>
 						</table>

@@ -9,4 +9,6 @@ import com.csh.framework.dao.BaseDao;
  */
 public interface RoleDao extends BaseDao<Role, Long> {
   boolean nameExists(String name, Long id);
+  
+  boolean hasContainAdmin(Role role);
 }

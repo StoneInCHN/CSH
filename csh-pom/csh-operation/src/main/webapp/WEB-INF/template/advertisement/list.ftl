@@ -68,7 +68,7 @@
 											</a>
 											<ul id="filterOption" class="dropdown-menu" role="menu" aria-labelledby="filterSelect">
 												<li>
-													<a href="javascript:;" name="status" val="" [#if status == null] class="checked"[/#if]>${message("csh.commonEnum.Status.ENABLE")}</a>
+													<a href="javascript:;" name="status" val="" [#if status == null] class="checked"[/#if]>${message("csh.commonEnum.Status.All")}</a>
 												</li>
 												<li>
 													<a href="javascript:;" name="status" val="ENABLE" [#if status == "ENABLE"] class="checked"[/#if]>${message("csh.commonEnum.Status.ENABLE")}</a>

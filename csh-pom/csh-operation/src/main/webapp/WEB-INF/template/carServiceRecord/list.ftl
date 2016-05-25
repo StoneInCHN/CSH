@@ -67,8 +67,9 @@
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
 								          <li [#if page.searchProperty == "recordNo" ] selected="selected" class="active" [/#if] title="recordNo"><a href="#">${message("csh.carServiceRecord.recordNo")}</a></li>
+								          <li [#if page.searchProperty == "tenantName" ] selected="selected" class="active" [/#if] title="tenantName"><a href="#">${message("csh.carServiceRecord.tenantName")}</a></li>
 								        </ul>
-								      </div>
+								 </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
 							    </div>
 						  </div>

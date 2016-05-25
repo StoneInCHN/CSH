@@ -35,4 +35,10 @@ public class RoleDaoImpl extends BaseDaoImpl<Role, Long> implements RoleDao {
     }
   }
 
+  @Override
+  public boolean hasContainAdmin(Role role) {
+    
+    return false;
+  }
+
 }

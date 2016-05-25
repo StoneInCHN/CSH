@@ -79,7 +79,11 @@
 									<span class="requiredField">*</span>${message("csh.vehicle.isDefault")}:
 								</th>
 								<td>
-									${vehicle.isDefault}
+									[#if vehicle.isDefault??]
+										是
+									[#else]
+										否
+									[/#if]
 								</td>
 							</tr>
 							<tr>
@@ -88,14 +92,6 @@
 								</th>
 								<td>
 									${vehicle.plate}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.vehicle.vin")}:
-								</th>
-								<td>
-									${vehicle.vin}
 								</td>
 							</tr>
 							<tr>
@@ -127,8 +123,8 @@
 									<span class="requiredField">*</span>${message("csh.vehicle.vehicleFullBrand")}:
 								</th>
 								<td>
-									[#if vehicle.vehicleFullBrand??]
-										<a href="../vehicleBrandDetail/details.jhtml?id=${vehicle.vehicleBrandDetail.id}" target="2">${vehicle.vehicleFullBrand}</a>
+									[#if vehicle.vehicleBrandDetail??]
+										<a href="../vehicleBrandDetail/details.jhtml?id=${vehicle.vehicleBrandDetail.id}" target="2">${vehicle.vehicleBrandDetail}</a>
 									[/#if]
 								</td>
 							</tr>
@@ -169,6 +165,16 @@
 									[#if vehicle.endUser??]
 										<a href="../endUser/details.jhtml?id=${vehicle.endUser.id}" target="3">${vehicle.endUser.userName}</a>
 									[/#if]
+								</td>
+							</tr>
+						</table>
+						<table class="input">
+							<tr>
+								<th>
+									&nbsp;
+								</th>
+								<td>
+									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 								</td>
 							</tr>
 						</table>

@@ -1,5 +1,8 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -11,21 +14,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Coupon;
-import com.csh.entity.DeviceType;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.entity.commonenum.CommonEnum.CouponType;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
+import com.csh.framework.filter.Filter;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.CouponService;
 
 @RequestMapping("console/coupon")
 @Controller("couponController")
-public class CouponController extends BaseController{
+public class CouponController extends BaseController {
 
-  @Resource(name="couponServiceImpl")
+  @Resource(name = "couponServiceImpl")
   private CouponService couponService;
-  
-  
+
+
   /**
    * 添加
    */
@@ -43,6 +46,7 @@ public class CouponController extends BaseController{
     coupon.setRemainNum(coupon.getCounts());
     coupon.setSendType(CouponSendType.NORMAL);
     coupon.setSystemType(SystemType.OPERATION);
+   /* coupon.setIsEnabled(true);*/
     couponService.save(coupon);
     return "redirect:list.jhtml";
   }
@@ -52,8 +56,15 @@ public class CouponController extends BaseController{
    */
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
-    model.addAttribute("coupon", couponService.find(id));
-    return "/coupon/edit";
+    Coupon coupon = couponService.find(id);
+    model.addAttribute("coupon", coupon);
+    if (CouponSendType.REG.equals(coupon.getSendType())
+        || CouponSendType.DEVICEBIND.equals(coupon.getSendType())) {
+      return "/coupon/edit4init";
+    } else {
+      return "/coupon/edit";
+    }
+
   }
 
   /**
@@ -61,15 +72,10 @@ public class CouponController extends BaseController{
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
   public String update(Coupon coupon) {
-	 Coupon temp = couponService.find(coupon.getId());
-	 temp.setRemainNum(coupon.getRemainNum());
-	 temp.setCounts(coupon.getCounts());
-	 temp.setIsEnabled(coupon.getIsEnabled());
-	 temp.setRemark(coupon.getRemark());
-	 temp.setDeadlineTime(coupon.getDeadlineTime());
-	 temp.setOverDueDay(coupon.getOverDueDay());
-	 temp.setOverDueTime(coupon.getOverDueTime());
-	 couponService.update(temp);
+    Coupon temp = couponService.find(coupon.getId());
+    temp.setIsEnabled(coupon.getIsEnabled());
+    temp.setDeadlineTime(coupon.getDeadlineTime());
+    couponService.update(temp);
     return "redirect:list.jhtml";
   }
 
@@ -78,6 +84,9 @@ public class CouponController extends BaseController{
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String list(Pageable pageable, ModelMap model) {
+    List<Filter> filters = new ArrayList<Filter>();
+    filters.add(Filter.eq("systemType", SystemType.OPERATION));
+    pageable.setFilters(filters);
     model.addAttribute("page", couponService.findPage(pageable));
     return "/coupon/list";
   }
@@ -92,7 +101,7 @@ public class CouponController extends BaseController{
     }
     return SUCCESS_MESSAGE;
   }
-  
-  
-  
+
+
+
 }

@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Message;
 import com.csh.beans.Setting;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.Admin;
 import com.csh.entity.Role;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.AdminService;
 import com.csh.service.RoleService;
 import com.csh.utils.SettingUtils;
 import com.csh.utils.SpringUtils;
@@ -35,6 +37,9 @@ public class RoleController extends BaseController {
   @Resource(name = "roleServiceImpl")
   private RoleService roleService;
 
+  @Resource(name="adminServiceImpl")
+  private AdminService adminService;
+  
   /**
    * 添加
    */
@@ -107,7 +112,9 @@ public class RoleController extends BaseController {
       for (Long id : ids) {
         Role role = roleService.find(id);
         if (role != null && role.getIsSystem()) {
-          return Message.error("admin.role.deleteExistNotAllowed", role.getName());
+          return Message.error("csh.role.deleteSystemNotAllowed", role.getName());
+        }else if (role != null && roleService.hasContainAdmin(role)) {
+            return Message.error("csh.role.deleteExistNotAllowed", role.getName());
         }
       }
       roleService.delete(ids);

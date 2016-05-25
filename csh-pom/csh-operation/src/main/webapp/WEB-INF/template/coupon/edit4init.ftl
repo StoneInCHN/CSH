@@ -9,33 +9,8 @@
 <link href="${base}/resources/style/style.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/common.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="${base}/resources/js/jquery.js"></script>
-<script type="text/javascript" src="${base}/resources/js/jquery.validate.js"></script>
-<script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
-<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
-<script type="text/javascript">
-$().ready(function() {
-
-	var $inputForm = $("#inputForm");
-	var $overDueType = $("#overDueType");
-	var $overDueDay = $("#overDueDay");
-	var $overDueTime = $("#overDueTime");
-	
-	// 表单验证
-	$inputForm.validate({
-		rules: {
-			deadlineTime:{
-				required: true
-			},
-			isEnabled: {
-				required: true
-			}
-		}	
-	});
-	
-});
-</script>
 </head>
 <body>
 	<div class="mainbar">
@@ -102,40 +77,6 @@ $().ready(function() {
 								</td>
 							</tr>
 							[/#if]
-							[#if coupon.overDueType== "BYDATE" ]
-							<tr >
-								<th>
-									${message("csh.coupon.overDueTime")}:
-								</th>
-								<td>
-									${coupon.overDueTime}
-								</td>
-							</tr>
-							[/#if]
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.coupon.deadlineTime")}:
-								</th>
-								<td>
-									<input type="text" name="deadlineTime" class="text Wdate" value="${coupon.deadlineTime}" onfocus="WdatePicker();" readonly maxlength="20" />
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.coupon.counts")}:
-								</th>
-								<td>
-									${coupon.counts}
-								</td>
-							</tr>
-							<tr>
-								<th>
-									${message("csh.coupon.remainNum")}:
-								</th>
-								<td>
-									${coupon.remainNum}
-								</td>
-							</tr>
 							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.coupon.isEnabled")}:

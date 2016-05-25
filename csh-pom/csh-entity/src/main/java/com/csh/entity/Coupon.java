@@ -124,6 +124,8 @@ public class Coupon extends BaseEntity {
   
   private SystemType systemType;
 
+  
+  
   @JsonProperty
   public Integer getRemainNum() {
     return remainNum;

@@ -11,7 +11,7 @@
 		value="http://apis.baidu.com/showapi_open_bus/oil_price/find" />
 	<setting name="vehicleOilAPIKey" value="7bb8ed487692b2c2dd290d477d879236" />
 	<!-- 分销商角色默认id -->
-	<setting name="defaultDistributorRoleId" value="2" />
+	<setting name="defaultDistributorRoleId" value="20" />
 	<setting name="siteName" value="车生活" />
 	<setting name="smtpFromMail" value="microctrllife@163.com" />
 	<setting name="smtpHost" value="smtp.163.com" />
@@ -20,7 +20,7 @@
 	<setting name="smtpPassword" value="o123456" />
 	<!-- 允许上传文件后缀名 -->
 	<setting name="uploadFileExtension" value="apk" />
-	<setting name="uploadImageExtension" value="png.jepg.gif" />
+	<setting name="uploadImageExtension" value="png,jepg,gif,jpg" />
 	<!-- 短信平台URL -->
 	<setting name="ucpaasUrl" value="https://api.ucpaas.com" />
 	<!-- 短信平台AccountId -->
@@ -42,7 +42,10 @@
 	<!-- 商家登陆地址(多租户系统地址) -->
 	<setting name="tenantLoginUrl" value="http://carlife.chcws.com/login.jsp" />	
 	
-	<setting name="imageMaxSize" value="4109996" />
+	<setting name="imageMaxSize" value="412000" />
+	
+	<!-- 消息推送接口 -->
+	<setting name="msgPushUrl" value="http://10.50.40.56:8081/csh-interface/message/pushMsg.jhtml" />
 	
 </csh>	
 	

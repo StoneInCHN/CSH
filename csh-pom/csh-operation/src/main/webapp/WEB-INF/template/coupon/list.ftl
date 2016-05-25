@@ -199,10 +199,18 @@
 														[/#if]
 													</td>
 													<td>
-														${coupon.counts}
+														[#if coupon.counts??]
+															${coupon.counts}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
-														${coupon.remainNum}
+														[#if coupon.remainNum??]
+															${coupon.remainNum}
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
 														<a href="edit.jhtml?id=${coupon.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
