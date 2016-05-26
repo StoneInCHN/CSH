@@ -2,6 +2,8 @@ package com.csh.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -155,7 +157,7 @@ public class CarServiceRecord extends BaseEntity {
    */
   private SystemType couponSource;
 
-
+  private Set<ItemPart> itemPart = new HashSet<ItemPart> ();
   @JsonProperty
   public SystemType getCouponSource() {
     return couponSource;

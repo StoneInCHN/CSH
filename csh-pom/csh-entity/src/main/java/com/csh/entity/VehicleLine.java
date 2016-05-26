@@ -62,6 +62,7 @@ public class VehicleLine extends BaseEntity {
 
   private MultipartFile iconFile;
 
+  private CarServiceItemPartsMap carServiceItemPartsMap;
   @OneToMany(mappedBy = "parent")
   public Set<VehicleLine> getChildren() {
     return children;
@@ -146,6 +147,18 @@ public class VehicleLine extends BaseEntity {
 
   public void setIconFile(MultipartFile iconFile) {
     this.iconFile = iconFile;
+  }
+
+  @ManyToOne
+  public CarServiceItemPartsMap getCarServiceItemPartsMap ()
+  {
+    return carServiceItemPartsMap;
+  }
+
+  public void setCarServiceItemPartsMap (
+      CarServiceItemPartsMap carServiceItemPartsMap)
+  {
+    this.carServiceItemPartsMap = carServiceItemPartsMap;
   }
   
   

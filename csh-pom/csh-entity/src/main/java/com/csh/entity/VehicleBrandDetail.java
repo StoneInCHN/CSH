@@ -74,7 +74,7 @@ public class VehicleBrandDetail extends BaseEntity
    */
   private OilType oilType;
   
-
+  private CarServiceItemPartsMap carServiceItemPartsMap;
   public Boolean getCanGetoil ()
   {
     return canGetoil;
@@ -169,6 +169,18 @@ public class VehicleBrandDetail extends BaseEntity
   public void setDisp (String disp)
   {
     this.disp = disp;
+  }
+
+  @ManyToOne
+  public CarServiceItemPartsMap getCarServiceItemPartsMap ()
+  {
+    return carServiceItemPartsMap;
+  }
+
+  public void setCarServiceItemPartsMap (
+      CarServiceItemPartsMap carServiceItemPartsMap)
+  {
+    this.carServiceItemPartsMap = carServiceItemPartsMap;
   }
   
 }
