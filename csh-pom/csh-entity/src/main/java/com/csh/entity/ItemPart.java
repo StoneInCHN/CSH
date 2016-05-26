@@ -2,9 +2,12 @@ package com.csh.entity;
 
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Index;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -46,12 +49,24 @@ public class ItemPart extends BaseEntity {
    */
   private BigDecimal price;
   
-  private CarServiceItemPartsMap carServiceItemPartsMap;
-
+  private CarServiceItem carServiceItem;
   /**
    * 是否默认选中
    */
   private Boolean isDefault;
+  
+  /**
+   * 关联车品牌
+   */
+  private Set<VehicleBrand> vehicleBrands;
+  /**
+   * 关联车系
+   */
+  private Set<VehicleLine> vehicleLines;
+  /**
+   * 关联车型
+   */
+  private Set<VehicleBrandDetail> vehicleBrandDetails;
   public Long getTenantID ()
   {
     return tenantID;
@@ -92,17 +107,6 @@ public class ItemPart extends BaseEntity {
     this.price = price;
   }
 
-  @OneToOne
-  public CarServiceItemPartsMap getCarServiceItemPartsMap ()
-  {
-    return carServiceItemPartsMap;
-  }
-
-  public void setCarServiceItemPartsMap (
-      CarServiceItemPartsMap carServiceItemPartsMap)
-  {
-    this.carServiceItemPartsMap = carServiceItemPartsMap;
-  }
 
   public Boolean getIsDefault ()
   {
@@ -112,6 +116,50 @@ public class ItemPart extends BaseEntity {
   public void setIsDefault (Boolean isDefault)
   {
     this.isDefault = isDefault;
+  }
+
+  @OneToMany
+  public Set<VehicleBrand> getVehicleBrands ()
+  {
+    return vehicleBrands;
+  }
+
+  public void setVehicleBrands (Set<VehicleBrand> vehicleBrands)
+  {
+    this.vehicleBrands = vehicleBrands;
+  }
+
+  @OneToMany
+  public Set<VehicleLine> getVehicleLines ()
+  {
+    return vehicleLines;
+  }
+
+  public void setVehicleLines (Set<VehicleLine> vehicleLines)
+  {
+    this.vehicleLines = vehicleLines;
+  }
+
+  @OneToMany
+  public Set<VehicleBrandDetail> getVehicleBrandDetails ()
+  {
+    return vehicleBrandDetails;
+  }
+
+  public void setVehicleBrandDetails (Set<VehicleBrandDetail> vehicleBrandDetails)
+  {
+    this.vehicleBrandDetails = vehicleBrandDetails;
+  }
+
+  @ManyToOne
+  public CarServiceItem getCarServiceItem ()
+  {
+    return carServiceItem;
+  }
+
+  public void setCarServiceItem (CarServiceItem carServiceItem)
+  {
+    this.carServiceItem = carServiceItem;
   }
   
 }

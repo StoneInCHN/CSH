@@ -50,7 +50,7 @@ public class CarServiceItem extends BaseEntity {
    */
   private CarService carService;
   
-  private Set<CarServiceItemPartsMap> carServiceItemPartsMaps = new HashSet<CarServiceItemPartsMap> ();
+  private Set<ItemPart> itemParts = new HashSet<ItemPart> ();
 
   public Long getTenantID ()
   {
@@ -104,15 +104,15 @@ public class CarServiceItem extends BaseEntity {
   }
 
   @OneToMany
-  public Set<CarServiceItemPartsMap> getCarServiceItemPartsMaps ()
+  public Set<ItemPart> getItemParts ()
   {
-    return carServiceItemPartsMaps;
+    return itemParts;
   }
 
-  public void setCarServiceItemPartsMaps (
-      Set<CarServiceItemPartsMap> carServiceItemPartsMaps)
+  public void setItemParts (Set<ItemPart> itemParts)
   {
-    this.carServiceItemPartsMaps = carServiceItemPartsMaps;
+    this.itemParts = itemParts;
   }
+
   
 }

@@ -55,7 +55,11 @@ public class VehicleBrand extends BaseEntity {
 
   private Set<VehicleLine> children = new HashSet<VehicleLine>();
 
-  private CarServiceItemPartsMap carServiceItemPartsMap;
+  /**
+   * 服务项配件
+   */
+  private ItemPart itemPart;
+  
   @JsonProperty
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer(
       impl = IKAnalyzer.class))
@@ -108,15 +112,15 @@ public class VehicleBrand extends BaseEntity {
   }
 
   @ManyToOne
-  public CarServiceItemPartsMap getCarServiceItemPartsMap ()
+  public ItemPart getItemPart ()
   {
-    return carServiceItemPartsMap;
+    return itemPart;
   }
 
-  public void setCarServiceItemPartsMap (
-      CarServiceItemPartsMap carServiceItemPartsMap)
+  public void setItemPart (ItemPart itemPart)
   {
-    this.carServiceItemPartsMap = carServiceItemPartsMap;
+    this.itemPart = itemPart;
   }
+
 
 }
