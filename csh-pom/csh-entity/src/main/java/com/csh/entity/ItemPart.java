@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Index;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -67,6 +68,11 @@ public class ItemPart extends BaseEntity {
    * 关联车型
    */
   private Set<VehicleBrandDetail> vehicleBrandDetails;
+  
+  /***
+   * 服务记录
+   */
+  private Set<CarServiceRecord> carServiceRecords;
   public Long getTenantID ()
   {
     return tenantID;
@@ -160,6 +166,17 @@ public class ItemPart extends BaseEntity {
   public void setCarServiceItem (CarServiceItem carServiceItem)
   {
     this.carServiceItem = carServiceItem;
+  }
+
+  @ManyToMany(mappedBy = "itemParts")
+  public Set<CarServiceRecord> getCarServiceRecords ()
+  {
+    return carServiceRecords;
+  }
+
+  public void setCarServiceRecords (Set<CarServiceRecord> carServiceRecords)
+  {
+    this.carServiceRecords = carServiceRecords;
   }
   
 }

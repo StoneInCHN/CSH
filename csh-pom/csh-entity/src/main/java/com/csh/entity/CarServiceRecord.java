@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -157,7 +158,7 @@ public class CarServiceRecord extends BaseEntity {
    */
   private SystemType couponSource;
 
-  private Set<ItemPart> itemPart = new HashSet<ItemPart> ();
+  private Set<ItemPart> itemParts = new HashSet<ItemPart> ();
   @JsonProperty
   public SystemType getCouponSource() {
     return couponSource;
@@ -402,6 +403,17 @@ public class CarServiceRecord extends BaseEntity {
 
   public void setVehicle(Vehicle vehicle) {
     this.vehicle = vehicle;
+  }
+
+  @ManyToMany
+  public Set<ItemPart> getItemParts ()
+  {
+    return itemParts;
+  }
+
+  public void setItemParts (Set<ItemPart> itemParts)
+  {
+    this.itemParts = itemParts;
   }
 
 
