@@ -63,7 +63,7 @@ public class VehicleLine extends BaseEntity {
 
   private MultipartFile iconFile;
 
-//  private Set<ItemPart> itemParts;
+  private Set<ItemPart> itemParts;
   
   @OneToMany(mappedBy = "parent")
   public Set<VehicleLine> getChildren() {
@@ -151,15 +151,15 @@ public class VehicleLine extends BaseEntity {
     this.iconFile = iconFile;
   }
 
-//  @ManyToMany(mappedBy = "vehicleLines")
-//  public Set<ItemPart> getItemParts ()
-//  {
-//    return itemParts;
-//  }
-//
-//  public void setItemParts (Set<ItemPart> itemParts)
-//  {
-//    this.itemParts = itemParts;
-//  }
+  @ManyToMany(mappedBy = "vehicleLines")
+  public Set<ItemPart> getItemParts ()
+  {
+    return itemParts;
+  }
+
+  public void setItemParts (Set<ItemPart> itemParts)
+  {
+    this.itemParts = itemParts;
+  }
 
 }

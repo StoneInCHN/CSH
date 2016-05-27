@@ -59,7 +59,7 @@ public class VehicleBrand extends BaseEntity {
   /**
    * 服务项配件
    */
-//  private Set<ItemPart> itemParts;
+  private Set<ItemPart> itemParts;
   
   @JsonProperty
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer(
@@ -112,16 +112,16 @@ public class VehicleBrand extends BaseEntity {
     this.iconFile = iconFile;
   }
 
-//  @ManyToMany(mappedBy = "vehicleBrands")
-//  public Set<ItemPart> getItemParts ()
-//  {
-//    return itemParts;
-//  }
-//
-//  public void setItemParts (Set<ItemPart> itemParts)
-//  {
-//    this.itemParts = itemParts;
-//  }
+  @ManyToMany(mappedBy = "vehicleBrands")
+  public Set<ItemPart> getItemParts ()
+  {
+    return itemParts;
+  }
+
+  public void setItemParts (Set<ItemPart> itemParts)
+  {
+    this.itemParts = itemParts;
+  }
 
 
 

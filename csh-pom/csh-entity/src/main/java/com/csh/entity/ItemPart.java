@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Index;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -118,7 +119,7 @@ public class ItemPart extends BaseEntity {
     this.isDefault = isDefault;
   }
 
-  @OneToMany(mappedBy = "itemPart")
+  @ManyToMany
   public Set<VehicleBrand> getVehicleBrands ()
   {
     return vehicleBrands;
@@ -129,7 +130,7 @@ public class ItemPart extends BaseEntity {
     this.vehicleBrands = vehicleBrands;
   }
 
-  @OneToMany(mappedBy = "itemPart")
+  @ManyToMany
   public Set<VehicleLine> getVehicleLines ()
   {
     return vehicleLines;
@@ -140,7 +141,7 @@ public class ItemPart extends BaseEntity {
     this.vehicleLines = vehicleLines;
   }
 
-  @OneToMany(mappedBy = "itemPart")
+  @ManyToMany
   public Set<VehicleBrandDetail> getVehicleBrandDetails ()
   {
     return vehicleBrandDetails;

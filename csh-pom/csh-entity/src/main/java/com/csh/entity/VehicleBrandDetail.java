@@ -75,7 +75,7 @@ public class VehicleBrandDetail extends BaseEntity
    */
   private OilType oilType;
   
-//  private Set<ItemPart> itemParts;
+  private Set<ItemPart> itemParts;
   public Boolean getCanGetoil ()
   {
     return canGetoil;
@@ -172,15 +172,15 @@ public class VehicleBrandDetail extends BaseEntity
     this.disp = disp;
   }
 
-//  @ManyToMany(mappedBy = "vehicleBrandDetails")
-//  public Set<ItemPart> getItemParts ()
-//  {
-//    return itemParts;
-//  }
-//
-//  public void setItemParts (Set<ItemPart> itemParts)
-//  {
-//    this.itemParts = itemParts;
-//  }
+  @ManyToMany(mappedBy = "vehicleBrandDetails")
+  public Set<ItemPart> getItemParts ()
+  {
+    return itemParts;
+  }
+
+  public void setItemParts (Set<ItemPart> itemParts)
+  {
+    this.itemParts = itemParts;
+  }
 
 }
