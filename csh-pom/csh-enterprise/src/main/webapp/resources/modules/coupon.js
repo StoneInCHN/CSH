@@ -610,6 +610,10 @@ $(function(){
 		      {title:message("csh.coupon.amount"),field:"amount",sortable:true},
 		      {title:message("csh.coupon.counts"),field:"counts",sortable:true},
 		      {title:message("csh.coupon.remainNum"),field:"remainNum",sortable:true},
+		      {title:message("csh.coupon.claimedNum"),field:"claimedNum",sortable:true,
+		    	  formatter:function(value,row,index){
+		    		 return row.counts-row.remainNum
+		    	  }},
 		      {title:message("csh.coupon.type"),field:"type",sortable:true,
 		    	  formatter:function(value,row,index){
 		    		  if(value =="COMMON"){

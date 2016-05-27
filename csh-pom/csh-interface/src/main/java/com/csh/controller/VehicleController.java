@@ -268,12 +268,12 @@ public class VehicleController extends MobileBaseController {
 
     Vehicle vehicle = vehicleService.find(vehicleId);
     if (vehicle.getTenantID() != null) {
-      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setCode(CommonAttributes.FAIL_VEHICLE_BIND_TENANT);
       response.setDesc(Message.error("csh.vehicle.binded").getContent());
       return response;
     }
     vehicle.setTenantID(tenantId);
-    vehicleService.bindTenant(vehicle);
+    Vehicle v = vehicleService.bindTenant(vehicle);
 
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
       LogUtil.debug(VehicleController.class, "Update",
@@ -282,6 +282,7 @@ public class VehicleController extends MobileBaseController {
     App app = appService.getTenantAppById(tenantId);
     String[] properties = {"appTitleName"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, app);
+    map.put("isGetCoupon", v.getIsGetCoupon());
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);

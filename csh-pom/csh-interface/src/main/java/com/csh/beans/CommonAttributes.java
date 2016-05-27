@@ -74,6 +74,9 @@ public final class CommonAttributes {
 
   /** 优惠券已领完 */
   public static final String FAIL_COUPON_NO_REMAIN = "0017"; // 优惠券已领完
+  
+  /** 车辆已经绑定租户 */
+  public static final String FAIL_VEHICLE_BIND_TENANT = "0018";// 车辆已经绑定租户
 
   /** 操作失败 */
   public static final String FAIL_COMMON = "1000"; // 操作失败
