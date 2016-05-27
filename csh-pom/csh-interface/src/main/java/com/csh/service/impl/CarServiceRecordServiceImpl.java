@@ -121,7 +121,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       carServiceRecord.setDiscountPrice(discountPrice);
       carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
       // couponEndUser.setIsUsed(true);
-      couponEndUserDao.merge(couponEndUser);
+      // couponEndUserDao.merge(couponEndUser);
     } else {
       carServiceRecord.setDiscountPrice(price);
     }
@@ -282,6 +282,16 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   public CarServiceRecord updateServiceRecord(CarServiceRecord carServiceRecord,
       CouponEndUser couponEndUser) {
     if (couponEndUser != null) {
+      List<Filter> filters = new ArrayList<Filter>();
+      Filter filter = new Filter("couponEndUser", Operator.eq, couponEndUser);
+      filters.add(filter);
+      List<CarServiceRecord> list = carServiceRecordDao.findList(null, null, filters, null);
+      for (CarServiceRecord record : list) {
+        record.setCouponEndUser(null);
+        record.setCouponSource(null);
+        record.setDiscountPrice(null);
+        carServiceRecordDao.merge(record);
+      }
       carServiceRecord.setCouponEndUser(couponEndUser);
       BigDecimal discountPrice =
           carServiceRecord.getPrice().subtract(couponEndUser.getCoupon().getAmount());
@@ -290,7 +300,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       carServiceRecord.setDiscountPrice(discountPrice);
       carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
       // couponEndUser.setIsUsed(true);
-      couponEndUserDao.merge(couponEndUser);
+      // couponEndUserDao.merge(couponEndUser);
     } else {
       carServiceRecord.setCouponSource(null);
       carServiceRecord.setCouponEndUser(null);
