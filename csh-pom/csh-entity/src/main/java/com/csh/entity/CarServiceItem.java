@@ -103,7 +103,7 @@ public class CarServiceItem extends BaseEntity {
     this.carService = carService;
   }
 
-  @OneToMany
+  @OneToMany(mappedBy = "carServiceItem")
   public Set<ItemPart> getItemParts ()
   {
     return itemParts;

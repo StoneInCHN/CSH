@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -62,7 +63,7 @@ public class VehicleLine extends BaseEntity {
 
   private MultipartFile iconFile;
 
-  private ItemPart itemPart;
+//  private Set<ItemPart> itemParts;
   
   @OneToMany(mappedBy = "parent")
   public Set<VehicleLine> getChildren() {
@@ -150,15 +151,15 @@ public class VehicleLine extends BaseEntity {
     this.iconFile = iconFile;
   }
 
-  @ManyToOne
-  public ItemPart getItemPart ()
-  {
-    return itemPart;
-  }
-
-  public void setItemPart (ItemPart itemPart)
-  {
-    this.itemPart = itemPart;
-  }
+//  @ManyToMany(mappedBy = "vehicleLines")
+//  public Set<ItemPart> getItemParts ()
+//  {
+//    return itemParts;
+//  }
+//
+//  public void setItemParts (Set<ItemPart> itemParts)
+//  {
+//    this.itemParts = itemParts;
+//  }
 
 }

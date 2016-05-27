@@ -6,10 +6,8 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Index;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -69,10 +67,6 @@ public class ItemPart extends BaseEntity {
    */
   private Set<VehicleBrandDetail> vehicleBrandDetails;
   
-  /***
-   * 服务记录
-   */
-  private Set<CarServiceRecord> carServiceRecords;
   public Long getTenantID ()
   {
     return tenantID;
@@ -124,7 +118,7 @@ public class ItemPart extends BaseEntity {
     this.isDefault = isDefault;
   }
 
-  @OneToMany
+  @OneToMany(mappedBy = "itemPart")
   public Set<VehicleBrand> getVehicleBrands ()
   {
     return vehicleBrands;
@@ -135,7 +129,7 @@ public class ItemPart extends BaseEntity {
     this.vehicleBrands = vehicleBrands;
   }
 
-  @OneToMany
+  @OneToMany(mappedBy = "itemPart")
   public Set<VehicleLine> getVehicleLines ()
   {
     return vehicleLines;
@@ -146,7 +140,7 @@ public class ItemPart extends BaseEntity {
     this.vehicleLines = vehicleLines;
   }
 
-  @OneToMany
+  @OneToMany(mappedBy = "itemPart")
   public Set<VehicleBrandDetail> getVehicleBrandDetails ()
   {
     return vehicleBrandDetails;
@@ -168,15 +162,5 @@ public class ItemPart extends BaseEntity {
     this.carServiceItem = carServiceItem;
   }
 
-  @ManyToMany(mappedBy = "itemParts")
-  public Set<CarServiceRecord> getCarServiceRecords ()
-  {
-    return carServiceRecords;
-  }
-
-  public void setCarServiceRecords (Set<CarServiceRecord> carServiceRecords)
-  {
-    this.carServiceRecords = carServiceRecords;
-  }
   
 }

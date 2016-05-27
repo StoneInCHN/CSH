@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -58,7 +59,7 @@ public class VehicleBrand extends BaseEntity {
   /**
    * 服务项配件
    */
-  private ItemPart itemPart;
+//  private Set<ItemPart> itemParts;
   
   @JsonProperty
   @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer(
@@ -111,16 +112,17 @@ public class VehicleBrand extends BaseEntity {
     this.iconFile = iconFile;
   }
 
-  @ManyToOne
-  public ItemPart getItemPart ()
-  {
-    return itemPart;
-  }
+//  @ManyToMany(mappedBy = "vehicleBrands")
+//  public Set<ItemPart> getItemParts ()
+//  {
+//    return itemParts;
+//  }
+//
+//  public void setItemParts (Set<ItemPart> itemParts)
+//  {
+//    this.itemParts = itemParts;
+//  }
 
-  public void setItemPart (ItemPart itemPart)
-  {
-    this.itemPart = itemPart;
-  }
 
 
 }

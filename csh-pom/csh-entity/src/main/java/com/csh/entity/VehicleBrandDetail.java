@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -74,7 +75,7 @@ public class VehicleBrandDetail extends BaseEntity
    */
   private OilType oilType;
   
-  private ItemPart itemPart;
+//  private Set<ItemPart> itemParts;
   public Boolean getCanGetoil ()
   {
     return canGetoil;
@@ -171,15 +172,15 @@ public class VehicleBrandDetail extends BaseEntity
     this.disp = disp;
   }
 
-  @ManyToOne
-  public ItemPart getItemPart ()
-  {
-    return itemPart;
-  }
-
-  public void setItemPart (ItemPart itemPart)
-  {
-    this.itemPart = itemPart;
-  }
+//  @ManyToMany(mappedBy = "vehicleBrandDetails")
+//  public Set<ItemPart> getItemParts ()
+//  {
+//    return itemParts;
+//  }
+//
+//  public void setItemParts (Set<ItemPart> itemParts)
+//  {
+//    this.itemParts = itemParts;
+//  }
 
 }

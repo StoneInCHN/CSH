@@ -205,7 +205,7 @@ public class CarService extends BaseEntity {
     this.serviceStatus = serviceStatus;
   }
 
-  @OneToMany
+  @OneToMany(mappedBy = "carService")
   public Set<CarServiceItem> getCarServiceItems ()
   {
     return carServiceItems;
