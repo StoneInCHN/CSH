@@ -34,8 +34,35 @@ public class TenantInfoRequest extends BaseRequest {
   private Long serviceCategoryId;
 
 
+  /**
+   * 服务ID
+   */
+  private Long serviceId;
+  
+  /**
+   * 车型ID
+   */
+  private Long brandDetailId;
+  
+
+public Long getBrandDetailId() {
+	return brandDetailId;
+}
+
+public void setBrandDetailId(Long brandDetailId) {
+	this.brandDetailId = brandDetailId;
+}
+
+public Long getServiceId() {
+	return serviceId;
+  }
+
+  public void setServiceId(Long serviceId) {
+	   this.serviceId = serviceId;
+  }
+	
   public Long getRecordId() {
-    return recordId;
+	   return recordId;
   }
 
   public void setRecordId(Long recordId) {

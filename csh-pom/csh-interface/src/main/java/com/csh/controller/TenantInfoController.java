@@ -35,6 +35,7 @@ import com.csh.json.request.TenantInfoRequest;
 import com.csh.service.AppService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
+import com.csh.service.ItemPartService;
 import com.csh.service.TenantInfoJdbcService;
 import com.csh.service.TenantInfoService;
 import com.csh.utils.FieldFilterUtils;
@@ -60,6 +61,10 @@ public class TenantInfoController extends MobileBaseController {
 
   @Resource(name = "carServiceServiceImpl")
   private CarServiceService carServiceService;
+  
+  @Resource(name = "itemPartServiceImpl")
+  private ItemPartService itemPartService;
+  
 
   /**
    * 租户列表
@@ -264,4 +269,37 @@ public class TenantInfoController extends MobileBaseController {
     return response;
   }
 
+  /**
+   * 服务详情
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getServiceById", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getServiceById(
+      @RequestBody TenantInfoRequest tenantInfoReq) {
+
+	ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = tenantInfoReq.getUserId();
+    String token = tenantInfoReq.getToken();
+    Long serviceId = tenantInfoReq.getServiceId();
+    Long brandDetailId = tenantInfoReq.getBrandDetailId();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    CarService carService = carServiceService.find(serviceId);
+    List<Map<String, Object>> serviceMap = itemPartService.getItemPartMaps(carService, brandDetailId);
+    response.setMsg(serviceMap);
+    String newtoken = TokenGenerator.generateToken(tenantInfoReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 }
