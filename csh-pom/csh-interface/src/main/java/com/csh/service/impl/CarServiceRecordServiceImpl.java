@@ -100,7 +100,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setTenantPhoto(carService.getTenantInfo().getPhoto());
     carServiceRecord.setSubscribeDate(subscribeDate);
     carServiceRecord.setPaymentType(paymentType);
-    carServiceRecord.setPaymentDate(new Date());
+    // carServiceRecord.setPaymentDate(new Date());
 
     if (couponEndUser != null) {
       List<Filter> filters = new ArrayList<Filter>();

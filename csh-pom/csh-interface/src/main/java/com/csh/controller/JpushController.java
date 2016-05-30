@@ -1,6 +1,7 @@
 package com.csh.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,13 +20,17 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.ApkVersion;
+import com.csh.entity.Coupon;
 import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.paging.Page;
+import com.csh.framework.paging.Pageable;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.JpushRequest;
 import com.csh.service.ApkVersionService;
+import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
@@ -43,6 +48,8 @@ public class JpushController extends MobileBaseController {
   @Resource(name = "apkVersionServiceImpl")
   private ApkVersionService apkVersionService;
 
+  @Resource(name = "couponServiceImpl")
+  private CouponService couponService;
 
 
   /**
@@ -95,12 +102,28 @@ public class JpushController extends MobileBaseController {
           jPushRegId, appPlatform);
     }
 
+    Map<String, Object> map = new HashMap<String, Object>();
     ApkVersion version = apkVersionService.getNewVersion(versionCode);
-    if (version != null) {
-      String[] properties = {"id", "versionName", "versionCode", "apkPath", "updateContent"};
-      Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, version);
-      response.setMsg(map);
+    String[] properties = {"id", "versionName", "versionCode", "apkPath", "updateContent"};
+    map = FieldFilterUtils.filterEntityMap(properties, version);
+
+    map.put("hasCoupon", false);
+    Long tenantId = null;
+    if (endUser.getDefaultVehicle() != null) {
+      tenantId = endUser.getDefaultVehicle().getTenantID();
     }
+    Pageable pageable = new Pageable();
+    Page<Coupon> coupons = couponService.getCouponList(pageable, tenantId);
+    if (coupons.getContent() != null && coupons.getContent().size() > 0) {
+      for (Coupon coupon : coupons.getContent()) {
+        Boolean isGet = couponService.isUserGetCoupon(coupon.getId(), endUser);
+        if (!isGet) {
+          map.put("hasCoupon", true);
+          break;
+        }
+      }
+    }
+    response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(req.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);

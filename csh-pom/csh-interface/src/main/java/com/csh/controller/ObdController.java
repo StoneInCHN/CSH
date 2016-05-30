@@ -26,6 +26,7 @@ import com.csh.utils.ApiUtils;
 import com.csh.utils.LatLonUtil;
 import com.csh.utils.TokenGenerator;
 import com.csh.utils.ToolsUtils;
+import com.csh.utils.VehicleUtil;
 
 /**
  * Control odb设备
@@ -80,18 +81,21 @@ public class ObdController extends MobileBaseController {
         LogUtil.debug(ObdController.class, "vehicleTrends",
             "Receive the msg from obd. deviceNo: %s, Msg: %s", deviceNo, msg);
       }
-      Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
-      if (flag) {
-        DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
-        Double mileAge = (Double) msg.get("mileAge");
-        if (deviceInfo.getVehicle() != null && deviceInfo.getVehicle().getDriveMileage() != null) {
-          msg.put("mileAge", mileAge + deviceInfo.getVehicle().getDriveMileage());
-        }
+      if (msg != null) {
+        Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
+        if (flag) {
+          DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+          Double mileAge = (Double) msg.get("mileAge");
+          if (deviceInfo.getVehicle() != null && deviceInfo.getVehicle().getDriveMileage() != null) {
+            msg.put("mileAge", mileAge + deviceInfo.getVehicle().getDriveMileage());
+          }
 
+        }
+        Map<String, Object> xy =
+            LatLonUtil.convertCoordinate(msg.get("lon").toString(), msg.get("lat").toString());
+        msg.putAll(xy);
       }
-      Map<String, Object> xy =
-          LatLonUtil.convertCoordinate(msg.get("lon").toString(), msg.get("lat").toString());
-      msg.putAll(xy);
+
       response.setMsg(msg);
     } catch (Exception e) {
       e.printStackTrace();
@@ -134,13 +138,35 @@ public class ObdController extends MobileBaseController {
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
       Map<String, Object> msg = (Map<String, Object>) map.get("msg");
-
-      BigDecimal cost = new BigDecimal(0);
-      DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
-      cost =
-          vehicleOilService.calOilCost(new BigDecimal((Double) msg.get("fuelConsumption")),
-              deviceInfo);
-      msg.put("cost", cost);
+      if (LogUtil.isDebugEnabled(ObdController.class)) {
+        LogUtil.debug(ObdController.class, "oneKeyDetection",
+            "Receive the msg from obd. deviceNo: %s,Date: %s, Msg: %s", deviceNo, searchDate, msg);
+      }
+      if (msg != null) {
+        Integer score =
+            VehicleUtil.getScore((Integer) msg.get("rapidlyspeedupcount"),
+                (Integer) msg.get("emergencybrakecount"), (Integer) msg.get("suddenturncount"),
+                (Integer) msg.get("fatiguedrivingcount"), (Double) msg.get("mileAge"));
+        if (score != -1) {
+          msg.put("drivingScore", score);
+        } else {
+          msg.put("drivingScore", "-");
+        }
+        Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
+        if (flag) {
+          DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+          Double mileAge = (Double) msg.get("totalMileAge");
+          if (deviceInfo.getVehicle() != null && deviceInfo.getVehicle().getDriveMileage() != null) {
+            msg.put("totalMileAge", mileAge + deviceInfo.getVehicle().getDriveMileage());
+          }
+        }
+        BigDecimal cost = new BigDecimal(0);
+        DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+        cost =
+            vehicleOilService.calOilCost(new BigDecimal((Double) msg.get("fuelConsumption")),
+                deviceInfo);
+        msg.put("cost", cost);
+      }
       response.setMsg(msg);
     } catch (Exception e) {
       e.printStackTrace();
@@ -182,16 +208,21 @@ public class ObdController extends MobileBaseController {
       String res = ApiUtils.post(url);
       Map<String, Object> map = ToolsUtils.convertStrToJson(res);
       Map<String, Object> msg = (Map<String, Object>) map.get("msg");
-      Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
-      if (flag) {
-        DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
-        Double mileAge = (Double) msg.get("totalMileAge");
-        if (deviceInfo.getVehicle() != null && deviceInfo.getVehicle().getDriveMileage() != null) {
-          msg.put("totalMileAge", mileAge + deviceInfo.getVehicle().getDriveMileage());
-        }
-
+      if (LogUtil.isDebugEnabled(ObdController.class)) {
+        LogUtil.debug(ObdController.class, "vehicleScan",
+            "Receive the msg from obd. deviceNo: %s,Msg: %s", deviceNo, msg);
       }
+      if (msg != null) {
+        Boolean flag = (Boolean) msg.get("isNeedToAddInitMileAge");
+        if (flag) {
+          DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+          Double mileAge = (Double) msg.get("totalMileAge");
+          if (deviceInfo.getVehicle() != null && deviceInfo.getVehicle().getDriveMileage() != null) {
+            msg.put("totalMileAge", mileAge + deviceInfo.getVehicle().getDriveMileage());
+          }
 
+        }
+      }
       response.setMsg(msg);
     } catch (Exception e) {
       e.printStackTrace();
