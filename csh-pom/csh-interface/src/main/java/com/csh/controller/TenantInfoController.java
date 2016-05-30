@@ -61,10 +61,10 @@ public class TenantInfoController extends MobileBaseController {
 
   @Resource(name = "carServiceServiceImpl")
   private CarServiceService carServiceService;
-  
+
   @Resource(name = "itemPartServiceImpl")
   private ItemPartService itemPartService;
-  
+
 
   /**
    * 租户列表
@@ -280,7 +280,7 @@ public class TenantInfoController extends MobileBaseController {
   public @ResponseBody ResponseMultiple<Map<String, Object>> getServiceById(
       @RequestBody TenantInfoRequest tenantInfoReq) {
 
-	ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Long userId = tenantInfoReq.getUserId();
     String token = tenantInfoReq.getToken();
     Long serviceId = tenantInfoReq.getServiceId();
@@ -293,8 +293,17 @@ public class TenantInfoController extends MobileBaseController {
       return response;
     }
 
+    if (LogUtil.isDebugEnabled(TenantInfoController.class)) {
+      LogUtil
+          .debug(
+              TenantInfoController.class,
+              "getServiceById",
+              "search tenant service detail for User Vehicle with UserId: %s,brandDetailId: %s,serviceId: %s",
+              userId, brandDetailId, serviceId);
+    }
     CarService carService = carServiceService.find(serviceId);
-    List<Map<String, Object>> serviceMap = itemPartService.getItemPartMaps(carService, brandDetailId);
+    List<Map<String, Object>> serviceMap =
+        itemPartService.getItemPartMaps(carService, brandDetailId);
     response.setMsg(serviceMap);
     String newtoken = TokenGenerator.generateToken(tenantInfoReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
