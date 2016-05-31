@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.csh.common.log.LogUtil;
 import com.csh.dao.AdvanceDepositsDao;
 import com.csh.dao.EndUserDao;
 import com.csh.dao.ReportUserRegStatisticsDao;
@@ -59,16 +58,16 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
 
   @Override
   public String getEndUserToken(Long id) {
-    EndUser endUser = endUserDao.find(id);
-    if (AccountStatus.LOCKED.equals(endUser.getAccountStatus())
-        || AccountStatus.DELETE.equals(endUser.getAccountStatus())) {
-      if (LogUtil.isDebugEnabled(EndUserServiceImpl.class)) {
-        LogUtil.debug(EndUserServiceImpl.class, "check EndUser Account Status",
-            "The endUser is in disabled or delete status. endUser ID: %s, accountStatus: %s",
-            id.toString(), endUser.getAccountStatus().toString());
-      }
-      return null;
-    }
+    // EndUser endUser = endUserDao.find(id);
+    // if (AccountStatus.LOCKED.equals(endUser.getAccountStatus())
+    // || AccountStatus.DELETE.equals(endUser.getAccountStatus())) {
+    // if (LogUtil.isDebugEnabled(EndUserServiceImpl.class)) {
+    // LogUtil.debug(EndUserServiceImpl.class, "check EndUser Account Status",
+    // "The endUser is in disabled or delete status. endUser ID: %s, accountStatus: %s",
+    // id.toString(), endUser.getAccountStatus().toString());
+    // }
+    // return null;
+    // }
     return endUserDao.getEndUserToken(id);
   }
 

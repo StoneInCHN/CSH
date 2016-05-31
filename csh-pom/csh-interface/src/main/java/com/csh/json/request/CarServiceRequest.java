@@ -43,6 +43,19 @@ public class CarServiceRequest extends BaseRequest {
    */
   private Long couponId;
 
+  /**
+   * 具体服务项IDs
+   */
+  private Long[] itemIds;
+
+
+  public Long[] getItemIds() {
+    return itemIds;
+  }
+
+  public void setItemIds(Long[] itemIds) {
+    this.itemIds = itemIds;
+  }
 
   public Long getCouponId() {
     return couponId;

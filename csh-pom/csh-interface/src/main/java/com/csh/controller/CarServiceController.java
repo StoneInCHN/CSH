@@ -83,6 +83,7 @@ public class CarServiceController extends MobileBaseController {
     Long userId = serviceReq.getUserId();
     String token = serviceReq.getToken();
     ChargeStatus chargeStatus = serviceReq.getChargeStatus();
+    Long[] itemIds = serviceReq.getItemIds();
     if (chargeStatus == null) {
       chargeStatus = ChargeStatus.RESERVATION;
     }
@@ -113,7 +114,7 @@ public class CarServiceController extends MobileBaseController {
     }
     CarServiceRecord carServiceRecord =
         carServiceRecordService.createServiceRecord(endUser, carService, chargeStatus,
-            new BigDecimal(-1), null, subscribeDate, null);
+            new BigDecimal(-1), null, subscribeDate, null, itemIds);
 
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
       LogUtil
@@ -248,7 +249,7 @@ public class CarServiceController extends MobileBaseController {
       }
       carServiceRecord =
           carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
-              carService.getPromotionPrice(), paymentType, null, couponEndUser);
+              carService.getPromotionPrice(), paymentType, null, couponEndUser, null);
 
     } else {
       carServiceRecord = carServiceRecordService.find(recordId);

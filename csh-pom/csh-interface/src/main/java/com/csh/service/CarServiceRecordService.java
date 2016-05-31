@@ -39,7 +39,7 @@ public interface CarServiceRecordService extends BaseService<CarServiceRecord, L
    */
   public CarServiceRecord createServiceRecord(EndUser endUser, CarService carService,
       ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType, Date subscribeDate,
-      CouponEndUser couponEndUser);
+      CouponEndUser couponEndUser, Long[] itemIds);
 
 
   /**

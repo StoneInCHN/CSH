@@ -37,6 +37,10 @@ public class VehicleOilServiceImpl extends BaseServiceImpl<VehicleOil, Long> imp
     }
     plate = plate.substring(0, 1);
     OilType oilType = deviceInfo.getVehicle().getVehicleBrandDetail().getOilType();
+    if (oilType == null) {
+      // 默认93号汽油
+      oilType = OilType.P93;
+    }
     List<Filter> filters = new ArrayList<Filter>();
     Filter plateFilter = new Filter("shortPlate", Operator.eq, plate);
     Filter oilTypeFilter = new Filter("oilType", Operator.eq, oilType);

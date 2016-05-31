@@ -207,6 +207,7 @@ public class TenantInfoController extends MobileBaseController {
       if (!categoryNames.contains(carService.getServiceCategory().getCategoryName())
           && ServiceStatus.ENABLED.equals(carService.getServiceStatus())) {
         categoryNames.add(carService.getServiceCategory().getCategoryName());
+        category_map.put("categoryId", carService.getServiceCategory().getId());
         category_map.put("categoryName", carService.getServiceCategory().getCategoryName());
         sub_service_map = FieldFilterUtils.filterEntityMap(service_properties, carService);
 
@@ -217,7 +218,6 @@ public class TenantInfoController extends MobileBaseController {
               carService.getServiceCategory().getCategoryName())) {
             sub_service_maps = (List<Map<String, Object>>) serviceMap.get("subServices");
             sub_service_map = FieldFilterUtils.filterEntityMap(service_properties, carService);
-
           }
         }
       }
@@ -284,7 +284,6 @@ public class TenantInfoController extends MobileBaseController {
     Long userId = tenantInfoReq.getUserId();
     String token = tenantInfoReq.getToken();
     Long serviceId = tenantInfoReq.getServiceId();
-    Long brandDetailId = tenantInfoReq.getBrandDetailId();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -293,13 +292,21 @@ public class TenantInfoController extends MobileBaseController {
       return response;
     }
 
+    EndUser endUser = endUserService.find(userId);
+    if (endUser.getDefaultVehicle() == null) {
+      response.setCode(CommonAttributes.FAIL_DEFAULT_VEHICLE);
+      response.setDesc(Message.error("csh.default.vehicle.not.exist").getContent());
+      return response;
+    }
+
+    Long brandDetailId = endUser.getDefaultVehicle().getVehicleBrandDetail().getId();
     if (LogUtil.isDebugEnabled(TenantInfoController.class)) {
       LogUtil
           .debug(
               TenantInfoController.class,
               "getServiceById",
-              "search tenant service detail for User Vehicle with UserId: %s,brandDetailId: %s,serviceId: %s",
-              userId, brandDetailId, serviceId);
+              "search tenant service detail for User Vehicle with UserName: %s,brandDetailId: %s,serviceId: %s",
+              endUser.getUserName(), brandDetailId, serviceId);
     }
     CarService carService = carServiceService.find(serviceId);
     List<Map<String, Object>> serviceMap =

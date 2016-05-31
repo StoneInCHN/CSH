@@ -15,14 +15,18 @@ import com.csh.beans.Message;
 import com.csh.beans.Setting;
 import com.csh.dao.BeautifyReservationDao;
 import com.csh.dao.CarServiceRecordDao;
+import com.csh.dao.CarServiceRecordPartInstDao;
 import com.csh.dao.CouponEndUserDao;
+import com.csh.dao.ItemPartDao;
 import com.csh.dao.MaintainReservationDao;
 import com.csh.dao.WalletDao;
 import com.csh.entity.BeautifyReservation;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
+import com.csh.entity.CarServiceRecordPartInst;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
+import com.csh.entity.ItemPart;
 import com.csh.entity.MaintainReservation;
 import com.csh.entity.MessageInfo;
 import com.csh.entity.MsgEndUser;
@@ -70,6 +74,12 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Resource(name = "beautifyReservationDaoImpl")
   private BeautifyReservationDao beautifyReservationDao;
 
+  @Resource(name = "itemPartDaoImpl")
+  private ItemPartDao itemPartDao;
+
+  @Resource(name = "carServiceRecordPartInstDaoImpl")
+  private CarServiceRecordPartInstDao carServiceRecordPartInstDao;
+
   @Resource(name = "carServiceRecordDaoImpl")
   public void setBaseDao(CarServiceRecordDao carServiceRecordDao) {
     super.setBaseDao(carServiceRecordDao);
@@ -85,7 +95,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public CarServiceRecord createServiceRecord(EndUser endUser, CarService carService,
       ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType, Date subscribeDate,
-      CouponEndUser couponEndUser) {
+      CouponEndUser couponEndUser, Long[] itemIds) {
     Setting setting = SettingUtils.get();
     CarServiceRecord carServiceRecord = new CarServiceRecord();
     carServiceRecord.setTenantID(carService.getTenantInfo().getId());
@@ -101,6 +111,22 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setSubscribeDate(subscribeDate);
     carServiceRecord.setPaymentType(paymentType);
     // carServiceRecord.setPaymentDate(new Date());
+
+    if (itemIds != null && itemIds.length > 0) {
+      carServiceRecord.setPrice(new BigDecimal(0));
+      for (Long itemId : itemIds) {
+        ItemPart item = itemPartDao.find(itemId);
+        CarServiceRecordPartInst inst = new CarServiceRecordPartInst();
+        inst.setCarServiceRecord(carServiceRecord);
+        inst.setPrice(item.getPrice());
+        inst.setServiceItemPartDesc(item.getServiceItemPartDesc());
+        inst.setServiceItemPartName(item.getServiceItemPartName());
+        inst.setTenantID(item.getTenantID());
+        BigDecimal instPrice = carServiceRecord.getPrice().add(inst.getPrice());
+        carServiceRecord.setPrice(instPrice);
+        carServiceRecord.getRecordItemPartInsts().add(inst);
+      }
+    }
 
     if (couponEndUser != null) {
       List<Filter> filters = new ArrayList<Filter>();
@@ -152,7 +178,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       carServiceRecord.setBeautifyReservation(beautifyReservation);
       beautifyReservationDao.persist(beautifyReservation);
     }
+
     carServiceRecordDao.persist(carServiceRecord);
+
     if (PaymentType.WALLET.equals(paymentType)) {
       Wallet wallet = endUser.getWallet();
       wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(
