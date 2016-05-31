@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
@@ -255,7 +256,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @Index(name = "carServiceRecord_tenantid")
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -296,7 +297,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public PaymentType getPaymentType() {
     return paymentType;
   }
@@ -306,7 +307,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public ChargeStatus getChargeStatus() {
     return chargeStatus;
   }
@@ -377,7 +378,7 @@ public class CarServiceRecord extends BaseEntity {
 
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   @FieldBridge(impl = DateBridgeImpl.class)
   public Date getPaymentDate() {
     return paymentDate;

@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
@@ -82,7 +83,7 @@ public class RepareReservation extends BaseEntity
   }
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   @FieldBridge(impl = DateBridgeImpl.class)
   public Date getReservationDate ()
   {
@@ -95,7 +96,7 @@ public class RepareReservation extends BaseEntity
   }
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, store = Store.NO,analyzer=@Analyzer(impl=IKAnalyzer.class))
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   public String getPlate ()
   {
     return plate;
@@ -118,7 +119,7 @@ public class RepareReservation extends BaseEntity
   }
 
   @Index (name = "repareReservation_tenantid")
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   public Long getTenantID ()
   {
     return tenantID;
@@ -130,7 +131,7 @@ public class RepareReservation extends BaseEntity
   }
   
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   public ReservationInfoFrom getReservationInfoFrom ()
   {
     return reservationInfoFrom;

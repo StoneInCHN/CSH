@@ -11,14 +11,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.springframework.web.multipart.MultipartFile;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
@@ -112,7 +111,7 @@ public class DeviceInfo extends BaseEntity {
 
   @JsonProperty
   @Column(unique = true,nullable=false,length=10)
-  @Field(store = Store.NO, index = Index.TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   public String getDeviceNo() {
     return deviceNo;
   }
@@ -122,7 +121,7 @@ public class DeviceInfo extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   public DeviceStatus getDeviceStatus() {
     return deviceStatus;
   }
@@ -162,7 +161,7 @@ public class DeviceInfo extends BaseEntity {
     this.vehicle = vehicle;
   }
 
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -172,7 +171,7 @@ public class DeviceInfo extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   public BindStatus getBindStatus() {
     return bindStatus;
   }
@@ -181,7 +180,7 @@ public class DeviceInfo extends BaseEntity {
     this.bindStatus = bindStatus;
   }
 
-//  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+//  @Field(store = Store.NO, index = Index.YES)
   @ManyToOne
   public Distributor getDistributor ()
   {

@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -56,7 +57,7 @@ public class MessageInfo extends BaseEntity {
   private Long tenantID;
   
   @JsonProperty
-  @Field(store = Store.NO,index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO,index = Index.YES,analyze = Analyze.NO)
   public MessageType getMessageType() {
     return messageType;
   }
@@ -92,7 +93,7 @@ public class MessageInfo extends BaseEntity {
     this.msgUser = msgUser;
   }
   @org.hibernate.annotations.Index(name="messageInfo_tenantid")
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -101,7 +102,7 @@ public class MessageInfo extends BaseEntity {
     this.tenantID = tenantID;
   }
 
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   @JsonProperty
   public SendType getSendType ()
   {

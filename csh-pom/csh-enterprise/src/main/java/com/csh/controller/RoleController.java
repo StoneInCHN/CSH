@@ -109,7 +109,8 @@ public class RoleController extends BaseController {
       String text = QueryParser.escape (roleNameSearch);
         try
         {
-          nameQuery = nameParser.parse (text);
+          nameParser.setAllowLeadingWildcard (true);
+          nameQuery = nameParser.parse ("*"+text+"*");
           query.add (nameQuery, Occur.MUST);
           
           if (LogUtil.isDebugEnabled (TenantAccountController.class))

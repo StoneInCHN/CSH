@@ -12,9 +12,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -110,8 +112,7 @@ public class VehicleLine extends BaseEntity {
 
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer(
-      impl = IKAnalyzer.class))
+  @Field(index = org.hibernate.search.annotations.Index.YES,store = Store.NO,analyze = Analyze.NO)
   public String getName() {
     return name;
   }

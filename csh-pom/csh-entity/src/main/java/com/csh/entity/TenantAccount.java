@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -104,7 +105,7 @@ public class TenantAccount extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public AccountStatus getAccoutStatus() {
     return accoutStatus;
   }
@@ -174,7 +175,7 @@ public class TenantAccount extends BaseEntity {
   }
 
   @Index(name="tenant_account_tenantid")
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -185,7 +186,7 @@ public class TenantAccount extends BaseEntity {
 
   @Column(length = 20)
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.TOKENIZED,analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public String getUserName() {
     return userName;
   }

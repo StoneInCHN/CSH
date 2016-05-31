@@ -11,10 +11,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -62,8 +64,7 @@ public class VehicleBrand extends BaseEntity {
   private Set<ItemPart> itemParts;
   
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer(
-      impl = IKAnalyzer.class))
+  @Field(index = org.hibernate.search.annotations.Index.YES,store =Store.NO ,analyze = Analyze.NO)
   @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getCode() {
     return code;
@@ -84,8 +85,7 @@ public class VehicleBrand extends BaseEntity {
 
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer(
-      impl = IKAnalyzer.class))
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   public String getName() {
     return name;
   }

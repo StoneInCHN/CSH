@@ -42,6 +42,9 @@
 				[@shiro.hasPermission name="clearingManage"]
 				<li><a href="#clearingManage"><i class="fa fa-users fa-1x"></i>${message("csh.clearingManage.config")}</a></li>
 				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="carServiceManage"]
+				<li><a href="#carService"><i class="fa fa-cogs fa-1x"></i>${message("csh.carServiceManage.config")}</a></li>
+				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="estoreManage"]
 				<li><a href="#estoreManage"><i class="fa fa-users fa-1x"></i>${message("csh.estoreManage.config")}</a></li>
 				[/@shiro.hasPermission]
@@ -103,9 +106,6 @@
     		[@shiro.hasPermission name="appConfig"]
     		<li><a href="#" data-url="${base}/console/app/app.jhtml">${message("csh.system.appConfig")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="serviceConfig"]
-    		<li><a href="#" data-url="${base}/console/carService/carService.jhtml">${message("csh.system.serviceConfig")}</a></li>
-    		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="advertisementConfig"]
     		<li><a href="#" data-url="${base}/console/advertisement/advertisement.jhtml">${message("csh.system.advertisementConfig")}</a></li>
     		[/@shiro.hasPermission]
@@ -146,6 +146,17 @@
     	<ul title="${message("csh.device.config")}" id="device">
     		[@shiro.hasPermission name="device"]
     		<li><a href="#" data-url="${base}/console/deviceInfo/deviceInfo.jhtml">${message("csh.device.device")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>
+    	<ul title="${message("csh.carServiceManage.serviceConfig")}" id="carService">
+    		[@shiro.hasPermission name="serviceConfig"]
+    		<li><a href="#" data-url="${base}/console/carService/carService.jhtml">${message("csh.carServiceManage.serviceConfig")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="carServiceItem"]
+    		<li><a href="#" data-url="${base}/console/carServiceItem/carServiceItem.jhtml">${message("csh.carServiceManage.carServiceItem")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="itemPart"]
+    		<li><a href="#" data-url="${base}/console/itemPart/itemPart.jhtml">${message("csh.carServiceManage.itemPart")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.endUser.config")}" id="endUser">

@@ -15,7 +15,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
@@ -95,7 +96,7 @@ public class InsuranceCompany extends BaseEntity {
   private Set<InsuranceCompany> children = new HashSet<InsuranceCompany>();
 
 
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getName() {
     return name;

@@ -15,7 +15,7 @@
 			<div class="search-item">
 			    <label> ${message("csh.messageInfo.type")}:</label>
 			    
-    			 <input class="easyui-combobox" data-options="required:true,
+    			 <input class="easyui-combobox",
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{

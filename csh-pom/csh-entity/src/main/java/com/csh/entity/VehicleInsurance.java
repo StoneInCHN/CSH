@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -198,7 +199,7 @@ public class VehicleInsurance extends BaseEntity
   }
 
   @Index(name="vehicleInsurance_tenantid")
-  @Field(store = Store.NO,index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @Field(store = Store.NO,index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public Long getTenantID ()
   {
     return tenantID;

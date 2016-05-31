@@ -100,7 +100,8 @@ public class TenantUserController extends BaseController
       String text = QueryParser.escape (realNameSearch);
         try
         {
-          nameQuery = nameParser.parse (text);
+          nameParser.setAllowLeadingWildcard (true);
+          nameQuery = nameParser.parse ("*"+text+"*");
           query.add (nameQuery, Occur.MUST);
           
           if (LogUtil.isDebugEnabled (TenantAccountController.class))

@@ -284,7 +284,7 @@ public class EndUser extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer(
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyzer = @Analyzer(
       impl = IKAnalyzer.class))
   public String getUserName() {
     return userName;
@@ -312,7 +312,7 @@ public class EndUser extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer(
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyzer = @Analyzer(
       impl = IKAnalyzer.class))
   public String getMobileNum() {
     return mobileNum;

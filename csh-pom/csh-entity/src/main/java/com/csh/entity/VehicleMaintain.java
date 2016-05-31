@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
@@ -69,7 +70,7 @@ public class VehicleMaintain extends BaseEntity
   }
 
   @JsonProperty
-  @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = Index.YES, store = Store.NO,analyze = Analyze.NO)
   @FieldBridge(impl = DateBridgeImpl.class)
   public Date getNextMaintainDate ()
   {
@@ -94,7 +95,7 @@ public class VehicleMaintain extends BaseEntity
   }
 
   @org.hibernate.annotations.Index(name="vehicleMaintain_tenantid")
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   public Long getTenantID ()
   {
     return tenantID;
@@ -117,7 +118,7 @@ public class VehicleMaintain extends BaseEntity
   }
 
   @JsonProperty
-  @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = Index.YES, store = Store.NO,analyze = Analyze.NO)
   @FieldBridge(impl = DateBridgeImpl.class)
   public Date getLastMaintainDate ()
   {

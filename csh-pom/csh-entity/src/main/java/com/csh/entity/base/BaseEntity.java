@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.groups.Default;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
@@ -70,7 +71,7 @@ public class BaseEntity implements Serializable {
   @JsonProperty
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequenceGenerator")
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   public Long getId() {
     return id;
   }
@@ -91,7 +92,7 @@ public class BaseEntity implements Serializable {
    */
   @JsonProperty
   @Column(nullable = false, updatable = false)
-  @Field(index = Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = Index.YES, store = Store.NO,analyze = Analyze.NO)
   @FieldBridge(impl = DateBridgeImpl.class)
   public Date getCreateDate() {
     return createDate;

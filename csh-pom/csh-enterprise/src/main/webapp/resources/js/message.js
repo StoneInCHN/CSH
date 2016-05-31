@@ -297,8 +297,11 @@ var messages = {
 	"csh.common.select.carService":"请选择服务",
 	"csh.coupon.counts":"优惠券总量",
 	"csh.coupon.claimedNum":"已领取数",
-	"csh.coupon.remainNum":"剩余数量"
+	"csh.coupon.remainNum":"剩余数量",
 	
+	"csh.carServiceItem.serviceItemName":"服务项名称",
+	"csh.carServiceItem.list":"服务项列表",
+	"csh.carServiceItem.add":"服务项添加"
 	
 	
 };

@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
@@ -68,7 +69,7 @@ public class ServiceCategory extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getCategoryName() {
     return categoryName;

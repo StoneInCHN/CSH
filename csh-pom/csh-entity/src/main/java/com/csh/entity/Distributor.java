@@ -61,7 +61,6 @@ public class Distributor extends BaseEntity {
 
 
 
-  @Field(store = Store.YES, index = Index.TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getDistributorName() {
     return distributorName;
   }

@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
@@ -232,7 +233,7 @@ public class Coupon extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public CouponType getType() {
     return type;
   }
@@ -242,7 +243,7 @@ public class Coupon extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public CouponOverDueType getOverDueType() {
     return overDueType;
   }
@@ -252,7 +253,7 @@ public class Coupon extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public CouponSendType getSendType() {
     return sendType;
   }

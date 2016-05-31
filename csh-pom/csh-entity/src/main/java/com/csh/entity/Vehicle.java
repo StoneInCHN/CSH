@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
@@ -287,7 +288,7 @@ public class Vehicle extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getPlate() {
     return plate;
@@ -317,7 +318,7 @@ public class Vehicle extends BaseEntity {
   }
 
   @Index(name = "index_vehicle_tenantid")
-  @Field(index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }

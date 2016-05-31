@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
@@ -157,7 +158,7 @@ public class TenantUser extends BaseEntity
 
   @Column (length = 30)
   @JsonProperty
-  @Field (store = Store.NO, index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer (impl = IKAnalyzer.class))
+  @Field (store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public String getStaffID ()
   {
     return staffID;
@@ -179,7 +180,7 @@ public class TenantUser extends BaseEntity
   }
 
   @JsonProperty
-  @Field (store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer (impl = IKAnalyzer.class))
+  @Field (store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public StaffStatus getStaffStatus ()
   {
     return staffStatus;
@@ -245,7 +246,7 @@ public class TenantUser extends BaseEntity
   }
 
   @JsonProperty
-  @Field (index = org.hibernate.search.annotations.Index.UN_TOKENIZED, store = Store.NO)
+  @Field (index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
   @FieldBridge (impl = DateBridgeImpl.class)
   public Date getHireDate ()
   {
@@ -270,7 +271,7 @@ public class TenantUser extends BaseEntity
 
   @Column (length = 20)
   @JsonProperty
-  @Field (store = Store.NO, index = org.hibernate.search.annotations.Index.TOKENIZED, analyzer = @Analyzer (impl = IKAnalyzer.class))
+  @Field (store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public String getRealName ()
   {
     return realName;
@@ -282,7 +283,7 @@ public class TenantUser extends BaseEntity
   }
 
   @Index (name = "tenant_user_tenantid")
-  @Field (store = Store.NO, index = org.hibernate.search.annotations.Index.UN_TOKENIZED, analyzer = @Analyzer (impl = IKAnalyzer.class))
+  @Field (store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
   public Long getTenantID ()
   {
     return tenantID;

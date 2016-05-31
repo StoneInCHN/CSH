@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -64,7 +65,7 @@ public class TenantDeductClearingRecord extends BaseEntity {
   private Long tenantID;
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   @Pattern(regexp = "^[0-9a-zA-Z_-]+$")
   @Length(max = 100)
   @Column(nullable = false, unique = true, length = 100)
@@ -118,7 +119,7 @@ public class TenantDeductClearingRecord extends BaseEntity {
   }
 
   @org.hibernate.annotations.Index(name="tenantDeductClearingRecord_tenantid")
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED)
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
   public Long getTenantID ()
   {
     return tenantID;

@@ -4,10 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Min;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Store;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

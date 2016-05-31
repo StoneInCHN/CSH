@@ -9,12 +9,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.Status;
@@ -44,7 +43,7 @@ public class DeviceType extends BaseEntity
 
   private Set<DeviceInfo> deviceInfos = new HashSet<DeviceInfo> ();
   @JsonProperty
-  @Field(store=Store.NO,index=Index.UN_TOKENIZED)
+  @Field(store=Store.NO,index=Index.YES,analyze = Analyze.NO)
   @FieldBridge(impl = LowCaseBridgeImpl.class)
   @Column(length=20)
   public String getName ()

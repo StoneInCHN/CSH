@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -118,7 +119,7 @@ public class CarService extends BaseEntity {
 
   @Column(length = 50)
   @JsonProperty
-  @Field(store = Store.NO, index = Index.TOKENIZED, analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO, analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getServiceName() {
     return serviceName;
   }
@@ -195,7 +196,7 @@ public class CarService extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.UN_TOKENIZED,
+  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO,
       analyzer = @Analyzer(impl = IKAnalyzer.class))
   public ServiceStatus getServiceStatus() {
     return serviceStatus;

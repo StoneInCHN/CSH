@@ -1,7 +1,6 @@
 package com.csh.entity;
 
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,9 +11,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -42,16 +46,13 @@ public class CarServiceItem extends BaseEntity {
    */
   private String serviceDesc;
   /**
-   * 价格
-   */
-  private BigDecimal price;
-  /**
    * 汽车服务
    */
   private CarService carService;
   
   private Set<ItemPart> itemParts = new HashSet<ItemPart> ();
 
+  @Field(store=Store.NO,index = org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO)
   public Long getTenantID ()
   {
     return tenantID;
@@ -62,6 +63,8 @@ public class CarServiceItem extends BaseEntity {
     this.tenantID = tenantID;
   }
 
+  @JsonProperty
+  @Field(store=Store.NO,index = org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO)
   public String getServiceItemName ()
   {
     return serviceItemName;
@@ -82,17 +85,8 @@ public class CarServiceItem extends BaseEntity {
     this.serviceDesc = serviceDesc;
   }
 
-  public BigDecimal getPrice ()
-  {
-    return price;
-  }
-
-  public void setPrice (BigDecimal price)
-  {
-    this.price = price;
-  }
-
   @ManyToOne
+  @IndexedEmbedded
   public CarService getCarService ()
   {
     return carService;
