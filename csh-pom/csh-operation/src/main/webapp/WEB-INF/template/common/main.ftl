@@ -97,7 +97,11 @@
 									<a href="../coupon/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.coupon")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
-							 	
+							 	[@shiro.hasPermission name="admin:systemConfig"]
+								<li>
+									<a href="../systemConfig/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.systemConfig")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
 				            </ul>
 						</li>
 					[#break /]

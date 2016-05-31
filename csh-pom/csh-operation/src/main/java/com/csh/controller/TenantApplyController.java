@@ -140,8 +140,8 @@ public class TenantApplyController extends BaseController {
       tenantApplyService.update(applyTemp);
       //send email
       String subject = SpringUtils.getMessage("csh.tenantApply.audit.failed.subject");
-      String message = SpringUtils.getMessage("csh.tenantApply.audit.failed.message",tenantApply.getTenantName(),tenantApply.getNotes());
-      mailService.send(tenantApply.getEmail(), subject, message);
+      String message = SpringUtils.getMessage("csh.tenantApply.audit.failed.message",applyTemp.getTenantName(),applyTemp.getNotes());
+      mailService.send(applyTemp.getEmail(), subject, message);
      //send msg
       
     }

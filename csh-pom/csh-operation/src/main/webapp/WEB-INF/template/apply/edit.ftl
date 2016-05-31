@@ -18,6 +18,12 @@ $().ready(function() {
 
 	var $inputForm = $("#inputForm");
 	var $submit = $("#submit");
+	var $distributorTr = $("#distributorTr");
+	var $distributorId = $("#distributorId");
+	var $versionConfig = $("#versionConfig");
+	var $versionConfigTr = $("#versionConfigTr");
+	var $applyStatus = $("#applyStatus");
+	
 	
 	// 表单验证
 	$inputForm.validate({
@@ -43,6 +49,26 @@ $().ready(function() {
 			});
 		}
 	});
+
+	$applyStatus.change(function(){
+		if("AUDIT_PASSED" == $(this).val()){
+			$distributorTr.show();
+			$versionConfigTr.show();
+			$distributorId.rules("add",{
+				 required: true
+			});
+			$versionConfig.rules("add",{
+				 required: true
+			});
+
+		}else if("AUDIT_FAILED" == $(this).val()){
+			$distributorTr.hide();
+			$versionConfigTr.hide();
+			$distributorId.rules("remove");  
+			$versionConfig.rules("remove");  
+		}
+	})
+
 
 });
 </script>
@@ -133,20 +159,20 @@ $().ready(function() {
 									${apply.area}
 								</td>
 							</tr>
-							<tr>
+							<tr id="distributorTr"  style="display:none">
 								<th>
-									${message("csh.apply.distributor")}:
+									<span class="requiredField">*</span>${message("csh.apply.distributor")}:
 								</th>
 								<td>
 									<input type="hidden" class="text" id="distributorId" name="distributorId"><span id="distributorName" style="margin-right:30px"></span><button id="selectDistributor"  class="btn btn-default">选择分销商</button>
 								</td>
 							</tr>
-							<tr>
+							<tr id="versionConfigTr" style="display:none">
 								<th>
-									${message("csh.apply.versionConfig")}:
+									<span class="requiredField">*</span>${message("csh.apply.versionConfig")}:
 								</th>
 								<td>
-									<select name="versionConfig">
+									<select id="versionConfig" name="versionConfig">
 										<option value="">${message("csh.apply.versionConfig.select")}</option>
 										[#list versions as version]
 										<option value="${version.id}">${version.versionName}</option>
@@ -156,10 +182,10 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									${message("csh.apply.applyStatus")}:
+									<span class="requiredField">*</span>${message("csh.apply.applyStatus")}:
 								</th>
 								<td>
-									<select name="applyStatus">
+									<select id="applyStatus" name="applyStatus">
 										<option value="">${message("csh.apply.applyStatus.select")}</option>
 										<option value="AUDIT_PASSED">${message("csh.apply.applyStatus.AUDIT_PASSED")}</option>
 										<option value="AUDIT_FAILED">${message("csh.apply.applyStatus.AUDIT_FAILED")}</option>

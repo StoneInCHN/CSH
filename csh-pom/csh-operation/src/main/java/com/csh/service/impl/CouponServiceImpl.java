@@ -44,7 +44,13 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
 
   @Override
   public void save(Coupon coupon) {
-      couponDao.persist(coupon);
+    if (coupon.getIsEnabled()) {
+      coupon.setIsSendout(true);
+    } else {
+      coupon.setIsSendout(false);
+    }
+    couponDao.persist(coupon);
+    if (coupon.getIsEnabled()) {
       List<EndUser> endUserList = endUserService.findAll();
       Set<MsgEndUser> msgEndUserList = new HashSet<MsgEndUser>();
       for (EndUser endUser : endUserList) {
@@ -65,7 +71,39 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
       params.put("msgId", msgInfo.getId());
       Setting setting = SettingUtils.get();
       ApiUtils.post(setting.getMsgPushUrl());
+    }
   }
+
+  @Override
+  public Coupon update(Coupon coupon) {
+    if (coupon.getIsEnabled() && !coupon.getIsSendout()) {
+      List<EndUser> endUserList = endUserService.findAll();
+      Set<MsgEndUser> msgEndUserList = new HashSet<MsgEndUser>();
+      for (EndUser endUser : endUserList) {
+        MsgEndUser msgEndUser = new MsgEndUser();
+        msgEndUser.setEndUser(endUser);
+        msgEndUser.setIsRead(false);
+        msgEndUser.setIsPush(false);
+        msgEndUserList.add(msgEndUser);
+      }
+      MessageInfo msgInfo = new MessageInfo();
+      msgInfo.setMessageTitle("优惠券");
+      msgInfo.setMessageType(MessageType.PROMOTION);
+      msgInfo.setMessageContent("优惠券发送，赶快前往活动中心领取");
+      msgInfo.setSendType(SendType.PUSH);
+      msgInfo.setMsgUser(msgEndUserList);
+      messageInfoService.save(msgInfo);
+      Map<String, Object> params = new HashMap<String, Object>();
+      params.put("msgId", msgInfo.getId());
+      Setting setting = SettingUtils.get();
+      ApiUtils.post(setting.getMsgPushUrl());
+      
+      coupon.setIsSendout(true);
+    }
+    return couponDao.merge(coupon);
+  }
+
+  
   
 
 }
