@@ -117,7 +117,7 @@ $(function(){
 		title:message("csh.carService.list"),
 		fitColumns:true,
 		toolbar:"#carService_manager_tool",
-		url:'../carService/list.jhtml',  
+		url:'../carService/list.jhtml?serviceCategorySearch='+'1',  
 		pagination:true,
 		singleSelect:true,
 		loadMsg:message("csh.common.loading"),
@@ -156,7 +156,12 @@ $(function(){
 			  $('#carServiceItem-table-list').datagrid('load',{
 				  carServiceId: rowData.id
 				});
-	      }
+	      },
+      onUnSelect:function(rowIndex, rowData){
+		  $('#carServiceItem-table-list').datagrid('load',{
+			  carServiceId: ""
+			});
+      }
 	});	
 	$("#carServiceItem-table-list").datagrid({
 		title:message("csh.carServiceItem.list"),
@@ -209,5 +214,10 @@ $(function(){
 	  var _queryParams = $("#carServiceItem-search-form").serializeJSON();
 	  $('#carServiceItem-table-list').datagrid('options').queryParams = _queryParams;  
 	  $("#carServiceItem-table-list").datagrid('reload');
+	})
+	$("#carService_carServiceItem-search-btn").click(function(){
+	  var _queryParams = $("#carService_carServiceItem-search-form").serializeJSON();
+	  $('#carService_carServiceItem-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#carService_carServiceItem-table-list").datagrid('reload');
 	})
 })

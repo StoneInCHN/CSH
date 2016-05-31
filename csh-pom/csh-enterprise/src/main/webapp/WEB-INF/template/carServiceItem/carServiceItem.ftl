@@ -3,7 +3,19 @@
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 <div class="easyui-layout" data-options="fit:true">
      <div data-options="region:'west',split:true" style="width:350px;padding-left:10px" title="筛选">
-             <table id="carService_carServiceItem-table-list"></table>  
+		  <fieldset>
+		    <legend>${message("csh.carServiceItem.search")}</legend>
+		   <form id="carService_carServiceItem-search-form" class="search-form">
+	    	<div class="search-item">
+			    <label> ${message("csh.carService.serviceName")}:</label>
+			    <input type="text" class="easyui-textbox" id="serviceNameSearch" style="width:100px" name="serviceNameSearch" validtype="length[0,20]"/>
+			</div>
+		</form>
+			<div class="search-item">
+		  	  <button id="carService_carServiceItem-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+		    </div>
+		  </fieldset>
+        <table id="carService_carServiceItem-table-list"></table>  
      </div>
 	<div data-options="region:'center'" style="padding-right:10px">
 		<div>
@@ -15,7 +27,7 @@
 					    <input type="text" class="easyui-textbox" style="width:80px" id="serviceItemNameSearch" name="serviceItemNameSearch" validtype="length[0,20]"/>
 					</div>
 					<div class="search-item">
-					    <label> 付款时间:</label>
+					    <label> 创建时间:</label>
 					    <input type="text" class="Wdate" id="beginDate" name="beginDate"  onclick="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
 					</div>
 					<div class="search-item">
@@ -28,7 +40,7 @@
 			    </div>
 			  </fieldset>
 		</div>
-		<table id="carServiceItem-table-list"></table>
+		<table id="carServiceItem-table-list" style="width:800px"></table>
 		<div id="carServiceItem_manager_tool">
 			<div class="tool-button">
 			<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="carServiceItem_manager_tool.add();">添加</a>

@@ -303,7 +303,7 @@ public class CarServiceController extends BaseController
         ("serviceName", Operator.eq, serviceName);
     com.csh.framework.filter.Filter serviceCategoryFilter = new com.csh.framework.filter.Filter 
         ("serviceCategory", Operator.eq, category);
-    if (serviceCategoryId == 2) //洗车服务
+    if (serviceCategoryId == 2 ||serviceCategoryId == 1 ) //洗车服务或保养服务
     {
       //serviceId 为空表示update方法
       if (serviceId !=null)

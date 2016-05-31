@@ -174,7 +174,7 @@ public class CarServiceItemController extends BaseController
   @RequestMapping (value = "/update", method = RequestMethod.POST)
   public @ResponseBody Message update (CarServiceItem carServiceItem)
   {
-    carServiceItemService.update (carServiceItem, "createDate", "tenantID","imgPath");
+    carServiceItemService.update (carServiceItem, "createDate", "tenantID","carService");
     return SUCCESS_MESSAGE;
   }
 

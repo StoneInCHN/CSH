@@ -59,7 +59,7 @@ var carService_manager_tool = {
 					    required:true,
 					    prompt:message("csh.common.please.select"),
 					    onSelect:function(record){
-					    	if(record.id != 2){
+					    	if(!(record.id == 2 || record.id == 1)){
 					    		$("#addCarServicePrice").textbox('setValue',-1);
 					    		$("#addCarServicePrice").textbox({
 					    			readonly:true,
@@ -251,7 +251,7 @@ var carService_manager_tool = {
 							$('#editCarServiceCategory').combobox("setValue",serviceCategoryId);
 						},
 						 onChange:function(newValue, oldValue){
-						    	if(newValue != 2){
+							 if(!(record.id == 2 || record.id == 1)){
 						    		$("#editCarServicePrice").textbox('setValue',-1);
 						    		$("#editCarServicePrice").textbox({
 						    			readonly:true,
