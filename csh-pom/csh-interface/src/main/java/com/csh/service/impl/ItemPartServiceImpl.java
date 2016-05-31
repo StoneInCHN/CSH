@@ -45,34 +45,14 @@ public class ItemPartServiceImpl extends BaseServiceImpl<ItemPart, Long> impleme
 
   @Override
   public List<Map<String, Object>> getItemPartMaps(CarService carService, Long brandDetailId) {
-    // List<Filter> filters = new ArrayList<Filter>();
 
     VehicleBrandDetail vehicleBrandDetail = vehicleBrandDetailDao.find(brandDetailId);
-    // Set<VehicleBrandDetail> vehicleBrandDetails = new HashSet<VehicleBrandDetail>();
-    // vehicleBrandDetails.add(vehicleBrandDetail);
-    // Filter brandDetailFilter = new Filter("vehicleBrandDetails", Operator.eq,
-    // vehicleBrandDetails);
-    // filters.add(brandDetailFilter);
-
     VehicleLine vehicleLine = vehicleBrandDetail.getVehicleLine();
-    // Set<VehicleLine> vehicleLines = new HashSet<VehicleLine>();
-    // vehicleLines.add(vehicleLine);
-    // Filter lineFilter = new Filter("vehicleLines", Operator.eq, vehicleLines);
-    // filters.add(lineFilter);
-
     VehicleBrand vehicleBrand = vehicleLine.getVehicleBrand();
-    // Set<VehicleBrand> vehicleBrands = new HashSet<VehicleBrand>();
-    // vehicleBrands.add(vehicleBrand);
-    // Filter brandFilter = new Filter("vehicleBrands", Operator.eq, vehicleBrands);
-    // filters.add(brandFilter);
-
 
     List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
     for (CarServiceItem item : carService.getCarServiceItems()) {
       Map<String, Object> itemMap = new HashMap<String, Object>();
-      // Filter itemFilter = new Filter("carServiceItem", Operator.eq, item);
-      // filters.add(itemFilter);
-      // List<ItemPart> itemParts = itemPartDao.findList(null, null, filters, null);
       List<ItemPart> itemParts =
           itemPartDao.getItemParts(item, vehicleBrandDetail, vehicleLine, vehicleBrand);
       if (itemParts != null && itemParts.size() > 0) {
@@ -82,7 +62,6 @@ public class ItemPartServiceImpl extends BaseServiceImpl<ItemPart, Long> impleme
         itemMap.put("itemParts", map);
         result.add(itemMap);
       }
-      // filters.remove(itemFilter);
     }
     return result;
   }
