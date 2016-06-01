@@ -242,10 +242,10 @@ public class CarServiceController extends MobileBaseController {
             .debug(
                 CarServiceController.class,
                 "payService",
-                "User buy Car Service. UserName: %s, Tenant: %s, Service: %s, price: %s, couponEndUserId: %s, paymentType: %s, chargeStatus: %s",
-                endUser.getUserName(), carServiceRecord.getTenantName(),
-                carService.getServiceName(), carServiceRecord.getPrice(), couponEndUserId,
-                carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
+                "User buy Car Service without exist record. UserName: %s, Tenant: %s, Service: %s, price: %s, couponEndUserId: %s, paymentType: %s, chargeStatus: %s",
+                endUser.getUserName(), carService.getTenantInfo().getTenantName(),
+                carService.getServiceName(), carService.getPromotionPrice(), couponEndUserId,
+                paymentType, ChargeStatus.UNPAID);
       }
       carServiceRecord =
           carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
@@ -253,6 +253,17 @@ public class CarServiceController extends MobileBaseController {
 
     } else {
       carServiceRecord = carServiceRecordService.find(recordId);
+      carServiceRecord.setPaymentType(paymentType);
+      if (LogUtil.isDebugEnabled(CarServiceController.class)) {
+        LogUtil
+            .debug(
+                CarServiceController.class,
+                "payService",
+                "User buy Car Service with exist record. UserName: %s, Tenant: %s, Service: %s, price: %s, couponEndUserId: %s, paymentType: %s, chargeStatus: %s",
+                endUser.getUserName(), carServiceRecord.getTenantName(),
+                carService.getServiceName(), carServiceRecord.getPrice(), couponEndUserId,
+                carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
+      }
       carServiceRecordService.updateServiceRecord(carServiceRecord, couponEndUser);
       if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
         if (carServiceRecord.getPrice().compareTo(wallet.getBalanceAmount()) > 0) {
