@@ -228,8 +228,19 @@ public class CarServiceController extends MobileBaseController {
         return response;
       }
     }
-    if (recordId == null) {
-      if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
+
+    /**
+     * 余额支付
+     */
+    if (PaymentType.WALLET.equals(paymentType)) {
+      if (couponEndUser != null) {
+        if (carService.getPromotionPrice().subtract(couponEndUser.getCoupon().getAmount())
+            .compareTo(wallet.getBalanceAmount()) > 0) {
+          response.setCode(CommonAttributes.FAIL_COMMON);
+          response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+          return response;
+        }
+      } else {
         if (carService.getPromotionPrice().compareTo(wallet.getBalanceAmount()) > 0) {
           response.setCode(CommonAttributes.FAIL_COMMON);
           response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
@@ -237,6 +248,9 @@ public class CarServiceController extends MobileBaseController {
         }
       }
 
+    }
+
+    if (recordId == null) {
       if (LogUtil.isDebugEnabled(CarServiceController.class)) {
         LogUtil
             .debug(
@@ -265,24 +279,24 @@ public class CarServiceController extends MobileBaseController {
                 carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
       }
       carServiceRecordService.updateServiceRecord(carServiceRecord, couponEndUser);
-      if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
-        if (carServiceRecord.getPrice().compareTo(wallet.getBalanceAmount()) > 0) {
-          response.setCode(CommonAttributes.FAIL_COMMON);
-          response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
-          return response;
-        }
-      }
+      // if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
+      // if (carServiceRecord.getPrice().compareTo(wallet.getBalanceAmount()) > 0) {
+      // response.setCode(CommonAttributes.FAIL_COMMON);
+      // response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+      // return response;
+      // }
+      // }
     }
 
     BigDecimal price = carServiceRecord.getDiscountPrice();
-    if (price.compareTo(new BigDecimal(0)) <= 0) {
+    if (price.compareTo(new BigDecimal(0)) <= 0) {// 优惠券是否抵扣完服务价格
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("out_trade_no", carServiceRecord.getRecordNo());
       map.put("isNeedPay", false);
       response.setMsg(map);
       response.setCode(CommonAttributes.SUCCESS);
     } else {
-      if (PaymentType.WECHAT.equals(paymentType)) {
+      if (PaymentType.WECHAT.equals(paymentType)) {// 微信支付
         try {
           BigDecimal weChatPrice = price.multiply(new BigDecimal(100));
           response =
@@ -295,7 +309,7 @@ public class CarServiceController extends MobileBaseController {
         } catch (DocumentException e) {
           e.printStackTrace();
         }
-      } else {
+      } else {// 支付宝和余额支付
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("out_trade_no", carServiceRecord.getRecordNo());
         map.put("isNeedPay", true);
