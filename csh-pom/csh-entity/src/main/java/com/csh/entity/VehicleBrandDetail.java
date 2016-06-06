@@ -13,9 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.OilType;
@@ -27,10 +25,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  */
 @Entity
-@Table (name = "csh_vehicle_brand_detail")
-@SequenceGenerator (name = "sequenceGenerator", sequenceName = "csh_vehicle_brand_detail_sequence")
-public class VehicleBrandDetail extends BaseEntity
-{
+@Table(name = "csh_vehicle_brand_detail")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_vehicle_brand_detail_sequence")
+public class VehicleBrandDetail extends BaseEntity {
+
   private static final long serialVersionUID = 1L;
 
 
@@ -51,7 +49,7 @@ public class VehicleBrandDetail extends BaseEntity
    */
   private String name;
 
-  
+
   /**
    * 百公里油耗
    */
@@ -68,93 +66,80 @@ public class VehicleBrandDetail extends BaseEntity
    * 油箱容积
    */
   private Float tank;
-  
-  private Set<Vehicle> vehicles = new HashSet<Vehicle> ();
+
+  private Set<Vehicle> vehicles = new HashSet<Vehicle>();
 
   /**
    * 油型号
    */
   private OilType oilType;
-  
+
   private Set<ItemPart> itemParts;
-  public Boolean getCanGetoil ()
-  {
+
+  public Boolean getCanGetoil() {
     return canGetoil;
   }
 
-  public void setCanGetoil (Boolean canGetoil)
-  {
+  public void setCanGetoil(Boolean canGetoil) {
     this.canGetoil = canGetoil;
   }
 
 
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
-  public String getName ()
-  {
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+  public String getName() {
     return name;
   }
 
-  public void setName (String name)
-  {
+  public void setName(String name) {
     this.name = name;
   }
 
-  public Float getOilPerHundred ()
-  {
+  public Float getOilPerHundred() {
     return oilPerHundred;
   }
 
-  public void setOilPerHundred (Float oilPerHundred)
-  {
+  public void setOilPerHundred(Float oilPerHundred) {
     this.oilPerHundred = oilPerHundred;
   }
 
- 
-  public Status getStatus ()
-  {
+
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus (Status status)
-  {
+  public void setStatus(Status status) {
     this.status = status;
   }
 
-  public Float getTank ()
-  {
+  public Float getTank() {
     return tank;
   }
 
-  public void setTank (Float tank)
-  {
+  public void setTank(Float tank) {
     this.tank = tank;
   }
 
-  @OneToMany(mappedBy="vehicleBrandDetail")
-  public Set<Vehicle> getVehicles ()
-  {
+  @OneToMany(mappedBy = "vehicleBrandDetail")
+  public Set<Vehicle> getVehicles() {
     return vehicles;
   }
 
-  public void setVehicles (Set<Vehicle> vehicles)
-  {
+  public void setVehicles(Set<Vehicle> vehicles) {
     this.vehicles = vehicles;
   }
 
   @JsonProperty
-  @ManyToOne(fetch=FetchType.EAGER)
-  public VehicleLine getVehicleLine ()
-  {
+  @ManyToOne(fetch = FetchType.EAGER)
+  public VehicleLine getVehicleLine() {
     return vehicleLine;
   }
 
-  public void setVehicleLine (VehicleLine vehicleLine)
-  {
+  public void setVehicleLine(VehicleLine vehicleLine) {
     this.vehicleLine = vehicleLine;
   }
 
-  @Column(length=2)
+  @Column(length = 2)
   public OilType getOilType() {
     return oilType;
   }
@@ -163,24 +148,20 @@ public class VehicleBrandDetail extends BaseEntity
     this.oilType = oilType;
   }
 
-  public String getDisp ()
-  {
+  public String getDisp() {
     return disp;
   }
 
-  public void setDisp (String disp)
-  {
+  public void setDisp(String disp) {
     this.disp = disp;
   }
 
   @ManyToMany(mappedBy = "vehicleBrandDetails")
-  public Set<ItemPart> getItemParts ()
-  {
+  public Set<ItemPart> getItemParts() {
     return itemParts;
   }
 
-  public void setItemParts (Set<ItemPart> itemParts)
-  {
+  public void setItemParts(Set<ItemPart> itemParts) {
     this.itemParts = itemParts;
   }
 
