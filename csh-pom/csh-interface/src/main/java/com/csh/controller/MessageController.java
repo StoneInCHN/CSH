@@ -256,7 +256,7 @@ public class MessageController extends MobileBaseController {
                 msgReq.getMsgContent()).getContent();
       } else if (msgType.equals("2")) {
         msgContent =
-            Message.warn("csh.obd.shutdown.message",
+            Message.warn("csh.obd.shutdown.message", deviceInfo.getVehicle().getPlate(),
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
                 msgReq.getTravelTime(), msgReq.getGpsMileage()).getContent();
       } else if (msgType.equals("1")) {
