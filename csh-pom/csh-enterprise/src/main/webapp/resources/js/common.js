@@ -1012,3 +1012,9 @@ var math ={
 Number.prototype.toPercent = function(){
 	return (Math.round(this * 10000)/100).toFixed(2) + '%';
 }
+$.extend($.fn.tree.methods, {
+    getLevel:function(jq,target){
+        var l = $(target).parentsUntil("ul.tree","ul");
+        return l.length+1;
+    }
+});

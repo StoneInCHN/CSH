@@ -98,7 +98,7 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon,Long> implements C
           msgInfo.setTenantID (tenantID);
 //          msgInfo.setMsgUser (msgEndUserList);
           for (EndUser endUser : endUserList)
-         {
+          {
             MsgEndUser msgEndUser = new MsgEndUser ();
             msgEndUser.setEndUser (endUser);
             msgEndUser.setIsRead (false);
@@ -106,7 +106,7 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon,Long> implements C
             msgEndUser.setMessage (msgInfo);
             msgEndUserService.save (msgEndUser);
             msgEndUserList.add (msgEndUser);
-         }
+          }
           coupon.setIsSendout (true);
           this.update (coupon, "createDate", "tenantID","tenantName");
           

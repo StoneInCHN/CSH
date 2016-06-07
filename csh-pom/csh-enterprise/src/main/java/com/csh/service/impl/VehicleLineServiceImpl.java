@@ -15,6 +15,7 @@ import com.csh.service.VehicleLineService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.ordering.Ordering;
 import com.csh.framework.service.impl.BaseServiceImpl;
 
 @Service("vehicleLineServiceImpl")
@@ -45,8 +46,12 @@ public class VehicleLineServiceImpl extends BaseServiceImpl<VehicleLine,Long> im
           filters.add (vehicleParentFilter);
         }
        
+        List<Ordering> orderings = new ArrayList<Ordering> ();
+        Ordering ordering = new Ordering();
+        ordering.setProperty ("id");
+        orderings.add (ordering);
         
-        List<VehicleLine> vehicleLineList = vehicleLineDao.findList (null, null, filters, null);
+        List<VehicleLine> vehicleLineList = vehicleLineDao.findList (null, null, filters, orderings);
         
         String[] propertys = {"id", "name","parent.name"};
         return FieldFilterUtils.filterCollectionMap(propertys, vehicleLineList);

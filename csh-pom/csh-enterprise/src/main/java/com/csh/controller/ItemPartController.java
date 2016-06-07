@@ -1,6 +1,8 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -25,39 +27,54 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.CarService;
 import com.csh.entity.CarServiceItem;
+import com.csh.entity.ItemPart;
+import com.csh.entity.VehicleBrand;
+import com.csh.entity.VehicleBrandDetail;
+import com.csh.entity.VehicleLine;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.CarServiceItemService;
-import com.csh.service.CarServiceService;
+import com.csh.service.ItemPartService;
+import com.csh.service.VehicleBrandDetailService;
+import com.csh.service.VehicleBrandService;
+import com.csh.service.VehicleLineService;
 import com.csh.utils.DateTimeUtils;
 
 /**
- * 服务项配置
+ * 服务项配件配置
  * @author huyong
  *
  */
-@Controller ("carServiceItemController")
-@RequestMapping ("console/carServiceItem")
-public class CarServiceItemController extends BaseController
+@Controller ("itemPartController")
+@RequestMapping ("console/itemPart")
+public class ItemPartController extends BaseController
 {
 
+  @Resource (name = "itemPartServiceImpl")
+  private ItemPartService itemPartService;
+  
   @Resource (name = "carServiceItemServiceImpl")
   private CarServiceItemService carServiceItemService;
-  @Resource (name = "carServiceServiceImpl")
-  private CarServiceService carServiceService;
 
+  @Resource (name = "vehicleBrandServiceImpl")
+  private VehicleBrandService vehicleBrandService;
+  
+  @Resource (name = "vehicleLineServiceImpl")
+  private VehicleLineService vehicleLineService;
+  
+  @Resource (name = "vehicleBrandDetailServiceImpl")
+  private VehicleBrandDetailService vehicleBrandDetailService;
   /**
    * 界面展示
    * 
    * @param model
    * @return
    */
-  @RequestMapping (value = "/carServiceItem", method = RequestMethod.GET)
+  @RequestMapping (value = "/itemPart", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "/carServiceItem/carServiceItem";
+    return "/itemPart/itemPart";
   }
 
   /**
@@ -68,9 +85,9 @@ public class CarServiceItemController extends BaseController
    * @return
    */
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<CarServiceItem> list (Model model, Pageable pageable,
-      Date beginDate, Date endDate, Long carServiceId,
-      String serviceItemNameSearch)
+  public @ResponseBody Page<ItemPart> list (Model model, Pageable pageable,
+      Date beginDate, Date endDate, Long carServiceItemId,
+      String serviceItemPartNameSearch)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -80,7 +97,7 @@ public class CarServiceItemController extends BaseController
     BooleanQuery query = new BooleanQuery ();
 
     QueryParser serviceItemParser = new QueryParser (Version.LUCENE_35,
-        "serviceItemName", analyzer);
+        "serviceItemPartName", analyzer);
     TermRangeQuery rangeQuery = null;
     Query serviceItemQuery = null;
     TermQuery carServiceTermQuery = null;
@@ -94,9 +111,9 @@ public class CarServiceItemController extends BaseController
     {
       endDateStr = DateTimeUtils.convertDateToString (endDate, null);
     }
-    if (serviceItemNameSearch != null)
+    if (serviceItemPartNameSearch != null)
     {
-      String text = QueryParser.escape (serviceItemNameSearch);
+      String text = QueryParser.escape (serviceItemPartNameSearch);
       try
       {
         //通配符查询，开启*开头，但影响效率
@@ -109,7 +126,7 @@ public class CarServiceItemController extends BaseController
         if (LogUtil.isDebugEnabled (VehicleController.class))
         {
           LogUtil.debug (VehicleController.class, "search",
-              "Search service item name: " + serviceItemNameSearch);
+              "Search service item part name: " + serviceItemPartNameSearch);
         }
       }
       catch (ParseException e)
@@ -126,24 +143,24 @@ public class CarServiceItemController extends BaseController
 
       if (LogUtil.isDebugEnabled (VehicleController.class))
       {
-        LogUtil.debug (CarServiceItemController.class, "search", "Search start date: "
+        LogUtil.debug (ItemPartController.class, "search", "Search start date: "
             + startDateStr + " end date: " + endDateStr);
       }
     }
-    if (carServiceId != null)
+    if (carServiceItemId != null)
     {
-      carServiceTermQuery = new TermQuery (new Term ("carService.id",
-          carServiceId.toString ()));
+      carServiceTermQuery = new TermQuery (new Term ("carServiceItem.id",
+          carServiceItemId.toString ()));
       query.add (carServiceTermQuery, Occur.MUST);
     }
     
     if (carServiceTermQuery != null || serviceItemQuery!= null || rangeQuery != null)
     {
-      return carServiceItemService.search (query, pageable, analyzer, filter,true);
+      return itemPartService.search (query, pageable, analyzer, filter,true);
     }
     else
     {
-      return carServiceItemService.findPage (pageable,true);
+      return itemPartService.findPage (pageable,true);
     }
 
   }
@@ -151,30 +168,46 @@ public class CarServiceItemController extends BaseController
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
-    CarServiceItem carServiceItem = carServiceItemService.find (id);
-    model.put ("carServiceItem", carServiceItem);
-    return "carServiceItem/edit";
+    ItemPart itemPart = itemPartService.find (id);
+    model.put ("itemPart", itemPart);
+    return "itemPart/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.GET)
   public String add (ModelMap model)
   {
-    return "carServiceItem/add";
+    return "itemPart/add";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (Long carServiceId,CarServiceItem carServiceItem)
+  public @ResponseBody Message add (Long carServiceItemId,ItemPart itemPart,Boolean selectAll
+      ,Long[] vehicleBrandIds,Long[] vehicleLineIds,Long[] vehicleBrandDetailIds)
   {
-    CarService carService = carServiceService.find (carServiceId);
-    carServiceItem.setCarService (carService);
-    carServiceItemService.save (carServiceItem,true);
+    if (selectAll== null || !selectAll)
+    {
+      List<VehicleBrand> vehicleBrands = vehicleBrandService.findList (vehicleBrandIds);
+      List<VehicleLine> vehicleLines = vehicleLineService.findList (vehicleLineIds);
+      List<VehicleBrandDetail> vehicleBrandDetails = vehicleBrandDetailService.findList (vehicleBrandDetailIds);
+      
+      itemPart.setVehicleBrands (new HashSet<VehicleBrand> (vehicleBrands));
+      itemPart.setVehicleLines (new HashSet<VehicleLine> (vehicleLines));
+      itemPart.setVehicleBrandDetails (new HashSet<VehicleBrandDetail> (vehicleBrandDetails));
+    }else {
+      List<VehicleBrand> vehicleBrands =vehicleBrandService.findAll ();
+      itemPart.setVehicleBrands (new HashSet<VehicleBrand> (vehicleBrands));
+    }
+    CarServiceItem carServiceItem = carServiceItemService.find (carServiceItemId);
+    itemPart.setCarServiceItem (carServiceItem);
+    
+    itemPartService.saveItemPart (itemPart);
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (CarServiceItem carServiceItem)
+  public @ResponseBody Message update (ItemPart itemPart,Boolean selectAll
+      ,Long[] vehicleBrandIds,Long[] vehicleLineIds,Long[] vehicleBrandDetailIds)
   {
-    carServiceItemService.update (carServiceItem, "createDate", "tenantID","carService");
+    itemPartService.update (itemPart, "createDate", "tenantID","carService");
     return SUCCESS_MESSAGE;
   }
 
@@ -190,7 +223,7 @@ public class CarServiceItemController extends BaseController
       // if()
       try
       {
-        carServiceItemService.delete (ids);
+        itemPartService.delete (ids);
       }
       catch (Exception e)
       {
@@ -211,9 +244,8 @@ public class CarServiceItemController extends BaseController
   @RequestMapping (value = "/details", method = RequestMethod.GET)
   public String details (ModelMap model, Long id)
   {
-    CarServiceItem carServiceItem = carServiceItemService.find (id);
-    model.addAttribute ("carServiceItem", carServiceItem);
-    return "carServiceItem/details";
+    ItemPart itemPart = itemPartService.find (id);
+    model.addAttribute ("itemPart", itemPart);
+    return "itemPart/details";
   }
-  
 }

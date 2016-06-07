@@ -8,13 +8,17 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -68,6 +72,7 @@ public class ItemPart extends BaseEntity {
    */
   private Set<VehicleBrandDetail> vehicleBrandDetails;
   
+  @Field(store=Store.NO,index = org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO)
   public Long getTenantID ()
   {
     return tenantID;
@@ -78,6 +83,8 @@ public class ItemPart extends BaseEntity {
     this.tenantID = tenantID;
   }
 
+  @JsonProperty
+  @Field(store=Store.NO,index = org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO)
   public String getServiceItemPartName ()
   {
     return serviceItemPartName;
@@ -98,6 +105,7 @@ public class ItemPart extends BaseEntity {
     this.serviceItemPartDesc = serviceItemPartDesc;
   }
 
+  @JsonProperty
   public BigDecimal getPrice ()
   {
     return price;
@@ -108,7 +116,7 @@ public class ItemPart extends BaseEntity {
     this.price = price;
   }
 
-
+  @JsonProperty
   public Boolean getIsDefault ()
   {
     return isDefault;
@@ -153,6 +161,7 @@ public class ItemPart extends BaseEntity {
   }
 
   @ManyToOne
+  @IndexedEmbedded
   public CarServiceItem getCarServiceItem ()
   {
     return carServiceItem;

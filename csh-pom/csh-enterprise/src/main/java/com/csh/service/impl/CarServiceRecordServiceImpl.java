@@ -30,6 +30,7 @@ import com.csh.entity.MsgEndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
+import com.csh.entity.commonenum.CommonEnum.SendType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -169,12 +170,13 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         msgInfo.setMessageTitle ("订单修改");
         msgInfo.setTenantID (tenantAccountService.getCurrentTenantID ());
         msgInfo.setMessageType (MessageType.PERSONALMSG);
+        msgInfo.setSendType (SendType.PUSH);
         Set<MsgEndUser> msgEndUserList =new HashSet<MsgEndUser> ();
         MsgEndUser msgEndUser = new MsgEndUser ();
         msgEndUser.setEndUser (record.getEndUser ());
         msgEndUser.setIsPush (false);
         msgEndUser.setIsRead (false);
-        
+        msgEndUser.setMessage (msgInfo);
         msgEndUserList.add (msgEndUser);
         msgInfo.setMsgUser (msgEndUserList);
         messageInfoService.save (msgInfo);

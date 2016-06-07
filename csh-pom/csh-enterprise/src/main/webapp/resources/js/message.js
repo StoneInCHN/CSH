@@ -301,9 +301,14 @@ var messages = {
 	
 	"csh.carServiceItem.serviceItemName":"服务项名称",
 	"csh.carServiceItem.list":"服务项列表",
-	"csh.carServiceItem.add":"服务项添加"
-	
-	
+	"csh.carServiceItem.add":"服务项添加",
+	"csh.itemPart.list":"服务配件列表",
+	"csh.itemPart.add":"服务配件添加",
+	"csh.itemPart.serviceItemPartName":"服务项配件名",
+	"csh.common.select.selectCarServiecItem":"请选择一个服务项",
+	"csh.itemPart.price":"配件价格",
+	"csh.itemPart.idDefault":"是否默认选中"
+		
 };
 //多语言
 function message(code) {

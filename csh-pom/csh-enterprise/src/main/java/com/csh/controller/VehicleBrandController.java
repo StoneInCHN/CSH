@@ -1,8 +1,11 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -26,11 +29,20 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.ItemPart;
 import com.csh.entity.VehicleBrand;
-import com.csh.entity.commonenum.CommonEnum.Status;
+import com.csh.entity.VehicleBrandDetail;
+import com.csh.entity.VehicleLine;
+import com.csh.entity.commonenum.CommonEnum.TreeNodeState;
+import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.ordering.Ordering;
+import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.json.response.TreeNodeResponse;
+import com.csh.service.ItemPartService;
 import com.csh.service.VehicleBrandService;
+import com.csh.service.VehicleLineService;
 import com.csh.utils.DateTimeUtils;
 
 
@@ -46,7 +58,10 @@ public class VehicleBrandController extends BaseController
 
   @Resource (name = "vehicleBrandServiceImpl")
   private VehicleBrandService vehicleBrandService;
-  
+  @Resource (name = "vehicleLineServiceImpl")
+  private VehicleLineService vehicleLineService;
+  @Resource (name = "itemPartServiceImpl")
+  private ItemPartService itemPartService;
   @RequestMapping (value = "/vehicleBrand", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
@@ -192,5 +207,59 @@ public class VehicleBrandController extends BaseController
   @RequestMapping(value = "/findAllVehicleBrand", method = RequestMethod.POST)
   public @ResponseBody List<Map<String, Object>> findAllVehicleBrand() {
     return vehicleBrandService.findAllVehicleBrand ();
+  }
+  
+  /**
+   * 车品牌树列表
+   * 
+   * @param pageable
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/listVehicleBrand", method = RequestMethod.POST)
+  public @ResponseBody List<TreeNodeResponse> listVehicleBrand (Pageable pageable,
+      Long vehicleLineId,Long vehicleLineParentId, Long vehicleBrandId,Integer size,Integer selectCount,Long itemPartId)
+  {
+    return vehicleBrandService.listVehicleBrandWithDetail(vehicleLineId,vehicleLineParentId,vehicleBrandId,
+        size,selectCount,itemPartId);
+  }
+  /**
+   * 车品牌树列表
+   * 
+   * @param pageable
+   * @param id
+   * @return
+   */
+  @RequestMapping(value = "/listAllVehicleBrand", method = RequestMethod.POST)
+  public @ResponseBody List<TreeNodeResponse> listAllVehicleBrand (Pageable pageable,
+      Long vehicleLineId,Long vehicleLineParentId, Long vehicleBrandId,Integer size,Integer selectCount,Long itemPartId)
+  {
+//    List<TreeNodeResponse> vehicleBrandResponse = new ArrayList<TreeNodeResponse> ();
+//    List<TreeNodeResponse> vehicleLineParentResponse = new ArrayList<TreeNodeResponse> ();
+//    List<TreeNodeResponse> vehicleLineChildResponse = new ArrayList<TreeNodeResponse> ();
+//    List<TreeNodeResponse> vehicleBrandDetailResponse = new ArrayList<TreeNodeResponse> ();
+    
+    List<TreeNodeResponse> vehicleBrandList= vehicleBrandService.listVehicleBrandWithDetail(null,null,null,
+        null,null,itemPartId);
+    
+    for (TreeNodeResponse treeNode : vehicleBrandList)
+    {
+      List<TreeNodeResponse> vehicleLineParentList =vehicleBrandService.listVehicleBrandWithDetail(null,null,treeNode.getId (),
+          null,null,itemPartId);
+      for (TreeNodeResponse treeNodeParent : vehicleLineParentList)
+      {
+        List<TreeNodeResponse> vehicleLineChildList =vehicleBrandService.listVehicleBrandWithDetail(null,treeNodeParent.getId (),null,
+            null,null,itemPartId);
+        for (TreeNodeResponse treeNodeChild : vehicleLineChildList)
+        {
+          List<TreeNodeResponse> vehicleBrandDetailList =vehicleBrandService.listVehicleBrandWithDetail(treeNodeChild.getId (),null,null,
+              null,null,itemPartId);
+          treeNodeChild.setChildren (vehicleBrandDetailList);
+        }
+        treeNodeParent.setChildren (vehicleLineChildList);
+      }
+      treeNode.setChildren (vehicleLineParentList); 
+    }
+    return vehicleBrandList;
   }
 }

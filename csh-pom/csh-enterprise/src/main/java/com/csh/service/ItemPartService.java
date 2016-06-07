@@ -5,4 +5,6 @@ import com.csh.framework.service.BaseService;
 
 public interface ItemPartService extends BaseService<ItemPart,Long>{
 
+  void saveItemPart (ItemPart itemPart);
+
 }

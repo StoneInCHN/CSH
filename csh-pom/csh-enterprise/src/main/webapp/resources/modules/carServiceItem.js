@@ -16,7 +16,6 @@ var carServiceItem_manager_tool = {
 						if(validate){
 							var _selected_row = $('#carService_carServiceItem-table-list').datagrid('getSelected');
 							var _data=$("#addCarServiceItem_form").serialize()+"&carServiceId="+_selected_row.id;
-							debugger;
 								$.ajax({
 									url:"../carServiceItem/add.jhtml",
 									type:"post",
