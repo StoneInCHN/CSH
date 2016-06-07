@@ -140,6 +140,7 @@ public class TenantInfoController extends MobileBaseController {
         serviceMap.put("serviceName", carService.getServiceName());
         serviceMap.put("price", carService.getPrice());
         serviceMap.put("promotion_price", carService.getPromotionPrice());
+        serviceMap.put("categoryId", carService.getServiceCategory().getId());
         serviceList.add(serviceMap);
       }
 

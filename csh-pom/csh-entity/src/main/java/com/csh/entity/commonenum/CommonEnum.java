@@ -483,15 +483,16 @@ public class CommonEnum {
     RESERVATION_SUCCESS("预约成功"),
     /*** 预约失败 */
     RESERVATION_FAIL("预约失败"),
-    /** 未支付 */
+    /** 服务完成未支付 */
     UNPAID("未支付"),
     /** 已支付 */
     PAID("已支付"),
     /** 完成 */
     FINISH("完成"),
     /** 过期 */
-    OVERDUE("过期");
-
+    OVERDUE("过期"),
+    /*** 服务中 */
+    IN_SERVICE("服务中");
 
     private String chargeStatusName;
 
