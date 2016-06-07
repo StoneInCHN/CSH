@@ -301,7 +301,17 @@ var messages = {
 	
 	"csh.carServiceItem.serviceItemName":"服务项名称",
 	"csh.carServiceItem.list":"服务项列表",
-	"csh.carServiceItem.add":"服务项添加"
+	"csh.carServiceItem.add":"服务项添加",
+	
+	"csh.carWashingCoupon.add":"添加洗车券",
+	"csh.carWashingCoupon.couponName":"名称",
+	"csh.carWashingCoupon.remark":"备注",
+	"csh.carWashingCoupon.expireDate":"有效期",
+	"csh.carWashingCoupon.list":"洗车券列表",
+	"csh.carWashingCoupon.endUser":"用户",
+	"csh.carWashingCoupon.isUsed":"使用状态",
+	"csh.carWashingCouponEndUser.list":"用户列表",
+	"csh.carWashingCoupon.counts":"次数"
 	
 	
 };

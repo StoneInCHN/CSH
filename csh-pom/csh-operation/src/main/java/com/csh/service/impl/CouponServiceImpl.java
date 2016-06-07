@@ -22,6 +22,7 @@ import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
 import com.csh.service.MessageInfoService;
+import com.csh.service.MsgEndUserService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.SettingUtils;
 
@@ -37,6 +38,9 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
 
+  @Resource(name = "msgEndUserServiceImpl")
+  private MsgEndUserService msgEndUserService;
+  
   @Resource(name = "couponDaoImpl")
   public void setBaseDao(CouponDao couponDao) {
     super.setBaseDao(couponDao);
@@ -51,6 +55,12 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
     }
     couponDao.persist(coupon);
     if (coupon.getIsEnabled()) {
+      MessageInfo msgInfo = new MessageInfo();
+      msgInfo.setMessageTitle("优惠券");
+      msgInfo.setMessageType(MessageType.PROMOTION);
+      msgInfo.setMessageContent("优惠券发送，赶快前往活动中心领取");
+      msgInfo.setSendType(SendType.PUSH);
+      messageInfoService.save(msgInfo);
       List<EndUser> endUserList = endUserService.findAll();
       Set<MsgEndUser> msgEndUserList = new HashSet<MsgEndUser>();
       for (EndUser endUser : endUserList) {
@@ -58,15 +68,10 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
         msgEndUser.setEndUser(endUser);
         msgEndUser.setIsRead(false);
         msgEndUser.setIsPush(false);
+        msgEndUser.setMessage(msgInfo);
+        msgEndUserService.save(msgEndUser);
         msgEndUserList.add(msgEndUser);
       }
-      MessageInfo msgInfo = new MessageInfo();
-      msgInfo.setMessageTitle("优惠券");
-      msgInfo.setMessageType(MessageType.PROMOTION);
-      msgInfo.setMessageContent("优惠券发送，赶快前往活动中心领取");
-      msgInfo.setSendType(SendType.PUSH);
-      msgInfo.setMsgUser(msgEndUserList);
-      messageInfoService.save(msgInfo);
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("msgId", msgInfo.getId());
       Setting setting = SettingUtils.get();
@@ -77,6 +82,12 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
   @Override
   public Coupon update(Coupon coupon) {
     if (coupon.getIsEnabled() && !coupon.getIsSendout()) {
+      MessageInfo msgInfo = new MessageInfo();
+      msgInfo.setMessageTitle("优惠券");
+      msgInfo.setMessageType(MessageType.PROMOTION);
+      msgInfo.setMessageContent("优惠券发送，赶快前往活动中心领取");
+      msgInfo.setSendType(SendType.PUSH);
+      messageInfoService.save(msgInfo);
       List<EndUser> endUserList = endUserService.findAll();
       Set<MsgEndUser> msgEndUserList = new HashSet<MsgEndUser>();
       for (EndUser endUser : endUserList) {
@@ -84,15 +95,9 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
         msgEndUser.setEndUser(endUser);
         msgEndUser.setIsRead(false);
         msgEndUser.setIsPush(false);
+        msgEndUserService.save(msgEndUser);
         msgEndUserList.add(msgEndUser);
       }
-      MessageInfo msgInfo = new MessageInfo();
-      msgInfo.setMessageTitle("优惠券");
-      msgInfo.setMessageType(MessageType.PROMOTION);
-      msgInfo.setMessageContent("优惠券发送，赶快前往活动中心领取");
-      msgInfo.setSendType(SendType.PUSH);
-      msgInfo.setMsgUser(msgEndUserList);
-      messageInfoService.save(msgInfo);
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("msgId", msgInfo.getId());
       Setting setting = SettingUtils.get();

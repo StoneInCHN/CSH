@@ -71,6 +71,21 @@ function alertErrorMsg(content) {
 	
 }
 
+/**
+ * 公共提示信息 info
+ */
+function alertInfoMsg(content) {
+	if(content){
+		$.messager.alert(message("csh.common.fail"),
+				message(content), 'info');
+	}else{
+		$.messager.alert(message("csh.common.fail"),
+				message("csh.common.unknow.error"), 'info');
+	}
+	
+}
+
+
 // 添加Cookie
 function addCookie(name, value, options) {
 	if (arguments.length > 1 && name != null) {
