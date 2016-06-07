@@ -51,6 +51,6 @@ public class VehicleOilServiceImpl extends BaseServiceImpl<VehicleOil, Long> imp
       return null;
     }
     VehicleOil oil = oils.get(0);
-    return averageFuelConsumption.multiply(oil.getPrice());
+    return averageFuelConsumption.multiply(oil.getPrice()).setScale(2, BigDecimal.ROUND_HALF_UP);
   }
 }

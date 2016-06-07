@@ -24,6 +24,7 @@ import com.csh.entity.App;
 import com.csh.entity.CarService;
 import com.csh.entity.EndUser;
 import com.csh.entity.TenantInfo;
+import com.csh.entity.VehicleBrandDetail;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
 import com.csh.framework.paging.Page;
@@ -299,7 +300,8 @@ public class TenantInfoController extends MobileBaseController {
       return response;
     }
 
-    Long brandDetailId = endUser.getDefaultVehicle().getVehicleBrandDetail().getId();
+    VehicleBrandDetail brandDetail = endUser.getDefaultVehicle().getVehicleBrandDetail();
+    Long brandDetailId = brandDetail.getId();
     if (LogUtil.isDebugEnabled(TenantInfoController.class)) {
       LogUtil
           .debug(
@@ -314,6 +316,7 @@ public class TenantInfoController extends MobileBaseController {
     response.setMsg(serviceMap);
     String newtoken = TokenGenerator.generateToken(tenantInfoReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
+    response.setDesc(brandDetail.getName());
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
     return response;

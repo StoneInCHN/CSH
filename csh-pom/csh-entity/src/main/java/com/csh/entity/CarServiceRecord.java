@@ -159,6 +159,11 @@ public class CarServiceRecord extends BaseEntity {
    */
   private SystemType couponSource;
 
+  /**
+   * 洗车券
+   */
+  private CarWashingCouponEndUser carWashingCouponEndUser;
+  
   private Set<CarServiceRecordPartInst> recordItemPartInsts = new HashSet<CarServiceRecordPartInst> ();
   @JsonProperty
   public SystemType getCouponSource() {
@@ -418,6 +423,13 @@ public class CarServiceRecord extends BaseEntity {
     this.recordItemPartInsts = recordItemPartInsts;
   }
 
+  @OneToOne
+  public CarWashingCouponEndUser getCarWashingCouponEndUser() {
+    return carWashingCouponEndUser;
+  }
 
+  public void setCarWashingCouponEndUser(CarWashingCouponEndUser carWashingCouponEndUser) {
+    this.carWashingCouponEndUser = carWashingCouponEndUser;
+  }
 
 }

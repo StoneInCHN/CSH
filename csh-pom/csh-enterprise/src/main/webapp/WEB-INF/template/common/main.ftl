@@ -235,6 +235,9 @@
     		[@shiro.hasPermission name="joyDraw"]
     		<li><a href="#" data-url="${base}/console/joyDraw/joyDraw.jhtml">${message("csh.appActivity.joyDraw")}</a></li>
     		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="carWashingCoupon"]
+    		<li><a href="#" data-url="${base}/console/carWashingCoupon/carWashingCoupon.jhtml">${message("csh.appActivity.carWashingCoupon")}</a></li>
+    		[/@shiro.hasPermission]
     	</ul>                   
     </div>
   

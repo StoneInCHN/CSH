@@ -269,14 +269,14 @@ public class VehicleController extends MobileBaseController {
     Vehicle vehicle = vehicleService.find(vehicleId);
     if (vehicle.getTenantID() != null) {
       response.setCode(CommonAttributes.FAIL_VEHICLE_BIND_TENANT);
-      response.setDesc(Message.error("csh.vehicle.binded").getContent());
+      response.setDesc(Message.error("csh.vehicle.bind.tenant").getContent());
       return response;
     }
     vehicle.setTenantID(tenantId);
     Vehicle v = vehicleService.bindTenant(vehicle);
 
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
-      LogUtil.debug(VehicleController.class, "Update",
+      LogUtil.debug(VehicleController.class, "bindTenant",
           "bind vehicle and tenant.TenantID: %s, VehicleId: %s,", tenantId, vehicleId);
     }
     App app = appService.getTenantAppById(tenantId);
@@ -318,6 +318,13 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
 
+    Vehicle vehicle = vehicleService.find(vehicleId);
+    if (vehicle.getTenantID() != null && vehicle.getDevice() != null) {
+      response.setCode(CommonAttributes.FAIL_VEHICLE_BIND_TENANT);
+      response.setDesc(Message.error("csh.vehicle.binded").getContent());
+      return response;
+    }
+
     List<Filter> filters = new ArrayList<Filter>();
     Filter deviceNoFilter = new Filter("deviceNo", Operator.eq, deviceNo);
     Filter deviceStatusFilter = new Filter("bindStatus", Operator.eq, BindStatus.UNBINDED);
@@ -347,10 +354,8 @@ public class VehicleController extends MobileBaseController {
 
     DeviceInfo deviceInfo = deviceInfos.get(0);
 
-    Vehicle vehicle = vehicleService.find(vehicleId);
-
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
-      LogUtil.debug(VehicleController.class, "Update",
+      LogUtil.debug(VehicleController.class, "bindDevice",
           "bind vehicle and device.DeviceNo: %s, VehicleId: %s,", deviceNo, vehicleId);
     }
     vehicleService.bindDevice(vehicle, deviceInfo, bindPrice);

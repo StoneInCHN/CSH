@@ -97,7 +97,7 @@ public class JpushController extends MobileBaseController {
     endUserService.update(updateUsers);
 
     if (LogUtil.isDebugEnabled(JpushController.class)) {
-      LogUtil.debug(JpushController.class, "Update",
+      LogUtil.debug(JpushController.class, "setRegId",
           "init User Jpush reg ID.UserName: %s, regId: %s, appPlatform: %s", endUser.getUserName(),
           jPushRegId, appPlatform);
     }

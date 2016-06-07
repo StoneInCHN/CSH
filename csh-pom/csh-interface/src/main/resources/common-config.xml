@@ -55,11 +55,14 @@
 		<!-- 交易类型 -->
 		<setting name="wechatTradeType" value="APP" />
 		<!-- 通知地址 -->
-		<setting name="wechatNotifyUrl" value="http://120.27.92.247:10001/csh-interface/wechat/pay_notify.jhtml" />
+		<setting name="wechatNotifyUrl" value="http://120.27.92.247:10001/csh-interface/payNotify/notify_wechat.jhtml" />
 		<!-- 微信下订单接口 -->
 		<setting name="wechatAddOrderUrl" value="https://api.mch.weixin.qq.com/pay/unifiedorder" />
 		<!-- 微信Token接口 -->
 		<setting name="wechatTokenUrl" value="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET" />
+		
+		<!-- 支付宝回调接口 -->
+		<!-- <setting name="alipayNotifyUrl" value="http://120.27.92.247:10001/csh-interface/payNotify/notify_alipay.jhtml" /> -->
 		
 		<!-- 违章查询 -->
 		<setting name="illegalSearchPeriod" value="7"/>

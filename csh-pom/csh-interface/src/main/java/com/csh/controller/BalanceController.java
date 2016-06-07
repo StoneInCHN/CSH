@@ -107,6 +107,15 @@ public class BalanceController extends MobileBaseController {
       } catch (DocumentException e) {
         e.printStackTrace();
       }
+    } else if (PaymentType.ALIPAY.equals(paymentType)) {
+      Map<String, Object> map = new HashMap<String, Object>();
+      if (chargeType.equals("CI")) {// 普通充值
+        map.put("out_trade_no", "0_" + tradeNo + "_" + userId.toString());
+      } else if (chargeType.equals("PD")) {// 购买设备充值
+        map.put("out_trade_no", "1_" + tradeNo + "_" + userId.toString());
+      }
+      response.setMsg(map);
+      response.setCode(CommonAttributes.SUCCESS);
     } else {
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("out_trade_no", tradeNo);
@@ -119,7 +128,6 @@ public class BalanceController extends MobileBaseController {
     response.setToken(newtoken);
     return response;
   }
-
 
   /**
    * 钱包充值余额call back

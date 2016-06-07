@@ -302,13 +302,25 @@ var messages = {
 	"csh.carServiceItem.serviceItemName":"服务项名称",
 	"csh.carServiceItem.list":"服务项列表",
 	"csh.carServiceItem.add":"服务项添加",
+	
 	"csh.itemPart.list":"服务配件列表",
 	"csh.itemPart.add":"服务配件添加",
 	"csh.itemPart.serviceItemPartName":"服务项配件名",
 	"csh.common.select.selectCarServiecItem":"请选择一个服务项",
 	"csh.itemPart.price":"配件价格",
-	"csh.itemPart.idDefault":"是否默认选中"
-		
+	"csh.itemPart.idDefault":"是否默认选中",
+	
+	"csh.carWashingCoupon.add":"添加洗车券",
+	"csh.carWashingCoupon.couponName":"名称",
+	"csh.carWashingCoupon.remark":"备注",
+	"csh.carWashingCoupon.expireDate":"有效期",
+	"csh.carWashingCoupon.list":"洗车券列表",
+	"csh.carWashingCoupon.endUser":"用户",
+	"csh.carWashingCoupon.isUsed":"使用状态",
+	"csh.carWashingCouponEndUser.list":"用户列表",
+	"csh.carWashingCoupon.counts":"次数"
+	
+	
 };
 //多语言
 function message(code) {
