@@ -120,13 +120,6 @@ $(function(){
 		   [
 		      {field:'ck',checkbox:true},
 		      {title:message("csh.carWashingCoupon.couponName"),field:"couponName",sortable:true},
-		      {title:message("csh.carWashingCoupon.expireDate"),field:"expireDate",width:100,sortable:true,formatter: function(value,row,index){
-		    	  if(value != null){
-						return new Date(value).Format("yyyy-MM-dd");
-					}else{
-						return "";
-					}}
-		      },
 		      {title:message("csh.carWashingCoupon.remark"),field:"remark",sortable:true},
 		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 		    	  if(value != null){
@@ -139,8 +132,6 @@ $(function(){
 		   ]
 		],
 		onDblClickRow:function(rowIndex, rowData){
-			console.log(rowIndex);
-			console.log(rowData);
 			var $carWashingCouponEndUserContainer = $("#carWashingCouponEndUserContainer");
 			$carWashingCouponEndUserContainer.show();
 			carWashingCouponEndUserLoad(rowData.id);

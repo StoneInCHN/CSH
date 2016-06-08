@@ -1,5 +1,6 @@
 package com.csh.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -158,6 +159,11 @@ public class EndUser extends BaseEntity {
    */
   private Boolean isGetCoupon;
 
+  /**
+   * 余额
+   */
+  private BigDecimal accountBalance;
+  
   @Transient
   public Boolean getIsGetCoupon() {
     return isGetCoupon;
@@ -395,6 +401,16 @@ public class EndUser extends BaseEntity {
 
   public void setVehicles(Set<Vehicle> vehicles) {
     this.vehicles = vehicles;
+  }
+
+  @Transient
+  @JsonProperty
+  public BigDecimal getAccountBalance() {
+    return accountBalance;
+  }
+
+  public void setAccountBalance(BigDecimal accountBalance) {
+    this.accountBalance = accountBalance;
   }
 
 }

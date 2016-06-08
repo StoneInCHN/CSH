@@ -100,6 +100,62 @@ var endUser_manager_tool = {
 		},
 		remove:function(){
 			listRemove('endUser-table-list','../endUser/delete.jhtml');
+		},
+		setBalance:function(){
+			var _edit_row = $('#endUser-table-list').datagrid('getSelected');
+			if( _edit_row == null ){
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
+				return false;
+			}
+			var _dialog = $('#setBalance4EndUser').dialog({
+			    title: message("csh.endUser.setBalance"),    
+			    width: 260,    
+			    height: 150,
+			    iconCls:'icon-mini-edit',
+			    cache: false, 
+			    buttons:[{
+			    	text:message("csh.common.save"),
+			    	iconCls:'icon-save',
+					handler:function(){
+						var validate = $('#setBalance4EndUser_form').form('validate');
+						
+						if(validate){
+								$.ajax({
+									url:"../endUser/setBalance.jhtml",
+									type:"post",
+									data:$("#setBalance4EndUser_form").serialize(),
+									beforeSend:function(){
+										$.messager.progress({
+											text:message("csh.common.saving")
+										});
+									},
+									success:function(result,response,status){
+										$.messager.progress('close');
+										if(result.type == "success"){
+											showSuccessMsg(result.content);
+											$('#setBalance4EndUser').dialog("close")
+											$("#setBalance4EndUser_form").form("reset");
+											$("#endUser-table-list").datagrid('reload');
+										}else{
+											alertInfoMsg(result.content);
+										}
+									}
+								});
+						};
+					}
+				},{
+					text:message("csh.common.cancel"),
+					iconCls:'icon-cancel',
+					handler:function(){
+						 $('#setBalance4EndUser').dialog("close");
+						 $("#setBalance4EndUser_form").form("reset");
+					}
+			    }],
+			    onOpen:function(){
+			    	$('#setBalance4EndUser_form').show();
+			    	$("#setBalance4EndUser_form_endUserId").val(_edit_row.id);
+			    }
+			})
 		}
 };
 
@@ -136,6 +192,7 @@ $(function(){
 //		      {title:message("csh.endUser.realName"),field:"realName",width:100,sortable:true   },
 		      {title:message("csh.endUser.mobileNum"),field:"mobileNum",width:100,sortable:true},
 		      {title:message("csh.endUser.qq"),field:"qq",width:100,sortable:true},
+		      {title:message("csh.endUser.accountBalance"),field:"accountBalance",width:100},
 		      {title:message("csh.endUser.accoutStatus"),field:"accoutStatus",width:100,sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(value == "ACTIVED"){

@@ -35,10 +35,6 @@ public class CarWashingCoupon extends BaseEntity {
    */
   private String couponName;
 
-  /**
-   * 有效期
-   */
-  private Date expireDate;
 
   /**
    * 租户ID
@@ -72,16 +68,6 @@ public class CarWashingCoupon extends BaseEntity {
     this.couponName = couponName;
   }
 
-  @Temporal(TemporalType.DATE)
-  @JsonProperty
-  public Date getExpireDate() {
-    return expireDate;
-  }
-
-  public void setExpireDate(Date expireDate) {
-    this.expireDate = expireDate;
-  }
-  
   @Index(name = "index_car_washing_coupon_tenantid")
   public Long getTenantID() {
     return tenantID;

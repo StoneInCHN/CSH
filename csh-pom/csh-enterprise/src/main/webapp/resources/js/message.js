@@ -139,7 +139,8 @@ var messages = {
 	"csh.endUser.list":"用户列表",
 	"csh.endUser.locked":"账号锁定",
 	"csh.endUser.search":"用户搜索",
-	
+	"csh.endUser.setBalance":"设置余额",
+	"csh.endUser.accountBalance":"余额",
 	//设备信息
 	"csh.deviceInfo.list":"设备列表",
 	"csh.deviceInfo.deviceNO":"设备编号",

@@ -28,16 +28,6 @@ public class CarWashingCouponEndUser extends BaseEntity {
 
 
   /**
-   * 是否过期
-   */
-  private Boolean isExpire;
-
-  /**
-   * 过期时间
-   */
-  private Date expireDate;
-
-  /**
    * 说明
    */
   private String remark;
@@ -56,24 +46,6 @@ public class CarWashingCouponEndUser extends BaseEntity {
    * 洗车劵
    */
   private CarWashingCoupon carWashingCoupon;
-
-  public Boolean getIsExpire() {
-    return isExpire;
-  }
-
-  public void setIsExpire(Boolean isExpire) {
-    this.isExpire = isExpire;
-  }
-
-  @Temporal(TemporalType.DATE)
-  @JsonProperty
-  public Date getExpireDate() {
-    return expireDate;
-  }
-
-  public void setExpireDate(Date expireDate) {
-    this.expireDate = expireDate;
-  }
 
   @JsonProperty
   public String getRemark() {

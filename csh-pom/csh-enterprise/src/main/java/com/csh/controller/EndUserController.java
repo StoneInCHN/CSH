@@ -1,6 +1,8 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -25,13 +27,18 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.AccountBalance;
+import com.csh.entity.Admin;
 import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.AccountBalanceService;
 import com.csh.service.EndUserService;
 import com.csh.service.RSAService;
+import com.csh.service.TenantAccountService;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.SpringUtils;
 
 /**
  * 终端用户
@@ -48,6 +55,12 @@ public class EndUserController extends BaseController
   @Resource(name = "rsaServiceImpl")
   private RSAService rsaService;
   
+  @Resource (name = "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
+  
+  @Resource(name="accountBalanceServiceImpl")
+  private AccountBalanceService accountBalanceService;
+  
   @RequestMapping (value = "/endUser", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
@@ -62,8 +75,20 @@ public class EndUserController extends BaseController
   public @ResponseBody Page<EndUser> list (Pageable pageable, ModelMap model,
       Date beginDate, Date endDate, String userNameSearch,AccountStatus accountStatusSearch)
   {
-    
-     return endUserService.findEndUser (pageable, model, beginDate, endDate, userNameSearch, accountStatusSearch);
+    Long tenantId = tenantAccountService.getCurrentTenantID();
+    // Page<EndUser> page = endUserService.findPage(pageable);
+     Page<EndUser> page = endUserService.findEndUser (pageable, model, beginDate, endDate, userNameSearch, accountStatusSearch);
+   List<EndUser> endUsers = page.getRows();
+     for (EndUser endUser : endUsers) {
+       List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter>();
+       filters.add(com.csh.framework.filter.Filter.eq("endUser",endUser.getId()));
+       filters.add(com.csh.framework.filter.Filter.eq("tenantID", tenantId));
+       List<AccountBalance> lists = accountBalanceService.findList(null, filters, null);
+       if(lists!=null && lists.size() >0){
+         endUser.setAccountBalance(lists.get(0).getBalance());
+       }
+    }
+     return new Page<EndUser>(endUsers, page.getTotal(), pageable);
   }
 
   /**
@@ -134,5 +159,30 @@ public class EndUserController extends BaseController
     EndUser endUser = endUserService.find(id);
     model.addAttribute("endUser", endUser);
     return "endUser/details";
+  }
+  
+  
+  /**
+   * 删除
+   */
+  @RequestMapping (value = "/setBalance", method = RequestMethod.POST)
+  public @ResponseBody Message setBalance (AccountBalance accountBalance,Long endUserId)
+  {
+    if(accountBalance.getBalance() ==null || endUserId == null){
+      return Message.error(SpringUtils.getMessage("csh.accountBalance.data.error"));
+    }
+    Long tenantId = tenantAccountService.getCurrentTenantID();
+    List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter>();
+    filters.add(com.csh.framework.filter.Filter.eq("endUser",endUserId));
+    filters.add(com.csh.framework.filter.Filter.eq("tenantID", tenantId));
+    List<AccountBalance> lists = accountBalanceService.findList(null, filters, null);
+    if(lists!=null && lists.size() >0){
+      return Message.error(SpringUtils.getMessage("csh.accountBalance.resubmit"));
+    }
+    EndUser endUser = endUserService.find(endUserId);
+    accountBalance.setTenantID(tenantId);
+    accountBalance.setEndUser(endUser);
+    accountBalanceService.save(accountBalance);
+    return SUCCESS_MESSAGE;
   }
 }

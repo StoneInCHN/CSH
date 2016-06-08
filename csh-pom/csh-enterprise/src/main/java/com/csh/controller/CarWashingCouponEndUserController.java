@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +34,7 @@ public class CarWashingCouponEndUserController extends BaseController {
   @Resource(name = "carWashingCouponEndUserServiceImpl")
   private CarWashingCouponEndUserService carWashingCouponEndUserService;
 
-  @Resource(name="endUserServiceImpl")
+  @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
 
   @RequestMapping(value = "/carWashingCouponEndUser", method = RequestMethod.GET)
@@ -45,25 +44,25 @@ public class CarWashingCouponEndUserController extends BaseController {
 
 
   @RequestMapping(value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add(Long endUserID ,Integer counts,Long id) {
-    if(endUserID ==null || counts ==null || id ==null){
+  public @ResponseBody Message add(Long endUserID, Integer counts, Long id) {
+    if (endUserID == null || counts == null || id == null) {
       return ERROR_MESSAGE;
     }
     List<Filter> filters = new ArrayList<Filter>();
     filters.add(Filter.eq("carWashingCoupon", id));
     filters.add(Filter.eq("endUser", endUserID));
-    List<CarWashingCouponEndUser> lists = carWashingCouponEndUserService.findList(null, filters, null);
-    if (lists !=null && lists.size() >0) {
+    List<CarWashingCouponEndUser> lists =
+        carWashingCouponEndUserService.findList(null, filters, null);
+    if (lists != null && lists.size() > 0) {
       return Message.warn(SpringUtils.getMessage("csh.carWashingCoupon.endUser.publish"));
     }
     EndUser endUser = endUserService.find(endUserID);
     CarWashingCoupon carWashingCoupon = carWashingCouponService.find(id);
-    if (counts >0) {
+    if (counts > 0) {
       for (int i = 0; i < counts; i++) {
         CarWashingCouponEndUser carWashingCouponEndUser = new CarWashingCouponEndUser();
         carWashingCouponEndUser.setCarWashingCoupon(carWashingCoupon);
         carWashingCouponEndUser.setEndUser(endUser);
-        carWashingCouponEndUser.setExpireDate(carWashingCoupon.getExpireDate());
         carWashingCouponEndUser.setIsUsed(false);
         carWashingCouponEndUser.setRemark(carWashingCoupon.getRemark());
         carWashingCouponEndUserService.save(carWashingCouponEndUser);
@@ -74,7 +73,6 @@ public class CarWashingCouponEndUserController extends BaseController {
 
   @RequestMapping(value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<CarWashingCouponEndUser> list(Long id, Pageable pageable) {
-   // CarWashingCoupon carWashingCoupon=carWashingCouponService.find(id);
     List<Filter> filters = new ArrayList<Filter>();
     filters.add(Filter.eq("carWashingCoupon", id));
     return carWashingCouponEndUserService.findPage(pageable);

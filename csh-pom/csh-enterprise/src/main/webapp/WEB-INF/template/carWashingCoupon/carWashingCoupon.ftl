@@ -18,12 +18,6 @@
 	    			  <input class="easyui-textbox" type="text" name="couponName" data-options="required:true" /> 
 	    		</td>
 	    	</tr>
-	    	<tr>
-	    		<th>${message("csh.carWashingCoupon.expireDate")}:</th>
-	    		<td>
-	    			  <input type="text" class="easyui-datebox" name="expireDate" data-options="required:true" />
-	    		</td>
-	    	</tr>
 			<tr>
 	    		<th>${message("csh.carWashingCoupon.remark")}:</th>
 	    		<td>

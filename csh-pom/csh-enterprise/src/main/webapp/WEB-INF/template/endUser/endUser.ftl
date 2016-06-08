@@ -37,6 +37,7 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="endUser_manager_tool.add();">添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="endUser_manager_tool.edit();">修改</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="endUser_manager_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="endUser_manager_tool.setBalance();">设置余额</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>
@@ -102,7 +103,19 @@
 </div>
 <div id="editTenantAccount"></div>
 <div id="tenantAccountDetail"></div>
-
+<div id="setBalance4EndUser" >
+	<form id="setBalance4EndUser_form" method="post" class="form-table">
+		<input type="hidden" name="endUserId" id="setBalance4EndUser_form_endUserId">
+		 <table class="table table-striped"  border="0">
+		<tr>
+	    		<th>${message("csh.accountBalance.balance")}:</th>
+	    		<td colspan='2'>
+	    			 <input type="text" class="easyui-numberbox" name="balance" data-options="required:true,min:0,precision:2"/>
+	    		</td>
+	    </tr>
+	</table>
+	</form>
+</div>
 
 
 

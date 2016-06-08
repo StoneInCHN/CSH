@@ -78,13 +78,6 @@ function carWashingCouponEndUserLoad(id){
 		      {title:message("csh.carWashingCoupon.couponName"),field:"couponName",sortable:true,formatter: function(value,row,index){
 		    	  return "洗车券"
 				}},
-		      {title:message("csh.carWashingCoupon.expireDate"),field:"expireDate",width:100,sortable:true,formatter: function(value,row,index){
-		    	  if(value != null){
-						return new Date(value).Format("yyyy-MM-dd");
-					}else{
-						return "";
-					}}
-		      },
 		      {title:message("csh.carWashingCoupon.endUser"),field:"endUser",sortable:true,formatter: function(value,row,index){
 		    	  if(value && value.userName){
 						return value.userName;
