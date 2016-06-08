@@ -40,6 +40,19 @@ public class WalletRequest extends BaseRequest {
    */
   private String recordNo;
 
+  /**
+   * 设备号
+   */
+  private String deviceNo;
+
+
+  public String getDeviceNo() {
+    return deviceNo;
+  }
+
+  public void setDeviceNo(String deviceNo) {
+    this.deviceNo = deviceNo;
+  }
 
   public String getRecordNo() {
     return recordNo;

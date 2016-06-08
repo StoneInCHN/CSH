@@ -40,6 +40,30 @@ public class ToolsUtils {
     return strBuffer.toString();
   }
 
+
+  /**
+   * 生成账单号 格式 param+随机4位数
+   * 
+   * @return
+   */
+  public synchronized static String generateRecordNoByParam(String param) {
+    StringBuffer strBuffer = new StringBuffer();
+    strBuffer.append(param);
+    strBuffer.append((int) ((Math.random() * 9 + 1) * 1000));
+    // 订单尾号增自999时重置
+    if (baseNo == 999) {
+      baseNo = 1;
+    }
+    if (baseNo.toString().length() == 1) {
+      strBuffer.append("00");
+    }
+    if (baseNo.toString().length() == 2) {
+      strBuffer.append("0");
+    }
+    strBuffer.append(baseNo++);
+    return strBuffer.toString();
+  }
+
   public static Map<String, Object> convertStrToJson(String str) {
     try {
       ObjectMapper mapper = new ObjectMapper();

@@ -1,7 +1,9 @@
 package com.csh.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -15,8 +17,11 @@ import com.csh.dao.VehicleDao;
 import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.Vehicle;
+import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CouponService;
 import com.csh.service.VehicleService;
@@ -53,11 +58,22 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     vehicle.setTenantID(deviceInfo.getTenantID());
     vehicleDao.merge(vehicle);
 
-    AdvanceDeposits advanceDeposits = vehicle.getEndUser().getAdvanceDeposits();
-    BigDecimal amount = advanceDeposits.getBalanceAmount().subtract(bindPrice);
-    advanceDeposits.setBalanceAmount(amount);
-    advanceDepositsDao.merge(advanceDeposits);
-
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter tenantFilter = new Filter("tenantID", Operator.eq, deviceInfo.getTenantID());
+    Filter endUserFilter = new Filter("endUser", Operator.eq, vehicle.getEndUser());
+    Filter deviceFilter = new Filter("deviceNo", Operator.eq, deviceInfo.getDeviceNo());
+    Filter typeFilter = new Filter("usageType", Operator.eq, AdvanceUsageType.DEVICE);
+    Filter bindFilter = new Filter("isBind", Operator.eq, false);
+    filters.add(bindFilter);
+    filters.add(typeFilter);
+    filters.add(tenantFilter);
+    filters.add(endUserFilter);
+    filters.add(deviceFilter);
+    List<AdvanceDeposits> advanceDeposits = advanceDepositsDao.findList(null, null, filters, null);
+    for (AdvanceDeposits deposit : advanceDeposits) {
+      deposit.setIsBind(true);
+      advanceDepositsDao.merge(deposit);
+    }
     // ReportDeviceBindStatistics report =
     // reportDeviceBindStatisticsDao.getReportByDate(TimeUtils.formatDate2Day(new Date()));
     // if (report != null) {

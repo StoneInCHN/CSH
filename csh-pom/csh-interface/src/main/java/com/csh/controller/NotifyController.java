@@ -27,6 +27,7 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
+import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.service.AdvanceDepositsService;
@@ -34,6 +35,7 @@ import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
 import com.csh.service.WalletService;
+import com.csh.utils.ToolsUtils;
 import com.csh.utils.alipay.util.AlipayNotify;
 import com.csh.utils.wechat.WeixinUtil;
 
@@ -127,18 +129,21 @@ public class NotifyController extends MobileBaseController {
                   "User charge in call back for common charge. UserId: %s, ChargeAmount: %s,",
                   userId, amount);
             }
-            walletService.updateWallet(new Long(userId), amount, recordNo);
+            walletService.updateWallet(new Long(userId), amount,
+                ToolsUtils.generateRecordNoByParam(recordNo));
           }
           // 购买设备充值
           else if (out_trade_no.startsWith("PD")) {
             String userId = out_trade_no.split("_")[1];
             BigDecimal amount = new BigDecimal(total_fee).divide(new BigDecimal(100));
             if (LogUtil.isDebugEnabled(NotifyController.class)) {
-              LogUtil.debug(BalanceController.class, "pay_notify",
+              LogUtil.debug(BalanceController.class, "notify_wechat",
                   "User charge in call back for purchase device. UserId: %s, ChargeAmount: %s,",
                   userId, amount);
             }
-            advanceDepositsService.updateAdvanceDeposit(new Long(userId), amount);
+            advanceDepositsService.updateAdvanceDeposit(new Long(userId), amount,
+                out_trade_no.split("_")[2], PaymentType.WECHAT,
+                ToolsUtils.generateRecordNoByParam(recordNo));
           }
           // 购买服务
           else {
@@ -278,10 +283,11 @@ public class NotifyController extends MobileBaseController {
                 "User charge in call back for common charge.UserId: %s, ChargeAmount: %s, trade_status: %s",
                 userId, amount, trade_status);
       }
-      walletService.updateWallet(new Long(userId), amount, out_trade_no.split("_")[1]);
+      walletService.updateWallet(new Long(userId), amount,
+          ToolsUtils.generateRecordNoByParam("CI" + out_trade_no.split("_")[1]));
     }
     // 购买设备充值
-    else if (out_trade_no.split("_").length == 3 && recordNo.equals("1")) {
+    else if (out_trade_no.split("_").length == 4 && recordNo.equals("1")) {
       String userId = out_trade_no.split("_")[2];
       BigDecimal amount = new BigDecimal(total_fee);
       if (LogUtil.isDebugEnabled(NotifyController.class)) {
@@ -292,7 +298,9 @@ public class NotifyController extends MobileBaseController {
                 "User charge in call back for purchase device. UserId: %s, ChargeAmount: %s, trade_status: %s",
                 userId, amount, trade_status);
       }
-      advanceDepositsService.updateAdvanceDeposit(new Long(userId), amount);
+      advanceDepositsService.updateAdvanceDeposit(new Long(userId), amount,
+          out_trade_no.split("_")[3], PaymentType.ALIPAY,
+          ToolsUtils.generateRecordNoByParam("PD" + out_trade_no.split("_")[1]));
     }
     // 购买服务
     else {
@@ -319,5 +327,4 @@ public class NotifyController extends MobileBaseController {
       }
     }
   }
-
 }

@@ -27,6 +27,7 @@ import com.csh.entity.VehicleBrand;
 import com.csh.entity.VehicleBrandDetail;
 import com.csh.entity.VehicleLine;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -37,6 +38,7 @@ import com.csh.json.base.BaseResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.VehicleRequest;
+import com.csh.service.AdvanceDepositsService;
 import com.csh.service.AppService;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
@@ -79,6 +81,9 @@ public class VehicleController extends MobileBaseController {
 
   @Resource(name = "appServiceImpl")
   private AppService appService;
+
+  @Resource(name = "advanceDepositsServiceImpl")
+  private AdvanceDepositsService advanceDepositsService;
 
 
 
@@ -267,7 +272,9 @@ public class VehicleController extends MobileBaseController {
     }
 
     Vehicle vehicle = vehicleService.find(vehicleId);
-    if (vehicle.getTenantID() != null) {
+    if (vehicle.getDevice() != null
+        || (vehicle.getTenantID() != null && advanceDepositsService.isAlreadyPurDevice(tenantId,
+            userId))) {
       response.setCode(CommonAttributes.FAIL_VEHICLE_BIND_TENANT);
       response.setDesc(Message.error("csh.vehicle.bind.tenant").getContent());
       return response;
@@ -291,7 +298,6 @@ public class VehicleController extends MobileBaseController {
 
     return response;
   }
-
 
   /**
    * 车辆与设备绑定
@@ -327,8 +333,10 @@ public class VehicleController extends MobileBaseController {
 
     List<Filter> filters = new ArrayList<Filter>();
     Filter deviceNoFilter = new Filter("deviceNo", Operator.eq, deviceNo);
-    Filter deviceStatusFilter = new Filter("bindStatus", Operator.eq, BindStatus.UNBINDED);
+    Filter bindStatusFilter = new Filter("bindStatus", Operator.eq, BindStatus.UNBINDED);
+    Filter deviceStatusFilter = new Filter("deviceStatus", Operator.eq, DeviceStatus.SALEOUT);
     filters.add(deviceNoFilter);
+    filters.add(bindStatusFilter);
     filters.add(deviceStatusFilter);
     List<DeviceInfo> deviceInfos = deviceInfoService.findList(null, filters, null);
     if (deviceInfos.size() != 1) {
@@ -336,8 +344,7 @@ public class VehicleController extends MobileBaseController {
       response.setDesc(Message.error("csh.bind.device.invalid").getContent());
       return response;
     }
-    // 验证购买设备专款余额是否足够
-    EndUser endUser = endUserService.find(userId);
+
     SystemConfig devicePrice =
         systemConfigService.getConfigByKey(SystemConfigKey.DEVICE_PRICE, null);
     if (devicePrice == null || devicePrice.getConfigValue() == null) {
@@ -346,11 +353,6 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
     BigDecimal bindPrice = new BigDecimal(devicePrice.getConfigValue());
-    if (bindPrice.compareTo(endUser.getAdvanceDeposits().getBalanceAmount()) > 0) {
-      response.setCode(CommonAttributes.FAIL_COMMON);
-      response.setDesc(Message.error("csh.wallet.device.insufficient").getContent());
-      return response;
-    }
 
     DeviceInfo deviceInfo = deviceInfos.get(0);
 

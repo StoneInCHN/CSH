@@ -9,15 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.csh.dao.AdvanceDepositsDao;
 import com.csh.dao.EndUserDao;
 import com.csh.dao.ReportUserRegStatisticsDao;
-import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.EndUser;
 import com.csh.entity.ReportUserRegStatistics;
 import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
-import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
 import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -34,8 +31,8 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
   @Resource(name = "couponServiceImpl")
   private CouponService couponService;
 
-  @Resource(name = "advanceDepositsDaoImpl")
-  private AdvanceDepositsDao advanceDepositsDao;
+  // @Resource(name = "advanceDepositsDaoImpl")
+  // private AdvanceDepositsDao advanceDepositsDao;
 
   @Resource(name = "reportUserRegStatisticsDaoImpl")
   private ReportUserRegStatisticsDao reportUserRegStatisticsDao;
@@ -95,12 +92,6 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
     wallet.setEndUser(regUser);
     regUser.setWallet(wallet);
     endUserDao.persist(regUser);
-
-    AdvanceDeposits advanceDeposits = new AdvanceDeposits();
-    advanceDeposits.setEndUser(regUser);
-    advanceDeposits.setUsageType(AdvanceUsageType.DEVICE);
-    regUser.setAdvanceDeposits(advanceDeposits);
-    advanceDepositsDao.persist(advanceDeposits);
 
     ReportUserRegStatistics report =
         reportUserRegStatisticsDao.getReportByDate(TimeUtils.formatDate2Day(new Date()));

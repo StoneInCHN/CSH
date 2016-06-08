@@ -129,9 +129,9 @@ public class EndUser extends BaseEntity {
   private Wallet wallet;
 
   /**
-   * 我的预存专款
+   * 我的预存专款消费记录
    */
-  private AdvanceDeposits advanceDeposits;
+  private Set<AdvanceDeposits> advanceDeposits = new HashSet<AdvanceDeposits>();
 
   /**
    * 汽车服务购买记录
@@ -163,7 +163,7 @@ public class EndUser extends BaseEntity {
    * 余额
    */
   private BigDecimal accountBalance;
-  
+
   @Transient
   public Boolean getIsGetCoupon() {
     return isGetCoupon;
@@ -209,12 +209,12 @@ public class EndUser extends BaseEntity {
     this.carServiceRecords = carServiceRecords;
   }
 
-  @OneToOne(mappedBy = "endUser", cascade = CascadeType.ALL)
-  public AdvanceDeposits getAdvanceDeposits() {
+  @OneToMany(mappedBy = "endUser", cascade = CascadeType.ALL)
+  public Set<AdvanceDeposits> getAdvanceDeposits() {
     return advanceDeposits;
   }
 
-  public void setAdvanceDeposits(AdvanceDeposits advanceDeposits) {
+  public void setAdvanceDeposits(Set<AdvanceDeposits> advanceDeposits) {
     this.advanceDeposits = advanceDeposits;
   }
 

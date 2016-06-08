@@ -80,6 +80,8 @@ public final class CommonAttributes {
 
   /** 无默认车辆 */
   public static final String FAIL_DEFAULT_VEHICLE = "0019";// 无默认车辆
+  /** 购买OBD设备失败 */
+  public static final String FAIL_PURCHASE_DEVICE = "0020";// 购买OBD设备失败
 
   /** 操作失败 */
   public static final String FAIL_COMMON = "1000"; // 操作失败
