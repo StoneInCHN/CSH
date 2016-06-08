@@ -163,8 +163,52 @@ public class CarServiceRecord extends BaseEntity {
    * 洗车券
    */
   private CarWashingCouponEndUser carWashingCouponEndUser;
-  
-  private Set<CarServiceRecordPartInst> recordItemPartInsts = new HashSet<CarServiceRecordPartInst> ();
+
+  /**
+   * 是否参与结算
+   */
+  private Boolean isEnableClear;
+
+  /**
+   * 是否是线下转线上金额参与购买
+   */
+  private Boolean isOffLineBalance;
+
+  /**
+   * 不参与结算的线下转线上的余额金额
+   */
+  private BigDecimal clearBalance;
+
+
+
+  public Boolean getIsEnableClear() {
+    return isEnableClear;
+  }
+
+  public void setIsEnableClear(Boolean isEnableClear) {
+    this.isEnableClear = isEnableClear;
+  }
+
+  public Boolean getIsOffLineBalance() {
+    return isOffLineBalance;
+  }
+
+  public void setIsOffLineBalance(Boolean isOffLineBalance) {
+    this.isOffLineBalance = isOffLineBalance;
+  }
+
+  @Column(scale = 2, precision = 10)
+  public BigDecimal getClearBalance() {
+    return clearBalance;
+  }
+
+  public void setClearBalance(BigDecimal clearBalance) {
+    this.clearBalance = clearBalance;
+  }
+
+  private Set<CarServiceRecordPartInst> recordItemPartInsts =
+      new HashSet<CarServiceRecordPartInst>();
+
   @JsonProperty
   public SystemType getCouponSource() {
     return couponSource;
@@ -261,7 +305,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @Index(name = "carServiceRecord_tenantid")
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -302,7 +346,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
   public PaymentType getPaymentType() {
     return paymentType;
   }
@@ -312,7 +356,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
   public ChargeStatus getChargeStatus() {
     return chargeStatus;
   }
@@ -383,7 +427,7 @@ public class CarServiceRecord extends BaseEntity {
 
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.NO)
   @FieldBridge(impl = DateBridgeImpl.class)
   public Date getPaymentDate() {
     return paymentDate;
@@ -412,14 +456,11 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @OneToMany(mappedBy = "carServiceRecord")
-  public Set<CarServiceRecordPartInst> getRecordItemPartInsts ()
-  {
+  public Set<CarServiceRecordPartInst> getRecordItemPartInsts() {
     return recordItemPartInsts;
   }
 
-  public void setRecordItemPartInsts (
-      Set<CarServiceRecordPartInst> recordItemPartInsts)
-  {
+  public void setRecordItemPartInsts(Set<CarServiceRecordPartInst> recordItemPartInsts) {
     this.recordItemPartInsts = recordItemPartInsts;
   }
 

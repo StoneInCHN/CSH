@@ -95,6 +95,10 @@ public class EndUserController extends MobileBaseController {
       response.setDesc(Message.error("csh.user.token.timeout").getContent());
       return response;
     }
+    EndUser endUser = endUserService.find(userId);
+    endUser.setjpushRegId(null);
+    endUserService.update(endUser);
+
     endUserService.deleteEndUserToken(userId);
     response.setCode(CommonAttributes.SUCCESS);
     return response;

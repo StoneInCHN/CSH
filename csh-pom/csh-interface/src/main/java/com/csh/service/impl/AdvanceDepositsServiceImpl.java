@@ -17,6 +17,7 @@ import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
+import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -56,6 +57,9 @@ public class AdvanceDepositsServiceImpl extends BaseServiceImpl<AdvanceDeposits,
     advanceDeposits.setUsageType(AdvanceUsageType.DEVICE);
     advanceDeposits.setIsBind(false);
     advanceDepositsDao.persist(advanceDeposits);
+
+    deviceInfo.setDeviceStatus(DeviceStatus.SALEOUT);
+    deviceInfoDao.merge(deviceInfo);
   }
 
   @Override
