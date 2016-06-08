@@ -4,11 +4,11 @@
 		<setting name="emailPattern" value="^[a-z0-9A-Z]+([-_.][a-z0-9A-Z]+)*@([a-z0-9A-Z]+[-.])+[a-zA-Z]{2,5}$" />
 		<setting name="captchaTypes" value="LOGIN,OTHER" />
 		<!-- 邮件相关配置 -->
-		<setting name="smtpFromMail" value="tankboo@163.com" />
+		<setting name="smtpFromMail" value="microctrllife@163.com" />
 		<setting name="smtpHost" value="smtp.163.com" />
 		<setting name="smtpPort" value="25" />
-		<setting name="smtpUsername" value="tankboo@163.com" />
-		<setting name="smtpPassword" value="676397876." />
+		<setting name="smtpUsername" value="microctrllife@163.com" />
+		<setting name="smtpPassword" value="o123456" />
 		<!-- key相关配置 -->
 		<setting name="safeKeyExpiryTime" value="1440" />
 		<!-- 文件上传相关配置 -->

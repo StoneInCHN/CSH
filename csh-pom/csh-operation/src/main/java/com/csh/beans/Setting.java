@@ -155,6 +155,11 @@ public class Setting implements Serializable {
 
   /** 短信平台购买服务短信模板 */
   private String ucpaasServiceTemplate;
+  /**
+   * 短信平台审核失败短信模板ID
+   */
+  private String applyFailureTemplate;
+  
 
   /** 短信平台语音回拨号码 */
   private String ucpaasCallDisplay;
@@ -449,6 +454,14 @@ public Integer getSmsCodeTimeOut() {
   }
   public void setMsgPushUrl(String msgPushUrl) {
     this.msgPushUrl = msgPushUrl;
+  }
+
+  public String getApplyFailureTemplate() {
+    return applyFailureTemplate;
+  }
+
+  public void setApplyFailureTemplate(String applyFailureTemplate) {
+    this.applyFailureTemplate = applyFailureTemplate;
   }
   
 }

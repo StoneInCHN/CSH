@@ -143,7 +143,7 @@ public class TenantApplyController extends BaseController {
       String message = SpringUtils.getMessage("csh.tenantApply.audit.failed.message",applyTemp.getTenantName(),applyTemp.getNotes());
       mailService.send(applyTemp.getEmail(), subject, message);
      //send msg
-      
+      UcpaasUtil.SendApplyFailureBySms(applyTemp.getContactPhone(), applyTemp.getTenantName(), applyTemp.getNotes());
     }
 
     return SUCCESS_MESSAGE;

@@ -130,10 +130,11 @@ public class UcpaasUtil {
    * @param code
    * @return
    */
-  public static String SendAccountBySms(String mobile,String orgCode , String userName ,String password) {
+  public static String SendAccountBySms(String mobile, String orgCode, String userName,
+      String password) {
 
     try {
-      String param =orgCode +","+ userName +","+ password +"," + setting.getTenantLoginUrl();
+      String param = orgCode + "," + userName + "," + password + "," + setting.getTenantLoginUrl();
       String time = TimeUtils.format("yyyyMMddHHmmss", System.currentTimeMillis());
       String sig = getSigParam(time);
       Map<String, String> head = getAuthorization(time);
@@ -148,9 +149,6 @@ public class UcpaasUtil {
               .append(",").append("\"to\":").append("\"" + mobile + "\"").append(",")
               .append("\"templateId\":").append("\"" + template + "\"").append(",")
               .append("\"param\":").append("\"" + param + "\"").append("}}")).toString();
-       System.out.println(reqUrl);
-       System.out.println(body);
-       System.out.println(head);
       // {"resp":{"respCode":"000000","failure":1,"templateSMS":{"createDate":20140623185016,"smsId":"f96f79240e372587e9284cd580d8f953"}}}
       String response = ApiUtils.post(reqUrl, body, head);
       return response;
@@ -159,8 +157,34 @@ public class UcpaasUtil {
     }
     return null;
   }
-  
-  
+
+  public static String SendApplyFailureBySms(String mobile, String userName, String notes) {
+
+    try {
+      String param = userName + "," + notes;
+      String time = TimeUtils.format("yyyyMMddHHmmss", System.currentTimeMillis());
+      String sig = getSigParam(time);
+      Map<String, String> head = getAuthorization(time);
+      String template = setting.getApplyFailureTemplate();
+      String appId = setting.getUcpaasAppId();
+      String reqUrl =
+          setting.getUcpaasUrl() + "/" + setting.getUcpaasVersion() + "/Accounts/"
+              + setting.getUcpaasSid() + "/Messages/templateSMS?sig=" + sig;
+      // 设置post json数据
+      String body =
+          (new StringBuilder("{\"templateSMS\":{").append("\"appId\":").append("\"" + appId + "\"")
+              .append(",").append("\"to\":").append("\"" + mobile + "\"").append(",")
+              .append("\"templateId\":").append("\"" + template + "\"").append(",")
+              .append("\"param\":").append("\"" + param + "\"").append("}}")).toString();
+      // {"resp":{"respCode":"000000","failure":1,"templateSMS":{"createDate":20140623185016,"smsId":"f96f79240e372587e9284cd580d8f953"}}}
+      String response = ApiUtils.post(reqUrl, body, head);
+      return response;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   /**
    * MD5数字签名
    * 

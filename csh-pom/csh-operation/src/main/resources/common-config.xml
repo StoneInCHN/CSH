@@ -37,6 +37,8 @@
 	<setting name="ucpaasAccountTemplate" value="23350" />
 	<!-- 短信平台购买服务短信模板ID -->
 	<setting name="ucpaasServiceTemplate" value="22544" />
+	<!-- 短信平台审核失败短信模板ID-->
+	<setting name="applyFailureTemplate" value="25176" />
 	<!-- 短信平台语音回拨号码 -->
 	<setting name="ucpaasCallDisplay" value="4007930888" />
 	<!-- 商家登陆地址(多租户系统地址) -->

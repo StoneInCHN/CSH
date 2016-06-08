@@ -7,28 +7,15 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Filter;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TermRangeQuery;
-import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
-import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.AccountBalance;
-import com.csh.entity.Admin;
 import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.framework.paging.Page;
@@ -37,7 +24,6 @@ import com.csh.service.AccountBalanceService;
 import com.csh.service.EndUserService;
 import com.csh.service.RSAService;
 import com.csh.service.TenantAccountService;
-import com.csh.utils.DateTimeUtils;
 import com.csh.utils.SpringUtils;
 
 /**
