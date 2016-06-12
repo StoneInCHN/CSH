@@ -118,7 +118,8 @@
     	<tr>
     		<th>${message("csh.coupon.remark")}:</th>
     		<td colspan="5">
-    			 <input  class="easyui-textbox" disabled="disabled" id= "remark" name = "remark" value="${coupon.remark}"  style="height:100px;width:100%"/>
+    			 <div id= "add_coupon_remark"  
+    			 style="height:400px;width:400px" name="remark">${coupon.remark}</div>   
     		</td>
     	</tr>
     </table>

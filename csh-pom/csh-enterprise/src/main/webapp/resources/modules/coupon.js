@@ -214,7 +214,34 @@ var coupon_manager_tool = {
 							});
 						}
 					});
-					
+					var editor = KindEditor.create('#add_coupon_remark', {
+						resizeType : 1,
+						width : '400px',
+						height:'400px',
+						allowPreviewEmoticons : false,
+						items: [
+								"source", "|", "undo", "redo", "|", "preview", "print", "template", "cut", "copy", "paste",
+								"plainpaste", "wordpaste", "|", "justifyleft", "justifycenter", "justifyright",
+								"justifyfull", "insertorderedlist", "insertunorderedlist", "indent", "outdent", "subscript",
+								"superscript", "clearhtml", "quickformat", "selectall", "|", "fullscreen", "/",
+								"formatblock", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold",
+								"italic", "underline", "strikethrough", "lineheight", "removeformat", "|", "image", "multiimage",
+								"table", "hr", "emoticons",  "pagebreak",
+								"anchor", "link", "unlink"
+							],
+						allowImageRemote : false,
+						showRemote : false,
+						allowFileManager: true,
+						filePostName: "file",
+						formatUploadUrl: false,
+						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=COUPONREMARKIMAGE",
+						urlType:'relative',
+						afterBlur:function(){ 
+				            this.sync(); 
+				        }
+					});	 
+			    	
+			    	editor.sync();
 				},
 			    onClose:function(){
 			    	$("#carServiceUploader-add .uploadBtn").trigger("clearFileQuene");
@@ -451,7 +478,35 @@ var coupon_manager_tool = {
 								return now<=date && date <=dt;
 							}
 						});
-					}
+					};
+					var editor = KindEditor.create('#edit_coupon_remark', {
+						resizeType : 1,
+						width : '400px',
+						height:'400px',
+						allowPreviewEmoticons : false,
+						items: [
+								"source", "|", "undo", "redo", "|", "preview", "print", "template", "cut", "copy", "paste",
+								"plainpaste", "wordpaste", "|", "justifyleft", "justifycenter", "justifyright",
+								"justifyfull", "insertorderedlist", "insertunorderedlist", "indent", "outdent", "subscript",
+								"superscript", "clearhtml", "quickformat", "selectall", "|", "fullscreen", "/",
+								"formatblock", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold",
+								"italic", "underline", "strikethrough", "lineheight", "removeformat", "|", "image", "multiimage",
+								"table", "hr", "emoticons",  "pagebreak",
+								"anchor", "link", "unlink"
+							],
+						allowImageRemote : false,
+						showRemote : false,
+						allowFileManager: true,
+						filePostName: "file",
+						formatUploadUrl: false,
+						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=COUPONREMARKIMAGE",
+						urlType:'relative',
+						afterBlur:function(){ 
+				            this.sync(); 
+				        }
+					});	 
+			    	
+			    	editor.sync();
 			    },
 			    onClose:function(){
 			    	$('#editCoupon').empty();

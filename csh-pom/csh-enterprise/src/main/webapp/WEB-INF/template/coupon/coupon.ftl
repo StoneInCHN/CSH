@@ -1,5 +1,8 @@
 <script src="${base}/resources/js/common.js"></script>
 <script src="${base}/resources/modules/coupon.js"></script>
+<link rel="stylesheet" type="text/css"href="${base}/resources/js/kindeditor/themes/default/default.css" >
+<script  src="${base}/resources/js/kindeditor/kindeditor-min.js"></script>
+<script  src="${base}/resources/js/kindeditor/lang/zh_CN.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 
 <div>

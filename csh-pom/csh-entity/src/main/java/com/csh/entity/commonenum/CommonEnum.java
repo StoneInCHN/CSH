@@ -378,7 +378,15 @@ public class CommonEnum {
     /**
      * 广告图片
      */
-    ADVIMAGE
+    ADVIMAGE,
+    /**
+     * 优惠券说明图片
+     */
+    COUPONREMARKIMAGE,
+    /**
+     * 服务描述图片
+     */
+    SERVICEDESCIMAGE
   }
 
 
@@ -473,7 +481,17 @@ public class CommonEnum {
     /** 微信 */
     WECHAT,
     /** 钱包余额 */
-    WALLET
+    WALLET,
+    /**优惠券*/
+    COUPON,
+    /**洗车券*/
+    WASHCOUPON,
+    /**线下余额*/
+    OFFLINEBALLANCE,
+    /**线下钱包混合*/
+    MIXOFFLINE,
+    /**线下钱包优惠券混合*/
+    MIXCOUPONOFFLINE,
   }
 
   public enum ChargeStatus {

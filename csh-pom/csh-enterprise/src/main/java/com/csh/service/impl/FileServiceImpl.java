@@ -146,6 +146,14 @@ public class FileServiceImpl implements FileService {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "advImage";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "advImage";
       }
+      if (imageType == ImageType.SERVICEDESCIMAGE) {
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "serviceDescImage";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "serviceDescImage";
+      }
+      if (imageType == ImageType.COUPONREMARKIMAGE) {
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "couponRemarkImage";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "couponRemarkImage";
+      }
       String sourcePath =
           imgUploadPath + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());

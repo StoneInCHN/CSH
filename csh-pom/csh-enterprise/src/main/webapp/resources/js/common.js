@@ -1027,9 +1027,11 @@ var math ={
 Number.prototype.toPercent = function(){
 	return (Math.round(this * 10000)/100).toFixed(2) + '%';
 }
-$.extend($.fn.tree.methods, {
-    getLevel:function(jq,target){
-        var l = $(target).parentsUntil("ul.tree","ul");
-        return l.length+1;
-    }
-});
+
+//根据值，从数组中删除某个元素
+function deleteByValue(arr,valueToDelete){
+	var ret = $.grep(arr,function(value,i){
+  		return value != valueToDelete;
+	});  
+  	return ret;
+}

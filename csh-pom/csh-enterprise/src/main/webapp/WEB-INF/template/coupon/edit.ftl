@@ -121,8 +121,9 @@
     	</tr>
     	<tr>
     		<th>${message("csh.coupon.remark")}:</th>
-    		<td colspan="5">
-    			 <input  class="easyui-textbox" id= "remark" name = "remark" value="${coupon.remark}"  style="height:100px;width:100%"/>
+    		 <td colspan="5">
+    			 <textarea id= "edit_coupon_remark"  
+    			 style="height:200px;width:300px" name="remark">${coupon.remark}</textarea>   
     		</td>
     	</tr>
     </table>

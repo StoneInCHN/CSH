@@ -128,7 +128,7 @@ public class CarService extends BaseEntity {
     this.serviceName = serviceName;
   }
 
-  @Lob
+  @Column(length=1000)
   public String getServiceDesc() {
     return serviceDesc;
   }

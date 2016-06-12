@@ -57,8 +57,9 @@
     	</tr>
     	<tr>
     		<th>${message("csh.carService.serviceDesc")}:</th>
-    		<td colspan="4">
-    			 <input  class="easyui-textbox" id= "serviceDesc" name = "serviceDesc"   style="height:100px;width:400px"/>
+    		<td colspan="5">
+    			 <textarea id= "add_carService_desc"  
+    			 style="height:400px;width:400px" name="serviceDesc"></textarea>   
     		</td>
     	</tr>
     </table>

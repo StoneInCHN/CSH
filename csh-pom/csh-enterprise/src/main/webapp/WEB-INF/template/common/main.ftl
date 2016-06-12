@@ -329,6 +329,7 @@
     <script type="text/javascript" src="${base}/resources/js/jquery.serializejson.min.js"></script>
 	<script type="text/javascript" src="${base}/resources/easyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${base}/resources/easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="${base}/resources/js/easyui-extends.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/validator.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/highcharts.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/common.js"></script>

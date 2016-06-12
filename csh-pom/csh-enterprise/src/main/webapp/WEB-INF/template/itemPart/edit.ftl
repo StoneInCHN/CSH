@@ -1,4 +1,4 @@
-<form id="addCarServiceItem_form" method="post" >
+<form id="editItemPart_form" method="post" >
 	<input type="hidden" id="editItemPartId" name="id" value="${itemPart.id}"/>
 	 <table class="table table-striped"  border="0">
 	    <tr>
@@ -15,13 +15,13 @@
     	</tr>
     	<tr>
 	    	<th colspan="4">
-    			<a href="#" class="easyui-linkbutton" id="addItemPart_default"  data-options="toggle:true [#if itemPart.isDefault],selected :true[/#if]" >是否默认</a>
+    			<a href="#" class="easyui-linkbutton" id="editItemPart_default"  data-options="toggle:true [#if itemPart.isDefault],selected :true[/#if]" >是否默认</a>
     		</th>
     	</tr>
     	<tr>
     		<th>${message("csh.itemPart.serviceItemPartDesc")}:</th>
     		<td colspan="4">
-    			 <input  class="easyui-textbox" name = "serviceItemPartDesc" value="${itemPart.serviceItemPartName}"  style="height:100px;width:400px"/>
+    			 <input  class="easyui-textbox" name = "serviceItemPartDesc" value="${itemPart.serviceItemPartDesc}"  style="height:100px;width:400px"/>
     		</td>
     	</tr>
     	<tr rowspan="2">
