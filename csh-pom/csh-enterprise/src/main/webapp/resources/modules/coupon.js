@@ -12,7 +12,6 @@ var coupon_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						debugger;
 						var validate = $('#addCoupon_form').form('validate');
 						var _ids = [];
 						if($('#couponType-add').combobox('getValue') == 'SPECIFY'){
@@ -229,9 +228,9 @@ var coupon_manager_tool = {
 								"table", "hr", "emoticons",  "pagebreak",
 								"anchor", "link", "unlink"
 							],
-						allowImageRemote : false,
+						allowImageRemote : true,
 						showRemote : false,
-						allowFileManager: true,
+						allowFileManager: false,
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=COUPONREMARKIMAGE",
@@ -469,7 +468,6 @@ var coupon_manager_tool = {
 						}
 					});
 					var deadTime = $('#couponOverDeadlineTime-edit').datebox('getValue');
-					debugger;
 					var dt = new Date(deadTime.replace(/-/,"/"))
 					if(deadTime != ''){
 						$('#editCouponOverDueTime').datebox('calendar').calendar({
@@ -495,12 +493,11 @@ var coupon_manager_tool = {
 								"anchor", "link", "unlink"
 							],
 						allowImageRemote : true,
-						showRemote : true,
-						allowFileManager: true,
+						showRemote : false,
+						allowFileManager: false,
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=COUPONREMARKIMAGE",
-						fileManagerJson : '../../resources/js/kindeditor/jsp/file_manager_json.jsp',
 						urlType:'relative',
 						afterBlur:function(){ 
 				            this.sync(); 
@@ -712,7 +709,6 @@ $(function(){
 
 	
 	$("#coupon-search-btn").click(function(){
-		debugger;
 	  var _queryParams = $("#coupon-search-form").serializeJSON();
 	  $('#coupon-table-list').datagrid('options').queryParams = _queryParams;  
 	  $("#coupon-table-list").datagrid('reload');

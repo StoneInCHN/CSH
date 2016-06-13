@@ -202,9 +202,9 @@ var carService_manager_tool = {
 								"table", "hr", "emoticons",  "pagebreak",
 								"anchor", "link", "unlink"
 							],
-						allowImageRemote : false,
+						allowImageRemote : true,
 						showRemote : false,
-						allowFileManager: true,
+						allowFileManager: false,
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=SERVICEDESCIMAGE",
@@ -410,9 +410,9 @@ var carService_manager_tool = {
 								"table", "hr", "emoticons",  "pagebreak",
 								"anchor", "link", "unlink"
 							],
-						allowImageRemote : false,
+						allowImageRemote : true,
 						showRemote : false,
-						allowFileManager: true,
+						allowFileManager: false,
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=SERVICEDESCIMAGE",

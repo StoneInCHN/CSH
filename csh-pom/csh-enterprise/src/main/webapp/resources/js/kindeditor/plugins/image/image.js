@@ -87,7 +87,8 @@ KindEditor.plugin('image', function(K) {
 			//local upload - end
 			'</div>'
 		].join('');
-		var dialogWidth = '100%',
+		//var dialogWidth = '100%',
+		var dialogWidth = 400,
 			dialogHeight = showLocal && showRemote ? 300 : 250;
 		var dialog = self.createDialog({
 			name : name,
