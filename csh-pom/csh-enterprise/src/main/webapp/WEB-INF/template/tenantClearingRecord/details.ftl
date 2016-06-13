@@ -1,13 +1,9 @@
 <form id="tenantClearingRecordDetail_form" method="post">   
 	 <table class="table table-striped"  border="0">
    	<tr>
-		<th>结算周期从：</th>
+		<th>结算时间：</th>
 		<td>
-			 <input type="text" class="easyui-datetimebox"  name="periodBeginDate" value="${tenantClearingRecord.periodBeginDate}" readonly="readonly" disabled="disabled"/>
-		</td>
-		<th>到：</th>
-		<td>
-			 <input type="text" class="easyui-datetimebox"  name="periodEndDate" value="${tenantClearingRecord.periodEndDate}" readonly="readonly" disabled="disabled"/>
+			 <input type="text" class="easyui-datetimebox"  name="createDate" value="${tenantClearingRecord.createDate}" readonly="readonly" disabled="disabled"/>
 		</td>
    	</tr>
    	<tr>

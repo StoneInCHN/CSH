@@ -30,6 +30,7 @@ import com.csh.entity.MsgEndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
+import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.SendType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -116,7 +117,21 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
             distributorDeductRecord.setFinishDate (oldCarServiceRecord.getFinishDate ());
             distributorDeductRecord.setPaymentDate (oldCarServiceRecord.getPaymentDate ());
             distributorDeductRecord.setPaymentType (oldCarServiceRecord.getPaymentType ());
-            distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
+            //如果用洗车券或者线下余额抵用全额，提成金额为0
+            if (oldCarServiceRecord.getPaymentType ()== PaymentType.WASHCOUPON 
+                || oldCarServiceRecord.getPaymentType ()== PaymentType.OFFLINEBALLANCE)
+            {
+              distributorDeductRecord.setPrice (new BigDecimal (0));
+            }
+            //如果线下余额抵用部分
+            else if (oldCarServiceRecord.getPaymentType ()== PaymentType.MIXOFFLINE
+                ||oldCarServiceRecord.getPaymentType ()== PaymentType.MIXCOUPONOFFLINE)
+            {
+              distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+            }
+            else {
+              distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
+            }
             distributorDeductRecord.setRecordNo (oldCarServiceRecord.getRecordNo ());
             distributorDeductRecord.setDistributorId (distributor.getId ());
             
