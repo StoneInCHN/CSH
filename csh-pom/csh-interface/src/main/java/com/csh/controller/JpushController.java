@@ -104,7 +104,8 @@ public class JpushController extends MobileBaseController {
 
     Map<String, Object> map = new HashMap<String, Object>();
     ApkVersion version = apkVersionService.getNewVersion(versionCode);
-    String[] properties = {"id", "versionName", "versionCode", "apkPath", "updateContent"};
+    String[] properties =
+        {"id", "versionName", "versionCode", "apkPath", "updateContent", "isForced"};
     map = FieldFilterUtils.filterEntityMap(properties, version);
 
     map.put("hasCoupon", false);

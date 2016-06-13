@@ -165,21 +165,21 @@ public class CarServiceRecord extends BaseEntity {
   private CarWashingCouponEndUser carWashingCouponEndUser;
 
   /**
-   * 线下余额，参与结算金额（洗车券支付，结算金额为0）
+   * 线下余额，不参与结算金额
    */
-  private BigDecimal clearBalance;
-
-  @Column(scale = 2, precision = 10)
-  public BigDecimal getClearBalance() {
-    return clearBalance;
-  }
-
-  public void setClearBalance(BigDecimal clearBalance) {
-    this.clearBalance = clearBalance;
-  }
+  private BigDecimal officeBalance;
 
   private Set<CarServiceRecordPartInst> recordItemPartInsts =
       new HashSet<CarServiceRecordPartInst>();
+
+  @Column(scale = 2, precision = 10)
+  public BigDecimal getOfficeBalance() {
+    return officeBalance;
+  }
+
+  public void setOfficeBalance(BigDecimal officeBalance) {
+    this.officeBalance = officeBalance;
+  }
 
   @JsonProperty
   public SystemType getCouponSource() {

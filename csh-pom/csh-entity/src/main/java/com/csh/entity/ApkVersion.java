@@ -42,6 +42,19 @@ public class ApkVersion extends BaseEntity {
    */
   private String updateContent;
 
+  /**
+   * 是否强制更新
+   */
+  private Boolean isForced;
+
+
+  public Boolean getIsForced() {
+    return isForced;
+  }
+
+  public void setIsForced(Boolean isForced) {
+    this.isForced = isForced;
+  }
 
   @Column(length = 20)
   public String getVersionName() {
