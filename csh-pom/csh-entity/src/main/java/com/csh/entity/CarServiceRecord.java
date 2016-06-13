@@ -167,25 +167,28 @@ public class CarServiceRecord extends BaseEntity {
   /**
    * 线下余额，不参与结算金额
    */
-  private BigDecimal officeBalance;
+  private BigDecimal offlineBalance;
 
   private Set<CarServiceRecordPartInst> recordItemPartInsts =
       new HashSet<CarServiceRecordPartInst>();
 
   @Column(scale = 2, precision = 10)
-  public BigDecimal getOfficeBalance() {
-    return officeBalance;
+  @JsonProperty
+  public BigDecimal getOfflineBalance ()
+  {
+    return offlineBalance;
   }
 
-  public void setOfficeBalance(BigDecimal officeBalance) {
-    this.officeBalance = officeBalance;
+  public void setOfflineBalance (BigDecimal offlineBalance)
+  {
+    this.offlineBalance = offlineBalance;
   }
-
+ 
   @JsonProperty
   public SystemType getCouponSource() {
     return couponSource;
   }
-
+  
   public void setCouponSource(SystemType couponSource) {
     this.couponSource = couponSource;
   }
@@ -268,6 +271,7 @@ public class CarServiceRecord extends BaseEntity {
 
   @Column(length = 30)
   @JsonProperty
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
   public String getRecordNo() {
     return recordNo;
   }

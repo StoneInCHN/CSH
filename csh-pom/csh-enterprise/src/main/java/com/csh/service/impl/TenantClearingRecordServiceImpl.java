@@ -133,14 +133,14 @@ TenantClearingRecordService {
         case OFFLINEBALLANCE:
         case MIXOFFLINE:
           //线下余额支付,减去clearBalance
-          totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfficeBalance ()));
+          totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
         break;
         case MIXCOUPONOFFLINE:
           //结算clearBalance,根据优惠券来源，判断是否结算discountPrice
           if(record .getCouponSource () == SystemType.ENTERPRISE){
-            totalMoney = totalMoney.add (record.getDiscountPrice ().subtract (record.getOfficeBalance ()));
+            totalMoney = totalMoney.add (record.getDiscountPrice ().subtract (record.getOfflineBalance ()));
           }else if(record .getCouponSource () == SystemType.OPERATION){
-            totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfficeBalance ()));
+            totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
           }
         default:
           break;
