@@ -93,32 +93,53 @@ var tenantClearingRecord_manager_tool = {
 						    	  {title:message("csh.carServiceRecord.paymentType"),width:50,field:"paymentType",sortable:true,
 							    	  formatter: function(value,row,index){
 							    		  if(value == "ALIPAY"){
+							    			  totalMoney = totalMoney+row.price;
 							    			  return "支付宝"
 							    		  }else if(value == "WECHAT"){
+							    			  totalMoney = totalMoney+row.price;
 							    			  return "微信"
 							    		  }else if(value == "WALLET"){
+							    			  totalMoney = totalMoney+row.price;
 							    			  return "钱包"
+							    		  }else if(value = "COUPON"){
+							    			  if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+row.price;
+							    			  }else if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+row.discountPrice;
+							    			  }
+							    			  return "优惠券";
+							    		  }else if(value = "MIXCOUPON"){
+							    			  if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+row.price;
+							    			  }else if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+row.discountPrice;
+							    			  }
+							    			  return "*优惠券钱包混合";
+							    		  }else if(value = "WASHCOUPON"){
+							    			  totalMoney = totalMoney+row.clearBalance;
+							    			  return "洗车券";
+							    		  }else if(value = "OFFLINEBALLANCE"){
+							    			  totalMoney = totalMoney+row.clearBalance;
+							    			  return "线下余额";
+							    		  }else if(value = "MIXOFFLINE"){
+							    			  totalMoney = totalMoney+row.clearBalance;
+							    			  return "线下钱包混合";
+							    		  }else if(value = "MIXCOUPONOFFLINE"){
+							    			  if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+row.price;
+							    			  }else if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+row.discountPrice;
+							    			  }
+							    			  totalMoney = totalMoney+row.clearBalance;
+							    			  return "线下钱包优惠券混合";
 							    		  }
 							    	  }},
 					    	  {title:message("csh.carServiceRecord.endUser"),field:"endUser",sortable:true,
 						    	  formatter: function(value,row,index){
 						    		  return value.userName;
 						    	  }},
-					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"price",sortable:true,
-					    		  formatter: function(value,row,index){
-					    			  if(value != null && (row.couponSource == null 
-					    					  || row.couponSource == 'OPERATION')){
-					    				  totalMoney = totalMoney+value;	
-					    			  }
-						    		  return value;
-						      }},
-						      {title:message("csh.carServiceRecord.discountPrice"),width:50,field:"discountPrice",sortable:true,
-					    		  formatter: function(value,row,index){
-					    			  if(value != null && row.couponSource == 'ENTERPRISE'){
-					    				  totalMoney = totalMoney+value;	
-					    			  }
-						    		  return value;
-						      }},
+					    	  {title:message("csh.carServiceRecord.price"),width:50,field:"price",sortable:true},
+						      {title:message("csh.carServiceRecord.discountPrice"),width:50,field:"discountPrice",sortable:true},
 						      {title:message("csh.carServiceRecord.systemType"),width:50,field:"couponSource",sortable:true,
 					    		  formatter: function(value,row,index){
 					    			  if(value != null && value =='OPERATION'){

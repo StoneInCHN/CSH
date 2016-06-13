@@ -482,11 +482,13 @@ public class CommonEnum {
     WECHAT,
     /** 钱包余额 */
     WALLET,
-    /**优惠券*/
+    /**优惠券,完全抵用*/
     COUPON,
+    /**优惠券钱包混合*/
+    MIXCOUPON,
     /**洗车券*/
     WASHCOUPON,
-    /**线下余额*/
+    /**线下余额，完全抵用*/
     OFFLINEBALLANCE,
     /**线下钱包混合*/
     MIXOFFLINE,

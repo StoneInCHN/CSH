@@ -76,18 +76,18 @@ var itemPart_manager_tool = {
 				onLoad:function(){
 					var loadCount = 1;
 					$('#itemPart_add_vehicleBrand').tree({    
-					    url:'../vehicleBrand/listVehicleBrand.jhtml',
+					    url:'../vehicleBrand/listVehicleBrand.jhtml?size=20',
 					    cache:false,
 			    	    animate:true,
 			    	    lines:true,
 			    	    onBeforeExpand:function(node){
 			    	    	var level = $('#itemPart_add_vehicleBrand').tree("getLevel",node.target);
 			    	    	if(level == 1){
-			    	    		$('#itemPart_add_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleBrandId='+node.id;
+			    	    		$('#itemPart_add_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleBrandId='+node.id+'&size=20';
 			    	    	}else if(level == 2){
-			    	    		$('#itemPart_add_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleLineParentId='+node.id;
+			    	    		$('#itemPart_add_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleLineParentId='+node.id+'&size=20';
 			    	    	}else if(level == 3){
-			    	    		$('#itemPart_add_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleLineId='+node.id;
+			    	    		$('#itemPart_add_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleLineId='+node.id+'&size=20';
 			    	    	}else{
 			    	    		$('#itemPart_add_vehicleBrand').tree('options').url ='';
 			    	    	}
@@ -135,6 +135,15 @@ var itemPart_manager_tool = {
 				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
 				return false;
 			}
+			var deleteBrandItem = [];
+			var deleteLineParentItem = [];
+			var deleteLineChildItem = [];
+			var deleteBrandDetailItem = [];
+			
+			var selectBrandItem = [];
+			var selectLineParentItem = [];
+			var selectLineChildItem = [];
+			var selectBrandDetailItem = [];
 			var _dialog = $('#editItemPart').dialog({    
 				title: message("csh.common.edit"),     
 			    width: 700,    
@@ -147,11 +156,25 @@ var itemPart_manager_tool = {
 			    	iconCls:'icon-save',
 					handler:function(){
 						var validate = $('#editItemPart_form').form('validate');
+						
+						
 						if(validate){
+							var _data=$("#editItemPart_form").serialize()
+							+"&deleteBrandItemIds="+deleteBrandItem
+							+"&deleteLineParentItemIds="+deleteLineParentItem
+							+"&deleteLineChildItemIds="+deleteLineChildItem
+							+"&deleteBrandDetailItemIds="+deleteBrandDetailItem
+							+"&selectBrandItemIds="+selectBrandItem
+							+"&selectLineParentItemIds="+selectLineParentItem
+							+"&selectLineChildItemIds="+selectLineChildItem
+							+"&selectBrandDetailItemIds="+selectBrandDetailItem
+							+"&selectAll="+$('#editItemPartVehicleBrand_selectAll').linkbutton('options').selected
+							+"&isDefault="+$('#editItemPart_default').linkbutton('options').selected;
+							debugger;
 							$.ajax({
 								url:"../itemPart/update.jhtml",
 								type:"post",
-								data:$("#editItemPart_form").serialize(),
+								data:_data,
 								beforeSend:function(){
 									$.messager.progress({
 										text:message("csh.common.saving")
@@ -177,23 +200,107 @@ var itemPart_manager_tool = {
 
 					var loadCount = 1;
 					var itemPartId= $('#editItemPartId').val();
+					var selected = false;
 					$('#itemPart_edit_vehicleBrand').tree({    
-					    url:'../vehicleBrand/listAllVehicleBrand.jhtml?itemPartId='+itemPartId,
+					    url:'../vehicleBrand/listVehicleBrand.jhtml?itemPartId='+itemPartId+"&size=20",
 					    cache:false,
 			    	    animate:true,
 			    	    lines:true,
 			    	    onBeforeExpand:function(node){
-//			    	    	var level = $('#itemPart_edit_vehicleBrand').tree("getLevel",node.target);
-//			    	    	if(level == 1){
-//			    	    		$('#itemPart_edit_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleBrandId='+node.id+'&itemPartId='+itemPartId;
-//			    	    	}else if(level == 2){
-//			    	    		$('#itemPart_edit_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleLineParentId='+node.id+'&itemPartId='+itemPartId;
-//			    	    	}else if(level == 3){
-//			    	    		$('#itemPart_edit_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleLineId='+node.id+'&itemPartId='+itemPartId;
-//			    	    	}else{
-//			    	    		$('#itemPart_edit_vehicleBrand').tree('options').url ='';
-//			    	    	}
+			    	    	var level = $('#itemPart_edit_vehicleBrand').tree("getLevel",node.target);
+			    	    	if(level == 1){
+			    	    		$('#itemPart_edit_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleBrandId='+node.id+'&itemPartId='+itemPartId+"&size=20";
+			    	    	}else if(level == 2){
+			    	    		$('#itemPart_edit_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleLineParentId='+node.id+'&itemPartId='+itemPartId+"&size=20";
+			    	    	}else if(level == 3){
+			    	    		$('#itemPart_edit_vehicleBrand').tree('options').url ='../vehicleBrand/listVehicleBrand.jhtml?vehicleLineId='+node.id+'&itemPartId='+itemPartId+"&size=20";
+			    	    	}else{
+			    	    		$('#itemPart_edit_vehicleBrand').tree('options').url ='';
+			    	    	}
+			    	    	if(node.checked){
+			    	    		selected=true;
+			    	    	}else{
+			    	    		selected=false;
+			    	    	}
 			    	    },
+			    	    onExpand:function(node){
+			    	    	if(selected){
+			    	    		$('#itemPart_edit_vehicleBrand').tree('check', node.target);
+			    	    	}
+			    	    	
+			    	    },
+			    	    onSelect:function(node){
+			    	    	debugger;
+			    	    },
+			    	    onCheck:function(node, checked){
+			    	    	debugger;
+			    	    	var level = $('#itemPart_edit_vehicleBrand').tree("getLevel",node.target);
+			    	    	if(level == 1){
+			    	    		if(checked){
+			    	    			if($.inArray(node.id, selectBrandItem) == -1){
+			    	    				selectBrandItem.push(node.id);
+			    	    			}
+			    	    			if($.inArray(node.id, deleteBrandItem) != -1){
+			    	    				deleteBrandItem=deleteByValue(deleteBrandItem,node.id)
+			    	    			}
+			    	    		}else{
+			    	    			if($.inArray(node.id, deleteBrandItem) == -1){
+			    	    				deleteBrandItem.push(node.id);
+			    	    			}
+			    	    			if($.inArray(node.id, selectBrandItem) != -1){
+			    	    				selectBrandItem=deleteByValue(selectBrandItem,node.id)
+			    	    			}
+			    	    		}
+			    	    	}else if(level == 2){
+			    	    		if(checked){
+			    	    			if($.inArray(node.id, selectLineParentItem) == -1){
+			    	    				selectLineParentItem.push(node.id);
+			    	    			}
+			    	    			if($.inArray(node.id, deleteLineParentItem) != -1){
+			    	    				deleteLineParentItem=deleteByValue(deleteLineParentItem,node.id)
+			    	    			}
+			    	    		}else{
+			    	    			if($.inArray(node.id, deleteLineParentItem) == -1){
+			    	    				deleteLineParentItem.push(node.id);
+			    	    			}
+			    	    			if($.inArray(node.id, selectLineParentItem) != -1){
+			    	    				selectLineParentItem=deleteByValue(selectLineParentItem,node.id)
+			    	    			}
+			    	    		}
+			    	    	}else if(level == 3){
+			    	    		if(checked){
+			    	    			if($.inArray(node.id, selectLineChildItem) == -1){
+			    	    				selectLineChildItem.push(node.id);
+			    	    			}
+			    	    			if($.inArray(node.id, deleteLineChildItem) != -1){
+			    	    				deleteLineChildItem=deleteByValue(deleteLineChildItem,node.id)
+			    	    			}
+			    	    		}else{
+			    	    			if($.inArray(node.id, deleteLineChildItem) == -1){
+			    	    				deleteLineChildItem.push(node.id);
+			    	    			}
+			    	    			if($.inArray(node.id, selectLineChildItem) != -1){
+			    	    				selectLineChildItem=deleteByValue(selectLineChildItem,node.id)
+			    	    			}
+			    	    		}
+			    	    	}else if(level == 4){
+			    	    		if(checked){
+			    	    			if($.inArray(node.id, selectBrandDetailItem) == -1){
+			    	    				selectBrandDetailItem.push(node.id);
+			    	    			}
+			    	    			if($.inArray(node.id, deleteBrandDetailItem) != -1){
+			    	    				deleteBrandDetailItem=deleteByValue(deleteBrandDetailItem,node.id)
+			    	    			}
+			    	    		}else{
+			    	    			if($.inArray(node.id, deleteBrandDetailItem) == -1){
+			    	    				deleteBrandDetailItem.push(node.id);
+			    	    			}
+			    	    			if($.inArray(node.id, selectBrandDetailItem) != -1){
+			    	    				selectBrandDetailItem=deleteByValue(selectBrandDetailItem,node.id)
+			    	    			}
+			    	    		}
+			    	    	}
+			    	    }
 		    	    
 					});
 					$('#editItemPartVehicleBrand_load').click(function(){
@@ -325,5 +432,11 @@ $(function(){
 	  var _queryParams = $("#itemPart-search-form").serializeJSON();
 	  $('#itemPart-table-list').datagrid('options').queryParams = _queryParams;  
 	  $("#itemPart-table-list").datagrid('reload');
-	})
+	});
+	$("#carServiceItem_itemPart-search-btn").click(function(){
+		  var _queryParams = $("#carServiceItem_itemPart-search-form").serializeJSON();
+		  $('#carServiceItem_itemPart-table-list').datagrid('options').queryParams = _queryParams;  
+		  $("#carServiceItem_itemPart-table-list").datagrid('reload');
+		});
+	
 })

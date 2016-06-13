@@ -9,7 +9,7 @@
 		   <form id="carServiceItem_itemPart-search-form" class="search-form">
 	    	<div class="search-item">
 			    <label> ${message("csh.carService.serviceName")}:</label>
-			    <input type="text" class="easyui-textbox" id="serviceNameSearch" style="width:100px" name="serviceNameSearch" validtype="length[0,20]"/>
+			    <input type="text" class="easyui-textbox" id="serviceItemNameSearch" style="width:100px" name="serviceItemNameSearch" validtype="length[0,20]"/>
 			</div>
 		</form>
 			<div class="search-item">

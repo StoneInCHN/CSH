@@ -205,9 +205,14 @@ public class ItemPartController extends BaseController
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
   public @ResponseBody Message update (ItemPart itemPart,Boolean selectAll
-      ,Long[] vehicleBrandIds,Long[] vehicleLineIds,Long[] vehicleBrandDetailIds)
+      ,Long[] deleteBrandItemIds,Long[] selectBrandItemIds,Long[] deleteLineParentItemIds,
+      Long[] selectLineParentItemIds,Long[] selectLineChildItemIds,Long[] deleteLineChildItemIds,
+      Long[] deleteBrandDetailItemIds,Long[] selectBrandDetailItemIds)
   {
-    itemPartService.update (itemPart, "createDate", "tenantID","carService");
+    itemPartService.updateItemParts (itemPart, selectAll
+        , deleteBrandItemIds, selectBrandItemIds, deleteLineParentItemIds,
+        selectLineParentItemIds, selectLineChildItemIds,deleteLineChildItemIds,
+        deleteBrandDetailItemIds,selectBrandDetailItemIds);
     return SUCCESS_MESSAGE;
   }
 

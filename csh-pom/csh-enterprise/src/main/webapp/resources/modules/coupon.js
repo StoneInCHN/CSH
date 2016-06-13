@@ -494,12 +494,13 @@ var coupon_manager_tool = {
 								"table", "hr", "emoticons",  "pagebreak",
 								"anchor", "link", "unlink"
 							],
-						allowImageRemote : false,
-						showRemote : false,
+						allowImageRemote : true,
+						showRemote : true,
 						allowFileManager: true,
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=COUPONREMARKIMAGE",
+						fileManagerJson : '../../resources/js/kindeditor/jsp/file_manager_json.jsp',
 						urlType:'relative',
 						afterBlur:function(){ 
 				            this.sync(); 

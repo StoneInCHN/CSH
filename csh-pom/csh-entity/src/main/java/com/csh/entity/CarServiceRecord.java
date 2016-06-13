@@ -165,37 +165,9 @@ public class CarServiceRecord extends BaseEntity {
   private CarWashingCouponEndUser carWashingCouponEndUser;
 
   /**
-   * 是否参与结算
-   */
-  private Boolean isEnableClear;
-
-  /**
-   * 是否是线下转线上金额参与购买
-   */
-  private Boolean isOffLineBalance;
-
-  /**
-   * 不参与结算的线下转线上的余额金额
+   * 线下余额，参与结算金额（洗车券支付，结算金额为0）
    */
   private BigDecimal clearBalance;
-
-
-
-  public Boolean getIsEnableClear() {
-    return isEnableClear;
-  }
-
-  public void setIsEnableClear(Boolean isEnableClear) {
-    this.isEnableClear = isEnableClear;
-  }
-
-  public Boolean getIsOffLineBalance() {
-    return isOffLineBalance;
-  }
-
-  public void setIsOffLineBalance(Boolean isOffLineBalance) {
-    this.isOffLineBalance = isOffLineBalance;
-  }
 
   @Column(scale = 2, precision = 10)
   public BigDecimal getClearBalance() {

@@ -111,14 +111,40 @@ TenantClearingRecordService {
     {
       
       CarServiceRecord record = carServiceRecordDao.find (id);
-      
-      if (record .getCouponSource ()!= null &&record .getCouponSource () == SystemType.OPERATION)
+      switch (record.getPaymentType ())
       {
-        totalMoney = totalMoney.add (record.getPrice ());
-      }else if(record .getCouponSource ()!= null && record .getCouponSource () == SystemType.ENTERPRISE){
-        totalMoney = totalMoney.add (record.getDiscountPrice ());
-      }else {
-        totalMoney = totalMoney.add (record.getPrice ());
+        case ALIPAY:
+        case WECHAT:
+        case WALLET:
+          //全额支付，全额结算
+          totalMoney = totalMoney.add (record.getPrice ());
+          break;
+        case COUPON:
+        case MIXCOUPON:
+          //根据优惠券来源结算，平台优惠券，结算全额，租户优惠券结算discountPrice
+          if(record .getCouponSource () == SystemType.ENTERPRISE){
+            totalMoney = totalMoney.add (record.getDiscountPrice ());
+          }else if(record .getCouponSource () == SystemType.OPERATION){
+            totalMoney = totalMoney.add (record.getPrice ());
+          }
+          // 结算discountPrice
+        break;
+        case WASHCOUPON:
+        case OFFLINEBALLANCE:
+        case MIXOFFLINE:
+          //洗车券支付,结算clearBalance
+          totalMoney = totalMoney.add (record.getClearBalance ());
+        break;
+        case MIXCOUPONOFFLINE:
+          //结算clearBalance,根据优惠券来源，判断是否结算discountPrice
+          totalMoney = totalMoney.add (record.getClearBalance ());
+          if(record .getCouponSource () == SystemType.ENTERPRISE){
+            totalMoney = totalMoney.add (record.getDiscountPrice ());
+          }else if(record .getCouponSource () == SystemType.OPERATION){
+            totalMoney = totalMoney.add (record.getPrice ());
+          }
+        default:
+          break;
       }
       carServiceRecordList.add (record);
     }

@@ -2,7 +2,7 @@ var carService_manager_tool = {
 		add:function(){
 			$('#addCarService').dialog({
 			    title: message("csh.carService.add"),    
-			    width: 700,    
+			    width: 900,    
 			    height: 550,
 			    href:'../carService/add.jhtml',
 			    method:"get",
@@ -186,6 +186,35 @@ var carService_manager_tool = {
 			     	};
 			     	
 			     	singleUpload(options);
+			     	
+			     	var editor = KindEditor.create('#add_carService_desc', {
+						resizeType : 1,
+						width : '400px',
+						height:'400px',
+						allowPreviewEmoticons : false,
+						items: [
+								"source", "|", "undo", "redo", "|", "preview", "print", "template", "cut", "copy", "paste",
+								"plainpaste", "wordpaste", "|", "justifyleft", "justifycenter", "justifyright",
+								"justifyfull", "insertorderedlist", "insertunorderedlist", "indent", "outdent", "subscript",
+								"superscript", "clearhtml", "quickformat", "selectall", "|", "fullscreen", "/",
+								"formatblock", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold",
+								"italic", "underline", "strikethrough", "lineheight", "removeformat", "|", "image", "multiimage",
+								"table", "hr", "emoticons",  "pagebreak",
+								"anchor", "link", "unlink"
+							],
+						allowImageRemote : false,
+						showRemote : false,
+						allowFileManager: true,
+						filePostName: "file",
+						formatUploadUrl: false,
+						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=SERVICEDESCIMAGE",
+						urlType:'relative',
+						afterBlur:function(){ 
+				            this.sync(); 
+				        }
+					});	 
+			    	
+			    	editor.sync();
 				},
 			    onClose:function(){
 			    	$("#carServiceUploader-add .uploadBtn").trigger("clearFileQuene");
@@ -201,7 +230,7 @@ var carService_manager_tool = {
 			}
 			var _dialog = $('#editCarService').dialog({    
 				title: message("csh.common.edit"),     
-			    width: 700,    
+			    width: 900,    
 			    height: 550,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
@@ -366,6 +395,34 @@ var carService_manager_tool = {
 			     		}); 
 			     		//alert("保存头像");
 			     	});
+			     	var editor = KindEditor.create('#edit_carService_desc', {
+						resizeType : 1,
+						width : '400px',
+						height:'400px',
+						allowPreviewEmoticons : false,
+						items: [
+								"source", "|", "undo", "redo", "|", "preview", "print", "template", "cut", "copy", "paste",
+								"plainpaste", "wordpaste", "|", "justifyleft", "justifycenter", "justifyright",
+								"justifyfull", "insertorderedlist", "insertunorderedlist", "indent", "outdent", "subscript",
+								"superscript", "clearhtml", "quickformat", "selectall", "|", "fullscreen", "/",
+								"formatblock", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold",
+								"italic", "underline", "strikethrough", "lineheight", "removeformat", "|", "image", "multiimage",
+								"table", "hr", "emoticons",  "pagebreak",
+								"anchor", "link", "unlink"
+							],
+						allowImageRemote : false,
+						showRemote : false,
+						allowFileManager: true,
+						filePostName: "file",
+						formatUploadUrl: false,
+						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=SERVICEDESCIMAGE",
+						urlType:'relative',
+						afterBlur:function(){ 
+				            this.sync(); 
+				        }
+					});	 
+			    	
+			    	editor.sync();
 			    },
 			    onClose:function(){
 			    	$('#editCarService').empty();
@@ -398,7 +455,7 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#carServiceDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 700,    
+			    width: 900,    
 			    height: 550, 
 			    cache: false,
 			    modal: true,
