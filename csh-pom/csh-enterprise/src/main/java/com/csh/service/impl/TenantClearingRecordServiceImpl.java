@@ -129,19 +129,18 @@ TenantClearingRecordService {
           }
           // 结算discountPrice
         break;
-        case WASHCOUPON:
+        case WASHCOUPON:break;//洗车券支付，结算金额为0
         case OFFLINEBALLANCE:
         case MIXOFFLINE:
-          //洗车券支付,结算clearBalance
-          totalMoney = totalMoney.add (record.getClearBalance ());
+          //线下余额支付,减去clearBalance
+          totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfficeBalance ()));
         break;
         case MIXCOUPONOFFLINE:
           //结算clearBalance,根据优惠券来源，判断是否结算discountPrice
-          totalMoney = totalMoney.add (record.getClearBalance ());
           if(record .getCouponSource () == SystemType.ENTERPRISE){
-            totalMoney = totalMoney.add (record.getDiscountPrice ());
+            totalMoney = totalMoney.add (record.getDiscountPrice ().subtract (record.getOfficeBalance ()));
           }else if(record .getCouponSource () == SystemType.OPERATION){
-            totalMoney = totalMoney.add (record.getPrice ());
+            totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfficeBalance ()));
           }
         default:
           break;

@@ -116,21 +116,20 @@ var tenantClearingRecord_manager_tool = {
 							    			  }
 							    			  return "*优惠券钱包混合";
 							    		  }else if(value = "WASHCOUPON"){
-							    			  totalMoney = totalMoney+row.clearBalance;
+							    			  totalMoney = totalMoney+row.officeBalance;
 							    			  return "洗车券";
 							    		  }else if(value = "OFFLINEBALLANCE"){
-							    			  totalMoney = totalMoney+row.clearBalance;
+							    			  totalMoney = totalMoney+row.officeBalance;
 							    			  return "线下余额";
 							    		  }else if(value = "MIXOFFLINE"){
-							    			  totalMoney = totalMoney+row.clearBalance;
+							    			  totalMoney = totalMoney+row.officeBalance;
 							    			  return "线下钱包混合";
 							    		  }else if(value = "MIXCOUPONOFFLINE"){
 							    			  if(row.couponSource == 'OPERATION'){
-							    				  totalMoney = totalMoney+row.price;
+							    				  totalMoney = totalMoney+(row.price-row.officeBalance);
 							    			  }else if(row.couponSource == 'OPERATION'){
-							    				  totalMoney = totalMoney+row.discountPrice;
+							    				  totalMoney = totalMoney+(row.discountPrice-row.officeBalance);
 							    			  }
-							    			  totalMoney = totalMoney+row.clearBalance;
 							    			  return "线下钱包优惠券混合";
 							    		  }
 							    	  }},
