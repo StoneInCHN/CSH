@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.appVersion.add")}</title>
+<title>${message("csh.newsCategory.add")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -21,40 +21,14 @@ $().ready(function() {
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			versionName: {
-				required: true,
-				minlength: 2,
-				maxlength: 50,
-				remote: {
-					url: "checkVersion.jhtml",
-					cache: false
-				}
-			},
-			isForced:{
+			name: {
 				required: true
 			},
-			file: {
-				required: true,
-				nameEndWith:".apk"
-			},
-			versionCode:{
-				required: true,
-				number:true
-			},
-			updateContent: {
+			categoryDesc: {
 				required: true
-			}
-		},
-		messages: {
-			version: {
-				remote: "${message("apkVersion.version.validate.exist")}"
-			},
-			file:{
-				nameEndWith:"${message("apkVersion.file.name.error")}"
 			}
 		}
 	});
-	
 	
 });
 </script>
@@ -63,11 +37,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-android"></i> ${message("csh.main.appVersion")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.newsCategory")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.appVersion.list")}</a>
+				<a href="list.jhtml" class="bread-current"><i class="fa fa-list"></i>${message("csh.newsCategory.list")}</a>
 				<span class="divider">/</span> 
-				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.appVersion.add")}</span>
+				<span  class="bread-current"><i class="fa fa-plus"></i>${message("csh.newsCategory.add")}</span>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -77,7 +51,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.appVersion.add")}</div>
+                  <div class="pull-left"><i class="fa fa-plus"></i>${message("csh.newsCategory.add")}</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -86,50 +60,22 @@ $().ready(function() {
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                     <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" enctype="multipart/form-data" role="form">
+                     <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
                      	<table class="input tabContent">
-							<tr>
+                     		<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.appVersion.version")}:
+									<span class="requiredField">*</span>${message("csh.newsCategory.name")}:
 								</th>
 								<td>
-									<input type="text" id="versionName" name="versionName" class="text" maxlength="20" />
+									<input type="text" id="name" name="name" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.appVersion.versionCode")}:
+									<span class="requiredField">*</span>${message("csh.newsCategory.categoryDesc")}:
 								</th>
 								<td>
-									<input type="text" id="versionCode" name="versionCode" class="text" maxlength="20" />
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.appVersion.isForced")}:
-								</th>
-								<td>
-									<select name="isForced">
-										<option value="">${message("csh.commonEnum.isForced.select")}</option>
-										<option value="true">${message("csh.appVersion.isForced.true")}</option>
-										<option value="false">${message("csh.appVersion.isForced.false")}</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.appVersion.file")}:
-								</th>
-								<td>
-									<input type="file" id="file" name="file" />
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.appVersion.updateContent")}:
-								</th>
-								<td>
-									<textarea name="updateContent" class="text" maxlength="500"></textarea>
+									<input type="text" id="categoryDesc" name="categoryDesc" class="text" />
 								</td>
 							</tr>
 						</table>

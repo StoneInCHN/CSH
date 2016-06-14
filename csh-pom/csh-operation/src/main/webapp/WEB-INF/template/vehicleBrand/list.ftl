@@ -101,13 +101,13 @@
 														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="vehicleBrandName">${message("csh.vehicleBrand.code")}</a>
+														<a href="javascript:;" class="sort" name="code">${message("csh.vehicleBrand.code")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="vehicleBrandIntro">${message("csh.vehicleBrand.icon")}</a>
+														<a href="javascript:;" class="sort" name="icon">${message("csh.vehicleBrand.icon")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="vehicleBrandPhone">${message("csh.vehicleBrand.name")}</a>
+														<a href="javascript:;" class="sort" name="name">${message("csh.vehicleBrand.name")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>

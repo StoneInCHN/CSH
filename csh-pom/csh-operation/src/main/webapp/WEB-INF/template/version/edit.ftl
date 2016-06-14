@@ -33,6 +33,9 @@ $().ready(function() {
 					}
 				}
 			},
+			updateContent: {
+				required: true
+			},
 			file: {
 				nameEndWith:".apk"
 			},
@@ -101,6 +104,17 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="text" id="versionCode" value="${apkVersion.versionCode}" name="versionCode" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.appVersion.isForced")}:
+								</th>
+								<td>
+									<select name="isForced">
+										<option value="true" [#if apkVersion.isForced == true]selected="selected"[/#if]>${message("csh.appVersion.isForced.true")}</option>
+										<option value="false" [#if apkVersion.isForced == false] selected="selected"[/#if]>${message("csh.appVersion.isForced.false")}</option>
+									</select>
 								</td>
 							</tr>
 							<tr>

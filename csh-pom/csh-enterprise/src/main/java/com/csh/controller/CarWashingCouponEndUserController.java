@@ -59,14 +59,14 @@ public class CarWashingCouponEndUserController extends BaseController {
     EndUser endUser = endUserService.find(endUserID);
     CarWashingCoupon carWashingCoupon = carWashingCouponService.find(id);
     if (counts > 0) {
-      for (int i = 0; i < counts; i++) {
         CarWashingCouponEndUser carWashingCouponEndUser = new CarWashingCouponEndUser();
         carWashingCouponEndUser.setCarWashingCoupon(carWashingCoupon);
         carWashingCouponEndUser.setEndUser(endUser);
         carWashingCouponEndUser.setIsUsed(false);
         carWashingCouponEndUser.setRemark(carWashingCoupon.getRemark());
+        carWashingCouponEndUser.setCounts(counts);
+        carWashingCouponEndUser.setRemainNum(counts);
         carWashingCouponEndUserService.save(carWashingCouponEndUser);
-      }
     }
     return SUCCESS_MESSAGE;
   }

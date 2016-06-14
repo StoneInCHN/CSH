@@ -348,6 +348,26 @@
 				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
+		[#list ["admin:news","admin:newsCategory"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.news")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:news"]
+								<li>
+									<a href="../news/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.news")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+							 [@shiro.hasPermission name="admin:newsCategory"]
+								<li>
+									<a href="../newsCategory/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.newsCategory")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
        </ul>
       </div>
       <div class="mainbar">

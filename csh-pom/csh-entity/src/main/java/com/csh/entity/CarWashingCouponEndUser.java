@@ -1,13 +1,9 @@
 package com.csh.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.search.annotations.Indexed;
 
@@ -47,6 +43,16 @@ public class CarWashingCouponEndUser extends BaseEntity {
    */
   private CarWashingCoupon carWashingCoupon;
 
+  /**
+   * 总数量
+   */
+  private Integer counts;
+
+  /**
+   * 剩余数量
+   */
+  private Integer remainNum;
+
   @JsonProperty
   public String getRemark() {
     return remark;
@@ -84,5 +90,22 @@ public class CarWashingCouponEndUser extends BaseEntity {
     this.carWashingCoupon = carWashingCoupon;
   }
 
+  @JsonProperty
+  public Integer getCounts() {
+    return counts;
+  }
+
+  public void setCounts(Integer counts) {
+    this.counts = counts;
+  }
+
+  @JsonProperty
+  public Integer getRemainNum() {
+    return remainNum;
+  }
+
+  public void setRemainNum(Integer remainNum) {
+    this.remainNum = remainNum;
+  }
 
 }

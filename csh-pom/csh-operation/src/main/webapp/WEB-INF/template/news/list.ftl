@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.vehicleLine.list")}</title>
+<title>${message("csh.newsCategory.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.vehicleLine")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.newsCategory")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.vehicleLine.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.newsCategory.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -70,11 +70,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "code" ] selected="selected" class="active" [/#if] title="code"><a href="#">${message("csh.vehicleLine.code")}</a></li>
-								          <li [#if page.searchProperty == "name" ] selected="selected" class="active" [/#if] title="name"><a href="#">${message("csh.vehicleLine.name")}</a></li>
-								          <li [#if page.searchProperty == "parent&name" ] selected="selected" class="active" [/#if] title="parent&name"><a href="#">${message("csh.vehicleLine.parent")}</a></li>
-								          <li [#if page.searchProperty == "vehicleBrand&name" ] selected="selected" class="active" [/#if] title="vehicleBrand&name"><a href="#">${message("csh.vehicleLine.vehicleBrand")}</a></li>
-								             
+								          <li [#if page.searchProperty == "name" ] selected="selected" class="active" [/#if] title="name"><a href="#">${message("csh.newsCategory.name")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -89,7 +85,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.vehicleLine")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.newsCategory")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -100,23 +96,16 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
+													<!--
 													<th class="check">
 														<input type="checkbox" id="selectAll" />
 													</th>
+													-->
 													<th>
-														<a href="javascript:;" class="sort" name="code">${message("csh.vehicleLine.code")}</a>
+														<a href="javascript:;" class="sort" name="name">${message("csh.newsCategory.name")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="icon">${message("csh.vehicleLine.icon")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="name">${message("csh.vehicleLine.name")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="parent">${message("csh.vehicleLine.parent")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="vehicleBrand">${message("csh.vehicleLine.vehicleBrand")}</a>
+														<a href="javascript:;" class="sort" name="categoryDesc">${message("csh.newsCategory.categoryDesc")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -124,35 +113,21 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as vehicleLine]
+												[#list page.content as newsCategory]
 												<tr>
+													<!--
 													<td>
-														<input type="checkbox"  name="ids" value="${vehicleLine.id}" />
+														<input type="checkbox"  name="ids" value="${newsCategory.id}" />
+													</td>
+													-->
+													<td>
+														${newsCategory.name}
 													</td>
 													<td>
-														${vehicleLine.code}
+														${newsCategory.categoryDesc}
 													</td>
 													<td>
-														[#if vehicleLine.parent??]
-															<a href="${vehicleLine.icon}" target="1"><img src="${vehicleLine.icon}"  style="max-width:100px;max-height:100px;padding:5px" alt="${message("csh.vehicleLine.icon")}"></a>
-														[#else]
-															--
-														[/#if]
-															
-													</td>
-													<td>
-														${vehicleLine.name}
-													</td>
-													<td>
-														[#if vehicleLine.parent??]${vehicleLine.parent.name}[#else]
-															--
-														[/#if]
-													</td>
-													<td>
-														[#if vehicleLine.vehicleBrand??]${vehicleLine.vehicleBrand.name}[/#if]
-													</td>
-													<td>
-														<a href="edit.jhtml?id=${vehicleLine.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														<a href="edit.jhtml?id=${newsCategory.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
 												</tr>
 												[/#list]
