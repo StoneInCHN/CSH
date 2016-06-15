@@ -482,18 +482,14 @@ public class CommonEnum {
     WECHAT,
     /** 钱包余额 */
     WALLET,
-    /**优惠券,完全抵用*/
+    /** 优惠券钱包混合 */
     COUPON,
-    /**优惠券钱包混合*/
-    MIXCOUPON,
-    /**洗车券*/
+    /** 洗车券 */
     WASHCOUPON,
-    /**线下余额，完全抵用*/
+    /** 线下钱包混合 */
     OFFLINEBALLANCE,
-    /**线下钱包混合*/
-    MIXOFFLINE,
-    /**线下钱包优惠券混合*/
-    MIXCOUPONOFFLINE,
+    /** 线下钱包优惠券混合 */
+    MIXCOUPONOFFLINE
   }
 
   public enum ChargeStatus {

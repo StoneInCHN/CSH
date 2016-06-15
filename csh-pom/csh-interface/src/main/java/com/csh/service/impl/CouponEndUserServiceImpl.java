@@ -50,7 +50,7 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
   }
 
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser) {
+  public Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser, Long tenantId) {
     List<Filter> filters = new ArrayList<Filter>();
     Filter userFilter = new Filter("endUser", Operator.eq, endUser);
     Filter isUsedFilter = new Filter("isUsed", Operator.eq, false);
@@ -83,6 +83,7 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
       if (!coupon.getIsOverDue() && !coupon.getIsUsed()
           && TimeUtils.daysBetween(coupon.getOverDueTime(), new Date()) >= 1) {
         coupon.setIsOverDue(true);
+        couponEndUserDao.merge(coupon);
       }
     }
   }

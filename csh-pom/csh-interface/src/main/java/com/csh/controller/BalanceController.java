@@ -42,6 +42,7 @@ import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.WalletRequest;
+import com.csh.service.AccountBalanceService;
 import com.csh.service.AdvanceDepositsService;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
@@ -78,6 +79,9 @@ public class BalanceController extends MobileBaseController {
 
   @Resource(name = "deviceInfoServiceImpl")
   private DeviceInfoService deviceInfoService;
+
+  @Resource(name = "accountBalanceServiceImpl")
+  private AccountBalanceService accountBalanceService;
 
 
   /**
@@ -218,6 +222,9 @@ public class BalanceController extends MobileBaseController {
     EndUser endUser = endUserService.find(userId);
     Wallet wallet = endUser.getWallet();
 
+    BigDecimal offLineAmount = accountBalanceService.getOfflineBalance(endUser);
+    BigDecimal totalAmount = wallet.getBalanceAmount().add(offLineAmount);
+    wallet.setBalanceAmount(totalAmount);
     String[] properties = {"id", "balanceAmount", "giftAmount", "score"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, wallet);
 
@@ -228,7 +235,6 @@ public class BalanceController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 
   /**
    * 按类别查询钱包明细

@@ -22,6 +22,7 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.AccountBalance;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.CouponEndUser;
@@ -41,6 +42,7 @@ import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.CarServiceRequest;
 import com.csh.json.request.InsuranceRequest;
+import com.csh.service.AccountBalanceService;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.CouponEndUserService;
@@ -67,6 +69,9 @@ public class CarServiceController extends MobileBaseController {
 
   @Resource(name = "carServiceServiceImpl")
   private CarServiceService carServiceService;
+
+  @Resource(name = "accountBalanceServiceImpl")
+  private AccountBalanceService accountBalanceService;
 
 
   /**
@@ -233,6 +238,11 @@ public class CarServiceController extends MobileBaseController {
      * 余额支付
      */
     if (PaymentType.WALLET.equals(paymentType)) {
+      AccountBalance accountBalance =
+          accountBalanceService.getOfflineBalanceByTenant(endUser, serviceId);
+      if (accountBalance != null) {
+        wallet.setBalanceAmount(wallet.getBalanceAmount().add(accountBalance.getBalance()));
+      }
       if (couponEndUser != null) {
         if (carService.getPromotionPrice().subtract(couponEndUser.getCoupon().getAmount())
             .compareTo(wallet.getBalanceAmount()) > 0) {
@@ -574,6 +584,7 @@ public class CarServiceController extends MobileBaseController {
           && carServiceRecord.getSubscribeDate() != null
           && TimeUtils.daysBetween(carServiceRecord.getSubscribeDate(), currentDate) >= 1) {
         carServiceRecord.setChargeStatus(ChargeStatus.OVERDUE);
+        carServiceRecordService.update(carServiceRecord);
       }
     }
   }

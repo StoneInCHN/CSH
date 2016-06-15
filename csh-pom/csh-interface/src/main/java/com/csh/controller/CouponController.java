@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.CarWashingCouponEndUser;
 import com.csh.entity.Coupon;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
@@ -25,6 +27,7 @@ import com.csh.json.base.BaseResponse;
 import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.request.CouponRequest;
+import com.csh.service.CarWashingCouponEndUserService;
 import com.csh.service.CouponEndUserService;
 import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
@@ -46,6 +49,9 @@ public class CouponController extends MobileBaseController {
 
   @Resource(name = "couponEndUserServiceImpl")
   private CouponEndUserService couponEndUserService;
+
+  @Resource(name = "carWashingCouponEndUserServiceImpl")
+  private CarWashingCouponEndUserService carWashingCouponEndUserService;
 
 
   /**
@@ -115,21 +121,21 @@ public class CouponController extends MobileBaseController {
       return response;
     }
 
-    Long tenantId = null;
     EndUser endUser = endUserService.find(userId);
+    Long tenantId = null;
     if (endUser.getDefaultVehicle() != null) {
       tenantId = endUser.getDefaultVehicle().getTenantID();
     }
 
-
     Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
     if (LogUtil.isDebugEnabled(CouponController.class)) {
-      LogUtil.debug(CouponController.class, "find",
+      LogUtil.debug(CouponController.class, "myCoupon",
           "search my coupon list for User with UserName: %s,UserId: %s", endUser.getUserName(),
           endUser.getId());
     }
 
-    Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser);
+
+    Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser, tenantId);
 
     String[] properties =
         {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount",
@@ -144,6 +150,65 @@ public class CouponController extends MobileBaseController {
     page.setPageSize(request.getPageSize());
     page.setTotal((int) coupons.getTotal());
     response.setPage(page);
+
+    List<CarWashingCouponEndUser> list =
+        carWashingCouponEndUserService.userGetWashingCoupon(endUser);
+    if (!CollectionUtils.isEmpty(list)) {// 判断该用户是否有洗车券
+      response.setDesc("existWashing");
+    }
+
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+  /**
+   * 我的洗车劵
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/myWashingCoupon", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> myWashingCoupon(
+      @RequestBody CouponRequest request) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+
+    EndUser endUser = endUserService.find(userId);
+    // Long tenantId = null;
+    // if (endUser.getDefaultVehicle() != null) {
+    // tenantId = endUser.getDefaultVehicle().getTenantID();
+    // }
+
+    if (LogUtil.isDebugEnabled(CouponController.class)) {
+      LogUtil.debug(CouponController.class, "myWashingCoupon",
+          "search my car washing coupon for User with UserName: %s,UserId: %s",
+          endUser.getUserName(), endUser.getId());
+    }
+
+    List<CarWashingCouponEndUser> list =
+        carWashingCouponEndUserService.userGetWashingCoupon(endUser);
+
+    String[] properties =
+        {"id", "remainNum", "carWashingCoupon.tenantName", "carWashingCoupon.remark",
+            "carWashingCoupon.couponName"};
+    List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, list);
+
+    response.setMsg(map);
+
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -191,6 +256,10 @@ public class CouponController extends MobileBaseController {
     List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, coupons);
 
     response.setMsg(map);
+
+    if (carWashingCouponEndUserService.isWashingCouponPay(endUser, serviceId)) {
+      response.setDesc("existWashing");
+    }
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
