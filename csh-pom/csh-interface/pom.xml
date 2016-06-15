@@ -413,8 +413,12 @@
 	   	    <version>2.5.0</version>
 		</dependency> -->
   	</dependencies>
+  	<properties> 
+  		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+  		<maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format> 
+  	</properties> 
  	<build>
-		<finalName>csh-interface</finalName>
+		<finalName>csh-interface-${maven.build.timestamp}</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>
