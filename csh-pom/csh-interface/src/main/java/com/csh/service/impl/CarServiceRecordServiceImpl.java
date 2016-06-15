@@ -16,6 +16,7 @@ import com.csh.beans.Setting;
 import com.csh.dao.BeautifyReservationDao;
 import com.csh.dao.CarServiceRecordDao;
 import com.csh.dao.CarServiceRecordPartInstDao;
+import com.csh.dao.CarWashingCouponEndUserDao;
 import com.csh.dao.CouponEndUserDao;
 import com.csh.dao.ItemPartDao;
 import com.csh.dao.MaintainReservationDao;
@@ -25,6 +26,7 @@ import com.csh.entity.BeautifyReservation;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.CarServiceRecordPartInst;
+import com.csh.entity.CarWashingCouponEndUser;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
 import com.csh.entity.ItemPart;
@@ -84,6 +86,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
 
   @Resource(name = "accountBalanceServiceImpl")
   private AccountBalanceService accountBalanceService;
+
+  @Resource(name = "carWashingCouponEndUserDaoImpl")
+  private CarWashingCouponEndUserDao carWashingCouponEndUserDao;
 
 
   @Resource(name = "carServiceRecordDaoImpl")
@@ -222,26 +227,23 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         accountBalanceService.update(accountBalance);
       }
 
+      WalletRecord walletRecord = new WalletRecord();
+      walletRecord.setBalanceType(BalanceType.OUTCOME);
+      walletRecord.setWallet(wallet);
+      walletRecord.setWalletType(WalletType.MONEY);
+      walletRecord.setRemark(Message.success("csh.wallet.purService.record",
+          carServiceRecord.getCarService().getServiceName()).getContent());
+      walletRecord.setMoney(carServiceRecord.getDiscountPrice());
       if (flag) {
-        WalletRecord walletRecord = new WalletRecord();
-        walletRecord.setBalanceType(BalanceType.OUTCOME);
-        walletRecord.setWallet(wallet);
-        walletRecord.setWalletType(WalletType.MONEY);
-        walletRecord.setRemark(Message.success("csh.wallet.purService.record",
-            carServiceRecord.getCarService().getServiceName()).getContent());
-
         if (walletMoney.compareTo(new BigDecimal(0)) > 0) {// 余额混合支付
-          walletRecord.setMoney(walletMoney);
           wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(walletMoney));
         } else {// 普通余额支付
-          walletRecord.setMoney(carServiceRecord.getDiscountPrice());
           wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(
               carServiceRecord.getDiscountPrice()));
         }
-
-        wallet.getWalletRecords().add(walletRecord);
-        walletDao.merge(wallet);
       }
+      wallet.getWalletRecords().add(walletRecord);
+      walletDao.merge(wallet);
 
     }
 
@@ -320,6 +322,19 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     }
     if (setting.getServiceCateWash().equals(
         carServiceRecord.getCarService().getServiceCategory().getId())) {
+      if (carServiceRecord.getPaymentType().equals(PaymentType.WASHCOUPON)) {
+        CarWashingCouponEndUser carWashingCoupon =
+            carWashingCouponEndUserDao.userGetWashingCouponByTenant(carServiceRecord.getTenantID(),
+                carServiceRecord.getEndUser());
+        if (carWashingCoupon != null) {
+          Integer remainNum = carWashingCoupon.getRemainNum() - 1;
+          carWashingCoupon.setRemainNum(remainNum);
+          if (remainNum == 0) {
+            carWashingCoupon.setIsUsed(true);
+          }
+          carWashingCouponEndUserDao.merge(carWashingCoupon);
+        }
+      }
       Integer tokenNo = (int) ((Math.random() * 9 + 1) * 100000);
       carServiceRecord.setPayCode(tokenNo.toString());
       EndUser endUser = carServiceRecord.getEndUser();

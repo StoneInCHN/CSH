@@ -257,7 +257,9 @@ public class CouponController extends MobileBaseController {
 
     response.setMsg(map);
 
-    if (carWashingCouponEndUserService.isWashingCouponPay(endUser, serviceId)) {
+    CarWashingCouponEndUser carWashingCoupon =
+        carWashingCouponEndUserService.getWashingCouponPay(endUser, serviceId);
+    if (carWashingCoupon != null) {
       response.setDesc("existWashing");
     }
 
@@ -267,7 +269,6 @@ public class CouponController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 
   /**
    * 可领取优惠券列表

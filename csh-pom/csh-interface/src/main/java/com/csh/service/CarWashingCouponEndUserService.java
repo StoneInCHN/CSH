@@ -23,5 +23,5 @@ public interface CarWashingCouponEndUserService extends BaseService<CarWashingCo
    * @param serviceId
    * @return
    */
-  Boolean isWashingCouponPay(EndUser endUser, Long serviceId);
+  CarWashingCouponEndUser getWashingCouponPay(EndUser endUser, Long serviceId);
 }

@@ -48,17 +48,15 @@ public class CarWashingCouponEndUserServiceImpl extends
   }
 
   @Override
-  public Boolean isWashingCouponPay(EndUser endUser, Long serviceId) {
+  public CarWashingCouponEndUser getWashingCouponPay(EndUser endUser, Long serviceId) {
     Setting setting = SettingUtils.get();
     CarService carService = carServiceDao.find(serviceId);
     if (carService.getServiceCategory().getId().equals(setting.getServiceCateWash())) {
       Long tenantId = carService.getTenantInfo().getId();
       CarWashingCouponEndUser washingCoupon =
           carWashingCouponEndUserDao.userGetWashingCouponByTenant(tenantId, endUser);
-      if (washingCoupon != null) {
-        return true;
-      }
+      return washingCoupon;
     }
-    return false;
+    return null;
   }
 }
