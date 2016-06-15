@@ -120,7 +120,6 @@ TenantClearingRecordService {
           totalMoney = totalMoney.add (record.getPrice ());
           break;
         case COUPON:
-        case MIXCOUPON:
           //根据优惠券来源结算，平台优惠券，结算全额，租户优惠券结算discountPrice
           if(record .getCouponSource () == SystemType.ENTERPRISE){
             totalMoney = totalMoney.add (record.getDiscountPrice ());
@@ -131,7 +130,6 @@ TenantClearingRecordService {
         break;
         case WASHCOUPON:break;//洗车券支付，结算金额为0
         case OFFLINEBALLANCE:
-        case MIXOFFLINE:
           //线下余额支付,减去clearBalance
           totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
         break;

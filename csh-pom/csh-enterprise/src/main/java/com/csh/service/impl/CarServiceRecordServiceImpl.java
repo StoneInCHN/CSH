@@ -117,17 +117,17 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
             distributorDeductRecord.setFinishDate (oldCarServiceRecord.getFinishDate ());
             distributorDeductRecord.setPaymentDate (oldCarServiceRecord.getPaymentDate ());
             distributorDeductRecord.setPaymentType (oldCarServiceRecord.getPaymentType ());
-            //如果用洗车券或者线下余额抵用全额，提成金额为0
-            if (oldCarServiceRecord.getPaymentType ()== PaymentType.WASHCOUPON 
-                || oldCarServiceRecord.getPaymentType ()== PaymentType.OFFLINEBALLANCE)
+            //如果用洗车券，提成金额为0
+            if (oldCarServiceRecord.getPaymentType ()== PaymentType.WASHCOUPON)
             {
               distributorDeductRecord.setPrice (new BigDecimal (0));
             }
             //如果线下余额抵用部分
-            else if (oldCarServiceRecord.getPaymentType ()== PaymentType.MIXOFFLINE
-                ||oldCarServiceRecord.getPaymentType ()== PaymentType.MIXCOUPONOFFLINE)
+            else if (oldCarServiceRecord.getPaymentType ()== PaymentType.OFFLINEBALLANCE)
             {
               distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+            }else if (oldCarServiceRecord.getPaymentType ()== PaymentType.MIXCOUPONOFFLINE) {
+              distributorDeductRecord.setPrice (oldCarServiceRecord.getDiscountPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
             }
             else {
               distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
@@ -179,6 +179,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         
       }
     @Override
+    @Transactional(propagation=Propagation.REQUIRED)
     public void sendRecordStatusUpdateMessag(CarServiceRecord record,ChargeStatus newChargeStatus){
         MessageInfo msgInfo = new MessageInfo ();
         msgInfo.setMessageContent ("订单状态已改为："+newChargeStatus.getChargeStatusName ());
@@ -199,5 +200,6 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         params.put ("msgId", msgInfo.getId ());
         Setting setting = SettingUtils.get();
         ApiUtils.post (setting.getMsgPushUrl ());
+        this.update (record);
       }
 }
