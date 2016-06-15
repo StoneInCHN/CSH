@@ -4,13 +4,13 @@
 	    <tr>
     		<th>${message("csh.itemPart.serviceItemPartName")}:</th>
     		<td colspan="4">
-    			 <input  class="easyui-textbox" value="${itemPart.serviceItemPartName}" name="serviceItemPartName"/>
+    			 <input  class="easyui-textbox" data-options="required:true" validtype="length[0,20]" value="${itemPart.serviceItemPartName}" name="serviceItemPartName"/>
     		</td>
     	</tr>
     	<tr>
     		<th>${message("csh.itemPart.price")}:</th>
     		<td colspan="4">
-    			 <input  class="easyui-numberbox" value="${itemPart.price}" name = "price" />
+    			 <input  class="easyui-numberbox" data-options="required:true,min:0" value="${itemPart.price}" name = "price" />
     		</td>
     	</tr>
     	<tr>

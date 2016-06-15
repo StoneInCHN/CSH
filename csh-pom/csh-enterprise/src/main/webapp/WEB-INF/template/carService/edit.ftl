@@ -9,7 +9,7 @@
     		</td>
     		<th>${message("csh.carService.serviceName")}:</th>
     		<td>
-    			 <input  class="easyui-textbox" value="${carService.serviceName}" id= "editServiceName" name="serviceName"  data-options="required:true"/>
+    			 <input  class="easyui-textbox"  data-options="required:true" validtype="length[0,20]" value="${carService.serviceName}" id= "editServiceName" name="serviceName"  data-options="required:true"/>
     		</td>
     	</tr>
     	<tr class='car-service'>

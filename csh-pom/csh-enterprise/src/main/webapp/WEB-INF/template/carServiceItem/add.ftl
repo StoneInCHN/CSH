@@ -3,7 +3,7 @@
 	    <tr>
     		<th>${message("csh.carServiceItem.serviceName")}:</th>
     		<td>
-    			 <input  class="easyui-textbox"  name="serviceItemName"/>
+    			 <input  class="easyui-textbox" data-options="required:true" validtype="length[0,20]" name="serviceItemName"/>
     		</td>
     	</tr>
     	<tr>
