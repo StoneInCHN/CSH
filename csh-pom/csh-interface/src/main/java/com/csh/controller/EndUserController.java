@@ -379,6 +379,7 @@ public class EndUserController extends MobileBaseController {
       userSmsToken.setSmsToken(smsTokenNo.toString());
       userSmsToken.setTimeoutToken(TokenGenerator.generateToken());
       userSmsToken.setSmsTokenType(tokenType);
+      userSmsToken.setSendType(sendType);
       smsTokenService.save(userSmsToken);
       response.setCode(CommonAttributes.SUCCESS);
       response.setDesc(smsTokenNo.toString());
@@ -435,7 +436,7 @@ public class EndUserController extends MobileBaseController {
       }
 
       if (LogUtil.isDebugEnabled(EndUserController.class)) {
-        LogUtil.debug(EndUserController.class, "save", "EndUser Reg. UserName: %s", userName);
+        LogUtil.debug(EndUserController.class, "reg", "EndUser Reg. UserName: %s", userName);
       }
       EndUser regUser = endUserService.userReg(userName, password);
       Map<String, Object> map = new HashMap<String, Object>();

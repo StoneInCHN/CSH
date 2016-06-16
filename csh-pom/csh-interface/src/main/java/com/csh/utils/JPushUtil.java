@@ -179,11 +179,11 @@ public class JPushUtil {
     Map<String, String> map = new HashMap<String, String>();
     map.put("id", "我是ID");
     map.put("title", "我是title");
-    // PushPayload payload =
-    // JPushUtil.buildPushObject_android_registerId("推送广播，推送到指定Alias设备", map,
-    // "100d85590944b10139b");// 100d85590944b10139b
     PushPayload payload =
-        JPushUtil.buildPushObject_ios_registerId("推送广播，推送到指定Alias设备", map, "06181b5bf02");//
+        JPushUtil.buildPushObject_android_registerId("推送广播，推送到指定Alias设备", map,
+            "140fe1da9ea842f2de0");// 100d85590944b10139b
+    // PushPayload payload =
+    // JPushUtil.buildPushObject_ios_registerId("推送广播，推送到指定Alias设备", map, "06181b5bf02");//
     JPushUtil.sendPush(payload);
 
   }

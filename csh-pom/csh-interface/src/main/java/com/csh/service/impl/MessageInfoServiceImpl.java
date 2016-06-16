@@ -32,7 +32,7 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
 
   @Resource(name = "messageInfoDaoImpl")
   private MessageInfoDao messageInfoDao;
-  
+
   @Resource(name = "endUserDaoImpl")
   private EndUserDao endUserDao;
 
@@ -75,25 +75,27 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
         map.put("title", msg.getMessageTitle());
         map.put("content", msg.getMessageContent());
         map.put("time", String.valueOf(msgEndUser.getModifyDate().getTime()));
+        map.put("type", msg.getMessageType().toString());
         map.put("unreadCount", unread_count.toString());
-        
+
         AppPlatform appPlatform = endUserDao.getEndUserAppPlatform(user.getId());
         if (LogUtil.isDebugEnabled(MessageInfoServiceImpl.class)) {
           LogUtil.debug(MessageInfoServiceImpl.class, "jpush message",
               "Push Message to User with userName: %s, regJpushId: %s, msgId: %s, appPlatform: %s",
-              user.getUserName(), user.getjpushRegId(), msg.getId().toString(),appPlatform!=null?appPlatform.toString():null);
+              user.getUserName(), user.getjpushRegId(), msg.getId().toString(),
+              appPlatform != null ? appPlatform.toString() : null);
         }
         try {
-          if (user.getjpushRegId() != null && appPlatform!=null) {
-        	  PushPayload payload = null;
-        	  if (AppPlatform.ANDROID.equals(appPlatform)) {
-        		  payload =
-        	                JPushUtil.buildPushObject_android_registerId(msg.getMessageContent(), map, regId);
-			}else if (AppPlatform.IOS.equals(appPlatform)) {
-				payload =
-		                JPushUtil.buildPushObject_ios_registerId(msg.getMessageContent(), map, regId);
-			}
-           
+          if (user.getjpushRegId() != null && appPlatform != null) {
+            PushPayload payload = null;
+            if (AppPlatform.ANDROID.equals(appPlatform)) {
+              payload =
+                  JPushUtil.buildPushObject_android_registerId(msg.getMessageContent(), map, regId);
+            } else if (AppPlatform.IOS.equals(appPlatform)) {
+              payload =
+                  JPushUtil.buildPushObject_ios_registerId(msg.getMessageContent(), map, regId);
+            }
+
             JPushUtil.sendPush(payload);
           }
         } catch (Exception e) {

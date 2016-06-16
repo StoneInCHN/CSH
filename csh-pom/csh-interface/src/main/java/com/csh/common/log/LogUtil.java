@@ -3,6 +3,7 @@ package com.csh.common.log;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.spi.LocationAwareLogger;
+
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
@@ -28,6 +29,18 @@ public class LogUtil {
 
   public static void debug(Class<?> clazz, String method, String format, Object... args) {
     writeLog(Level.DEBUG, clazz, method, format, args);
+  }
+
+  public static void info(Class<?> clazz, String method, String format, Object... args) {
+    writeLog(Level.INFO, clazz, method, format, args);
+  }
+
+  public static void warn(Class<?> clazz, String method, String format, Object... args) {
+    writeLog(Level.WARN, clazz, method, format, args);
+  }
+
+  public static void error(Class<?> clazz, String method, String format, Object... args) {
+    writeLog(Level.ERROR, clazz, method, format, args);
   }
 
   @SuppressWarnings("static-access")
