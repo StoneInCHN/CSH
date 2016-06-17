@@ -137,7 +137,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
             
             distributorDeductRecord.setTenantName (oldCarServiceRecord.getTenantName ());
             distributorDeductRecord.setVehicle (oldCarServiceRecord.getVehicle ());
-            BigDecimal deductMoney = new BigDecimal(rate.getDistributorRate ()*oldCarServiceRecord.getPrice ().doubleValue ());
+            BigDecimal deductMoney = new BigDecimal(rate.getDistributorRate ()*distributorDeductRecord.getPrice ().doubleValue ());
             distributorDeductRecord.setDeductMoney (deductMoney);
             carServiceDistributorDeductRecordDao.persist (distributorDeductRecord);
           

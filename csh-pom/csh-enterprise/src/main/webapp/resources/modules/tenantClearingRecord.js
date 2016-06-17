@@ -119,11 +119,8 @@ var tenantClearingRecord_manager_tool = {
 							    			  totalMoney = totalMoney+row.offlineBalance;
 							    			  return "洗车券";
 							    		  }else if(value == "OFFLINEBALLANCE"){
-//							    			  totalMoney = totalMoney+row.offlineBalance;
+							    			  totalMoney = totalMoney+(row.price-row.offlineBalance);
 							    			  return "线下余额";
-							    		  }else if(value == "MIXOFFLINE"){
-							    			  totalMoney = totalMoney+row.offlineBalance;
-							    			  return "线下钱包混合";
 							    		  }else if(value == "MIXCOUPONOFFLINE"){
 							    			  if(row.couponSource == 'OPERATION'){
 							    				  totalMoney = totalMoney+(row.price-row.offlineBalance);

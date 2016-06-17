@@ -239,6 +239,7 @@ var messages = {
 	"csh.carServiceRecord.chargeStatus.RESERVATION":"预约",
 	"csh.carServiceRecord.chargeStatus.UNPAID":"未支付",
 	"csh.carServiceRecord.chargeStatus.PAID":"已支付",
+	"csh.carServiceRecord.chargeStatus.IN_SERVICE":"服务中",
 	"csh.carServiceRecord.chargeStatus.RESERVATION_SUCCESS":"预约成功",
 	"csh.carServiceRecord.chargeStatus.RESERVATION_FAIL":"预约失败",
 	"csh.carServiceRecord.chargeStatus.FINISH":"完成",

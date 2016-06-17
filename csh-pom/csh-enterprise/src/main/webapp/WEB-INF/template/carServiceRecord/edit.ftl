@@ -21,14 +21,23 @@
     		<th>${message("csh.carServiceRecord.paymentType")}:</th>
     		<td >
     			 <input  class="easyui-textbox"
-    			  	[#if carServiceRecord.paymentType == 'ALIPAY']
-    			  		value="${message('csh.carServiceRecord.paymentType.ALIPAY')}"
+				  	[#if carServiceRecord.paymentType == 'ALIPAY']
+    			  		${message('csh.carServiceRecord.paymentType.ALIPAY')}
 				  	[/#if]
 				  	[#if carServiceRecord.paymentType == 'WECHAT']
-				  		value="${message('csh.carServiceRecord.paymentType.WECHAT')}"
+				  		${message('csh.carServiceRecord.paymentType.WECHAT')}
 				  	[/#if]
-				  	[#if carServiceRecord.paymentType == 'WALLET']
-				  		value="${message('csh.carServiceRecord.paymentType.WALLET')}"
+				  	[#if carServiceRecord.paymentType == 'COUPON']
+				  		${message('csh.carServiceRecord.paymentType.COUPON')}
+				  	[/#if]
+				  	[#if carServiceRecord.paymentType == 'WASHCOUPON']
+				  		${message('csh.carServiceRecord.paymentType.WASHCOUPON')}
+				  	[/#if]
+				  	[#if carServiceRecord.paymentType == 'OFFLINEBALLANCE']
+				  		${message('csh.carServiceRecord.paymentType.OFFLINEBALLANCE')}
+				  	[/#if]
+				  	[#if carServiceRecord.paymentType == 'MIXCOUPONOFFLINE']
+				  		${message('csh.carServiceRecord.paymentType.MIXCOUPONOFFLINE')}
 				  	[/#if]
     			   disabled="disabled"  data-options="required:true"/>
     		</td>
@@ -50,7 +59,7 @@
     	<tr>
     		<th>${message("csh.carServiceRecord.price")}:</th>
     		<td>
-    			 <input  class="easyui-textbox" name="price"  [#if carServiceRecord.chargeStatus != 'UNPAID'] readonly="true"[/#if] [#if carServiceRecord.price != '-1']value="${carServiceRecord.price}"[/#if] data-options="required:true"/>
+    			 <input  class="easyui-textbox" name="price"  [#if carServiceRecord.chargeStatus != 'IN_SERVICE'] readonly="true"[/#if] [#if carServiceRecord.price != '-1']value="${carServiceRecord.price}"[/#if] data-options="required:true"/>
     		</td>
     		
     		<th>${message("csh.carServiceRecord.chargeStatus")}:</th>
@@ -72,6 +81,16 @@
 				      [#if carServiceRecord.chargeStatus == 'FINISH']
     			  		, selected:true
     			  	  [/#if]
+				     }],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100" id="carServiceEditChargeStatus" name="chargeStatus" style="width:110px;"/>
+				[#elseif carServiceRecord.chargeStatus == 'IN_SERVICE']
+				     <input class="easyui-combobox" readOnly = "true" data-options="
+				     valueField: 'label',
+				     textField: 'value',
+				     data: [{
+				      label: 'UNPAID',
+				      value: '${message("csh.carServiceRecord.chargeStatus.UNPAID")}', 
+				      selected:true
 				     }],
 				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100" id="carServiceEditChargeStatus" name="chargeStatus" style="width:110px;"/>
 				[#else]
@@ -100,6 +119,12 @@
 				      label: 'UNPAID',
 				      value: '${message("csh.carServiceRecord.chargeStatus.UNPAID")}'
 				      [#if carServiceRecord.chargeStatus == 'UNPAID']
+    			  		, selected:true
+    			  	  [/#if]
+				     },{
+				      label: 'IN_SERVICE',
+				      value: '${message("csh.carServiceRecord.chargeStatus.IN_SERVICE")}'
+				      [#if carServiceRecord.chargeStatus == 'IN_SERVICE']
     			  		, selected:true
     			  	  [/#if]
 				     },{

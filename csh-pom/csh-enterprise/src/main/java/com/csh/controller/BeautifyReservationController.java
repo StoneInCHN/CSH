@@ -360,7 +360,7 @@ public class BeautifyReservationController extends BaseController
     BeautifyReservation beautifyReservation = beautifyReservationService
         .find (id);
     beautifyReservation.getCarServiceRecord ().setChargeStatus (
-        ChargeStatus.UNPAID);
+        ChargeStatus.IN_SERVICE);
     beautifyReservationService.save (beautifyReservation);
     
     carServiceRecordService.sendRecordStatusUpdateMessag (beautifyReservation.getCarServiceRecord (), ChargeStatus.UNPAID);

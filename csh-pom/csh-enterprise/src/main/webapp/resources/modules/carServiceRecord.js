@@ -374,6 +374,8 @@ $(function(){
 		    				return message("csh.carServiceRecord.chargeStatus.RESERVATION");
 		    			}else if(value == "UNPAID"){
 		    				return message("csh.carServiceRecord.chargeStatus.UNPAID");
+		    			}else if(value == "IN_SERVICE"){
+		    				return message("csh.carServiceRecord.chargeStatus.IN_SERVICE");
 		    			}else if (value == "PAID"){
 		    				return message("csh.carServiceRecord.chargeStatus.PAID");
 		    			}else if (value == "RESERVATION_SUCCESS"){

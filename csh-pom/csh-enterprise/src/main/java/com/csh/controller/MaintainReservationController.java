@@ -338,7 +338,7 @@ public class MaintainReservationController extends BaseController
   @RequestMapping(value = "/arrival", method = RequestMethod.GET)
   public @ResponseBody Message arrival(Long id) {
     MaintainReservation maintainReservation = maintainReservationService.find(id);
-    maintainReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.UNPAID);
+    maintainReservation.getCarServiceRecord ().setChargeStatus (ChargeStatus.IN_SERVICE);
     maintainReservationService.save (maintainReservation);
     
     carServiceRecordService.sendRecordStatusUpdateMessag (maintainReservation.getCarServiceRecord (), ChargeStatus.UNPAID);
