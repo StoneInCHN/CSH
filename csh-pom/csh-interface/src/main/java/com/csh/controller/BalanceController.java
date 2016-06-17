@@ -125,6 +125,21 @@ public class BalanceController extends MobileBaseController {
         response.setDesc(Message.error("csh.purchase.device.invalid").getContent());
         return response;
       }
+      SystemConfig devicePrice =
+          systemConfigService.getConfigByKey(SystemConfigKey.DEVICE_PRICE, null);
+      if (devicePrice == null || devicePrice.getConfigValue() == null) {
+        response.setCode(CommonAttributes.FAIL_COMMON);
+        response.setDesc(Message.error("csh.wallet.config.error").getContent());
+        return response;
+      }
+
+      EndUser endUser = endUserService.find(userId);
+      if (new BigDecimal(devicePrice.getConfigValue()).compareTo(endUser.getWallet()
+          .getBalanceAmount()) > 0) {
+        response.setCode(CommonAttributes.FAIL_COMMON);
+        response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+        return response;
+      }
     }
 
     String tradeNo = TimeUtils.getLongDateStr(new Date());

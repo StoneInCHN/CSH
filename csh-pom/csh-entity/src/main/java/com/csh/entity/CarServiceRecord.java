@@ -174,21 +174,19 @@ public class CarServiceRecord extends BaseEntity {
 
   @Column(scale = 2, precision = 10)
   @JsonProperty
-  public BigDecimal getOfflineBalance ()
-  {
+  public BigDecimal getOfflineBalance() {
     return offlineBalance;
   }
 
-  public void setOfflineBalance (BigDecimal offlineBalance)
-  {
+  public void setOfflineBalance(BigDecimal offlineBalance) {
     this.offlineBalance = offlineBalance;
   }
- 
+
   @JsonProperty
   public SystemType getCouponSource() {
     return couponSource;
   }
-  
+
   public void setCouponSource(SystemType couponSource) {
     this.couponSource = couponSource;
   }
@@ -431,7 +429,7 @@ public class CarServiceRecord extends BaseEntity {
     this.vehicle = vehicle;
   }
 
-  @OneToMany(mappedBy = "carServiceRecord")
+  @OneToMany(mappedBy = "carServiceRecord", cascade = CascadeType.ALL)
   public Set<CarServiceRecordPartInst> getRecordItemPartInsts() {
     return recordItemPartInsts;
   }

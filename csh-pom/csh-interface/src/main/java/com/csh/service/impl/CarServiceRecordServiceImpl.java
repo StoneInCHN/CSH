@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.csh.beans.Message;
 import com.csh.beans.Setting;
+import com.csh.common.log.LogUtil;
 import com.csh.dao.BeautifyReservationDao;
 import com.csh.dao.CarServiceRecordDao;
 import com.csh.dao.CarServiceRecordPartInstDao;
@@ -125,6 +126,15 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     if (itemIds != null && itemIds.length > 0) {
       carServiceRecord.setPrice(new BigDecimal(0));
       for (Long itemId : itemIds) {
+        if (LogUtil.isDebugEnabled(CarServiceRecordServiceImpl.class)) {
+          LogUtil
+              .debug(
+                  CarServiceRecordServiceImpl.class,
+                  "createServiceRecord",
+                  "User subscribe Car Service. UserName: %s, Tenant: %s, Service: %s, price: %s, itemIds: %s",
+                  endUser.getUserName(), carService.getTenantInfo().getTenantName(),
+                  carService.getServiceName(), carService.getPromotionPrice(), itemId);
+        }
         ItemPart item = itemPartDao.find(itemId);
         CarServiceRecordPartInst inst = new CarServiceRecordPartInst();
         inst.setCarServiceRecord(carServiceRecord);
@@ -136,6 +146,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         carServiceRecord.setPrice(instPrice);
         carServiceRecord.getRecordItemPartInsts().add(inst);
       }
+      price = carServiceRecord.getPrice();
     }
 
 
@@ -300,9 +311,8 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord) {
     Setting setting = SettingUtils.get();
-    // 消费兑换积分.规则 1元=1积分(余额消费不送积分，因为余额充值时已经送了积分)
-    if (carServiceRecord.getPaymentType() != null
-        && !PaymentType.WALLET.equals(carServiceRecord.getPaymentType())) {
+    // 消费兑换积分.规则 1元=1积分(余额消费也送积分，因为余额充值时没有送了积分)
+    if (carServiceRecord.getPaymentType() != null) {
       Wallet wallet = carServiceRecord.getEndUser().getWallet();
       WalletRecord walletRecord = new WalletRecord();
       walletRecord.setWallet(wallet);

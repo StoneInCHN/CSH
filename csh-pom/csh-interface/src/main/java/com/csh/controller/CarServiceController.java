@@ -117,20 +117,22 @@ public class CarServiceController extends MobileBaseController {
     if (subscribeDate == null) {
       subscribeDate = new Date();
     }
-    CarServiceRecord carServiceRecord =
-        carServiceRecordService.createServiceRecord(endUser, carService, chargeStatus,
-            new BigDecimal(-1), null, subscribeDate, null, itemIds);
 
     if (LogUtil.isDebugEnabled(CarServiceController.class)) {
       LogUtil
           .debug(
               CarServiceController.class,
-              "Save",
-              "User buy Car Service. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
-              endUser.getUserName(), carServiceRecord.getTenantName(), carService.getServiceName(),
-              carServiceRecord.getPrice(), carServiceRecord.getPaymentType(),
-              carServiceRecord.getChargeStatus());
+              "subscribeService",
+              "User subscribe Car Service. UserName: %s, Tenant: %s, Service: %s, price: %s, itemIds: %s",
+              endUser.getUserName(), carService.getTenantInfo().getTenantName(), carService
+                  .getServiceName(), carService.getPromotionPrice(),
+              itemIds != null ? itemIds.length : null);
     }
+
+    CarServiceRecord carServiceRecord =
+        carServiceRecordService.createServiceRecord(endUser, carService, chargeStatus,
+            new BigDecimal(-1), null, subscribeDate, null, itemIds);
+
 
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
@@ -240,18 +242,19 @@ public class CarServiceController extends MobileBaseController {
     if (PaymentType.WALLET.equals(paymentType)) {
       AccountBalance accountBalance =
           accountBalanceService.getOfflineBalanceByTenant(endUser, serviceId);
+      BigDecimal walletMoney = wallet.getBalanceAmount();
       if (accountBalance != null) {
-        wallet.setBalanceAmount(wallet.getBalanceAmount().add(accountBalance.getBalance()));
+        walletMoney = wallet.getBalanceAmount().add(accountBalance.getBalance());
       }
       if (couponEndUser != null) {
         if (carService.getPromotionPrice().subtract(couponEndUser.getCoupon().getAmount())
-            .compareTo(wallet.getBalanceAmount()) > 0) {
+            .compareTo(walletMoney) > 0) {
           response.setCode(CommonAttributes.FAIL_COMMON);
           response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
           return response;
         }
       } else {
-        if (carService.getPromotionPrice().compareTo(wallet.getBalanceAmount()) > 0) {
+        if (carService.getPromotionPrice().compareTo(walletMoney) > 0) {
           response.setCode(CommonAttributes.FAIL_COMMON);
           response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
           return response;
