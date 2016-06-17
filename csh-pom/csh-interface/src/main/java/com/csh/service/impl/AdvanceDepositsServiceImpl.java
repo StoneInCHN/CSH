@@ -10,15 +10,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.beans.Message;
 import com.csh.dao.AdvanceDepositsDao;
 import com.csh.dao.DeviceInfoDao;
 import com.csh.dao.EndUserDao;
+import com.csh.dao.WalletDao;
 import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
+import com.csh.entity.Wallet;
+import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
+import com.csh.entity.commonenum.CommonEnum.BalanceType;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -33,6 +39,9 @@ public class AdvanceDepositsServiceImpl extends BaseServiceImpl<AdvanceDeposits,
 
   @Resource(name = "endUserDaoImpl")
   private EndUserDao endUserDao;
+
+  @Resource(name = "walletDaoImpl")
+  private WalletDao walletDao;
 
   @Resource(name = "deviceInfoDaoImpl")
   private DeviceInfoDao deviceInfoDao;
@@ -57,6 +66,21 @@ public class AdvanceDepositsServiceImpl extends BaseServiceImpl<AdvanceDeposits,
     advanceDeposits.setUsageType(AdvanceUsageType.DEVICE);
     advanceDeposits.setIsBind(false);
     advanceDepositsDao.persist(advanceDeposits);
+
+    if (PaymentType.WALLET.equals(paymentType)) {
+      Wallet wallet = endUser.getWallet();
+      wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(amount));
+      WalletRecord walletRecord = new WalletRecord();
+      walletRecord.setBalanceType(BalanceType.OUTCOME);
+      walletRecord.setWalletType(WalletType.MONEY);
+      walletRecord.setMoney(amount);
+      walletRecord.setRecordNo(recordNo);
+      walletRecord.setRemark(Message.success("csh.wallet.chargeIn.purDevice").getContent());
+      walletRecord.setWallet(wallet);
+      wallet.getWalletRecords().add(walletRecord);
+      walletDao.merge(wallet);
+    }
+
 
     deviceInfo.setDeviceStatus(DeviceStatus.SALEOUT);
     deviceInfoDao.merge(deviceInfo);
