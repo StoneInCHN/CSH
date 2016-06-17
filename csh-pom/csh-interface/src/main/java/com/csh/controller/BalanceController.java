@@ -224,10 +224,9 @@ public class BalanceController extends MobileBaseController {
 
     BigDecimal offLineAmount = accountBalanceService.getOfflineBalance(endUser);
     BigDecimal totalAmount = wallet.getBalanceAmount().add(offLineAmount);
-    wallet.setBalanceAmount(totalAmount);
     String[] properties = {"id", "balanceAmount", "giftAmount", "score"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, wallet);
-
+    map.put("balanceAmount", totalAmount);
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);

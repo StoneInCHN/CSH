@@ -142,7 +142,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     /**
      * 优惠券支付
      */
-    if (couponEndUser != null && !paymentType.equals(PaymentType.WASHCOUPON)) {
+    if (couponEndUser != null && !PaymentType.WASHCOUPON.equals(paymentType)) {
       List<Filter> filters = new ArrayList<Filter>();
       Filter filter = new Filter("couponEndUser", Operator.eq, couponEndUser);
       filters.add(filter);
@@ -167,7 +167,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     /**
      * 洗车券支付
      */
-    else if (paymentType.equals(PaymentType.WASHCOUPON)) {
+    else if (PaymentType.WASHCOUPON.equals(paymentType)) {
       carServiceRecord.setDiscountPrice(new BigDecimal(0));
     } else {
       carServiceRecord.setDiscountPrice(price);
