@@ -57,8 +57,17 @@
 				  	[#if carServiceRecord.paymentType == 'WECHAT']
 				  		${message('csh.carServiceRecord.paymentType.WECHAT')}
 				  	[/#if]
-				  	[#if carServiceRecord.paymentType == 'WALLET']
-				  		${message('csh.carServiceRecord.paymentType.WALLET')}
+				  	[#if carServiceRecord.paymentType == 'COUPON']
+				  		${message('csh.carServiceRecord.paymentType.COUPON')}
+				  	[/#if]
+				  	[#if carServiceRecord.paymentType == 'WASHCOUPON']
+				  		${message('csh.carServiceRecord.paymentType.WASHCOUPON')}
+				  	[/#if]
+				  	[#if carServiceRecord.paymentType == 'OFFLINEBALLANCE']
+				  		${message('csh.carServiceRecord.paymentType.OFFLINEBALLANCE')}
+				  	[/#if]
+				  	[#if carServiceRecord.paymentType == 'MIXCOUPONOFFLINE']
+				  		${message('csh.carServiceRecord.paymentType.MIXCOUPONOFFLINE')}
 				  	[/#if]
     			   </td>
             		<td>${carServiceRecord.endUser.userName}</td>

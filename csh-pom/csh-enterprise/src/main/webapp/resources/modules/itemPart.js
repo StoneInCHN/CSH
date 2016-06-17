@@ -402,7 +402,6 @@ $(function(){
 	$("#carServiceItem_itemPart-table-list").datagrid({
 		title:message("csh.carServiceItem.list"),
 		fitColumns:true,
-		toolbar:"#carServiceItem_manager_tool",
 		url:'../carServiceItem/list.jhtml',  
 		pagination:true,
 		singleSelect:true,

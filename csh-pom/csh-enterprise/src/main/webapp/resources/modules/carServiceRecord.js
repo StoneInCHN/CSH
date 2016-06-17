@@ -354,6 +354,18 @@ $(function(){
 		    			}else if (value == "WALLET"){
 		    				return message("csh.carServiceRecord.paymentType.WALLET");
 		    			}
+		    			else if (value == "COUPON"){
+		    				return message("csh.carServiceRecord.paymentType.COUPON");
+		    			}
+		    			else if (value == "WASHCOUPON"){
+		    				return message("csh.carServiceRecord.paymentType.WASHCOUPON");
+		    			}
+		    			else if (value == "OFFLINEBALLANCE"){
+		    				return message("csh.carServiceRecord.paymentType.OFFLINEBALLANCE");
+		    			}
+		    			else if (value == "MIXCOUPONOFFLINE"){
+		    				return message("csh.carServiceRecord.paymentType.MIXCOUPONOFFLINE");
+		    			}
 		    	  }},
 		     
 		      {title:message("csh.carServiceRecord.chargeStatus"),field:"chargeStatus",width:100,sortable:true,
