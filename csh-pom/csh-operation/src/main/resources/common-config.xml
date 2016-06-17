@@ -48,6 +48,9 @@
 	
 	<!-- 消息推送接口 -->
 	<setting name="msgPushUrl" value="http://10.174.236.186:10001/csh-interface/message/pushMsg.jhtml" />
-	
+	<!-- 新闻消息推送接口 -->
+	<!-- <setting name="newsPushUrl" value="http://10.174.236.186:10001/csh-interface/message/pushNewsMsg.jhtml" /> -->
+	<setting name="newsPushUrl" value="http://10.50.40.56:8081/csh-interface/news/pushNews.jhtml" />
+	<setting name="newsDetailsUrl" value="http://10.50.40.82:8888/console/news/details.jhtml" />
 </csh>	
 	

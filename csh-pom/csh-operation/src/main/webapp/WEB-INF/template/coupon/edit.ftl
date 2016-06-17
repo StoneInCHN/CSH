@@ -69,14 +69,6 @@ $().ready(function() {
 						<table class="input tabContent">
 							<tr>
 								<th>
-									${message("csh.coupon.remark")}:
-								</th>
-								<td>
-									${coupon.remark}
-								</td>
-							</tr>
-							<tr>
-								<th>
 									${message("csh.coupon.amount")}:
 								</th>
 								<td>
@@ -145,6 +137,14 @@ $().ready(function() {
 										<option value="true" [#if coupon.isEnabled == true]selected="selected"[/#if]>${message("csh.commonEnum.Status.ENABLE")}</option>
 										<option value="false" [#if coupon.isEnabled == false] selected="selected"[/#if]>${message("csh.commonEnum.Status.DISABLE")}</option>
 									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									${message("csh.coupon.remark")}:
+								</th>
+								<td>
+									${coupon.remark}
 								</td>
 							</tr>
 						</table>

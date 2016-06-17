@@ -24,7 +24,9 @@ import com.csh.service.EndUserService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
 import com.csh.utils.ApiUtils;
+import com.csh.utils.JsonUtil;
 import com.csh.utils.SettingUtils;
+import com.csh.utils.SpringUtils;
 
 @Service("couponServiceImpl")
 public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements CouponService {
@@ -56,9 +58,9 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
     couponDao.persist(coupon);
     if (coupon.getIsEnabled()) {
       MessageInfo msgInfo = new MessageInfo();
-      msgInfo.setMessageTitle("优惠券");
+      msgInfo.setMessageTitle(SpringUtils.getMessage("csh.coupon.name"));
       msgInfo.setMessageType(MessageType.PROMOTION);
-      msgInfo.setMessageContent("优惠券发送，赶快前往活动中心领取");
+      msgInfo.setMessageContent(SpringUtils.getMessage("csh.coupon.send"));
       msgInfo.setSendType(SendType.PUSH);
       messageInfoService.save(msgInfo);
       List<EndUser> endUserList = endUserService.findAll();
@@ -75,7 +77,8 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("msgId", msgInfo.getId());
       Setting setting = SettingUtils.get();
-      ApiUtils.post(setting.getMsgPushUrl());
+      String data =JsonUtil.getJsonString4JavaPOJO(params);
+      ApiUtils.post(setting.getMsgPushUrl(),data);
     }
   }
 
@@ -83,9 +86,9 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
   public Coupon update(Coupon coupon) {
     if (coupon.getIsEnabled() && !coupon.getIsSendout()) {
       MessageInfo msgInfo = new MessageInfo();
-      msgInfo.setMessageTitle("优惠券");
+      msgInfo.setMessageTitle(SpringUtils.getMessage("csh.coupon.name"));
       msgInfo.setMessageType(MessageType.PROMOTION);
-      msgInfo.setMessageContent("优惠券发送，赶快前往活动中心领取");
+      msgInfo.setMessageContent(SpringUtils.getMessage("csh.coupon.send"));
       msgInfo.setSendType(SendType.PUSH);
       messageInfoService.save(msgInfo);
       List<EndUser> endUserList = endUserService.findAll();
@@ -101,7 +104,8 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("msgId", msgInfo.getId());
       Setting setting = SettingUtils.get();
-      ApiUtils.post(setting.getMsgPushUrl());
+      String data =JsonUtil.getJsonString4JavaPOJO(params);
+      ApiUtils.post(setting.getMsgPushUrl(),data);
       
       coupon.setIsSendout(true);
     }

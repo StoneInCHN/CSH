@@ -3,7 +3,7 @@
 <table id="carWashingCoupon-table-list"></table>
 <div id="carWashingCoupon_manager_tool">
 	<div class="tool-button">
-		[#if  !isCreate] <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="carWashingCoupon_manager_tool.add();">添加</a> [/#if]
+		[#if  !isCreate] <a href="#" id="carWashingCoupon_manager_tool_add"  class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="carWashingCoupon_manager_tool.add();">添加</a> [/#if]
 		<!--<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="carWashingCoupon_manager_tool.edit();">修改</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="carWashingCoupon_manager_tool.remove();">删除</a>-->
 	</div>

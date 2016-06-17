@@ -21,6 +21,8 @@ import com.csh.utils.SpringUtils;
 public class BaseController{
 	/** 错误视图 */
 	protected static final String ERROR_VIEW = "/common/error";
+	
+	protected static final String VIEW_404 = "/common/404";
 
 	/** 错误消息 */
 	protected static final Message ERROR_MESSAGE = Message.error("csh.message.error");

@@ -123,6 +123,8 @@ public final class ApiUtils {
       connection.setRequestMethod("POST");// 请求方式
       connection.setRequestProperty("Charset", p_charset);// 请求编码
       connection.setConnectTimeout(TIME_OUT);// 响应超时时长
+      connection.setRequestProperty("Content-Type",
+          "application/json");
       connection.getOutputStream().write(data);// 发送字节流的请求
       connection.getOutputStream().flush();// 清空字节流
       connection.getOutputStream().close();// 关闭请求流

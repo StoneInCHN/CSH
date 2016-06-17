@@ -54,7 +54,11 @@ public class Setting implements Serializable {
     /**
      * 车辆品牌图标
      */
-    VEHICLEICON
+    VEHICLEICON,
+    /**
+     * 新闻图片
+     */
+    NEWS
   }
 
 
@@ -174,9 +178,19 @@ public class Setting implements Serializable {
   private Long defaultDistributorRoleId;
   
   private Long imageMaxSize;
-  
+  /**
+   * 消息推送
+   */
   private String msgPushUrl;
+  /**
+   * 新闻推送
+   */
+  private String newsPushUrl;
   
+  /**
+   * 新闻详情URL
+   */
+  private String newsDetailsUrl;
   
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
@@ -462,6 +476,22 @@ public Integer getSmsCodeTimeOut() {
 
   public void setApplyFailureTemplate(String applyFailureTemplate) {
     this.applyFailureTemplate = applyFailureTemplate;
+  }
+
+  public String getNewsPushUrl() {
+    return newsPushUrl;
+  }
+
+  public void setNewsPushUrl(String newsPushUrl) {
+    this.newsPushUrl = newsPushUrl;
+  }
+
+  public String getNewsDetailsUrl() {
+    return newsDetailsUrl;
+  }
+
+  public void setNewsDetailsUrl(String newsDetailsUrl) {
+    this.newsDetailsUrl = newsDetailsUrl;
   }
   
 }

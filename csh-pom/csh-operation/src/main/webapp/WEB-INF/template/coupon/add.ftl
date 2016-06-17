@@ -14,6 +14,31 @@
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${base}/resources/js/editor/kindeditor-min.js"></script>
+<script type="text/javascript" src="${base}/resources/js/editor/lang/zh_CN.js"></script>
+<script>
+       KindEditor.ready(function(K) {
+				K.create('textarea[name="remark"]', {
+					autoHeightMode : true,
+					afterCreate : function() {
+						var self = this;
+						self.loadPlugin('autoheight');
+					},
+					cssPath : '${base}/resources/js/editor/plugins/code/prettify.css',
+					resizeType : 1,
+					allowPreviewEmoticons : false,
+					allowImageUpload : true,
+					items : [
+						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+					uploadJson: '${base}/console/common/uploadImg.jhtml',
+					afterChange: function() {
+						this.sync();
+					}
+				});
+			});
+</script>
 <script type="text/javascript">
 $().ready(function() {
 
@@ -106,14 +131,6 @@ $().ready(function() {
                      	<table class="input tabContent">
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.coupon.remark")}:
-								</th>
-								<td>
-									<input type="text" name="remark" class="text" maxlength="20" />
-								</td>
-							</tr>
-							<tr>
-								<th>
 									<span class="requiredField">*</span>${message("csh.coupon.amount")}:
 								</th>
 								<td>
@@ -174,6 +191,14 @@ $().ready(function() {
 										<option value="true">${message("csh.commonEnum.Status.ENABLE")}</option>
 										<option value="false">${message("csh.commonEnum.Status.DISABLE")}</option>
 									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.coupon.remark")}:
+								</th>
+								<td>
+									<textarea id="remark" name="remark" style="width:700px;height:300px;" maxlength="2000"></textarea>
 								</td>
 							</tr>
 						</table>

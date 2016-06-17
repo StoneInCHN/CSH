@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.newsCategory.list")}</title>
+<title>${message("csh.news.list")}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.newsCategory")}</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.main.news")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.newsCategory.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.news.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -35,11 +35,9 @@
 										<div class="btn-group operationButton">
 										  <button type="button" id="addButton" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;&nbsp;${message("csh.common.add")}</button>
 										</div>
-										<!--
 										<div class="btn-group operationButton">
 										  <button type="button" id="deleteButton" class="btn btn-default disabled"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;${message("csh.common.delete")}</button>
 										</div>
-										-->
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
@@ -70,7 +68,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "name" ] selected="selected" class="active" [/#if] title="name"><a href="#">${message("csh.newsCategory.name")}</a></li>
+								          <li [#if page.searchProperty == "title" ] selected="selected" class="active" [/#if] title="title"><a href="#">${message("csh.news.title")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -85,7 +83,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.newsCategory")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.news")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -96,16 +94,23 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
-													<!--
 													<th class="check">
 														<input type="checkbox" id="selectAll" />
 													</th>
-													-->
 													<th>
-														<a href="javascript:;" class="sort" name="name">${message("csh.newsCategory.name")}</a>
+														<a href="javascript:;" class="sort" name="title">${message("csh.news.title")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="categoryDesc">${message("csh.newsCategory.categoryDesc")}</a>
+														<a href="javascript:;" class="sort" name="userName">${message("csh.news.userName")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="publishReminder">${message("csh.news.publishReminder")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="newsCategory">${message("csh.news.newsCategory")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="createDate">${message("csh.common.createDate")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -113,21 +118,37 @@
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as newsCategory]
+												[#list page.content as news]
 												<tr>
-													<!--
 													<td>
-														<input type="checkbox"  name="ids" value="${newsCategory.id}" />
-													</td>
-													-->
-													<td>
-														${newsCategory.name}
+														<input type="checkbox"  name="ids" value="${news.id}" />
 													</td>
 													<td>
-														${newsCategory.categoryDesc}
+														${news.title}
 													</td>
 													<td>
-														<a href="edit.jhtml?id=${newsCategory.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														${news.userName}
+													</td>
+													<td>
+														[#if news.publishReminder]
+															是
+														[#else]
+															否
+														[/#if]
+													</td>
+													<td>
+														${news.newsCategory.name}
+													</td>
+													<td>
+														[#if news.createDate??]
+															<span title="${news.createDate?string("yyyy-MM-dd HH:mm:ss")}">${news.createDate}</span>
+														[#else]
+															--
+														[/#if]
+													</td>
+													<td>
+														<a href="edit.jhtml?id=${news.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
+														<a href="details.jhtml?id=${news.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>
 													</td>
 												</tr>
 												[/#list]

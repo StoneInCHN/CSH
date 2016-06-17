@@ -123,14 +123,17 @@ public class FileServiceImpl implements FileService {
       if (imageType == ImageType.LICENSE) {
         subPath = File.separator + "license";
       }
-      if (imageType == ImageType.STOREPICTURE) {
+      else if (imageType == ImageType.STOREPICTURE) {
         subPath = File.separator + "storePicture";
       }
-      if (imageType == ImageType.ADVERTISEMENT) {
+      else if (imageType == ImageType.ADVERTISEMENT) {
         subPath = File.separator + "advertisement";
       }
-      if (imageType == ImageType.VEHICLEICON) {
+      else if (imageType == ImageType.VEHICLEICON) {
         subPath = File.separator + "vehicleIcon";
+      }
+      else if (imageType == ImageType.NEWS) {
+        subPath = File.separator + "news";
       }
 
       imgUploadPath = uploadPath + subPath;
@@ -138,7 +141,7 @@ public class FileServiceImpl implements FileService {
       String sourcePath =
           imgUploadPath + File.separator + date + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      webPath =File.separator+"upload" + subPath + File.separator + date + File.separator + "src_"
+      webPath =projectUploadPath+ subPath + File.separator + date + File.separator + "src_"
               + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
       String storePath =
           imgUploadPath + File.separator + date + File.separator + uuid + "." + DEST_EXTENSION;;

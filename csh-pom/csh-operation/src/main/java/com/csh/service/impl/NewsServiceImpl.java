@@ -12,7 +12,7 @@ import com.csh.service.NewsService;
 @Service("newsServiceImpl")
 public class NewsServiceImpl extends BaseServiceImpl<News, Long> implements NewsService {
 
-  @Resource(name = "baseDaoImpl")
+  @Resource(name = "newsDaoImpl")
   public void setBaseDao(NewsDao newsDao) {
     super.setBaseDao(newsDao);
   }

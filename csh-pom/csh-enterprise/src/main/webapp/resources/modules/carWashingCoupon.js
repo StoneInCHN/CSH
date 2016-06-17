@@ -27,7 +27,7 @@ var carWashingCoupon_manager_tool = {
 									$('#addCarWashingCoupon_form').form('reset');
 									$('#addCarWashingCoupon').dialog("close");
 									$("#carWashingCoupon-table-list").datagrid('reload');
-									
+									$("#carWashingCoupon_manager_tool_add").hide();
 								},
 								error:function (XMLHttpRequest, textStatus, errorThrown) {
 									$.messager.progress('close');

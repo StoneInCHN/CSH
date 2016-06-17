@@ -99,9 +99,7 @@
 													<th class="check">
 														<input type="checkbox" id="selectAll" />
 													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="remark">${message("csh.coupon.remark")}</a>
-													</th>
+													
 													<th>
 														<a href="javascript:;" class="sort" name="amount">${message("csh.coupon.amount")}</a>
 													</th>
@@ -143,9 +141,7 @@
 													<td>
 														<input type="checkbox"  name="ids" value="${coupon.id}" />
 													</td>
-													<td>
-														${coupon.remark}
-													</td>
+													
 													<td>
 														${coupon.amount}
 													</td>
@@ -216,8 +212,8 @@
 														<a href="edit.jhtml?id=${coupon.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
 												</tr>
-											</tbody>
 											[/#list]
+											</tbody>
 										</table>
 										<div class="widget-foot">
 					                       [@pagination pageNumber = page.pageNumber totalPages = page.totalPages]

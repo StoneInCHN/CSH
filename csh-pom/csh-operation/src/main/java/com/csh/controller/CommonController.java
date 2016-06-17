@@ -26,15 +26,21 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.csh.beans.Setting.CaptchaType;
+import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Admin;
 import com.csh.entity.Area;
 import com.csh.service.AdminService;
 import com.csh.service.AreaService;
 import com.csh.service.CaptchaService;
+import com.csh.service.FileService;
 import com.csh.service.RSAService;
+import com.csh.utils.JsonUtil;
+
 
 /**
  * Controller - 共用
@@ -52,7 +58,8 @@ public class CommonController extends BaseController {
   private AdminService adminService;
   @Resource(name = "areaServiceImpl")
   private AreaService areaService;
-
+  @Resource(name = "fileServiceImpl")
+  private FileService fileService;
 
   /**
    * 验证码
@@ -89,16 +96,16 @@ public class CommonController extends BaseController {
     }
   }
 
-  
+
   /**
    * 主页
    */
-@RequestMapping(value = "/main", method = RequestMethod.GET)
-public String main(ModelMap model,  HttpSession session) {
+  @RequestMapping(value = "/main", method = RequestMethod.GET)
+  public String main(ModelMap model, HttpSession session) {
     Admin admin = adminService.getCurrent();
     model.addAttribute("admin", admin);
-  return "/common/main";
-}
+    return "/common/main";
+  }
 
 
   /**
@@ -148,8 +155,7 @@ public String main(ModelMap model,  HttpSession session) {
    * 公钥
    */
   @RequestMapping(value = "/public_key", method = RequestMethod.GET)
-  public @ResponseBody
-  Map<String, String> publicKey(HttpServletRequest request) {
+  public @ResponseBody Map<String, String> publicKey(HttpServletRequest request) {
     RSAPublicKey publicKey = rsaService.generateKey(request);
     Map<String, String> data = new HashMap<String, String>();
     data.put("modulus", Base64.encodeBase64String(publicKey.getModulus().toByteArray()));
@@ -159,35 +165,65 @@ public String main(ModelMap model,  HttpSession session) {
 
   /**
    * 异步判断验证码是否正确
+   * 
    * @param captchaType 验证码类型
    * @param captchaId 验证码Id
    * @param captcha 验证码
    * @return
    */
   @RequestMapping(value = "/captchaCheck", method = RequestMethod.GET)
-  public @ResponseBody
-  boolean captchaCheck(CaptchaType captchaType, String captchaId, String captcha) {
+  public @ResponseBody boolean captchaCheck(CaptchaType captchaType, String captchaId,
+      String captcha) {
     return captchaService.isValid(captchaType, captchaId, captcha);
   }
-  
+
   /**
    * 地区
    */
   @RequestMapping(value = "/area", method = RequestMethod.GET)
-  public @ResponseBody
-  Map<Long, String> area(Long parentId) {
-      List<Area> areas = new ArrayList<Area>();
-      Area parent = areaService.find(parentId);
-      if (parent != null) {
-          areas = new ArrayList<Area>(parent.getChildren());
-      } else {
-          areas = areaService.findRoots();
+  public @ResponseBody Map<Long, String> area(Long parentId) {
+    List<Area> areas = new ArrayList<Area>();
+    Area parent = areaService.find(parentId);
+    if (parent != null) {
+      areas = new ArrayList<Area>(parent.getChildren());
+    } else {
+      areas = areaService.findRoots();
+    }
+    Map<Long, String> options = new HashMap<Long, String>();
+    for (Area area : areas) {
+      options.put(area.getId(), area.getName());
+    }
+    return options;
+  }
+
+  /**
+   * notice upload the images
+   */
+  @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
+  public void uploadImg(HttpServletRequest request, HttpServletResponse response) {
+    Map<String, Object> map = new HashMap<String, Object>();
+    MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+    Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+    for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+      try {
+        MultipartFile mf = entity.getValue();
+        String displayPath = fileService.saveImage(mf, ImageType.NEWS);
+        map.put("url", displayPath);
+        map.put("error", 0);
+        String result = JsonUtil.getJsonString4JavaPOJO(map);
+        String callback = request.getParameter("callback");
+        if (callback == null) {
+          response.getWriter().print(result);
+        } else {
+          response.getWriter().print("<script>" + callback + "(" + result + ")</script>");
+        }
+
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-      Map<Long, String> options = new HashMap<Long, String>();
-      for (Area area : areas) {
-          options.put(area.getId(), area.getName());
-      }
-      return options;
+    }
+
+
   }
 
 }

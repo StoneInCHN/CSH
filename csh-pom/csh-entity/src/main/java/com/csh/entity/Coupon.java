@@ -223,7 +223,7 @@ public class Coupon extends BaseEntity {
     this.tenantID = tenantID;
   }
 
-  @Column(length = 1000)
+  @Column(length = 2000)
   public String getRemark() {
     return remark;
   }

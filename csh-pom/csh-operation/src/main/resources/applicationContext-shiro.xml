@@ -19,6 +19,7 @@
 				/console/common/captchaCheck.jhtml = anon
 				/console/common/area.jhtml = anon
 				/console/apply/submit.jhtml = anon
+				/console/news/details.jhtml = anon
 				/console/password/** = anon
 				
 				/console/admin/** = perms["admin:admin"]
