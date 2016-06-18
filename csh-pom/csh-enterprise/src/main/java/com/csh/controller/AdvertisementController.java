@@ -125,9 +125,9 @@ public class AdvertisementController extends BaseController
     }
     if (nameQuery != null || rangeQuery != null || statusQuery != null)
     {
-      return advertisementService.search (query, pageable, analyzer,filter);
+      return advertisementService.search (query, pageable, analyzer,filter,true);
     }
-    return advertisementService.findPage (pageable);
+    return advertisementService.findPage (pageable,true);
   }
 
   /**

@@ -60,7 +60,7 @@
 						        </div>
 						        <div class="show-img">
 						        	<p class="imgWrap img-thumbnail">
-										    <img id ="carServiceImgPath-edit" src="${base}/${carService.imgPath}" style ="width:110px;hight:110 px">
+										    <img id ="carServiceImgPath-edit" src="${carService.imgPath}" style ="width:110px;hight:110 px">
 									 </p>
 						        </div>
 						    </div>
