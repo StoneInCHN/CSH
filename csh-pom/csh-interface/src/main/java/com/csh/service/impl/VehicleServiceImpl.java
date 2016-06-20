@@ -1,6 +1,5 @@
 package com.csh.service.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +47,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
 
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public Vehicle bindDevice(Vehicle vehicle, DeviceInfo deviceInfo, BigDecimal bindPrice) {
+  public Vehicle bindDevice(Vehicle vehicle, DeviceInfo deviceInfo) {
 
     vehicle.setDeviceNo(deviceInfo.getDeviceNo());
     deviceInfo.setVehicle(vehicle);

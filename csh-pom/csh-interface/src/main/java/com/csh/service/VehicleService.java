@@ -1,7 +1,5 @@
 package com.csh.service;
 
-import java.math.BigDecimal;
-
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.Vehicle;
 import com.csh.framework.service.BaseService;
@@ -25,7 +23,7 @@ public interface VehicleService extends BaseService<Vehicle, Long> {
    * @param deviceInfo
    * @return
    */
-  Vehicle bindDevice(Vehicle vehicle, DeviceInfo deviceInfo, BigDecimal bindPrice);
+  Vehicle bindDevice(Vehicle vehicle, DeviceInfo deviceInfo);
 
   /**
    * 根据车牌号查询车辆

@@ -14,10 +14,12 @@ import com.csh.beans.Message;
 import com.csh.dao.AdvanceDepositsDao;
 import com.csh.dao.DeviceInfoDao;
 import com.csh.dao.EndUserDao;
+import com.csh.dao.TenantInfoDao;
 import com.csh.dao.WalletDao;
 import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
+import com.csh.entity.TenantInfo;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
@@ -46,6 +48,9 @@ public class AdvanceDepositsServiceImpl extends BaseServiceImpl<AdvanceDeposits,
   @Resource(name = "deviceInfoDaoImpl")
   private DeviceInfoDao deviceInfoDao;
 
+  @Resource(name = "tenantInfoDaoImpl")
+  private TenantInfoDao tenantInfoDao;
+
   @Resource(name = "advanceDepositsDaoImpl")
   public void setBaseDao(AdvanceDepositsDao advanceDepositsDao) {
     super.setBaseDao(advanceDepositsDao);
@@ -61,6 +66,8 @@ public class AdvanceDepositsServiceImpl extends BaseServiceImpl<AdvanceDeposits,
     advanceDeposits.setEndUser(endUser);
     advanceDeposits.setAmount(amount);
     advanceDeposits.setTenantID(deviceInfo.getTenantID());
+    TenantInfo tenantInfo = tenantInfoDao.find(deviceInfo.getTenantID());
+    advanceDeposits.setTenantName(tenantInfo != null ? tenantInfo.getTenantName() : null);
     advanceDeposits.setRecordNo(recordNo);
     advanceDeposits.setPaymentType(paymentType);
     advanceDeposits.setUsageType(AdvanceUsageType.DEVICE);
