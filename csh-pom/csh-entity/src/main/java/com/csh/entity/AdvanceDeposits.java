@@ -61,11 +61,25 @@ public class AdvanceDeposits extends BaseEntity {
    */
   private Long tenantID;
 
+
+  /**
+   * 租户名称
+   */
+  private String tenantName;
+
   /**
    * 设备是否已经绑定
    */
   private Boolean isBind;
 
+  @Column(length = 80)
+  public String getTenantName() {
+    return tenantName;
+  }
+
+  public void setTenantName(String tenantName) {
+    this.tenantName = tenantName;
+  }
 
   public Boolean getIsBind() {
     return isBind;

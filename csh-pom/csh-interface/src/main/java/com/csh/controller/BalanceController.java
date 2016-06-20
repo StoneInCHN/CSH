@@ -25,6 +25,7 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
 import com.csh.entity.SystemConfig;
+import com.csh.entity.Vehicle;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
@@ -84,6 +85,7 @@ public class BalanceController extends MobileBaseController {
   private AccountBalanceService accountBalanceService;
 
 
+
   /**
    * 充值
    * 
@@ -110,6 +112,7 @@ public class BalanceController extends MobileBaseController {
       return response;
     }
 
+    EndUser endUser = endUserService.find(userId);
     // 购买设备
     if (chargeType.equals("PD")) {
       List<Filter> filters = new ArrayList<Filter>();
@@ -133,13 +136,22 @@ public class BalanceController extends MobileBaseController {
         return response;
       }
 
-      EndUser endUser = endUserService.find(userId);
-      if (new BigDecimal(devicePrice.getConfigValue()).compareTo(endUser.getWallet()
-          .getBalanceAmount()) > 0) {
-        response.setCode(CommonAttributes.FAIL_COMMON);
-        response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
-        return response;
+      amount = new BigDecimal(devicePrice.getConfigValue());
+      if (paymentType.equals(PaymentType.WALLET)) {
+        if (amount.compareTo(endUser.getWallet().getBalanceAmount()) > 0) {
+          response.setCode(CommonAttributes.FAIL_COMMON);
+          response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+          return response;
+        }
       }
+
+      Integer unBindVehicleNum = 0;
+      for (Vehicle vehicle : endUser.getVehicles()) {
+        if (vehicle.getDevice() == null) {
+          unBindVehicleNum++;
+        }
+      }
+      response.setDesc(unBindVehicleNum.toString());
     }
 
     String tradeNo = TimeUtils.getLongDateStr(new Date());

@@ -1,6 +1,5 @@
 package com.csh.controller;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,17 +17,17 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.App;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
-import com.csh.entity.SystemConfig;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleBrand;
 import com.csh.entity.VehicleBrandDetail;
 import com.csh.entity.VehicleLine;
+import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
-import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.ordering.Ordering;
@@ -299,6 +298,54 @@ public class VehicleController extends MobileBaseController {
     return response;
   }
 
+
+  /**
+   * 用户获取当前可以绑定的设备列表
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getAvailableDevice", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getAvailableDevice(
+      @RequestBody VehicleRequest vehicleReq) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = vehicleReq.getUserId();
+    String token = vehicleReq.getToken();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    EndUser endUser = endUserService.find(userId);
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter endUserFilter = new Filter("endUser", Operator.eq, endUser);
+    Filter typeFilter = new Filter("usageType", Operator.eq, AdvanceUsageType.DEVICE);
+    Filter bindFilter = new Filter("isBind", Operator.eq, false);
+    filters.add(bindFilter);
+    filters.add(typeFilter);
+    filters.add(endUserFilter);
+    List<AdvanceDeposits> advanceDeposits =
+        advanceDepositsService.findList(null, null, filters, null);
+
+    String[] properties = {"deviceNo", "tenantName"};
+    List<Map<String, Object>> maps =
+        FieldFilterUtils.filterCollectionMap(properties, advanceDeposits);
+    response.setMsg(maps);
+    String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+
+    return response;
+  }
+
+
   /**
    * 车辆与设备绑定
    * 
@@ -345,14 +392,14 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
 
-    SystemConfig devicePrice =
-        systemConfigService.getConfigByKey(SystemConfigKey.DEVICE_PRICE, null);
-    if (devicePrice == null || devicePrice.getConfigValue() == null) {
-      response.setCode(CommonAttributes.FAIL_COMMON);
-      response.setDesc(Message.error("csh.wallet.config.error").getContent());
-      return response;
-    }
-    BigDecimal bindPrice = new BigDecimal(devicePrice.getConfigValue());
+    // SystemConfig devicePrice =
+    // systemConfigService.getConfigByKey(SystemConfigKey.DEVICE_PRICE, null);
+    // if (devicePrice == null || devicePrice.getConfigValue() == null) {
+    // response.setCode(CommonAttributes.FAIL_COMMON);
+    // response.setDesc(Message.error("csh.wallet.config.error").getContent());
+    // return response;
+    // }
+    // BigDecimal bindPrice = new BigDecimal(devicePrice.getConfigValue());
 
     DeviceInfo deviceInfo = deviceInfos.get(0);
 
@@ -360,7 +407,7 @@ public class VehicleController extends MobileBaseController {
       LogUtil.debug(VehicleController.class, "bindDevice",
           "bind vehicle and device.DeviceNo: %s, VehicleId: %s,", deviceNo, vehicleId);
     }
-    vehicleService.bindDevice(vehicle, deviceInfo, bindPrice);
+    vehicleService.bindDevice(vehicle, deviceInfo);
 
     App app = appService.getTenantAppById(deviceInfo.getTenantID());
     String[] properties = {"appTitleName"};
