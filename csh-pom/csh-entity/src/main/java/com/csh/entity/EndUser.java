@@ -9,8 +9,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -22,6 +25,11 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.Gender;
+import com.csh.entity.estore.Cart;
+import com.csh.entity.estore.Order;
+import com.csh.entity.estore.Product;
+import com.csh.entity.estore.ReceiverAddress;
+import com.csh.entity.estore.Review;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -127,7 +135,8 @@ public class EndUser extends BaseEntity {
    * 我的钱包
    */
   private Wallet wallet;
-
+  /** 购物车 */
+  private Cart cart;
   /**
    * 我的预存专款消费记录
    */
@@ -154,6 +163,18 @@ public class EndUser extends BaseEntity {
    */
   private Set<CouponEndUser> couponEndUsers = new HashSet<CouponEndUser>();
 
+  /** 订单 */
+  private Set<Order> orders = new HashSet<Order>();
+
+
+  /** 收货地址 */
+  private Set<ReceiverAddress> receivers = new HashSet<ReceiverAddress>();
+
+  /** 评论 */
+  private Set<Review> reviews = new HashSet<Review>();
+
+  /** 收藏商品 */
+  private Set<Product> favoriteProducts = new HashSet<Product>();
   /**
    * 是否获取到红包
    */
@@ -413,4 +434,104 @@ public class EndUser extends BaseEntity {
     this.accountBalance = accountBalance;
   }
 
+  /**
+   * 获取购物车
+   * 
+   * @return 购物车
+   */
+  @OneToOne(mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  public Cart getCart() {
+    return cart;
+  }
+
+  /**
+   * 设置购物车
+   * 
+   * @param cart
+   *            购物车
+   */
+  public void setCart(Cart cart) {
+    this.cart = cart;
+  }
+
+  /**
+   * 获取订单
+   * 
+   * @return 订单
+   */
+  @OneToMany(mappedBy = "endUser", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  public Set<Order> getOrders() {
+    return orders;
+  }
+
+  /**
+   * 设置订单
+   * 
+   * @param orders
+   *            订单
+   */
+  public void setOrders(Set<Order> orders) {
+    this.orders = orders;
+  }
+
+
+
+  /**
+   * 获取收货地址
+   * 
+   * @return 收货地址
+   */
+  @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+  @OrderBy("isDefault desc, createDate desc")
+  public Set<ReceiverAddress> getReceivers() {
+    return receivers;
+  }
+
+  public void setReceivers (Set<ReceiverAddress> receivers)
+  {
+    this.receivers = receivers;
+  }
+
+  /**
+   * 获取评论
+   * 
+   * @return 评论
+   */
+  @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OrderBy("createDate desc")
+  public Set<Review> getReviews() {
+    return reviews;
+  }
+
+  /**
+   * 设置评论
+   * 
+   * @param reviews
+   *            评论
+   */
+  public void setReviews(Set<Review> reviews) {
+    this.reviews = reviews;
+  }
+
+  /**
+   * 获取收藏商品
+   * 
+   * @return 收藏商品
+   */
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "xx_member_favorite_product")
+  @OrderBy("createDate desc")
+  public Set<Product> getFavoriteProducts() {
+    return favoriteProducts;
+  }
+
+  /**
+   * 设置收藏商品
+   * 
+   * @param favoriteProducts
+   *            收藏商品
+   */
+  public void setFavoriteProducts(Set<Product> favoriteProducts) {
+    this.favoriteProducts = favoriteProducts;
+  }
 }
