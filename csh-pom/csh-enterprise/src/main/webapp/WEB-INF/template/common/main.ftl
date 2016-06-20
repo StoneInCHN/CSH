@@ -48,6 +48,12 @@
 				[@shiro.hasPermission name="estoreManage"]
 				<li><a href="#estoreManage"><i class="fa fa-users fa-1x"></i>${message("csh.estoreManage.config")}</a></li>
 				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="orderManager"]
+				<li><a href="#orderManager"><i class="fa fa-users fa-1x"></i>${message("csh.orderManager.config")}</a></li>
+				[/@shiro.hasPermission]
+				[@shiro.hasPermission name="shippingManager"]
+				<li><a href="#shippingManager"><i class="fa fa-users fa-1x"></i>${message("csh.shippingManager.config")}</a></li>
+				[/@shiro.hasPermission]
 				[@shiro.hasPermission name="reservationManage"]
 				<li><a href="#reservationManage"><i class="fa fa-mobile fa-1x"></i>${message("csh.reservationMange.config")}</a></li>
 				[/@shiro.hasPermission]
@@ -204,16 +210,67 @@
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.estoreManage.config")}" id="estoreManage">
+    		[@shiro.hasPermission name="productBrand"]
+    		<li><a href="#" data-url="${base}/console/brand/brand.jhtml">${message("csh.estoreManage.productBrand")}</a></li>
+    		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="product"]
     		<li><a href="#" data-url="${base}/console/product/product.jhtml">${message("csh.estoreManage.product")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="order"]
-    		<li><a href="#" data-url="${base}/console/order/order.jhtml">${message("csh.estoreManage.order")}</a></li>
+    		[@shiro.hasPermission name="productCategory"]
+    		<li><a href="#" data-url="${base}/console/productCategory/productCategory.jhtml">${message("csh.estoreManage.productCategory")}</a></li>
     		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="productTag"]
+    		<li><a href="#" data-url="${base}/console/tag/tag.jhtml">${message("csh.estoreManage.productTag")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="productAttribute"]
+    		<li><a href="#" data-url="${base}/console/attribute/attribute.jhtml">${message("csh.estoreManage.productAttribute")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="productParameter"]
+    		<li><a href="#" data-url="${base}/console/parameter/parameter.jhtml">${message("csh.estoreManage.productParameter")}</a></li>
+    		[/@shiro.hasPermission]
+    		
     		[@shiro.hasPermission name="marketingCenter"]
     		<li><a href="#" data-url="${base}/console/marketingCenter/marketingCenter.jhtml">${message("csh.estoreManage.marketingCenter")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul> 
+    	</ul>
+    	
+    	<ul title="${message("csh.orderManager.config")}" id="orderManager">
+    		[@shiro.hasPermission name="order"]
+    		<li><a href="#" data-url="${base}/console/order/order.jhtml">${message("csh.orderManager.order")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="orderItem"]
+    		<li><a href="#" data-url="${base}/console/orderItem/orderItem.jhtml">${message("csh.orderManager.orderItem")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="orderLog"]
+    		<li><a href="#" data-url="${base}/console/orderLog/orderLog.jhtml">${message("csh.orderManager.orderLog")}</a></li>
+    		[/@shiro.hasPermission]
+    	</ul>
+    	<ul title="${message("csh.shippingManager.config")}" id="shippingManager">
+    		[@shiro.hasPermission name="shipping"]
+    		<li><a href="#" data-url="${base}/console/shipping/shipping.jhtml">${message("csh.shippingManager.shipping")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="shippingItem"]
+    		<li><a href="#" data-url="${base}/console/shippingItem/shippingItem.jhtml">${message("csh.shippingManager.shippingItem")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="shippingMethod"]
+    		<li><a href="#" data-url="${base}/console/shippingMethod/shippingMethod.jhtml">${message("csh.shippingManager.shippingMethod")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="deliveryCorp"]
+    		<li><a href="#" data-url="${base}/console/deliveryCorp/deliveryCorp.jhtml">${message("csh.shippingManager.deliveryCorp")}</a></li>
+    		[/@shiro.hasPermission]
+    		
+    		[@shiro.hasPermission name="returns"]
+    		<li><a href="#" data-url="${base}/console/returns/returns.jhtml">${message("csh.shippingManager.returns")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="returnsItem"]
+    		<li><a href="#" data-url="${base}/console/returnsItem/returnsItem.jhtml">${message("csh.shippingManager.returnsItem")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="refunds"]
+    		<li><a href="#" data-url="${base}/console/refunds/refunds.jhtml">${message("csh.shippingManager.refunds")}</a></li>
+    		[/@shiro.hasPermission]
+    		
+    	</ul>  
+    	 
     	<ul title="${message("csh.clearingManage.config")}" id="clearingManage">
     		[@shiro.hasPermission name="clearingRecord"]
     		<li><a href="#" data-url="${base}/console/tenantClearingRecord/tenantClearingRecord.jhtml">${message("csh.clearingManage.clearingRecord")}</a></li>

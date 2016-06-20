@@ -1,39 +1,25 @@
 package com.csh.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Filter;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TermRangeQuery;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
-import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.CarWashingCoupon;
-import com.csh.entity.Coupon;
 import com.csh.entity.TenantInfo;
-import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
-import com.csh.entity.commonenum.CommonEnum.CouponSendType;
-import com.csh.entity.commonenum.CommonEnum.CouponType;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.CarWashingCouponService;
 import com.csh.service.TenantAccountService;
-import com.csh.utils.DateTimeUtils;
 
 @RequestMapping("console/carWashingCoupon")
 @Controller("carWashingCouponController")

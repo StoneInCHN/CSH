@@ -80,6 +80,8 @@ public class ProductCategory extends OrderEntity {
 	/** 筛选属性 */
 	private Set<Attribute> attributes = new HashSet<Attribute>();
 
+	/** 参数组 */
+  private Set<ParameterGroup> parameterGroups = new HashSet<ParameterGroup>();
 	/**
    * 租户ID
    */
@@ -352,7 +354,26 @@ public class ProductCategory extends OrderEntity {
 		}
 		return null;
 	}
+  /**
+   * 获取参数组
+   * 
+   * @return 参数组
+   */
+  @OneToMany(mappedBy = "productCategory", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OrderBy("order asc")
+  public Set<ParameterGroup> getParameterGroups() {
+    return parameterGroups;
+  }
 
+  /**
+   * 设置参数组
+   * 
+   * @param parameterGroups
+   *            参数组
+   */
+  public void setParameterGroups(Set<ParameterGroup> parameterGroups) {
+    this.parameterGroups = parameterGroups;
+  }
 	/**
 	 * 删除前处理
 	 */

@@ -325,8 +325,12 @@ var messages = {
 	"csh.carWashingCoupon.endUser":"用户",
 	"csh.carWashingCoupon.isUsed":"使用状态",
 	"csh.carWashingCouponEndUser.list":"用户列表",
-	"csh.carWashingCoupon.counts":"次数"
-	
+	"csh.carWashingCoupon.counts":"次数",
+	//商品品牌
+	"csh.brand.name":"品牌名",
+	"csh.brand.type":"类型",
+	"csh.brand.add":"品牌添加",
+	"csh.brand.list":"品牌列表"
 	
 };
 //多语言
