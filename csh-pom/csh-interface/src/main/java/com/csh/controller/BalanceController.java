@@ -307,6 +307,10 @@ public class BalanceController extends MobileBaseController {
     page.setPageSize(request.getPageSize());
     page.setTotal((int) walletRecords.getTotal());
     response.setPage(page);
+
+    BigDecimal offLineAmount = accountBalanceService.getOfflineBalance(wallet.getEndUser());
+    BigDecimal totalAmount = wallet.getBalanceAmount().add(offLineAmount);
+    response.setDesc(totalAmount.toString());
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
