@@ -120,10 +120,10 @@ public class NotifyController extends MobileBaseController {
 
 
           String recordNo = out_trade_no.split("_")[0];
+          BigDecimal amount = new BigDecimal(total_fee).divide(new BigDecimal(100));
           // 普通充值
           if (out_trade_no.startsWith("CI")) {
             String userId = out_trade_no.split("_")[1];
-            BigDecimal amount = new BigDecimal(total_fee).divide(new BigDecimal(100));
             if (LogUtil.isDebugEnabled(NotifyController.class)) {
               LogUtil.debug(BalanceController.class, "notify_wechat",
                   "User charge in call back for common charge. UserId: %s, ChargeAmount: %s,",
@@ -135,7 +135,7 @@ public class NotifyController extends MobileBaseController {
           // 购买设备充值
           else if (out_trade_no.startsWith("PD")) {
             String userId = out_trade_no.split("_")[1];
-            BigDecimal amount = new BigDecimal(total_fee).divide(new BigDecimal(100));
+
             if (LogUtil.isDebugEnabled(NotifyController.class)) {
               LogUtil.debug(BalanceController.class, "notify_wechat",
                   "User charge in call back for purchase device. UserId: %s, ChargeAmount: %s,",
@@ -159,12 +159,11 @@ public class NotifyController extends MobileBaseController {
                 LogUtil
                     .debug(
                         CarServiceController.class,
-                        "pay_notify",
+                        "notify_wechat",
                         "call back method for update Car Service pay status. recordNo: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
                         carServiceRecord.getRecordNo(), carServiceRecord.getTenantName(),
-                        carServiceRecord.getCarService().getServiceName(),
-                        carServiceRecord.getPrice(), carServiceRecord.getPaymentType(),
-                        carServiceRecord.getChargeStatus());
+                        carServiceRecord.getCarService().getServiceName(), amount,
+                        carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
               }
               carServiceRecordService.updatePayStatus(carServiceRecord);
             }
@@ -271,14 +270,14 @@ public class NotifyController extends MobileBaseController {
 
   private void alipayNotifySuccess(String out_trade_no, String total_fee, String trade_status) {
     String recordNo = out_trade_no.split("_")[0];
+    BigDecimal amount = new BigDecimal(total_fee);
     // 普通充值
     if (out_trade_no.split("_").length == 3 && recordNo.equals("0")) {
       String userId = out_trade_no.split("_")[2];
-      BigDecimal amount = new BigDecimal(total_fee);
       if (LogUtil.isDebugEnabled(NotifyController.class)) {
         LogUtil
             .debug(
-                BalanceController.class,
+                NotifyController.class,
                 "notify_alipay",
                 "User charge in call back for common charge.UserId: %s, ChargeAmount: %s, trade_status: %s",
                 userId, amount, trade_status);
@@ -289,11 +288,10 @@ public class NotifyController extends MobileBaseController {
     // 购买设备充值
     else if (out_trade_no.split("_").length == 4 && recordNo.equals("1")) {
       String userId = out_trade_no.split("_")[2];
-      BigDecimal amount = new BigDecimal(total_fee);
       if (LogUtil.isDebugEnabled(NotifyController.class)) {
         LogUtil
             .debug(
-                BalanceController.class,
+                NotifyController.class,
                 "notify_alipay",
                 "User charge in call back for purchase device. UserId: %s, ChargeAmount: %s, trade_status: %s",
                 userId, amount, trade_status);
@@ -312,14 +310,14 @@ public class NotifyController extends MobileBaseController {
         CarServiceRecord carServiceRecord = records.get(0);
         carServiceRecord.setChargeStatus(ChargeStatus.PAID);
         carServiceRecord.setPaymentDate(new Date());
-        if (LogUtil.isDebugEnabled(CarServiceController.class)) {
+        if (LogUtil.isDebugEnabled(NotifyController.class)) {
           LogUtil
               .debug(
-                  CarServiceController.class,
+                  NotifyController.class,
                   "notify_alipay",
                   "call back method for update Car Service pay status. recordNo: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s,trade_status: %s",
                   carServiceRecord.getRecordNo(), carServiceRecord.getTenantName(),
-                  carServiceRecord.getCarService().getServiceName(), carServiceRecord.getPrice(),
+                  carServiceRecord.getCarService().getServiceName(), amount,
                   carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus(),
                   trade_status);
         }

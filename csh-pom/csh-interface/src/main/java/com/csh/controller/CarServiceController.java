@@ -172,10 +172,11 @@ public class CarServiceController extends MobileBaseController {
           .debug(
               CarServiceController.class,
               "updatePayStatus",
-              "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s",
+              "Update Car Service pay status. UserName: %s, Tenant: %s, Service: %s, price: %s, paymentType: %s, chargeStatus: %s, recordNo: %s",
               endUser.getUserName(), carServiceRecord.getTenantName(), carServiceRecord
                   .getCarService().getServiceName(), carServiceRecord.getPrice(), carServiceRecord
-                  .getPaymentType(), carServiceRecord.getChargeStatus());
+                  .getPaymentType(), carServiceRecord.getChargeStatus(), carServiceRecord
+                  .getRecordNo());
     }
     carServiceRecordService.updatePayStatus(carServiceRecord);
 

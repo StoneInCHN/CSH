@@ -81,6 +81,7 @@
 		<setting name="mapAk" value="ulsOtfMZcNc4D6aQnBwwnOTt6ZKohflO"/>
 		
 		<!-- 百度车联网API-->
+		<setting name="bdCarConvert" value="http://api.map.baidu.com/geoconv/v1/?"/>
 		<setting name="bdCarMapUrl" value="http://api.map.baidu.com/telematics/v3/local"/>
 		<setting name="bdCarMapAk" value="ulsOtfMZcNc4D6aQnBwwnOTt6ZKohflO"/>
 		<setting name="bdCarMcode" value="B5:86:45:55:F7:63:3F:C4:7F:24:3D:55:17:D7:00:83:7E:72:89:A2;com.cheweishi.android"/>
