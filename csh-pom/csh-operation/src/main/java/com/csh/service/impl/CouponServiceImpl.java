@@ -85,33 +85,39 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
 
   @Override
   public Coupon update(Coupon coupon) {
-    if (CouponSendType.DEVICEBIND != coupon.getSendType()
-        && CouponSendType.REG != coupon.getSendType() && coupon.getIsEnabled()
-        && !coupon.getIsSendout()) {
-      MessageInfo msgInfo = new MessageInfo();
-      msgInfo.setMessageTitle(SpringUtils.getMessage("csh.coupon.name"));
-      msgInfo.setMessageType(MessageType.PROMOTION);
-      msgInfo.setMessageContent(SpringUtils.getMessage("csh.coupon.send"));
-      msgInfo.setSendType(SendType.PUSH);
-      messageInfoService.save(msgInfo);
-      List<EndUser> endUserList = endUserService.findAll();
-      Set<MsgEndUser> msgEndUserList = new HashSet<MsgEndUser>();
-      for (EndUser endUser : endUserList) {
-        MsgEndUser msgEndUser = new MsgEndUser();
-        msgEndUser.setEndUser(endUser);
-        msgEndUser.setIsRead(false);
-        msgEndUser.setIsPush(false);
-        msgEndUserService.save(msgEndUser);
-        msgEndUserList.add(msgEndUser);
-      }
-      Map<String, Object> params = new HashMap<String, Object>();
-      params.put("msgId", msgInfo.getId());
-      Setting setting = SettingUtils.get();
-      String data = JsonUtil.getJsonString4JavaPOJO(params);
-      ApiUtils.post(setting.getMsgPushUrl(), data);
-      coupon.setIsSendout(true);
-    }
-    return couponDao.merge(coupon);
+	  if(CouponSendType.REG !=coupon.getSendType() && CouponSendType.DEVICEBIND !=coupon.getSendType()){
+		  if ( coupon.getIsEnabled() && !coupon.getIsSendout()) {
+		      MessageInfo msgInfo = new MessageInfo();
+		      msgInfo.setMessageTitle(SpringUtils.getMessage("csh.coupon.name"));
+		      msgInfo.setMessageType(MessageType.PROMOTION);
+		      msgInfo.setMessageContent(SpringUtils.getMessage("csh.coupon.send"));
+		      msgInfo.setSendType(SendType.PUSH);
+		      messageInfoService.save(msgInfo);
+		      List<EndUser> endUserList = endUserService.findAll();
+		      Set<MsgEndUser> msgEndUserList = new HashSet<MsgEndUser>();
+		      for (EndUser endUser : endUserList) {
+		        MsgEndUser msgEndUser = new MsgEndUser();
+		        msgEndUser.setEndUser(endUser);
+		        msgEndUser.setIsRead(false);
+		        msgEndUser.setIsPush(false);
+		        msgEndUserService.save(msgEndUser);
+		        msgEndUserList.add(msgEndUser);
+		      }
+		      Map<String, Object> params = new HashMap<String, Object>();
+		      params.put("msgId", msgInfo.getId());
+		      Setting setting = SettingUtils.get();
+		      String data =JsonUtil.getJsonString4JavaPOJO(params);
+		      ApiUtils.post(setting.getMsgPushUrl(),data);
+		      coupon.setIsSendout(true);
+		    }
+		  return couponDao.merge(coupon);
+	  }else {
+		  Coupon temp = couponDao.find(coupon.getId());
+		  temp.setAmount(coupon.getAmount());
+		  temp.setIsEnabled(coupon.getIsEnabled());
+		  return couponDao.merge(temp);
+	}
+
   }
 
 

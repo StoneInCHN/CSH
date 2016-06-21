@@ -142,13 +142,13 @@ public class FileServiceImpl implements FileService {
           imgUploadPath + File.separator + date + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
       if (imageType == ImageType.NEWS) {
-        webPath =projectUploadPath+ subPath + File.separator + date + File.separator + "src_"
-            + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      }else{
-        webPath =File.separator+"upload"+subPath + File.separator + date + File.separator + "src_"
-            + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      }
-     
+    	  webPath =projectUploadPath+ subPath + File.separator + date + File.separator + "src_"
+                  + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+        }else{
+        	webPath =File.separator +"upload"+ subPath + File.separator + date + File.separator + "src_"
+                    + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+        }
+
       String storePath =
           imgUploadPath + File.separator + date + File.separator + uuid + "." + DEST_EXTENSION;;
 
