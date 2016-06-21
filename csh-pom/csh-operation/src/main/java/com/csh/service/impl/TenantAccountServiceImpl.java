@@ -120,7 +120,7 @@ public class TenantAccountServiceImpl extends BaseServiceImpl<TenantAccount, Lon
      UcpaasUtil.SendAccountBySms(tenantInfo.getContactPhone(), tenantInfo.getOrgCode(), tenantAccount.getUserName(), password);
     
      // 邮件
-    String subject = SpringUtils.getMessage("csh.tenantAccount.password.subject");
+    String subject = SpringUtils.getMessage("csh.tenantAccount.password.subject",tenantInfo.getTenantName());
     String message =
         SpringUtils.getMessage("csh.tenantAccount.password.message",tenantInfo.getTenantName() ,tenantAccount.getUserName(),
             password,tenantInfo.getOrgCode(),UcpaasUtil.setting.getTenantLoginUrl());

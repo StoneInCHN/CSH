@@ -29,7 +29,7 @@
                 <div class="widget-content">
                   <div class="padd">
                   		[#if distributorDeductClearingRecord.carServiceDistributorDeductRecords ??]
-						<table class="input tabContent">
+						<table class=" tabContent">
 							<tr>
 								<th>${message("csh.distributorDeductClearingRecord.amountOfCurrentPeriod")}:</th>
 								<td>
@@ -116,11 +116,9 @@
 									<td>
 										${carServiceRecord.tenantName}
 									</td>
-								
-												
 								</tr>
-							</tbody>
 							[/#list]
+						 </tbody>
 						</table>
 						[#else]
 							你没有需要结算的订单

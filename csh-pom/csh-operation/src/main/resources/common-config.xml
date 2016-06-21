@@ -18,6 +18,11 @@
 	<setting name="smtpPort" value="25" />
 	<setting name="smtpUsername" value="microctrllife@163.com" />
 	<setting name="smtpPassword" value="o123456" />
+	<!-- <setting name="smtpFromMail" value="tankboo@163.com" />
+	<setting name="smtpHost" value="smtp.163.com" />
+	<setting name="smtpPort" value="25" />
+	<setting name="smtpUsername" value="tankboo@163.com" />
+	<setting name="smtpPassword" value=".676397876" /> -->
 	<!-- 允许上传文件后缀名 -->
 	<setting name="uploadFileExtension" value="apk" />
 	<setting name="uploadImageExtension" value="png,jepg,gif,jpg" />
@@ -49,8 +54,9 @@
 	<!-- 消息推送接口 -->
 	<setting name="msgPushUrl" value="http://10.174.236.186:10001/csh-interface/message/pushMsg.jhtml" />
 	<!-- 新闻消息推送接口 -->
-	<!-- <setting name="newsPushUrl" value="http://10.174.236.186:10001/csh-interface/message/pushNewsMsg.jhtml" /> -->
+	<!-- <setting name="newsPushUrl" value="http://10.174.236.186:10001/csh-interface/news/pushNews.jhtml" /> -->
 	<setting name="newsPushUrl" value="http://10.50.40.56:8081/csh-interface/news/pushNews.jhtml" />
 	<setting name="newsDetailsUrl" value="http://10.50.40.82:8888/console/news/details.jhtml" />
+	<!-- <setting name="newsDetailsUrl" value="http://carlife.chcws.com:8080/console/news/details.jhtml" /> -->
 </csh>	
 	

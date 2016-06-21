@@ -145,8 +145,8 @@
 														<a href="details4distributor.jhtml?id=${distributorDeductClearingRecord.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>
 													</td>
 												</tr>
-											</tbody>
 											[/#list]
+											</tbody>
 										</table>
 										<div class="widget-foot">
 					                       [@pagination pageNumber = page.pageNumber totalPages = page.totalPages]
@@ -180,9 +180,9 @@
 			$operationModal.find(".modal-title").text("结算单预览");
 			$operationModal.modal("show");
 			$operationModalIframe.attr("src","${base}/console/distributorDeductClearingRecord/viewClearingRecord.jhtml");
-			$operationModalIframe.css("height",380);
-			$operationModalIframe.css("width",700);
-			$operationModal.find(".modal-dialog").css("width",705)
+			$operationModalIframe.css("height",480);
+			$operationModalIframe.css("width",900);
+			$operationModal.find(".modal-dialog").css("width",905)
 		})
 		$operationModalOK.click(function(){
 			 $.ajax({
@@ -192,6 +192,9 @@
 			   success: function(result){
 			     // $.messager.popup(result.content);
 			     alert(result.content)
+			     if(result.type == "success"){
+			     	$operationModalOK.attr("disabled","disabled");
+			     }
 			   }
 			});
 			

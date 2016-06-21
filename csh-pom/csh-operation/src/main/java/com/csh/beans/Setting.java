@@ -58,7 +58,11 @@ public class Setting implements Serializable {
     /**
      * 新闻图片
      */
-    NEWS
+    NEWS,
+    /**
+     * 优惠券
+     */
+    Coupon
   }
 
 

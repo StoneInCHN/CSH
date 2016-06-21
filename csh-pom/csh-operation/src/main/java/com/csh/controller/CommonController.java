@@ -39,6 +39,8 @@ import com.csh.service.AreaService;
 import com.csh.service.CaptchaService;
 import com.csh.service.FileService;
 import com.csh.service.RSAService;
+import com.csh.service.VehicleOilService;
+import com.csh.utils.CommonUtils;
 import com.csh.utils.JsonUtil;
 
 
@@ -61,6 +63,9 @@ public class CommonController extends BaseController {
   @Resource(name = "fileServiceImpl")
   private FileService fileService;
 
+  @Resource(name="vehicleOilServiceImpl")
+  private VehicleOilService vehicleOilService;
+  
   /**
    * 验证码
    */
@@ -222,8 +227,11 @@ public class CommonController extends BaseController {
         e.printStackTrace();
       }
     }
-
-
   }
 
+  @RequestMapping(value = "/oilTest", method = RequestMethod.GET)
+  public @ResponseBody String oilTest() {
+    return  CommonUtils.getOilInfo4BaiDu();
+  }
+  
 }

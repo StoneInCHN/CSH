@@ -154,7 +154,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantInfo.businessTime")}:
+									${message("csh.tenantInfo.businessTime")}:
 								</th>
 								<td>
 									<input type="text" name="businessTime" class="text" maxlength="20" />
@@ -162,7 +162,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantInfo.description")}:
+									${message("csh.tenantInfo.description")}:
 								</th>
 								<td>
 									<input type="text" name="description" class="text" maxlength="20" />
@@ -170,7 +170,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantInfo.ownerName")}:
+									${message("csh.tenantInfo.ownerName")}:
 								</th>
 								<td>
 									<input type="text" name="ownerName" class="text" maxlength="20" />
@@ -178,7 +178,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									${message("csh.apply.versionConfig")}:
+									<span class="requiredField">*</span>${message("csh.apply.versionConfig")}:
 								</th>
 								<td>
 									<select name="versionConfigId">
@@ -204,7 +204,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantInfo.remark")}:
+									${message("csh.tenantInfo.remark")}:
 								</th>
 								<td>
 									<input type="text" name="remark" class="text" maxlength="200" />

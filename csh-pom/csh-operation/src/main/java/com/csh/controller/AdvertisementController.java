@@ -64,9 +64,7 @@ public class AdvertisementController extends BaseController{
     }else {
       return Message.error(SpringUtils.getMessage("csh.advertisement.image.file.type.error"));
     }
-    if (advertisement.getAdvImage() != null) {
-      advImageUrl = fileService.saveImage(advertisement.getAdvImage(), ImageType.ADVERTISEMENT);
-    }
+
     advertisement.setAdvImageUrl(advImageUrl);
     advertisement.setSystemType(SystemType.OPERATION);
     advertisementService.save(advertisement);

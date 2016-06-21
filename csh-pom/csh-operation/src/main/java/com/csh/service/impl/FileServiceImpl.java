@@ -141,8 +141,14 @@ public class FileServiceImpl implements FileService {
       String sourcePath =
           imgUploadPath + File.separator + date + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
-      webPath =projectUploadPath+ subPath + File.separator + date + File.separator + "src_"
-              + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+      if (imageType == ImageType.NEWS) {
+        webPath =projectUploadPath+ subPath + File.separator + date + File.separator + "src_"
+            + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+      }else{
+        webPath =File.separator+"upload"+subPath + File.separator + date + File.separator + "src_"
+            + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+      }
+     
       String storePath =
           imgUploadPath + File.separator + date + File.separator + uuid + "." + DEST_EXTENSION;;
 
@@ -175,7 +181,7 @@ public class FileServiceImpl implements FileService {
       uploadExtensions = setting.getUploadImageExtensions();
 	}
     if (!ArrayUtils.isEmpty(uploadExtensions)) {
-      return FilenameUtils.isExtension(multipartFile.getOriginalFilename(), uploadExtensions);
+      return FilenameUtils.isExtension(multipartFile.getOriginalFilename().toLowerCase(), uploadExtensions);
     }
     return false;
   }

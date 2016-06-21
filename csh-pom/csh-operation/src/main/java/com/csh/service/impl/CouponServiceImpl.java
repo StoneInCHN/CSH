@@ -16,6 +16,7 @@ import com.csh.entity.Coupon;
 import com.csh.entity.EndUser;
 import com.csh.entity.MessageInfo;
 import com.csh.entity.MsgEndUser;
+import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
 import com.csh.entity.commonenum.CommonEnum.SendType;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -42,7 +43,7 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
 
   @Resource(name = "msgEndUserServiceImpl")
   private MsgEndUserService msgEndUserService;
-  
+
   @Resource(name = "couponDaoImpl")
   public void setBaseDao(CouponDao couponDao) {
     super.setBaseDao(couponDao);
@@ -77,14 +78,16 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("msgId", msgInfo.getId());
       Setting setting = SettingUtils.get();
-      String data =JsonUtil.getJsonString4JavaPOJO(params);
-      ApiUtils.post(setting.getMsgPushUrl(),data);
+      String data = JsonUtil.getJsonString4JavaPOJO(params);
+      ApiUtils.post(setting.getMsgPushUrl(), data);
     }
   }
 
   @Override
   public Coupon update(Coupon coupon) {
-    if (coupon.getIsEnabled() && !coupon.getIsSendout()) {
+    if (CouponSendType.DEVICEBIND != coupon.getSendType()
+        && CouponSendType.REG != coupon.getSendType() && coupon.getIsEnabled()
+        && !coupon.getIsSendout()) {
       MessageInfo msgInfo = new MessageInfo();
       msgInfo.setMessageTitle(SpringUtils.getMessage("csh.coupon.name"));
       msgInfo.setMessageType(MessageType.PROMOTION);
@@ -104,15 +107,13 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon, Long> implements 
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("msgId", msgInfo.getId());
       Setting setting = SettingUtils.get();
-      String data =JsonUtil.getJsonString4JavaPOJO(params);
-      ApiUtils.post(setting.getMsgPushUrl(),data);
-      
+      String data = JsonUtil.getJsonString4JavaPOJO(params);
+      ApiUtils.post(setting.getMsgPushUrl(), data);
       coupon.setIsSendout(true);
     }
     return couponDao.merge(coupon);
   }
 
-  
-  
+
 
 }
