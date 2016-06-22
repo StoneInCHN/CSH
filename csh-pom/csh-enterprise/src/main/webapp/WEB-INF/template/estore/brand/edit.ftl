@@ -20,20 +20,21 @@
 						         <div  class="placeholder element-invisible">
 						        	<div id="brandFilePicker-edit" ></div>
 						        </div>
-						    </div>
-						    <div class="show-img">
-					        	<p class="imgWrap img-thumbnail">
-									 <img id ="brandLogo-edit" src="${brand.logo}"/>
-								</p>
-						    </div>
+						 
+							    <div class="show-img">
+						        	<p class="imgWrap img-thumbnail">
+										 <img id ="brandLogo-edit" src="${brand.logo}" style ="width:80px;hight:80 px"/>
+									</p>
+							    </div>
+							</div>
 						    <div class="btns">
 						        <div class="uploadBtn state-pedding"></div>
 						    </div>
 						</div>
 						<div class="btns">
 					        <div class="uploadBtn state-pedding"></div>
-					        <div id="brandFilePicker-edit2" class="margin-left-40">选择文件</div>
-					        <div class="btn btn-info savePhoto margin-left-40" style="display:none">保存头像</div>
+					        <div id="brandFilePicker-edit2" class="margin-left-20">选择文件</div>
+					        <div class="btn btn-info savePhoto margin-left-20" style="display:none">保存图片</div>
 					    </div>
 	    			</div>
 			</td>

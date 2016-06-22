@@ -7,49 +7,11 @@
 
 <div>
 	  <fieldset>
-	    <legend>${message("csh.coupon.search")}</legend>
-	    <form id="coupon-search-form" class="search-form">
-	    	<div class="search-item">
-			    <label> 优惠券类型:</label>
-			    <input class="easyui-combobox" data-options="
-				     valueField: 'label',
-				     textField: 'value',
-				     data: [{
-				      label: 'COMMON',
-				      value: '${message("csh.coupon.type.COMMON")}'
-				     },{
-				      label: 'SPECIFY',
-				      value: '${message("csh.coupon.type.SPECIFY")}'
-				     }],
-				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:60" name="couponTypeSearch" style="width:110px;" />
-			</div>
+	    <legend>${message("csh.brand.search")}</legend>
+	    <form id="brand-search-form" class="search-form">
 			<div class="search-item">
-			    <label> 发送类型:</label>
-				<input class="easyui-combobox" data-options="
-					     valueField: 'label',
-					     textField: 'value',
-					     data: [{
-					      label: 'NORMAL',
-					      value: '${message("csh.coupon.sendType.NORMAL")}'
-					     },{
-					      label: 'BIND',
-					      value: '${message("csh.coupon.sendType.BIND")}'
-					     }],
-					     prompt:'${message("csh.common.please.select")}',panelMaxHeight:60"  name="couponSendTypeSearch" style="width:110px;" />
-			</div>
-			<div class="search-item">
-			    <label> 过期类型:</label>
-				 <input class="easyui-combobox" data-options="
-						     valueField: 'label',
-						     textField: 'value',
-						     data: [{
-						      label: 'BYDAY',
-						      value: '${message("csh.coupon.overDueType.BYDAY")}'
-						     },{
-						      label: 'BYDATE',
-						      value: '${message("csh.coupon.overDueType.BYDATE")}'
-						     }],
-						     prompt:'${message("csh.common.please.select")}',panelMaxHeight:60"  name="couponOverDueTypeSearch" style="width:110px;" />
+			    <label> ${message("csh.brand.name")}:</label>
+				<input type="text" class="easyui-textbox" id="brandNameSearch" name="brandNameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
 			    <label> 创建时间:</label>
@@ -61,7 +23,7 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="coupon-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="brand-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 </div>

@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Entity - 品牌
  * @author huyong
  */
+@Indexed(index="brand")
 @Entity
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_brand_sequence")
 @Table(name = "csh_brand" ,indexes={@Index(name="brand_tenantid",columnList="tenantID")})
@@ -68,6 +70,7 @@ public class Brand extends OrderEntity {
 	@Length(max = 200)
 	@Column(nullable = false)
 	@JsonProperty
+	@Field(index=org.hibernate.search.annotations.Index.YES,store=Store.NO,analyze=Analyze.NO)
 	public String getName() {
 		return name;
 	}

@@ -1,19 +1,17 @@
 package com.csh.estore.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
-import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermRangeQuery;
+import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -25,31 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
-import com.csh.beans.Setting;
 import com.csh.common.log.LogUtil;
+import com.csh.controller.DeviceInfoController;
 import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.CarService;
-import com.csh.entity.Coupon;
-import com.csh.entity.MessageInfo;
-import com.csh.entity.TenantInfo;
-import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
-import com.csh.entity.commonenum.CommonEnum.CouponSendType;
-import com.csh.entity.commonenum.CommonEnum.CouponType;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
-import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.entity.estore.Brand;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.BrandService;
-import com.csh.service.CarServiceService;
-import com.csh.service.CouponService;
 import com.csh.service.FileService;
-import com.csh.service.ServiceCategoryService;
-import com.csh.service.TenantAccountService;
-import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
-import com.csh.utils.SettingUtils;
 
 /**
  * 商品品牌
@@ -87,7 +71,7 @@ public class BrandController extends BaseController
    */
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<Brand> list (Model model, Pageable pageable,
-      Date beginDate, Date endDate)
+     String brandNameSearch, Date beginDate, Date endDate)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -96,11 +80,32 @@ public class BrandController extends BaseController
     analyzer.setMaxWordLength (true);
     BooleanQuery query = new BooleanQuery ();
   
+    QueryParser nameParser = new QueryParser (Version.LUCENE_35, "name",
+        analyzer);
     TermRangeQuery rangeQuery = null;
-    TermQuery typeTermQuery = null;
-    TermQuery sendTypeTermQuery = null;
-    TermQuery overDueTypeQuery = null;
+    Query nameQuery = null;
     Filter filter = null;
+    
+    if (brandNameSearch != null)
+    {
+      String text = QueryParser.escape (brandNameSearch);
+        try
+        {
+          nameParser.setAllowLeadingWildcard (true);
+          nameQuery = nameParser.parse ("*"+text+"*");
+          query.add (nameQuery, Occur.MUST);
+          
+          if (LogUtil.isDebugEnabled (DeviceInfoController.class))
+          {
+            LogUtil.debug (DeviceInfoController.class, "search", "Search brand name: "
+                + brandNameSearch );
+          }
+        }
+        catch (ParseException e)
+        {
+          e.printStackTrace();
+        }
+    }
     
     if (beginDate != null)
     {
@@ -125,7 +130,7 @@ public class BrandController extends BaseController
       }
     }
    
-    if (typeTermQuery != null || rangeQuery != null || sendTypeTermQuery != null || overDueTypeQuery != null)
+    if (nameQuery != null || rangeQuery != null)
     {
       return brandService.search (query, pageable, analyzer, filter,true);
     }else{

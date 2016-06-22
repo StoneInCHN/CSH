@@ -2,7 +2,7 @@ var brand_manager_tool = {
 		add:function(){
 			$('#addBrand').dialog({
 			    title: message("csh.brand.add"),    
-			    width: 750,    
+			    width: 850,    
 			    height: 500,
 			    href:'../brand/add.jhtml',
 			    method:"get",
@@ -51,7 +51,7 @@ var brand_manager_tool = {
 					}
 			    }],
 				onLoad:function(){
-					//头像上传
+					//图片上传
 			     	var options ={
 			     			createOption:{
 			     				pick: {
@@ -265,7 +265,7 @@ var brand_manager_tool = {
 			     			uploadImageType:"edit",
 			     			addButton:{
 			     				id: '#brandFilePicker-edit2',
-			     				innerHTML: '替换头像'
+			     				innerHTML: '替换图片'
 			     			},
 			     			uploadBeforeSend:function(object, data, headers){
 			     				 data.brandId=$("#editBrand_form").find("input[name='id']").val();;
@@ -273,15 +273,15 @@ var brand_manager_tool = {
 			     	};
 			     	singleUpload(editOptions);
 			     	$("#editBrand_form").find(".savePhoto").on("click",function(){
-			     		$.messager.confirm('确认','头像保存后将直接修改当前用户的头像，确认要上传吗？',function(res){    
+			     		$.messager.confirm('确认','图片保存后将直接修改当前Logo，确认要上传吗？',function(res){    
 			     		    if (res){
 			     		    	$("#brandUploader-edit .uploadBtn").trigger("upload");
 			     		    }    
 			     		}); 
-			     		//alert("保存头像");
+			     		//alert("保存图片");
 			     	});
 			     	
-					var editor = KindEditor.create('#edit_brand_remark', {
+					var editor = KindEditor.create('#edit_brand_introduction', {
 						resizeType : 1,
 						width : '400px',
 						height:'400px',
@@ -371,9 +371,9 @@ $(function(){
 	});
 
 	
-	$("#coupon-search-btn").click(function(){
-	  var _queryParams = $("#coupon-search-form").serializeJSON();
-	  $('#coupon-table-list').datagrid('options').queryParams = _queryParams;  
-	  $("#coupon-table-list").datagrid('reload');
+	$("#brand-search-btn").click(function(){
+	  var _queryParams = $("#brand-search-form").serializeJSON();
+	  $('#brand-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#brand-table-list").datagrid('reload');
 	});
 })
