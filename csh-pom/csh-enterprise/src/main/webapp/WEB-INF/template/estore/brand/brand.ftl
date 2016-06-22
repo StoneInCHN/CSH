@@ -1,5 +1,5 @@
 <script src="${base}/resources/js/common.js"></script>
-<script src="${base}/resources/modules/coupon.js"></script>
+<script src="${base}/resources/modules/estore/brand.js"></script>
 <link rel="stylesheet" type="text/css"href="${base}/resources/js/kindeditor/themes/default/default.css" >
 <script  src="${base}/resources/js/kindeditor/kindeditor-min.js"></script>
 <script  src="${base}/resources/js/kindeditor/lang/zh_CN.js"></script>
@@ -65,18 +65,18 @@
 	    </div>
 	  </fieldset>
 </div>
-<table id="coupon-table-list"></table>
-<div id="coupon_manager_tool">
+<table id="brand-table-list"></table>
+<div id="brand_manager_tool">
 	<div class="tool-button">
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="coupon_manager_tool.add();">添加</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="coupon_manager_tool.edit();">修改</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="coupon_manager_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="brand_manager_tool.add();">添加</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="brand_manager_tool.edit();">修改</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="brand_manager_tool.remove();">删除</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>
-<div id="addCoupon"></div>
-<div id="editCoupon"></div>
-<div id="couponDetail"></div>
+<div id="addBrand"></div>
+<div id="editBrand"></div>
+<div id="brandDetail"></div>
 
 
 

@@ -23,6 +23,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.csh.entity.base.OrderEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity - 品牌
@@ -35,23 +36,9 @@ public class Brand extends OrderEntity {
 
 	private static final long serialVersionUID = -6109590619136943215L;
 
-	/**
-	 * 类型
-	 */
-	public enum Type {
-
-		/** 文本 */
-		text,
-
-		/** 图片 */
-		image
-	}
-
 	/** 名称 */
 	private String name;
 
-	/** 类型 */
-	private Type type;
 
 	/** logo */
 	private String logo;
@@ -80,6 +67,7 @@ public class Brand extends OrderEntity {
 	@NotEmpty
 	@Length(max = 200)
 	@Column(nullable = false)
+	@JsonProperty
 	public String getName() {
 		return name;
 	}
@@ -94,26 +82,6 @@ public class Brand extends OrderEntity {
 		this.name = name;
 	}
 
-	/**
-	 * 获取类型
-	 * 
-	 * @return 类型
-	 */
-	@NotNull
-	@Column(nullable = false)
-	public Type getType() {
-		return type;
-	}
-
-	/**
-	 * 设置类型
-	 * 
-	 * @param type
-	 *            类型
-	 */
-	public void setType(Type type) {
-		this.type = type;
-	}
 
 	/**
 	 * 获取logo
@@ -141,6 +109,7 @@ public class Brand extends OrderEntity {
 	 * @return 网址
 	 */
 	@Length(max = 200)
+	@JsonProperty
 	public String getUrl() {
 		return url;
 	}

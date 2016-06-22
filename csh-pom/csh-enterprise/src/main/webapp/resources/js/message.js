@@ -328,7 +328,7 @@ var messages = {
 	"csh.carWashingCoupon.counts":"次数",
 	//商品品牌
 	"csh.brand.name":"品牌名",
-	"csh.brand.type":"类型",
+	"csh.brand.url":"网址",
 	"csh.brand.add":"品牌添加",
 	"csh.brand.list":"品牌列表"
 	

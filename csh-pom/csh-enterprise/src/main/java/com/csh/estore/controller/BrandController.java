@@ -19,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
@@ -34,6 +36,7 @@ import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.CouponOverDueType;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
 import com.csh.entity.commonenum.CommonEnum.CouponType;
+import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.entity.estore.Brand;
 import com.csh.framework.paging.Page;
@@ -72,7 +75,7 @@ public class BrandController extends BaseController
   @RequestMapping (value = "/brand", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "/brand/brand";
+    return "estore/brand/brand";
   }
 
   /**
@@ -136,19 +139,19 @@ public class BrandController extends BaseController
   {
     Brand brand = brandService.find (id);
     model.put ("brand", brand);
-    return "brand/edit";
+    return "estore/brand/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.GET)
   public String add (ModelMap model)
   {
-    return "brand/add";
+    return "estore/brand/add";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
   public @ResponseBody Message add (Brand brand)
   {
-    brandService.save (brand);
+    brandService.save (brand,true);
     
     return SUCCESS_MESSAGE;
   }
@@ -196,6 +199,24 @@ public class BrandController extends BaseController
   {
     Brand brand = brandService.find (id);
     model.put ("brand", brand);
-    return "brand/details";
+    return "estore/brand/details";
+  }
+  
+  @RequestMapping (value = "/uploadLogo", method = RequestMethod.POST)
+  public @ResponseBody Message uploadPhoto (
+      @RequestParam ("file") MultipartFile file, Long brandId)
+  {
+    String filePath = fileService.saveImage (file, ImageType.PRODUCTBRANDIMAGE);
+    if (filePath != null && brandId != null)
+    {
+      Brand brand = brandService.find (brandId);
+      brand.setLogo (filePath);
+      brandService.update (brand);
+      return Message.success (filePath);
+    }
+    else
+    {
+      return ERROR_MESSAGE;
+    }
   }
 }

@@ -386,7 +386,11 @@ public class CommonEnum {
     /**
      * 服务描述图片
      */
-    SERVICEDESCIMAGE
+    SERVICEDESCIMAGE,
+    /**
+     * 商品品牌图片
+     */
+    PRODUCTBRANDIMAGE
   }
 
 

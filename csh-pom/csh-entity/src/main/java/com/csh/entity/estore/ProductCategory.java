@@ -286,7 +286,7 @@ public class ProductCategory extends OrderEntity {
 	 * @return 筛选品牌
 	 */
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "xx_product_category_brand")
+	@JoinTable(name = "csh_product_category_brand")
 	@OrderBy("order asc")
 	public Set<Brand> getBrands() {
 		return brands;

@@ -126,33 +126,37 @@ public class FileServiceImpl implements FileService {
         imgUploadPath = uploadPath +File.separator+tenantAccountService.getCurrentTenantID ()+ File.separator + "carServicePicture";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "carServicePicture";
       }
-      if (imageType == ImageType.DRIVERLICENSEPHOTO) {
+      else if (imageType == ImageType.DRIVERLICENSEPHOTO) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "driverLicensePhoto";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "driverLicensePhoto";
       }
-      if (imageType == ImageType.DRIVINGLICENSEPHOTO) {
+      else if (imageType == ImageType.DRIVINGLICENSEPHOTO) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "drivingLicensePhoto";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "drivingLicensePhoto";
       }
-      if (imageType == ImageType.IDPHOTO) {
+      else if (imageType == ImageType.IDPHOTO) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "IDPhoto";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "IDPhoto";
       }
-      if (imageType == ImageType.PHOTO) {
+      else if (imageType == ImageType.PHOTO) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "photo";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "photo";
       }
-      if (imageType == ImageType.ADVIMAGE) {
+      else if (imageType == ImageType.ADVIMAGE) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "advImage";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "advImage";
       }
-      if (imageType == ImageType.SERVICEDESCIMAGE) {
+      else if (imageType == ImageType.SERVICEDESCIMAGE) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "serviceDescImage";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "serviceDescImage";
       }
-      if (imageType == ImageType.COUPONREMARKIMAGE) {
+      else if (imageType == ImageType.COUPONREMARKIMAGE) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "couponRemarkImage";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "couponRemarkImage";
+      }
+      else if (imageType == ImageType.PRODUCTBRANDIMAGE) {
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productBrandImage";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productBrandImage";
       }
       String sourcePath =
           imgUploadPath + File.separator + "src_" + uuid + "."

@@ -1769,7 +1769,7 @@ public class Product extends BaseEntity {
 	@Valid
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@CollectionTable(name = "xx_product_product_image")
+	@CollectionTable(name = "csh_product_product_image")
 	public List<ProductImage> getProductImages() {
 		return productImages;
 	}
@@ -1831,7 +1831,7 @@ public class Product extends BaseEntity {
 	 * @return 标签
 	 */
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "xx_product_tag")
+	@JoinTable(name = "csh_product_tag")
 	@OrderBy("order asc")
 	public Set<Tag> getTags() {
 		return tags;
