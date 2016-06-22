@@ -105,10 +105,10 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.advertisement.advImage")}:
+									${message("csh.advertisement.advImage")}:
 								</th>
 								<td>
-									<input type="file" name="advImage" />
+									<input type="file" name="advImage" value=""/>
 								</td>
 							</tr>
 							<tr>
@@ -137,7 +137,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
-									${message("csh.advertisement.status")}:
+									<span class="requiredField">*</span>${message("csh.advertisement.status")}:
 								</th>
 								<td>
 									<select name="status" class="text">

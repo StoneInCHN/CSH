@@ -45,6 +45,7 @@ public class SystemConfigController extends BaseController {
   @RequestMapping(value = "/update", method = RequestMethod.POST)
   public String update(SystemConfig systemConfig) {
     SystemConfig temp = systemConfigService.find(systemConfig.getId());
+    temp.setConfigValue(systemConfig.getConfigValue());
     systemConfigService.update(temp);
     return "redirect:list.jhtml";
   }

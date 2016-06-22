@@ -73,6 +73,9 @@ public class CouponController extends BaseController {
   @RequestMapping(value = "/update", method = RequestMethod.POST)
   public String update(Coupon coupon) {
     Coupon temp = couponService.find(coupon.getId());
+    if (CouponSendType.REG ==temp.getSendType() || CouponSendType.DEVICEBIND ==temp.getSendType()) {
+    	temp.setAmount(coupon.getAmount());
+	}
     temp.setIsEnabled(coupon.getIsEnabled());
     temp.setDeadlineTime(coupon.getDeadlineTime());
     couponService.update(temp);

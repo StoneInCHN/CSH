@@ -148,7 +148,7 @@
 													</td>
 													<td>
 														<a href="edit.jhtml?id=${news.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
-														<a href="details.jhtml?id=${news.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>
+														<a href="details.jhtml?id=${news.id}" title="${message("csh.common.details")}" target="-1"><i class="fa fa-eye"></i></a>
 													</td>
 												</tr>
 												[/#list]

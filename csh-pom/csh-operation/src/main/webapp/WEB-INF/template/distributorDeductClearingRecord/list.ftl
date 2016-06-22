@@ -142,8 +142,8 @@
 														<a href="details.jhtml?id=${distributorDeductClearingRecord.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>
 													</td>
 												</tr>
-											</tbody>
 											[/#list]
+											</tbody>
 										</table>
 										<div class="widget-foot">
 					                       [@pagination pageNumber = page.pageNumber totalPages = page.totalPages]

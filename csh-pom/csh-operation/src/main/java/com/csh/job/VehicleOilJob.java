@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.csh.beans.OilBean;
+import com.csh.common.log.LogUtil;
 import com.csh.service.VehicleOilService;
 import com.csh.utils.CommonUtils;
 import com.csh.utils.JsonUtil;
@@ -26,38 +27,35 @@ public class VehicleOilJob {
    */
   @Scheduled(cron = "${job.csh.vehicleOilJob.cron}")
   public void updateOilInfo() {
-    System.out.println("开始扫描........");
-
+    if(LogUtil.isDebugEnabled(VehicleOilJob.class)){
+      LogUtil.debug(VehicleOilJob.class, "updateOilInfo", "%s", "Starting Scanning........");
+    }
     String jsonResult = CommonUtils.getOilInfo4BaiDu();
     Map<String, Object> map = JsonUtil.getMap4Json(jsonResult);
-    String[] strings = jsonResult.split("list");
-    String[] str = null;
+    String[] strings = jsonResult.split("\"list\":");
+    String str = null;
     String objString = null;
     for (String string : strings) {
-      if (string.contains("ret_code")) {
-        str = string.split("ret_code");
+      if (!string.contains("ret_code")) {
+        str = string;
       }
     }
     if (str != null) {
-      for (String string : str) {
-        if (string.contains("[")) {
-          objString = string.substring(2, string.length() - 2);
-          break;
-        }
-
-      }
+          objString = str.substring(0, str.length() - 4);
     }
     if (objString != null) {
       List<OilBean> oilBeans = JsonUtil.getList4Json(objString, OilBean.class);
       for (OilBean oilBean : oilBeans) {
-        System.out.println(oilBean.getProv() + "的油价:p0=" + oilBean.getP0() + " , p90 = "
-            + oilBean.getP90() + " , p93 = " + oilBean.getP93() + " , p97 = " + oilBean.getP97());
+        if(LogUtil.isDebugEnabled(VehicleOilJob.class)){
+          LogUtil.debug(VehicleOilJob.class, "updateOilInfo", "%s的油价:p0=%s , p90 = %s, p93 = %s, p97 = %s",oilBean.getProv(),oilBean.getP0(),oilBean.getP90(),oilBean.getP93(),oilBean.getP97());
+        }
         vehicleOilService.updateOilInfo(oilBean);
       }
 
     }
-    
-    System.out.println("扫描结束........");
+    if(LogUtil.isDebugEnabled(VehicleOilJob.class)){
+      LogUtil.debug(VehicleOilJob.class, "updateOilInfo", "%s", "end of scan........");
+    }
   }
   
   

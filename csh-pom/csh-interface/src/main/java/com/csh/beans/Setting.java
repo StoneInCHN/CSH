@@ -218,6 +218,18 @@ public class Setting implements Serializable {
    */
   private String bdPage;
 
+  /**
+   * 百度车联网API 坐标修正
+   */
+  private String bdCarConvert;
+
+  public String getBdCarConvert() {
+    return bdCarConvert;
+  }
+
+  public void setBdCarConvert(String bdCarConvert) {
+    this.bdCarConvert = bdCarConvert;
+  }
 
   public String getBdCarMapUrl() {
     return bdCarMapUrl;

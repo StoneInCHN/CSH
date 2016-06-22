@@ -9,8 +9,31 @@
 <link href="${base}/resources/style/style.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/common.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="${base}/resources/js/jquery.js"></script>
+<script type="text/javascript" src="${base}/resources/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			amount: {
+				required: true,
+				number:true,
+				min:1
+			},
+			isEnabled: {
+				required: true
+			}
+		},
+	});
+	
+});
+</script>
 </head>
 <body>
 	<div class="mainbar">
@@ -52,10 +75,10 @@
 							</tr>
 							<tr>
 								<th>
-									${message("csh.coupon.amount")}:
+									<span class="requiredField">*</span>${message("csh.coupon.amount")}:
 								</th>
 								<td>
-									${coupon.amount}
+									<input type="text" name="amount" value="${coupon.amount}" class="text" maxlength="20" />
 								</td>
 							</tr>
 							<tr>

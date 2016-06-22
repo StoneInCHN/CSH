@@ -1,6 +1,7 @@
 package com.csh.utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
@@ -116,6 +117,31 @@ public class LatLonUtil {
       *//*
          * }
          */
+
+  public static Map<String, Object> convertCoordinateForBaiDuLbs(String lon, String lat) {
+    try {
+      Map<String, Object> map = new HashMap<String, Object>();
+      Setting setting = SettingUtils.get();
+      String url =
+          setting.getBdCarConvert() + "coords=" + lon + "," + lat + "&from=3&to=5&ak="
+              + setting.getBdCarMapAk();
+      String res = ApiUtils.get(url);
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
+      if (resMap != null && (int) resMap.get("status") == 0) {
+        List<Map<String, Object>> coords = (List<Map<String, Object>>) resMap.get("result");
+        for (Map<String, Object> coord : coords) {
+          map.put("lng", coord.get("x").toString());
+          map.put("lat", coord.get("y").toString());
+          return map;
+        }
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
   public static Map<String, Object> convertCoordinate(String lon, String lat) {
     try {

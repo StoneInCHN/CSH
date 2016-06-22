@@ -144,7 +144,7 @@
 										[/#if]
 									</td>
 									<td>
-										${carServiceRecord.price}
+										${carServiceRecord.deductMoney}
 									</td>
 									<td>
 										${carServiceRecord.tenantName}
