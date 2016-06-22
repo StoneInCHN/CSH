@@ -227,8 +227,8 @@
 
 		<!-- Datasource -->
 		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
+				<groupId>com.mchange</groupId>
+				<artifactId>c3p0</artifactId>
 		</dependency>
 
 		<!-- Json -->
