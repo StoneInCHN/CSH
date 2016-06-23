@@ -26,6 +26,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.csh.entity.base.OrderEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity - 商品分类
@@ -105,6 +106,7 @@ public class ProductCategory extends OrderEntity {
 	@NotEmpty
 	@Length(max = 200)
 	@Column(nullable = false)
+	@JsonProperty
 	public String getName() {
 		return name;
 	}
@@ -205,6 +207,7 @@ public class ProductCategory extends OrderEntity {
 	 * @return 层级
 	 */
 	@Column(nullable = false)
+	@JsonProperty
 	public Integer getGrade() {
 		return grade;
 	}
@@ -246,6 +249,7 @@ public class ProductCategory extends OrderEntity {
 	 */
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
 	@OrderBy("order asc")
+	@JsonProperty
 	public Set<ProductCategory> getChildren() {
 		return children;
 	}
