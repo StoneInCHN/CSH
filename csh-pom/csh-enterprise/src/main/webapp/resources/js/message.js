@@ -330,7 +330,13 @@ var messages = {
 	"csh.brand.name":"品牌名",
 	"csh.brand.url":"网址",
 	"csh.brand.add":"品牌添加",
-	"csh.brand.list":"品牌列表"
+	"csh.brand.list":"品牌列表",
+	//商品分类
+	"csh.productCategory.name":"分类名称",
+	"csh.productCategory.list":"商品分类列表",
+	"csh.productCategory.grade":"等级",
+	"csh.productCategory.parent":"上级分类",
+	"csh.productCategory.add":"添加商品分类"
 	
 };
 //多语言

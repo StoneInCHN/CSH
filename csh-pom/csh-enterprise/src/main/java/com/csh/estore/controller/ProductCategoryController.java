@@ -1,6 +1,8 @@
 package com.csh.estore.controller;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -17,9 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
@@ -27,28 +27,28 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.DeviceInfoController;
 import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.estore.Brand;
+import com.csh.entity.estore.ProductCategory;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.BrandService;
-import com.csh.service.FileService;
+import com.csh.service.ProductCategoryService;
 import com.csh.utils.DateTimeUtils;
 
 /**
- * 商品品牌
+ * 商品分类
  * @author huyong
  *
  */
-@Controller ("brandController")
-@RequestMapping ("console/brand")
-public class BrandController extends BaseController
+@Controller ("productCategoryController")
+@RequestMapping ("console/productCategory")
+public class ProductCategoryController extends BaseController
 {
 
-  @Resource (name = "brandServiceImpl")
+  @Resource (name = "productCategoryServiceImpl")
+  private ProductCategoryService productCategoryService;
+  @Resource(name = "brandServiceImpl")
   private BrandService brandService;
-  @Resource (name = "fileServiceImpl")
-  private FileService fileService;
 
   /**
    * 界面展示
@@ -56,10 +56,10 @@ public class BrandController extends BaseController
    * @param model
    * @return
    */
-  @RequestMapping (value = "/brand", method = RequestMethod.GET)
+  @RequestMapping (value = "/productCategory", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "estore/brand/brand";
+    return "estore/productCategory/productCategory";
   }
 
   /**
@@ -70,7 +70,7 @@ public class BrandController extends BaseController
    * @return
    */
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<Brand> list (Model model, Pageable pageable,
+  public @ResponseBody Page<ProductCategory> list (Model model, Pageable pageable,
      String brandNameSearch, Date beginDate, Date endDate)
   {
     String startDateStr = null;
@@ -132,9 +132,9 @@ public class BrandController extends BaseController
    
     if (nameQuery != null || rangeQuery != null)
     {
-      return brandService.search (query, pageable, analyzer, filter,true);
+      return productCategoryService.search (query, pageable, analyzer, filter,true);
     }else{
-      return brandService.findPage (pageable,true);
+      return productCategoryService.findPage (pageable,true);
     }
 
   }
@@ -142,29 +142,55 @@ public class BrandController extends BaseController
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
-    Brand brand = brandService.find (id);
-    model.put ("brand", brand);
-    return "estore/brand/edit";
+    ProductCategory productCategory = productCategoryService.find (id);
+    model.put ("productCategory", productCategory);
+    if (productCategory.getParent () != null)
+    {
+      model.put ("parentId", productCategory.getParent ().getId ());
+    }
+    model.put ("brands",brandService.findAll (true));
+    return "estore/productCategory/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.GET)
   public String add (ModelMap model)
   {
-    return "estore/brand/add";
+    model.put ("brands",brandService.findAll (true));
+    return "estore/productCategory/add";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (Brand brand)
+  public @ResponseBody Message add (ProductCategory productCategory,Long parentId,Long[] brandIds)
   {
-    brandService.save (brand,true);
+    if (parentId != null)
+    {
+      ProductCategory parent=productCategoryService.find (parentId);
+      productCategory.setParent (parent);
+    }
+    if (brandIds != null && brandIds.length>0)
+    {
+      List<Brand> brands = brandService.findList (brandIds);
+      productCategory.setBrands (new HashSet<Brand> (brands));
+    }
+    productCategoryService.save (productCategory,true);
     
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (Brand brand)
+  public @ResponseBody Message update (ProductCategory productCategory,Long parentId,Long[] brandIds)
   {
-    brandService.update (brand,"tenantID","createDate");
+    if (parentId != null)
+    {
+      ProductCategory parent=productCategoryService.find (parentId);
+      productCategory.setParent (parent);
+    }
+    if (brandIds != null && brandIds.length>0)
+    {
+      List<Brand> brands = brandService.findList (brandIds);
+      productCategory.setBrands (new HashSet<Brand> (brands));
+    }
+    productCategoryService.update (productCategory,"tenantID","createDate","treePath", "grade", "children", "products", "parameterGroups", "attributes");
     return SUCCESS_MESSAGE;
   }
 
@@ -181,7 +207,7 @@ public class BrandController extends BaseController
       
       try
       {
-        brandService.delete (ids);
+        productCategoryService.delete (ids);
       }
       catch (Exception e)
       {
@@ -202,26 +228,21 @@ public class BrandController extends BaseController
   @RequestMapping (value = "/details", method = RequestMethod.GET)
   public String details (ModelMap model, Long id)
   {
-    Brand brand = brandService.find (id);
-    model.put ("brand", brand);
-    return "estore/brand/details";
+    ProductCategory productCategory = productCategoryService.find (id);
+    if (productCategory.getParent () != null)
+    {
+      model.put ("parentId", productCategory.getParent ().getId ());
+    }
+    model.put ("brands",brandService.findAll (true));
+    model.put ("productCategory", productCategory);
+    return "estore/productCategory/details";
   }
   
-  @RequestMapping (value = "/uploadLogo", method = RequestMethod.POST)
-  public @ResponseBody Message uploadPhoto (
-      @RequestParam ("file") MultipartFile file, Long brandId)
+  @RequestMapping (value = "/findAll", method = RequestMethod.GET)
+  public @ResponseBody List<ProductCategory> findAll (ModelMap model, Long id)
   {
-    String filePath = fileService.saveImage (file, ImageType.PRODUCTBRANDIMAGE);
-    if (filePath != null && brandId != null)
-    {
-      Brand brand = brandService.find (brandId);
-      brand.setLogo (filePath);
-      brandService.update (brand);
-      return Message.success (filePath);
-    }
-    else
-    {
-      return ERROR_MESSAGE;
-    }
+    List<ProductCategory> productCategoryList = productCategoryService.findRoots (true);
+    return productCategoryList;
   }
+ 
 }

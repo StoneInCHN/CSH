@@ -1,4 +1,4 @@
-<form id="addCarServiceItem_form" method="post" >
+<form id="editCarServiceItem_form" method="post" >
 	<input type="hidden" name="id" value="${carServiceItem.id}"/>
 	  <table class="table table-striped"  border="0">
 	    <tr>
