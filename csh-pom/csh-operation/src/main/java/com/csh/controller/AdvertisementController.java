@@ -102,7 +102,7 @@ public class AdvertisementController extends BaseController{
     }
    
     advertisementService.update(advertisement,"tenantId","createDate","systemType");
-    return Message.success("csh.advertisement.image.file.upload.success");
+    return Message.success("csh.advertisement.update.success");
   }
 
   /**

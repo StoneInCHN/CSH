@@ -41,6 +41,12 @@ $().ready(function() {
 			       		$('input[type="submit"]').attr("disabled","disabled");
 			       		$loadingBar.show();
 			       	},
+			       	beforeSerialize:function(form,options){
+			       		var $advImage = $('input[name="advImage"]');
+			       		if(!$advImage.val()){
+			       			$('input[name="advImage"]').remove();
+			       		}
+			       	},
 			       	success:function(result){
 			       		if(result.type == "error"){
 			       			$loadingBar.hide();
@@ -108,7 +114,7 @@ $().ready(function() {
 									${message("csh.advertisement.advImage")}:
 								</th>
 								<td>
-									<input type="file" name="advImage" value=""/>
+									<input type="file" name="advImage" />
 								</td>
 							</tr>
 							<tr>

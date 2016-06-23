@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.csh.beans.Setting;
 import com.csh.beans.Setting.ImageType;
+import com.csh.entity.ApkVersion;
 import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.service.FileService;
 import com.csh.utils.ImageUtils;
@@ -229,6 +230,52 @@ public class FileServiceImpl implements FileService {
 
   public String upload(FileType fileType, MultipartFile multipartFile) {
     return upload(fileType, multipartFile, false);
+  }
+  
+  public String uploadApk(MultipartFile multipartFile,ApkVersion apkVersion) {
+
+	    String webPath = null;
+	    String fileUploadPath = "";
+	    String projectPath = "";
+	    if (multipartFile == null) {
+	      return null;
+	    }
+	      fileUploadPath = uploadPath + File.separator + "apk";
+	      projectPath = projectUploadPath + File.separator + "apk";
+	    try {
+	      String destPath = fileUploadPath + File.separator + multipartFile.getOriginalFilename();
+	      String backupPath = fileUploadPath + File.separator +"backup"+File.separator+apkVersion.getVersionName()+File.separator+ multipartFile.getOriginalFilename();
+	      webPath = projectPath + File.separator + multipartFile.getOriginalFilename();
+	      File tempFile =
+	          new File(System.getProperty("java.io.tmpdir") + "/upload_" + UUID.randomUUID() + ".tmp");
+	      if (!tempFile.getParentFile().exists()) {
+	        tempFile.getParentFile().mkdirs();
+	      }
+	      multipartFile.transferTo(tempFile);
+	        try {
+	          File destFile = new File(destPath);
+	          File backupFile = new File(backupPath);
+	          try {
+	        	  if(destFile.exists()){
+	        		FileUtils.moveFile(destFile, backupFile);
+	        		destFile.deleteOnExit();
+	        		destFile = new File(destPath);
+	  	            FileUtils.moveFile(tempFile, destFile);
+	        	  }else{
+	  	            FileUtils.moveFile(tempFile, destFile);
+	        	  }
+	          } catch (IOException e) {
+	            e.printStackTrace();
+	          }
+	        } finally {
+	          FileUtils.deleteQuietly(tempFile);
+	        }
+	      return webPath;
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    }
+	    return null;
+	  
   }
 
   /**

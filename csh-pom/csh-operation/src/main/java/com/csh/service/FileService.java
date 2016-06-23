@@ -3,6 +3,7 @@ package com.csh.service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.csh.beans.Setting.ImageType;
+import com.csh.entity.ApkVersion;
 import com.csh.entity.commonenum.CommonEnum.FileType;
 
 public interface FileService {
@@ -45,5 +46,11 @@ public interface FileService {
    * @return 访问URL
    */
   String upload(FileType fileType, MultipartFile multipartFile);
+  /**
+   * 上传APK文件
+   * @param multipartFile
+   * @return
+   */
+  String uploadApk(MultipartFile multipartFile,ApkVersion apkVersion);
 
 }
