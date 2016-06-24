@@ -143,6 +143,8 @@ public class TenantInfo extends BaseEntity {
    */
   private Distributor distributor;
 
+  private Set<TenantImage> tenantImages= new HashSet<TenantImage> ();
+  
   @OneToMany(mappedBy = "tenantInfo")
   public Set<CarService> getCarServices() {
     return carServices;
@@ -362,6 +364,17 @@ public class TenantInfo extends BaseEntity {
 
   public void setDistributor(Distributor distributor) {
     this.distributor = distributor;
+  }
+
+  @OneToMany(mappedBy="tenantInfo")
+  public Set<TenantImage> getTenantImages ()
+  {
+    return tenantImages;
+  }
+
+  public void setTenantImages (Set<TenantImage> tenantImages)
+  {
+    this.tenantImages = tenantImages;
   }
 
   
