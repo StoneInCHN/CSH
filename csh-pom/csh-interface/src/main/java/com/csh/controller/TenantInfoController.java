@@ -198,6 +198,10 @@ public class TenantInfoController extends MobileBaseController {
             "longitude"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, tenantInfo);
 
+    String[] imagesProperties = {"id", "image"};
+    List<Map<String, Object>> imageMaps =
+        FieldFilterUtils.filterCollectionMap(imagesProperties, tenantInfo.getTenantImages());
+    map.put("tenantImages", imageMaps);
     List<Map<String, Object>> service_map = new ArrayList<Map<String, Object>>();
     Set<String> categoryNames = new HashSet<String>();
     String[] service_properties =

@@ -176,7 +176,7 @@ public class EndUserController extends MobileBaseController {
       return response;
     }
     if (LogUtil.isDebugEnabled(EndUserController.class)) {
-      LogUtil.debug(EndUserController.class, "find",
+      LogUtil.debug(EndUserController.class, "login",
           "Fetching User from database with UserName: %s", userName);
     }
     EndUser loginUser = endUserService.findByUserName(userName);
@@ -344,7 +344,7 @@ public class EndUserController extends MobileBaseController {
       response.setDesc(Message.error("csh.mobile.invaliable").getContent());
     } else {
       if (LogUtil.isDebugEnabled(EndUserController.class)) {
-        LogUtil.debug(EndUserController.class, "find",
+        LogUtil.debug(EndUserController.class, "getSmsToken",
             "Fetching SmsToken from database with mobile no: %s", mobileNo);
       }
       EndUser endUser = endUserService.findByUserName(mobileNo);
