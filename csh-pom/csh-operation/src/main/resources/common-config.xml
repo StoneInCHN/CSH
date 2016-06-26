@@ -20,6 +20,7 @@
 	<setting name="smtpPassword" value="o123456" />
 	<!-- 允许上传文件后缀名 -->
 	<setting name="uploadFileExtension" value="apk" />
+	<setting name="apkName" value="csh.apk" />
 	<setting name="uploadImageExtension" value="png,jepg,gif,jpg" />
 	<!-- 短信平台URL -->
 	<setting name="ucpaasUrl" value="https://api.ucpaas.com" />

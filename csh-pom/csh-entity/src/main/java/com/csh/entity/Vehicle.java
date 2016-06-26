@@ -165,7 +165,10 @@ public class Vehicle extends BaseEntity {
    * 是否获取到红包
    */
   private Boolean isGetCoupon;
-
+  
+  private String tenantName;
+  private String distributorName;
+  
   @Transient
   public Boolean getIsGetCoupon() {
     return isGetCoupon;
@@ -431,4 +434,25 @@ public class Vehicle extends BaseEntity {
     this.initMileage = initMileage;
   }
 
+  @Transient
+	public String getTenantName() {
+		return tenantName;
+	}
+	
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+	
+	@Transient
+	public String getDistributorName() {
+		return distributorName;
+	}
+	
+	public void setDistributorName(String distributorName) {
+		this.distributorName = distributorName;
+	}
+
+  
+  
+  
 }

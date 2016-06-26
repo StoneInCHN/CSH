@@ -232,19 +232,18 @@ public class FileServiceImpl implements FileService {
     return upload(fileType, multipartFile, false);
   }
   
-  public String uploadApk(MultipartFile multipartFile,ApkVersion apkVersion) {
-
+  public String uploadApk(MultipartFile multipartFile) {
+	  Setting setting = SettingUtils.get();
+	  String apkName = setting.getApkName(); 
 	    String webPath = null;
-	    String fileUploadPath = "";
-	    String projectPath = "";
+	    String fileUploadPath = uploadPath + File.separator + "apk";;
+	    String projectPath = projectUploadPath + File.separator + "apk";;
 	    if (multipartFile == null) {
 	      return null;
 	    }
-	      fileUploadPath = uploadPath + File.separator + "apk";
-	      projectPath = projectUploadPath + File.separator + "apk";
 	    try {
 	      String destPath = fileUploadPath + File.separator + multipartFile.getOriginalFilename();
-	      String backupPath = fileUploadPath + File.separator +"backup"+File.separator+apkVersion.getVersionName()+File.separator+ multipartFile.getOriginalFilename();
+	      String downloadApkPath = fileUploadPath + File.separator + apkName;
 	      webPath = projectPath + File.separator + multipartFile.getOriginalFilename();
 	      File tempFile =
 	          new File(System.getProperty("java.io.tmpdir") + "/upload_" + UUID.randomUUID() + ".tmp");
@@ -252,31 +251,26 @@ public class FileServiceImpl implements FileService {
 	        tempFile.getParentFile().mkdirs();
 	      }
 	      multipartFile.transferTo(tempFile);
-	        try {
-	          File destFile = new File(destPath);
-	          File backupFile = new File(backupPath);
 	          try {
-	        	  if(destFile.exists()){
-	        		FileUtils.moveFile(destFile, backupFile);
-	        		destFile.deleteOnExit();
-	        		destFile = new File(destPath);
-	  	            FileUtils.moveFile(tempFile, destFile);
-	        	  }else{
-	  	            FileUtils.moveFile(tempFile, destFile);
-	        	  }
-	          } catch (IOException e) {
-	            e.printStackTrace();
+	            File destFile = new File(destPath);
+	            File downloadApkFile = new File(downloadApkPath);
+	            try {
+	              FileUtils.moveFile(tempFile, destFile);
+	              downloadApkFile.deleteOnExit();
+	              downloadApkFile = new File(downloadApkPath);
+	              FileUtils.copyFile(destFile, downloadApkFile);
+	            } catch (IOException e) {
+	              e.printStackTrace();
+	            }
+	          } finally {
+	            FileUtils.deleteQuietly(tempFile);
 	          }
-	        } finally {
-	          FileUtils.deleteQuietly(tempFile);
-	        }
 	      return webPath;
 	    } catch (Exception e) {
 	      e.printStackTrace();
 	    }
 	    return null;
-	  
-  }
+	  }
 
   /**
    * 添加上传任务

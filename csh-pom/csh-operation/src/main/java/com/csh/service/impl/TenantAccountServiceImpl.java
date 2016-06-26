@@ -129,6 +129,25 @@ public class TenantAccountServiceImpl extends BaseServiceImpl<TenantAccount, Lon
      tenantInfoDao.merge(tenantInfo);
   }
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void reSendEmail4InitAccount(TenantAccount tenantAccount) throws Exception{
+		 String password = CommonUtils.randomPwd();
+		 tenantAccount.setPassword(DigestUtils.md5Hex(password));
+		 TenantInfo tenantInfo = tenantInfoDao.find(tenantAccount.getTenantID());
+	    tenantAccountDao.merge(tenantAccount);
+	    // send password
+	     //短信
+	     UcpaasUtil.SendAccountBySms(tenantInfo.getContactPhone(), tenantInfo.getOrgCode(), tenantAccount.getUserName(), password);
+	    
+	     // 邮件
+	    String subject = SpringUtils.getMessage("csh.tenantAccount.password.subject",tenantInfo.getTenantName());
+	    String message =
+	        SpringUtils.getMessage("csh.tenantAccount.password.message",tenantInfo.getTenantName() ,tenantAccount.getUserName(),
+	            password,tenantInfo.getOrgCode(),UcpaasUtil.setting.getTenantLoginUrl());
+	    mailService.send(tenantInfo.getEmail(), subject, message);
+	}
+
 
 
 }

@@ -106,6 +106,12 @@
 														${message("csh.vehicle.device")}
 													</th>
 													<th>
+														${message("csh.vehicle.tenantName")}
+													</th>
+													<th>
+														${message("csh.vehicle.distributorName")}
+													</th>
+													<th>
 														<a href="javascript:;" class="sort" name="produceDate">${message("csh.vehicle.produceDate")}</a>
 													</th>
 													<th>
@@ -134,6 +140,12 @@
 													</td>
 													<td>
 														${vehicle.device.deviceNo}
+													</td>
+													<td>
+														${vehicle.device.tenantName}
+													</td>
+													<td>
+														${vehicle.device.distributorName}
 													</td>
 													<td>
 														[#if vehicle.produceDate??]

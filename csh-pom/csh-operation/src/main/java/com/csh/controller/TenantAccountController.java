@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.csh.beans.Message;
+import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Role;
 import com.csh.entity.TenantAccount;
@@ -28,6 +29,7 @@ import com.csh.service.RoleService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantInfoService;
 import com.csh.utils.CommonUtils;
+import com.csh.utils.SpringUtils;
 
 @RequestMapping("console/tenantAccount")
 @Controller("tenantAccountController")
@@ -134,4 +136,39 @@ public class TenantAccountController extends BaseController {
     }
   }
 
+  /**
+   * 重新发送账户信息
+   */
+  @RequestMapping(value = "/reSendEmail", method = RequestMethod.POST)
+  public @ResponseBody Message reSendEmail(Long[] ids) {
+	 int successNum = 0;
+  	int failedNum = 0;
+  	String successName="";
+  	String failedName="";
+    if (ids != null) {
+    	List<TenantAccount> tenantAccounts = tenantAccountService.findList(ids);
+    	for(TenantAccount tenantAccount :tenantAccounts){
+    		try {
+				tenantAccountService.reSendEmail4InitAccount(tenantAccount);
+				if(successNum == 0){
+					successName = tenantAccount.getUserName();
+				}else{
+					successName = successName +" ," +tenantAccount.getUserName();
+				}
+				successNum++;
+			} catch (Exception e) {
+				LogUtil.debug(TenantAccountController.class, "reSendEmail", "%s", "send account failed");
+				if(failedNum == 0){
+					failedName = tenantAccount.getUserName();
+				}else{
+					failedName = failedName +" ," +tenantAccount.getUserName();
+				}
+				failedNum++;
+			}
+    	}
+    }
+    return Message.success(SpringUtils.getMessage("csh.tenantAccount.reSendEmail.result", successNum,successName,failedNum,failedName));
+  }
+  
+  
 }

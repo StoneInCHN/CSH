@@ -196,6 +196,11 @@ public class Setting implements Serializable {
    */
   private String newsDetailsUrl;
   
+  /**
+   * 下载时apk的名字
+   */
+  private String apkName;
+  
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
   }
@@ -497,5 +502,13 @@ public Integer getSmsCodeTimeOut() {
   public void setNewsDetailsUrl(String newsDetailsUrl) {
     this.newsDetailsUrl = newsDetailsUrl;
   }
+
+public String getApkName() {
+	return apkName;
+}
+
+public void setApkName(String apkName) {
+	this.apkName = apkName;
+}
   
 }

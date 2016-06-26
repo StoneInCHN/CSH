@@ -6,6 +6,7 @@ $().ready( function() {
 	var $addButton = $("#addButton");
 	var $deleteButton = $("#deleteButton");
 	var $deleteButtonFirst = $("#deleteButtonFirst");
+	var $reSendEmailButton = $("#reSendEmailButton");
 	var $refreshButton = $("#refreshButton");
 	var $refreshButtonFirst =$("#refreshButtonFirst");
 	var $pageSizeSelect = $("#pageSizeSelect");
@@ -33,6 +34,34 @@ $().ready( function() {
 	//添加
 	$addButton.click(function(){
 		location.href="add.jhtml";
+	});
+	
+	// 删除
+	$reSendEmailButton.click( function() {
+		var $this = $(this);
+		if ($this.hasClass("disabled")) {
+			return false;
+		}
+		var $checkedIds = $("#listTable input[name='ids']:enabled:checked");
+		$.dialog({
+			type: "warn",
+			content: message("确实要重新发送账户信息吗"),
+			ok: message("admin.dialog.ok"),
+			cancel: message("admin.dialog.cancel"),
+			onOk: function() {
+				$.ajax({
+					url: "reSendEmail.jhtml",
+					type: "POST",
+					data: $checkedIds.serialize(),
+					dataType: "json",
+					cache: false,
+					success: function(res) {
+						//alert(res.content);
+						alert("操作成功");
+					}
+				});
+			}
+		});
 	});
 	
 	// 删除
@@ -73,7 +102,6 @@ $().ready( function() {
 			}
 		});
 	});
-	
 	
 	
 	// 删除
@@ -221,17 +249,20 @@ $().ready( function() {
 				$deleteButtonFirst.removeClass("disabled");
 				$deviceProvide.removeClass("disabled");
 				$promptButton.removeClass("disabled");
+				$reSendEmailButton.removeClass("disabled");
 				$contentRow.addClass("selected");
 			} else {
 				$deleteButton.addClass("disabled");
 				$deleteButtonFirst.addClass("disabled");
 				$deviceProvide.addClass("disabled");
+				$reSendEmailButton.addClass("disabled");
 			}
 		} else {
 			$enabledIds.prop("checked", false);
 			$deleteButton.addClass("disabled");
 			$deviceProvide.addClass("disabled");
 			$promptButton.addClass("disabled");
+			$reSendEmailButton.addClass("disabled");
 			$contentRow.removeClass("selected");
 		}
 	});
@@ -245,6 +276,7 @@ $().ready( function() {
 			$deleteButtonFirst.removeClass("disabled");
 			$deviceProvide.removeClass("disabled");
 			$promptButton.removeClass("disabled");
+			$reSendEmailButton.removeClass("disabled");
 		
 		} else {
 			$this.closest("tr").removeClass("selected");
@@ -253,11 +285,13 @@ $().ready( function() {
 				$deleteButtonFirst.removeClass("disabled");
 				$deviceProvide.removeClass("disabled");
 				$promptButton.removeClass("disabled");
+				$reSendEmailButton.removeClass("disabled");
 			} else {
 				$deleteButton.addClass("disabled");
 				$deleteButtonFirst.addClass("disabled");
 				$deviceProvide.addClass("disabled");
 				$promptButton.addClass("disabled");
+				$reSendEmailButton.addClass("disabled");
 			}
 		}
 	});

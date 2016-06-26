@@ -12,4 +12,7 @@ public interface TenantAccountService extends BaseService<TenantAccount,Long>{
    * @return 用户名是否存在
    */
   boolean usernameExists(String username);
+  
+  void reSendEmail4InitAccount(TenantAccount tenantAccount) throws Exception;
+  
 }

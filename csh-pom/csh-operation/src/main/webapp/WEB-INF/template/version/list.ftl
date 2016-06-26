@@ -103,9 +103,11 @@
 													<th>
 														<a href="javascript:;" class="sort" name="createDate">${message("csh.common.createDate")}</a>
 													</th>
+													<!--
 													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
+													-->
 												</tr>
 											</thead>
 											<tbody>
@@ -131,9 +133,11 @@
 													<td>
 														<span title="${apkersion.createDate?string("yyyy-MM-dd HH:mm:ss")}">${apkersion.createDate}</span>
 													</td>
+													<!--
 													<td>
 														<a href="edit.jhtml?id=${apkersion.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 													</td>
+													-->
 												</tr>
 											</tbody>
 											[/#list]

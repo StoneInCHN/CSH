@@ -51,6 +51,6 @@ public interface FileService {
    * @param multipartFile
    * @return
    */
-  String uploadApk(MultipartFile multipartFile,ApkVersion apkVersion);
+  String uploadApk(MultipartFile multipartFile);
 
 }

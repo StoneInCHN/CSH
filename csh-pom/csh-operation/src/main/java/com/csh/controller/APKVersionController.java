@@ -67,7 +67,7 @@ public class APKVersionController extends BaseController {
       if (!fileService.isValid(FileType.file, apkVersion.getFile())) {
         return ERROR_VIEW;
       } else {
-        String apkPath = fileService.uploadApk(apkVersion.getFile(),apkVersionService.getTheLastVersion());
+        String apkPath = fileService.uploadApk(apkVersion.getFile());
         apkVersion.setApkPath(apkPath);
         apkVersionService.save(apkVersion);
         return "redirect:list.jhtml";
