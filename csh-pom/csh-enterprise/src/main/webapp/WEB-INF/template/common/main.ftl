@@ -103,6 +103,9 @@
     		[@shiro.hasPermission name="tenantAccount"]
     		<li><a href="#" data-url="${base}/console/tenantAccount/tenantAccount.jhtml">${message("csh.system.tenantAccount")}</a></li>
     		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="tenantInfo"]
+    		<li><a href="#" data-url="${base}/console/tenantInfo/tenantInfo.jhtml">${message("csh.system.tenantImage")}</a></li>
+    		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="role"]
     		<li><a href="#" data-url="${base}/console/role/role.jhtml">${message("csh.system.tenantAccount.role")}</a></li>
     		[/@shiro.hasPermission]
@@ -401,6 +404,7 @@
 	
 	<script src="${base}/resources/js/jquery.bootstrap.newsbox.min.js" type="text/javascript"></script>
 	<script src="${base}/resources/js/fileUploadCommon.js"></script>
+	<script src="${base}/resources/js/multiplefileUpload.js"></script>
     <script type="text/javascript" src="${base}/resources/js/jquery.easing.1.3.js"></script>
 	<script>
 		var BASE_URL = '${base}/resources' ;

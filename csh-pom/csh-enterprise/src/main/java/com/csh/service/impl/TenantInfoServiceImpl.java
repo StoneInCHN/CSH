@@ -8,14 +8,18 @@ import java.util.concurrent.Executor;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.csh.dao.TenantInfoDao;
 import com.csh.entity.ConfigMeta;
 import com.csh.entity.EndUser;
+import com.csh.entity.TenantImage;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.Vehicle;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.TenantAccountService;
+import com.csh.service.TenantImageService;
 import com.csh.service.TenantInfoService;
 import com.csh.service.VehicleService;
 
@@ -40,6 +44,10 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
 
   @Resource(name = "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
+  
+  @Resource(name = "tenantImageServiceImpl")
+  private TenantImageService tenantImageService;
+  
   @Resource(name = "vehicleServiceImpl")
   private VehicleService vehicleService;
   
@@ -87,5 +95,20 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
       }
     }
     return endUserList;
+  }
+
+  @Override
+  @Transactional(propagation=Propagation.REQUIRED)
+  public void saveTenantInfo (TenantInfo tenantInfo, String[] tenantImageList)
+  {
+    this.update (tenantInfo, "tenantName","ownerName","address","createDate","orgCode","accountStatus",
+        "versionConfig","area","praiseRate","isHaveAccount","distributor","qrImage");
+    for (String image : tenantImageList)
+    {
+      TenantImage tenantImage = new TenantImage ();
+      tenantImage.setImage (image);
+      tenantImage.setTenantInfo (tenantInfo);
+      tenantImageService.save (tenantImage);
+    }
   }
 }

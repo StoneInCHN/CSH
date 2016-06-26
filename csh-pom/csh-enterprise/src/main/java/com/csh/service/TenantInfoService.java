@@ -34,4 +34,6 @@ public interface TenantInfoService extends BaseService<TenantInfo, Long> {
    * 查询租户的所有终端用户
    */
   List<EndUser> findEndUser();
+
+  public void saveTenantInfo (TenantInfo tenantInfo, String[] imageList);
 }

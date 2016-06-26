@@ -158,6 +158,10 @@ public class FileServiceImpl implements FileService {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productBrandImage";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productBrandImage";
       }
+      else if (imageType == ImageType.TENANTIMAGE) {
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "tenantImage";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "tenantImage";
+      }
       String sourcePath =
           imgUploadPath + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
