@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -367,6 +368,7 @@ public class TenantInfo extends BaseEntity {
   }
 
   @OneToMany(mappedBy="tenantInfo")
+  @OrderBy("createDate asc")
   public Set<TenantImage> getTenantImages ()
   {
     return tenantImages;

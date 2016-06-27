@@ -401,7 +401,7 @@
 	<script type="text/javascript" src="${base}/resources/js/kindeditor/kindeditor-min.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/multiselect.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/prettify.min.js"></script>
-	
+	<script type="text/javascript" src="${base}/resources/js/jquery.imagePreview.1.0.js"></script>
 	<script src="${base}/resources/js/jquery.bootstrap.newsbox.min.js" type="text/javascript"></script>
 	<script src="${base}/resources/js/fileUploadCommon.js"></script>
 	<script src="${base}/resources/js/multiplefileUpload.js"></script>

@@ -35,5 +35,5 @@ public interface TenantInfoService extends BaseService<TenantInfo, Long> {
    */
   List<EndUser> findEndUser();
 
-  public void saveTenantInfo (TenantInfo tenantInfo, String[] imageList);
+  public void saveTenantInfo (TenantInfo tenantInfo, String[] imageList, Long[] deleteImageIdList);
 }

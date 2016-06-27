@@ -99,7 +99,7 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
 
   @Override
   @Transactional(propagation=Propagation.REQUIRED)
-  public void saveTenantInfo (TenantInfo tenantInfo, String[] tenantImageList)
+  public void saveTenantInfo (TenantInfo tenantInfo, String[] tenantImageList,Long[] deleteImageIdList)
   {
     this.update (tenantInfo, "tenantName","ownerName","address","createDate","orgCode","accountStatus",
         "versionConfig","area","praiseRate","isHaveAccount","distributor","qrImage");
@@ -109,6 +109,10 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
       tenantImage.setImage (image);
       tenantImage.setTenantInfo (tenantInfo);
       tenantImageService.save (tenantImage);
+    }
+    if (deleteImageIdList!= null && deleteImageIdList.length>0)
+    {
+      tenantImageService.delete (deleteImageIdList);
     }
   }
 }

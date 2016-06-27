@@ -72,7 +72,6 @@ function multipleUpload(options) {
 
     // 当有文件添加进来时执行，负责view的创建
     function addFile( file ) {
-    	debugger;
         var $li = $( '<li id="' + file.id + '">' +
                 '<p class="title">' + file.name + '</p>' +
                 '<p class="imgWrap"></p>'+
@@ -271,7 +270,6 @@ function multipleUpload(options) {
     }
 
     function setState( val ) {
-    	debugger;
         var file, stats;
 
         if ( val === state ) {
@@ -404,9 +402,13 @@ function multipleUpload(options) {
     });
 
     uploader.onError = function( code ) {
-        alert( 'Eroor: ' + code );
+		if(code=="Q_EXCEED_NUM_LIMIT"){
+				alert("Error:超出最大张数");
+		}
+		else if(code=="F_DUPLICATE"){
+			alert("Error:文件重复");
+		}
     };
-
     $upload.on('upload', function() {
         if ( $(this).hasClass( 'disabled' ) ) {//上传图片时候，防止重复提交
             return false;

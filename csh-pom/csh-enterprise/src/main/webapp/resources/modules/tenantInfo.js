@@ -1,7 +1,9 @@
+var deleteImageIdList = new Array();
 var tenantInfo_manager_tool = {
 	edit:function(){
 		var validate = $('#tenantInfoConfig_form').form('validate');
 		var $photoLi = $("#tenantImageUploader-edit ul.filelist li");
+		$("#deleteImageIdList").val(deleteImageIdList.join(","));
 		if(validate){
 			if($photoLi.length >0){
 				$("#tenantImageUploader-edit .uploadBtn").trigger("upload");
@@ -20,6 +22,9 @@ var tenantInfo_manager_tool = {
 						if(response == "success"){
 							showSuccessMsg(result.content);
 							$("#editTenandImage_form").form("reset");
+							$("#tenantImageUploader-edit .uploadBtn").trigger("clearFiles");//清空上次所选图片文件
+							var tab = $('#manager-tabs').tabs('getSelected');  // 获取选择的面板
+							tab.panel('refresh');
 						}else{
 							alertErrorMsg();
 						}
@@ -43,6 +48,7 @@ var tenantInfo_manager_tool = {
 				$.messager.progress('close');
 				showSuccessMsg(result.content);
 				$("#tenantInfoConfig_form").form("reset");
+				$("#tenantImageUploader-edit .uploadBtn").trigger("clearFiles");//清空上次所选图片文件
 				var tab = $('#manager-tabs').tabs('getSelected');  // 获取选择的面板
 				tab.panel('refresh');
 			},
@@ -53,27 +59,29 @@ var tenantInfo_manager_tool = {
 		});
 	},
 	deleteTenantImage:function(id){
-		$.ajax({
-			url:"../tenantInfo/deleteImage.jhtml?id="+id,
-			type:"post",
-			beforeSend:function(){
-				$.messager.progress({
-					text:message("csh.common.saving")
-				});
-			},
-			success:function(result,response,status){
-				$.messager.progress('close');
-				showSuccessMsg(result.content);
-				$("#tenantInfoConfig_form").form("reset");
-				var tab = $('#manager-tabs').tabs('getSelected');  // 获取选择的面板
-				tab.panel('refresh');
-
-			},
-			error:function (XMLHttpRequest, textStatus, errorThrown) {
-				$.messager.progress('close');
-				alertErrorMsg();
-			}
-		});
+		$(".tenantImage_edit"+id).remove();
+		deleteImageIdList.push(id);
+//		$.ajax({
+//			url:"../tenantInfo/deleteImage.jhtml?id="+id,
+//			type:"post",
+//			beforeSend:function(){
+//				$.messager.progress({
+//					text:message("csh.common.saving")
+//				});
+//			},
+//			success:function(result,response,status){
+//				$.messager.progress('close');
+//				showSuccessMsg(result.content);
+//				$("#tenantInfoConfig_form").form("reset");
+//				var tab = $('#manager-tabs').tabs('getSelected');  // 获取选择的面板
+//				tab.panel('refresh');
+//
+//			},
+//			error:function (XMLHttpRequest, textStatus, errorThrown) {
+//				$.messager.progress('close');
+//				alertErrorMsg();
+//			}
+//		});
 	},
 };
 $(function(){
@@ -104,13 +112,13 @@ $(function(){
 	             swf: BASE_URL + '/js/Uploader.swf',
 	             disableGlobalDnd: true,
 	             server: '../file/uploadPhoto.jhtml',
-	             fileNumLimit: 10,
+	             fileNumLimit: 4-$('img[class="preview"]').length,
 	             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
 	             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
 	             //图片裁剪
 	             compress:{
-	            	 width: 110,
-	            	 height: 110,
+	            	 width: 300,
+	            	 height: 300,
 	            	 // 图片质量，只有type为`image/jpeg`的时候才有效。
 	            	 quality: 90,
 	            	 // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
@@ -137,6 +145,13 @@ $(function(){
  				photoUrlList.push(response.content);
  			}
  	};
- 	multipleUpload(options);
+ 	if($('img[class="preview"]').length>0 && $('img[class="preview"]').length<4){
+ 		options.createOption.pick.innerHTML="继续添加";
+ 		multipleUpload(options);
+ 	}else if($('img[class="preview"]').length==0 && $('img[class="preview"]').length<4){
+ 		options.createOption.pick.innerHTML="选择文件";
+ 		multipleUpload(options);
+ 	}
+ 	
 // 	singleUpload(options);
 });

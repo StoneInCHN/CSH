@@ -50,10 +50,10 @@ public class TenantInfoController extends BaseController
     return "tenantInfo/tenantInfo";
   }
   @RequestMapping (value = "/edit", method = RequestMethod.POST)
-  public @ResponseBody Message tenantInfo (ModelMap model,TenantInfo tenantInfo,String[] tenantImageList,String businessTimeStart,String businessTimeEnd)
+  public @ResponseBody Message tenantInfo (ModelMap model,TenantInfo tenantInfo,String[] tenantImageList,Long[] deleteImageIdList,String businessTimeStart,String businessTimeEnd)
   {
     tenantInfo.setBusinessTime (businessTimeStart+"-"+businessTimeEnd);
-    tenantInfoService.saveTenantInfo(tenantInfo,tenantImageList);
+    tenantInfoService.saveTenantInfo(tenantInfo,tenantImageList,deleteImageIdList);
     return SUCCESS_MESSAGE;
   }
   @RequestMapping (value = "/deleteImage", method = RequestMethod.POST)

@@ -491,3 +491,9 @@
 .multiple-uploader .filelist div.file-panel span.cancel:hover {
     background-position: -48px 0;
 }
+#tenantImageUploader-edit ui.imgWrap{
+	list-style-type: none;
+}
+#tenantImageUploader-edit ui.imgWrap >li{
+	float:left;
+}

@@ -1,3 +1,4 @@
+
 <script src="${base}/resources/js/common.js"></script>
 <script src="${base}/resources/modules/tenantInfo.js"></script>
 <div class="easyui-layout" data-options="fit:true">
@@ -13,6 +14,7 @@
 			<table  class="table table-striped"  border="0">
 				<input type="hidden" value="${tenantInfo.id}" name="id"/>
 				<input type="hidden" id="tenantImageList_input" name="tenantImageList"/>
+				<input type="hidden" id="deleteImageIdList" name="deleteImageIdList"/>
 		 		<tr>
 					<th>
 						${message("csh.tenantInfo.tenantName")}:
@@ -151,12 +153,17 @@
 							    <div  class="queueList">
 							       
 							        <div class="show-img">
-							        <p class="imgWrap img-thumbnail">
-							        [#list tenantImageList as tenantImage]
-										    <img src="${tenantImage.image}" style ="width:110px;hight:110 px">
-										    <button type="button" onclick="tenantInfo_manager_tool.deleteTenantImage(${tenantImage.id})" class="btn btn-primary">删除图片</button>
-									[/#list]
-									</p>
+							        <ul class="imgWrap img-thumbnail" style="list-style-type: none;">
+							        	[#list tenantImageList as tenantImage]
+							        	<li class="tenantImage_edit${tenantImage.id}"  style="float:left;height: 200px;width: 130px;">
+								        	<a class="preview" href="${tenantImage.image}" style ="width:300px;hight:300 px">
+											    <img class="preview" src="${tenantImage.image}" style ="width:110px;hight:110 px">
+											</a>
+											<button type="button" onclick="tenantInfo_manager_tool.deleteTenantImage(${tenantImage.id})" class="btn btn-primary" style="background-color:#00A2D4;border-color:#fff;margin: 0 15px;
+  width: 100px;">删除图片</button>
+										</li>
+										[/#list]
+									</ul>
 						        	</div>
 						        	 <div  class="placeholder">
 							        	<div id="tenantImageFilePicker-edit" ></div>
@@ -175,6 +182,16 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+$(function(){
+	$("a.preview").preview();	  
+});
+</script>
+<style type="text/css">
+html{overflow-y:scroll;}
+a.preview,a.preview:hover{text-decoration:none;}
+a.preview img{margin:20px 10px;}
+</style>
 
 
 
