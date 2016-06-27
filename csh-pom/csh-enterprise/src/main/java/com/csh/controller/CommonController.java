@@ -272,6 +272,7 @@ public String main(ModelMap model,  HttpSession session) {
         // 禁止图像缓存。
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Content-Disposition","attachment; filename=qr.jpg");  
         response.setDateHeader("Expires", 0);
         response.setContentType("image/jpeg");
         // 将图像输出到Servlet输出流中。

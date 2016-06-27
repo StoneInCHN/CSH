@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
 
 import com.csh.common.log.LogUtil;
 import com.google.zxing.BarcodeFormat;
@@ -74,5 +76,22 @@ public class QRCodeGenerator {
 		LogUtil.debug (QRCodeGenerator.class,"generateQrImage","\n\nYou have successfully created QR Code.");
 		return bytes;
 	}
-	
+	public static void main (String[] args)
+  {
+//	  byte[] bytes = generateQrImage ("http://carlife.chcws.com:8080/upload/apk/csh.apk");
+	  byte[] bytes = generateQrImage ("http://carlife.chcws.com:8080/");
+	  FileImageOutputStream output;
+    try
+    {
+      output = new FileImageOutputStream(new File("E:/tmp/qr2.jpg"));
+      output.write(bytes);
+      output.flush();
+      output.close();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+	  
+  }
 }

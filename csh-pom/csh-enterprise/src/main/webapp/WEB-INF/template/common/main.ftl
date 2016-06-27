@@ -341,7 +341,9 @@
 								
 								<button type="button" id="generateQrcodeButton" onclick="generateQrcode()" class="btn btn-primary">生成二维码</button>
 							[#else]
-								<img id="qrCodeImage" style="width:120px;height:120px" src="${base}/console/common/showQrCode.jhtml" title="扫码加入"/>
+								<a href='${base}/console/common/showQrCode.jhtml'>
+									<img id="qrCodeImage" style="width:120px;height:120px" src="${base}/console/common/showQrCode.jhtml" title="扫码加入"/>
+								</a>
 							[/#if]	
 							</div>
 						
