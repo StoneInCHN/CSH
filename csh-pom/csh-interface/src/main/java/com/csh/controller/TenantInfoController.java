@@ -100,7 +100,7 @@ public class TenantInfoController extends MobileBaseController {
     }
 
     if (LogUtil.isDebugEnabled(TenantInfoController.class)) {
-      LogUtil.debug(TenantInfoController.class, "find",
+      LogUtil.debug(TenantInfoController.class, "getTenantList",
           "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s",
           endUser.getUserName(), endUser.getId(), longitude, latitude);
     }
