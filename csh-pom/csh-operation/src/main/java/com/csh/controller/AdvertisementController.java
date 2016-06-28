@@ -17,6 +17,8 @@ import com.csh.beans.Setting;
 import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Advertisement;
+import com.csh.entity.ResolutionConfig;
+import com.csh.entity.commonenum.CommonEnum.AdType;
 import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
@@ -24,6 +26,7 @@ import com.csh.framework.filter.Filter;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdvertisementService;
 import com.csh.service.FileService;
+import com.csh.service.ResolutionConfigService;
 import com.csh.utils.SettingUtils;
 import com.csh.utils.SpringUtils;
 
@@ -37,12 +40,18 @@ public class AdvertisementController extends BaseController{
   @Resource(name = "fileServiceImpl")
   private FileService fileService;
   
+  @Resource(name = "resolutionConfigServiceImpl")
+  private ResolutionConfigService resolutionConfigService;
+  
+  
   
   /**
    * 添加
    */
   @RequestMapping(value = "/add", method = RequestMethod.GET)
-  public String add() {
+  public String add(ModelMap model) {
+    List<ResolutionConfig> resConfs = resolutionConfigService.findAll();
+    model.addAttribute("resConfs", resConfs);
     return "/advertisement/add";
   }
 
@@ -50,7 +59,7 @@ public class AdvertisementController extends BaseController{
    * 保存
    */
   @RequestMapping(value = "/save", method = RequestMethod.POST)
-  public@ResponseBody Message save(Advertisement advertisement) {
+  public@ResponseBody Message save(Advertisement advertisement, Long resolutionConfigId) {
     if (!isValid(advertisement)) {
       return ERROR_MESSAGE;
     }
@@ -67,6 +76,14 @@ public class AdvertisementController extends BaseController{
 
     advertisement.setAdvImageUrl(advImageUrl);
     advertisement.setSystemType(SystemType.OPERATION);
+    if (advertisement.getAdType() == AdType.NORMAL_AD) {
+      advertisement.setResolutionConfig(null);
+    }else if (advertisement.getAdType() == AdType.STARTING_AD){
+      if (resolutionConfigId != null) {
+        ResolutionConfig resConf = resolutionConfigService.find(resolutionConfigId);
+        advertisement.setResolutionConfig(resConf);
+      }
+    }
     advertisementService.save(advertisement);
     return Message.success("csh.advertisement.image.file.upload.success");
   }
@@ -77,6 +94,8 @@ public class AdvertisementController extends BaseController{
   @RequestMapping(value = "/edit", method = RequestMethod.GET)
   public String edit(Long id, ModelMap model) {
     model.addAttribute("advertisement", advertisementService.find(id));
+    List<ResolutionConfig> resConfs = resolutionConfigService.findAll();
+    model.addAttribute("resConfs", resConfs);
     return  "/advertisement/edit";
   }
 
@@ -84,7 +103,7 @@ public class AdvertisementController extends BaseController{
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update(Advertisement advertisement) {
+  public @ResponseBody Message update(Advertisement advertisement, Long resolutionConfigId) {
     if (!isValid(advertisement)) {
       return ERROR_MESSAGE;
     }
@@ -100,8 +119,15 @@ public class AdvertisementController extends BaseController{
         return Message.error(SpringUtils.getMessage("csh.advertisement.image.file.type.error"));
       }
     }
-   
-    advertisementService.update(advertisement,"tenantId","createDate","systemType");
+    if (advertisement.getAdType() == AdType.NORMAL_AD) {
+      advertisement.setResolutionConfig(null);
+    }else if (advertisement.getAdType() == AdType.STARTING_AD){
+      if (resolutionConfigId != null) {
+        ResolutionConfig resConf = resolutionConfigService.find(resolutionConfigId);
+        advertisement.setResolutionConfig(resConf);
+      }
+    }
+    advertisementService.update(advertisement,"tenantId","createDate","systemType","adType");
     return Message.success("csh.advertisement.update.success");
   }
 

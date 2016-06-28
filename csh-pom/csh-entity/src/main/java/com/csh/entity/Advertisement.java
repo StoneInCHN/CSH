@@ -2,6 +2,7 @@ package com.csh.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -14,6 +15,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.csh.entity.commonenum.CommonEnum.AdType;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.lucene.LowCaseBridgeImpl;
@@ -69,7 +71,15 @@ public class Advertisement extends OrderEntity {
    * 所属系统
    */
   private SystemType systemType;
-
+  /**
+   * 广告类型
+   */
+  private AdType adType;
+  /**
+   * 广告分辨率
+   */
+  private ResolutionConfig resolutionConfig;
+  
 
   @Index(name = "index_ad_tenantid")
   @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
@@ -148,6 +158,23 @@ public class Advertisement extends OrderEntity {
 
   public void setSystemType(SystemType systemType) {
     this.systemType = systemType;
+  }
+
+  public AdType getAdType() {
+    return adType;
+  }
+
+  public void setAdType(AdType adType) {
+    this.adType = adType;
+  }
+  
+  @ManyToOne
+  public ResolutionConfig getResolutionConfig() {
+    return resolutionConfig;
+  }
+
+  public void setResolutionConfig(ResolutionConfig resolutionConfig) {
+    this.resolutionConfig = resolutionConfig;
   }
 
   

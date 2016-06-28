@@ -34,7 +34,16 @@ $().ready(function() {
 			},
 			status: {
 				required: true
+			},
+			adType: {
+				required: true
 			}
+			/*
+			,
+			resolutionConfigId: {
+				required: true
+			}
+			*/
 		},
 		submitHandler:function(form){
 			$inputForm.ajaxSubmit({
@@ -60,6 +69,15 @@ $().ready(function() {
 			});
 		}
 			
+	});
+	$('#resConf').hide();
+	$('#adType').change(function(){ 
+		var selectedType = $(this).children('option:selected').val(); 
+		if(selectedType == 'STARTING_AD'){
+			$('#resConf').show();
+		}else if(selectedType == 'NORMAL_AD'){
+			$('#resConf').hide();
+		}
 	});
 	
 });
@@ -90,6 +108,31 @@ $().ready(function() {
                   <div class="padd">
                      <form id="inputForm" action="save.jhtml" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
                      	<table class="input tabContent">
+                     		<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.advertisement.adType")}:
+								</th>
+								<td>
+									<select name="adType" id="adType">
+										<option value="">${message("csh.advertisement.adType.select")}</option>
+										<option value="NORMAL_AD">${message("csh.advertisement.adType.NORMAL_AD")}</option>
+										<option value="STARTING_AD">${message("csh.advertisement.adType.STARTING_AD")}</option>
+									</select>
+								</td>
+							</tr>
+							<tr id="resConf">
+								<th>
+									<span class="requiredField">*</span>${message("csh.advertisement.resolution")}:
+								</th>
+								<td>
+									<select name="resolutionConfigId" id="resolutionConfigId">
+										<option value="">${message("csh.advertisement.resolution.select")}</option>
+										[#list resConfs as resConf]
+    			 						<option value="${resConf.id}">${resConf.name}</option>
+    			 						[/#list]
+									</select>
+								</td>
+							</tr>
 							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.advertisement.advName")}:

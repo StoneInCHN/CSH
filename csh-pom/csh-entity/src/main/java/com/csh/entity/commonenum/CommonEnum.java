@@ -681,7 +681,16 @@ public class CommonEnum {
     DEVICE_PRICE
   }
 
-
+  public enum AdType{
+    /**
+     * 普通广告
+     */
+    NORMAL_AD,
+    /**
+     * App首页启功广告
+     */
+    STARTING_AD
+  }
   /**
    * 订单状态
    */

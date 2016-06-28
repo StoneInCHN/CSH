@@ -132,6 +132,9 @@
 														<a href="javascript:;" class="sort" name="status">${message("csh.advertisement.status")}</a>
 													</th>
 													<th>
+														<a href="javascript:;" class="sort" name="adType">${message("csh.advertisement.adType")}</a>
+													</th>
+													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
 												</tr>
@@ -164,6 +167,9 @@
 													</td>
 													<td>
 														${message("csh.advertisement.status."+advertisement.status)}
+													</td>
+													<td>
+														${message("csh.advertisement.adType."+advertisement.adType)}
 													</td>
 													<td>
 														<a href="edit.jhtml?id=${advertisement.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
