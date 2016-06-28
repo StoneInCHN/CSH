@@ -681,4 +681,100 @@ public class CommonEnum {
     DEVICE_PRICE
   }
 
+
+  /**
+   * 订单状态
+   */
+  public enum OrderStatus {
+
+      /** 未确认 */
+      unconfirmed,
+
+      /** 已确认 */
+      confirmed,
+
+      /** 已完成 */
+      completed,
+
+      /** 已取消 */
+      cancelled
+  }
+
+  /**
+   * 支付状态
+   */
+  public enum PaymentStatus {
+
+      /** 未支付 */
+      unpaid,
+
+      /** 部分支付 */
+      partialPayment,
+
+      /** 已支付 */
+      paid,
+
+      /** 部分退款 */
+      partialRefunds,
+
+      /** 已退款 */
+      refunded
+  }
+
+  /**
+   * 配送状态
+   */
+  public enum ShippingStatus {
+
+      /** 未发货 */
+      unshipped,
+
+      /** 部分发货 */
+      partialShipment,
+
+      /** 已发货 */
+      shipped,
+
+      /** 部分退货 */
+      partialReturns,
+
+      /** 已退货 */
+      returned
+  }
+  
+  /**
+   * 订单日志类型
+   */
+  public enum Type {
+
+      /** 订单创建 */
+      create,
+
+      /** 订单修改 */
+      modify,
+
+      /** 订单确认 */
+      confirm,
+
+      /** 订单支付 */
+      payment,
+
+      /** 订单退款 */
+      refunds,
+
+      /** 订单发货 */
+      shipping,
+
+      /** 订单退货 */
+      returns,
+
+      /** 订单完成 */
+      complete,
+
+      /** 订单取消 */
+      cancel,
+
+      /** 其它 */
+      other
+  };
 }

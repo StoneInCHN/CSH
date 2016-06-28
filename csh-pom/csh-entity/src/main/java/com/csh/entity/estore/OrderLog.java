@@ -14,6 +14,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.Type;
 
 /**
  * Entity - 订单日志
@@ -26,41 +27,7 @@ public class OrderLog extends BaseEntity {
 
 	private static final long serialVersionUID = -2704154761295319939L;
 
-	/**
-	 * 类型
-	 */
-	public enum Type {
 
-		/** 订单创建 */
-		create,
-
-		/** 订单修改 */
-		modify,
-
-		/** 订单确认 */
-		confirm,
-
-		/** 订单支付 */
-		payment,
-
-		/** 订单退款 */
-		refunds,
-
-		/** 订单发货 */
-		shipping,
-
-		/** 订单退货 */
-		returns,
-
-		/** 订单完成 */
-		complete,
-
-		/** 订单取消 */
-		cancel,
-
-		/** 其它 */
-		other
-	};
 
 	/** 类型 */
 	private Type type;
