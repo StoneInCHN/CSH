@@ -128,7 +128,7 @@ $().ready(function() {
 									<select name="resolutionConfigId" id="resolutionConfigId">
 										<option value="">${message("csh.advertisement.resolution.select")}</option>
 										[#list resConfs as resConf]
-    			 						<option value="${resConf.id}">${resConf.name}</option>
+    			 						<option value="${resConf.id}">${resConf.name} (${resConf.piWidth } * ${resConf.piHeight })</option>
     			 						[/#list]
 									</select>
 								</td>
