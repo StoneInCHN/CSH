@@ -41,6 +41,7 @@ $().ready(function() {
 			*/
 		},
 		submitHandler:function(form){
+			  $('#adType').prop("disabled", false);
 			$inputForm.ajaxSubmit({
 			      	dataType:"json",
 			       	beforeSubmit:function(){

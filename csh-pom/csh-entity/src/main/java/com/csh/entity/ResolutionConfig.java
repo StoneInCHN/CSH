@@ -1,6 +1,10 @@
 package com.csh.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -32,6 +36,8 @@ public class ResolutionConfig extends BaseEntity {
    * 备注
    */
   private String remark;
+  
+  private Set<Advertisement> ads;
 
   public String getName() {
     return name;
@@ -63,6 +69,15 @@ public class ResolutionConfig extends BaseEntity {
 
   public void setRemark(String remark) {
     this.remark = remark;
+  }
+  
+  @OneToMany(mappedBy = "resolutionConfig", fetch = FetchType.LAZY)
+  public Set<Advertisement> getAds() {
+    return ads;
+  }
+
+  public void setAds(Set<Advertisement> ads) {
+    this.ads = ads;
   }
   
   
