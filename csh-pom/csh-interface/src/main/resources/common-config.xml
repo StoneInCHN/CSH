@@ -87,5 +87,10 @@
 		<setting name="bdCarMcode" value="B5:86:45:55:F7:63:3F:C4:7F:24:3D:55:17:D7:00:83:7E:72:89:A2;com.cheweishi.android"/>
 		<setting name="bdNumber" value="15"/>
 		<setting name="bdPage" value="0"/>
+		
+		<!-- 兑吧-->
+		<setting name="duibaAppKey" value="2Q3avyPZ3krtR9yTjphyfhoGabvP"/>
+		<setting name="duibaAppSecret" value="gFxZ77QXSSDqBNgQZEFbN6VpLEA"/>
+		<setting name="duibaLoginUrl" value="http://www.duiba.com.cn/autoLogin/autologin?"/>
 	</csh>	
 	

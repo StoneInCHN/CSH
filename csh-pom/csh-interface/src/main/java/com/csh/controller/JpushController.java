@@ -19,6 +19,7 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.Advertisement;
 import com.csh.entity.ApkVersion;
 import com.csh.entity.Coupon;
 import com.csh.entity.EndUser;
@@ -29,6 +30,7 @@ import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.JpushRequest;
+import com.csh.service.AdvertisementService;
 import com.csh.service.ApkVersionService;
 import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
@@ -51,6 +53,9 @@ public class JpushController extends MobileBaseController {
   @Resource(name = "couponServiceImpl")
   private CouponService couponService;
 
+  @Resource(name = "advertisementServiceImpl")
+  private AdvertisementService advertisementService;
+
 
   /**
    * 初始化jpush reg id
@@ -68,6 +73,8 @@ public class JpushController extends MobileBaseController {
     Integer versionCode = req.getVersionCode();
     String jPushRegId = req.getRegId();
     AppPlatform appPlatform = req.getAppPlatform();
+    Integer piWidth = req.getPiWidth();
+    Integer piHeight = req.getPiHeight();
 
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
@@ -124,6 +131,9 @@ public class JpushController extends MobileBaseController {
         }
       }
     }
+
+    Advertisement adv = advertisementService.getLoadAdv(piWidth, piHeight);
+    map.put("homeAdvUrl", adv != null ? adv.getAdvImageUrl() : null);
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(req.getToken());
     endUserService.createEndUserToken(newtoken, userId);

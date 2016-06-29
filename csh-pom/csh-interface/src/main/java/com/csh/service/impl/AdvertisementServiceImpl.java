@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.csh.dao.AdvertisementDao;
 import com.csh.dao.EndUserDao;
+import com.csh.dao.ResolutionConfigDao;
 import com.csh.entity.Advertisement;
 import com.csh.entity.EndUser;
+import com.csh.entity.ResolutionConfig;
 import com.csh.entity.Vehicle;
+import com.csh.entity.commonenum.CommonEnum.AdType;
+import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.AdvertisementService;
 import com.csh.utils.FieldFilterUtils;
@@ -26,6 +30,9 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<Advertisement, Lon
 
   @Resource(name = "endUserDaoImpl")
   private EndUserDao endUserDao;
+
+  @Resource(name = "resolutionConfigDaoImpl")
+  private ResolutionConfigDao resolutionConfigDao;
 
   @Resource(name = "advertisementDaoImpl")
   public void setBaseDao(AdvertisementDao advertisementDao) {
@@ -47,5 +54,18 @@ public class AdvertisementServiceImpl extends BaseServiceImpl<Advertisement, Lon
     List<Map<String, Object>> map =
         FieldFilterUtils.filterCollectionMap(properties, advertisements);
     return map;
+  }
+
+  @Override
+  public Advertisement getLoadAdv(Integer piWidth, Integer piHeight) {
+    ResolutionConfig config = resolutionConfigDao.getResolutionConfig(piWidth, piHeight);
+    if (config != null) {
+      for (Advertisement adv : config.getAds()) {
+        if (Status.ENABLE.equals(adv.getStatus()) && AdType.STARTING_AD.equals(adv.getAdType())) {
+          return adv;
+        }
+      }
+    }
+    return null;
   }
 }

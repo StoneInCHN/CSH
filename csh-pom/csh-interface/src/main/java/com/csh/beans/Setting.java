@@ -223,6 +223,46 @@ public class Setting implements Serializable {
    */
   private String bdCarConvert;
 
+  /**
+   * 兑吧appkey
+   */
+  private String duibaAppKey;
+
+  /**
+   * 兑吧appsecret
+   */
+  private String duibaAppSecret;
+
+  /**
+   * 兑吧login url
+   */
+  private String duibaLoginUrl;
+
+
+  public String getDuibaLoginUrl() {
+    return duibaLoginUrl;
+  }
+
+  public void setDuibaLoginUrl(String duibaLoginUrl) {
+    this.duibaLoginUrl = duibaLoginUrl;
+  }
+
+  public String getDuibaAppKey() {
+    return duibaAppKey;
+  }
+
+  public void setDuibaAppKey(String duibaAppKey) {
+    this.duibaAppKey = duibaAppKey;
+  }
+
+  public String getDuibaAppSecret() {
+    return duibaAppSecret;
+  }
+
+  public void setDuibaAppSecret(String duibaAppSecret) {
+    this.duibaAppSecret = duibaAppSecret;
+  }
+
   public String getBdCarConvert() {
     return bdCarConvert;
   }

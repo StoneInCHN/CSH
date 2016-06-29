@@ -25,6 +25,7 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.AccountBalance;
 import com.csh.entity.CarService;
 import com.csh.entity.CarServiceRecord;
+import com.csh.entity.CarWashingCouponEndUser;
 import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
 import com.csh.entity.Wallet;
@@ -45,6 +46,7 @@ import com.csh.json.request.InsuranceRequest;
 import com.csh.service.AccountBalanceService;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
+import com.csh.service.CarWashingCouponEndUserService;
 import com.csh.service.CouponEndUserService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
@@ -72,6 +74,9 @@ public class CarServiceController extends MobileBaseController {
 
   @Resource(name = "accountBalanceServiceImpl")
   private AccountBalanceService accountBalanceService;
+
+  @Resource(name = "carWashingCouponEndUserServiceImpl")
+  private CarWashingCouponEndUserService carWashingCouponEndUserService;
 
 
   /**
@@ -262,6 +267,16 @@ public class CarServiceController extends MobileBaseController {
         }
       }
 
+    }
+
+    if (PaymentType.WASHCOUPON.equals(paymentType)) {
+      CarWashingCouponEndUser carWashingCoupon =
+          carWashingCouponEndUserService.getWashingCouponPay(endUser, serviceId);
+      if (carWashingCoupon == null) {
+        response.setCode(CommonAttributes.FAIL_COMMON);
+        response.setDesc(Message.error("csh.washCoupon.insufficient").getContent());
+        return response;
+      }
     }
 
     if (recordId == null) {

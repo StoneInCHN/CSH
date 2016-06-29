@@ -19,19 +19,44 @@ public class JpushRequest extends BaseRequest {
    * 版本序列号
    */
   private Integer versionCode;
-  
+
   /**
    * 手机平台
    */
   private AppPlatform appPlatform;
 
+  /**
+   * 宽（像素）
+   */
+  private Integer piWidth;
+  /**
+   * 高（像素）
+   */
+  private Integer piHeight;
+
+
+  public Integer getPiWidth() {
+    return piWidth;
+  }
+
+  public void setPiWidth(Integer piWidth) {
+    this.piWidth = piWidth;
+  }
+
+  public Integer getPiHeight() {
+    return piHeight;
+  }
+
+  public void setPiHeight(Integer piHeight) {
+    this.piHeight = piHeight;
+  }
 
   public AppPlatform getAppPlatform() {
-	return appPlatform;
+    return appPlatform;
   }
 
   public void setAppPlatform(AppPlatform appPlatform) {
-	this.appPlatform = appPlatform;
+    this.appPlatform = appPlatform;
   }
 
   public String getVersionName() {
