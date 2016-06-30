@@ -322,7 +322,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     }
     if (setting.getServiceCateWash().equals(
         carServiceRecord.getCarService().getServiceCategory().getId())) {
-      if (carServiceRecord.getPaymentType().equals(PaymentType.WASHCOUPON)) {
+      if (PaymentType.WASHCOUPON.equals(carServiceRecord.getPaymentType())) {
         CarWashingCouponEndUser carWashingCoupon =
             carWashingCouponEndUserDao.userGetWashingCouponByTenant(carServiceRecord.getTenantID(),
                 carServiceRecord.getEndUser());
