@@ -80,7 +80,7 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.deviceInfo.deviceNo")}:
 								</th>
 								<td>
-									<input type="text" name="deviceNo" class="text" maxlength="20" value="${deviceInfo.deviceNo}"/>
+									<input type="text" name="deviceNo" class="text" maxlength="10" value="${deviceInfo.deviceNo}"/>
 								</td>
 							</tr>
 							<tr>

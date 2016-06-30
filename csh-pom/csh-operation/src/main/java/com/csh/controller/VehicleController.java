@@ -47,7 +47,7 @@ public class VehicleController extends BaseController {
 	  List<Vehicle> vehicles = page.getContent();
 	  List<Vehicle> lists = new ArrayList<Vehicle>();
 	  for(Vehicle vehicle:vehicles){
-		  TenantInfo info = tenantInfoService.find(vehicle.getId());
+		  TenantInfo info = tenantInfoService.find(vehicle.getTenantID());
 		  if (info !=null) {
 			  vehicle.setTenantName(info.getTenantName());	
 			  Distributor distributor = info.getDistributor();

@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, user-scalable=no">
 <!-- iOS 设备适配代码Star-->
 <!-- 添加到主屏后的标题（iOS 6 新增） -->
-<meta name="apple-mobile-web-app-title" content="UU商城">
+<meta name="apple-mobile-web-app-title" content="车生活">
 <!-- 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏 -->
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <!-- 设置苹果工具栏颜色 -->

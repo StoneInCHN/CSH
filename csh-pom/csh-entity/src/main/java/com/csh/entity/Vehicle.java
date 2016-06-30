@@ -436,6 +436,8 @@ public class Vehicle extends BaseEntity {
 
   @Transient
 	public String getTenantName() {
+    
+    
 		return tenantName;
 	}
 	
@@ -451,8 +453,5 @@ public class Vehicle extends BaseEntity {
 	public void setDistributorName(String distributorName) {
 		this.distributorName = distributorName;
 	}
-
-  
-  
   
 }

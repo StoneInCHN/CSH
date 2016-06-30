@@ -16,7 +16,6 @@ import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Distributor;
 import com.csh.entity.TenantApply;
-import com.csh.entity.VersionConfig;
 import com.csh.entity.commonenum.CommonEnum.ApplyStatus;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -48,13 +47,13 @@ public class TenantApplyController extends BaseController {
 
   @Resource(name = "tenantInfoServiceImpl")
   private TenantInfoService tenantInfoService;
-  
+
   @Resource(name = "versionConfigServiceImpl")
   private VersionConfigService versionConfigService;
-  
+
   @Resource(name = "distributorServiceImpl")
   private DistributorService distributorService;
-  
+
   @Resource(name = "mailServiceImpl")
   private MailService mailService;
 
@@ -82,6 +81,28 @@ public class TenantApplyController extends BaseController {
     return "/apply/main";
   }
 
+  @RequestMapping(value = "/apply", method = RequestMethod.POST)
+  public @ResponseBody Message apply(TenantApply tenantApply, Long areaId) {
+    if (!isValid(tenantApply)) {
+      return ERROR_MESSAGE;
+    } else {
+      String license = "";
+      if (tenantApply.getLicenseFile() != null) {
+        license = fileService.saveImage(tenantApply.getLicenseFile(), ImageType.LICENSE);
+      }
+      tenantApply.setLicense(license);
+      String photo = "";
+      if (tenantApply.getPhotoFile() != null) {
+        photo = fileService.saveImage(tenantApply.getPhotoFile(), ImageType.STOREPICTURE);
+      }
+      tenantApply.setPhoto(photo);
+      tenantApply.setApplyStatus(ApplyStatus.AUDIT_WAITING);
+
+      tenantApply.setArea(areaService.find(areaId));
+      tenantApplyService.save(tenantApply);
+      return SUCCESS_MESSAGE;
+    }
+  }
 
   /**
    * 列表
@@ -128,22 +149,25 @@ public class TenantApplyController extends BaseController {
    * 更新
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update(TenantApply tenantApply,Long distributorId) {
+  public @ResponseBody Message update(TenantApply tenantApply, Long distributorId) {
     TenantApply applyTemp = tenantApplyService.find(tenantApply.getId());
     applyTemp.setApplyStatus(tenantApply.getApplyStatus());
     applyTemp.setNotes(tenantApply.getNotes());
     applyTemp.setVersionConfig(tenantApply.getVersionConfig());
     if (ApplyStatus.AUDIT_PASSED.equals(tenantApply.getApplyStatus())) {
-     Distributor distributor =  distributorService.find(distributorId);
-      tenantApplyService.auditPassed(applyTemp ,distributor);
+      Distributor distributor = distributorService.find(distributorId);
+      tenantApplyService.auditPassed(applyTemp, distributor);
     } else {
       tenantApplyService.update(applyTemp);
-      //send email
+      // send email
       String subject = SpringUtils.getMessage("csh.tenantApply.audit.failed.subject");
-      String message = SpringUtils.getMessage("csh.tenantApply.audit.failed.message",applyTemp.getTenantName(),applyTemp.getNotes());
+      String message =
+          SpringUtils.getMessage("csh.tenantApply.audit.failed.message", applyTemp.getTenantName(),
+              applyTemp.getNotes());
       mailService.send(applyTemp.getEmail(), subject, message);
-     //send msg
-      UcpaasUtil.SendApplyFailureBySms(applyTemp.getContactPhone(), applyTemp.getTenantName(), applyTemp.getNotes());
+      // send msg
+      UcpaasUtil.SendApplyFailureBySms(applyTemp.getContactPhone(), applyTemp.getTenantName(),
+          applyTemp.getNotes());
     }
 
     return SUCCESS_MESSAGE;
@@ -157,12 +181,12 @@ public class TenantApplyController extends BaseController {
     model.addAttribute("apply", tenantApplyService.find(id));
     return "/apply/details";
   }
-  
+
   @RequestMapping(value = "/selectDistributor", method = RequestMethod.GET)
   public String selectDistributor(ModelMap modelMap, Pageable pageable) {
     pageable.setPageSize(5);;
     modelMap.addAttribute("page", distributorService.findPage(pageable));
     return "/apply/selectDistributor";
   }
-  
+
 }
