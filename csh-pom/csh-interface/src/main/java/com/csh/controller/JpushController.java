@@ -104,9 +104,12 @@ public class JpushController extends MobileBaseController {
     endUserService.update(updateUsers);
 
     if (LogUtil.isDebugEnabled(JpushController.class)) {
-      LogUtil.debug(JpushController.class, "setRegId",
-          "init User Jpush reg ID.UserName: %s, regId: %s, appPlatform: %s", endUser.getUserName(),
-          jPushRegId, appPlatform);
+      LogUtil
+          .debug(
+              JpushController.class,
+              "setRegId",
+              "init User Jpush reg ID.UserName: %s, regId: %s, appPlatform: %s, piWidth: %s, piHeight: %s",
+              endUser.getUserName(), jPushRegId, appPlatform, piWidth, piHeight);
     }
 
     Map<String, Object> map = new HashMap<String, Object>();

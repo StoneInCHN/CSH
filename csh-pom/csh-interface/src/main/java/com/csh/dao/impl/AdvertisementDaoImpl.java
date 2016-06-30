@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.csh.dao.AdvertisementDao;
 import com.csh.entity.Advertisement;
+import com.csh.entity.commonenum.CommonEnum.AdType;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.framework.dao.impl.BaseDaoImpl;
 
@@ -20,10 +21,11 @@ public class AdvertisementDaoImpl extends BaseDaoImpl<Advertisement, Long> imple
   public List<Advertisement> getAdvBanner(Long tenantId) {
     try {
       String jpql =
-          "select adv from Advertisement adv where adv.status = :status and (adv.tenantID = :tenantId or adv.tenantID is null)";
+          "select adv from Advertisement adv where adv.status = :status and adv.adType=:adType and (adv.tenantID = :tenantId or adv.tenantID is null)";
       return entityManager.createQuery(jpql, Advertisement.class)
           .setFlushMode(FlushModeType.COMMIT).setParameter("status", Status.ENABLE)
-          .setParameter("tenantId", tenantId).getResultList();
+          .setParameter("adType", AdType.NORMAL_AD).setParameter("tenantId", tenantId)
+          .getResultList();
     } catch (NoResultException e) {
       return null;
     }

@@ -21,11 +21,11 @@ public class ResolutionConfigDaoImpl extends BaseDaoImpl<ResolutionConfig, Long>
     }
     try {
       String jpql =
-          "select * from csh_resolution_config where abs(pi_height-:piHeight)<300 and abs(pi_width-:piWeight)<200 order by abs(pi_height-:piHeight) asc";
+          "select * from csh_resolution_config where abs(pi_height-:piHeight)<300 and abs(pi_width-:piWidth)<200 order by abs(pi_height-:piHeight) asc";
       List<ResolutionConfig> configs =
           (List<ResolutionConfig>) entityManager.createNativeQuery(jpql, ResolutionConfig.class)
               .setFlushMode(FlushModeType.COMMIT).setParameter("piHeight", piHeight)
-              .setParameter("piWeight", piWidth).getResultList();
+              .setParameter("piWidth", piWidth).getResultList();
       if (configs != null && configs.size() > 0) {
         return configs.get(0);
       }
