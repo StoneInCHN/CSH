@@ -146,7 +146,7 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.advertisement.advName")}:
 								</th>
 								<td>
-									<input type="text" name="advName" class="text" maxlength="20" value="${advertisement.advName}"/>
+									<input type="text" name="advName" class="text" maxlength="50" value="${advertisement.advName}"/>
 								</td>
 							</tr>
 							<tr>
