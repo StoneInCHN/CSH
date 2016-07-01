@@ -41,6 +41,9 @@
 					required:true,
 					email:true
 				},
+				areaId_select:{
+					required:true
+				},
 				address:{
 					required:true
 				}
@@ -50,7 +53,7 @@
 					required:"商家企业名字不能为空"
 				},
 				contactPhone: {
-					required:"联系方式不能为空"
+					required:"联系电话不能为空"
 				},
 				contactPerson:{
 					required:"联系人不能为空"
@@ -59,7 +62,7 @@
 					required:"邮箱不能为空",
 					email:"邮箱格式不正确"
 				},
-				areaId:{
+				areaId_select:{
 					required:"地区不能为空"
 				},
 				address:{
@@ -73,8 +76,6 @@
 				}
 			},
 			submitHandler:function(form){
-	            alert("submitted");    
-	           // form.submit();
 	            $applyForm.ajaxSubmit({
 			      	dataType:"json",
 			       	beforeSubmit:function(){
@@ -86,7 +87,7 @@
 							alert("信息提交成功!");
 							location.reload();
 						} else {
-							alert("提交失败");
+							alert("提交失败,请重新提交");
 							return false;
 						}
 			       		
@@ -125,16 +126,21 @@
         		flag = formValidate.form();
         		var address = $("select[name='areaId_select']  option:selected").text() +$("input[name='address']").val();
         		console.log(address)
-        		var myGeo = new BMap.Geocoder();
-        		// 将地址解析结果显示在地图上,并调整地图视野
-        		myGeo.getPoint(address, function(point){
-        			if (point) {
-        				map.centerAndZoom(point, 15);
-        				map.addOverlay(new BMap.Marker(point));
-        			}else{
-        				alert("您选择地址没有解析到结果!");
-        			}
-        		}, address);
+        		if(address && address !="请选择地址..."){
+        			var myGeo = new BMap.Geocoder();
+            		// 将地址解析结果显示在地图上,并调整地图视野
+            		myGeo.getPoint(address, function(point){
+            			if (point) {
+            				$("#longitude").val(point.lng);
+                			$("#latitude").val(point.lat);
+            				map.clearOverlays()
+            				map.centerAndZoom(point, 15);
+            				map.addOverlay(new BMap.Marker(point));
+            			}else{
+            				//alert("您选择地址没有解析到结果!");
+            			}
+            		}, address);
+        		}
         		//flag = true;
         	}else if("secondNextBtn" == btnId){
         		var $longitude = $(':input[name="longitude"]');
@@ -204,10 +210,5 @@
         		easing: 'easeInOutBack'
         	});
         });
-
-      /*  $(".submit").click(function(){
-        	flag = formValidate.form();
-        	return false;
-        })*/
         
     })
