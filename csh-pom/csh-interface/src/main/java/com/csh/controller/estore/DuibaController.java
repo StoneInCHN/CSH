@@ -18,7 +18,6 @@ import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
-import com.csh.controller.NotifyController;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.EndUser;
 import com.csh.entity.Wallet;
@@ -112,7 +111,7 @@ public class DuibaController extends MobileBaseController {
       data.put(key, new String(map.get(key)[0].getBytes("ISO-8859-1"), "UTF-8"));
     }
     if (LogUtil.isDebugEnabled(DuibaController.class)) {
-      LogUtil.debug(NotifyController.class, "notify_score", "Dui Ba score notify. response: %s",
+      LogUtil.debug(DuibaController.class, "notify_score", "Dui Ba score notify. response: %s",
           data);
     }
     if (SignTool.signVerify(setting.getDuibaAppSecret(), data)) {
@@ -140,14 +139,14 @@ public class DuibaController extends MobileBaseController {
       result.setBizId(orderNum);
       result.setCredits(new Long(wallet.getScore().setScale(0).toString()));
       if (LogUtil.isDebugEnabled(DuibaController.class)) {
-        LogUtil.debug(NotifyController.class, "notify_score",
+        LogUtil.debug(DuibaController.class, "notify_score",
             "Dui Ba score notify success. return to Dui ba: %s", result.toString());
       }
       return result.toString();
 
     } else {
       if (LogUtil.isDebugEnabled(DuibaController.class)) {
-        LogUtil.debug(NotifyController.class, "notify_score",
+        LogUtil.debug(DuibaController.class, "notify_score",
             "Dui Ba score notify Verify sign failed.");
       }
       CreditConsumeResult result = new CreditConsumeResult(false);
@@ -172,7 +171,7 @@ public class DuibaController extends MobileBaseController {
       data.put(key, new String(map.get(key)[0].getBytes("ISO-8859-1"), "UTF-8"));
     }
     if (LogUtil.isDebugEnabled(DuibaController.class)) {
-      LogUtil.debug(NotifyController.class, "notify_order", "Dui Ba order notify. response: %s",
+      LogUtil.debug(DuibaController.class, "notify_order", "Dui Ba order notify. response: %s",
           data);
     }
     if (SignTool.signVerify(setting.getDuibaAppSecret(), data)) {
@@ -183,11 +182,11 @@ public class DuibaController extends MobileBaseController {
 
       if (Boolean.valueOf(success)) {
         if (LogUtil.isDebugEnabled(DuibaController.class)) {
-          LogUtil.debug(NotifyController.class, "notify_order", "Dui Ba order notify success.");
+          LogUtil.debug(DuibaController.class, "notify_order", "Dui Ba order notify success.");
         }
       } else {
         if (LogUtil.isDebugEnabled(DuibaController.class)) {
-          LogUtil.debug(NotifyController.class, "notify_order",
+          LogUtil.debug(DuibaController.class, "notify_order",
               "Dui Ba order notify failed. rollback data, recordNo: %s", orderNum);
         }
         WalletRecord walletRecord = walletRecordService.getRecordByOrderNum(orderNum);
@@ -202,7 +201,7 @@ public class DuibaController extends MobileBaseController {
       }
     } else {
       if (LogUtil.isDebugEnabled(DuibaController.class)) {
-        LogUtil.debug(NotifyController.class, "notify_order",
+        LogUtil.debug(DuibaController.class, "notify_order",
             "Dui Ba order notify Verify sign failed.");
       }
     }
