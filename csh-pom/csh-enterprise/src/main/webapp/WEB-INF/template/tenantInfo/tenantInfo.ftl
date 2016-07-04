@@ -142,7 +142,7 @@
 						${message("csh.tenantInfo.remark")}:
 					</th>
 					<td>
-						<input type="text" name="remark" value="${tenantInfo.ownerName}" class="easyui-textbox" maxlength="200" />
+						<input type="text" name="remark" value="${tenantInfo.remark}" class="easyui-textbox" maxlength="200" />
 					</td>
 				</tr>
 				<tr>

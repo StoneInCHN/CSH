@@ -16,6 +16,10 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -26,8 +30,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Entity - 参数组
  * 
  */
+@Indexed(index="parameterGroup")
 @Entity
-@Table(name = "csh_parameter_group")
+@Table(name = "csh_parameter_group",indexes={@javax.persistence.Index(name="parameterGroup_tenantid",columnList="tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_parameter_group_sequence")
 public class ParameterGroup extends OrderEntity {
 
@@ -42,6 +47,18 @@ public class ParameterGroup extends OrderEntity {
 	/** 参数 */
 	private List<Parameter> parameters = new ArrayList<Parameter>();
 
+	private Long tenantID;
+	
+	@Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
+  public Long getTenantID ()
+  {
+    return tenantID;
+  }
+  
+  public void setTenantID (Long tenantID)
+  {
+    this.tenantID = tenantID;
+  }
 	/**
 	 * 获取名称
 	 * 
@@ -51,6 +68,7 @@ public class ParameterGroup extends OrderEntity {
 	@NotEmpty
 	@Length(max = 200)
 	@Column(nullable = false)
+	@Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
 	public String getName() {
 		return name;
 	}

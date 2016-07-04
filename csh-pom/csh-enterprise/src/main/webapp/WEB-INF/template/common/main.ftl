@@ -104,7 +104,7 @@
     		<li><a href="#" data-url="${base}/console/tenantAccount/tenantAccount.jhtml">${message("csh.system.tenantAccount")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="tenantInfo"]
-    		<li><a href="#" data-url="${base}/console/tenantInfo/tenantInfo.jhtml">${message("csh.system.tenantImage")}</a></li>
+    		<li><a href="#" data-url="${base}/console/tenantInfo/tenantInfo.jhtml">${message("csh.system.tenantInfo")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="role"]
     		<li><a href="#" data-url="${base}/console/role/role.jhtml">${message("csh.system.tenantAccount.role")}</a></li>
@@ -229,7 +229,7 @@
     		<li><a href="#" data-url="${base}/console/attribute/attribute.jhtml">${message("csh.estoreManage.productAttribute")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="productParameter"]
-    		<li><a href="#" data-url="${base}/console/parameter/parameter.jhtml">${message("csh.estoreManage.productParameter")}</a></li>
+    		<li><a href="#" data-url="${base}/console/parameterGroup/parameterGroup.jhtml">${message("csh.estoreManage.productParameter")}</a></li>
     		[/@shiro.hasPermission]
     		
     		[@shiro.hasPermission name="marketingCenter"]

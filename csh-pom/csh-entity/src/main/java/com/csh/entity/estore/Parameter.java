@@ -1,6 +1,7 @@
 
 package com.csh.entity.estore;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -60,7 +61,7 @@ public class Parameter extends OrderEntity {
 	 * 
 	 * @return 参数组
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.PERSIST)
 	@JoinColumn(nullable = false)
 	public ParameterGroup getParameterGroup() {
 		return parameterGroup;

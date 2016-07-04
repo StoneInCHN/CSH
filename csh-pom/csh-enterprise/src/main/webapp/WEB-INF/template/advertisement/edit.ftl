@@ -46,7 +46,7 @@
 						        </div>
 						        <div class="show-img">
 						        	<p class="imgWrap img-thumbnail">
-										    <img id ="advertisementImgPath-edit" src="${base}/${advertisement.advImageUrl}" style ="width:110px;hight:110 px">
+										    <img id ="advertisementImgPath-edit" src="${base}${advertisement.advImageUrl}" style ="width:110px;hight:110 px">
 									 </p>
 						        </div>
 						    </div>

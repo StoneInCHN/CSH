@@ -1,18 +1,17 @@
-package com.csh.estore.controller;
+package com.csh.controller;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,31 +23,25 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
-import com.csh.controller.DeviceInfoController;
-import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.estore.Brand;
-import com.csh.entity.estore.ProductCategory;
+import com.csh.entity.estore.ParameterGroup;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
-import com.csh.service.BrandService;
-import com.csh.service.ProductCategoryService;
+import com.csh.service.ParameterGroupService;
 import com.csh.utils.DateTimeUtils;
 
 /**
- * 商品分类
+ * 商品参数
  * @author huyong
  *
  */
-@Controller ("productCategoryController")
-@RequestMapping ("console/productCategory")
-public class ProductCategoryController extends BaseController
+@Controller ("parameterGroupController")
+@RequestMapping ("console/parameterGroup")
+public class ParameterGroupController extends BaseController
 {
 
-  @Resource (name = "productCategoryServiceImpl")
-  private ProductCategoryService productCategoryService;
-  @Resource(name = "brandServiceImpl")
-  private BrandService brandService;
+  @Resource (name = "parameterGroupServiceImpl")
+  private ParameterGroupService parameterGroupService;
 
   /**
    * 界面展示
@@ -56,10 +49,10 @@ public class ProductCategoryController extends BaseController
    * @param model
    * @return
    */
-  @RequestMapping (value = "/productCategory", method = RequestMethod.GET)
+  @RequestMapping (value = "/parameterGroup", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "estore/productCategory/productCategory";
+    return "estore/parameterGroup/parameterGroup";
   }
 
   /**
@@ -70,8 +63,9 @@ public class ProductCategoryController extends BaseController
    * @return
    */
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<ProductCategory> list (Model model, Pageable pageable,
-     String productCategoryNameSearch, Date beginDate, Date endDate)
+  public @ResponseBody Page<ParameterGroup> list (Model model, Pageable pageable,
+      Date beginDate, Date endDate, String  parameterGroupNameSearch
+      )
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -82,13 +76,13 @@ public class ProductCategoryController extends BaseController
   
     QueryParser nameParser = new QueryParser (Version.LUCENE_35, "name",
         analyzer);
+    
     TermRangeQuery rangeQuery = null;
     Query nameQuery = null;
     Filter filter = null;
-    
-    if (productCategoryNameSearch != null)
+    if (parameterGroupNameSearch != null)
     {
-      String text = QueryParser.escape (productCategoryNameSearch);
+      String text = QueryParser.escape (parameterGroupNameSearch);
         try
         {
           nameParser.setAllowLeadingWildcard (true);
@@ -98,7 +92,7 @@ public class ProductCategoryController extends BaseController
           if (LogUtil.isDebugEnabled (DeviceInfoController.class))
           {
             LogUtil.debug (DeviceInfoController.class, "search", "Search brand name: "
-                + productCategoryNameSearch );
+                + parameterGroupNameSearch );
           }
         }
         catch (ParseException e)
@@ -129,12 +123,11 @@ public class ProductCategoryController extends BaseController
             + startDateStr + " end date: " + endDateStr);
       }
     }
-   
-    if (nameQuery != null || rangeQuery != null)
+    if (rangeQuery != null || nameQuery != null)
     {
-      return productCategoryService.search (query, pageable, analyzer, filter,true);
+      return parameterGroupService.search (query, pageable, analyzer, filter,true);
     }else{
-      return productCategoryService.findPage (pageable,true);
+      return parameterGroupService.findPage (pageable,true);
     }
 
   }
@@ -142,55 +135,29 @@ public class ProductCategoryController extends BaseController
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
-    ProductCategory productCategory = productCategoryService.find (id);
-    model.put ("productCategory", productCategory);
-    if (productCategory.getParent () != null)
-    {
-      model.put ("parentId", productCategory.getParent ().getId ());
-    }
-    model.put ("brands",brandService.findAll (true));
-    return "estore/productCategory/edit";
+    ParameterGroup parameterGroup = parameterGroupService.find (id);
+    model.put ("parameterGroup", parameterGroup);
+    return "estore/parameterGroup/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.GET)
   public String add (ModelMap model)
   {
-    model.put ("brands",brandService.findAll (true));
-    return "estore/productCategory/add";
+    return "estore/parameterGroup/add";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (ProductCategory productCategory,Long parentId,Long[] brandIds)
+  public @ResponseBody Message add (Long productCategoryId,ParameterGroup parameterGroup)
   {
-    if (parentId != null)
-    {
-      ProductCategory parent=productCategoryService.find (parentId);
-      productCategory.setParent (parent);
-    }
-    if (brandIds != null && brandIds.length>0)
-    {
-      List<Brand> brands = brandService.findList (brandIds);
-//      productCategory.setBrands (new HashSet<Brand> (brands));
-    }
-    productCategoryService.save (productCategory,true);
-    
+    parameterGroupService.saveParameterGrpoup (productCategoryId,parameterGroup);
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (ProductCategory productCategory,Long parentId,Long[] brandIds)
+  public @ResponseBody Message update (ParameterGroup parameterGroup)
   {
-    if (parentId != null)
-    {
-      ProductCategory parent=productCategoryService.find (parentId);
-      productCategory.setParent (parent);
-    }
-    if (brandIds != null && brandIds.length>0)
-    {
-      List<Brand> brands = brandService.findList (brandIds);
-//      productCategory.setBrands (new HashSet<Brand> (brands));
-    }
-    productCategoryService.update (productCategory,"tenantID","createDate","treePath", "grade", "children", "products", "parameterGroups", "attributes");
+    
+    parameterGroupService.updateParameterGroup (parameterGroup);
     return SUCCESS_MESSAGE;
   }
 
@@ -207,7 +174,7 @@ public class ProductCategoryController extends BaseController
       
       try
       {
-        productCategoryService.delete (ids);
+        parameterGroupService.delete (ids);
       }
       catch (Exception e)
       {
@@ -228,21 +195,10 @@ public class ProductCategoryController extends BaseController
   @RequestMapping (value = "/details", method = RequestMethod.GET)
   public String details (ModelMap model, Long id)
   {
-    ProductCategory productCategory = productCategoryService.find (id);
-    if (productCategory.getParent () != null)
-    {
-      model.put ("parentId", productCategory.getParent ().getId ());
-    }
-    model.put ("brands",brandService.findAll (true));
-    model.put ("productCategory", productCategory);
-    return "estore/productCategory/details";
+    ParameterGroup parameterGroup = parameterGroupService.find (id);
+    model.put ("parameterGroup", parameterGroup);
+    return "estore/parameterGroup/details";
   }
-  
-  @RequestMapping (value = "/findAll", method = RequestMethod.GET)
-  public @ResponseBody List<ProductCategory> findAll (ModelMap model, Long id)
-  {
-    List<ProductCategory> productCategoryList = productCategoryService.findRoots (true);
-    return productCategoryList;
-  }
- 
+
+
 }

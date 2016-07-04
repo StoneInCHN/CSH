@@ -22,10 +22,12 @@
 				/console/vehicle/pushVehicleWainingInfo.jhtml = anon
 				<!--系统管理  -->
 				/console/tenantAccount/** = perms["tenantAccount"]
+				/console/tenantInfo/** = perms["tenantInfo"]
 		    	/console/role/** = perms["role"]
 		    	/console/operationLog/** = perms["operationLog"]
-		    	/console/carService/** = perms["serviceConfig"]
+		    	/console/advertisementConfig/** = perms["advertisementConfig"]
 		    	/console/app/** = perms["appConfig"]
+		    	
 		    	<!-- 人事管理 -->
 				/console/department/** = perms["department"]
 				/console/position/** = perms["position"]
@@ -51,6 +53,7 @@
 				/console/notificationPush/** = perms["notificationPush"]
 				/console/shortMessagePush/** = perms["shortMessagePush"]
 				
+				
 				<!-- 统计报表-->
 				/console/reportRepareStatistics/** = perms["shortMessagePush"]
 				/console/reportMaintainStatistics/** = perms["maintainReport"]
@@ -66,9 +69,16 @@
 				<!-- 结算中心 -->
 				/console/clearingRecord/** = perms["clearingRecord"]
 				/console/carServiceRecord/** = perms["carServiceRecord"]
+				/console/carServiceTenantDeductRecord/** = perms["carServiceTenantDeductRecord"]
+				/console/tenantDeductClearingRecord/** = perms["tenantDeductClearingRecord"]
+				<!--汽车服务  -->
+				/console/carService/** = perms["serviceConfig"]
+				/console/carServiceItem/** = perms["carServiceItem"]
+				/console/itemPart/** = perms["itemPart"]
 				
 				<!-- 活动中心 -->
-				/console/redPacketSend/** = perms["redPacketSend"]
+				/console/coupon/** = perms["coupon"]
+				/console/carWashingCoupon/** = perms["carWashingCoupon"]
 				/console/joyDraw/** = perms["joyDraw"]
 			</value>
 		</property>

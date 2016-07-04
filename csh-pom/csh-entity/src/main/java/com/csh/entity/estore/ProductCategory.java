@@ -21,6 +21,8 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -32,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Entity - 商品分类
  * 
  */
+@Indexed(index="productCategory")
 @Entity
 @Table(name = "csh_product_category",indexes={@javax.persistence.Index(name="productCategory_tenantid",columnList="tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_product_category_sequence")
@@ -107,6 +110,7 @@ public class ProductCategory extends OrderEntity {
 	@Length(max = 200)
 	@Column(nullable = false)
 	@JsonProperty
+	@Field(index = Index.YES,analyze=Analyze.NO,store=Store.NO)
 	public String getName() {
 		return name;
 	}
@@ -247,9 +251,8 @@ public class ProductCategory extends OrderEntity {
 	 * 
 	 * @return 下级分类
 	 */
-	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-	@OrderBy("order asc")
 	@JsonProperty
+	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	public Set<ProductCategory> getChildren() {
 		return children;
 	}

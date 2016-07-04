@@ -336,7 +336,14 @@ var messages = {
 	"csh.productCategory.list":"商品分类列表",
 	"csh.productCategory.grade":"等级",
 	"csh.productCategory.parent":"上级分类",
-	"csh.productCategory.add":"添加商品分类"
+	"csh.productCategory.add":"添加商品分类",
+	//parameterGroup
+	"csh.parameterGroup.list":"商品参数列表",
+	"csh.parameterGroup.add":"添加商品参数",
+	"csh.parameterGroup.search":"查询商品参数",
+	"csh.parameterGroup.order":"序号",
+	"csh.parameterGroup.name":"名称",
+	"csh.parameterGroup.productCategory":"绑定分类"
 	
 };
 //多语言

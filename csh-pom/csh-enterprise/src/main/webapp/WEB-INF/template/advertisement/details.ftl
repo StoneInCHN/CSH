@@ -35,7 +35,7 @@
     	<tr>
 			<th>${message("csh.advertisement.advImage")}:</th>
 			<td colspan="3">
-				  <img id ="advertisementImgPath-edit" src="${base}/${advertisement.advImageUrl}" disabled = "disabled" style ="width:110px;hight:110 px">
+				  <img id ="advertisementImgPath-edit" src="${base}${advertisement.advImageUrl}" disabled = "disabled" style ="width:110px;hight:110 px">
 			</td>
 		</tr>
 		<tr>

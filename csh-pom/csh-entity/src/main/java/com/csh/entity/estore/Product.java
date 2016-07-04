@@ -4,8 +4,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -421,7 +423,7 @@ public class Product extends BaseEntity {
 
 //	/** 会员价 */
 //	private Map<MemberRank, BigDecimal> memberPrice = new HashMap<MemberRank, BigDecimal>();
-
+	private Map<Parameter, String> parameterValue = new HashMap<Parameter, String>();
 	
 	/**
    * 租户ID
@@ -2122,6 +2124,26 @@ public class Product extends BaseEntity {
     this.barCode = barCode;
   }
 
+  /**
+   * 获取参数值
+   * 
+   * @return 参数值
+   */
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "csh_product_parameter_value")
+  public Map<Parameter, String> getParameterValue() {
+    return parameterValue;
+  }
+
+  /**
+   * 设置参数值
+   * 
+   * @param parameterValue
+   *            参数值
+   */
+  public void setParameterValue(Map<Parameter, String> parameterValue) {
+    this.parameterValue = parameterValue;
+  }
 
 	/**
 	 * 获取商品属性值

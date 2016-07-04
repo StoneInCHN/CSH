@@ -27,6 +27,7 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Advertisement;
+import com.csh.entity.commonenum.CommonEnum.AdType;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.entity.commonenum.CommonEnum.SystemType;
@@ -147,6 +148,7 @@ public class AdvertisementController extends BaseController
   public @ResponseBody Message add (Advertisement advertisement)
   {
     advertisement.setSystemType (SystemType.ENTERPRISE);
+    advertisement.setAdType (AdType.NORMAL_AD);
     advertisementService.save (advertisement,true);
     return SUCCESS_MESSAGE;
   }
@@ -154,7 +156,7 @@ public class AdvertisementController extends BaseController
   @RequestMapping (value = "/update", method = RequestMethod.POST)
   public @ResponseBody Message update (Advertisement advertisement)
   {
-    advertisementService.update (advertisement,"advImageUrl","createDate","systemType","tenantID");
+    advertisementService.update (advertisement,"advImageUrl","createDate","systemType","tenantID","adType");
     return SUCCESS_MESSAGE;
   }
 
