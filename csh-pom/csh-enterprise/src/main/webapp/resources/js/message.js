@@ -343,7 +343,12 @@ var messages = {
 	"csh.parameterGroup.search":"查询商品参数",
 	"csh.parameterGroup.order":"序号",
 	"csh.parameterGroup.name":"名称",
-	"csh.parameterGroup.productCategory":"绑定分类"
+	"csh.parameterGroup.productCategory":"绑定分类",
+	//物流公司
+		"csh.deliveryCorp.name":"公司名称",
+		"csh.deliveryCorp.url":"公司网址",
+		"csh.deliveryCorp.code":"公司代码",
+		"csh.deliveryCorp.list":"物流公司列表",
 	
 };
 //多语言
