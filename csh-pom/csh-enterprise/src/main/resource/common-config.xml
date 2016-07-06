@@ -49,5 +49,7 @@
 		<!-- cookie相关配置 -->
 		<setting name="cookiePath" value="/" />
 		<setting name="cookieDomain" value="" />
+		<!-- 上传图片大小的最大值 -->
+		<setting name="imageMaxSize" value="512000" />
 	</csh>	
 	

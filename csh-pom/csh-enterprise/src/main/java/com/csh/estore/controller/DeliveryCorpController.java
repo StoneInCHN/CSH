@@ -43,9 +43,9 @@ public class DeliveryCorpController extends BaseController {
   @RequestMapping (value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<DeliveryCorp> deliveryCorpList (Pageable pageable,String nameSearch, ModelMap model) {
       if (nameSearch == null) {
-        return deliveryCorpService.findPage(pageable);
+        return deliveryCorpService.findPage(pageable,true);
       }else {
-        return deliveryCorpService.findPageByFilter(nameSearch, pageable);
+        return deliveryCorpService.findPageByFilter(nameSearch, pageable,true);
       }
       
   }
@@ -73,7 +73,7 @@ public class DeliveryCorpController extends BaseController {
    */
   @RequestMapping (value = "/update", method = RequestMethod.POST)
   public @ResponseBody Message updateDeliveryCorp(DeliveryCorp deliveryCorp) {   
-    deliveryCorpService.update(deliveryCorp,"shippingMethods");
+    deliveryCorpService.update(deliveryCorp,"tenantID","shippingMethods");
     return SUCCESS_MESSAGE;
   } 
   /**

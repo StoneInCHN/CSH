@@ -394,7 +394,11 @@ public class CommonEnum {
     /**
      * 租户图片
      */
-    TENANTIMAGE
+    TENANTIMAGE,
+    /**
+     * 配送方式图标
+     */
+    SHIPPINGMETHODICON
   }
 
 

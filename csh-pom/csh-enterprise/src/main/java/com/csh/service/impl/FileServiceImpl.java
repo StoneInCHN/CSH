@@ -8,15 +8,19 @@ import javax.annotation.Resource;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.csh.beans.Setting;
+import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.service.FileService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantUserService;
 import com.csh.utils.ImageUtils;
+import com.csh.utils.SettingUtils;
 
 @Service("fileServiceImpl")
 public class FileServiceImpl implements FileService {
@@ -115,7 +119,8 @@ public class FileServiceImpl implements FileService {
   public String saveImage(MultipartFile multiFile ,ImageType imageType) {
     String webPath = null;
     String imgUploadPath ="";
-    String projectPath="/upload/tenant";
+//    String projectPath="/upload/tenant";
+    String projectPath=File.separator + "upload"+File.separator+"tenant";
     try {
 
       if (multiFile == null) {
@@ -162,6 +167,11 @@ public class FileServiceImpl implements FileService {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "tenantImage";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "tenantImage";
       }
+      else if (imageType == ImageType.SHIPPINGMETHODICON) {
+        imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "shippingMethodIcon";
+        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "shippingMethodIcon";
+      }
+      
       String sourcePath =
           imgUploadPath + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());
@@ -181,6 +191,22 @@ public class FileServiceImpl implements FileService {
     }
     return webPath;
   }
-
+  public boolean isValid(FileType fileType, MultipartFile multipartFile) {
+    if (multipartFile == null) {
+      return false;
+    }
+    Setting setting = SettingUtils.get();
+    String[] uploadExtensions = null;
+    if (fileType == FileType.file) {
+      uploadExtensions = setting.getUploadFileExtensions();
+    } else if (fileType == FileType.image) {
+      uploadExtensions = setting.getUploadImageExtensions();
+    }
+    if (!ArrayUtils.isEmpty(uploadExtensions)) {
+      return FilenameUtils.isExtension(multipartFile.getOriginalFilename().toLowerCase(),
+          uploadExtensions);
+    }
+    return false;
+  }
 }
 

@@ -2,9 +2,11 @@ package com.csh.service.impl;
 
 import javax.annotation.Resource;
 
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,6 @@ import com.csh.framework.service.impl.BaseServiceImpl;
 public class DeliveryCorpServiceImpl extends BaseServiceImpl<DeliveryCorp, Long> implements
     DeliveryCorpService {
 
-
   @Resource(name = "deliveryCorpDaoImpl")
   private DeliveryCorpDao deliveryCorpDao;
 
@@ -31,12 +32,12 @@ public class DeliveryCorpServiceImpl extends BaseServiceImpl<DeliveryCorp, Long>
   }
 
   @Override
-  public Page<DeliveryCorp> findPageByFilter(String nameSearch, Pageable pageable) {
+  public Page<DeliveryCorp> findPageByFilter(String nameSearch, Pageable pageable, boolean isTenant) {
     IKAnalyzer analyzer = new IKAnalyzer();
     analyzer.setMaxWordLength(true);
     try {
       BooleanQuery booleanQuery = findPageQuery(analyzer, nameSearch);
-      return deliveryCorpDao.search(booleanQuery, pageable, null, null);
+      return search(booleanQuery, pageable, null, null, isTenant);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -60,4 +61,5 @@ public class DeliveryCorpServiceImpl extends BaseServiceImpl<DeliveryCorp, Long>
       return null;
     }
   }
+
 }

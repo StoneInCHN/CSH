@@ -7,6 +7,6 @@ import com.csh.framework.service.BaseService;
 
 public interface DeliveryCorpService extends BaseService<DeliveryCorp,Long>{
 
-  Page<DeliveryCorp> findPageByFilter(String nameSearch, Pageable pageable);
+  Page<DeliveryCorp> findPageByFilter(String nameSearch, Pageable pageable, boolean isTenant);
 
 }

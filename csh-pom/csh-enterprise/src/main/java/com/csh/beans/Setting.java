@@ -125,6 +125,10 @@ public class Setting implements Serializable {
      */
     private String obdServiceUrl;
     /**
+     * 上传图片大小的最大值
+     */
+    private Long imageMaxSize;
+    /**
      * 获取相册上传路径
      * 
      * @return
@@ -804,6 +808,12 @@ public class Setting implements Serializable {
       this.clearingRecordCycle = clearingRecordCycle;
     }
 
-    
+    public Long getImageMaxSize() {
+      return imageMaxSize;
+  }
+  
+  public void setImageMaxSize(Long imageMaxSize) {
+      this.imageMaxSize = imageMaxSize;
+  }
     
 }
