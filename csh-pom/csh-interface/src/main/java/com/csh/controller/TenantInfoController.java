@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ import com.csh.entity.TenantInfo;
 import com.csh.entity.VehicleBrandDetail;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
+import com.csh.entity.commonenum.CommonEnum.SortType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.PageResponse;
@@ -81,6 +83,11 @@ public class TenantInfoController extends MobileBaseController {
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Long userId = tenantInfoReq.getUserId();
     String token = tenantInfoReq.getToken();
+    Integer radius = setting.getSearchRadius();
+    String latitude = tenantInfoReq.getLatitude();// 纬度
+    String longitude = tenantInfoReq.getLongitude();// 经度
+    Long serviceCategoryId = tenantInfoReq.getServiceCategoryId();
+    SortType sortType = tenantInfoReq.getSortType();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -88,10 +95,6 @@ public class TenantInfoController extends MobileBaseController {
       response.setDesc(Message.error("csh.user.token.timeout").getContent());
       return response;
     }
-    Integer radius = setting.getSearchRadius();
-    String latitude = tenantInfoReq.getLatitude();// 纬度
-    String longitude = tenantInfoReq.getLongitude();// 经度
-    Long serviceCategoryId = tenantInfoReq.getServiceCategoryId();
 
     Long tenantId = null;
     EndUser endUser = endUserService.find(userId);
@@ -100,14 +103,17 @@ public class TenantInfoController extends MobileBaseController {
     }
 
     if (LogUtil.isDebugEnabled(TenantInfoController.class)) {
-      LogUtil.debug(TenantInfoController.class, "getTenantList",
-          "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s",
-          endUser.getUserName(), endUser.getId(), longitude, latitude);
+      LogUtil
+          .debug(
+              TenantInfoController.class,
+              "getTenantList",
+              "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s, SortType: %s",
+              endUser.getUserName(), endUser.getId(), longitude, latitude, sortType);
     }
     Pageable pageable = new Pageable(tenantInfoReq.getPageNumber(), tenantInfoReq.getPageSize());
     Page<Map<String, Object>> tenantPage =
         tenantInfoJdbcService.getTenantInfos(longitude, latitude, pageable, radius,
-            serviceCategoryId, tenantId);
+            serviceCategoryId, tenantId, sortType);
     if (tenantId != null) {
       TenantInfo bindTenant = tenantInfoService.find(tenantId);
 
@@ -122,36 +128,77 @@ public class TenantInfoController extends MobileBaseController {
         if (flag) {
           String[] properties =
               {"id", "contactPhone", "latitude", "longitude", "address", "tenantName", "photo",
-                  "praiseRate", "distance"};
+                  "praiseRate", "distance", "rateCounts"};
           Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, bindTenant);
           tenantPage.getContent().add(0, map);
         }
 
       }
     }
-    for (Map<String, Object> map : tenantPage.getContent()) {
-      TenantInfo tenantInfo = tenantInfoService.find(Long.parseLong(map.get("id").toString()));
-      List<CarService> services =
-          carServiceService.getServicesByTenantAndCategory(tenantInfo, serviceCategoryId);
-      List<Map<String, Object>> serviceList = new ArrayList<Map<String, Object>>();
-      for (CarService carService : services) {
+
+    /**
+     * 洗车服务显示服务及价格
+     */
+    if (serviceCategoryId.equals(setting.getServiceCateWash())) {
+      for (Map<String, Object> map : tenantPage.getContent()) {
+        TenantInfo tenantInfo = tenantInfoService.find(Long.parseLong(map.get("id").toString()));
+        List<CarService> services =
+            carServiceService.getServicesByTenantAndCategory(tenantInfo, serviceCategoryId);
+        CarService lowPriceService = null;
+        for (CarService carService : services) {
+          if (lowPriceService == null) {
+            lowPriceService = carService;
+            continue;
+          }
+          if (carService.getPromotionPrice().compareTo(lowPriceService.getPromotionPrice()) < 0) {
+            lowPriceService = carService;
+          }
+        }
+
         Map<String, Object> serviceMap = new HashMap<>();
-        serviceMap.put("service_id", carService.getId());
-        serviceMap.put("serviceName", carService.getServiceName());
-        serviceMap.put("price", carService.getPrice());
-        serviceMap.put("promotion_price", carService.getPromotionPrice());
-        serviceMap.put("categoryId", carService.getServiceCategory().getId());
-        serviceList.add(serviceMap);
+        serviceMap.put("service_id", lowPriceService.getId());
+        serviceMap.put("serviceName", lowPriceService.getServiceName());
+        serviceMap.put("price", lowPriceService.getPrice());
+        serviceMap.put("promotion_price", lowPriceService.getPromotionPrice());
+        // serviceMap.put("categoryId", lowPriceService.getServiceCategory().getId());
+        map.put("carService", serviceMap);
       }
 
-      map.put("carService", serviceList);
+      if (SortType.PRICEASC.equals(sortType)) {
+        List<Map<String, Object>> serviceList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> lowPriceMap = new HashMap<String, Object>();
+        for (Map<String, Object> map : tenantPage.getContent()) {
+          if (serviceList.size() == 0) {
+            lowPriceMap = map;
+            serviceList.add(0, lowPriceMap);
+            continue;
+          }
+          BigDecimal price =
+              new BigDecimal(((Map<String, Object>) map.get("carService")).get("promotion_price")
+                  .toString());
+          BigDecimal lowPrice =
+              new BigDecimal(((Map<String, Object>) lowPriceMap.get("carService")).get(
+                  "promotion_price").toString());
+          if (price.compareTo(lowPrice) < 0) {
+            lowPriceMap = map;
+            serviceList.add(0, lowPriceMap);
+          } else {
+            serviceList.add(map);
+          }
+        }
+        response.setMsg(serviceList);
+      }
     }
+
     PageResponse page = new PageResponse();
     page.setPageNumber(tenantInfoReq.getPageNumber());
     page.setPageSize(tenantInfoReq.getPageSize());
     page.setTotal((int) tenantPage.getTotal());
     response.setPage(page);
-    response.setMsg(tenantPage.getContent());
+    if (!SortType.PRICEASC.equals(sortType)) {
+      response.setMsg(tenantPage.getContent());
+    }
+
 
     EndUser user = endUserService.find(userId);
     if (user.getDefaultVehicle() != null) {

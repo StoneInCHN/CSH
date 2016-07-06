@@ -138,14 +138,29 @@ public class TenantInfo extends BaseEntity {
    * 是否已开管理员账号
    */
   private Boolean isHaveAccount;
-  
+
   /**
    * 所属分销商
    */
   private Distributor distributor;
 
-  private Set<TenantImage> tenantImages= new HashSet<TenantImage> ();
-  
+  private Set<TenantImage> tenantImages = new HashSet<TenantImage>();
+
+
+  /**
+   * 评价次数
+   */
+  private Integer rateCounts = 0;
+
+
+  public Integer getRateCounts() {
+    return rateCounts;
+  }
+
+  public void setRateCounts(Integer rateCounts) {
+    this.rateCounts = rateCounts;
+  }
+
   @OneToMany(mappedBy = "tenantInfo")
   public Set<CarService> getCarServices() {
     return carServices;
@@ -367,18 +382,16 @@ public class TenantInfo extends BaseEntity {
     this.distributor = distributor;
   }
 
-  @OneToMany(mappedBy="tenantInfo")
+  @OneToMany(mappedBy = "tenantInfo")
   @OrderBy("createDate asc")
-  public Set<TenantImage> getTenantImages ()
-  {
+  public Set<TenantImage> getTenantImages() {
     return tenantImages;
   }
 
-  public void setTenantImages (Set<TenantImage> tenantImages)
-  {
+  public void setTenantImages(Set<TenantImage> tenantImages) {
     this.tenantImages = tenantImages;
   }
 
-  
-  
+
+
 }

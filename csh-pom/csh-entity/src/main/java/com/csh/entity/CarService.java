@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -98,7 +97,22 @@ public class CarService extends BaseEntity {
    */
   private Set<Coupon> coupons = new HashSet<Coupon>();
 
-  private Set<CarServiceItem> carServiceItems = new HashSet<CarServiceItem> ();
+  /**
+   * 购买次数
+   */
+  private Integer purchaseCounts = 0;
+
+  private Set<CarServiceItem> carServiceItems = new HashSet<CarServiceItem>();
+
+
+  public Integer getPurchaseCounts() {
+    return purchaseCounts;
+  }
+
+  public void setPurchaseCounts(Integer purchaseCounts) {
+    this.purchaseCounts = purchaseCounts;
+  }
+
   @ManyToMany(mappedBy = "carServices")
   public Set<Coupon> getCoupons() {
     return coupons;
@@ -119,7 +133,8 @@ public class CarService extends BaseEntity {
 
   @Column(length = 50)
   @JsonProperty
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO, analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO, analyzer = @Analyzer(
+      impl = IKAnalyzer.class))
   public String getServiceName() {
     return serviceName;
   }
@@ -128,7 +143,7 @@ public class CarService extends BaseEntity {
     this.serviceName = serviceName;
   }
 
-  @Column(length=1000)
+  @Column(length = 1000)
   public String getServiceDesc() {
     return serviceDesc;
   }
@@ -196,8 +211,8 @@ public class CarService extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO,
-      analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO, analyzer = @Analyzer(
+      impl = IKAnalyzer.class))
   public ServiceStatus getServiceStatus() {
     return serviceStatus;
   }
@@ -207,13 +222,11 @@ public class CarService extends BaseEntity {
   }
 
   @OneToMany(mappedBy = "carService")
-  public Set<CarServiceItem> getCarServiceItems ()
-  {
+  public Set<CarServiceItem> getCarServiceItems() {
     return carServiceItems;
   }
 
-  public void setCarServiceItems (Set<CarServiceItem> carServiceItems)
-  {
+  public void setCarServiceItems(Set<CarServiceItem> carServiceItems) {
     this.carServiceItems = carServiceItems;
   }
 

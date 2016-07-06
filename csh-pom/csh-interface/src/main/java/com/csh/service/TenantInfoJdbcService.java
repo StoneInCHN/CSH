@@ -2,6 +2,7 @@ package com.csh.service;
 
 import java.util.Map;
 
+import com.csh.entity.commonenum.CommonEnum.SortType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 
@@ -16,10 +17,11 @@ public interface TenantInfoJdbcService {
    * @param pageable 分页信息
    * @param radius 搜索半径
    * @param categoryId 服务类别ID
+   * @param sortType 排序类型
    * @return
    */
   public Page<Map<String, Object>> getTenantInfos(String lng, String lat, Pageable pageable,
-      int radius, Long categoryId, Long tenantId);
+      int radius, Long categoryId, Long tenantId, SortType sortType);
 
 
 }

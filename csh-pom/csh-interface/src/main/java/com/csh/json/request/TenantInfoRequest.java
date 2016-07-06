@@ -1,5 +1,6 @@
 package com.csh.json.request;
 
+import com.csh.entity.commonenum.CommonEnum.SortType;
 import com.csh.json.base.BaseRequest;
 
 public class TenantInfoRequest extends BaseRequest {
@@ -38,31 +39,44 @@ public class TenantInfoRequest extends BaseRequest {
    * 服务ID
    */
   private Long serviceId;
-  
+
   /**
    * 车型ID
    */
   private Long brandDetailId;
-  
 
-public Long getBrandDetailId() {
-	return brandDetailId;
-}
+  /**
+   * 排序类型
+   */
+  private SortType sortType;
 
-public void setBrandDetailId(Long brandDetailId) {
-	this.brandDetailId = brandDetailId;
-}
 
-public Long getServiceId() {
-	return serviceId;
+  public SortType getSortType() {
+    return sortType;
+  }
+
+  public void setSortType(SortType sortType) {
+    this.sortType = sortType;
+  }
+
+  public Long getBrandDetailId() {
+    return brandDetailId;
+  }
+
+  public void setBrandDetailId(Long brandDetailId) {
+    this.brandDetailId = brandDetailId;
+  }
+
+  public Long getServiceId() {
+    return serviceId;
   }
 
   public void setServiceId(Long serviceId) {
-	   this.serviceId = serviceId;
+    this.serviceId = serviceId;
   }
-	
+
   public Long getRecordId() {
-	   return recordId;
+    return recordId;
   }
 
   public void setRecordId(Long recordId) {

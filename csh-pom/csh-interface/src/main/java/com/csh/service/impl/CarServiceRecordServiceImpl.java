@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csh.beans.Message;
 import com.csh.beans.Setting;
 import com.csh.dao.BeautifyReservationDao;
+import com.csh.dao.CarServiceDao;
 import com.csh.dao.CarServiceRecordDao;
 import com.csh.dao.CarServiceRecordPartInstDao;
 import com.csh.dao.CarWashingCouponEndUserDao;
@@ -89,6 +90,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
 
   @Resource(name = "carWashingCouponEndUserDaoImpl")
   private CarWashingCouponEndUserDao carWashingCouponEndUserDao;
+
+  @Resource(name = "carServiceDaoImpl")
+  private CarServiceDao carServiceDao;
 
 
   @Resource(name = "carServiceRecordDaoImpl")
@@ -320,6 +324,16 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       couponEndUser.setIsUsed(true);
       couponEndUserDao.merge(couponEndUser);
     }
+
+    carServiceRecordDao.merge(carServiceRecord);
+
+    /**
+     * 更新该服务购买次数
+     */
+    CarService carService = carServiceRecord.getCarService();
+    carService.setPurchaseCounts(carService.getPurchaseCounts() + 1);
+    carServiceDao.merge(carService);
+
     if (setting.getServiceCateWash().equals(
         carServiceRecord.getCarService().getServiceCategory().getId())) {
       if (PaymentType.WASHCOUPON.equals(carServiceRecord.getPaymentType())) {
@@ -368,7 +382,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
           carServiceRecord.getCarService().getTenantInfo().getAddress(), tokenNo.toString());
 
     }
-    carServiceRecordDao.merge(carServiceRecord);
+
     return carServiceRecord;
   }
 

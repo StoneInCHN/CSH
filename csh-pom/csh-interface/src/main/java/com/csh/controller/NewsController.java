@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,12 @@ import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.EndUser;
 import com.csh.entity.News;
+import com.csh.entity.NewsCategory;
+import com.csh.entity.NewsComment;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
@@ -23,15 +29,17 @@ import com.csh.json.base.BaseRequest;
 import com.csh.json.base.BaseResponse;
 import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
+import com.csh.json.base.ResponseOne;
 import com.csh.json.request.NewsRequest;
 import com.csh.service.EndUserService;
+import com.csh.service.NewsCategoryService;
 import com.csh.service.NewsService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
 
 
 /**
- * Controller - 新闻
+ * Controller - 新闻资讯
  * 
  * @author sujinxuan
  *
@@ -46,6 +54,48 @@ public class NewsController extends MobileBaseController {
   @Resource(name = "newsServiceImpl")
   private NewsService newsService;
 
+  @Resource(name = "newsCategoryServiceImpl")
+  private NewsCategoryService newsCategoryService;
+
+
+  /**
+   * 获取新闻类别信息
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getNewsType", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getNewsType(
+      @RequestBody BaseRequest req) {
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    String token = req.getToken();
+    Long userId = req.getUserId();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter("isEnabled", Operator.eq, true);
+    filters.add(filter);
+    List<NewsCategory> newsCategories = newsCategoryService.findList(null, filters, null);
+
+    String[] properties = {"id", "name"};
+    List<Map<String, Object>> result =
+        FieldFilterUtils.filterCollectionMap(properties, newsCategories);
+
+    response.setMsg(result);
+
+    String newtoken = TokenGenerator.generateToken(token);
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
   /**
    * 获取新闻列表
@@ -55,12 +105,14 @@ public class NewsController extends MobileBaseController {
    */
   @RequestMapping(value = "/getNewsList", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseMultiple<Map<String, Object>> getMsgList(@RequestBody BaseRequest req) {
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getMsgList(@RequestBody NewsRequest req) {
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Integer pageSize = req.getPageSize();
     Integer pageNumber = req.getPageNumber();
     String token = req.getToken();
     Long userId = req.getUserId();
+    Long categoryId = req.getCategoryId();
+
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -72,6 +124,15 @@ public class NewsController extends MobileBaseController {
     Pageable pageable = new Pageable();
     pageable.setPageNumber(pageNumber);
     pageable.setPageSize(pageSize);
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter("isEnabled", Operator.eq, true);
+    filters.add(filter);
+    if (categoryId != null) {
+      NewsCategory category = newsCategoryService.find(categoryId);
+      Filter categoryFilter = new Filter("newsCategory", Operator.eq, category);
+      filters.add(categoryFilter);
+    }
+    pageable.setFilters(filters);
     pageable.setOrderProperty("createDate");
     pageable.setOrderDirection(Direction.desc);
     Page<News> newsList = newsService.findPage(pageable);
@@ -82,13 +143,138 @@ public class NewsController extends MobileBaseController {
     pageInfo.setTotal((int) newsList.getTotal());
 
 
-    String[] propertys = {"id", "title", "content"};
-
+    String[] propertys =
+        {"id", "title", "subTitle", "modifyDate", "imgUrl", "readCounts", "likeCounts",
+            "commentCounts"};
     List<Map<String, Object>> result =
         FieldFilterUtils.filterCollectionMap(propertys, newsList.getContent());
 
     response.setMsg(result);
     response.setPage(pageInfo);
+
+    String newtoken = TokenGenerator.generateToken(token);
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+
+  /**
+   * 查看新闻详情
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/readNewsDetail", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> readNewsDetail(@RequestBody NewsRequest req) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    String token = req.getToken();
+    Long userId = req.getUserId();
+    Long newsId = req.getNewsId();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    News news = newsService.find(newsId);
+
+    String[] properties =
+        {"id", "title", "content", "modifyDate", "readCounts", "likeCounts", "commentCounts"};
+    Map<String, Object> result = FieldFilterUtils.filterEntityMap(properties, news);
+    result.put("category", news.getNewsCategory().getName());
+
+    String[] commentProperties = {"userName", "content", "createDate", "photoUrl"};
+    List<Map<String, Object>> comments =
+        FieldFilterUtils.filterCollectionMap(commentProperties, news.getNewsComments());
+    result.put("comment", comments);
+    result.put("commentCounts", comments.size());
+    response.setMsg(result);
+
+    news.setReadCounts(news.getReadCounts() + 1);
+    newsService.update(news);
+
+    String newtoken = TokenGenerator.generateToken(token);
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+
+  /**
+   * 新闻资讯评论
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/doComment", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody BaseResponse doComment(@RequestBody NewsRequest req) {
+    BaseResponse response = new BaseResponse();
+    String token = req.getToken();
+    Long userId = req.getUserId();
+    Long newsId = req.getNewsId();
+    String commentStr = req.getComment();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    EndUser endUser = endUserService.find(userId);
+    News news = newsService.find(newsId);
+    NewsComment comment = new NewsComment();
+    comment.setContent(commentStr);
+    comment.setNews(news);
+    comment.setPhotoUrl(endUser.getPhoto());
+    comment.setUserName(endUser.getNickName() != null ? endUser.getNickName() : endUser
+        .getUserName());
+    news.setCommentCounts(news.getCommentCounts() + 1);
+    news.getNewsComments().add(comment);
+    newsService.update(news);
+
+    String newtoken = TokenGenerator.generateToken(token);
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+  /**
+   * 新闻资讯点赞
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/doLikeClick", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody BaseResponse doLikeClick(@RequestBody NewsRequest req) {
+    BaseResponse response = new BaseResponse();
+    String token = req.getToken();
+    Long userId = req.getUserId();
+    Long newsId = req.getNewsId();
+    Integer doLikeOpr = req.getDoLikeOpr();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    News news = newsService.find(newsId);
+    news.setLikeCounts(news.getLikeCounts() + doLikeOpr);
+    newsService.update(news);
 
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);

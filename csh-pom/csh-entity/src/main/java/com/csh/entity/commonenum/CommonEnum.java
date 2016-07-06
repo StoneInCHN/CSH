@@ -685,7 +685,7 @@ public class CommonEnum {
     DEVICE_PRICE
   }
 
-  public enum AdType{
+  public enum AdType {
     /**
      * 普通广告
      */
@@ -700,17 +700,17 @@ public class CommonEnum {
    */
   public enum OrderStatus {
 
-      /** 未确认 */
-      unconfirmed,
+    /** 未确认 */
+    unconfirmed,
 
-      /** 已确认 */
-      confirmed,
+    /** 已确认 */
+    confirmed,
 
-      /** 已完成 */
-      completed,
+    /** 已完成 */
+    completed,
 
-      /** 已取消 */
-      cancelled
+    /** 已取消 */
+    cancelled
   }
 
   /**
@@ -718,20 +718,20 @@ public class CommonEnum {
    */
   public enum PaymentStatus {
 
-      /** 未支付 */
-      unpaid,
+    /** 未支付 */
+    unpaid,
 
-      /** 部分支付 */
-      partialPayment,
+    /** 部分支付 */
+    partialPayment,
 
-      /** 已支付 */
-      paid,
+    /** 已支付 */
+    paid,
 
-      /** 部分退款 */
-      partialRefunds,
+    /** 部分退款 */
+    partialRefunds,
 
-      /** 已退款 */
-      refunded
+    /** 已退款 */
+    refunded
   }
 
   /**
@@ -739,55 +739,77 @@ public class CommonEnum {
    */
   public enum ShippingStatus {
 
-      /** 未发货 */
-      unshipped,
+    /** 未发货 */
+    unshipped,
 
-      /** 部分发货 */
-      partialShipment,
+    /** 部分发货 */
+    partialShipment,
 
-      /** 已发货 */
-      shipped,
+    /** 已发货 */
+    shipped,
 
-      /** 部分退货 */
-      partialReturns,
+    /** 部分退货 */
+    partialReturns,
 
-      /** 已退货 */
-      returned
+    /** 已退货 */
+    returned
   }
-  
+
   /**
    * 订单日志类型
    */
   public enum Type {
 
-      /** 订单创建 */
-      create,
+    /** 订单创建 */
+    create,
 
-      /** 订单修改 */
-      modify,
+    /** 订单修改 */
+    modify,
 
-      /** 订单确认 */
-      confirm,
+    /** 订单确认 */
+    confirm,
 
-      /** 订单支付 */
-      payment,
+    /** 订单支付 */
+    payment,
 
-      /** 订单退款 */
-      refunds,
+    /** 订单退款 */
+    refunds,
 
-      /** 订单发货 */
-      shipping,
+    /** 订单发货 */
+    shipping,
 
-      /** 订单退货 */
-      returns,
+    /** 订单退货 */
+    returns,
 
-      /** 订单完成 */
-      complete,
+    /** 订单完成 */
+    complete,
 
-      /** 订单取消 */
-      cancel,
+    /** 订单取消 */
+    cancel,
 
-      /** 其它 */
-      other
-  };
+    /** 其它 */
+    other
+  }
+
+  /**
+   * 手机接口查询排序类型
+   * 
+   * @author sujinxuan
+   *
+   */
+  public enum SortType {
+    /**
+     * 距离由近及远
+     */
+    DISTANCEASC,
+    /**
+     * 价格由低到高
+     */
+    PRICEASC,
+    /**
+     * 好评分由高到低
+     */
+    SCOREDESC,
+  }
+
 }

@@ -61,6 +61,7 @@ public class TenantEvaluateServiceImpl extends BaseServiceImpl<TenantEvaluate, L
     Integer avgScore = (int) Math.ceil(sum / tenantEvaluates.size());
     TenantInfo tenantInfo = tenantInfoDao.find(tenantId);
     tenantInfo.setPraiseRate(avgScore);
+    tenantInfo.setRateCounts(tenantInfo.getRateCounts() + 1);
     tenantInfoDao.merge(tenantInfo);
   }
 }
