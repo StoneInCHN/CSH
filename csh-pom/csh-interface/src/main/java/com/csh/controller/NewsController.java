@@ -22,6 +22,7 @@ import com.csh.entity.NewsCategory;
 import com.csh.entity.NewsComment;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.ordering.Ordering;
 import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
@@ -33,6 +34,7 @@ import com.csh.json.base.ResponseOne;
 import com.csh.json.request.NewsRequest;
 import com.csh.service.EndUserService;
 import com.csh.service.NewsCategoryService;
+import com.csh.service.NewsCommentService;
 import com.csh.service.NewsService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
@@ -56,6 +58,9 @@ public class NewsController extends MobileBaseController {
 
   @Resource(name = "newsCategoryServiceImpl")
   private NewsCategoryService newsCategoryService;
+
+  @Resource(name = "newsCommentServiceImpl")
+  private NewsCommentService newsCommentService;
 
 
   /**
@@ -133,7 +138,7 @@ public class NewsController extends MobileBaseController {
       filters.add(categoryFilter);
     }
     pageable.setFilters(filters);
-    pageable.setOrderProperty("createDate");
+    pageable.setOrderProperty("modifyDate");
     pageable.setOrderDirection(Direction.desc);
     Page<News> newsList = newsService.findPage(pageable);
 
@@ -183,21 +188,27 @@ public class NewsController extends MobileBaseController {
     }
 
     News news = newsService.find(newsId);
+    news.setReadCounts(news.getReadCounts() + 1);
+    newsService.update(news);
 
     String[] properties =
         {"id", "title", "content", "modifyDate", "readCounts", "likeCounts", "commentCounts"};
     Map<String, Object> result = FieldFilterUtils.filterEntityMap(properties, news);
     result.put("category", news.getNewsCategory().getName());
 
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter("news", Operator.eq, news);
+    filters.add(filter);
+    List<Ordering> orderings = new ArrayList<Ordering>();
+    Ordering ordering = new Ordering("createDate", Direction.desc);
+    orderings.add(ordering);
+    List<NewsComment> commentList = newsCommentService.findList(null, filters, orderings);
     String[] commentProperties = {"userName", "content", "createDate", "photoUrl"};
     List<Map<String, Object>> comments =
-        FieldFilterUtils.filterCollectionMap(commentProperties, news.getNewsComments());
+        FieldFilterUtils.filterCollectionMap(commentProperties, commentList);
     result.put("comment", comments);
     result.put("commentCounts", comments.size());
     response.setMsg(result);
-
-    news.setReadCounts(news.getReadCounts() + 1);
-    newsService.update(news);
 
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
@@ -205,7 +216,6 @@ public class NewsController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 
   /**
    * 新闻资讯评论
@@ -215,8 +225,8 @@ public class NewsController extends MobileBaseController {
    */
   @RequestMapping(value = "/doComment", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse doComment(@RequestBody NewsRequest req) {
-    BaseResponse response = new BaseResponse();
+  public @ResponseBody ResponseMultiple<Map<String, Object>> doComment(@RequestBody NewsRequest req) {
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     String token = req.getToken();
     Long userId = req.getUserId();
     Long newsId = req.getNewsId();
@@ -242,8 +252,21 @@ public class NewsController extends MobileBaseController {
     news.getNewsComments().add(comment);
     newsService.update(news);
 
+
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter("news", Operator.eq, news);
+    filters.add(filter);
+    List<Ordering> orderings = new ArrayList<Ordering>();
+    Ordering ordering = new Ordering("createDate", Direction.desc);
+    orderings.add(ordering);
+    List<NewsComment> commentList = newsCommentService.findList(null, filters, orderings);
+    String[] commentProperties = {"userName", "content", "createDate", "photoUrl"};
+    List<Map<String, Object>> comments =
+        FieldFilterUtils.filterCollectionMap(commentProperties, commentList);
+    response.setMsg(comments);
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
+    response.setDesc(news.getCommentCounts().toString());
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
     return response;
