@@ -34,6 +34,20 @@ public class JpushRequest extends BaseRequest {
    */
   private Integer piHeight;
 
+  /**
+   * 地理位置
+   */
+  private String location;
+
+
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
+  }
 
   public Integer getPiWidth() {
     return piWidth;

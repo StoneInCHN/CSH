@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.csh.beans.Setting;
+
 
 public class VehicleUtil {
 
@@ -78,5 +82,43 @@ public class VehicleUtil {
       score = 99;
     }
     return score;
+  }
+
+  public static String getWeather4CashCar(String location) {
+    try {
+      Setting setting = SettingUtils.get();
+      String pyUrl =
+          setting.getBdApiStoreHz2PyUrl() + "?words=" + location
+              + "&accent=0&traditional=0&letter=0&oc=0&type=json";
+
+      String res = ApiUtils.get(pyUrl, setting.getBdApiStoreKey());
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
+      if (resMap.get("py") != null) {
+        String pyLocation = resMap.get("py").toString().replace(" ", "");
+        String cashUrl =
+            setting.getBdApiStoreWeatherUrl() + "?location=" + pyLocation + "&language=zh-Hans";
+
+        String cashRes = ApiUtils.get(cashUrl, setting.getBdApiStoreKey());
+        ObjectMapper cashMapper = new ObjectMapper();
+        Map<String, Object> cashMap =
+            (Map<String, Object>) cashMapper.readValue(cashRes, Map.class);
+        if (cashMap != null) {
+          List<Map<String, Object>> resultMap = (List<Map<String, Object>>) cashMap.get("results");
+          if (resultMap != null && resultMap.size() > 0) {
+            Map<String, Object> suggestionMap =
+                (Map<String, Object>) resultMap.get(0).get("suggestion");
+            Map<String, Object> washingMap = (Map<String, Object>) suggestionMap.get("car_washing");
+            String brief = washingMap.get("brief").toString();
+            return brief + "洗车";
+          }
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return null;
+
   }
 }

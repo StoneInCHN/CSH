@@ -36,6 +36,7 @@ import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
+import com.csh.utils.VehicleUtil;
 
 
 
@@ -75,6 +76,7 @@ public class JpushController extends MobileBaseController {
     AppPlatform appPlatform = req.getAppPlatform();
     Integer piWidth = req.getPiWidth();
     Integer piHeight = req.getPiHeight();
+    String location = req.getLocation();
 
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
@@ -137,6 +139,11 @@ public class JpushController extends MobileBaseController {
 
     Advertisement adv = advertisementService.getLoadAdv(piWidth, piHeight);
     map.put("homeAdvUrl", adv != null ? adv.getAdvImageUrl() : null);
+
+    /**
+     * 获取洗车指数
+     */
+    map.put("carWashing", VehicleUtil.getWeather4CashCar(location));
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(req.getToken());
     endUserService.createEndUserToken(newtoken, userId);
@@ -144,5 +151,4 @@ public class JpushController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-
 }
