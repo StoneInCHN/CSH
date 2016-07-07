@@ -16,6 +16,7 @@ import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.csh.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity - 发货项
@@ -61,6 +62,7 @@ public class ShippingItem extends BaseEntity {
 	 */
 	@NotEmpty
 	@Column(nullable = false, updatable = false)
+	@JsonProperty
 	public String getSn() {
 		return sn;
 	}
@@ -82,6 +84,7 @@ public class ShippingItem extends BaseEntity {
 	 */
 	@NotEmpty
 	@Column(nullable = false, updatable = false)
+	@JsonProperty
 	public String getName() {
 		return name;
 	}
@@ -104,6 +107,7 @@ public class ShippingItem extends BaseEntity {
 	@NotNull
 	@Min(1)
 	@Column(nullable = false, updatable = false)
+	@JsonProperty
 	public Integer getQuantity() {
 		return quantity;
 	}

@@ -365,6 +365,28 @@ var messages = {
 	"csh.shippingMethod.continuePrice":"续重价格",
 	"csh.shippingMethod.defaultDeliveryCorp":"默认物流公司",
 	"csh.shippingMethod.list":"配送方式列表",
+	//发货单
+	"csh.shipping.list":"发货单列表",
+	"csh.shipping.sn":"发货单编号",
+	"csh.shipping.shippingMethod":"配送方式",
+	"csh.shipping.deliveryCorp":"物流公司",
+	"csh.shipping.freight":"物流费用",
+	"csh.shipping.trackingNo":"运单号",
+	"csh.shipping.consignee":"收货人",
+	"csh.shipping.order.list":"待发货订单列表",
+	//发货项
+	"csh.shippingItem.list":"发货项列表",
+	//订单
+	"csh.order.sn":"订单编号",
+	"csh.order.totalAmount":"订单金额",
+	"csh.order.endUser":"会员",
+	"csh.order.consignee":"收货人",
+	"csh.order.paymentTypeName":"支付方式名称",
+	"csh.order.shippingMethodName":"配送方式名称",
+	"csh.order.orderStatus":"订单状态",
+	"csh.order.paymentStatus":"支付状态",
+	"csh.order.shippingStatus":"配送状态",
+	
 		
 };
 //多语言
