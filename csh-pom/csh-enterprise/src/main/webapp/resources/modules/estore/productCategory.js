@@ -1,63 +1,6 @@
-		var editIndex = undefined;
-		function endEditing(id){
-			if (editIndex == undefined){return true}
-			if ($('#'+id).datagrid('validateRow', editIndex)){
-				$('#'+id).datagrid('endEdit', editIndex);
-				editIndex = undefined;
-				return true;
-			} else {
-				return false;
-			}
-		}
-		function onClickRow(index,id){
-			if (editIndex != index){
-				if (endEditing(id)){
-					$('#'+id).datagrid('selectRow', index)
-							.datagrid('beginEdit', index);
-					editIndex = index;
-				} else {
-					$('#'+id).datagrid('selectRow', editIndex);
-				}
-			}
-		}
-		function append(id){
-			if (endEditing(id)){
-				$('#'+id).datagrid('appendRow',{
-					order:"",
-					name:""
-				});
-				editIndex =$('#'+id).datagrid('getRows').length-1;
-				$('#'+id).datagrid('selectRow', editIndex)
-						.datagrid('beginEdit', editIndex);
-			}
-		}
-		function removeit(id){
-			if (editIndex == undefined){return}
-			$('#'+id).datagrid('cancelEdit', editIndex)
-					.datagrid('deleteRow', editIndex);
-			editIndex = undefined;
-		}
-		function accept(id){
-			if (endEditing(id)){
-				$('#'+id).datagrid('acceptChanges');
-			}
-		}
-		function reject(id){
-			$('#'+id).datagrid('rejectChanges');
-			editIndex = undefined;
-		}
-		function edit(id){
-			var selectIndex=$('#'+id).datagrid('getRowIndex',$('#'+id).datagrid('getSelected'));
-			if(selectIndex != -1)
-				onClickRow(selectIndex,id);
-		}
-		function getChanges(id){
-			var rows = $('#'+id).datagrid('getChanges');
-			alert(rows.length+' rows are changed!');
-		}
+
 var productCategory_manager_tool = {
 		add:function(){
-			var editIndex = undefined;
 			function endEditing(){
 				if (editIndex == undefined){return true}
 				if ($('#productCategoryAdd-parameterGroup').datagrid('validateRow', editIndex)){
@@ -128,56 +71,6 @@ var productCategory_manager_tool = {
 			    			return node.name;
 			    		},
 			    	});
-					
-					$('#productCategoryAdd-parameterGroup').datagrid({
-						toolbar: '#productCategoryAdd-parameterGroup-tb',
-						iconCls: 'icon-edit',
-						singleSelect:true,
-						columns:[[
-						    {field:'name',title:'参数名',width:75,editor:{
-	                            type:'textbox',
-	                            options:{
-	                                validType:'length[0,200]',
-	                                required:true
-	                            }
-	                        }},  
-					        {field:'order',title:'序号',width:75,editor:{
-	                            type:'numberbox'
-	                        }} 
-					        
-					    ]],
-						onSelect:function(rowIndex, rowData){
-							$('#productCategoryAdd-parameter').datagrid({
-								width:150,
-							    columns:[[
-							        {field:'name',title:'参数名',width:75,editor:'textbox'},
-							        {field:'order',title:'序号',width:75,editor:'textbox'}    
-							    ]]
-							});
-						},
-						onEndEdit:function(rowIndex, rowData, changes){
-							$('#productCategoryAdd-parameterGroup-tb-append').show();
-							$('#productCategoryAdd-parameterGroup-tb-edit').show();
-							$('#productCategoryAdd-parameterGroup-tb-remove').hide();
-							$('#productCategoryAdd-parameterGroup-tb-save').hide();
-							$('#productCategoryAdd-parameterGroup-tb-repeal').hide();
-						},
-						onCancelEdit:function(){
-							$('#productCategoryAdd-parameterGroup-tb-append').show();
-							$('#productCategoryAdd-parameterGroup-tb-edit').show();
-							$('#productCategoryAdd-parameterGroup-tb-remove').hide();
-							$('#productCategoryAdd-parameterGroup-tb-save').hide();
-							$('#productCategoryAdd-parameterGroup-tb-repeal').hide();
-						},
-						onBeginEdit:function(){
-							$('#productCategoryAdd-parameterGroup-tb-append').hide();
-							$('#productCategoryAdd-parameterGroup-tb-edit').hide();
-							$('#productCategoryAdd-parameterGroup-tb-remove').show();
-							$('#productCategoryAdd-parameterGroup-tb-save').show();
-							$('#productCategoryAdd-parameterGroup-tb-repeal').show();
-						}
-					});
-					 
 				},
 			    onClose:function(){
 			    	$('#addProductCategory').empty();

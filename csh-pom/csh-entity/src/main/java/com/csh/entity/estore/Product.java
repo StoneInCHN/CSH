@@ -55,6 +55,7 @@ import org.wltea.analyzer.lucene.IKSimilarity;
 
 import com.csh.entity.EndUser;
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.ProductStatus;
 import com.csh.lucene.BigDecimalNumericFieldBridge;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -119,30 +120,6 @@ public class Product extends BaseEntity {
 		dateDesc
 	}
 	
-	/**
-	 * 商品状态
-	 */
-	public enum ProductStatus {
-		
-		/** 新建状态 */
-		created,
-		
-		/** 提交审核 */
-		supply,
-		
-		/** 审核通过 */
-		approvedPass,
-		
-		/** 审核退回 */
-		approvedFailed,
-		
-		/** 上架 */
-		marketed,
-		
-		/** 下架 */
-		unmarketed
-		
-	}
 	
 	/**
 	 * 促销状态
@@ -160,7 +137,6 @@ public class Product extends BaseEntity {
 		
 		/** 处理完成 */
 		finished,
-		
 		
 		
 	}
@@ -2305,7 +2281,43 @@ public class Product extends BaseEntity {
 		if (getStock() == null) {
 			setAllocatedStock(0);
 		}
-		setScore(0F);
+		if (getIsGift () == null)
+    {
+      setIsGift (false);
+    }
+		if (getIsList () == null)
+    {
+      setIsList (false);
+    }
+		if (getIsMarketable () == null)
+    {
+      setIsMarketable (false);
+    }
+		if (getPoint () == null)
+    {
+      setPoint (0L);
+    }
+		if (getMarketPrice () == null)
+    {
+      setMarketPrice (new BigDecimal(0));
+    }
+		if(getIsTop () == null){
+		  setIsTop (false);
+		}
+		setAllocatedStock(0);
+    setScore(0F);
+    setTotalScore(0L);
+    setScoreCount(0L);
+    setHits(0L);
+    setWeekHits(0L);
+    setMonthHits(0L);
+    setSales(0L);
+    setWeekSales(0L);
+    setMonthSales(0L);
+    setWeekHitsDate(new Date());
+    setMonthHitsDate(new Date());
+    setWeekSalesDate(new Date());
+    setMonthSalesDate(new Date());
 	}
 
 	/**

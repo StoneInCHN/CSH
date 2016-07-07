@@ -4,11 +4,11 @@
 
 <div>
 	  <fieldset>
-	    <legend>${message("csh.brand.search")}</legend>
-	    <form id="brand-search-form" class="search-form">
+	    <legend>${message("csh.productCategory.search")}</legend>
+	    <form id="productCategory-search-form" class="search-form">
 			<div class="search-item">
 			    <label> ${message("csh.brand.name")}:</label>
-				<input type="text" class="easyui-textbox" id="brandNameSearch" name="brandNameSearch" validtype="length[0,20]"/>
+				<input type="text" class="easyui-textbox" id="brandNameSearch" name="productCategoryNameSearch" validtype="length[0,20]"/>
 			</div>
 			<div class="search-item">
 			    <label> 创建时间:</label>
@@ -20,7 +20,7 @@
 			</div>
 		</form>
 		<div class="search-item">
-	  	  <button id="brand-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
+	  	  <button id="productCategory-search-btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</button>
 	    </div>
 	  </fieldset>
 </div>

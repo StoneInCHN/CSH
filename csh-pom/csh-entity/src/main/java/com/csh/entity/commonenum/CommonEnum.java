@@ -786,4 +786,29 @@ public class CommonEnum {
       /** 其它 */
       other
   };
+  
+  /**
+   * 商品状态
+   */
+  public enum ProductStatus {
+    
+    /** 新建状态 */
+    created,
+    
+    /** 提交审核 */
+    supply,
+    
+    /** 审核通过 */
+    approvedPass,
+    
+    /** 审核退回 */
+    approvedFailed,
+    
+    /** 上架 */
+    marketed,
+    
+    /** 下架 */
+    unmarketed
+    
+  }
 }

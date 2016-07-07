@@ -343,7 +343,11 @@ var messages = {
 	"csh.parameterGroup.search":"查询商品参数",
 	"csh.parameterGroup.order":"序号",
 	"csh.parameterGroup.name":"名称",
-	"csh.parameterGroup.productCategory":"绑定分类"
+	"csh.parameterGroup.productCategory":"绑定分类",
+	//商品
+	"csh.product.name":"商品名",
+	"csh.product.list":"商品列表",
+	"csh.product.add":"添加商品",
 	
 };
 //多语言

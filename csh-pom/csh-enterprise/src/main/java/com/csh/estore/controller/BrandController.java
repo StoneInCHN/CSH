@@ -1,6 +1,8 @@
 package com.csh.estore.controller;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -34,6 +36,7 @@ import com.csh.framework.paging.Pageable;
 import com.csh.service.BrandService;
 import com.csh.service.FileService;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.FieldFilterUtils;
 
 /**
  * 商品品牌
@@ -223,5 +226,13 @@ public class BrandController extends BaseController
     {
       return ERROR_MESSAGE;
     }
+  }
+  
+  @RequestMapping (value = "/findAll", method = RequestMethod.GET)
+  public @ResponseBody List<Map<String, Object>> findAll (ModelMap model)
+  {
+    List<Brand> brandlist = brandService.findAll (true);
+    String[] propertys = {"id", "name"};
+    return FieldFilterUtils.filterCollectionMap(propertys, brandlist);
   }
 }

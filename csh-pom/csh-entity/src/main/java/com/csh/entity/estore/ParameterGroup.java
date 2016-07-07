@@ -88,6 +88,7 @@ public class ParameterGroup extends OrderEntity {
 	 * 
 	 * @return 绑定分类
 	 */
+	@JsonProperty
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)

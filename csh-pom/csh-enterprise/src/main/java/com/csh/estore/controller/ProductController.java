@@ -1,17 +1,17 @@
-package com.csh.controller;
+package com.csh.estore.controller;
 
 import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,25 +23,39 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
+import com.csh.controller.DeviceInfoController;
+import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.estore.Brand;
+import com.csh.entity.estore.Parameter;
 import com.csh.entity.estore.ParameterGroup;
+import com.csh.entity.estore.Product;
+import com.csh.entity.estore.ProductCategory;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
-import com.csh.service.ParameterGroupService;
+import com.csh.json.request.PropertyListRequest;
+import com.csh.json.response.PropertyGridResponse;
+import com.csh.service.BrandService;
+import com.csh.service.ProductCategoryService;
+import com.csh.service.ProductService;
 import com.csh.utils.DateTimeUtils;
 
 /**
- * 商品参数
+ * 商品
  * @author huyong
  *
  */
-@Controller ("parameterGroupController")
-@RequestMapping ("console/parameterGroup")
-public class ParameterGroupController extends BaseController
+@Controller ("productController")
+@RequestMapping ("console/product")
+public class ProductController extends BaseController
 {
 
-  @Resource (name = "parameterGroupServiceImpl")
-  private ParameterGroupService parameterGroupService;
+  @Resource (name = "productServiceImpl")
+  private ProductService productService;
+  @Resource (name = "productCategoryServiceImpl")
+  private ProductCategoryService productCategoryService;
+  @Resource(name = "brandServiceImpl")
+  private BrandService brandService;
 
   /**
    * 界面展示
@@ -49,10 +63,10 @@ public class ParameterGroupController extends BaseController
    * @param model
    * @return
    */
-  @RequestMapping (value = "/parameterGroup", method = RequestMethod.GET)
+  @RequestMapping (value = "/product", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "estore/parameterGroup/parameterGroup";
+    return "estore/product/product";
   }
 
   /**
@@ -63,9 +77,8 @@ public class ParameterGroupController extends BaseController
    * @return
    */
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<ParameterGroup> list (Model model, Pageable pageable,
-      Date beginDate, Date endDate, String  parameterGroupNameSearch
-      )
+  public @ResponseBody Page<Product> list (Model model, Pageable pageable,
+     String productNameSearch, Date beginDate, Date endDate)
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -76,13 +89,13 @@ public class ParameterGroupController extends BaseController
   
     QueryParser nameParser = new QueryParser (Version.LUCENE_35, "name",
         analyzer);
-    
     TermRangeQuery rangeQuery = null;
     Query nameQuery = null;
     Filter filter = null;
-    if (parameterGroupNameSearch != null)
+    
+    if (productNameSearch != null)
     {
-      String text = QueryParser.escape (parameterGroupNameSearch);
+      String text = QueryParser.escape (productNameSearch);
         try
         {
           nameParser.setAllowLeadingWildcard (true);
@@ -92,7 +105,7 @@ public class ParameterGroupController extends BaseController
           if (LogUtil.isDebugEnabled (DeviceInfoController.class))
           {
             LogUtil.debug (DeviceInfoController.class, "search", "Search brand name: "
-                + parameterGroupNameSearch );
+                + productNameSearch );
           }
         }
         catch (ParseException e)
@@ -123,11 +136,12 @@ public class ParameterGroupController extends BaseController
             + startDateStr + " end date: " + endDateStr);
       }
     }
-    if (rangeQuery != null || nameQuery != null)
+   
+    if (nameQuery != null || rangeQuery != null)
     {
-      return parameterGroupService.search (query, pageable, analyzer, filter,true);
+      return productService.search (query, pageable, analyzer, filter,true);
     }else{
-      return parameterGroupService.findPage (pageable,true);
+      return productService.findPage (pageable,true);
     }
 
   }
@@ -135,29 +149,56 @@ public class ParameterGroupController extends BaseController
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
-    ParameterGroup parameterGroup = parameterGroupService.find (id);
-    model.put ("parameterGroup", parameterGroup);
-    return "estore/parameterGroup/edit";
+    Product product = productService.find (id);
+    model.put ("product", product);
+    return "estore/product/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.GET)
   public String add (ModelMap model)
   {
-    return "estore/parameterGroup/add";
+    return "estore/product/add";
   }
 
-  @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (Long productCategoryId,ParameterGroup parameterGroup)
+  @RequestMapping (value = "/add",method = RequestMethod.POST)
+  public @ResponseBody Message add (Product product,Long productCategoryId,Long brandId,PropertyListRequest request)
   {
-    parameterGroupService.saveParameterGrpoup (productCategoryId,parameterGroup);
+    ProductCategory category =productCategoryService.find (productCategoryId);
+    product.setProductCategory (category);
+    Brand brand = brandService.find (brandId);
+    product.setBrand (brand);
+    
+    //商品参数配置
+    PropertyGridResponse[] propertyGrids = request.getPropertyGridResponses ();
+    for (ParameterGroup parameterGroup : product.getProductCategory().getParameterGroups()) {
+      for (Parameter parameter : parameterGroup.getParameters()) {
+        for (PropertyGridResponse propertyGridResponse : propertyGrids)
+        {
+          if (propertyGridResponse.getId () == parameter.getId ())
+          {
+            String parameterValue = propertyGridResponse.getValue ();
+            if (StringUtils.isNotEmpty(parameterValue)) {
+              product.getParameterValue().put(parameter, parameterValue);
+            } else {
+              product.getParameterValue().remove(parameter);
+            }
+          }
+          
+        }
+       
+      }
+    }
+    
+    
+    productService.save (product,true);
+    
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (ParameterGroup parameterGroup)
+  public @ResponseBody Message update (Product product,Long parentId,Long[] brandIds)
   {
-    
-    parameterGroupService.updateParameterGroup (parameterGroup);
+    productService.update (product,"tenantID","createDate","treePath", "grade", "children", "products", "parameterGroups", "attributes");
     return SUCCESS_MESSAGE;
   }
 
@@ -174,7 +215,7 @@ public class ParameterGroupController extends BaseController
       
       try
       {
-        parameterGroupService.delete (ids);
+        productService.delete (ids);
       }
       catch (Exception e)
       {
@@ -195,10 +236,10 @@ public class ParameterGroupController extends BaseController
   @RequestMapping (value = "/details", method = RequestMethod.GET)
   public String details (ModelMap model, Long id)
   {
-    ParameterGroup parameterGroup = parameterGroupService.find (id);
-    model.put ("parameterGroup", parameterGroup);
-    return "estore/parameterGroup/details";
+    Product product = productService.find (id);
+    model.put ("product", product);
+    return "estore/product/details";
   }
-
-
+  
+ 
 }

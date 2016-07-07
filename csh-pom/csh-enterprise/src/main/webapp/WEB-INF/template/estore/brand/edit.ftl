@@ -43,7 +43,7 @@
 			<th>${message("csh.brand.introduction")}:</th>
 			 <td colspan="5">
 				 <textarea id= "edit_brand_introduction"  
-				 style="height:200px;width:300px" name="introduction"></textarea>   
+				 style="height:200px;width:300px" name="introduction">${brand.introduction}</textarea>   
 			</td>
 		</tr>
 	</table>

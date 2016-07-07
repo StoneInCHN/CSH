@@ -1,7 +1,7 @@
 package com.csh.estore.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -27,39 +27,41 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.DeviceInfoController;
 import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
-import com.csh.entity.estore.Brand;
+import com.csh.entity.estore.Parameter;
+import com.csh.entity.estore.ParameterGroup;
 import com.csh.entity.estore.ProductCategory;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
-import com.csh.service.BrandService;
+import com.csh.json.response.PropertyGridResponse;
+import com.csh.service.ParameterGroupService;
 import com.csh.service.ProductCategoryService;
 import com.csh.utils.DateTimeUtils;
 
 /**
- * 商品分类
+ * 商品参数
  * @author huyong
  *
  */
-@Controller ("productCategoryController")
-@RequestMapping ("console/productCategory")
-public class ProductCategoryController extends BaseController
+@Controller ("parameterGroupController")
+@RequestMapping ("console/parameterGroup")
+public class ParameterGroupController extends BaseController
 {
 
+  @Resource (name = "parameterGroupServiceImpl")
+  private ParameterGroupService parameterGroupService;
   @Resource (name = "productCategoryServiceImpl")
   private ProductCategoryService productCategoryService;
-  @Resource(name = "brandServiceImpl")
-  private BrandService brandService;
-
   /**
    * 界面展示
    * 
    * @param model
    * @return
    */
-  @RequestMapping (value = "/productCategory", method = RequestMethod.GET)
+  @RequestMapping (value = "/parameterGroup", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
-    return "estore/productCategory/productCategory";
+    return "estore/parameterGroup/parameterGroup";
   }
 
   /**
@@ -70,8 +72,9 @@ public class ProductCategoryController extends BaseController
    * @return
    */
   @RequestMapping (value = "/list", method = RequestMethod.POST)
-  public @ResponseBody Page<ProductCategory> list (Model model, Pageable pageable,
-     String productCategoryNameSearch, Date beginDate, Date endDate)
+  public @ResponseBody Page<ParameterGroup> list (Model model, Pageable pageable,
+      Date beginDate, Date endDate, String  parameterGroupNameSearch
+      )
   {
     String startDateStr = null;
     String endDateStr = null;
@@ -82,13 +85,13 @@ public class ProductCategoryController extends BaseController
   
     QueryParser nameParser = new QueryParser (Version.LUCENE_35, "name",
         analyzer);
+    
     TermRangeQuery rangeQuery = null;
     Query nameQuery = null;
     Filter filter = null;
-    
-    if (productCategoryNameSearch != null)
+    if (parameterGroupNameSearch != null)
     {
-      String text = QueryParser.escape (productCategoryNameSearch);
+      String text = QueryParser.escape (parameterGroupNameSearch);
         try
         {
           nameParser.setAllowLeadingWildcard (true);
@@ -98,7 +101,7 @@ public class ProductCategoryController extends BaseController
           if (LogUtil.isDebugEnabled (DeviceInfoController.class))
           {
             LogUtil.debug (DeviceInfoController.class, "search", "Search brand name: "
-                + productCategoryNameSearch );
+                + parameterGroupNameSearch );
           }
         }
         catch (ParseException e)
@@ -129,12 +132,11 @@ public class ProductCategoryController extends BaseController
             + startDateStr + " end date: " + endDateStr);
       }
     }
-   
-    if (nameQuery != null || rangeQuery != null)
+    if (rangeQuery != null || nameQuery != null)
     {
-      return productCategoryService.search (query, pageable, analyzer, filter,true);
+      return parameterGroupService.search (query, pageable, analyzer, filter,true);
     }else{
-      return productCategoryService.findPage (pageable,true);
+      return parameterGroupService.findPage (pageable,true);
     }
 
   }
@@ -142,55 +144,29 @@ public class ProductCategoryController extends BaseController
   @RequestMapping (value = "/edit", method = RequestMethod.GET)
   public String edit (ModelMap model, Long id)
   {
-    ProductCategory productCategory = productCategoryService.find (id);
-    model.put ("productCategory", productCategory);
-    if (productCategory.getParent () != null)
-    {
-      model.put ("parentId", productCategory.getParent ().getId ());
-    }
-    model.put ("brands",brandService.findAll (true));
-    return "estore/productCategory/edit";
+    ParameterGroup parameterGroup = parameterGroupService.find (id);
+    model.put ("parameterGroup", parameterGroup);
+    return "estore/parameterGroup/edit";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.GET)
   public String add (ModelMap model)
   {
-    model.put ("brands",brandService.findAll (true));
-    return "estore/productCategory/add";
+    return "estore/parameterGroup/add";
   }
 
   @RequestMapping (value = "/add", method = RequestMethod.POST)
-  public @ResponseBody Message add (ProductCategory productCategory,Long parentId,Long[] brandIds)
+  public @ResponseBody Message add (Long productCategoryId,ParameterGroup parameterGroup)
   {
-    if (parentId != null)
-    {
-      ProductCategory parent=productCategoryService.find (parentId);
-      productCategory.setParent (parent);
-    }
-    if (brandIds != null && brandIds.length>0)
-    {
-      List<Brand> brands = brandService.findList (brandIds);
-      productCategory.setBrands (new HashSet<Brand> (brands));
-    }
-    productCategoryService.save (productCategory,true);
-    
+    parameterGroupService.saveParameterGrpoup (productCategoryId,parameterGroup);
     return SUCCESS_MESSAGE;
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (ProductCategory productCategory,Long parentId,Long[] brandIds)
+  public @ResponseBody Message update (ParameterGroup parameterGroup)
   {
-    if (parentId != null)
-    {
-      ProductCategory parent=productCategoryService.find (parentId);
-      productCategory.setParent (parent);
-    }
-    if (brandIds != null && brandIds.length>0)
-    {
-      List<Brand> brands = brandService.findList (brandIds);
-      productCategory.setBrands (new HashSet<Brand> (brands));
-    }
-    productCategoryService.update (productCategory,"tenantID","createDate","treePath", "grade", "children", "products", "parameterGroups", "attributes");
+    
+    parameterGroupService.updateParameterGroup (parameterGroup);
     return SUCCESS_MESSAGE;
   }
 
@@ -207,7 +183,7 @@ public class ProductCategoryController extends BaseController
       
       try
       {
-        productCategoryService.delete (ids);
+        parameterGroupService.delete (ids);
       }
       catch (Exception e)
       {
@@ -228,21 +204,41 @@ public class ProductCategoryController extends BaseController
   @RequestMapping (value = "/details", method = RequestMethod.GET)
   public String details (ModelMap model, Long id)
   {
-    ProductCategory productCategory = productCategoryService.find (id);
-    if (productCategory.getParent () != null)
-    {
-      model.put ("parentId", productCategory.getParent ().getId ());
-    }
-    model.put ("brands",brandService.findAll (true));
-    model.put ("productCategory", productCategory);
-    return "estore/productCategory/details";
+    ParameterGroup parameterGroup = parameterGroupService.find (id);
+    model.put ("parameterGroup", parameterGroup);
+    return "estore/parameterGroup/details";
   }
-  
+  /**
+   * 获取商品参数
+   * 
+   * @param model
+   * @param id
+   * @return
+   */
   @RequestMapping (value = "/findAll", method = RequestMethod.GET)
-  public @ResponseBody List<ProductCategory> findAll (ModelMap model, Long id)
+  public @ResponseBody Page<PropertyGridResponse> details (ModelMap model,Pageable pageable,Long productCategoryId)
   {
-    List<ProductCategory> productCategoryList = productCategoryService.findRoots (true);
-    return productCategoryList;
+    ProductCategory productCategory = productCategoryService.find (productCategoryId);
+    List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter> ();
+    com.csh.framework.filter.Filter categoryFilter = new com.csh.framework.filter.Filter ("productCategory", Operator.eq, productCategory);
+    filters.add (categoryFilter);
+    pageable.setFilters (filters);
+    Page<ParameterGroup> parameterGroupPage = parameterGroupService.findPage (pageable,true);
+    
+    List<PropertyGridResponse> responseList = new ArrayList<PropertyGridResponse>();
+    for (ParameterGroup parameterGroup : parameterGroupPage.getRows ())
+    {
+      List<Parameter> parameterList = parameterGroup.getParameters ();
+      for (Parameter parameter : parameterList)
+      {
+        PropertyGridResponse response = new PropertyGridResponse ();
+        response.setId (parameter.getId ());
+        response.setGroup (parameterGroup.getName ());
+        response.setName (parameter.getName ());
+        responseList.add (response);
+      }
+    }
+    return new Page<PropertyGridResponse> (responseList,responseList.size (),pageable);
   }
- 
+
 }
