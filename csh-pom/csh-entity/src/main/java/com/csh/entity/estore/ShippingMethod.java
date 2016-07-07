@@ -18,12 +18,16 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.OrderEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity - 配送方式
@@ -32,6 +36,7 @@ import com.csh.entity.base.OrderEntity;
 @Entity
 @Table(name = "csh_shipping_method",indexes={@javax.persistence.Index(name="shippingMethod_tenantid",columnList="tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_shipping_method_sequence")
+@Indexed(index="shippingMethod")
 public class ShippingMethod extends OrderEntity {
 
 	private static final long serialVersionUID = 5873163245980853245L;
@@ -89,6 +94,9 @@ public class ShippingMethod extends OrderEntity {
 	@NotEmpty
 	@Length(max = 200)
 	@Column(nullable = false)
+	   @Field (index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyzer = @Analyzer(
+	          impl = IKAnalyzer.class))
+	@JsonProperty
 	public String getName() {
 		return name;
 	}
@@ -111,6 +119,7 @@ public class ShippingMethod extends OrderEntity {
 	@NotNull
 	@Min(0)
 	@Column(nullable = false)
+	@JsonProperty
 	public Integer getFirstWeight() {
 		return firstWeight;
 	}
@@ -133,6 +142,7 @@ public class ShippingMethod extends OrderEntity {
 	@NotNull
 	@Min(1)
 	@Column(nullable = false)
+	@JsonProperty
 	public Integer getContinueWeight() {
 		return continueWeight;
 	}
@@ -156,6 +166,7 @@ public class ShippingMethod extends OrderEntity {
 	@Min(0)
 	@Digits(integer = 12, fraction = 3)
 	@Column(nullable = false, precision = 21, scale = 6)
+	@JsonProperty
 	public BigDecimal getFirstPrice() {
 		return firstPrice;
 	}
@@ -179,6 +190,7 @@ public class ShippingMethod extends OrderEntity {
 	@Min(0)
 	@Digits(integer = 12, fraction = 3)
 	@Column(nullable = false, precision = 21, scale = 6)
+	@JsonProperty
 	public BigDecimal getContinuePrice() {
 		return continuePrice;
 	}
@@ -199,6 +211,7 @@ public class ShippingMethod extends OrderEntity {
 	 * @return 图标
 	 */
 	@Length(max = 200)
+	@JsonProperty
 	public String getIcon() {
 		return icon;
 	}
@@ -219,6 +232,7 @@ public class ShippingMethod extends OrderEntity {
 	 * @return 介绍
 	 */
 	@Lob
+	@JsonProperty
 	public String getDescription() {
 		return description;
 	}

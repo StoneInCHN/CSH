@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import com.csh.entity.commonenum.CommonEnum.SortType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.TenantInfoJdbcService;
@@ -22,18 +23,14 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
   private JdbcTemplate jdbcTemplate;
 
   public Page<Map<String, Object>> getTenantInfos(String lng, String lat, Pageable pageable,
-      int radius, Long categoryId, Long tenantId) {
+      int radius, Long categoryId, Long tenantId, SortType sortType) {
 
     double[] aroundGps = LatLonUtil.getAround(Double.valueOf(lat), Double.valueOf(lng), radius);
-    // todo pageable.getPageNumber() <1
-    /*
-     * Map param = new HashMap(); param.put("minLat", aroundGps[0]); param.put("minLng",
-     * aroundGps[1]); param.put("maxLat", aroundGps[2]); param.put("maxLng", aroundGps[3]);
-     */
+
 
     StringBuffer tenant_sql = new StringBuffer();
     tenant_sql
-        .append("SELECT distinct(cti.id),cti.contact_phone,cti.latitude,cti.longitude,cti.address,cti.tenant_name,cti.photo,cti.praise_rate,");
+        .append("SELECT distinct(cti.id),cti.contact_phone,cti.latitude,cti.longitude,cti.address,cti.tenant_name,cti.photo,cti.praise_rate,cti.rate_counts");
     tenant_sql.append("round(6378.138*2*asin(sqrt(pow(sin((" + lat);
     tenant_sql.append("*pi()/180-latitude*pi()/180)/2),2)+cos(" + lat);
     tenant_sql.append("*pi()/180)*cos(latitude*pi()/180)*pow(sin((" + lng);
@@ -52,8 +49,17 @@ public class TenantInfoJdbcServiceImpl implements TenantInfoJdbcService {
     tenant_sql.append(" AND longitude <" + aroundGps[3]);
     tenant_sql.append(" AND latitude > " + aroundGps[0]);
     tenant_sql.append(" AND latitude < " + aroundGps[2]);
-    tenant_sql.append(" ORDER BY distance LIMIT " + (pageable.getPageNumber() - 1)
-        * pageable.getPageSize() + "," + pageable.getPageSize() + ";");
+    if (SortType.DISTANCEASC.equals(sortType)) {
+      tenant_sql.append(" ORDER BY distance LIMIT " + (pageable.getPageNumber() - 1)
+          * pageable.getPageSize() + "," + pageable.getPageSize() + ";");
+
+    } else if (SortType.SCOREDESC.equals(sortType)) {
+      tenant_sql.append(" ORDER BY cti.praise_rate desc LIMIT " + (pageable.getPageNumber() - 1)
+          * pageable.getPageSize() + "," + pageable.getPageSize() + ";");
+    } else {
+      tenant_sql.append(" ORDER BY distance LIMIT " + (pageable.getPageNumber() - 1)
+          * pageable.getPageSize() + "," + pageable.getPageSize() + ";");
+    }
 
 
     StringBuffer total_count_sql = new StringBuffer();

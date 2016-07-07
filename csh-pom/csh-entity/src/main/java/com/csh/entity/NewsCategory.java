@@ -31,8 +31,22 @@ public class NewsCategory extends BaseEntity {
    * 描述
    */
   private String categoryDesc;
-  
+
   private Set<News> newsInfo = new HashSet<News>();
+
+  /**
+   * 是否启用
+   */
+  private Boolean isEnabled;
+
+
+  public Boolean getIsEnabled() {
+    return isEnabled;
+  }
+
+  public void setIsEnabled(Boolean isEnabled) {
+    this.isEnabled = isEnabled;
+  }
 
   @JsonProperty
   @Column(length = 30, nullable = false)

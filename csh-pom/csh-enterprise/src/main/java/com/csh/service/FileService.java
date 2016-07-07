@@ -1,6 +1,8 @@
 package com.csh.service;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 
 
@@ -25,5 +27,14 @@ public interface FileService {
 	 */
 	public String saveImage(MultipartFile multipartFile ,ImageType imageType);
 
-
+	  /**
+	   * 文件验证
+	   * 
+	   * @param fileType
+	   *            文件类型
+	   * @param multipartFile
+	   *            上传文件
+	   * @return 文件验证是否通过
+	   */
+	  boolean isValid(FileType fileType, MultipartFile multipartFile);
 }

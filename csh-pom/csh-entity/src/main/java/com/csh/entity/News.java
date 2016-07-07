@@ -1,8 +1,13 @@
 package com.csh.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -26,7 +31,15 @@ public class News extends BaseEntity {
    */
   private static final long serialVersionUID = 2728868626426836566L;
 
+  /**
+   * 标题
+   */
   private String title;
+
+  /**
+   * 副标题
+   */
+  private String subTitle;
 
   private String content;
 
@@ -42,8 +55,97 @@ public class News extends BaseEntity {
 
   private NewsCategory newsCategory;
 
+  /**
+   * 新闻配图
+   */
+  private String imgUrl;
+
+  /**
+   * 是否启用
+   */
+  private Boolean isEnabled;
+
+  /**
+   * 阅读次数
+   */
+  private Integer readCounts = 0;
+
+  /**
+   * 点赞次数
+   */
+  private Integer likeCounts = 0;
+
+  /**
+   * 评论次数
+   */
+  private Integer commentCounts = 0;
+
+  /**
+   * 新闻评论
+   */
+  private Set<NewsComment> newsComments = new HashSet<NewsComment>();
+
+
+
+  public String getSubTitle() {
+    return subTitle;
+  }
+
+  public void setSubTitle(String subTitle) {
+    this.subTitle = subTitle;
+  }
+
+  public String getImgUrl() {
+    return imgUrl;
+  }
+
+  public void setImgUrl(String imgUrl) {
+    this.imgUrl = imgUrl;
+  }
+
+  public Integer getReadCounts() {
+    return readCounts;
+  }
+
+  public void setReadCounts(Integer readCounts) {
+    this.readCounts = readCounts;
+  }
+
+  public Integer getLikeCounts() {
+    return likeCounts;
+  }
+
+  public void setLikeCounts(Integer likeCounts) {
+    this.likeCounts = likeCounts;
+  }
+
+  public Integer getCommentCounts() {
+    return commentCounts;
+  }
+
+  public void setCommentCounts(Integer commentCounts) {
+    this.commentCounts = commentCounts;
+  }
+
+  @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
+  public Set<NewsComment> getNewsComments() {
+    return newsComments;
+  }
+
+  public void setNewsComments(Set<NewsComment> newsComments) {
+    this.newsComments = newsComments;
+  }
+
+  public Boolean getIsEnabled() {
+    return isEnabled;
+  }
+
+  public void setIsEnabled(Boolean isEnabled) {
+    this.isEnabled = isEnabled;
+  }
+
   @JsonProperty
-  @Column(length=100,nullable=false)
+  @Column(length = 100, nullable = false)
   public String getTitle() {
     return title;
   }
@@ -53,7 +155,7 @@ public class News extends BaseEntity {
   }
 
   @JsonProperty
-  @Column(length=2000,nullable=false)
+  @Column(length = 2000, nullable = false)
   public String getContent() {
     return content;
   }
@@ -63,7 +165,7 @@ public class News extends BaseEntity {
   }
 
   @JsonProperty
-  @Column(length=50)
+  @Column(length = 50)
   public String getUserName() {
     return userName;
   }
@@ -71,9 +173,9 @@ public class News extends BaseEntity {
   public void setUserName(String userName) {
     this.userName = userName;
   }
-  
+
   @JsonProperty
-  @Column(nullable=false)
+  @Column(nullable = false)
   public Boolean getPublishReminder() {
     return publishReminder;
   }
@@ -91,5 +193,5 @@ public class News extends BaseEntity {
   public void setNewsCategory(NewsCategory newsCategory) {
     this.newsCategory = newsCategory;
   }
-  
+
 }

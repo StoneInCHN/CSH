@@ -219,6 +219,21 @@ public class Setting implements Serializable {
   private String bdPage;
 
   /**
+   * 百度API Store api key
+   */
+  private String bdApiStoreKey;
+
+  /**
+   * 百度API Store api 汉字转拼音
+   */
+  private String bdApiStoreHz2PyUrl;
+
+  /**
+   * 百度API Store api 获取生活指数
+   */
+  private String bdApiStoreWeatherUrl;
+
+  /**
    * 百度车联网API 坐标修正
    */
   private String bdCarConvert;
@@ -238,6 +253,31 @@ public class Setting implements Serializable {
    */
   private String duibaLoginUrl;
 
+
+
+  public String getBdApiStoreKey() {
+    return bdApiStoreKey;
+  }
+
+  public void setBdApiStoreKey(String bdApiStoreKey) {
+    this.bdApiStoreKey = bdApiStoreKey;
+  }
+
+  public String getBdApiStoreHz2PyUrl() {
+    return bdApiStoreHz2PyUrl;
+  }
+
+  public void setBdApiStoreHz2PyUrl(String bdApiStoreHz2PyUrl) {
+    this.bdApiStoreHz2PyUrl = bdApiStoreHz2PyUrl;
+  }
+
+  public String getBdApiStoreWeatherUrl() {
+    return bdApiStoreWeatherUrl;
+  }
+
+  public void setBdApiStoreWeatherUrl(String bdApiStoreWeatherUrl) {
+    this.bdApiStoreWeatherUrl = bdApiStoreWeatherUrl;
+  }
 
   public String getDuibaLoginUrl() {
     return duibaLoginUrl;

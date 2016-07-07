@@ -88,6 +88,13 @@
 		<setting name="bdNumber" value="15"/>
 		<setting name="bdPage" value="0"/>
 		
+		<!-- 百度API Store api key -->
+		<setting name="bdApiStoreKey" value="ceeb59919cd08c4086abba8d08ae5eb5"/>
+		<!-- 百度API Store api 获取生活指数 -->
+		<setting name="bdApiStoreWeatherUrl" value="http://apis.baidu.com/thinkpage/weather_api/daily"/>
+		<!-- 百度API Store api 汉字转拼音 -->
+		<setting name="bdApiStoreHz2PyUrl" value="http://apis.baidu.com/sillystudio/service/topy"/>
+		
 		<!-- 兑吧-->
 		<setting name="duibaAppKey" value="2Q3avyPZ3krtR9yTjphyfhoGabvP"/>
 		<setting name="duibaAppSecret" value="gFxZ77QXSSDqBNgQZEFbN6VpLEA"/>

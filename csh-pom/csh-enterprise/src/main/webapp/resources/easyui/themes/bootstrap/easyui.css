@@ -1477,6 +1477,11 @@
   background: #0081c2;
   color: #fff;
 }
+/* 
+.datagrid-row-selected {
+  background: #66b3ff;
+  color: #000000;
+}*/
 .datagrid-row-editing .textbox,
 .datagrid-row-editing .textbox-text {
   -moz-border-radius: 0 0 0 0;

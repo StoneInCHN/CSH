@@ -13,12 +13,16 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.OrderEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity - 物流公司
@@ -27,6 +31,7 @@ import com.csh.entity.base.OrderEntity;
 @Entity
 @Table(name = "csh_delivery_corp",indexes={@Index(name="deliveryCorp_tenantid",columnList="tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_delivery_corp_sequence")
+@Indexed(index="deliveryCorp")
 public class DeliveryCorp extends OrderEntity {
 
 	private static final long serialVersionUID = 10595703086045998L;
@@ -65,6 +70,9 @@ public class DeliveryCorp extends OrderEntity {
 	@NotEmpty
 	@Length(max = 200)
 	@Column(nullable = false)
+	@Field (index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyzer = @Analyzer(
+	      impl = IKAnalyzer.class))
+	@JsonProperty
 	public String getName() {
 		return name;
 	}
@@ -85,6 +93,7 @@ public class DeliveryCorp extends OrderEntity {
 	 * @return 网址
 	 */
 	@Length(max = 200)
+	@JsonProperty
 	public String getUrl() {
 		return url;
 	}
@@ -105,6 +114,7 @@ public class DeliveryCorp extends OrderEntity {
 	 * @return 代码
 	 */
 	@Length(max = 200)
+	@JsonProperty
 	public String getCode() {
 		return code;
 	}
