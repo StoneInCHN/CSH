@@ -252,8 +252,11 @@
     		[@shiro.hasPermission name="shipping"]
     		<li><a href="#" data-url="${base}/console/shipping/shipping.jhtml">${message("csh.shippingManager.shipping")}</a></li>
     		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="shippingItem"]
-    		<li><a href="#" data-url="${base}/console/shippingItem/shippingItem.jhtml">${message("csh.shippingManager.shippingItem")}</a></li>
+    		[@shiro.hasPermission name="returns"]
+    		<li><a href="#" data-url="${base}/console/returns/returns.jhtml">${message("csh.shippingManager.returns")}</a></li>
+    		[/@shiro.hasPermission]
+    		[@shiro.hasPermission name="refunds"]
+    		<li><a href="#" data-url="${base}/console/refunds/refunds.jhtml">${message("csh.shippingManager.refunds")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="shippingMethod"]
     		<li><a href="#" data-url="${base}/console/shippingMethod/shippingMethod.jhtml">${message("csh.shippingManager.shippingMethod")}</a></li>
@@ -261,17 +264,6 @@
     		[@shiro.hasPermission name="deliveryCorp"]
     		<li><a href="#" data-url="${base}/console/deliveryCorp/deliveryCorp.jhtml">${message("csh.shippingManager.deliveryCorp")}</a></li>
     		[/@shiro.hasPermission]
-    		
-    		[@shiro.hasPermission name="returns"]
-    		<li><a href="#" data-url="${base}/console/returns/returns.jhtml">${message("csh.shippingManager.returns")}</a></li>
-    		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="returnsItem"]
-    		<li><a href="#" data-url="${base}/console/returnsItem/returnsItem.jhtml">${message("csh.shippingManager.returnsItem")}</a></li>
-    		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="refunds"]
-    		<li><a href="#" data-url="${base}/console/refunds/refunds.jhtml">${message("csh.shippingManager.refunds")}</a></li>
-    		[/@shiro.hasPermission]
-    		
     	</ul>  
     	 
     	<ul title="${message("csh.clearingManage.config")}" id="clearingManage">

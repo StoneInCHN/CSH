@@ -26,6 +26,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.csh.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity - 发货单
@@ -107,6 +108,7 @@ public class Shipping extends BaseEntity {
 	 * @return 编号
 	 */
 	@Column(nullable = false, updatable = false, unique = true, length = 100)
+	@JsonProperty
 	public String getSn() {
 		return sn;
 	}
@@ -128,6 +130,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@NotEmpty
 	@Column(nullable = false, updatable = false)
+	@JsonProperty
 	public String getShippingMethod() {
 		return shippingMethod;
 	}
@@ -149,6 +152,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@NotEmpty
 	@Column(nullable = false, updatable = false)
+	@JsonProperty
 	public String getDeliveryCorp() {
 		return deliveryCorp;
 	}
@@ -210,6 +214,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@Length(max = 200)
 	@Column(updatable = false)
+	@JsonProperty
 	public String getTrackingNo() {
 		return trackingNo;
 	}
@@ -232,6 +237,7 @@ public class Shipping extends BaseEntity {
 	@Min(0)
 	@Digits(integer = 12, fraction = 3)
 	@Column(updatable = false, precision = 21, scale = 6)
+	@JsonProperty
 	public BigDecimal getFreight() {
 		return freight;
 	}
@@ -254,6 +260,7 @@ public class Shipping extends BaseEntity {
 	@NotEmpty
 	@Length(max = 200)
 	@Column(nullable = false, updatable = false)
+	@JsonProperty
 	public String getConsignee() {
 		return consignee;
 	}
@@ -341,6 +348,7 @@ public class Shipping extends BaseEntity {
 	@NotEmpty
 	@Length(max = 200)
 	@Column(nullable = false, updatable = false)
+	@JsonProperty
 	public String getPhone() {
 		return phone;
 	}
@@ -426,6 +434,7 @@ public class Shipping extends BaseEntity {
 	@Valid
 	@NotEmpty
 	@OneToMany(mappedBy = "shipping", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonProperty
 	public List<ShippingItem> getShippingItems() {
 		return shippingItems;
 	}

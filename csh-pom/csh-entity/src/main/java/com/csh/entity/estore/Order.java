@@ -43,6 +43,7 @@ import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.ShippingStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity - 订单
@@ -195,6 +196,7 @@ public class Order extends BaseEntity {
    * @return 订单编号
    */
   @Column(nullable = false, updatable = false, unique = true, length = 100)
+  @JsonProperty
   public String getSn() {
     return sn;
   }
@@ -214,6 +216,7 @@ public class Order extends BaseEntity {
    * @return 订单状态
    */
   @Column(nullable = false)
+  @JsonProperty
   public OrderStatus getOrderStatus() {
     return orderStatus;
   }
@@ -233,6 +236,7 @@ public class Order extends BaseEntity {
    * @return 支付状态
    */
   @Column(nullable = false)
+  @JsonProperty
   public PaymentStatus getPaymentStatus() {
     return paymentStatus;
   }
@@ -252,6 +256,7 @@ public class Order extends BaseEntity {
    * @return 配送状态
    */
   @Column(nullable = false)
+  @JsonProperty
   public ShippingStatus getShippingStatus() {
     return shippingStatus;
   }
@@ -422,6 +427,7 @@ public class Order extends BaseEntity {
    * 
    * @param consignee 收货人
    */
+  @JsonProperty
   public void setConsignee(String consignee) {
     this.consignee = consignee;
   }
@@ -767,6 +773,7 @@ public class Order extends BaseEntity {
    */
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false, updatable = false)
+  @JsonProperty
   public EndUser getEndUser() {
     return endUser;
   }
@@ -806,6 +813,7 @@ public class Order extends BaseEntity {
   @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL,
       orphanRemoval = true)
   @OrderBy("isGift asc")
+  @JsonProperty
   public List<OrderItem> getOrderItems() {
     return orderItems;
   }
