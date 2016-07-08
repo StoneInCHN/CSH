@@ -30,6 +30,8 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="product_manager_tool.add();">添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="product_manager_tool.edit();">修改</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="product_manager_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-ok" plain=true onclick="product_manager_tool.marketable(true);">上架</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain=true onclick="product_manager_tool.marketable(false);">下架</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>

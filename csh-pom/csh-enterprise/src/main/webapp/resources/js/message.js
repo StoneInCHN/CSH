@@ -352,7 +352,11 @@ var messages = {
 	"csh.product.name":"商品名",
 	"csh.product.list":"商品列表",
 	"csh.product.add":"添加商品",
-	
+	"csh.product.marketable":"上架状态",
+	"csh.product.marketable.up":"上架",
+	"csh.product.marketable.down":"下架",
+	"csh.product.fullName":"全称",
+	"csh.product.sn":"商品编号",
 	//物流公司
 	"csh.deliveryCorp.name":"公司名称",
 	"csh.deliveryCorp.url":"公司网址",

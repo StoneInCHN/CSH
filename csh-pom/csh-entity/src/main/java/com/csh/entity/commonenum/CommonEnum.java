@@ -392,6 +392,10 @@ public class CommonEnum {
      */
     PRODUCTBRANDIMAGE,
     /**
+     * 商品展示图片
+     */
+    PRODUCTIMAGE,
+    /**
      * 租户图片
      */
     TENANTIMAGE,

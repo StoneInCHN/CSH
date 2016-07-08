@@ -1,45 +1,61 @@
  <form id="addProduct_form" method="post" >
+ 	<input type="hidden" id="addProductImage_form_file_input" name="image">
 	<div id="addProductTab" data-options="tabPosition:'top',headerWidth:100" class="easyui-tabs">  
 		<div title="${message("csh.product.baseInfo")}" style="padding:10px"> 
 			  <table class="table table-striped"  border="0">
 			  	<tr>
 			  		<th >${message("csh.product.sn")}:</th>
-		    		<td colspan="6">
-		    			<input  class="easyui-textbox" name="sn" />
+		    		<td>
+		    			<input  class="easyui-textbox" name="sn" value=${sn} required="required" readonly="true"/>
+		    		</td>
+		    		<th>${message("csh.product.productCategory")}:</th>
+		    		<td>
+		    			<input  class="easyui-combobox" required="required" id="addProduct_productCategory" name="productCategoryId"/>
+		    		</td>
+		    		<td rowspan="5" colspan="2">
+		    			<div title="图片上传" class="easyui-tooltip headWarp">
+	    				<div id="productImageUploader-add" class="single-uploader">
+						    <div  class="queueList">
+						        <div  class="placeholder">
+						        	<div id="productImageFilePicker-add" ></div>
+						        </div>
+						    </div>
+						    <div class="btns">
+						        <div class="uploadBtn state-pedding"></div>
+						    </div>
+						</div>
+	    			</div>
 		    		</td>
 			  	</tr>
 			    <tr>
-		    		<th >${message("csh.product.productCategory")}:</th>
-		    		<td>
-		    			<input  class="easyui-combobox" id="addProduct_productCategory" name="productCategoryId"/>
-		    		</td>
+		    		
 		    		<th>${message("csh.product.name")}:</th>
 		    		<td>
-		    			 <input  class="easyui-textbox" name="name" validtype="length[0,20]"/>
+		    			 <input  class="easyui-textbox" required="required" name="name" validtype="length[0,20]"/>
 		    		</td>
 		    		<th >${message("csh.product.fullName")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="fullName" validtype="length[0,50]"/>
+		    			<input  class="easyui-textbox" required="required"  name="fullName" validtype="length[0,50]"/>
 		    		</td>
 		    	</tr>
 		    	 <tr>
 		    		<th >${message("csh.product.price")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="price"/>
+		    			<input  class="easyui-textbox" required="required" name="price"/>
 		    		</td>
 		    		<th >${message("csh.product.cost")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="cost"/>
+		    			<input  class="easyui-textbox"  name="cost"/>
 		    		</td>
+		    	</tr>
+		    	<tr>
 		    		<th >${message("csh.product.marketPrice")}:</th>
 		    		<td>
 		    			<input  class="easyui-textbox" name="marketPrice"/>
 		    		</td>
-		    	</tr>
-		    	<tr>
-		    		<th >${message("csh.product.image")}:</th>
-		    		<td colspan="6">
-		    			<input  class="easyui-textbox" name="image"/>
+		    		<th >${message("csh.product.point")}:</th>
+		    		<td>
+		    			<input  class="easyui-textbox" name="point" data-options="min:0"/>
 		    		</td>
 		    	</tr>
 		    	<tr>
@@ -49,31 +65,27 @@
 		    		</td>
 		    		<th >${message("csh.product.weight")}:</th>
 		    		<td >
-		    			<input  class="easyui-textbox" name="weight"/>
+		    			<input  class="easyui-numberbox" name="weight" data-options="min:0"/>
 		    		</td >
-		    		<th >${message("csh.product.point")}:</th>
-		    		<td>
-		    			<input  class="easyui-textbox" name="point"/>
-		    		</td>
 		    	</tr>
 		    	<tr>
 		    		<th >${message("csh.product.stock")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stock"/>
+		    			<input  class="easyui-textbox" name="stock" data-options="min:0"/>
 		    		</td>
 		    		<th >${message("csh.product.stockMemo")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stockMemo"/>
+		    			<input  class="easyui-textbox" name="stockMemo" data-options="min:0"/>
 		    		</td >
 		    		<th >${message("csh.product.stockAlertCount")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stockAlertCount"/>
+		    			<input  class="easyui-textbox" name="stockAlertCount" data-options="min:0"/>
 		    		</td >
 		    	</tr>
 		    	<tr>
 		    		<th >${message("csh.product.brand")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" id="addProduct_brand" name="brandId"/>
+		    			<input  class="easyui-textbox" required="required" id="addProduct_brand" name="brandId"/>
 		    		</td >
 		    		<th >${message("csh.product.memo")}:</th>
 		    		<td>

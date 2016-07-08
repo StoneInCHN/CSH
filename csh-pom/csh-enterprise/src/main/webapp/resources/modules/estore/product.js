@@ -14,36 +14,42 @@ var product_manager_tool = {
 			    	iconCls:'icon-save',
 					handler:function(){
 						var validate = $('#addProduct_form').form('validate');
+						var $photoLi = $("#productImageUploader-add ul.filelist li");
 						if(validate){
-							var requestParameters = $('#addProductProductParameter').propertygrid('getData').rows;
-							var request ="";
-							for(var i=0;i<requestParameters.length;i++){
-								request = request +'&propertyGridResponses['+i+'].name='+requestParameters[i].name+
-										'&propertyGridResponses['+i+'].value='+requestParameters[i].value+
-										'&propertyGridResponses['+i+'].id='+requestParameters[i].id;
-							}
-							debugger;
-							$.ajax({
-								url:"../product/add.jhtml",
-								type:"post",
-								data:$("#addProduct_form").serialize()+request,
-								beforeSend:function(){
-									$.messager.progress({
-										text:message("csh.common.saving")
-									});
-								},
-								success:function(result,response,status){
-									$.messager.progress('close');
-									if(response == "success"){
-										showSuccessMsg(result.content);
-										$('#addProduct').dialog("close")
-										$("#addProduct_form").form("reset");
-										$("#product-table-list").datagrid('reload');
-									}else{
-										alertErrorMsg();
+							if($photoLi.length >0){
+								$("#productImageUploader-add .uploadBtn").trigger("upload");
+							}else{
+								if(validate){
+									var requestParameters = $('#addProductProductParameter').propertygrid('getData').rows;
+									var request ="";
+									for(var i=0;i<requestParameters.length;i++){
+										request = request +'&propertyGridResponses['+i+'].name='+requestParameters[i].name+
+												'&propertyGridResponses['+i+'].value='+requestParameters[i].value+
+												'&propertyGridResponses['+i+'].id='+requestParameters[i].id;
 									}
+									$.ajax({
+										url:"../product/add.jhtml",
+										type:"post",
+										data:$("#addProduct_form").serialize()+request,
+										beforeSend:function(){
+											$.messager.progress({
+												text:message("csh.common.saving")
+											});
+										},
+										success:function(result,response,status){
+											$.messager.progress('close');
+											if(response == "success"){
+												showSuccessMsg(result.content);
+												$('#addProduct').dialog("close")
+												$("#addProduct_form").form("reset");
+												$("#product-table-list").datagrid('reload');
+											}else{
+												alertErrorMsg();
+											}
+										}
+									});
 								}
-							});
+							}
 						}
 					}
 				},{
@@ -66,6 +72,96 @@ var product_manager_tool = {
 			    			return node.name;
 			    		},
 			    	});
+
+					//图片上传
+			     	var options ={
+			     			createOption:{
+			     				pick: {
+					                 id: '#productImageFilePicker-add',
+					                 label: '',
+					                 multiple :false
+					             },
+					             dnd: '#productImageUploader-add .queueList',
+					             accept: {
+					                 title: 'Images',
+					                 extensions: 'gif,jpg,jpeg,bmp,png',
+					                 mimeTypes: 'image/*'
+					             },
+					             //缩略图
+					             thumb:{
+					            	    width: 110,
+					            	    height: 110,
+					            	    quality: 90,
+					            	    allowMagnify: false,
+					            	    crop: false,
+					            	    type: 'image/jpeg'
+					              },
+					             // swf文件路径
+					             swf: BASE_URL + '/js/Uploader.swf',
+					             disableGlobalDnd: true,
+					             server: '../file/uploadPhoto.jhtml',
+					             fileNumLimit: 1,
+					             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
+					             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
+					             //图片裁剪
+					             compress:{
+					            	 width: 110,
+					            	 height: 110,
+					            	 // 图片质量，只有type为`image/jpeg`的时候才有效。
+					            	 quality: 90,
+					            	 // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+					            	 allowMagnify: false,
+					            	 // 是否允许裁剪。
+					            	 crop: false,
+					            	 // 是否保留头部meta信息。
+					            	 preserveHeaders: true,
+					            	 // 如果发现压缩后文件大小比原来还大，则使用原来图片
+					            	 // 此属性可能会影响图片自动纠正功能
+					            	 noCompressIfLarger: false,
+					            	 // 单位字节，如果图片大小小于此值，不会采用压缩。
+					            	 compressSize: 0
+					             }
+			     			},
+			     			//包裹上传组件的div id
+			     			warp :"addProduct_form",
+			     			uploadBeforeSend:function(object, data, headers){
+			     				 data.imageType ='PRODUCTIMAGE';
+			     			},
+			     			uploadSuccess:function(file, response){
+			     				//将返回的图片路径放到隐藏的input中，用于表单保存
+			     				$("#addProductImage_form_file_input").val(response.content);
+			     				var requestParameters = $('#addProductProductParameter').propertygrid('getData').rows;
+								var request ="";
+								for(var i=0;i<requestParameters.length;i++){
+									request = request +'&propertyGridResponses['+i+'].name='+requestParameters[i].name+
+											'&propertyGridResponses['+i+'].value='+requestParameters[i].value+
+											'&propertyGridResponses['+i+'].id='+requestParameters[i].id;
+								}
+								$.ajax({
+									url:"../product/add.jhtml",
+									type:"post",
+									data:$("#addProduct_form").serialize()+request,
+									beforeSend:function(){
+										$.messager.progress({
+											text:message("csh.common.saving")
+										});
+									},
+									success:function(result,response,status){
+										$.messager.progress('close');
+										if(response == "success"){
+											showSuccessMsg(result.content);
+											$('#addProduct').dialog("close")
+											$("#addProduct_form").form("reset");
+											$("#product-table-list").datagrid('reload');
+										}else{
+											alertErrorMsg();
+										}
+									}
+								});
+			     			}
+			     	};
+			     	
+			     	singleUpload(options);
 					var editor = KindEditor.create('#add_product_introduction', {
 						resizeType : 1,
 						width : '400px',
@@ -134,6 +230,7 @@ var product_manager_tool = {
 			    	});
 				},
 			    onClose:function(){
+			    	$("#productImageUploader-add .uploadBtn").trigger("clearFileQuene");
 			    	$('#addProduct').empty();
 			    }
 			});  
@@ -190,6 +287,39 @@ var product_manager_tool = {
 			    }
 			});  
 		},
+		
+		marketable:function(isMarketable){
+			var _rows = $('#product-table-list').datagrid('getSelections');
+			if (_rows.length == 0) {
+				$.messager.alert(message("csh.common.prompt"),
+						message("csh.common.select.deleteRow"), 'warning');
+			} else {
+				var _ids = [];
+				for (var i = 0; i < _rows.length; i++) {
+					_ids.push(_rows[i].id);
+				}
+				$.ajax({
+					url:"../product/marketable.jhtml",
+					type:"post",
+					traditional : true,
+					data : {
+						"isMarketable":isMarketable,
+						"ids":_ids
+					},
+					beforeSend:function(){
+						$.messager.progress({
+							text:message("csh.common.saving")
+						});
+					},
+					success:function(result,response,status){
+						$.messager.progress('close');
+						showSuccessMsg(result.content);
+						$("#product-table-list").datagrid('reload');
+					}
+				});
+			}		
+		},
+		
 		remove:function(){
 			listRemove('product-table-list','../product/delete.jhtml');
 		}
@@ -244,8 +374,16 @@ $(function(){
 		columns:[
 		   [
 		      {field:'ck',checkbox:true},
+		      {title:message("csh.product.sn"),field:"sn",sortable:true},
 		      {title:message("csh.product.name"),field:"name",sortable:true},
-		      {title:message("csh.product.grade"),field:"grade",sortable:true},
+		      {title:message("csh.product.fullName"),field:"fullName",sortable:true},
+		      {title:message("csh.product.marketable"),field:"isMarketable",sortable:true,formatter: function(value,row,index){
+		    	  if(value){
+		    		  return message("csh.product.marketable.up");
+		    	  }else{
+		    		  return message("csh.product.marketable.down");
+		    	  }
+		      }},
 //		      {title:message("csh.product.parent"),field:"parent",sortable:true,formatter: function(value,row,index){
 //		    	  if(value != null){
 //						return value.name;

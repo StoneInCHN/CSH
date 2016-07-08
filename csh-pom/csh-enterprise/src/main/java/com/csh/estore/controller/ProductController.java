@@ -1,6 +1,7 @@
 package com.csh.estore.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -26,6 +27,7 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.DeviceInfoController;
 import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.Sn.Type;
 import com.csh.entity.estore.Brand;
 import com.csh.entity.estore.Parameter;
 import com.csh.entity.estore.ParameterGroup;
@@ -38,6 +40,7 @@ import com.csh.json.response.PropertyGridResponse;
 import com.csh.service.BrandService;
 import com.csh.service.ProductCategoryService;
 import com.csh.service.ProductService;
+import com.csh.service.SnService;
 import com.csh.utils.DateTimeUtils;
 
 /**
@@ -56,6 +59,8 @@ public class ProductController extends BaseController
   private ProductCategoryService productCategoryService;
   @Resource(name = "brandServiceImpl")
   private BrandService brandService;
+  @Resource (name = "snServiceImpl")
+  private SnService snService;
 
   /**
    * 界面展示
@@ -157,6 +162,8 @@ public class ProductController extends BaseController
   @RequestMapping (value = "/add", method = RequestMethod.GET)
   public String add (ModelMap model)
   {
+    
+    model.put ("sn", snService.generate (Type.product));
     return "estore/product/add";
   }
 
@@ -177,7 +184,7 @@ public class ProductController extends BaseController
           if (propertyGridResponse.getId () == parameter.getId ())
           {
             String parameterValue = propertyGridResponse.getValue ();
-            if (StringUtils.isNotEmpty(parameterValue)) {
+            if (StringUtils.isNotEmpty(parameterValue) && !"null".equals (parameterValue)) {
               product.getParameterValue().put(parameter, parameterValue);
             } else {
               product.getParameterValue().remove(parameter);
@@ -225,7 +232,23 @@ public class ProductController extends BaseController
     }
     return SUCCESS_MESSAGE;
   }
-
+  /**
+   * 删除
+   */
+  @RequestMapping (value = "/marketable", method = RequestMethod.POST)
+  public @ResponseBody Message marketable (Long[] ids,Boolean isMarketable)
+  {
+    if (ids != null)
+    {
+      List<Product > prudoctList =productService.findList (ids);
+      for (Product product : prudoctList)
+      {
+        product.setIsMarketable (isMarketable);
+      }
+      productService.update (prudoctList);
+    }
+    return SUCCESS_MESSAGE;
+  }
   /**
    * 获取数据进入详情页面
    * 

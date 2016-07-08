@@ -536,7 +536,7 @@ public class Product extends BaseEntity {
 	@NotNull
 	@Min(0)
 	@Digits(integer = 12, fraction = 3)
-	@Column(nullable = false, precision = 21, scale = 6)
+	@Column(nullable = false, precision = 2, scale = 6)
 	public BigDecimal getPrice() {
 		return price;
 	}
@@ -762,6 +762,7 @@ public class Product extends BaseEntity {
 	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
 	@NotNull
 	@Column(nullable = false)
+	@JsonProperty
 	public Boolean getIsMarketable() {
 		return isMarketable;
 	}
