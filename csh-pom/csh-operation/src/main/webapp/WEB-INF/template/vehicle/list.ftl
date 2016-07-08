@@ -63,7 +63,7 @@
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
 								          <li [#if page.searchProperty == "plate" ] selected="selected" class="active" [/#if] title="plate"><a href="#">${message("csh.vehicle.plate")}</a></li>
-										  <li [#if page.searchProperty == "tenant" ] selected="selected" class="active" [/#if] title="plate"><a href="#">${message("csh.vehicle.tenant")}</a></li>
+										 <!-- <li [#if page.searchProperty == "tenant" ] selected="selected" class="active" [/#if] title="plate"><a href="#">${message("csh.vehicle.tenantName")}</a></li> -->
 										   <li [#if page.searchProperty == "mobileNum" ] selected="selected" class="active" [/#if] title="mobileNum"><a href="#">${message("csh.vehicle.mobileNum")}</a></li>
 								        </ul>
 								      </div>
@@ -106,6 +106,9 @@
 														${message("csh.vehicle.device")}
 													</th>
 													<th>
+														${message("csh.vehicle.bindTime")}
+													</th>
+													<th>
 														${message("csh.vehicle.tenantName")}
 													</th>
 													<th>
@@ -142,10 +145,17 @@
 														${vehicle.device.deviceNo}
 													</td>
 													<td>
-														${vehicle.device.tenantName}
+														[#if vehicle.device?? && vehicle.device.bindTime??]
+															<span title="${vehicle.device.bindTime?string("yyyy-MM-dd HH:mm:ss")}">${vehicle.device.bindTime}</span>
+														[#else]
+															-
+														[/#if]
 													</td>
 													<td>
-														${vehicle.device.distributorName}
+														${vehicle.tenantName}
+													</td>
+													<td>
+														${vehicle.distributorName}
 													</td>
 													<td>
 														[#if vehicle.produceDate??]

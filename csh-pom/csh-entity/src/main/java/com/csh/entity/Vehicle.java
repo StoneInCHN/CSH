@@ -165,10 +165,16 @@ public class Vehicle extends BaseEntity {
    * 是否获取到红包
    */
   private Boolean isGetCoupon;
-  
+
+  /**
+   * 商家名字
+   */
   private String tenantName;
+  /**
+   * 分销商名字
+   */
   private String distributorName;
-  
+
   @Transient
   public Boolean getIsGetCoupon() {
     return isGetCoupon;
@@ -291,7 +297,7 @@ public class Vehicle extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.NO)
   @FieldBridge(impl = LowCaseBridgeImpl.class)
   public String getPlate() {
     return plate;
@@ -321,7 +327,7 @@ public class Vehicle extends BaseEntity {
   }
 
   @Index(name = "index_vehicle_tenantid")
-  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -435,23 +441,23 @@ public class Vehicle extends BaseEntity {
   }
 
   @Transient
-	public String getTenantName() {
-    
-    
-		return tenantName;
-	}
-	
-	public void setTenantName(String tenantName) {
-		this.tenantName = tenantName;
-	}
-	
-	@Transient
-	public String getDistributorName() {
-		return distributorName;
-	}
-	
-	public void setDistributorName(String distributorName) {
-		this.distributorName = distributorName;
-	}
-  
+  public String getTenantName() {
+
+
+    return tenantName;
+  }
+
+  public void setTenantName(String tenantName) {
+    this.tenantName = tenantName;
+  }
+
+  @Transient
+  public String getDistributorName() {
+    return distributorName;
+  }
+
+  public void setDistributorName(String distributorName) {
+    this.distributorName = distributorName;
+  }
+
 }

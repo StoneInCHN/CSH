@@ -28,7 +28,7 @@
 					allowPreviewEmoticons : false,
 					allowImageUpload : true,
 					items : [
-						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'source','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
 						'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
 					uploadJson: '${base}/console/common/uploadImg.jhtml',

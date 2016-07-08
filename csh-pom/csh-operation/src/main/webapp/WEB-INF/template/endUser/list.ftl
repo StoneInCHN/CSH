@@ -92,6 +92,9 @@
 														<a href="javascript:;" class="sort" name="userName">${message("csh.endUser.userName")}</a>
 													</th>
 													<th>
+														<a href="javascript:;" class="sort" name="createDate">${message("csh.endUser.registerDate")}</a>
+													</th>
+													<th>
 														<a href="javascript:;" class="sort" name="realName">${message("csh.endUser.realName")}</a>
 													</th>
 													<th>
@@ -100,9 +103,6 @@
 													<th>
 														<a href="javascript:;" class="sort" name="mobileNum">${message("csh.endUser.mobileNum")}</a>
 													</th>
-												<!--	<th>
-														<a href="javascript:;" class="sort" name="vipLevel">${message("csh.endUser.vipLevel")}</a>
-													</th> -->
 													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
@@ -115,6 +115,9 @@
 														${endUser.userName}
 													</td>
 													<td>
+														<span title="${endUser.createDate?string("yyyy-MM-dd HH:mm:ss")}">${endUser.createDate}</span>
+													</td>
+													<td>
 														${endUser.realName}
 													</td>
 													<td>
@@ -123,13 +126,6 @@
 													<td>
 														${endUser.mobileNum}
 													</td>
-									<!--				<td>
-														[#if endUser.vipLevel??]
-															${endUser.vipLevel}
-														[#else]
-															-
-														[/#if]
-													</td> -->
 													<td>
 														<a href="details.jhtml?id=${endUser.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>
 													</td>
