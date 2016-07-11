@@ -29,7 +29,7 @@
 					allowPreviewEmoticons : false,
 					allowImageUpload : true,
 					items : [
-						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'source','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
 						'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
 					uploadJson: '${base}/console/common/uploadImg.jhtml',
@@ -54,6 +54,12 @@ $().ready(function() {
 				required: true
 			},
 			newsCategoryId:{
+				required: true
+			},
+			isEnabled:{
+				required: true
+			},
+			subTitle:{
 				required: true
 			}
 		}
@@ -89,7 +95,7 @@ $().ready(function() {
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                     <form id="inputForm" action="update.jhtml"  method="post" class="form-horizontal" role="form">
+                     <form id="inputForm" action="update.jhtml"  method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
                      	<input type="hidden" name="id" value="${news.id}" />
                      	<table class="input tabContent">
                      		<tr>
@@ -98,6 +104,14 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="text"  value="${news.title}" name="title" class="text" maxlength="200" style="width:500px"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.news.subTitle")}:
+								</th>
+								<td>
+									<input type="text" id="subTitle" name="subTitle" value="${news.subTitle}" class="text" maxlength="200" style="width:500px"/>
 								</td>
 							</tr>
 							<tr>
@@ -112,8 +126,34 @@ $().ready(function() {
 									</select>
 								</td>
 							</tr>
-							<!--
-							<tr disable="disable">
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.news.isEnabled")}:
+								</th>
+								<td>
+									<select name="isEnabled">
+										<option value="true" [#if news.isEnabled?? && news.isEnabled]selected="selected"[/#if]>${message("csh.news.isEnabled.true")}</option>
+										<option value="false"[#if news.isEnabled?? && !news.isEnabled]selected="selected"[/#if]>${message("csh.news.isEnabled.false")}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.news.imgUrl")}:
+								</th>
+								<td>
+									<input type="file" id="imgFile" name="imgFile"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.news.imgUrl")}:
+								</th>
+								<td>
+									<a href="${news.imgUrl}" target="100"><img src="${news.imgUrl}" alt="新闻配图" style="width:100px;height:100px"><a>
+								</td>
+							</tr>
+							<tr >
 								<th>
 									${message("csh.news.publishReminder")}:
 								</th>
@@ -121,7 +161,6 @@ $().ready(function() {
 									<input type="checkbox" id="publishReminder" name="publishReminder"[#if news.publishReminder] checked="checked" [/#if] />
 								</td>
 							</tr>
-							-->
 							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.news.content")}:

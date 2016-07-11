@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.csh.entity.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -53,6 +56,11 @@ public class News extends BaseEntity {
    */
   private Boolean publishReminder;
 
+  /**
+   * 是否已经推送
+   */
+  private Boolean hasReminder;
+  
   private NewsCategory newsCategory;
 
   /**
@@ -60,6 +68,8 @@ public class News extends BaseEntity {
    */
   private String imgUrl;
 
+  private MultipartFile imgFile;
+  
   /**
    * 是否启用
    */
@@ -103,6 +113,7 @@ public class News extends BaseEntity {
     this.imgUrl = imgUrl;
   }
 
+  @Column(nullable=false,columnDefinition="INT default 0")
   public Integer getReadCounts() {
     return readCounts;
   }
@@ -111,6 +122,7 @@ public class News extends BaseEntity {
     this.readCounts = readCounts;
   }
 
+  @Column(nullable=false,columnDefinition="INT default 0")
   public Integer getLikeCounts() {
     return likeCounts;
   }
@@ -194,4 +206,21 @@ public class News extends BaseEntity {
     this.newsCategory = newsCategory;
   }
 
+  @Transient
+  public MultipartFile getImgFile() {
+    return imgFile;
+  }
+
+  public void setImgFile(MultipartFile imgFile) {
+    this.imgFile = imgFile;
+  }
+
+  public Boolean getHasReminder() {
+    return hasReminder;
+  }
+
+  public void setHasReminder(Boolean hasReminder) {
+    this.hasReminder = hasReminder;
+  }
+  
 }
