@@ -64,7 +64,7 @@ public class ReportVehicleMileageController extends BaseController {
       params.append(fromDate);
       params.append("&toDate=");
       params.append(toDate);
-      mileageJson = ApiUtils.post(setting.getObdServiceUrl ()+"monthlyVehicleStatus.jhtml",params.toString());
+      mileageJson = ApiUtils.post(setting.getObdServiceUrl ()+"tenantVehicleData/monthlyVehicleStatus.jhtml",params.toString());
       return mileageJson;
     }else {
       return "";

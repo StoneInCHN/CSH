@@ -41,6 +41,14 @@ public class VehicleStatus {
    * gps里程
    */
   private Float gpsMileage;
+  /**
+   * 纬度
+   */
+  private Float lat;
+  /**
+   * 经度
+   */
+  private Float Lon;
   
   public Long getDeviceId() {
     return deviceId;
@@ -98,6 +106,26 @@ public class VehicleStatus {
   public void setGpsMileage (Float gpsMileage)
   {
     this.gpsMileage = gpsMileage;
+  }
+
+  public Float getLat ()
+  {
+    return lat;
+  }
+
+  public void setLat (Float lat)
+  {
+    this.lat = lat;
+  }
+
+  public Float getLon ()
+  {
+    return Lon;
+  }
+
+  public void setLon (Float lon)
+  {
+    Lon = lon;
   }
   
 }
