@@ -253,7 +253,32 @@ public class Setting implements Serializable {
    */
   private String duibaLoginUrl;
 
+  /**
+   * 对外接口APIKEY
+   */
+  private String intfApiKey;
 
+  /**
+   * 新闻详情url
+   */
+  private String newsDetailsUrl;
+
+
+  public String getNewsDetailsUrl() {
+    return newsDetailsUrl;
+  }
+
+  public void setNewsDetailsUrl(String newsDetailsUrl) {
+    this.newsDetailsUrl = newsDetailsUrl;
+  }
+
+  public String getIntfApiKey() {
+    return intfApiKey;
+  }
+
+  public void setIntfApiKey(String intfApiKey) {
+    this.intfApiKey = intfApiKey;
+  }
 
   public String getBdApiStoreKey() {
     return bdApiStoreKey;

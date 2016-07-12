@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 public class TimeUtils {
 
   private static final SimpleDateFormat longDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+  public static final SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
   /**
    * 格式化时间

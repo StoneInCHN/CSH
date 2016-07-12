@@ -11,5 +11,5 @@ public interface NewsService extends BaseService<News, Long> {
    * @param title
    * @param contentUrl
    */
-  public void jpushNews(String title, String contentUrl);
+  public void jpushNews(Long newsId, String title, String contentUrl);
 }

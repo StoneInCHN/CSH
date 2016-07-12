@@ -70,6 +70,105 @@ public class TenantInfoController extends MobileBaseController {
 
 
   /**
+   * 首页改版前租户列表接口（由于新接口返回值数据结构发生变化，为保证老版本用户不报错保留此接口）
+   * 
+   * @param req
+   * @return
+   */
+  private ResponseMultiple<Map<String, Object>> oldVersion_list(TenantInfoRequest tenantInfoReq) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+    Long userId = tenantInfoReq.getUserId();
+    String token = tenantInfoReq.getToken();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+    Integer radius = setting.getSearchRadius();
+    String latitude = tenantInfoReq.getLatitude();// 纬度
+    String longitude = tenantInfoReq.getLongitude();// 经度
+    Long serviceCategoryId = tenantInfoReq.getServiceCategoryId();
+
+    Long tenantId = null;
+    EndUser endUser = endUserService.find(userId);
+    if (endUser.getDefaultVehicle() != null && tenantInfoReq.getPageNumber() == 1) {
+      tenantId = endUser.getDefaultVehicle().getTenantID();
+    }
+
+    if (LogUtil.isDebugEnabled(TenantInfoController.class)) {
+      LogUtil.debug(TenantInfoController.class, "getTenantList",
+          "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s",
+          endUser.getUserName(), endUser.getId(), longitude, latitude);
+    }
+    Pageable pageable = new Pageable(tenantInfoReq.getPageNumber(), tenantInfoReq.getPageSize());
+    Page<Map<String, Object>> tenantPage =
+        tenantInfoJdbcService.getTenantInfos(longitude, latitude, pageable, radius,
+            serviceCategoryId, tenantId, null);
+    if (tenantId != null) {
+      TenantInfo bindTenant = tenantInfoService.find(tenantId);
+
+      if (bindTenant != null && AccountStatus.ACTIVED.equals(bindTenant.getAccountStatus())) {
+        Boolean flag = false;
+        for (CarService service : bindTenant.getCarServices()) {
+          if (service.getServiceCategory().getId().equals(serviceCategoryId)) {
+            flag = true;
+            break;
+          }
+        }
+        if (flag) {
+          String[] properties =
+              {"id", "contactPhone", "latitude", "longitude", "address", "tenantName", "photo",
+                  "praiseRate", "distance"};
+          Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, bindTenant);
+          tenantPage.getContent().add(0, map);
+        }
+
+      }
+    }
+    for (Map<String, Object> map : tenantPage.getContent()) {
+      TenantInfo tenantInfo = tenantInfoService.find(Long.parseLong(map.get("id").toString()));
+      List<CarService> services =
+          carServiceService.getServicesByTenantAndCategory(tenantInfo, serviceCategoryId);
+      List<Map<String, Object>> serviceList = new ArrayList<Map<String, Object>>();
+      for (CarService carService : services) {
+        Map<String, Object> serviceMap = new HashMap<>();
+        serviceMap.put("service_id", carService.getId());
+        serviceMap.put("serviceName", carService.getServiceName());
+        serviceMap.put("price", carService.getPrice());
+        serviceMap.put("promotion_price", carService.getPromotionPrice());
+        serviceMap.put("categoryId", carService.getServiceCategory().getId());
+        serviceList.add(serviceMap);
+      }
+
+      map.put("carService", serviceList);
+    }
+    PageResponse page = new PageResponse();
+    page.setPageNumber(tenantInfoReq.getPageNumber());
+    page.setPageSize(tenantInfoReq.getPageSize());
+    page.setTotal((int) tenantPage.getTotal());
+    response.setPage(page);
+    response.setMsg(tenantPage.getContent());
+
+    EndUser user = endUserService.find(userId);
+    if (user.getDefaultVehicle() != null) {
+      App app = appService.getTenantAppById(user.getDefaultVehicle().getTenantID());
+      if (app != null) {
+        response.setDesc(app.getAppTitleName());
+      }
+    }
+
+    String newtoken = TokenGenerator.generateToken(tenantInfoReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+
+  /**
    * 租户列表
    * 
    * @param req
@@ -79,7 +178,12 @@ public class TenantInfoController extends MobileBaseController {
   @UserValidCheck
   public @ResponseBody ResponseMultiple<Map<String, Object>> list(
       @RequestBody TenantInfoRequest tenantInfoReq) {
-
+    /**
+     * 老版本用户
+     */
+    if (tenantInfoReq.getSortType() == null) {
+      return oldVersion_list(tenantInfoReq);
+    }
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Long userId = tenantInfoReq.getUserId();
     String token = tenantInfoReq.getToken();

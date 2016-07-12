@@ -18,7 +18,7 @@ public interface CouponEndUserService extends BaseService<CouponEndUser, Long> {
    * @param endUser
    * @return
    */
-  Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser, Long tenantId);
+  Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser);
 
   /**
    * 支付时可用的优惠券列表

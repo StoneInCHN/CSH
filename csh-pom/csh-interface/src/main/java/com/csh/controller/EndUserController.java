@@ -387,6 +387,41 @@ public class EndUserController extends MobileBaseController {
     return response;
   }
 
+
+  /**
+   * 导入终端用户
+   * 
+   * @param request
+   * @param userReg
+   * @return
+   */
+  @RequestMapping(value = "/importUser", method = RequestMethod.GET)
+  public @ResponseBody ResponseOne<Map<String, Object>> importUser(String mobileNum) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    String password = "123456";
+
+    // 手机号码格式验证
+    if (StringUtils.isEmpty(mobileNum) || !isMobileNumber(mobileNum)) {
+      response.setCode(CommonAttributes.FAIL_REG);
+      response.setDesc(Message.error("csh.mobile.invaliable").getContent());
+      return response;
+    }
+    // 账号重复验证
+    EndUser user = endUserService.findByUserName(mobileNum);
+    if (user != null) {
+      response.setCode(CommonAttributes.FAIL_REG);
+      response.setDesc(Message.error("csh.mobile.used").getContent());
+      return response;
+    }
+
+
+    endUserService.userReg(mobileNum, password);
+    response.setCode(CommonAttributes.SUCCESS);
+    response.setDesc("用户导入成功！");
+    return response;
+
+  }
+
   /**
    * 终端用户注册
    * 
