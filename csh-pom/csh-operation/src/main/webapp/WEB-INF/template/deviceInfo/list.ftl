@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>${message("csh.deviceInfo.list")}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no,">
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/bootstrap-theme.css" rel="stylesheet" type="text/css" />
@@ -10,6 +10,9 @@
 <link href="${base}/resources/style/style.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/dialog.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/list.css" rel="stylesheet" type="text/css" />
+<style>
+	#allmap{height:400px;width:100%;}
+</style>
   <!-- HTML5 Support for IE -->
   <!--[if lt IE 9]>
   <script src="${base}/resources/js/html5shim.js"></script>
@@ -60,12 +63,14 @@
 												<li>
 													<a href="javascript:;"[#if page.pageSize == 20] class="active"[/#if] val="20">20</a>
 												</li>
+												<!--
 												<li>
 													<a href="javascript:;"[#if page.pageSize == 50] class="active"[/#if] val="50">50</a>
 												</li>
 												<li>
 													<a href="javascript:;"[#if page.pageSize == 100] class="active"[/#if] val="100">100</a>
 												</li>
+												-->
 										    </ul>
 									  </li>
 										<li role="presentation" class="dropdown pull-right ">
@@ -151,6 +156,12 @@
 														<a href="javascript:;" class="sort" name="distributor">${message("csh.deviceInfo.distributorId")}</a>
 													</th>
 													<th>
+														${message("csh.deviceInfo.lastUpdateDate")}
+													</th>
+													<th>
+														${message("csh.deviceInfo.currentPosition")}
+													</th>
+													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
 												</tr>
@@ -179,7 +190,7 @@
 															-
 														[/#if]
 													</td>
-													<td>
+													<td class="deviceNo-td" data-deviceNo="${deviceInfo.deviceNo}">
 														${deviceInfo.deviceNo}
 													</td>
 													<td>
@@ -205,6 +216,12 @@
 															--
 														[/#if]
 													</td>
+													<td class="lastUpdateDate-td">
+														--
+													</td>
+													<td class="currentPosition-td">
+														<i class="fa fa-eye" style="display:none"></i>
+													</td>
 													<td>
 														<a href="edit.jhtml?id=${deviceInfo.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 														<a href="details.jhtml?id=${deviceInfo.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>
@@ -226,22 +243,42 @@
 				</div>
 			</form>
 </div>
-
+<div class="modal fade" id="currentPositionModal" tabindex="-1" role="dialog" aria-labelledby="operationModalLabel" >
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title"></h4>
+	      </div>
+	      <div class="modal-body" style="margin:0;padding:0">
+	      	<div id="allmap"></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button  type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 <script type="text/javascript" src="${base}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${base}/resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=D767b598a9f1e43c3cadc4fe26cdb610"></script>
 <script type="text/javascript">
 $().ready(function() {
 
+	var map = new BMap.Map("allmap");
+	map.centerAndZoom(new BMap.Point(116.331398,39.897445),13);
+	map.enableScrollWheelZoom(true);
 	var $listForm = $("#listForm");
 	var $filterSelect = $("#filterSelect");
 	var $filterOption = $("#filterOption a");
 	var $deviceProvide = $("#deviceProvide");
 	var $deviceStatus = $("#deviceStatus");
 	var $batchdAddButton = $("#batchdAddButton");
-	
+	var $deviceNoTd = $(".deviceNo-td");
+	var $currentPositionModal = $("#currentPositionModal");
 	$batchdAddButton.click(function(){
 		location.href="batchAdd.jhtml";
 	})
@@ -282,6 +319,42 @@ $().ready(function() {
 		return false;
 	});
 
+	$deviceNoTd.each(function(i){
+	  var $this = $(this);
+	  //ajax 
+
+	  $.ajax({
+        url: 'http://139.129.5.114:20001/obd-data/tenantVehicleData/vehicleCoordinate.jhtml',
+        dataType: "jsonp",
+        data:{"deviceId": $this.attr("data-deviceNo")},
+        jsonp: "callback",
+        success: function (res) {
+            console.log(res.msg);
+            if(res.msg){
+            	$this.parent().find(".lastUpdateDate-td").text(res.msg.createtime);
+            	$currentPosition.attr("data-longitude",res.msg.lon);
+           		$currentPosition.attr("data-latitude",res.msg.lat);
+            }
+        }
+   	 })
+	  var $currentPosition = $this.parent().find(".currentPosition-td");
+	  $currentPosition.find("i").show().bind("click",function(){
+	   $currentPositionModal.modal("show");
+	  var longitude=$currentPosition.attr("data-longitude");
+	  var latitude=$currentPosition.attr("data-latitude");
+		setTimeout(function(){
+			if(longitude&&latitude){
+			map.clearOverlays(); 
+			var new_point = new BMap.Point(longitude,latitude);
+			var marker = new BMap.Marker(new_point);  // 创建标注
+			map.addOverlay(marker);              // 将标注添加到地图中
+			map.panTo(new_point);   
+		}
+		}, 1000);
+	  })
+	  
+	});
+	
 });
 </script>
 </body>

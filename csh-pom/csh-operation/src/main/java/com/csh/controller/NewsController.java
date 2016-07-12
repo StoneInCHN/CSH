@@ -80,6 +80,7 @@ public class NewsController extends BaseController {
         Setting setting = SettingUtils.get();
         Map<String, Object> params = new HashMap<String, Object>();
         params.putIfAbsent("title", news.getTitle());
+        params.putIfAbsent("newsId", news.getId());
         params.putIfAbsent("contentUrl",setting.getNewsDetailsUrl()+"?id="+news.getId());
         String url = setting.getNewsPushUrl();
         String data =JsonUtil.getJsonString4JavaPOJO(params);
@@ -127,6 +128,7 @@ public class NewsController extends BaseController {
         Setting setting = SettingUtils.get();
         Map<String, Object> params = new HashMap<String, Object>();
         params.putIfAbsent("title", news.getTitle());
+        params.putIfAbsent("newsId", news.getId());
         params.putIfAbsent("contentUrl",setting.getNewsDetailsUrl()+"?id="+news.getId());
         String url = setting.getNewsPushUrl();
         String data =JsonUtil.getJsonString4JavaPOJO(params);
