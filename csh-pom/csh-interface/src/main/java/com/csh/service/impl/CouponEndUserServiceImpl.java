@@ -50,7 +50,7 @@ public class CouponEndUserServiceImpl extends BaseServiceImpl<CouponEndUser, Lon
   }
 
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser, Long tenantId) {
+  public Page<CouponEndUser> getMyCoupons(Pageable pageable, EndUser endUser) {
     List<Filter> filters = new ArrayList<Filter>();
     Filter userFilter = new Filter("endUser", Operator.eq, endUser);
     Filter isUsedFilter = new Filter("isUsed", Operator.eq, false);

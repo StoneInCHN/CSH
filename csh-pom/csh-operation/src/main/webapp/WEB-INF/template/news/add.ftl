@@ -28,7 +28,7 @@
 					allowPreviewEmoticons : false,
 					allowImageUpload : true,
 					items : [
-						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'source','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
 						'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
 					uploadJson: '${base}/console/common/uploadImg.jhtml',
@@ -53,6 +53,15 @@ $().ready(function() {
 				required: true
 			},
 			newsCategoryId:{
+				required: true
+			},
+			imgFile:{
+				required: true
+			},
+			isEnabled:{
+				required: true
+			},
+			subTitle:{
 				required: true
 			}
 		}
@@ -100,6 +109,14 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<th>
+									<span class="requiredField">*</span>${message("csh.news.subTitle")}:
+								</th>
+								<td>
+									<input type="text" id="subTitle" name="subTitle" class="text" maxlength="200" style="width:500px"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
 									<span class="requiredField">*</span>${message("csh.news.newsCategory")}:
 								</th>
 								<td>
@@ -111,7 +128,25 @@ $().ready(function() {
 									</select>
 								</td>
 							</tr>
-							<!--
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.news.isEnabled")}:
+								</th>
+								<td>
+									<select name="isEnabled">
+										<option value="true">${message("csh.news.isEnabled.true")}</option>
+										<option value="false">${message("csh.news.isEnabled.false")}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.news.imgUrl")}:
+								</th>
+								<td>
+									<input type="file" id="imgFile" name="imgFile"/>
+								</td>
+							</tr>
 							<tr>
 								<th>
 									${message("csh.news.publishReminder")}:
@@ -120,7 +155,6 @@ $().ready(function() {
 									<input type="checkbox" id="publishReminder" name="publishReminder"/>
 								</td>
 							</tr>
-							-->
 							<tr>
 								<th>
 									<span class="requiredField">*</span>${message("csh.news.content")}:

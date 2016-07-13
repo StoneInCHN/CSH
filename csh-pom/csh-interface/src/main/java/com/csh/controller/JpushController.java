@@ -22,6 +22,7 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.Advertisement;
 import com.csh.entity.ApkVersion;
 import com.csh.entity.Coupon;
+import com.csh.entity.CouponEndUser;
 import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.framework.filter.Filter;
@@ -32,6 +33,7 @@ import com.csh.json.base.ResponseOne;
 import com.csh.json.request.JpushRequest;
 import com.csh.service.AdvertisementService;
 import com.csh.service.ApkVersionService;
+import com.csh.service.CouponEndUserService;
 import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
 import com.csh.utils.FieldFilterUtils;
@@ -53,6 +55,9 @@ public class JpushController extends MobileBaseController {
 
   @Resource(name = "couponServiceImpl")
   private CouponService couponService;
+
+  @Resource(name = "couponEndUserServiceImpl")
+  private CouponEndUserService couponEndUserService;
 
   @Resource(name = "advertisementServiceImpl")
   private AdvertisementService advertisementService;
@@ -136,7 +141,15 @@ public class JpushController extends MobileBaseController {
         }
       }
     }
-
+    /**
+     * 我的优惠券数量(包括已过期的)
+     */
+    Page<CouponEndUser> myCoupons = couponEndUserService.getMyCoupons(pageable, endUser);
+    Integer myCouponCounts = myCoupons.getContent() != null ? myCoupons.getContent().size() : 0;
+    map.put("couponCounts", myCouponCounts);
+    /**
+     * 加载页广告
+     */
     Advertisement adv = advertisementService.getLoadAdv(piWidth, piHeight);
     map.put("homeAdvUrl", adv != null ? adv.getAdvImageUrl() : null);
 
@@ -144,6 +157,12 @@ public class JpushController extends MobileBaseController {
      * 获取洗车指数
      */
     map.put("carWashing", VehicleUtil.getWeather4CashCar(location));
+    /**
+     * 用户车辆数
+     */
+    Integer carCounts = endUser.getVehicles() != null ? endUser.getVehicles().size() : 0;
+    map.put("carCounts", carCounts);
+
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(req.getToken());
     endUserService.createEndUserToken(newtoken, userId);

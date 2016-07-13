@@ -15,6 +15,7 @@ import com.csh.dao.ReportDeviceBindStatisticsDao;
 import com.csh.dao.VehicleDao;
 import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.DeviceInfo;
+import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
@@ -109,6 +110,43 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
         couponService.takeCouponBySendType(vehicle.getTenantID(), vehicle.getEndUser(),
             CouponSendType.TENANTBIND);
     vehicle.setIsGetCoupon(flag);
+    return vehicle;
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public Vehicle addVehicle(Vehicle vehicle, EndUser endUser, Boolean isDefault) {
+    if (endUser.getVehicles() == null || endUser.getVehicles().size() <= 0) {
+      vehicle.setIsDefault(true);
+    } else {
+      vehicle.setIsDefault(isDefault);
+      if (isDefault) {
+        for (Vehicle vehi : endUser.getVehicles()) {
+          if (vehi.getIsDefault()) {
+            vehi.setIsDefault(false);
+            vehicleDao.merge(vehi);
+          }
+        }
+      }
+    }
+    vehicle.setEndUser(endUser);
+    vehicleDao.persist(vehicle);
+    return vehicle;
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public Vehicle updateVehicle(Vehicle vehicle, EndUser endUser, Boolean isDefault) {
+    vehicle.setIsDefault(isDefault);
+    if (isDefault) {
+      for (Vehicle vehi : endUser.getVehicles()) {
+        if (!vehi.getId().equals(vehicle.getId()) && vehi.getIsDefault()) {
+          vehi.setIsDefault(false);
+          vehicleDao.merge(vehi);
+        }
+      }
+    }
+    vehicleDao.merge(vehicle);
     return vehicle;
   }
 }

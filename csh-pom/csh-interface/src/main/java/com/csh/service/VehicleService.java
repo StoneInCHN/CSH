@@ -1,6 +1,7 @@
 package com.csh.service;
 
 import com.csh.entity.DeviceInfo;
+import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
 import com.csh.framework.service.BaseService;
 
@@ -40,4 +41,26 @@ public interface VehicleService extends BaseService<Vehicle, Long> {
    * @return
    */
   Vehicle getVehicleByVehicleNo(String vehicleNo);
+
+  /**
+   * 添加车辆信息
+   * 
+   * @param vehicle
+   * @param endUser
+   * @param isDefault
+   * @return
+   */
+  Vehicle addVehicle(Vehicle vehicle, EndUser endUser, Boolean isDefault);
+
+
+  /**
+   * 修改车辆信息
+   * 
+   * @param vehicle
+   * @param endUser
+   * @param isDefault
+   * @return
+   */
+  Vehicle updateVehicle(Vehicle vehicle, EndUser endUser, Boolean isDefault);
+
 }

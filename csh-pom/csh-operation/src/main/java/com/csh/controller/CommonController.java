@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -227,11 +229,6 @@ public class CommonController extends BaseController {
         e.printStackTrace();
       }
     }
-  }
-
-  @RequestMapping(value = "/oilTest", method = RequestMethod.GET)
-  public @ResponseBody String oilTest() {
-    return  CommonUtils.getOilInfo4BaiDu();
   }
   
 }

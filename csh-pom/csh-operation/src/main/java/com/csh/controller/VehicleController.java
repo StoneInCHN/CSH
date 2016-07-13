@@ -11,11 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.csh.controller.base.BaseController;
+import com.csh.entity.DeviceInfo;
 import com.csh.entity.Distributor;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.Vehicle;
+import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
+import com.csh.framework.filter.Filter;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.DeviceInfoService;
 import com.csh.service.TenantInfoService;
 import com.csh.service.VehicleService;
 
@@ -28,7 +33,7 @@ public class VehicleController extends BaseController {
   
   @Resource(name = "tenantInfoServiceImpl")
   private TenantInfoService tenantInfoService;
-
+  
   /**
    * 详情
    */
@@ -47,6 +52,7 @@ public class VehicleController extends BaseController {
 	  List<Vehicle> vehicles = page.getContent();
 	  List<Vehicle> lists = new ArrayList<Vehicle>();
 	  for(Vehicle vehicle:vehicles){
+	      //获取商家及分销商信息
 		  TenantInfo info = tenantInfoService.find(vehicle.getTenantID());
 		  if (info !=null) {
 			  vehicle.setTenantName(info.getTenantName());	

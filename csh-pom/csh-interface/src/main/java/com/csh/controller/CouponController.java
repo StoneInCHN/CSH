@@ -122,10 +122,10 @@ public class CouponController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
-    Long tenantId = null;
-    if (endUser.getDefaultVehicle() != null) {
-      tenantId = endUser.getDefaultVehicle().getTenantID();
-    }
+    // Long tenantId = null;
+    // if (endUser.getDefaultVehicle() != null) {
+    // tenantId = endUser.getDefaultVehicle().getTenantID();
+    // }
 
     Pageable pageable = new Pageable(request.getPageNumber(), request.getPageSize());
     if (LogUtil.isDebugEnabled(CouponController.class)) {
@@ -135,7 +135,7 @@ public class CouponController extends MobileBaseController {
     }
 
 
-    Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser, tenantId);
+    Page<CouponEndUser> coupons = couponEndUserService.getMyCoupons(pageable, endUser);
 
     String[] properties =
         {"id", "isOverDue", "overDueTime", "coupon.remark", "isUsed", "coupon.amount",

@@ -191,23 +191,9 @@ public class NewsController extends MobileBaseController {
     news.setReadCounts(news.getReadCounts() + 1);
     newsService.update(news);
 
-    String[] properties =
-        {"id", "title", "content", "modifyDate", "readCounts", "likeCounts", "commentCounts"};
+    String[] properties = {"id", "title", "readCounts", "likeCounts", "commentCounts"};
     Map<String, Object> result = FieldFilterUtils.filterEntityMap(properties, news);
-    result.put("category", news.getNewsCategory().getName());
-
-    List<Filter> filters = new ArrayList<Filter>();
-    Filter filter = new Filter("news", Operator.eq, news);
-    filters.add(filter);
-    List<Ordering> orderings = new ArrayList<Ordering>();
-    Ordering ordering = new Ordering("createDate", Direction.desc);
-    orderings.add(ordering);
-    List<NewsComment> commentList = newsCommentService.findList(null, filters, orderings);
-    String[] commentProperties = {"userName", "content", "createDate", "photoUrl"};
-    List<Map<String, Object>> comments =
-        FieldFilterUtils.filterCollectionMap(commentProperties, commentList);
-    result.put("comment", comments);
-    result.put("commentCounts", comments.size());
+    result.put("contentUrl", setting.getNewsDetailsUrl() + "?id=" + newsId);
     response.setMsg(result);
 
     String newtoken = TokenGenerator.generateToken(token);
@@ -315,12 +301,12 @@ public class NewsController extends MobileBaseController {
   @RequestMapping(value = "/pushNews", method = RequestMethod.POST)
   public @ResponseBody BaseResponse pushMsg(@RequestBody NewsRequest newsReq) {
     BaseResponse response = new BaseResponse();
-
+    Long newsId = newsReq.getNewsId();
     String title = newsReq.getTitle();
     String contentUrl = newsReq.getContentUrl();
 
     // 极光推送消息
-    newsService.jpushNews(title, contentUrl);
+    newsService.jpushNews(newsId, title, contentUrl);
 
     response.setCode(CommonAttributes.SUCCESS);
     return response;

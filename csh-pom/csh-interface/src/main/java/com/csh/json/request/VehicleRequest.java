@@ -1,5 +1,7 @@
 package com.csh.json.request;
 
+import java.util.Date;
+
 import com.csh.json.base.BaseRequest;
 
 public class VehicleRequest extends BaseRequest {
@@ -58,6 +60,45 @@ public class VehicleRequest extends BaseRequest {
    */
   private Long lastMaintainMileage;
 
+  /**
+   * 是否是默认车辆
+   */
+  private Boolean isDefault;
+
+  /**
+   * 搜索日期
+   */
+  private Date searchDate;
+
+  /**
+   * 外部系统调用时所需key
+   */
+  private String apiKey;
+
+
+  public String getApiKey() {
+    return apiKey;
+  }
+
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
+  }
+
+  public Date getSearchDate() {
+    return searchDate;
+  }
+
+  public void setSearchDate(Date searchDate) {
+    this.searchDate = searchDate;
+  }
+
+  public Boolean getIsDefault() {
+    return isDefault;
+  }
+
+  public void setIsDefault(Boolean isDefault) {
+    this.isDefault = isDefault;
+  }
 
   public Long getBrandId() {
     return brandId;

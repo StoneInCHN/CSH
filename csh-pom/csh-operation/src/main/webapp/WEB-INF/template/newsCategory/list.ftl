@@ -108,6 +108,9 @@
 														<a href="javascript:;" class="sort" name="categoryDesc">${message("csh.newsCategory.categoryDesc")}</a>
 													</th>
 													<th>
+														<a href="javascript:;" class="sort" name="isEnabled">${message("csh.newsCategory.isEnabled")}</a>
+													</th>
+													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
 												</tr>
@@ -125,6 +128,13 @@
 													</td>
 													<td>
 														${newsCategory.categoryDesc}
+													</td>
+													<td>
+														[#if newsCategory.isEnabled?? && newsCategory.isEnabled]
+															${message("csh.newsCategory.isEnabled.true")}
+														[#else]
+															${message("csh.newsCategory.isEnabled.false")}
+														[/#if]
 													</td>
 													<td>
 														<a href="edit.jhtml?id=${newsCategory.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>

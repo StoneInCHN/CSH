@@ -36,14 +36,16 @@ public class NewsServiceImpl extends BaseServiceImpl<News, Long> implements News
   }
 
   @Override
-  public void jpushNews(String title, String contentUrl) {
+  public void jpushNews(Long newsId, String title, String contentUrl) {
 
     Map<String, String> map = new HashMap<String, String>();
+    map.put("newsId", newsId.toString());
     map.put("contentUrl", contentUrl);
     map.put("type", MessageType.NEWSMSG.toString());
     if (LogUtil.isDebugEnabled(MessageInfoServiceImpl.class)) {
       LogUtil.debug(NewsServiceImpl.class, "jpush news",
-          "Push News to All EndUser. title: %s, contentUrl: %s", title, contentUrl);
+          "Push News to All EndUser. newsId:%s, title: %s, contentUrl: %s", newsId, title,
+          contentUrl);
     }
     List<EndUser> users = endUserDao.findList(null, null, null, null);
     for (EndUser user : users) {

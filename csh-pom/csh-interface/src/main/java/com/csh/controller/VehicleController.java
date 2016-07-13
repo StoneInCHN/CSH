@@ -1,6 +1,7 @@
 package com.csh.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,6 @@ import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.ordering.Ordering;
 import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.json.base.BaseRequest;
-import com.csh.json.base.BaseResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.VehicleRequest;
@@ -131,9 +131,8 @@ public class VehicleController extends MobileBaseController {
    */
   @RequestMapping(value = "/add", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse add(@RequestBody VehicleRequest vehicleReq) {
-
-    BaseResponse response = new BaseResponse();
+  public @ResponseBody ResponseOne<Map<String, Object>> add(@RequestBody VehicleRequest vehicleReq) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     Long userId = vehicleReq.getUserId();
     String token = vehicleReq.getToken();
     // 验证登录token
@@ -170,24 +169,39 @@ public class VehicleController extends MobileBaseController {
     vehicle.setLastMaintainMileage(vehicleReq.getLastMaintainMileage());
 
     EndUser endUser = endUserService.find(userId);
-    if (endUser.getVehicles() == null || endUser.getVehicles().size() <= 0) {
-      vehicle.setIsDefault(true);
-    } else {
-      vehicle.setIsDefault(false);
-    }
-    vehicle.setEndUser(endUser);
+    // if (endUser.getVehicles() == null || endUser.getVehicles().size() <= 0) {
+    // vehicle.setIsDefault(true);
+    // } else {
+    // if (vehicleReq.getIsDefault()) {
+    // for (Vehicle vehi : endUser.getVehicles()) {
+    // vehi.setIsDefault(false);
+    //
+    // }
+    // } else {
+    // vehicle.setIsDefault(false);
+    // }
+    // }
+    // vehicle.setEndUser(endUser);
+    // if (LogUtil.isDebugEnabled(VehicleController.class)) {
+    // LogUtil.debug(VehicleController.class, "AddVehicle",
+    // "Add vehicle for User with UserName: %s,VehiclePlate", endUser.getUserName(),
+    // vehicleReq.getPlateNo());
+    // }
+    // vehicleService.save(vehicle);
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
       LogUtil.debug(VehicleController.class, "AddVehicle",
-          "Add vehicle for User with UserName: %s,VehiclePlate", endUser.getUserName(),
-          vehicleReq.getPlateNo());
+          "Add vehicle for User with UserName: %s,VehiclePlate: %s,isDefault: %s",
+          endUser.getUserName(), vehicleReq.getPlateNo(), vehicleReq.getIsDefault());
     }
-    vehicleService.save(vehicle);
+    Vehicle addVehicle = vehicleService.addVehicle(vehicle, endUser, vehicleReq.getIsDefault());
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("vehicleId", addVehicle.getId());
+    response.setMsg(map);
 
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
-    response.setDesc(vehicle.getId().toString());
     return response;
   }
 
@@ -200,9 +214,8 @@ public class VehicleController extends MobileBaseController {
    */
   @RequestMapping(value = "/edit", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse edit(@RequestBody VehicleRequest vehicleReq) {
-
-    BaseResponse response = new BaseResponse();
+  public @ResponseBody ResponseOne<Map<String, Object>> edit(@RequestBody VehicleRequest vehicleReq) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
     Long userId = vehicleReq.getUserId();
     String token = vehicleReq.getToken();
     // 验证登录token
@@ -214,6 +227,24 @@ public class VehicleController extends MobileBaseController {
     }
 
     Vehicle vehicle = vehicleService.find(vehicleReq.getVehicleId());
+    if (!vehicle.getPlate().equals(vehicleReq.getPlateNo())) {
+      Vehicle plateVehicle = vehicleService.getVehicleByPlate(vehicleReq.getPlateNo());
+      if (plateVehicle != null) {
+        response.setCode(CommonAttributes.FAIL_VEHICLE_PLATE_EXIST);
+        response.setDesc(Message.error("csh.vehicle.plate.exist").getContent());
+        return response;
+      }
+    }
+
+    if (!vehicle.getVehicleNo().equals(vehicleReq.getVehicleNo())) {
+      Vehicle vehicleNoVehicle = vehicleService.getVehicleByVehicleNo(vehicleReq.getVehicleNo());
+      if (vehicleNoVehicle != null) {
+        response.setCode(CommonAttributes.FAIL_VEHICLE_PLATE_EXIST);
+        response.setDesc(Message.error("csh.vehicle.num.exist").getContent());
+        return response;
+      }
+    }
+
     if (vehicleReq.getBrandDetailId() != null) {
       VehicleBrandDetail brandDetail =
           vehicleBrandDetailService.find(vehicleReq.getBrandDetailId());
@@ -230,10 +261,23 @@ public class VehicleController extends MobileBaseController {
 
     if (LogUtil.isDebugEnabled(VehicleController.class)) {
       LogUtil.debug(VehicleController.class, "editVehicle",
-          "Update vehicle Info. UserId: %s,VehicleId: %s", userId, vehicleReq.getVehicleId());
+          "Update vehicle Info. UserId: %s,VehicleId: %s,isDefault: %s", userId,
+          vehicleReq.getVehicleId(), vehicleReq.getIsDefault());
     }
-    vehicleService.update(vehicle);
+    EndUser endUser = endUserService.find(userId);
+    Vehicle updateVehicle =
+        vehicleService.updateVehicle(vehicle, endUser, vehicleReq.getIsDefault());
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("vehicleId", updateVehicle.getId());
+    map.put("appTitle", "default");
+    if (updateVehicle.getIsDefault()) {
+      App app = appService.getTenantAppById(updateVehicle.getTenantID());
+      if (app != null) {
+        map.put("appTitle", app.getAppTitleName());
+      }
+    }
 
+    response.setMsg(map);
 
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);

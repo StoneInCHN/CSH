@@ -26,6 +26,9 @@ $().ready(function() {
 			},
 			categoryDesc: {
 				required: true
+			},
+			isEnabled: {
+				required: true
 			}
 		}
 		
@@ -78,6 +81,17 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="text" name="categoryDesc" class="text" maxlength="20" value="${newsCategory.categoryDesc}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.newsCategory.isEnabled")}:
+								</th>
+								<td>
+									<select name="isEnabled">
+										<option value="true" [#if newsCategory.isEnabled ?? && newsCategory.isEnabled] selected="selected" [/#if]>${message("csh.newsCategory.isEnabled.true")}</option>
+										<option value="false" [#if newsCategory.isEnabled ?? && !newsCategory.isEnabled] selected="selected" [/#if]>${message("csh.newsCategory.isEnabled.false")}</option>
+									</select>
 								</td>
 							</tr>
 						</table>

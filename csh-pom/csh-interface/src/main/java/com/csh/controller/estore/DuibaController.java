@@ -62,7 +62,7 @@ public class DuibaController extends MobileBaseController {
    */
   @RequestMapping(value = "/getLoginUrl", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse getMsgList(@RequestBody BaseRequest req) {
+  public @ResponseBody BaseResponse getLoginUrl(@RequestBody BaseRequest req) {
 
     BaseResponse response = new BaseResponse();
 
@@ -80,7 +80,8 @@ public class DuibaController extends MobileBaseController {
     CreditTool tool = new CreditTool(setting.getDuibaAppKey(), setting.getDuibaAppSecret());
     Map<String, String> params = new HashMap<String, String>();
     params.put("uid", endUser.getUserName());
-    params.put("credits", endUser.getWallet().getScore().setScale(0).toString());
+    params.put("credits", endUser.getWallet().getScore().setScale(0, BigDecimal.ROUND_DOWN)
+        .toString());
     // if(redirect!=null){
     // //redirect是目标页面地址，默认积分商城首页是：http://www.duiba.com.cn/chome/index
     // //此处请设置成一个外部传进来的参数，方便运营灵活配置
@@ -137,7 +138,7 @@ public class DuibaController extends MobileBaseController {
 
       CreditConsumeResult result = new CreditConsumeResult(true);
       result.setBizId(orderNum);
-      result.setCredits(new Long(wallet.getScore().setScale(0).toString()));
+      result.setCredits(new Long(wallet.getScore().setScale(0, BigDecimal.ROUND_DOWN).toString()));
       if (LogUtil.isDebugEnabled(DuibaController.class)) {
         LogUtil.debug(DuibaController.class, "notify_score",
             "Dui Ba score notify success. return to Dui ba: %s", result.toString());
