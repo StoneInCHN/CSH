@@ -76,7 +76,7 @@
     		<th>${message("csh.carService.serviceDesc")}:</th>
     		<td colspan="5">
     			 <textarea id= "edit_carService_desc"  
-    			 style="height:400px;width:400px" name="serviceDesc">"${carService.serviceDesc}</textarea>   
+    			 style="height:400px;width:400px" name="serviceDesc">${carService.serviceDesc}</textarea>   
     		</td>
     	</tr>
     </table>

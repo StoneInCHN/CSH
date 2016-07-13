@@ -208,7 +208,7 @@ var carService_manager_tool = {
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=SERVICEDESCIMAGE",
-						urlType:'relative',
+						urlType:'',
 						afterBlur:function(){ 
 				            this.sync(); 
 				        }
@@ -416,7 +416,7 @@ var carService_manager_tool = {
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=SERVICEDESCIMAGE",
-						urlType:'relative',
+						urlType:'',
 						afterBlur:function(){ 
 				            this.sync(); 
 				        }

@@ -123,7 +123,7 @@ var product_manager_tool = {
 					             }
 			     			},
 			     			//包裹上传组件的div id
-			     			warp :"addProduct_form",
+			     			warp :"addProductImageWarp",
 			     			uploadBeforeSend:function(object, data, headers){
 			     				 data.imageType ='PRODUCTIMAGE';
 			     			},
@@ -161,7 +161,70 @@ var product_manager_tool = {
 			     			}
 			     	};
 			     	
-			     	singleUpload(options);
+//			     	singleUpload(options);
+			     	
+			     	//图片上传
+			     	var multipleOptions ={
+			     			createOption:{
+			     				pick: {
+			    	                 id: '#productImageListFilePicker-add',
+			    	                 innerHTML: '选择文件',
+			    	                 multiple :true
+			    	             },
+			    	             dnd: '#productImageListUploader-add .queueList',
+			    	             accept: {
+			    	                 title: 'Images',
+			    	                 extensions: 'gif,jpg,jpeg,bmp,png',
+			    	                 mimeTypes: 'image/*'
+			    	             },
+			    	             //缩略图
+			    	             thumb:{
+			    	            	    width: 110,
+			    	            	    height: 110,
+			    	            	    quality: 90,
+			    	            	    allowMagnify: false,
+			    	            	    crop: false,
+			    	            	    type: 'image/jpeg'
+			    	              },
+			    	             // swf文件路径
+			    	             swf: BASE_URL + '/js/Uploader.swf',
+			    	             disableGlobalDnd: true,
+			    	             server: '../file/uploadPhoto.jhtml',
+			    	             fileNumLimit: 4-$('img[class="preview"]').length,
+			    	             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
+			    	             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
+			    	             //图片裁剪
+			    	             compress:{
+			    	            	 width: 300,
+			    	            	 height: 300,
+			    	            	 // 图片质量，只有type为`image/jpeg`的时候才有效。
+			    	            	 quality: 90,
+			    	            	 // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+			    	            	 allowMagnify: false,
+			    	            	 // 是否允许裁剪。
+			    	            	 crop: false,
+			    	            	 // 是否保留头部meta信息。
+			    	            	 preserveHeaders: true,
+			    	            	 // 如果发现压缩后文件大小比原来还大，则使用原来图片
+			    	            	 // 此属性可能会影响图片自动纠正功能
+			    	            	 noCompressIfLarger: false,
+			    	            	 // 单位字节，如果图片大小小于此值，不会采用压缩。
+			    	            	 compressSize: 0
+			    	             }
+			     			},
+			     			//包裹上传组件的div id
+			     			warp :"addProductImageListWarp",
+			     			filePicker_replace :"filePicker_replace_Photos",
+			     			filePicker2 :"filePicker2_Photos",
+//			     			uploadBeforeSend:function(object, data, headers){
+//			     				 data.imageType ='TENANTIMAGE';
+//			     			},
+			     			uploadSuccess:function(file, response){
+			     			}
+			     	};
+			     	
+			     	multipleUpload(multipleOptions);
+			     	
 					var editor = KindEditor.create('#add_product_introduction', {
 						resizeType : 1,
 						width : '400px',
@@ -217,6 +280,8 @@ var product_manager_tool = {
 					    	});
 			    		}
 			    	});
+			    	
+			    	
 			    	$("#addProduct_brand").combobox({    
 			    	    url: '../brand/findAll.jhtml',    
 			    	    method:"get",

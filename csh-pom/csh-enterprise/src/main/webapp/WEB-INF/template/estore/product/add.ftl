@@ -13,7 +13,7 @@
 		    			<input  class="easyui-combobox" required="required" id="addProduct_productCategory" name="productCategoryId"/>
 		    		</td>
 		    		<td rowspan="5" colspan="2">
-		    			<div title="图片上传" class="easyui-tooltip headWarp">
+		    			<div title="图片上传" class="easyui-tooltip headWarp" id="addProductImageWarp">
 	    				<div id="productImageUploader-add" class="single-uploader">
 						    <div  class="queueList">
 						        <div  class="placeholder">
@@ -127,6 +127,21 @@
 	    			</td>
     			</tr>
 	    	</table>
+	    </div>
+	    <div title="${message("csh.product.productImageList")}" style="padding:10px;text-align: centor;">
+			 <div title="图片上传" class="easyui-tooltip" id="addProductImageListWarp">
+				<div id="productImageListUploader-add" class="multiple-uploader">
+				    <div  class="queueList">
+			        	 <div  class="placeholder">
+				        	<div id="productImageListFilePicker-add" ></div>
+				        </div>
+				    </div>
+				    <div class="btns">
+				    	<div id="filePicker2_Photos"></div>
+				        <div class="uploadBtn state-pedding"></div>
+				    </div>
+				</div>
+			</div>
 	    </div>
 	    <div title="${message("csh.product.productParameter")}" style="padding:10px;text-align: centor;">
 	    	<table id="addProductProductParameter" class="easyui-propertygrid" style="width:300px">

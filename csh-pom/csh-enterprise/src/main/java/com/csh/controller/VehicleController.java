@@ -459,7 +459,7 @@ public class VehicleController extends BaseController
             if (vehicle.getDevice ()!= null && vehicle.getDevice ().getId ().toString ().equals (vehicleStatus.getRowId ()))
             {
               vehicle.setDashboardBV (vehicleStatus.getBv ());
-              if (vehicleStatus.getMileage () !=0)
+              if (vehicleStatus.getMileage ()!=null && vehicleStatus.getMileage () !=0)
               {
                 vehicle.setDashboardMileage (vehicleStatus.getMileage ());
               }else {
@@ -467,6 +467,8 @@ public class VehicleController extends BaseController
               }
               vehicle.setDashboradOil (vehicleStatus.getRemaininggas ());
               vehicle.setIsOnline (vehicleStatus.getOnline ());
+              vehicle.setLat (vehicleStatus.getLat ());
+              vehicle.setLon (vehicleStatus.getLon ());
             }
           }
         }

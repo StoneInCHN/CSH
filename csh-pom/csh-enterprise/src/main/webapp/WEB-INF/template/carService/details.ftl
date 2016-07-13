@@ -75,7 +75,7 @@
     		<th>${message("csh.carService.serviceDesc")}:</th>
     		<td colspan="5">
     			 <div id= "edit_carService_desc"  
-    			 style="height:400px;width:400px" name="serviceDesc">"${carService.serviceDesc}</div>   
+    			 style="height:400px;width:400px" name="serviceDesc">${carService.serviceDesc}</div>   
     		</td>
     	</tr>
     </table>

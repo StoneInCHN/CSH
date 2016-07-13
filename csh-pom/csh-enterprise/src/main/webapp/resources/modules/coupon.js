@@ -234,7 +234,7 @@ var coupon_manager_tool = {
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=COUPONREMARKIMAGE",
-						urlType:'relative',
+						urlType:'',
 						afterBlur:function(){ 
 				            this.sync(); 
 				        }
@@ -498,7 +498,7 @@ var coupon_manager_tool = {
 						filePostName: "file",
 						formatUploadUrl: false,
 						uploadJson:  "../../console/file/kindEditorUploadPicutre.jhtml?imageType=COUPONREMARKIMAGE",
-						urlType:'relative',
+						urlType:'',
 						afterBlur:function(){ 
 				            this.sync(); 
 				        }
