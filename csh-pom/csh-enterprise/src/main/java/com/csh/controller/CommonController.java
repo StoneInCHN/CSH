@@ -245,8 +245,7 @@ public String main(ModelMap model,  HttpSession session) {
    generateQrImage(HttpServletRequest request) {
     
     Long tenantID = tenantAccountService.getCurrentTenantID ();
-    ;
-    String content ="{flag:"+ DigestUtils.md5Hex("车生活")+",tenantInfo:"+tenantID+"}";
+    String content ="{\"flag\":\""+ DigestUtils.md5Hex("车生活")+"\",\"tenantInfo\":\""+tenantID+"\"}";
     byte[] qrByte = QRCodeGenerator.generateQrImage (content);
     
     TenantInfo tenantInfo = tenantInfoService.find (tenantID);

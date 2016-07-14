@@ -1,5 +1,7 @@
 package com.csh.json.response;
 
+import java.util.Date;
+
 /**
  * 实时车况
  * 
@@ -47,6 +49,11 @@ public class RealTimeCarCondition {
    * 是否启动 1启动  0熄火
    */
   private String acc;
+  
+  /**
+   * 创建时间
+   */
+  private Date createtime;
   
   private Boolean isNeedToAddInitMileAge;
   public Float getMileAge() {
@@ -121,6 +128,16 @@ public class RealTimeCarCondition {
   public void setIsNeedToAddInitMileAge (Boolean isNeedToAddInitMileAge)
   {
     this.isNeedToAddInitMileAge = isNeedToAddInitMileAge;
+  }
+
+  public Date getCreatetime ()
+  {
+    return createtime;
+  }
+
+  public void setCreatetime (Date createtime)
+  {
+    this.createtime = createtime;
   }
   
 }

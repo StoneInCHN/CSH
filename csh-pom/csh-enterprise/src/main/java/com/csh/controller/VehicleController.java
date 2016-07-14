@@ -384,7 +384,7 @@ public class VehicleController extends BaseController
     try
     {
 //      String response = "{\"msg\":{\"mileAge\":100,\"engineRuntime\":12,\"averageOil\":10,\"speed\":60,\"lon\":104.0637,\"lat\":30.6338,\"azimuth\":null,\"acc\":1}}";
-      String response = ApiUtils.post (setting.getObdServiceUrl ()+"realTimeVehicleStatus.jhtml", params);
+      String response = ApiUtils.post (setting.getObdServiceUrl ()+"tenantVehicleData/realTimeVehicleStatus.jhtml", params);
       ObjectMapper objectMapper = new ObjectMapper();
      
       JsonNode rootNode = objectMapper.readTree(response);
@@ -444,7 +444,7 @@ public class VehicleController extends BaseController
     {
       String params = objectMapper.writeValueAsString(paramList);
     
-      String response= ApiUtils.postJson (setting.getObdServiceUrl ()+"vehicleOnlineStatus.jhtml", "UTF-8", "UTF-8", params);
+      String response= ApiUtils.postJson (setting.getObdServiceUrl ()+"tenantVehicleData/vehicleOnlineStatus.jhtml", "UTF-8", "UTF-8", params);
 //      String response = "{\"msg\": [{\"deviceId\": \"1\",\"rowId\": \"1\",\"mileage\": 100,\"online\": true,\"remaininggas\": 10, \"bv\": 12.5},{\"deviceId\": \"2\",\"rowId\": \"1\",\"mileage\": 20,\"online\": true,\"remaininggas\": 20,\"bv\": 10.5}]}";
       if (response != null && !response.equals (""))
       {
@@ -459,7 +459,7 @@ public class VehicleController extends BaseController
             if (vehicle.getDevice ()!= null && vehicle.getDevice ().getId ().toString ().equals (vehicleStatus.getRowId ()))
             {
               vehicle.setDashboardBV (vehicleStatus.getBv ());
-              if (vehicleStatus.getMileage () !=0)
+              if (vehicleStatus.getMileage ()!=null && vehicleStatus.getMileage () !=0)
               {
                 vehicle.setDashboardMileage (vehicleStatus.getMileage ());
               }else {
@@ -467,6 +467,8 @@ public class VehicleController extends BaseController
               }
               vehicle.setDashboradOil (vehicleStatus.getRemaininggas ());
               vehicle.setIsOnline (vehicleStatus.getOnline ());
+              vehicle.setLat (vehicleStatus.getLat ());
+              vehicle.setLon (vehicleStatus.getLon ());
             }
           }
         }

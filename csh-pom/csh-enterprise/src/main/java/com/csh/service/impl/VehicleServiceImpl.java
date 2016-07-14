@@ -143,7 +143,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
         VehicleDailyReport vehicleDailyReport = new VehicleDailyReport ();
         try
         {
-          String response = ApiUtils.post (setting.getObdServiceUrl ()+"dailyVehicleStatus.jhtml" , params);
+          String response = ApiUtils.post (setting.getObdServiceUrl ()+"tenantVehicleData/dailyVehicleStatus.jhtml" , params);
           
 //          String response = "{\"msg\":{\"dailyMileage\":10.0,\"averageFuelConsumption\":10.0,\"fuelConsumption\":0.0,\"cost\":null,\"averageSpeed\":0.0,\"emergencybrakecount\":0,\"suddenturncount\":0,\"rapidlyspeedupcount\":0}}";
           if (response != null)

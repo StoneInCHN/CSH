@@ -174,7 +174,11 @@ public class Vehicle extends BaseEntity {
    * 分销商名字
    */
   private String distributorName;
-
+  
+  private Float lat;
+  
+  private Float lon;
+  
   @Transient
   public Boolean getIsGetCoupon() {
     return isGetCoupon;
@@ -441,23 +445,48 @@ public class Vehicle extends BaseEntity {
   }
 
   @Transient
-  public String getTenantName() {
+	public String getTenantName() {
+    
+    
+		return tenantName;
+	}
+	
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+	
+	@Transient
+	public String getDistributorName() {
+		return distributorName;
+	}
+	
+	public void setDistributorName(String distributorName) {
+		this.distributorName = distributorName;
+	}
 
-
-    return tenantName;
+	@Transient
+	@JsonProperty
+  public Float getLat ()
+  {
+    return lat;
   }
 
-  public void setTenantName(String tenantName) {
-    this.tenantName = tenantName;
+  public void setLat (Float lat)
+  {
+    this.lat = lat;
   }
 
   @Transient
-  public String getDistributorName() {
-    return distributorName;
+  @JsonProperty
+  public Float getLon ()
+  {
+    return lon;
   }
 
-  public void setDistributorName(String distributorName) {
-    this.distributorName = distributorName;
+  public void setLon (Float lon)
+  {
+    this.lon = lon;
   }
-
+  
+	
 }

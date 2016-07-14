@@ -22,6 +22,15 @@
 	<!--[if lt IE 9]>
     <script type="text/javascript" src="${base}/resources/js/respond.1.4.2.min.js"></script>
     <![endif]-->
+    <!-- 百度地图api -->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=${message("csh.baiduMap.ak")}"></script>
+    <!--加载鼠标绘制工具-->
+	<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+	
+    <!-- 坐标转换-->
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+    
   </head>
 
   <body class="easyui-layout" >   
@@ -148,9 +157,9 @@
     		[@shiro.hasPermission name="vehicleMaintain"]
     		<li><a href="#" data-url="${base}/console/vehicleMaintain/vehicleMaintain.jhtml">${message("csh.vehicle.vehicleMaintain")}</a></li>
     		[/@shiro.hasPermission]
-    		<!--[@shiro.hasPermission name="vehicleTrack"]
-    		<li><a href="#" data-url="${base}/console/vehicleTrack/vehicleTrack.jhtml">${message("csh.vehicle.vehicleTrack")}</a></li>
-    		[/@shiro.hasPermission]-->
+    		[@shiro.hasPermission name="vehicleTrack"]
+    		<li><a href="#" data-url="${base}/console/vehicleTrack/track.jhtml">${message("csh.vehicle.vehicleTrack")}</a></li>
+    		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.device.config")}" id="device">
     		[@shiro.hasPermission name="device"]
@@ -391,7 +400,7 @@
 	<script type="text/javascript" src="${base}/resources/js/main.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/dropdown.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
-	<script type="text/javascript" src="${base}/resources/js/webuploader.min.js"></script>
+	<script type="text/javascript" src="${base}/resources/js/webuploader.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/kindeditor/kindeditor-min.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/multiselect.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/prettify.min.js"></script>

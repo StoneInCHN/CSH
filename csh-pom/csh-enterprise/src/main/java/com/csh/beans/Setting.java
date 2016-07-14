@@ -128,6 +128,21 @@ public class Setting implements Serializable {
      * 上传图片大小的最大值
      */
     private Long imageMaxSize;
+    
+    /**
+     * 百度API坐标转换
+     */
+    private String convertMapUrl;
+
+    /**
+     * 百度API地址转坐标
+     */
+    private String convertAddressUrl;
+
+    /**
+     * 百度地图api key
+     */
+    private String mapAk;
     /**
      * 获取相册上传路径
      * 
@@ -815,5 +830,36 @@ public class Setting implements Serializable {
   public void setImageMaxSize(Long imageMaxSize) {
       this.imageMaxSize = imageMaxSize;
   }
+
+  public String getConvertMapUrl ()
+  {
+    return convertMapUrl;
+  }
+
+  public void setConvertMapUrl (String convertMapUrl)
+  {
+    this.convertMapUrl = convertMapUrl;
+  }
+
+  public String getConvertAddressUrl ()
+  {
+    return convertAddressUrl;
+  }
+
+  public void setConvertAddressUrl (String convertAddressUrl)
+  {
+    this.convertAddressUrl = convertAddressUrl;
+  }
+
+  public String getMapAk ()
+  {
+    return mapAk;
+  }
+
+  public void setMapAk (String mapAk)
+  {
+    this.mapAk = mapAk;
+  }
     
+  
 }

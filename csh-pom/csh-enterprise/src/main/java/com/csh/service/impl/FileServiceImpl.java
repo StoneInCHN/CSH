@@ -153,11 +153,11 @@ public class FileServiceImpl implements FileService {
       }
       else if (imageType == ImageType.SERVICEDESCIMAGE) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "serviceDescImage";
-        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "serviceDescImage";
+        projectPath=projectUploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "serviceDescImage";
       }
       else if (imageType == ImageType.COUPONREMARKIMAGE) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "couponRemarkImage";
-        projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "couponRemarkImage";
+        projectPath=projectUploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "couponRemarkImage";
       }
       else if (imageType == ImageType.PRODUCTBRANDIMAGE) {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productBrandImage";

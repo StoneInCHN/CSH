@@ -28,7 +28,7 @@
 		<!-- 消息推送接口 -->
 		<setting name="msgPushUrl" value="http://120.27.92.247:10001/csh-interface/message/pushMsg.jhtml" />
 		<!-- obd server接口 -->
-		<setting name="obdServiceUrl" value="http://139.129.5.114:10000/obd-data/tenantVehicleData/" />
+		<setting name="obdServiceUrl" value="http://139.129.5.114:20001/obd-data/" />
 		<setting name="clearingRecordCycle" value="7" />
 		
 		<!-- 短信平台URL -->
@@ -51,5 +51,13 @@
 		<setting name="cookieDomain" value="" />
 		<!-- 上传图片大小的最大值 -->
 		<setting name="imageMaxSize" value="512000" />
+		
+		<!-- 百度API:GPS坐标转百度坐标 -->
+		<setting name="convertMapUrl" value="http://api.map.baidu.com/ag/coord/convert"/>
+		<!-- 百度API:地址转坐标 -->
+		<setting name="convertAddressUrl" value="http://api.map.baidu.com/geocoder/v2/"/>
+		<!-- 百度API ak -->
+		<setting name="mapAk" value="ulsOtfMZcNc4D6aQnBwwnOTt6ZKohflO"/>
+		
 	</csh>	
 	

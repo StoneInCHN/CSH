@@ -1,4 +1,6 @@
-<form id="vehicleDetail_form" method="post">   
+<form id="vehicleDetail_form" method="post">
+	<input type="hidden" id="realTimeCarConditonLat" value="${realTimeCarCondition.lat}"/>
+	<input type="hidden" id="realTimeCarConditonLon" value="${realTimeCarCondition.lon}">   
 	 <table class="table table-striped"  border="0">
 	    	<tr>
 	    		<th>里程:</th>
@@ -43,8 +45,14 @@
 	    			 <input class="easyui-textbox" value="${realTimeCarCondition.acc}" name="dashboardBV" id= "dashboardBV" disabled="disabled"/>
 	    		</td>
 	    	</tr>
-	    	
+	    	<tr>
+	    		<th>当前位置</th>
+	    		<td colspan="4">
+	    			<div id="vehicleLocationMap" style="height:350px;width:99%;">
+	    		</td>
+	    	</tr>
 	    </table>
+	    
 </form>
 
 
