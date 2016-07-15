@@ -54,10 +54,11 @@ function createMarker(point, icon,map){  // 创建图标对象
 
 
 function createMap(track){
+	debugger;
 	var s_point = track[0];
 	var e_point = track[track.length-1];
-	var startPoint = new BMap.Point(s_point["lon"], s_point["lat"]);
-	var endPoint = new BMap.Point(e_point["lon"], e_point["lat"]);
+	var startPoint = new BMap.Point(s_point["x"], s_point["y"]);
+	var endPoint = new BMap.Point(e_point["x"], e_point["y"]);
 	var map = new BMap.Map("vehicleTrackMap");  
 	map.centerAndZoom(startPoint,13);// 初始化地图,设置中心点坐标和地图级别。
 	map.enableScrollWheelZoom();//启用滚轮放大缩小
@@ -68,25 +69,17 @@ function createMap(track){
 	var trackMap=[];
 	var flag = 0;
 	for(var i=0;i<track.length;i++){
-		var m = new BMap.Point(track[i]["lon"], track[i]["lat"]);
-		BMap.Convertor.translate(m,0,function (point){
-			trackMap.push(point);
-			var polyline = new BMap.Polyline(trackMap,{strokeColor:"blue", strokeWeight:3, strokeOpacity:0.5});    
-			map.addOverlay(polyline);
-		}); 
-	}
+		var m = new BMap.Point(track[i]["x"], track[i]["y"]);
+		trackMap.push(m);
+	}	
+	var polyline = new BMap.Polyline(trackMap,{strokeColor:"blue", strokeWeight:3, strokeOpacity:0.5});    
+	map.addOverlay(polyline);
+	map.addEventListener("click",function(e){
+		console.log(e.point.lng + "," + e.point.lat);
+	});
 	
-	//console.log(trackMap);
-	
-	BMap.Convertor.translate(startPoint,0,function (point){
-		createMarker(point,"../../resources/images/start.png",map);
-	}); 
-	
-	BMap.Convertor.translate(endPoint,0,function (point){
-		createMarker(point,"../../resources/images/end.png",map);
-	}); 
-	
-	
+	createMarker(startPoint,"../../resources/images/start.png",map);
+	createMarker(endPoint,"../../resources/images/end.png",map);
 	
 }
 

@@ -175,9 +175,19 @@ public class Vehicle extends BaseEntity {
    */
   private String distributorName;
   
+  /**
+   * 当前车辆纬度
+   */
   private Float lat;
-  
+  /**
+   * 当前车辆经度
+   */
   private Float lon;
+  
+  /**
+   * 设备信息上传时间
+   */
+  private Date obdStatusTime;
   
   @Transient
   public Boolean getIsGetCoupon() {
@@ -486,6 +496,18 @@ public class Vehicle extends BaseEntity {
   public void setLon (Float lon)
   {
     this.lon = lon;
+  }
+
+  @Transient
+  @JsonProperty
+  public Date getObdStatusTime ()
+  {
+    return obdStatusTime;
+  }
+
+  public void setObdStatusTime (Date obdStatusTime)
+  {
+    this.obdStatusTime = obdStatusTime;
   }
   
 	

@@ -139,6 +139,7 @@ public class Setting implements Serializable {
      */
     private String convertAddressUrl;
 
+    private String convertMutipleMapUrl;
     /**
      * 百度地图api key
      */
@@ -859,6 +860,16 @@ public class Setting implements Serializable {
   public void setMapAk (String mapAk)
   {
     this.mapAk = mapAk;
+  }
+
+  public String getConvertMutipleMapUrl ()
+  {
+    return convertMutipleMapUrl;
+  }
+
+  public void setConvertMutipleMapUrl (String convertMutipleMapUrl)
+  {
+    this.convertMutipleMapUrl = convertMutipleMapUrl;
   }
     
   

@@ -191,6 +191,7 @@ var messages = {
 	"csh.vehicle.no.track":"该车辆今日没有轨迹",
 	"csh.vehicle.miss.param":"请选择查询车辆和时间",
 	"csh.vehicle.location":"当前位置",
+	"csh.vehicle.obdStatusTime":"最新上传",
 	//车辆品牌
 	"csh.vehicleBrand.list":"车辆品牌列表",
 	"csh.vehicleBrand.name":"品牌名称",

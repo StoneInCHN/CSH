@@ -20,6 +20,7 @@ import com.csh.entity.Vehicle;
 import com.csh.service.VehicleService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.LatLonUtil;
 import com.csh.utils.SettingUtils;
 
 /**
@@ -49,6 +50,7 @@ public class VehicleTrackController extends BaseController {
 
 
   @RequestMapping(value = "/drawVehicleTrack", method = RequestMethod.POST)
+  @SuppressWarnings ("unchecked")
   public @ResponseBody List<Map<String, Object>> singleVehicleTrack(Model model, Long vehicleID,
       Date searchDate) {
     if (vehicleID == null || searchDate == null) {
@@ -68,7 +70,7 @@ public class VehicleTrackController extends BaseController {
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> map = mapper.readValue(res, Map.class);
       List<Map<String, Object>> maps = (List<Map<String, Object>>) map.get("msg");
-      return maps;
+      return LatLonUtil.convertCoordinates (maps);
     } catch (Exception e) {
       e.printStackTrace();
     }

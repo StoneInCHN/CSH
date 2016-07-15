@@ -327,29 +327,6 @@ var vehicle_manager_tool = {
 		}
 		
 };
-function openLocation(lat, lon){
-	$('#vehicleLocation').dialog({    
-		title: message("csh.common.edit"),     
-	    width: 700,    
-	    height: 450,    
-	    modal: true,
-	    iconCls:'icon-mini-edit'
-	});
-	
-	var point = new BMap.Point(lon,lat);
-	var map = new BMap.Map("vehicleLocationMap");  
-	map.centerAndZoom(point,13);// 初始化地图,设置中心点坐标和地图级别。
-	map.enableScrollWheelZoom();//启用滚轮放大缩小
-	map.addControl(new BMap.NavigationControl()); // 添加平移缩放控件
-	map.addControl(new BMap.ScaleControl()); // 添加比例尺控件
-	map.addControl(new BMap.OverviewMapControl()); //添加缩略地图控件
-	
-	BMap.Convertor.translate(point,0,function (point){
-		var marker = new BMap.Marker(point);  // 创建标注
-		map.addOverlay(marker);               // 将标注添加到地图中
-		marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-	}); 
-}
 $(function(){
 	$("#vehicle-table-list").datagrid({
 		title:message("csh.vehicle.list"),
@@ -449,7 +426,7 @@ $(function(){
 	      	  {title:message("csh.vehicle.dashboardMileage"),field:"dashboardMileage",sortable:true},
 	      	  {title:message("csh.vehicle.dashboardBV"),field:"dashboardBV",sortable:true},
 		      {title:message("csh.vehicle.device"),field:"deviceNo",width:100,sortable:false},
-		      {title:message("csh.vehicle.deviceOnLine"),field:"isOnline",width:100,sortable:false,
+		      {title:message("csh.vehicle.deviceOnLine"),field:"isOnline",width:70,sortable:false,
 		    	  formatter: function(value,row,index){
 			    	  if(value ){
 			    		  return message("csh.vehicle.deviceOnLine.online");
@@ -465,7 +442,7 @@ $(function(){
 						}
 					}  
 		      },
-		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
+		      {title:message("csh.vehicle.obdStatusTime"),field:"obdStatusTime",width:130,sortable:true,formatter: function(value,row,index){
 		    	  if(value != null){
 						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 					}else{
@@ -473,9 +450,9 @@ $(function(){
 					}
 				}
 		      },
-		      {title:message("csh.vehicle.location"),field:"lon",width:60,sortable:true,formatter: function(value,row,index){
-		    	  if(row != null){
-						return '<a href ="#" onclick="openLocation('+row.lat+','+row.lon+')"><i class="fa fa-globe fa-1x"></i></a>';
+		      {title:message("csh.common.createDate"),field:"createDate",width:130,sortable:true,formatter: function(value,row,index){
+		    	  if(value != null){
+						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
 					}else{
 						return "";
 					}

@@ -469,6 +469,7 @@ public class VehicleController extends BaseController
               vehicle.setIsOnline (vehicleStatus.getOnline ());
               vehicle.setLat (vehicleStatus.getLat ());
               vehicle.setLon (vehicleStatus.getLon ());
+              vehicle.setObdStatusTime (vehicleStatus.getCreatetime ());
             }
           }
         }

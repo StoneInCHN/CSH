@@ -1,5 +1,7 @@
 package com.csh.json.response;
 
+import java.util.Date;
+
 /**
  * 返回给租户的车辆实时状态数据,用户车辆查询页面显示
  * 
@@ -49,6 +51,11 @@ public class VehicleStatus {
    * 经度
    */
   private Float Lon;
+  
+  /**
+   * 创建时间
+   */
+  private Date createtime;
   
   public Long getDeviceId() {
     return deviceId;
@@ -126,6 +133,16 @@ public class VehicleStatus {
   public void setLon (Float lon)
   {
     Lon = lon;
+  }
+
+  public Date getCreatetime ()
+  {
+    return createtime;
+  }
+
+  public void setCreatetime (Date createtime)
+  {
+    this.createtime = createtime;
   }
   
 }

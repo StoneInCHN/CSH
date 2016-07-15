@@ -46,20 +46,6 @@ public class App extends BaseEntity {
    */
   private String jpushMasterSecret;
 
-  /**
-   * 微信支付平台秘钥
-   */
-  private String wechatKey;
-
-  /**
-   * 微信分配的公众账号ID(企业号corpid即为此appId)
-   */
-  private String wechatAppid;
-
-  /**
-   * 微信支付平台商户ID
-   */
-  private String wechatMchId;
 
 
   @Column(length = 100)
@@ -80,32 +66,6 @@ public class App extends BaseEntity {
     this.jpushMasterSecret = jpushMasterSecret;
   }
 
-  @Column(length = 100)
-  public String getWechatKey() {
-    return wechatKey;
-  }
-
-  public void setWechatKey(String wechatKey) {
-    this.wechatKey = wechatKey;
-  }
-
-  @Column(length = 100)
-  public String getWechatAppid() {
-    return wechatAppid;
-  }
-
-  public void setWechatAppid(String wechatAppid) {
-    this.wechatAppid = wechatAppid;
-  }
-
-  @Column(length = 100)
-  public String getWechatMchId() {
-    return wechatMchId;
-  }
-
-  public void setWechatMchId(String wechatMchId) {
-    this.wechatMchId = wechatMchId;
-  }
 
   @Index(name = "app_tenantid")
   public Long getTenantID() {
