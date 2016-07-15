@@ -22,6 +22,7 @@ import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.App;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.EndUser;
+import com.csh.entity.TenantInfo;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleBrand;
 import com.csh.entity.VehicleBrandDetail;
@@ -42,6 +43,7 @@ import com.csh.service.AppService;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.SystemConfigService;
+import com.csh.service.TenantInfoService;
 import com.csh.service.VehicleBrandDetailService;
 import com.csh.service.VehicleBrandService;
 import com.csh.service.VehicleLineService;
@@ -84,6 +86,8 @@ public class VehicleController extends MobileBaseController {
   @Resource(name = "advanceDepositsServiceImpl")
   private AdvanceDepositsService advanceDepositsService;
 
+  @Resource(name = "tenantInfoServiceImpl")
+  private TenantInfoService tenantInfoService;
 
 
   /**
@@ -107,13 +111,20 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
 
-    EndUser user = endUserService.find(userId);
     String[] properties =
         {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo", "vehicleNo",
             "trafficInsuranceExpiration", "nextAnnualInspection", "driveMileage",
             "lastMaintainMileage"};
-    List<Map<String, Object>> map =
-        FieldFilterUtils.filterCollectionMap(properties, user.getVehicles());
+    List<Vehicle> vehicles = new ArrayList<Vehicle>();
+    /**
+     * 外部接口调用时会有车牌号为000000的虚拟车辆，显示时要过滤掉
+     */
+    for (Vehicle vehicle : vehicles) {
+      if (!"0000000".equals(vehicle.getPlate())) {
+        vehicles.add(vehicle);
+      }
+    }
+    List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, vehicles);
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(req.getToken());
     endUserService.createEndUserToken(newtoken, userId);
@@ -305,6 +316,7 @@ public class VehicleController extends MobileBaseController {
     // String deviceNo = vehicleReq.getDeviceNo();
     Long vehicleId = vehicleReq.getVehicleId();
     Long tenantId = vehicleReq.getTenantId();
+    String orgCode = vehicleReq.getOrgCode();
 
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
@@ -322,6 +334,16 @@ public class VehicleController extends MobileBaseController {
       response.setDesc(Message.error("csh.vehicle.bind.tenant").getContent());
       return response;
     }
+    /**
+     * 外部接口调用时不传tenantId,传orgCode ======Start
+     */
+    if (orgCode != null && tenantId == null) {
+      TenantInfo tenantInfo = tenantInfoService.findTenantWithOrgCode(orgCode);
+      tenantId = tenantInfo.getId();
+    }
+    /**
+     * =====end
+     */
     vehicle.setTenantID(tenantId);
     Vehicle v = vehicleService.bindTenant(vehicle);
 
@@ -341,7 +363,6 @@ public class VehicleController extends MobileBaseController {
 
     return response;
   }
-
 
   /**
    * 用户获取当前可以绑定的设备列表

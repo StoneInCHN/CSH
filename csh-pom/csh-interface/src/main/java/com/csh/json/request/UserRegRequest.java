@@ -2,40 +2,52 @@ package com.csh.json.request;
 
 import com.csh.json.base.BaseRequest;
 
-public class UserRegRequest extends BaseRequest{
+public class UserRegRequest extends BaseRequest {
 
   /**
    * 密码
    */
   private String password;
-  
+
   /**
    * 确认密码
    */
   private String password_confirm;
-  
+
   /**
    * 手机验证码
    */
   private String smsToken;
-  
+
   /**
    * app初始化个推SDK后生成的client id
    */
   private String appClientId;
-  
-  
-    public String getPassword_confirm() {
-	  return password_confirm;
-    }
 
-	public void setPassword_confirm(String password_confirm) {
-		this.password_confirm = password_confirm;
-	}
-	
-	public String getAppClientId() {
-	    return appClientId;
-	}
+  /**
+   * 租户orgCode
+   */
+  private String orgCode;
+
+  public String getOrgCode() {
+    return orgCode;
+  }
+
+  public void setOrgCode(String orgCode) {
+    this.orgCode = orgCode;
+  }
+
+  public String getPassword_confirm() {
+    return password_confirm;
+  }
+
+  public void setPassword_confirm(String password_confirm) {
+    this.password_confirm = password_confirm;
+  }
+
+  public String getAppClientId() {
+    return appClientId;
+  }
 
   public void setAppClientId(String appClientId) {
     this.appClientId = appClientId;
@@ -58,6 +70,6 @@ public class UserRegRequest extends BaseRequest{
     this.smsToken = smsToken;
   }
 
- 
+
 
 }

@@ -96,4 +96,9 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
     map.put("carServices", service_map);
     return map;
   }
+
+  @Override
+  public TenantInfo findTenantWithOrgCode(String orgCode) {
+    return tenantInfoDao.findTenantWithOrgCode(orgCode);
+  }
 }

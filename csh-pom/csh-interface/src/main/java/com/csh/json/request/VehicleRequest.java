@@ -75,6 +75,19 @@ public class VehicleRequest extends BaseRequest {
    */
   private String apiKey;
 
+  /**
+   * 租户orgCode
+   */
+  private String orgCode;
+
+  public String getOrgCode() {
+    return orgCode;
+  }
+
+  public void setOrgCode(String orgCode) {
+    this.orgCode = orgCode;
+  }
+
 
   public String getApiKey() {
     return apiKey;
