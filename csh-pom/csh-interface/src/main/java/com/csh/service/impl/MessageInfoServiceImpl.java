@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.jpush.api.push.model.PushPayload;
 
 import com.csh.common.log.LogUtil;
+import com.csh.dao.AppDao;
 import com.csh.dao.EndUserDao;
 import com.csh.dao.MessageInfoDao;
 import com.csh.dao.MsgEndUserDao;
+import com.csh.entity.App;
 import com.csh.entity.EndUser;
 import com.csh.entity.MessageInfo;
 import com.csh.entity.MsgEndUser;
@@ -39,6 +41,9 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
   @Resource(name = "msgEndUserDaoImpl")
   private MsgEndUserDao msgEndUserDao;
 
+  @Resource(name = "appDaoImpl")
+  private AppDao appDao;
+
   @Resource(name = "messageInfoDaoImpl")
   public void setBaseDao(MessageInfoDao messageInfoDao) {
     super.setBaseDao(messageInfoDao);
@@ -58,9 +63,14 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
   public void jpushMsg(MessageInfo msg) {
     Integer unread_count = 0;
     for (MsgEndUser msgEndUser : msg.getMsgUser()) {
+      Long tenantId = null;
       if (!msgEndUser.getIsPush()) {
         msgEndUser.setIsPush(true);
         EndUser user = msgEndUser.getEndUser();
+        if (user.getDefaultVehicle() != null) {
+          tenantId = user.getDefaultVehicle().getTenantID();
+        }
+
         String regId = user.getjpushRegId();
         // regIds.add(user.getjpushRegId());
         msgEndUserDao.merge(msgEndUser);
@@ -80,10 +90,13 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
 
         AppPlatform appPlatform = endUserDao.getEndUserAppPlatform(user.getId());
         if (LogUtil.isDebugEnabled(MessageInfoServiceImpl.class)) {
-          LogUtil.debug(MessageInfoServiceImpl.class, "jpush message",
-              "Push Message to User with userName: %s, regJpushId: %s, msgId: %s, appPlatform: %s",
-              user.getUserName(), user.getjpushRegId(), msg.getId().toString(),
-              appPlatform != null ? appPlatform.toString() : null);
+          LogUtil
+              .debug(
+                  MessageInfoServiceImpl.class,
+                  "jpush message",
+                  "Push Message to User with userName: %s, regJpushId: %s, msgId: %s, appPlatform: %s,Tenant ID with User Belong: %s",
+                  user.getUserName(), user.getjpushRegId(), msg.getId().toString(),
+                  appPlatform != null ? appPlatform.toString() : null, tenantId);
         }
         try {
           if (user.getjpushRegId() != null && appPlatform != null) {
@@ -96,7 +109,13 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
                   JPushUtil.buildPushObject_ios_registerId(msg.getMessageContent(), map, regId);
             }
 
-            JPushUtil.sendPush(payload);
+            App app = appDao.getTenantAppById(tenantId);
+            if (app != null) {
+              JPushUtil.sendPush(payload, app.getJpushMasterSecret(), app.getJpushAppKey());
+            } else {
+              JPushUtil.sendPush(payload, null, null);
+            }
+
           }
         } catch (Exception e) {
           e.printStackTrace();

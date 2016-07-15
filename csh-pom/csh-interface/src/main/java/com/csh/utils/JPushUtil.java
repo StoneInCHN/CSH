@@ -18,9 +18,14 @@ public class JPushUtil {
 
   public static Setting setting = SettingUtils.get();
 
-  public static PushResult sendPush(PushPayload payload) throws Exception {
+  public static PushResult sendPush(PushPayload payload, String masterSecret, String appKey)
+      throws Exception {
     try {
-      JPushClient client = new JPushClient(setting.getMasterSecret(), setting.getAppKey());
+      if (masterSecret == null && appKey == null) {
+        masterSecret = setting.getMasterSecret();
+        appKey = setting.getAppKey();
+      }
+      JPushClient client = new JPushClient(masterSecret, appKey);
       return client.sendPush(payload);
     } catch (Exception e) {
       e.printStackTrace();
@@ -179,12 +184,12 @@ public class JPushUtil {
     Map<String, String> map = new HashMap<String, String>();
     map.put("id", "我是ID");
     map.put("title", "我是title");
-    // PushPayload payload =
-    // JPushUtil.buildPushObject_android_registerId("推送广播，推送到指定Alias设备", map,
-    // "140fe1da9ea842f2de0");// 100d85590944b10139b
+    String[] regIds = {"140fe1da9ea842f2de0", "100d85590944b10139b"};
     PushPayload payload =
-        JPushUtil.buildPushObject_ios_registerId("推送广播，推送到指定Alias设备", map, "06181b5bf02");//
-    JPushUtil.sendPush(payload);
+        JPushUtil.buildPushObject_android_registerId("推送广播，推送到指定Alias设备", map, regIds);// 100d85590944b10139b
+    // PushPayload payload =
+    // JPushUtil.buildPushObject_ios_registerId("推送广播，推送到指定Alias设备", map, "06181b5bf02");//
+    JPushUtil.sendPush(payload, setting.getMasterSecret(), setting.getAppKey());
 
   }
 }
