@@ -14,7 +14,6 @@ import com.csh.common.log.LogUtil;
 import com.csh.dao.AppDao;
 import com.csh.dao.EndUserDao;
 import com.csh.dao.NewsDao;
-import com.csh.entity.App;
 import com.csh.entity.EndUser;
 import com.csh.entity.News;
 import com.csh.entity.commonenum.CommonEnum.AppPlatform;
@@ -52,10 +51,7 @@ public class NewsServiceImpl extends BaseServiceImpl<News, Long> implements News
     List<EndUser> users = endUserDao.findList(null, null, null, null);
     for (EndUser user : users) {
       try {
-        Long tenantId = null;
-        if (user.getDefaultVehicle() != null) {
-          tenantId = user.getDefaultVehicle().getTenantID();
-        }
+
         AppPlatform appPlatform = endUserDao.getEndUserAppPlatform(user.getId());
         if (user.getjpushRegId() != null && appPlatform != null) {
           PushPayload payload = null;
@@ -67,20 +63,12 @@ public class NewsServiceImpl extends BaseServiceImpl<News, Long> implements News
           }
 
           if (LogUtil.isDebugEnabled(MessageInfoServiceImpl.class)) {
-            LogUtil
-                .debug(
-                    NewsServiceImpl.class,
-                    "jpush news",
-                    "Push News to All EndUser. newsId:%s, title: %s, contentUrl: %s, Tenant ID with User Belong: %s",
-                    newsId, title, contentUrl, tenantId);
+            LogUtil.debug(NewsServiceImpl.class, "jpush news",
+                "Push News to All EndUser. newsId:%s, title: %s, contentUrl: %s", newsId, title,
+                contentUrl);
           }
 
-          App app = appDao.getTenantAppById(tenantId);
-          if (app != null) {
-            JPushUtil.sendPush(payload, app.getJpushMasterSecret(), app.getJpushAppKey());
-          } else {
-            JPushUtil.sendPush(payload, null, null);
-          }
+          JPushUtil.sendPush(payload, null, null);
         }
       } catch (Exception e) {
         e.printStackTrace();

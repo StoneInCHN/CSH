@@ -16,4 +16,12 @@ public interface TenantInfoService extends BaseService<TenantInfo, Long> {
    */
   Map<String, Object> getTenantByUserAndServiceCategory(Long userId, Long categoryId);
 
+  /**
+   * 通过机构代码找租户
+   * 
+   * @param orgCode
+   * @return
+   */
+  TenantInfo findTenantWithOrgCode(String orgCode);
+
 }
