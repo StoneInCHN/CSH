@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,7 +123,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
       vehicle.setIsDefault(isDefault);
       if (isDefault) {
         for (Vehicle vehi : endUser.getVehicles()) {
-          if (vehi.getIsDefault()) {
+          if (BooleanUtils.isTrue(vehi.getIsDefault())) {
             vehi.setIsDefault(false);
             vehicleDao.merge(vehi);
           }
@@ -137,12 +138,14 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public Vehicle updateVehicle(Vehicle vehicle, EndUser endUser, Boolean isDefault) {
-    vehicle.setIsDefault(isDefault);
-    if (isDefault) {
-      for (Vehicle vehi : endUser.getVehicles()) {
-        if (!vehi.getId().equals(vehicle.getId()) && vehi.getIsDefault()) {
-          vehi.setIsDefault(false);
-          vehicleDao.merge(vehi);
+    if (isDefault != null) {
+      vehicle.setIsDefault(isDefault);
+      if (isDefault) {
+        for (Vehicle vehi : endUser.getVehicles()) {
+          if (!vehi.getId().equals(vehicle.getId()) && vehi.getIsDefault()) {
+            vehi.setIsDefault(false);
+            vehicleDao.merge(vehi);
+          }
         }
       }
     }

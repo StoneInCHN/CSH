@@ -18,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.wltea.analyzer.lucene.IKAnalyzer;
@@ -262,7 +263,7 @@ public class EndUser extends BaseEntity {
   @Transient
   public Vehicle getDefaultVehicle() {
     for (Vehicle v : vehicles) {
-      if (v.getIsDefault()) {
+      if (BooleanUtils.isTrue(v.getIsDefault())) {
         defaultVehicle = v;
         break;
       }
@@ -447,8 +448,7 @@ public class EndUser extends BaseEntity {
   /**
    * 设置购物车
    * 
-   * @param cart
-   *            购物车
+   * @param cart 购物车
    */
   public void setCart(Cart cart) {
     this.cart = cart;
@@ -467,8 +467,7 @@ public class EndUser extends BaseEntity {
   /**
    * 设置订单
    * 
-   * @param orders
-   *            订单
+   * @param orders 订单
    */
   public void setOrders(Set<Order> orders) {
     this.orders = orders;
@@ -487,8 +486,7 @@ public class EndUser extends BaseEntity {
     return receivers;
   }
 
-  public void setReceivers (Set<ReceiverAddress> receivers)
-  {
+  public void setReceivers(Set<ReceiverAddress> receivers) {
     this.receivers = receivers;
   }
 
@@ -506,8 +504,7 @@ public class EndUser extends BaseEntity {
   /**
    * 设置评论
    * 
-   * @param reviews
-   *            评论
+   * @param reviews 评论
    */
   public void setReviews(Set<Review> reviews) {
     this.reviews = reviews;
@@ -528,8 +525,7 @@ public class EndUser extends BaseEntity {
   /**
    * 设置收藏商品
    * 
-   * @param favoriteProducts
-   *            收藏商品
+   * @param favoriteProducts 收藏商品
    */
   public void setFavoriteProducts(Set<Product> favoriteProducts) {
     this.favoriteProducts = favoriteProducts;

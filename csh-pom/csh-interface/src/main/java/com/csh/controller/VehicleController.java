@@ -111,15 +111,17 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
 
+    EndUser endUser = endUserService.find(userId);
     String[] properties =
         {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo", "vehicleNo",
             "trafficInsuranceExpiration", "nextAnnualInspection", "driveMileage",
             "lastMaintainMileage"};
     List<Vehicle> vehicles = new ArrayList<Vehicle>();
+
     /**
      * 外部接口调用时会有车牌号为000000的虚拟车辆，显示时要过滤掉
      */
-    for (Vehicle vehicle : vehicles) {
+    for (Vehicle vehicle : endUser.getVehicles()) {
       if (!"0000000".equals(vehicle.getPlate())) {
         vehicles.add(vehicle);
       }
