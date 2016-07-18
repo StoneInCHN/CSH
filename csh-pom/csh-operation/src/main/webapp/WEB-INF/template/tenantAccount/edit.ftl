@@ -17,6 +17,9 @@
 $().ready(function() {
 
 	var $inputForm = $("#inputForm");
+	var $editPassword = $("#editPassword");
+	var $password = $("#password");
+	var $rePassword = $("#rePassword");
 	
 	
 	// 表单验证
@@ -27,11 +30,29 @@ $().ready(function() {
 				required: true,
 				email: true
 			},
-			roleIds: "required",
-			adminStatus: "required"
+			adminStatus: "required",
+			password: {
+				minlength: 6
+			},
+			rePassword: {
+				equalTo: "#password"
+			}
+		},
+		messages: {
+			password: {
+				pattern: "${message("csh.reg.passwordIllegal")}",
+				minlength: "${message("csh.password.minlength",6)}"
+			},
+			repassword:{
+					 equalTo:"${message("csh.reg.passwordIllegal")}"
+			}
 		}
 	});
-
+	$editPassword.click(function(){
+		$password.parent().parent().show();
+		$rePassword.parent().parent().show();
+	});
+	
 });
 </script>
 </head>
@@ -106,22 +127,22 @@ $().ready(function() {
 									</select>
 								</td>
 							</tr>
-							<!--
-							<tr class="roles">
+							<tr style="display:none">
 								<th>
-									<span class="requiredField">*</span>${message("csh.tenantAccount.roles")}:
+									${message("csh.admin.password")}:
 								</th>
 								<td>
-									<span class="fieldSet">
-										[#list roles as role]
-											<label>
-												<input type="checkbox" name="roleIds" value="${role.id}"[#if tenantAccount.roles?seq_contains(role)] checked="checked"[/#if] /><span>${role.name}</span>
-											</label>
-										[/#list]
-									</span>
+									<input type="password" id="password" name="password" class="text" maxlength="20" />
 								</td>
 							</tr>
-							-->
+							<tr style="display:none">
+								<th>
+									${message("csh.admin.rePassword")}:
+								</th>
+								<td>
+									<input type="password" name="rePassword" id="rePassword" class="text" maxlength="20" />
+								</td>
+							</tr>
 						</table>
 						<table class="input">
 							<tr>
@@ -130,6 +151,7 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="submit" class="button" value="${message("csh.common.submit")}" />
+									<input type="button" id="editPassword" class="button" value="${message("csh.tenantAccount.editPasswordButton")}" />
 									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
 								</td>
 							</tr>

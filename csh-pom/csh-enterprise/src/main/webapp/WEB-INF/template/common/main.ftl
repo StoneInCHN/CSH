@@ -84,7 +84,9 @@
 				[@shiro.hasPermission name="systemManage"]
 				<li><a href="#system"><i class="fa fa-windows fa-1x"></i>系统管理</a></li>
 				[/@shiro.hasPermission]
-				
+				[@shiro.hasPermission name="systemManage"]
+				<li><a href="#estoreOrder"><i class="fa fa-windows fa-1x"></i>商品订单管理</a></li>
+				[/@shiro.hasPermission]
 				<a href="#" id="nav-switcher" class="nav-switcher">更多<i class="fa fa-angle-down fa-1x"></i></a>
 				<!--<a id="nav-switcherset" href="#" class="router nav-switcherset off"><span class="middlehelper">设置</span><span><i class="fa fa-cog"></i></span></a>-->
 			</ul>
@@ -299,7 +301,11 @@
     		[@shiro.hasPermission name="carWashingCoupon"]
     		<li><a href="#" data-url="${base}/console/carWashingCoupon/carWashingCoupon.jhtml">${message("csh.appActivity.carWashingCoupon")}</a></li>
     		[/@shiro.hasPermission]
-    	</ul>                   
+    	</ul>  
+    	<ul title="${message("csh.estoreOrder.config")}" id="estoreOrder">
+    		<li><a href="#" data-url="${base}/console/estore/order/order.jhtml">${message("csh.estore.order")}</a></li>
+    	</ul>  
+    	                 
     </div>
   
     <div class="main-content" data-options="region:'center'">

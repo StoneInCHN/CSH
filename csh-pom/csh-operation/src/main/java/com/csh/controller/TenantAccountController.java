@@ -97,6 +97,10 @@ public class TenantAccountController extends BaseController {
   public String update(TenantAccount tenantAccount) {
     TenantAccount temp = tenantAccountService.find(tenantAccount.getId());
     temp.setAccoutStatus(tenantAccount.getAccoutStatus());
+    if(tenantAccount.getPassword() !=null){
+    	String password = DigestUtils.md5Hex(tenantAccount.getPassword());
+    	temp.setPassword(password);
+    }
     tenantAccountService.update(temp);
     return "redirect:list.jhtml";
   }
