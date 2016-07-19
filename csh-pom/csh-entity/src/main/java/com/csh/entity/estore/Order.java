@@ -181,6 +181,11 @@ public class Order extends BaseEntity {
    */
   private Long tenantID;
 
+  /**
+   * 父级订单
+   */
+  private Integer parent;
+  
   @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public Long getTenantID() {
     return tenantID;
@@ -1135,4 +1140,13 @@ public class Order extends BaseEntity {
 
   }
 
+	public Integer getParent() {
+		return parent;
+	}
+	
+	public void setParent(Integer parent) {
+		this.parent = parent;
+	}
+  
+  
 }

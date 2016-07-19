@@ -36,7 +36,7 @@ $().ready( function() {
 		location.href="add.jhtml";
 	});
 	
-	// 删除
+	// 
 	$reSendEmailButton.click( function() {
 		var $this = $(this);
 		if ($this.hasClass("disabled")) {
@@ -63,6 +63,7 @@ $().ready( function() {
 			}
 		});
 	});
+
 	
 	// 删除
 	$deleteButton.click( function() {

@@ -120,15 +120,20 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     if (endUser.getVehicles() == null || endUser.getVehicles().size() <= 0) {
       vehicle.setIsDefault(true);
     } else {
-      vehicle.setIsDefault(isDefault);
-      if (isDefault) {
-        for (Vehicle vehi : endUser.getVehicles()) {
-          if (BooleanUtils.isTrue(vehi.getIsDefault())) {
-            vehi.setIsDefault(false);
-            vehicleDao.merge(vehi);
+      if (isDefault != null) {
+        vehicle.setIsDefault(isDefault);
+        if (isDefault) {
+          for (Vehicle vehi : endUser.getVehicles()) {
+            if (BooleanUtils.isTrue(vehi.getIsDefault())) {
+              vehi.setIsDefault(false);
+              vehicleDao.merge(vehi);
+            }
           }
         }
+      } else {
+        vehicle.setIsDefault(false);
       }
+
     }
     vehicle.setEndUser(endUser);
     vehicleDao.persist(vehicle);

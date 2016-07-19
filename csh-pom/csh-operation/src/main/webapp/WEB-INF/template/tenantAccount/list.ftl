@@ -46,6 +46,9 @@
 										<div class="btn-group operationButton">
 										  <button type="button" id="reSendEmailButton" class="btn btn-default disabled"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.tenantAccount.reSendEmailButton")}</button>
 										</div>
+										<div class="btn-group editPasswordButton">
+										  <button type="button" id="editPasswordButton" class="btn btn-default disabled"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.tenantAccount.editPasswordButton")}</button>
+										</div>
 									</li>
 									  <li role="presentation" class="dropdown pull-right">
 										    <a id="pageSizeSelect" aria-expanded="false" role="button" aria-haspopup="true" data-toggle="dropdown" class="dropdown-toggle" href="#">
