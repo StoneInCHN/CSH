@@ -11,12 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
 import com.csh.dao.TenantInfoDao;
 import com.csh.entity.ConfigMeta;
 import com.csh.entity.EndUser;
 import com.csh.entity.TenantImage;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.Vehicle;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantImageService;
@@ -85,7 +88,15 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
   public List<EndUser> findEndUser ()
   {
     List<EndUser> endUserList = new ArrayList<EndUser>();
-    List<Vehicle> vehicleList =vehicleService.findList (null, null, null, true, null);
+    List<Filter> filters = new ArrayList<Filter> ();
+    Filter plateFilter = new Filter();
+    plateFilter.setOperator (Operator.ne);
+    plateFilter.setProperty ("plate");
+    plateFilter.setValue ("0000000");
+    
+    filters.add (plateFilter);
+    
+    List<Vehicle> vehicleList =vehicleService.findList (null, filters, null, true, null);
     for (Vehicle vehicle : vehicleList)
     {
       EndUser user = vehicle.getEndUser ();

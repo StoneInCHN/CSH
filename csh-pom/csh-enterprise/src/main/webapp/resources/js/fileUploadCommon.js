@@ -12,7 +12,6 @@
  */
 function singleUpload(options) {
 	
-	
 	var $ = jQuery, // just in case. Make sure it's not an other libaray.
 
 	$wrap = $('#'+options.warp),

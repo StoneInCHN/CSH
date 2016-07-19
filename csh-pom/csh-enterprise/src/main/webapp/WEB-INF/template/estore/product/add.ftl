@@ -132,12 +132,12 @@
 			 <div title="图片上传" class="easyui-tooltip" id="addProductImageListWarp">
 				<div id="productImageListUploader-add" class="multiple-uploader">
 				    <div  class="queueList">
-			        	 <div  class="placeholder">
+			        	 <div  class="multiplePlaceholder">
 				        	<div id="productImageListFilePicker-add" ></div>
 				        </div>
 				    </div>
 				    <div class="btns">
-				    	<div id="filePicker2_Photos"></div>
+				    	<div id="filePicker2_productImageList"></div>
 				        <div class="uploadBtn state-pedding"></div>
 				    </div>
 				</div>

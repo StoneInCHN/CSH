@@ -9,12 +9,14 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Controller;
@@ -30,10 +32,8 @@ import com.csh.beans.Setting;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
-import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
-import com.csh.entity.VehicleBrandDetail;
-import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.request.MsgRequest;
@@ -116,6 +116,7 @@ public class VehicleController extends BaseController
     QueryParser mobileNumParser = new QueryParser (Version.LUCENE_35, "endUser.mobileNum",
         analyzer);
     Query plateQuery = null;
+    Query plateNotQuery = null;
     Query userNameQuery = null;
     Query mobileNumQuery = null;
     TermRangeQuery rangeQuery = null;
@@ -205,10 +206,17 @@ public class VehicleController extends BaseController
             +" end date: "+endDateStr);
       }
     }
+    plateNotQuery = new TermQuery (new Term ("plate","0000000"));
+    query.add (plateNotQuery, Occur.MUST_NOT);
+    
     if (plateQuery != null || userNameQuery != null || mobileNumQuery != null || rangeQuery != null )
     {
       vehiclePage= vehicleService.search (query, pageable, analyzer,filter,true);
     }else {
+      List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter> ();
+      com.csh.framework.filter.Filter plateFilter = new com.csh.framework.filter.Filter("plate",Operator.ne,"0000000");
+      filters.add (plateFilter);
+      pageable.setFilters (filters);
       vehiclePage= vehicleService.findPage (pageable, true);
     }
     prepareVehicleList (vehiclePage.getRows ());

@@ -69,6 +69,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
         
         Filter userFilter = new Filter ("endUser", Operator.eq, user);
         filters.add (userFilter);
+        Filter plateFilter = new Filter ("plate", Operator.ne, "0000000");
+        filters.add (plateFilter);
         List<Vehicle> vehicleList=vehicleDao.findList (null, null, filters, null);
         String[] propertys = {"id", "plate","dashboardMileage","vehicleFullBrand"};
         return FieldFilterUtils.filterCollectionMap(propertys, vehicleList);
@@ -93,7 +95,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
           Query plateQuery = null;
           Query userNameQuery = null;
           Query mobileNumQuery = null;
-    
+          Query plateNotQuery = null;
           String text = QueryParser.escape (endUserFilter);
           try
           {
@@ -105,9 +107,12 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
             mobileNumParser.setAllowLeadingWildcard (true);
             mobileNumQuery = mobileNumParser.parse ("*" + text + "*");
     
+            plateNotQuery = plateParser.parse ("0000000");
+            
             query.add (plateQuery, Occur.SHOULD);
             query.add (userNameQuery, Occur.SHOULD);
             query.add (mobileNumQuery, Occur.SHOULD);
+            query.add (plateNotQuery,Occur.MUST_NOT);
           }
           catch (ParseException e)
           {
@@ -123,6 +128,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
           
           Filter tenantIDFilter = new Filter ("tenantID", Operator.eq, tenantID);
           Filter bindStatusFilter = new Filter ("device", Operator.isNotNull);
+          Filter plateFilter = new Filter ("plate", Operator.ne,"0000000");
+          filters.add (plateFilter);
           filters.add (tenantIDFilter);
           filters.add (bindStatusFilter);
           

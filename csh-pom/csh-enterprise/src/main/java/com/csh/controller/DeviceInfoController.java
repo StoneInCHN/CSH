@@ -115,7 +115,7 @@ public class DeviceInfoController extends BaseController
     }
     if (deviceTpyeSearch != null)
     {
-      typeqQuery = new TermQuery (new Term ("type.name",deviceTpyeSearch.toString ()));
+      typeqQuery = new TermQuery (new Term ("type.name",deviceTpyeSearch.toLowerCase ()));
       query.add (typeqQuery,Occur.MUST);
     }
     if (startDateStr != null || endDateStr != null)

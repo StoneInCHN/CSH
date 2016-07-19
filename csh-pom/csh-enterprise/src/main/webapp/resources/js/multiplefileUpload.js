@@ -20,7 +20,7 @@ function multipleUpload(options) {
         $upload = $wrap.find('.uploadBtn'),
 
         // 没选择文件之前的内容。
-        $placeHolder = $wrap.find('.placeholder'),
+        $placeHolder = $wrap.find('.multiplePlaceholder'),
 
         // 总体进度条
         $progress = $statusBar.find('.progress').hide(),

@@ -42,7 +42,7 @@ public class VehicleDaoImpl extends  BaseDaoImpl<Vehicle,Long> implements Vehicl
     
     String jpql =
         "select vehicle from DeviceInfo deviceInfo right join  deviceInfo.vehicle vehicle"
-        + " where vehicle.tenantID=:tenantID and deviceInfo.id is null";
+        + " where vehicle.plate != '0000000' and vehicle.tenantID=:tenantID and deviceInfo.id is null";
     if (vehiclePlateSearch != null)
     {
       jpql= jpql+ " and vehicle.plate like :plate";
