@@ -22,7 +22,6 @@ import com.csh.entity.NewsCategory;
 import com.csh.entity.NewsComment;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
-import com.csh.framework.ordering.Ordering;
 import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
@@ -239,20 +238,20 @@ public class NewsController extends MobileBaseController {
     newsService.update(news);
 
 
-    List<Filter> filters = new ArrayList<Filter>();
-    Filter filter = new Filter("news", Operator.eq, news);
-    filters.add(filter);
-    List<Ordering> orderings = new ArrayList<Ordering>();
-    Ordering ordering = new Ordering("createDate", Direction.desc);
-    orderings.add(ordering);
-    List<NewsComment> commentList = newsCommentService.findList(null, filters, orderings);
-    String[] commentProperties = {"userName", "content", "createDate", "photoUrl"};
-    List<Map<String, Object>> comments =
-        FieldFilterUtils.filterCollectionMap(commentProperties, commentList);
-    response.setMsg(comments);
+    // List<Filter> filters = new ArrayList<Filter>();
+    // Filter filter = new Filter("news", Operator.eq, news);
+    // filters.add(filter);
+    // List<Ordering> orderings = new ArrayList<Ordering>();
+    // Ordering ordering = new Ordering("createDate", Direction.desc);
+    // orderings.add(ordering);
+    // List<NewsComment> commentList = newsCommentService.findList(null, filters, orderings);
+    // String[] commentProperties = {"userName", "content", "createDate", "photoUrl"};
+    // List<Map<String, Object>> comments =
+    // FieldFilterUtils.filterCollectionMap(commentProperties, commentList);
+    // response.setMsg(comments);
     String newtoken = TokenGenerator.generateToken(token);
     endUserService.createEndUserToken(newtoken, userId);
-    response.setDesc(news.getCommentCounts().toString());
+    // response.setDesc(news.getCommentCounts().toString());
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
     return response;
