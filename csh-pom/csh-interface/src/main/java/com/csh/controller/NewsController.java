@@ -137,7 +137,7 @@ public class NewsController extends MobileBaseController {
       filters.add(categoryFilter);
     }
     pageable.setFilters(filters);
-    pageable.setOrderProperty("modifyDate");
+    pageable.setOrderProperty("createDate");
     pageable.setOrderDirection(Direction.desc);
     Page<News> newsList = newsService.findPage(pageable);
 
@@ -148,7 +148,7 @@ public class NewsController extends MobileBaseController {
 
 
     String[] propertys =
-        {"id", "title", "subTitle", "modifyDate", "imgUrl", "readCounts", "likeCounts",
+        {"id", "title", "subTitle", "createDate", "imgUrl", "readCounts", "likeCounts",
             "commentCounts"};
     List<Map<String, Object>> result =
         FieldFilterUtils.filterCollectionMap(propertys, newsList.getContent());
