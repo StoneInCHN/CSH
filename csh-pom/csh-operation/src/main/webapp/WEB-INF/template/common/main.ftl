@@ -47,7 +47,7 @@
     <div class="content">
       <div class="sidebar" >
       	<ul id="nav">
-           [#list ["admin:admin", "admin:role","admin:area","admin:account"] as permission]
+           [#list ["admin:admin", "admin:role","admin:area","admin:account","admin:advertisement","admin:apkVersion","admin:commissionRate","admin:coupon","admin:systemConfig","admin:faultCode"] as permission]
 					[@shiro.hasPermission name = permission]
 						<li class="has_sub" >
 							<a href="#admin" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.systemNav")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
@@ -100,6 +100,11 @@
 							 	[@shiro.hasPermission name="admin:systemConfig"]
 								<li>
 									<a href="../systemConfig/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.systemConfig")}</a>
+								</li>
+							 	[/@shiro.hasPermission]
+							 	[@shiro.hasPermission name="admin:faultCode"]
+								<li>
+									<a href="../faultCode/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.faultCode")}</a>
 								</li>
 							 	[/@shiro.hasPermission]
 				            </ul>

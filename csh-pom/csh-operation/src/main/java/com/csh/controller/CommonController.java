@@ -77,13 +77,6 @@ public class CommonController extends BaseController {
     if (StringUtils.isEmpty(captchaId)) {
       captchaId = request.getSession().getId();
     }
-    String pragma =
-        new StringBuffer().append("yB").append("-").append("der").append("ewoP").reverse()
-            .toString();
-    String value =
-        new StringBuffer().append("ten").append(".").append("erot").append("se").reverse()
-            .toString();
-    response.addHeader(pragma, value);
     response.setHeader("Pragma", "no-cache");
     response.setHeader("Cache-Control", "no-cache");
     response.setHeader("Cache-Control", "no-store");

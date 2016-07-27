@@ -305,17 +305,18 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord) {
     Setting setting = SettingUtils.get();
-    // 消费兑换积分.规则 1元=1积分(余额消费也送积分，因为余额充值时没有送了积分)
+    // 消费兑换积分.规则 1元=1积分,不足1元送1积分(余额消费也送积分，因为余额充值时没有送了积分)
     if (carServiceRecord.getPaymentType() != null) {
       Wallet wallet = carServiceRecord.getEndUser().getWallet();
       WalletRecord walletRecord = new WalletRecord();
       walletRecord.setWallet(wallet);
       walletRecord.setBalanceType(BalanceType.INCOME);
       walletRecord.setWalletType(WalletType.SCORE);
-      walletRecord.setScore(carServiceRecord.getPrice());
+      walletRecord.setScore(carServiceRecord.getPrice().setScale(0, BigDecimal.ROUND_UP));
       walletRecord.setRemark(Message.success("csh.wallet.score.comein.record").getContent());
       wallet.getWalletRecords().add(walletRecord);
-      wallet.setScore(wallet.getScore().add(walletRecord.getScore()));
+      wallet.setScore(wallet.getScore().add(walletRecord.getScore())
+          .setScale(0, BigDecimal.ROUND_UP));
       walletDao.merge(wallet);
     }
 

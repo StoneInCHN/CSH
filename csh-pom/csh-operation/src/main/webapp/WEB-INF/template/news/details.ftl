@@ -23,7 +23,7 @@
 <body>
 	<div class="container">
 		<h4 style="text-align:center;margin:30px">${news.title}</h4>
-		<p style="text-align:center;margin:30px;font-size:12px;">创建人:${news.userName} 创建时间：${news.createDate}</p>
+		<p style="text-align:center;margin:30px;font-size:12px;">创建时间：${news.createDate} 浏览次数:${news.readCounts}</p>
 		<div style="margin-bottom:80px;">${news.content}</div>
 	</div>
 </body>

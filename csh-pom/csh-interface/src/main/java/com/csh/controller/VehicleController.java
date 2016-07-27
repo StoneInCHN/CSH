@@ -213,6 +213,7 @@ public class VehicleController extends MobileBaseController {
 
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
+    response.setDesc(addVehicle.getId().toString());
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
     return response;

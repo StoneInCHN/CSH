@@ -12,4 +12,9 @@ public interface DeviceInfoService extends BaseService<DeviceInfo,Long>{
    */
   public DeviceInfo findByDeviceNo(String deviceNo);
   
+  /**
+   * 解除设备绑定
+   * @param deviceInfo
+   */
+  DeviceInfo unBind (DeviceInfo deviceInfo);
 }

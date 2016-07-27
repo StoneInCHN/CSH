@@ -17,7 +17,9 @@ import com.csh.entity.TenantInfo;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
+import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DeviceInfoService;
@@ -48,6 +50,9 @@ public class VehicleController extends BaseController {
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String list(Pageable pageable, ModelMap model) {
+      List<Filter> filters = new ArrayList<Filter>();
+      filters.add(Filter.ne("plate","0000000"));
+      pageable.setFilters(filters);
 	  Page<Vehicle> page = vehicleService.findPage(pageable);
 	  List<Vehicle> vehicles = page.getContent();
 	  List<Vehicle> lists = new ArrayList<Vehicle>();
