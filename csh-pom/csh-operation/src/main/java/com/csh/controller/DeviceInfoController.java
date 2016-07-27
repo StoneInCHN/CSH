@@ -1,6 +1,8 @@
 package com.csh.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -116,17 +118,34 @@ public class DeviceInfoController extends BaseController {
    * 列表
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
-  public String list(Pageable pageable, ModelMap model, DeviceStatus deviceStatus) {
+  public String list(Pageable pageable, ModelMap model, DeviceStatus deviceStatus,
+      Date beginDate ,Date endDate) {
     model.addAttribute("deviceStatus", deviceStatus);
+    model.addAttribute("beginDate", beginDate);
+    model.addAttribute("endDate", endDate);
+    List<Filter> filters = new ArrayList<Filter>();
     if (deviceStatus != null) {
-      List<Filter> filters = new ArrayList<Filter>();
       Filter filter = new Filter();
       filter.setProperty("deviceStatus");
       filter.setValue(deviceStatus);
       filter.setOperator(Operator.eq);
       filters.add(filter);
-      pageable.setFilters(filters);
     }
+    if(beginDate !=null){
+      Filter filter = new Filter();
+      filter.setProperty("createDate");
+      filter.setValue(beginDate);
+      filter.setOperator(Operator.ge);
+      filters.add(filter);
+    }
+    if(endDate !=null){
+      Filter filter = new Filter();
+      filter.setProperty("createDate");
+      filter.setValue(endDate);
+      filter.setOperator(Operator.le);
+      filters.add(filter);
+    }
+    pageable.setFilters(filters);
     model.addAttribute("page", deviceInfoService.findPage(pageable));
     return "/deviceInfo/list";
   }
@@ -187,7 +206,7 @@ public class DeviceInfoController extends BaseController {
     if (admin.getIsDistributor() != null && admin.getIsDistributor()
         && admin.getDistributor() != null) {
       distributorFilter.setValue(admin.getDistributor().getId());
-    }else{
+    } else {
       distributorFilter.setValue(0);
     }
     distributorFilter.setOperator(Operator.eq);
@@ -204,6 +223,13 @@ public class DeviceInfoController extends BaseController {
     pageable.setPageSize(5);;
     modelMap.addAttribute("page", distributorService.findPage(pageable));
     return "/deviceInfo/deviceProvide";
+  }
+  
+  @RequestMapping(value = "/deviceProvide4edit", method = RequestMethod.GET)
+  public String deviceProvide4edit(ModelMap modelMap, Pageable pageable) {
+    pageable.setPageSize(5);;
+    modelMap.addAttribute("page", distributorService.findPage(pageable));
+    return "/deviceInfo/deviceProvide4edit";
   }
 
   @RequestMapping(value = "/provide4distributor", method = RequestMethod.POST)
@@ -238,19 +264,35 @@ public class DeviceInfoController extends BaseController {
       if (string.length() > 0) {
         Long id = Long.valueOf(string);
         DeviceInfo deviceInfo = deviceInfoService.find(id);
-        if (DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus())){
+        if (DeviceStatus.INITED.equals(deviceInfo.getDeviceStatus())) {
           Distributor distributor = distributorService.find(distributorId);
           deviceInfo.setDistributor(distributor);
           deviceInfo.setDeviceStatus(DeviceStatus.SENDOUT);
           deviceInfoService.update(deviceInfo);
         }
-        
+
       }
     }
     return SUCCESS_MESSAGE;
   }
 
-  
+  @RequestMapping(value = "/provide4edit", method = RequestMethod.POST)
+  public @ResponseBody Message provide4edit(Long id, Long distributorId) {
+    if(id ==null || distributorId ==null){
+      return ERROR_MESSAGE;
+    }
+    DeviceInfo deviceInfo = deviceInfoService.find(id);
+    if (deviceInfo !=null && DeviceStatus.SENDOUT.equals(deviceInfo.getDeviceStatus())) {
+      Distributor distributor = distributorService.find(distributorId);
+      if(distributor !=null){
+        deviceInfo.setDistributor(distributor);
+        deviceInfoService.update(deviceInfo);
+        return SUCCESS_MESSAGE;
+      }
+    }
+      return ERROR_MESSAGE;
+  }
+
   /**
    * 详情
    */
@@ -320,15 +362,15 @@ public class DeviceInfoController extends BaseController {
               formatFailDeviceIds.add(deviceTemp.getDeviceNo());
               faileCount++;
             } else {
-                deviceTemp.setDeviceStatus(DeviceStatus.INITED);
-                deviceTemp.setBindStatus(BindStatus.UNBINDED);
-                deviceInfoService.save(deviceTemp);
-                if (LogUtil.isDebugEnabled(DeviceInfoController.class)) {
-                  LogUtil.debug(DeviceInfoController.class, "batchAddSave",
-                      "DeviceInfo saved , Sn : %s , simNo : %s", deviceTemp.getDeviceNo(),
-                      deviceTemp.getSimNo());
-                }
-                successCount++;
+              deviceTemp.setDeviceStatus(DeviceStatus.INITED);
+              deviceTemp.setBindStatus(BindStatus.UNBINDED);
+              deviceInfoService.save(deviceTemp);
+              if (LogUtil.isDebugEnabled(DeviceInfoController.class)) {
+                LogUtil.debug(DeviceInfoController.class, "batchAddSave",
+                    "DeviceInfo saved , Sn : %s , simNo : %s", deviceTemp.getDeviceNo(),
+                    deviceTemp.getSimNo());
+              }
+              successCount++;
             }
           } else {
             formatFailDeviceIds.add(deviceTemp.getDeviceNo() + "\n");
@@ -362,18 +404,36 @@ public class DeviceInfoController extends BaseController {
    * 检查用户名是否存在
    */
   @RequestMapping(value = "/check_deviceNo", method = RequestMethod.GET)
-  public @ResponseBody boolean checkUsername(String deviceNo,Long id) {
+  public @ResponseBody boolean checkUsername(String deviceNo, Long id) {
     if (StringUtils.isEmpty(deviceNo)) {
       return false;
     }
     DeviceInfo deviceInfo = deviceInfoService.findByDeviceNo(deviceNo);
-    if (deviceInfo!=null) {
-      if (id !=null && deviceInfo.getId() ==id) {
+    if (deviceInfo != null) {
+      if (id != null && deviceInfo.getId() == id) {
         return true;
-      }else{
+      } else {
         return false;
       }
-    } 
-      return true;
+    }
+    return true;
   }
+
+  /**
+   * 删除
+   */
+  @RequestMapping(value = "/unbind", method = RequestMethod.POST)
+  public @ResponseBody Message unbind(Long id) {
+    if (id != null) {
+      DeviceInfo deviceInfo = deviceInfoService.find(id);
+      if (deviceInfo != null && deviceInfo.getBindStatus() == BindStatus.BINDED) {
+        deviceInfo = deviceInfoService.unBind(deviceInfo);
+        java.util.Date unBindTime = deviceInfo.getUnBindTime();
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return new Message(com.csh.beans.Message.Type.success, sdFormat.format(unBindTime));
+      }
+    }
+    return ERROR_MESSAGE;
+  }
+
 }

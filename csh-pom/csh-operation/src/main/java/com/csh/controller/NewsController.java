@@ -170,7 +170,11 @@ public class NewsController extends BaseController {
     if (id == null) {
       return ERROR_VIEW;
     }
+    News news = newsService.find(id);
     model.addAttribute("news", newsService.find(id));
+    Integer readCounts = news.getReadCounts() +1 ;
+    news.setReadCounts(readCounts);
+    newsService.update(news);
     return "/news/details";
   }
 

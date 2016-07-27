@@ -63,7 +63,6 @@ $().ready( function() {
 			}
 		});
 	});
-
 	
 	// 删除
 	$deleteButton.click( function() {

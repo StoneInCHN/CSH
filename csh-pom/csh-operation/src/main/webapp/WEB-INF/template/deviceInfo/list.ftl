@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>${message("csh.deviceInfo.list")}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no,">
+<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no"/>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/bootstrap-theme.css" rel="stylesheet" type="text/css" />
@@ -12,6 +12,9 @@
 <link href="${base}/resources/style/list.css" rel="stylesheet" type="text/css" />
 <style>
 	#allmap{height:400px;width:100%;}
+	.deviceInfoUnbind ,.changeDistributor{
+		margin-left:10px;
+	}
 </style>
   <!-- HTML5 Support for IE -->
   <!--[if lt IE 9]>
@@ -32,10 +35,10 @@
 			<form id="listForm" action="list.jhtml" method="get">
 				<input type="hidden" id="deviceStatus" name="deviceStatus" value="${deviceStatus}" />
 				  <div class="container operation">
-					<div class="row">
-						  <div class="col-xs-9 col-md-9 col-lg-9">
-						  		<ul class="nav">
-									 <li class="pull-left">
+				  	<div class="row">
+				  		<div class="col-xs-12  col-md-12 col-lg-12">
+				  			<ul class="nav">
+								<li class="pull-left">
 										<div class="btn-group operationButton">
 										  <button type="button" id="addButton" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;&nbsp;${message("csh.common.add")}</button>
 										</div>
@@ -52,6 +55,12 @@
 											<button type="button" id="deviceProvide"  class="btn btn-default disabled"><i class="fa fa-wrench"></i>${message("csh.deviceInfo.deviceProvide")}</button>
 										</div>
 									</li>
+							</ul>
+				  		</div>
+				  	</div>
+					<div class="row">
+						  <div class="col-xs-9 col-md-9 col-lg-9">
+						  		<ul class="nav">
 									  <li role="presentation" class="dropdown pull-right">
 										    <a id="pageSizeSelect" aria-expanded="false" role="button" aria-haspopup="true" data-toggle="dropdown" class="dropdown-toggle" href="#">
 										      ${message("csh.page.pageSize")} <span class="caret"></span>
@@ -97,6 +106,10 @@
 													<a href="javascript:;" name="deviceStatus" val="REFUNDED" [#if deviceStatus == "REFUNDED"] class="checked"[/#if]>${message("csh.deviceInfo.deviceStatus.REFUNDED")}</a>
 												</li>
 											</ul>
+										</li>
+										 <li class="dateClass pull-right">
+											${message("csh.operate.log.date")}: <input type="text" id="beginDate" name="beginDate" class="text Wdate" value="${(beginDate?string('yyyy-MM-dd'))!}" onfocus="WdatePicker({maxDate: '#F{$dp.$D(\'endDate\')}'});" />
+											~~ <input type="text"  id="endDate" name="endDate" class="text Wdate" value="${(endDate?string('yyyy-MM-dd'))!}" onfocus="WdatePicker({minDate: '#F{$dp.$D(\'beginDate\')}'});" />
 										</li>
 									</ul>
 						  </div>
@@ -156,6 +169,9 @@
 														<a href="javascript:;" class="sort" name="distributor">${message("csh.deviceInfo.distributorId")}</a>
 													</th>
 													<th>
+														<a href="javascript:;" class="sort" name="createDate">${message("csh.common.createDate")}</a>
+													</th>
+													<th>
 														${message("csh.deviceInfo.lastUpdateDate")}
 													</th>
 													<th>
@@ -178,14 +194,14 @@
 													</td>
 													<td>
 														[#if deviceInfo.bindTime??]
-															<span title="${deviceInfo.bindTime?string("yyyy-MM-dd HH:mm:ss")}">${deviceInfo.bindTime}</span>
+															<span title="${deviceInfo.bindTime?string("yyyy-MM-dd HH:mm:ss")}" class="bindTimeSpan">${deviceInfo.bindTime}</span>
 														[#else]
-															-
+															- 
 														[/#if]
 													</td>
-													<td>
+													<td >
 														[#if deviceInfo.unBindTime??]
-															<span title="${deviceInfo.unBindTime?string("yyyy-MM-dd HH:mm:ss")}">${deviceInfo.unBindTime}</span>
+															<span title="${deviceInfo.unBindTime?string("yyyy-MM-dd HH:mm:ss")}" class="unBindTimeSpan">${deviceInfo.unBindTime}</span>
 														[#else]
 															-
 														[/#if]
@@ -206,7 +222,7 @@
 													</td>
 													<td>
 														[#if deviceInfo.bindStatus??]
-														   ${message("csh.deviceInfo.bindStatus."+deviceInfo.bindStatus)}
+														   <span class="bindStatusSpan">${message("csh.deviceInfo.bindStatus."+deviceInfo.bindStatus)}</span>
 														[/#if]
 													</td>
 													<td>
@@ -216,15 +232,25 @@
 															--
 														[/#if]
 													</td>
+													<td>
+														<span title="${deviceInfo.createDate?string("yyyy-MM-dd HH:mm:ss")}">${deviceInfo.createDate}</span>
+													</td>
 													<td class="lastUpdateDate-td">
 														--
 													</td>
 													<td class="currentPosition-td">
 														<i class="fa fa-eye" style="display:none"></i>
 													</td>
-													<td>
+													<td>	
 														<a href="edit.jhtml?id=${deviceInfo.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>
 														<a href="details.jhtml?id=${deviceInfo.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>
+														[#if deviceInfo.bindStatus == "BINDED" ] 
+															<a href="#" title="解除绑定" class="deviceInfoUnbind" data-id="${deviceInfo.id}" data-deviceNo="${deviceInfo.deviceNo}"><i class="fa fa-cog" aria-hidden="true"></i></a>
+														[/#if]
+													[#if deviceInfo.deviceStatus == "SENDOUT" ] 
+															<a href="#" title="变更分销商" class="changeDistributor" data-id="${deviceInfo.id}"><i class="fa fa-users"></i></a>
+													[/#if]
+														
 													</td>
 												</tr>
 											</tbody>
@@ -264,6 +290,7 @@
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=D767b598a9f1e43c3cadc4fe26cdb610"></script>
 <script type="text/javascript">
 $().ready(function() {
@@ -279,6 +306,9 @@ $().ready(function() {
 	var $batchdAddButton = $("#batchdAddButton");
 	var $deviceNoTd = $(".deviceNo-td");
 	var $currentPositionModal = $("#currentPositionModal");
+	var $deviceUnbind = $(".deviceInfoUnbind");
+	var $changeDistributor = $(".changeDistributor");
+	
 	$batchdAddButton.click(function(){
 		location.href="batchAdd.jhtml";
 	})
@@ -329,31 +359,88 @@ $().ready(function() {
         data:{"deviceId": $this.attr("data-deviceNo")},
         jsonp: "callback",
         success: function (res) {
-            console.log(res.msg);
             if(res.msg){
             	$this.parent().find(".lastUpdateDate-td").text(res.msg.createtime);
-            	$currentPosition.attr("data-longitude",res.msg.lon);
-           		$currentPosition.attr("data-latitude",res.msg.lat);
+           		 var $currentPosition = $this.parent().find(".currentPosition-td");
+				  var longitude=res.msg.lon;
+				  var latitude=res.msg.lat;
+				  var createtime = res.msg.createtime;
+				  if(longitude && latitude){
+				  	 $currentPosition.find("i").show().bind("click",function(){
+				  	 $currentPositionModal.modal("show");
+				  	 map.clearOverlays(); 
+					 var new_point = new BMap.Point(longitude,latitude);
+						setTimeout(function(){
+								var convertor = new BMap.Convertor();
+						        var pointArr = [];
+						        pointArr.push(new_point);
+						        convertor.translate(pointArr, 1, 5, function(data){
+						        	if(data.status === 0) {
+								        var marker = new BMap.Marker(data.points[0]);
+								        map.addOverlay(marker);
+								     //   var label = new BMap.Label(createtime,{offset:new BMap.Size(20,-10)});
+								     //   marker.setLabel(label); //添加百度label
+								        map.setCenter(data.points[0]);
+								     }
+						        })
+						}, 1000);
+				  })
+				  }
             }
         }
    	 })
-	  var $currentPosition = $this.parent().find(".currentPosition-td");
-	  $currentPosition.find("i").show().bind("click",function(){
-	   $currentPositionModal.modal("show");
-	  var longitude=$currentPosition.attr("data-longitude");
-	  var latitude=$currentPosition.attr("data-latitude");
-		setTimeout(function(){
-			if(longitude&&latitude){
-			map.clearOverlays(); 
-			var new_point = new BMap.Point(longitude,latitude);
-			var marker = new BMap.Marker(new_point);  // 创建标注
-			map.addOverlay(marker);              // 将标注添加到地图中
-			map.panTo(new_point);   
-		}
-		}, 1000);
-	  })
-	  
 	});
+	
+	$deviceUnbind.click( function() {
+		var $this = $(this);
+		$.dialog({
+			type: "warn",
+			content: "确定要对设备号为 [ "+$this.attr("data-deviceNo")+" ]的设备进行解绑操作吗",
+			ok: message("admin.dialog.ok"),
+			cancel: message("admin.dialog.cancel"),
+			onOk: function() {
+				$.ajax({
+					url: "unbind.jhtml",
+					type: "POST",
+					data: {id:$this.attr("data-id")},
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+							var contentMsg = "操作成功";
+							if(message.type=="error"){
+								contentMsg="操作失败";
+							}
+							$.dialog({
+								type: "success",
+								content:contentMsg,
+								cancel:null,
+								ok:"确定",
+								onOk:function(){
+									if(message.type=="success"){
+										var $parent = $this.parent().parent();
+										$parent.find(".bindTimeSpan").html("-");
+										$parent.find(".unBindTimeSpan").html(message.content);
+										$parent.find(".bindStatusSpan").html("未绑定");
+										$this.hide();
+									}
+								}
+							});
+					}
+				});
+			}
+		});
+	});
+	
+	$changeDistributor.click(function(){
+		var $this = $(this);
+		var $deviceBinding = window.parent.$('#operationModal');
+		var $operationModalIframe= window.parent.$('#operationModalIframe');
+		$deviceBinding.find(".modal-title").text("更改分销商");
+		$deviceBinding.modal("show");
+		$deviceBinding.attr("data-id",$this.attr("data-id"));
+		$operationModalIframe.attr("src","${base}/console/deviceInfo/deviceProvide4edit.jhtml");
+		$operationModalIframe.css("height",380);
+	})
 	
 });
 </script>
