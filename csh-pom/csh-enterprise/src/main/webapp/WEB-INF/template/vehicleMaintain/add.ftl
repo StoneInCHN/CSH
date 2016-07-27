@@ -14,7 +14,7 @@
     	<tr>
     		<th>${message("csh.vehicle.plate")}:</th>
     		<td colspan="3">
-    			 <input  class="easyui-combobox" name="vehicleId" id= "vehiclePlate" readOnly="readOnly"  data-options="required:true"/>
+    			 <input  class="easyui-combobox" name="vehicleId" id= "vehiclePlate"   data-options="required:true"/>
     		</td>
     		<th>${message("csh.vehicleMaintain.dashboardMileage")}:</th>
     		<td >

@@ -18,7 +18,6 @@ import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.service.FileService;
 import com.csh.service.TenantAccountService;
-import com.csh.service.TenantUserService;
 import com.csh.utils.ImageUtils;
 import com.csh.utils.SettingUtils;
 
@@ -175,6 +174,10 @@ public class FileServiceImpl implements FileService {
         imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productImage";
         projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productImage";
       }
+      else if (imageType == ImageType.PRODUCTIMAGELIST) {
+          imgUploadPath = uploadPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productImageList";
+          projectPath=projectPath+File.separator+tenantAccountService.getCurrentTenantID () + File.separator + "productImageList";
+        }
       String sourcePath =
           imgUploadPath + File.separator + "src_" + uuid + "."
               + FilenameUtils.getExtension(multiFile.getOriginalFilename());

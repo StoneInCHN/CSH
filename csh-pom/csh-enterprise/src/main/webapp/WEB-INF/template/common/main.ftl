@@ -406,7 +406,7 @@
 	<script type="text/javascript" src="${base}/resources/js/main.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/dropdown.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
-	<script type="text/javascript" src="${base}/resources/js/webuploader.js"></script>
+	<script type="text/javascript" src="${base}/resources/js/webuploader.min.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/kindeditor/kindeditor-min.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/multiselect.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/prettify.min.js"></script>

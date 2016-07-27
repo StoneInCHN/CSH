@@ -226,6 +226,7 @@ var product_manager_tool = {
 			    	    method:"get",
 			    	    animate:true,
 			    	    lines:true,
+			    	    valueField:'id',
 			    	    prompt:message("csh.common.please.select"),
 			    	    formatter:function(node){
 			    	    	node.text = node.name;
@@ -288,9 +289,9 @@ var product_manager_tool = {
 						     			warp :"addProductImageListWarp",
 						     			filePicker_replace :"filePicker_replace_Photos",
 						     			filePicker2 :"filePicker2_productImageList",
-//						     			uploadBeforeSend:function(object, data, headers){
-//						     				 data.imageType ='TENANTIMAGE';
-//						     			},
+						     			uploadBeforeSend:function(object, data, headers){
+						     				 data.imageType ='PRODUCTIMAGELIST';
+						     			},
 						     			uploadSuccess:function(file, response){
 						     			}
 						     	};
@@ -351,7 +352,49 @@ var product_manager_tool = {
 					}
 			    }],
 			    onLoad:function(){
+			    	$("#editProduct_productCategory").combotree({    
+			    	    url: '../productCategory/findAll.jhtml',    
+			    	    method:"get",
+			    	    animate:true,
+			    	    lines:true,
+			    	    prompt:message("csh.common.please.select"),
+			    	    formatter:function(node){
+			    	    	node.text = node.name;
+			    			return node.name;
+			    		},
+			    		onChange:function(newValue, oldValue){
+			    			$('#editProductProductParameter').propertygrid({    
+					    	    url: '../parameterGroup/findAll.jhtml', 
+					    	    method:"get",
+					    	    showGroup: true,
+					    	    showHeader:false,
+					    	    scrollbarSize: 0,
+					    	    columns:[[
+									{field:'name',width:100,sortable:true},
+									{field:'value',width:100,resizable:false},
+									{field:'id',width:100,resizable:false,hidden:true}
+					    	    ]],
+					    	    onBeforeLoad:function(param){
+									param.productCategoryId = newValue;
+								},
+					    	});
+			    		}
+			    	});
 			    	
+			    	
+			    	$("#editProduct_brand").combobox({    
+			    	    url: '../brand/findAll.jhtml',    
+			    	    method:"get",
+			    	    animate:true,
+			    	    lines:true,
+			    	    prompt:message("csh.common.please.select"),
+			    	    formatter:function(node){
+			    	    	node.text = node.name;
+			    			return node.name;
+			    		},
+			    	});
+			    	$('#editProduct_productCategory').combobox("setValue",$("#editProduct_productCategory").attr("data-value"));
+			    	$('#editProduct_brand').combobox("setValue",$("#editProduct_brand").attr("data-value"));
 			    },
 			    onClose:function(){
 			    	$('#editProduct').empty();

@@ -402,7 +402,11 @@ public class CommonEnum {
     /**
      * 配送方式图标
      */
-    SHIPPINGMETHODICON
+    SHIPPINGMETHODICON,
+    /**
+     * 商品展示图片列表
+     */
+    PRODUCTIMAGELIST
   }
 
 
