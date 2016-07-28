@@ -1,5 +1,6 @@
 package com.csh.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,30 +50,41 @@ public class NewsServiceImpl extends BaseServiceImpl<News, Long> implements News
     map.put("type", MessageType.NEWSMSG.toString());
 
     List<EndUser> users = endUserDao.findList(null, null, null, null);
+    List<String> androidUsers = new ArrayList<String>();
+    List<String> iosUsers = new ArrayList<String>();
     for (EndUser user : users) {
-      try {
+      AppPlatform appPlatform = endUserDao.getEndUserAppPlatform(user.getId());
+      if (user.getjpushRegId() != null && appPlatform != null) {
 
-        AppPlatform appPlatform = endUserDao.getEndUserAppPlatform(user.getId());
-        if (user.getjpushRegId() != null && appPlatform != null) {
-          PushPayload payload = null;
-          if (AppPlatform.ANDROID.equals(appPlatform)) {
-            payload =
-                JPushUtil.buildPushObject_android_registerId(title, map, user.getjpushRegId());
-          } else if (AppPlatform.IOS.equals(appPlatform)) {
-            payload = JPushUtil.buildPushObject_ios_registerId(title, map, user.getjpushRegId());
-          }
+        if (AppPlatform.ANDROID.equals(appPlatform)) {
+          androidUsers.add(user.getjpushRegId());
 
-          if (LogUtil.isDebugEnabled(MessageInfoServiceImpl.class)) {
-            LogUtil.debug(NewsServiceImpl.class, "jpush news",
-                "Push News to All EndUser. newsId:%s, title: %s, contentUrl: %s", newsId, title,
-                contentUrl);
-          }
-
-          JPushUtil.sendPush(payload, null, null);
+        } else if (AppPlatform.IOS.equals(appPlatform)) {
+          iosUsers.add(user.getjpushRegId());
         }
-      } catch (Exception e) {
-        e.printStackTrace();
       }
+    }
+
+    try {
+      if (LogUtil.isDebugEnabled(NewsServiceImpl.class)) {
+        LogUtil
+            .debug(
+                NewsServiceImpl.class,
+                "jpush news",
+                "Push News to All EndUsers. newsId:%s, title: %s, contentUrl: %s,AndroidUserCount: %s, IosUserCount: %s",
+                newsId, title, contentUrl, androidUsers.size(), iosUsers.size());
+      }
+
+      PushPayload andorid_payload = null;
+      String[] androidUserStr = (String[]) androidUsers.toArray(new String[androidUsers.size()]);
+      andorid_payload = JPushUtil.buildPushObject_android_registerId(title, map, androidUserStr);
+      JPushUtil.sendPush(andorid_payload, null, null);
+      PushPayload ios_payload = null;
+      String[] iosUserStr = (String[]) iosUsers.toArray(new String[iosUsers.size()]);
+      ios_payload = JPushUtil.buildPushObject_ios_registerId(title, map, iosUserStr);
+      JPushUtil.sendPush(ios_payload, null, null);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
   }
