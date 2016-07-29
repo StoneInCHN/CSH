@@ -103,7 +103,7 @@ if (applicationContext != null) {
 		var $captchaImage = $("#captchaImage");
 		var $isRememberUsername = $("#isRememberUsername");
 		var $alertError = $("#alertError");
-		
+		$captchaImage.attr("src", "<%=base%>/console/common/captcha.jhtml?captchaId=<%=captchaId%>&timestamp=" + (new Date()).valueOf()+"&clientSessionId=<%=session.getId()%>");
 		// 记住用户名
 		if(getCookie("adminUsername") != null) {
 			$isRememberUsername.prop("checked", true);
@@ -116,7 +116,7 @@ if (applicationContext != null) {
 		
 		// 更换验证码
 		$captchaImage.click( function() {
-			$captchaImage.attr("src", "<%=base%>/console/common/captcha.jhtml?captchaId=<%=captchaId%>&timestamp=" + (new Date()).valueOf());
+			$captchaImage.attr("src", "<%=base%>/console/common/captcha.jhtml?captchaId=<%=captchaId%>&timestamp=" + (new Date()).valueOf()+"&clientSessionId=<%=session.getId()%>");
 		});
 		
 		// 表单验证、记住用户名
@@ -224,7 +224,7 @@ if (applicationContext != null) {
 					<div class="input-icon left">
 						<i class="fa fa-lock"></i>
 						<input type="text" id="captcha" name="captcha" class="m-wrap placeholder-no-fix captcha" maxlength="4" autocomplete="off" placeholder="验证码"/>
-						<img id="captchaImage" src="<%=base%>/console/common/captcha.jhtml?captchaId=<%=captchaId%>" title="<%=SpringUtils.getMessage("csh.captcha.imageTitle")%>" />
+						<img id="captchaImage"   title="<%=SpringUtils.getMessage("csh.captcha.imageTitle")%>" />
 					</div>
 				</div>
 			</div>	

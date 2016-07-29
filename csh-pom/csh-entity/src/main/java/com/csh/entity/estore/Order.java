@@ -29,10 +29,13 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.Area;
 import com.csh.entity.Coupon;
@@ -52,6 +55,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "csh_order", indexes = {@Index(name = "order_tenantid", columnList = "tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_order_sequence")
+@Indexed(index="order")
 public class Order extends BaseEntity {
 
   private static final long serialVersionUID = 8370942500343156156L;
@@ -202,6 +206,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false, updatable = false, unique = true, length = 100)
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,store=Store.NO,analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getSn() {
     return sn;
   }
@@ -222,6 +227,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
   public OrderStatus getOrderStatus() {
     return orderStatus;
   }
@@ -242,6 +248,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
   public PaymentStatus getPaymentStatus() {
     return paymentStatus;
   }
@@ -262,6 +269,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
   public ShippingStatus getShippingStatus() {
     return shippingStatus;
   }

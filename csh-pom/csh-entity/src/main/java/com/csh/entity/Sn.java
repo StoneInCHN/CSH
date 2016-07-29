@@ -34,7 +34,16 @@ public class Sn extends BaseEntity {
 		/**
 		 * 提成结算单
 		 */
-		deductClearing
+		deductClearing,
+		
+	    /** 退款单 */
+        refunds,
+
+        /** 发货单 */
+        shipping,
+
+        /** 退货单 */
+        returns
 	}
 
 	/** 类型 */

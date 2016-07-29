@@ -1,11 +1,17 @@
 var shipping_manager_tool = {
-		add:function(){
+		addShipping:function(){
+			var _edit_row = $('#shipping-order-table-list').datagrid('getSelected');
+			if( _edit_row == null ){
+				$.messager.alert(message("csh.common.prompt"),message("csh.order.select.addShippingRow"),'warning');  
+				return false;
+			}
 			$('#addShipping').dialog({
-			    title: message("csh.common.add"),    
-			    width: 400,    
+			    title: message("csh.shipping"),    
+			    width: 600,    
 			    height: 450,
 			    iconCls:'icon-mini-add',
 			    cache: false, 
+			    href:'../shipping/addShipping.jhtml?orderId='+_edit_row.id,
 			    buttons:[{
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
@@ -13,7 +19,7 @@ var shipping_manager_tool = {
 						var validate = $('#addShipping_form').form('validate');
 						if(validate){
 								$.ajax({
-									url:"../shipping/add.jhtml",
+									url:"../shipping/saveShipping.jhtml",
 									type:"post",
 									data:$("#addShipping_form").serialize(),
 									beforeSend:function(){
@@ -26,9 +32,10 @@ var shipping_manager_tool = {
 										if(response == "success"){
 											$('#addShipping').dialog("close");
 											$('#addShipping_form').form("reset");
+											$("#shipping-order-table-list").datagrid('reload');
 											$("#shipping-table-list").datagrid('reload');
 											showSuccessMsg(result.content);
-											$.messager.alert(message("csh.common.prompt"),result.content,'info');
+											//$.messager.alert(message("csh.common.prompt"),result.content,'info');
 										}else{
 											alertErrorMsg();
 										}
@@ -43,9 +50,8 @@ var shipping_manager_tool = {
 						 $('#addShipping').dialog("close").form("reset");
 					}
 			    }],
-			    onOpen:function(){
-			    	$('#addShipping_form').show();
-			    }
+			    onOpen:function(){}
+
 			});  
 		},
 		edit:function(){
@@ -227,26 +233,41 @@ $(function(){
 		      {field:'ck',checkbox:true},		      
 		      {title:message("csh.order.sn"),field:"sn",sortable:true},
 		      {title:message("csh.order.totalAmount"),field:"totalAmount",sortable:true},		     
-		      {title:message("csh.order.endUser"),field:"endUser",sortable:true},
+		      {title:message("csh.order.endUser"),field:"endUser",sortable:true,formatter:function(value,row,index){
+		    	  if(value){
+		    		  return value.userName;
+		    	  }
+		      }},
 		      {title:message("csh.order.consignee"),field:"consignee",sortable:true},
-		      {title:message("csh.order.paymentTypeName"),field:"paymentTypeName",sortable:true},
-		      {title:message("csh.order.shippingMethodName"),field:"shippingMethodName",sortable:true},
-		      {title:message("csh.order.orderStatus"),field:"orderStatus",sortable:true},
-		      {title:message("csh.order.paymentStatus"),field:"paymentStatus",sortable:true},
-		      {title:message("csh.order.shippingStatus"),field:"shippingStatus",sortable:true},
+		      {title:message("csh.order.shippingStatus"),field:"shippingStatus",sortable:true,formatter:function(value,row,index){
+		    	  if(value){
+		    		  return message("csh.order.shippingStatus."+value);
+		    	  }
+		      }},
+		      {title:message("csh.order.orderStatus"),field:"orderStatus",sortable:true,formatter:function(value,row,index){
+		    	  if(value){
+		    		  return message("csh.order.orderStatus."+value);
+		    	  }
+		      }},
+		      {title:message("csh.order.paymentStatus"),field:"paymentStatus",sortable:true,formatter:function(value,row,index){
+		    	  if(value){
+		    		  return message("csh.order.paymentStatus."+value);
+		    	  }
+		      }},
 		      {title:message("csh.common.createDate"),field:"createDate",sortable:true,formatter: function(value,row,index){
 					return new Date(value).Format("yyyy-MM-dd");
 		      }},
 		   ]
 		]
 	});	
-	$("#shipping-search-btn").click(function(){
-	  var _queryParams = $("#shipping-search-form").serializeJSON();
-	  $('#shipping-table-list').datagrid('options').queryParams = _queryParams;  
-	  $("#shipping-table-list").datagrid('reload');
+	$("#shipping-order-search-btn").click(function(){
+	  var _queryParams = $("#shipping-order-search-form").serializeJSON();
+	  $('#shipping-order-table-list').datagrid('options').queryParams = _queryParams;  
+	  $("#shipping-order-table-list").datagrid('reload');
 	});
 //订单项列表
 	$('#shipping-orderItem-table-list').datagrid({
 		singleSelect:true
 	});
 });
+
