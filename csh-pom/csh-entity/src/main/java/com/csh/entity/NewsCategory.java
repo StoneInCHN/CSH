@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.csh.entity.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,6 +42,12 @@ public class NewsCategory extends BaseEntity {
    */
   private Boolean isEnabled;
 
+  /**
+   * 新闻类型配图
+   */
+  private String imgUrl;
+
+  private MultipartFile imgFile;
 
   public Boolean getIsEnabled() {
     return isEnabled;
@@ -77,4 +86,21 @@ public class NewsCategory extends BaseEntity {
     this.newsInfo = newsInfo;
   }
 
+  public String getImgUrl() {
+    return imgUrl;
+  }
+
+  public void setImgUrl(String imgUrl) {
+    this.imgUrl = imgUrl;
+  }
+
+  @Transient
+  public MultipartFile getImgFile() {
+    return imgFile;
+  }
+
+  public void setImgFile(MultipartFile imgFile) {
+    this.imgFile = imgFile;
+  }
+  
 }

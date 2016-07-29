@@ -20,12 +20,14 @@ import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.News;
 import com.csh.entity.NewsCategory;
+import com.csh.entity.NewsComment;
 import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdminService;
 import com.csh.service.FileService;
 import com.csh.service.NewsCategoryService;
+import com.csh.service.NewsCommentService;
 import com.csh.service.NewsService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.JsonUtil;
@@ -48,6 +50,9 @@ public class NewsController extends BaseController {
   @Resource(name = "fileServiceImpl")
   private FileService fileService;
   
+  @Resource(name = "newsCommentServiceImpl")
+  private NewsCommentService  newsCommentService;
+  
   /**
    * 添加
    */
@@ -66,12 +71,15 @@ public class NewsController extends BaseController {
   public String save(News news,Long newsCategoryId) {
     String imgUrl = "";
     if (news.getImgFile() != null && fileService.isValid(FileType.image,news.getImgFile())) {
-      imgUrl = fileService.saveImage(news.getImgFile(), ImageType.NEWS);
+      imgUrl = fileService.saveImage(news.getImgFile(), ImageType.NEWS,false);
     }
     news.setImgUrl(imgUrl);
     NewsCategory newsCategory =newsCategoryService.find(newsCategoryId);
     news.setNewsCategory(newsCategory);
-    news.setPublishReminder(true);
+   /* news.setPublishReminder(true);*/
+    if(news.getPublishReminder() ==null){
+      news.setPublishReminder(false);
+    }
     news.setUserName(adminService.getCurrentUsername());
     news.setHasReminder(false);
     newsService.save(news);
@@ -113,8 +121,11 @@ public class NewsController extends BaseController {
   public String update(News news,Long newsCategoryId) {
     News temp = newsService.find(news.getId());
     if (news.getImgFile() != null && fileService.isValid(FileType.image,news.getImgFile())) {
-      String imgUrl = fileService.saveImage(news.getImgFile(), ImageType.NEWS);
+      String imgUrl = fileService.saveImage(news.getImgFile(), ImageType.NEWS,false);
       temp.setImgUrl(imgUrl);
+    }
+    if(news.getPublishReminder() ==null){
+      news.setPublishReminder(false);
     }
     temp.setNewsCategory(newsCategoryService.find(newsCategoryId));
     temp.setTitle(news.getTitle());
@@ -171,11 +182,22 @@ public class NewsController extends BaseController {
       return ERROR_VIEW;
     }
     News news = newsService.find(id);
+    List<Filter> filters = new ArrayList<Filter>();
+    filters.add(Filter.eq("news", id));
+    List<NewsComment> newsComments = newsCommentService.findList(null, filters, null);
     model.addAttribute("news", newsService.find(id));
-    Integer readCounts = news.getReadCounts() +1 ;
+    if(newsComments!=null && newsComments.size() >0){
+      model.addAttribute("newsComments",newsComments);
+    }
+    Integer readCounts = 0;
+    if(news.getReadCounts() !=null){
+      readCounts = news.getReadCounts() +1 ;
+    }
     news.setReadCounts(readCounts);
     newsService.update(news);
     return "/news/details";
   }
 
+  
+  
 }

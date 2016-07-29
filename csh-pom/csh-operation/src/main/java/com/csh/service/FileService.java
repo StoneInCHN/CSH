@@ -18,6 +18,15 @@ public interface FileService {
   public String saveImage(MultipartFile multipartFile, ImageType imageType);
 
   /**
+   * 
+   * @param multiFile
+   * @param imageType
+   * @param hasFullPath 是否添加全路径
+   * @return
+   */
+  public String saveImage(MultipartFile multiFile, ImageType imageType,Boolean hasFullPath);
+  
+  /**
    * 文件验证
    * 
    * @param fileType

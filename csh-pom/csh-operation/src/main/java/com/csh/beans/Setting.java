@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
+import com.csh.entity.NewsCategory;
+
 /**
  * 系统设置
  * 
@@ -59,6 +61,10 @@ public class Setting implements Serializable {
      * 新闻图片
      */
     NEWS,
+    /**
+     * 新闻类型
+     */
+   NEWSGCATEGORY,
     /**
      * 优惠券
      */

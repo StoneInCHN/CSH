@@ -35,11 +35,9 @@
 										<div class="btn-group operationButton">
 										  <button type="button" id="addButton" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;&nbsp;${message("csh.common.add")}</button>
 										</div>
-										<!--
 										<div class="btn-group operationButton">
 										  <button type="button" id="deleteButton" class="btn btn-default disabled"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;${message("csh.common.delete")}</button>
 										</div>
-										-->
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
@@ -96,11 +94,9 @@
 										<table id="listTable" class="table table-striped table-bordered table-hover">
 											<thead>
 												<tr>
-													<!--
 													<th class="check">
 														<input type="checkbox" id="selectAll" />
 													</th>
-													-->
 													<th>
 														<a href="javascript:;" class="sort" name="name">${message("csh.newsCategory.name")}</a>
 													</th>
@@ -118,11 +114,9 @@
 											<tbody>
 												[#list page.content as newsCategory]
 												<tr>
-													<!--
 													<td>
 														<input type="checkbox"  name="ids" value="${newsCategory.id}" />
 													</td>
-													-->
 													<td>
 														${newsCategory.name}
 													</td>
