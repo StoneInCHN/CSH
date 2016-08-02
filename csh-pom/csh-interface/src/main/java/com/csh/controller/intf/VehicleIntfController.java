@@ -30,6 +30,7 @@ import com.csh.service.VehicleBrandService;
 import com.csh.service.VehicleLineService;
 import com.csh.service.VehicleService;
 import com.csh.utils.ApiUtils;
+import com.csh.utils.LatLonUtil;
 import com.csh.utils.TimeUtils;
 
 
@@ -67,9 +68,8 @@ public class VehicleIntfController extends MobileBaseController {
   private AdvanceDepositsService advanceDepositsService;
 
 
-
   /**
-   * 车辆轨迹接口
+   * 车辆轨迹分段接口
    * 
    * @param req
    * @return
@@ -107,15 +107,33 @@ public class VehicleIntfController extends MobileBaseController {
     }
     String date = TimeUtils.format("yyyy-MM-dd", searchDate.getTime());
 
+    // String url =
+    // setting.getObdServerUrl() + "/appVehicleData/vehicleTrack.jhtml?date=" + date
+    // + "&deviceId=" + deviceNo;
     String url =
-        setting.getObdServerUrl() + "/appVehicleData/vehicleTrack.jhtml?date=" + date
+        setting.getObdServerUrl() + "/appVehicleData/vehicleTrackFragment.jhtml?date=" + date
             + "&deviceId=" + deviceNo;
     String res = ApiUtils.post(url);
     try {
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> map = mapper.readValue(res, Map.class);
-      List<Map<String, Object>> maps = (List<Map<String, Object>>) map.get("msg");
-      response.setMsg(maps);
+      List<Map<String, Object>> resultList = (List<Map<String, Object>>) map.get("msg");
+      for (Map<String, Object> result : resultList) {
+        List<Map<String, Object>> trackMap = (List<Map<String, Object>>) result.get("tracks");
+        if (trackMap != null && trackMap.size() > 0) {
+          Map<String, Object> startTrack = trackMap.get(0);
+          Map<String, Object> endTrack = trackMap.get(trackMap.size() - 1);
+          String startAddr =
+              LatLonUtil.convertCoorForAddr(startTrack.get("lat").toString(), startTrack.get("lon")
+                  .toString());
+          String endAddr =
+              LatLonUtil.convertCoorForAddr(endTrack.get("lat").toString(), endTrack.get("lon")
+                  .toString());
+          result.put("startAddr", startAddr);
+          result.put("endAddr", endAddr);
+        }
+      }
+      response.setMsg(resultList);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -133,7 +151,5 @@ public class VehicleIntfController extends MobileBaseController {
 
     return response;
   }
-
-
 
 }

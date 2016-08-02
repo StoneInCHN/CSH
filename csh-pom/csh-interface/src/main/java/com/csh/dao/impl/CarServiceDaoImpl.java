@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.csh.dao.CarServiceDao;
 import com.csh.entity.CarService;
 import com.csh.entity.TenantInfo;
+import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
 import com.csh.framework.dao.impl.BaseDaoImpl;
 
 @Repository("carServiceDaoImpl")
@@ -22,10 +23,10 @@ public class CarServiceDaoImpl extends BaseDaoImpl<CarService, Long> implements 
     }
     try {
       String jpql =
-          "select carService from CarService carService where carService.tenantInfo = :tenantInfo and carService.serviceCategory.id = :categoryId";
+          "select carService from CarService carService where carService.tenantInfo = :tenantInfo and carService.serviceCategory.id = :categoryId and carService.serviceStatus = :serviceStatus";
       return entityManager.createQuery(jpql, CarService.class).setFlushMode(FlushModeType.COMMIT)
           .setParameter("tenantInfo", tenantInfo).setParameter("categoryId", categoryId)
-          .getResultList();
+          .setParameter("serviceStatus", ServiceStatus.ENABLED).getResultList();
     } catch (NoResultException e) {
       return null;
     }

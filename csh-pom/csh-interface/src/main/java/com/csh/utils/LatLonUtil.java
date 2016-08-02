@@ -162,6 +162,13 @@ public class LatLonUtil {
     return null;
   }
 
+
+  /**
+   * 百度地址转坐标
+   * 
+   * @param address
+   * @return
+   */
   public static Map<String, Object> convertAddress(String address) {
     try {
       Map<String, Object> map = new HashMap<String, Object>();
@@ -180,4 +187,32 @@ public class LatLonUtil {
     }
     return null;
   }
+
+
+  /**
+   * 百度坐标转地址
+   * 
+   * @param lat
+   * @param lng
+   * @return
+   */
+  public static String convertCoorForAddr(String lat, String lng) {
+    try {
+      Map<String, Object> map = new HashMap<String, Object>();
+      Setting setting = SettingUtils.get();
+      String url =
+          setting.getConvertAddressUrl() + "?location=" + lat + "," + lng + "&output=json&ak="
+              + setting.getMapAk();
+      String res = ApiUtils.get(url);
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
+      Map<String, Object> resultMap = (Map<String, Object>) resMap.get("result");
+      String addr = (String) resultMap.get("formatted_address");
+      return addr;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
 }

@@ -187,8 +187,8 @@ public class NewsController extends MobileBaseController {
     }
 
     News news = newsService.find(newsId);
-    news.setReadCounts(news.getReadCounts() + 1);
-    newsService.update(news);
+    // news.setReadCounts(news.getReadCounts() + 1);
+    // newsService.update(news);
 
     String[] properties = {"id", "title", "readCounts", "likeCounts", "commentCounts"};
     Map<String, Object> result = FieldFilterUtils.filterEntityMap(properties, news);
