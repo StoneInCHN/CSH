@@ -762,7 +762,23 @@ public class CommonEnum {
     /** 已退货 */
     returned
   }
-
+  /**
+   * 退款售后状态
+   *
+   */
+  public enum AfterSalesStatus{
+    /** 申请退款中...*/
+    applyRefund,
+    
+    /** 申请部分退款中...*/
+    applyPartialRefund,
+    
+    /** 已批准退款*/
+    approvedRefund,
+    
+    /** 已批准部分退款*/
+    approvedPartialRefund,
+  }
   /**
    * 订单日志类型
    */

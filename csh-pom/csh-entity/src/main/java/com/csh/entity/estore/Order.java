@@ -42,6 +42,7 @@ import com.csh.entity.Coupon;
 import com.csh.entity.EndUser;
 import com.csh.entity.TenantAccount;
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.AfterSalesStatus;
 import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
@@ -75,6 +76,9 @@ public class Order extends BaseEntity {
 
   /** 配送状态 */
   private ShippingStatus shippingStatus;
+  
+  /** 退款售后状态*/
+  private AfterSalesStatus afterSalesStatus;
 
   /** 支付手续费 */
   private BigDecimal fee;
@@ -281,6 +285,25 @@ public class Order extends BaseEntity {
    */
   public void setShippingStatus(ShippingStatus shippingStatus) {
     this.shippingStatus = shippingStatus;
+  }
+  
+  /**
+   * 获取退款售后状态
+   * 
+   * @return 退款售后状态
+   */
+  @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
+  public AfterSalesStatus getAfterSalesStatus() {
+    return afterSalesStatus;
+  }
+  /**
+   * 设置退款售后状态
+   * 
+   * @param afterSalesStatus 退款售后状态
+   */
+  public void setAfterSalesStatus(AfterSalesStatus afterSalesStatus) {
+    this.afterSalesStatus = afterSalesStatus;
   }
 
   /**
