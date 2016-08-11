@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.persistence.LockModeType;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.SortField;
+
 import com.csh.framework.filter.Filter;
 import com.csh.framework.ordering.Ordering;
 import com.csh.framework.paging.Page;
@@ -62,14 +66,14 @@ public interface BaseDao<T, ID extends Serializable> {
    * @param entity 实体对象
    */
   void persist(T entity);
-  
+
   /**
    * 持久化多个实体对象
    * 
    * @param entities 实体对象集合
    */
   void persist(List<T> entities);
-  
+
   /**
    * 合并实体对象
    * 
@@ -77,7 +81,7 @@ public interface BaseDao<T, ID extends Serializable> {
    * @return 实体对象
    */
   T merge(T entity);
-  
+
   /**
    * 合并多个实体对象
    * 
@@ -147,5 +151,16 @@ public interface BaseDao<T, ID extends Serializable> {
    * 同步数据
    */
   void flush();
+
+  /**
+   * lucene分页查询
+   */
+  Page<T> search(Query query, Pageable pageable, Analyzer analyzer,
+      org.apache.lucene.search.Filter filter, SortField sortField);
+
+  /**
+   * 重建索引
+   */
+  void refreshIndex();
 
 }

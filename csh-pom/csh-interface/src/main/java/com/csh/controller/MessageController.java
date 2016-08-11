@@ -2,8 +2,10 @@ package com.csh.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -263,6 +265,18 @@ public class MessageController extends MobileBaseController {
         msgContent =
             Message.warn("csh.obd.fire.message",
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime())).getContent();
+      } else if (msgType.equals("4")) {
+        String content = msgReq.getMsgContent();
+        Set<String> codeSet = new HashSet<String>();
+        String[] codes = content.split(",");
+        for (String code : codes) {
+          codeSet.add(code.split(":")[0].trim());
+        }
+        String obdCode = codeSet.toString().substring(1, codeSet.toString().length() - 1);
+        msgContent =
+            Message.warn("csh.obd.code.message", deviceInfo.getVehicle().getPlate(),
+                TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()), obdCode)
+                .getContent();
       }
 
       msg.setMessageContent(msgContent);

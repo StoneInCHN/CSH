@@ -766,17 +766,17 @@ public class CommonEnum {
    * 退款售后状态
    *
    */
-  public enum AfterSalesStatus{
-    /** 申请退款中...*/
+  public enum AfterSalesStatus {
+    /** 申请退款中... */
     applyRefund,
-    
-    /** 申请部分退款中...*/
+
+    /** 申请部分退款中... */
     applyPartialRefund,
-    
-    /** 已批准退款*/
+
+    /** 已批准退款 */
     approvedRefund,
-    
-    /** 已批准部分退款*/
+
+    /** 已批准部分退款 */
     approvedPartialRefund,
   }
   /**
@@ -811,36 +811,36 @@ public class CommonEnum {
     /** 订单取消 */
     cancel,
 
-      /** 其它 */
-      other
+    /** 其它 */
+    other
   };
-  
+
   /**
    * 商品状态
    */
   public enum ProductStatus {
-    
+
     /** 新建状态 */
     created,
-    
+
     /** 提交审核 */
     supply,
-    
+
     /** 审核通过 */
     approvedPass,
-    
+
     /** 审核退回 */
     approvedFailed,
-    
+
     /** 上架 */
     marketed,
-    
+
     /** 下架 */
     unmarketed
-    
+
   }
 
-    
+
 
   /**
    * 手机接口查询排序类型
@@ -861,9 +861,14 @@ public class CommonEnum {
      * 好评分由高到低
      */
     SCOREDESC,
+    /**
+     * 销量由高到低
+     */
+    SALESDESC,
     /** 其它 */
-    other
+    OTHER
   }
-  
+
+
 
 }

@@ -10,6 +10,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.SortField;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
@@ -105,7 +108,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
   public void save(T entity) {
     baseDao.persist(entity);
   }
-  
+
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public void save(List<T> entities) {
     baseDao.persist(entities);
@@ -115,20 +118,21 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
   public T update(T entity) {
     return baseDao.merge(entity);
   }
-  
+
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public void detach(T entity){
+  public void detach(T entity) {
     baseDao.detach(entity);
   }
+
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public void detach(Collection<T> entitys){
-    for (T entity: entitys) {
+  public void detach(Collection<T> entitys) {
+    for (T entity : entitys) {
       baseDao.detach(entity);
     }
   }
-  
+
   public void update(List<T> entities) {
-     baseDao.merge(entities);
+    baseDao.merge(entities);
   }
 
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -204,5 +208,16 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
         }
       }
     }
+  }
+
+  @Override
+  public Page<T> search(Query query, Pageable pageable, Analyzer analyzer,
+      org.apache.lucene.search.Filter filter, SortField sortField) {
+    return baseDao.search(query, pageable, analyzer, filter, sortField);
+  }
+
+  @Override
+  public void refreshIndex() {
+    baseDao.refreshIndex();
   }
 }

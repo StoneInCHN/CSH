@@ -1,11 +1,15 @@
 package com.csh.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +21,14 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.DeviceInfo;
+import com.csh.entity.FaultCode;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.DeviceRequest;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
+import com.csh.service.FaultCodeService;
 import com.csh.service.VehicleOilService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.LatLonUtil;
@@ -46,6 +54,9 @@ public class ObdController extends MobileBaseController {
 
   @Resource(name = "vehicleOilServiceImpl")
   private VehicleOilService vehicleOilService;
+
+  @Resource(name = "faultCodeServiceImpl")
+  private FaultCodeService faultCodeService;
 
 
   /**
@@ -228,6 +239,50 @@ public class ObdController extends MobileBaseController {
       e.printStackTrace();
     }
 
+    String newtoken = TokenGenerator.generateToken(deviceReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+
+  /**
+   * 获取故障码信息
+   * 
+   * @return
+   */
+  @RequestMapping(value = "/getObdCode", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> getObdCode(
+      @RequestBody DeviceRequest deviceReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+
+    Long userId = deviceReq.getUserId();
+    String token = deviceReq.getToken();
+    String faultCode = deviceReq.getFaultCode();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter("codeKey", Operator.eq, faultCode);
+    filters.add(filter);
+    List<FaultCode> codes = faultCodeService.findList(null, filters, null);
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("codeKey", faultCode);
+    if (!CollectionUtils.isEmpty(codes)) {
+      map.put("codeDesc", codes.get(0).getCodeValue());
+    } else {
+      map.put("codeDesc", Message.success("csh.obd.code.noexist").getContent());
+    }
+    response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(deviceReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.SortField;
+
 import com.csh.framework.filter.Filter;
 import com.csh.framework.ordering.Ordering;
 import com.csh.framework.paging.Page;
@@ -106,7 +110,7 @@ public interface BaseService<T, ID extends Serializable> {
    * @param entity 实体对象
    */
   void save(T entity);
-  
+
   /**
    * 保存多个实体对象
    */
@@ -119,7 +123,7 @@ public interface BaseService<T, ID extends Serializable> {
    * @return 实体对象
    */
   T update(T entity);
-  
+
   /**
    * 更新多个实体对象
    * 
@@ -159,12 +163,26 @@ public interface BaseService<T, ID extends Serializable> {
 
   /**
    * 将对象设置为游离状态
+   * 
    * @param entity
    */
   void detach(T entity);
+
   /**
    * 将对象设置为游离状态
+   * 
    * @param entity
    */
   void detach(Collection<T> entitys);
+
+  /**
+   * Lucene分页查询
+   */
+  Page<T> search(Query query, Pageable pageable, Analyzer analyzer,
+      org.apache.lucene.search.Filter filter, SortField sortField);
+
+  /**
+   * 重建索引
+   */
+  void refreshIndex();
 }
