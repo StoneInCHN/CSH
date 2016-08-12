@@ -11,10 +11,12 @@ import javax.persistence.LockModeType;
 
 
 
+
 import org.springframework.stereotype.Service; 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.entity.commonenum.CommonEnum.Method;
 import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
 import com.csh.entity.estore.Order;
@@ -49,7 +51,7 @@ public class RefundsServiceImpl extends BaseServiceImpl<Refunds,Long> implements
         orderDao.lock(order, LockModeType.PESSIMISTIC_WRITE);
         refunds.setOrder(order);
         refundsDao.persist(refunds);
-        if (refunds.getMethod() == Refunds.Method.deposit) {
+        if (refunds.getMethod() == Method.deposit) {
 //            Member member = order.getMember();
 //            memberDao.lock(member, LockModeType.PESSIMISTIC_WRITE);
 //            member.setBalance(member.getBalance().add(refunds.getAmount()));

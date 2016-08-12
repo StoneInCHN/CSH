@@ -24,6 +24,7 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Sn.Type;
+import com.csh.entity.commonenum.CommonEnum.Method;
 import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.estore.DeliveryCorp;
 import com.csh.entity.estore.Order;
@@ -186,7 +187,7 @@ public class ReturnsRefundsController extends BaseController {
   public String addRefunds(ModelMap model, Long orderId) {
     Order order = orderService.find(orderId);
     model.put ("order", order);
-    model.addAttribute("refundsMethods", Refunds.Method.values());
+    model.addAttribute("refundsMethods", Method.values());
     //model.addAttribute("paymentMethods", paymentMethodService.findAll());
     return "estore/returnsRefunds/addRefunds";
   }
