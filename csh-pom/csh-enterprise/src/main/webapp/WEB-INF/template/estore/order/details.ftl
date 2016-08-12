@@ -2,8 +2,8 @@
     <div title="订单信息">   
     	<p style="margin:10px">
     		[#if order.orderStatus == "unconfirmed" && order.paymentStatus == "paid" ]
-    			<a class="btn btn-primary" href="#" role="button">确认</a>
-    		[/#if]
+    			<a class="btn btn-primary" id="orderStatusConfirmed" data-id="${order.id}" data-sn="${order.sn}"   href="#" role="button">确认</a>
+    		[/#if] 
 			<!--
 			<a class="btn btn-primary" href="#" role="button">发货</a>
 			<a class="btn btn-success" href="#" role="button">完成</a>
@@ -21,7 +21,7 @@
  			</tr>
  			<tr>
  				<th>订单状态</th>
- 				<td>${message("csh.commonEnum.OrderStatus."+order.orderStatus)}</td>
+ 				<td id="orderDetailsOrderStatus">${message("csh.commonEnum.OrderStatus."+order.orderStatus)}</td>
  				<th>支付状态</th>
 				<td>${message("csh.commonEnum.PaymentStatus."+order.paymentStatus)}</td>
  			</tr>
@@ -47,7 +47,7 @@
  				<th>运费</th>
  				<td>${order.freight}</td>
  				<th>支付方式</th>
- 				<td>${order.paymentType}</td>
+				<td>${message("csh.commonEnum.PaymentType."+order.paymentType)}</td>
  			</tr>
  			<tr>
  				<th>收货人</th>
@@ -88,7 +88,9 @@
 					       			<td>${orderItem.quantity}</td>
 					       			<td>${orderItem.price}</td>
 					       			<td>${orderItem.subtotal}</td>
-					       			<td>${orderItem.order.orderStatus}</td>
+									[#if orderItem.order??]
+										<td>${message("csh.commonEnum.OrderStatus."+orderItem.order.orderStatus)}</td>
+									[/#if]
 					       		</tr>
 						[/#list]
 					[/#if]

@@ -2,7 +2,6 @@ $(function(){
 	$("#order-table-list").datagrid({
 		title:message("csh.order.list"),
 		fitColumns:true,
-		fit:true,
 		toolbar:"#order_manager_tool",
 		url:'../estore/order/list.jhtml',  
 		pagination:true,
@@ -15,7 +14,7 @@ $(function(){
 			    height: 450, 
 			    cache: false,
 			    modal: true,
-			    href:'../estore/order/details.jhtml?id='+rowData.id,
+			    href:'../estore/order/details.jhtml?id='+rowData.id+'&sn='+rowData.sn,
 			    buttons:[{
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
@@ -27,7 +26,34 @@ $(function(){
 			    	$('#orderDetail').empty();
 			    },
 			    onLoad:function(){
-			    	
+			    	$("#orderStatusConfirmed").unbind();
+			    	$("#orderStatusConfirmed").bind("click",function(){
+			    		$this = $(this);
+			    		$.ajax({
+							url:"../estore/order/confirm.jhtml",
+							type:"post",
+							data:{
+								id:$this.attr("data-id"),
+								sn:$this.attr("data-sn")
+							},
+							beforeSend:function(){
+								$.messager.progress({
+									text:message("csh.common.saving")
+								});
+							},
+							success:function(result,response,status){
+								$.messager.progress('close');
+								if(response == "success"){
+									showSuccessMsg(result.content);
+									if(result.type == "success"){
+										$("#orderDetailsOrderStatus").text("已确认")
+									}
+								}else{
+									alertErrorMsg();
+								}
+							}
+						});
+			    	})
 			    }
 			});   
 		},
@@ -78,4 +104,16 @@ $(function(){
 		   ]
 		]
 	});
+	
+	$("#order-search-btn").click(function(){
+		  var _queryParams = $("#order-search-form").serializeJSON();
+		  $('#order-table-list').datagrid('options').queryParams = _queryParams;  
+		  $("#order-table-list").datagrid('reload');
+	})
+	$("#order-reset-btn").click(function(){
+		$('#order-search-form')[0].reset()
+		  var _queryParams ={};
+		  $('#order-table-list').datagrid('options').queryParams = _queryParams;  
+		  $("#order-table-list").datagrid('reload');
+	})
 })

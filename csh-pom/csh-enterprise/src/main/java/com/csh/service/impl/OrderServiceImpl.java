@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.util.Assert;
 
+import com.csh.beans.Message;
 import com.csh.dao.OrderDao;
 import com.csh.dao.OrderLogDao;
 import com.csh.entity.TenantAccount;
@@ -16,6 +17,7 @@ import com.csh.entity.estore.Order;
 import com.csh.entity.estore.OrderLog;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.OrderService;
+import com.csh.utils.SpringUtils;
 
 @Service("orderServiceImpl")
 public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements OrderService {
@@ -40,6 +42,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     orderLog.setType(OrderLogType.confirm);
     orderLog.setOperator(operator != null ? operator.getUserName() : null);
     orderLog.setOrder(order);
+    orderLog.setContent(SpringUtils.getMessage("csh.order.orderStatus.change.confirmed"));
     orderLogDao.persist(orderLog);
   }
 
