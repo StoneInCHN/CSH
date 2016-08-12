@@ -25,6 +25,13 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
 import org.springframework.util.Assert;
 
 import com.csh.beans.CommonAttributes;
@@ -636,6 +643,57 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     }
     stringBuilder.append(jpql.substring(from));
     return stringBuilder.toString();
+  }
+
+  /**
+   * 从数据库初始化Index
+   */
+  @Override
+  public void refreshIndex() {
+
+    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+    try {
+      fullTextEntityManager.createIndexer().startAndWait();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    fullTextEntityManager.close();
+  }
+
+  /**
+   * lucene分页查询
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public Page<T> search(Query query, Pageable pageable, Analyzer analyzer,
+      org.apache.lucene.search.Filter filter, SortField sortField) {
+
+    if (pageable == null) {
+      pageable = new Pageable();
+    }
+    List<?> list;
+    List<T> entityList = new ArrayList<T>();
+
+    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+    FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, entityClass);
+    fullTextQuery.setMaxResults(pageable.getPageSize());
+    fullTextQuery.setFirstResult((pageable.getPageNumber() - 1) * pageable.getPageSize());
+    if (filter != null) {
+      fullTextQuery.setFilter(filter);
+    }
+    if (sortField != null) {
+      fullTextQuery.setSort(new Sort(sortField));
+    }
+    list = fullTextQuery.getResultList();
+
+    for (Object o : list) {
+      if (!entityList.contains((T) o)) {
+        entityList.add((T) o);
+      }
+    }
+    int resultSize = fullTextQuery.getResultSize();
+    return new Page<T>(entityList, resultSize, pageable);
+
   }
 
 }

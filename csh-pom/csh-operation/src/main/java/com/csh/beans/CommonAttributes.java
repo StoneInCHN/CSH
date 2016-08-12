@@ -16,7 +16,11 @@ public final class CommonAttributes {
 	/** common-config.properties文件路径 */
 	public static final String COMMON_CONFIG_PROPERTIES_PATH = "/common-config.properties";
 	
+    /** 请求成功 */
+	public static final String SUCCESS = "0000";// 请求成功
 	
+	/** 操作失败 */
+	public static final String FAIL_COMMON = "1000"; // 操作失败
 	
 	/**
 	 * 不可实例化

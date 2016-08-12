@@ -113,7 +113,8 @@ public class TenantInfoController extends MobileBaseController {
       if (bindTenant != null && AccountStatus.ACTIVED.equals(bindTenant.getAccountStatus())) {
         Boolean flag = false;
         for (CarService service : bindTenant.getCarServices()) {
-          if (service.getServiceCategory().getId().equals(serviceCategoryId)) {
+          if (service.getServiceCategory().getId().equals(serviceCategoryId)
+              && ServiceStatus.ENABLED.equals(service.getServiceStatus())) {
             flag = true;
             break;
           }
@@ -224,7 +225,8 @@ public class TenantInfoController extends MobileBaseController {
       if (bindTenant != null && AccountStatus.ACTIVED.equals(bindTenant.getAccountStatus())) {
         Boolean flag = false;
         for (CarService service : bindTenant.getCarServices()) {
-          if (service.getServiceCategory().getId().equals(serviceCategoryId)) {
+          if (service.getServiceCategory().getId().equals(serviceCategoryId)
+              && ServiceStatus.ENABLED.equals(service.getServiceStatus())) {
             flag = true;
             break;
           }

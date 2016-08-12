@@ -250,13 +250,13 @@
     	
     	<ul title="${message("csh.orderManager.config")}" id="orderManager">
     		[@shiro.hasPermission name="order"]
-    		<li><a href="#" data-url="${base}/console/order/order.jhtml">${message("csh.orderManager.order")}</a></li>
+    		<li><a href="#" data-url="${base}/console/estore/order/order.jhtml">${message("csh.orderManager.order")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="orderItem"]
-    		<li><a href="#" data-url="${base}/console/orderItem/orderItem.jhtml">${message("csh.orderManager.orderItem")}</a></li>
+    		<li><a href="#" data-url="${base}/console/estore/orderItem/orderItem.jhtml">${message("csh.orderManager.orderItem")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="orderLog"]
-    		<li><a href="#" data-url="${base}/console/orderLog/orderLog.jhtml">${message("csh.orderManager.orderLog")}</a></li>
+    		<li><a href="#" data-url="${base}/console/estore/orderLog/orderLog.jhtml">${message("csh.orderManager.orderLog")}</a></li>
     		[/@shiro.hasPermission]
     	</ul>
     	<ul title="${message("csh.shippingManager.config")}" id="shippingManager">
@@ -264,10 +264,7 @@
     		<li><a href="#" data-url="${base}/console/shipping/shipping.jhtml">${message("csh.shippingManager.shipping")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="returns"]
-    		<li><a href="#" data-url="${base}/console/returns/returns.jhtml">${message("csh.shippingManager.returns")}</a></li>
-    		[/@shiro.hasPermission]
-    		[@shiro.hasPermission name="refunds"]
-    		<li><a href="#" data-url="${base}/console/refunds/refunds.jhtml">${message("csh.shippingManager.refunds")}</a></li>
+    		<li><a href="#" data-url="${base}/console/returnsRefunds/returnsRefunds.jhtml">${message("csh.shippingManager.returns")}${message("csh.shippingManager.refunds")}</a></li>
     		[/@shiro.hasPermission]
     		[@shiro.hasPermission name="shippingMethod"]
     		<li><a href="#" data-url="${base}/console/shippingMethod/shippingMethod.jhtml">${message("csh.shippingManager.shippingMethod")}</a></li>

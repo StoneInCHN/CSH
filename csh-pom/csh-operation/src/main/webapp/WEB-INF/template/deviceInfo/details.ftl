@@ -142,7 +142,7 @@
 									&nbsp;
 								</th>
 								<td>
-									<input type="button" class="button" value="${message("csh.common.back")}" onclick="location.href='list.jhtml'" />
+									<input type="button" class="button" value="${message("csh.common.back")}" onclick="history.go(-1)" />
 								</td>
 							</tr>
 						</table>

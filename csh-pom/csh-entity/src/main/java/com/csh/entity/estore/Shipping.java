@@ -20,10 +20,13 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,6 +38,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "csh_shipping",indexes={@javax.persistence.Index(name="shipping_tenantid",columnList="tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_shipping_sequence")
+@Indexed(index="shipping")
 public class Shipping extends BaseEntity {
 
 	private static final long serialVersionUID = -261737051893669935L;
@@ -107,8 +111,9 @@ public class Shipping extends BaseEntity {
 	 * 
 	 * @return 编号
 	 */
-	@Column(nullable = false, updatable = false, unique = true, length = 100)
+	@Column(nullable = false,  unique = true, length = 100)
 	@JsonProperty
+	@Field(index=org.hibernate.search.annotations.Index.YES,store=Store.NO,analyzer = @Analyzer(impl = IKAnalyzer.class))
 	public String getSn() {
 		return sn;
 	}
@@ -129,7 +134,7 @@ public class Shipping extends BaseEntity {
 	 * @return 配送方式
 	 */
 	@NotEmpty
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	@JsonProperty
 	public String getShippingMethod() {
 		return shippingMethod;
@@ -151,7 +156,7 @@ public class Shipping extends BaseEntity {
 	 * @return 物流公司
 	 */
 	@NotEmpty
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	@JsonProperty
 	public String getDeliveryCorp() {
 		return deliveryCorp;
@@ -182,7 +187,6 @@ public class Shipping extends BaseEntity {
 	 * @param deliveryCorpUrl
 	 *            物流公司网址
 	 */
-	@Column(updatable = false)
 	public void setDeliveryCorpUrl(String deliveryCorpUrl) {
 		this.deliveryCorpUrl = deliveryCorpUrl;
 	}
@@ -202,7 +206,6 @@ public class Shipping extends BaseEntity {
 	 * @param deliveryCorpCode
 	 *            物流公司代码
 	 */
-	@Column(updatable = false)
 	public void setDeliveryCorpCode(String deliveryCorpCode) {
 		this.deliveryCorpCode = deliveryCorpCode;
 	}
@@ -213,7 +216,6 @@ public class Shipping extends BaseEntity {
 	 * @return 运单号
 	 */
 	@Length(max = 200)
-	@Column(updatable = false)
 	@JsonProperty
 	public String getTrackingNo() {
 		return trackingNo;
@@ -236,7 +238,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@Min(0)
 	@Digits(integer = 12, fraction = 3)
-	@Column(updatable = false, precision = 21, scale = 6)
+	@Column(precision = 21, scale = 6)
 	@JsonProperty
 	public BigDecimal getFreight() {
 		return freight;
@@ -259,7 +261,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@NotEmpty
 	@Length(max = 200)
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	@JsonProperty
 	public String getConsignee() {
 		return consignee;
@@ -281,7 +283,7 @@ public class Shipping extends BaseEntity {
 	 * @return 地区
 	 */
 	@NotEmpty
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	public String getArea() {
 		return area;
 	}
@@ -303,7 +305,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@NotEmpty
 	@Length(max = 200)
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	public String getAddress() {
 		return address;
 	}
@@ -325,7 +327,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@NotEmpty
 	@Length(max = 200)
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	public String getZipCode() {
 		return zipCode;
 	}
@@ -347,7 +349,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@NotEmpty
 	@Length(max = 200)
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	@JsonProperty
 	public String getPhone() {
 		return phone;
@@ -368,7 +370,7 @@ public class Shipping extends BaseEntity {
 	 * 
 	 * @return 操作员
 	 */
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	public String getOperator() {
 		return operator;
 	}
@@ -389,7 +391,6 @@ public class Shipping extends BaseEntity {
 	 * @return 备注
 	 */
 	@Length(max = 200)
-	@Column(updatable = false)
 	public String getMemo() {
 		return memo;
 	}
@@ -411,7 +412,7 @@ public class Shipping extends BaseEntity {
 	 */
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "orders", nullable = false, updatable = false)
+	@JoinColumn(name = "orders", nullable = false)
 	public Order getOrder() {
 		return order;
 	}

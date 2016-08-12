@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.csh.beans.Setting;
 import com.csh.beans.Setting.CaptchaType;
+import com.csh.common.log.LogUtil;
 import com.csh.service.CaptchaService;
 import com.csh.utils.SettingUtils;
 
@@ -23,10 +24,18 @@ public class CaptchaServiceImpl implements CaptchaService {
     private com.octo.captcha.service.CaptchaService imageCaptchaService;
 
     public BufferedImage buildImage(String captchaId) {
+        if (LogUtil.isDebugEnabled(getClass())) {
+          LogUtil.debug(getClass(), "buildImage", "Parameter captchaId=%s",
+              captchaId);
+        }
         return (BufferedImage) imageCaptchaService.getChallengeForID(captchaId);
     }
 
     public boolean isValid(CaptchaType captchaType, String captchaId, String captcha) {
+      if (LogUtil.isDebugEnabled(getClass())) {
+        LogUtil.debug(getClass(), "isValid", "Parameter captchaType=%s, captchaId=%s, captcha=%s",
+            captchaType.toString(),captchaId,captcha);
+      }
         Setting setting = SettingUtils.get();
         if (captchaType == null || ArrayUtils.contains(setting.getCaptchaTypes(), captchaType)) {
             if (StringUtils.isNotEmpty(captchaId) && StringUtils.isNotEmpty(captcha)) {

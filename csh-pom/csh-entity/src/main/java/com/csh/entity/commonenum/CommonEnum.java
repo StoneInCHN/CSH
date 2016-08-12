@@ -718,7 +718,12 @@ public class CommonEnum {
     completed,
 
     /** 已取消 */
-    cancelled
+    cancelled,
+    
+    /**
+     * 已失效
+     */
+    failure
   }
 
   /**
@@ -762,11 +767,55 @@ public class CommonEnum {
     /** 已退货 */
     returned
   }
+  /**
+   * 退款售后状态
+   *
+   */
+  public enum AfterSalesStatus {
+    /** 申请退款中... */
+    applyRefund,
 
+    /** 申请部分退款中... */
+    applyPartialRefund,
+
+    /** 已批准退款 */
+    approvedRefund,
+
+    /** 已批准部分退款 */
+    approvedPartialRefund,
+  }
+  /**
+   * 退款单状态
+   */
+  public enum RefundsStatus{
+    /** 未退款*/
+    noRefund,
+    /** 退款成功*/
+    refund_success,
+    /** 退款失败*/
+    refund_failed,
+    /** 已取消 */
+    cancelled
+  }
+  /**
+   * 退货单状态
+   */
+  public enum ReturnsStatus{
+    /** 申请退货中...*/
+    applyReturn,
+    /** 已批准退货*/
+    approvedReturn,
+    /** 退货成功*/
+    return_success,
+    /** 退货失败*/
+    return_failed,
+    /** 已取消 */
+    cancelled
+  }
   /**
    * 订单日志类型
    */
-  public enum Type {
+  public enum OrderLogType {
 
     /** 订单创建 */
     create,
@@ -795,36 +844,49 @@ public class CommonEnum {
     /** 订单取消 */
     cancel,
 
-      /** 其它 */
-      other
+    /** 其它 */
+    other
   };
-  
+  /**
+   * 方式
+   */
+  public enum Method {
+
+      /** 在线支付 */
+      online,
+
+      /** 线下支付 */
+      offline,
+
+      /** 预存款支付 */
+      deposit
+  }
   /**
    * 商品状态
    */
   public enum ProductStatus {
-    
+
     /** 新建状态 */
     created,
-    
+
     /** 提交审核 */
     supply,
-    
+
     /** 审核通过 */
     approvedPass,
-    
+
     /** 审核退回 */
     approvedFailed,
-    
+
     /** 上架 */
     marketed,
-    
+
     /** 下架 */
     unmarketed
-    
+
   }
 
-    
+
 
   /**
    * 手机接口查询排序类型
@@ -845,9 +907,14 @@ public class CommonEnum {
      * 好评分由高到低
      */
     SCOREDESC,
+    /**
+     * 销量由高到低
+     */
+    SALESDESC,
     /** 其它 */
-    other
+    OTHER
   }
-  
+
+
 
 }

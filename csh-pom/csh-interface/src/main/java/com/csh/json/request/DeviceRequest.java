@@ -14,6 +14,19 @@ public class DeviceRequest extends BaseRequest {
    */
   private String searchDate;
 
+  /**
+   * 故障码
+   */
+  private String faultCode;
+
+  public String getFaultCode() {
+    return faultCode;
+  }
+
+  public void setFaultCode(String faultCode) {
+    this.faultCode = faultCode;
+  }
+
   public String getDeviceNo() {
     return deviceNo;
   }

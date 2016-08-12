@@ -104,6 +104,15 @@
 														<a href="javascript:;" class="sort" name="mobileNum">${message("csh.endUser.mobileNum")}</a>
 													</th>
 													<th>
+														${message("csh.endUser.selfBalance")}
+													</th>
+													<th>
+														${message("csh.endUser.accountBalance")}
+													</th>
+													<th>
+														${message("csh.endUser.couponNum")}
+													</th>
+													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
 												</tr>
@@ -125,6 +134,20 @@
 													</td>
 													<td>
 														${endUser.mobileNum}
+													</td>
+													<td>
+														${endUser.accountBalance}
+													</td>
+													<td>
+														${endUser.accountBalance}
+													</td>
+													<td>
+														[#if endUser.couponEndUsers]
+															${endUser.couponEndUsers?size}
+														[#else]
+															0
+														[/#if]		
+
 													</td>
 													<td>
 														<a href="details.jhtml?id=${endUser.id}" title="${message("csh.common.edit")}"><i class="fa fa-eye"></i></a>

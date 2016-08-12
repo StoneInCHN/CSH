@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
+import com.csh.entity.NewsCategory;
+
 /**
  * 系统设置
  * 
@@ -59,6 +61,10 @@ public class Setting implements Serializable {
      * 新闻图片
      */
     NEWS,
+    /**
+     * 新闻类型
+     */
+   NEWSGCATEGORY,
     /**
      * 优惠券
      */
@@ -200,6 +206,51 @@ public class Setting implements Serializable {
    * 下载时apk的名字
    */
   private String apkName;
+  
+  
+  
+  //微信的配置参数
+  /**
+   * 秘钥
+   */
+  private String wechatKey;
+
+  /**
+   * 微信分配的公众账号ID（企业号corpid即为此appId）
+   */
+  private String wechatAppid;
+
+  /**
+   * 商户ID
+   */
+  private String wechatMchId;
+
+  /**
+   * 微信申请退款接口
+   */
+  private String wechatRefundUrl;
+  
+  
+  //支付宝的配置参数
+  /**
+   * 支付宝服务URL
+   */
+  private String alipayServerUrl;
+  /**
+   * 支付宝appId
+   */
+  private String alipayAppid;
+  /**
+   * 商户的私钥
+   */
+  private String alipayPrivateKey;
+  /**
+   * 支付宝的公钥，无需修改该值
+   */
+  private String alipayPublicKey ;
+  
+  
+  
   
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
@@ -503,12 +554,76 @@ public Integer getSmsCodeTimeOut() {
     this.newsDetailsUrl = newsDetailsUrl;
   }
 
-public String getApkName() {
-	return apkName;
-}
+  public String getApkName() {
+  	return apkName;
+  }
+  
+  public void setApkName(String apkName) {
+  	this.apkName = apkName;
+  }
+  
+  public String getWechatKey() {
+    return wechatKey;
+  }
+  
+  public void setWechatKey(String wechatKey) {
+    this.wechatKey = wechatKey;
+  }
+  
+  public String getWechatAppid() {
+    return wechatAppid;
+  }
+  
+  public void setWechatAppid(String wechatAppid) {
+    this.wechatAppid = wechatAppid;
+  }
+  
+  public String getWechatMchId() {
+    return wechatMchId;
+  }
+  
+  public void setWechatMchId(String wechatMchId) {
+    this.wechatMchId = wechatMchId;
+  }
+  
+  public String getWechatRefundUrl() {
+    return wechatRefundUrl;
+  }
+  
+  public void setWechatRefundUrl(String wechatRefundUrl) {
+    this.wechatRefundUrl = wechatRefundUrl;
+  }
 
-public void setApkName(String apkName) {
-	this.apkName = apkName;
-}
+  public String getAlipayServerUrl() {
+    return alipayServerUrl;
+  }
+
+  public void setAlipayServerUrl(String alipayServerUrl) {
+    this.alipayServerUrl = alipayServerUrl;
+  }
+
+  public String getAlipayAppid() {
+    return alipayAppid;
+  }
+
+  public void setAlipayAppid(String alipayAppid) {
+    this.alipayAppid = alipayAppid;
+  }
+
+  public String getAlipayPrivateKey() {
+    return alipayPrivateKey;
+  }
+
+  public void setAlipayPrivateKey(String alipayPrivateKey) {
+    this.alipayPrivateKey = alipayPrivateKey;
+  }
+
+  public String getAlipayPublicKey() {
+    return alipayPublicKey;
+  }
+
+  public void setAlipayPublicKey(String alipayPublicKey) {
+    this.alipayPublicKey = alipayPublicKey;
+  }
   
 }

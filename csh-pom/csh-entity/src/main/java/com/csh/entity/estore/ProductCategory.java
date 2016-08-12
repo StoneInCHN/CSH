@@ -53,16 +53,7 @@ public class ProductCategory extends OrderEntity {
 
 	/** 名称 */
 	private String name;
-
-	/** 页面标题 */
-	private String seoTitle;
-
-	/** 页面关键词 */
-	private String seoKeywords;
-
-	/** 页面描述 */
-	private String seoDescription;
-
+	
 	/** 树路径 */
 	private String treePath;
 
@@ -123,66 +114,6 @@ public class ProductCategory extends OrderEntity {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * 获取页面标题
-	 * 
-	 * @return 页面标题
-	 */
-	@Length(max = 200)
-	public String getSeoTitle() {
-		return seoTitle;
-	}
-
-	/**
-	 * 设置页面标题
-	 * 
-	 * @param seoTitle
-	 *            页面标题
-	 */
-	public void setSeoTitle(String seoTitle) {
-		this.seoTitle = seoTitle;
-	}
-
-	/**
-	 * 获取页面关键词
-	 * 
-	 * @return 页面关键词
-	 */
-	@Length(max = 200)
-	public String getSeoKeywords() {
-		return seoKeywords;
-	}
-
-	/**
-	 * 设置页面关键词
-	 * 
-	 * @param seoKeywords
-	 *            页面关键词
-	 */
-	public void setSeoKeywords(String seoKeywords) {
-		this.seoKeywords = seoKeywords;
-	}
-
-	/**
-	 * 获取页面描述
-	 * 
-	 * @return 页面描述
-	 */
-	@Length(max = 200)
-	public String getSeoDescription() {
-		return seoDescription;
-	}
-
-	/**
-	 * 设置页面描述
-	 * 
-	 * @param seoDescription
-	 *            页面描述
-	 */
-	public void setSeoDescription(String seoDescription) {
-		this.seoDescription = seoDescription;
 	}
 
 	/**

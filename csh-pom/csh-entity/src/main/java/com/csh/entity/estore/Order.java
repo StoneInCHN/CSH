@@ -29,16 +29,20 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.Area;
 import com.csh.entity.Coupon;
 import com.csh.entity.EndUser;
 import com.csh.entity.TenantAccount;
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.AfterSalesStatus;
 import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
@@ -52,6 +56,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "csh_order", indexes = {@Index(name = "order_tenantid", columnList = "tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_order_sequence")
+@Indexed(index="order")
 public class Order extends BaseEntity {
 
   private static final long serialVersionUID = 8370942500343156156L;
@@ -71,6 +76,9 @@ public class Order extends BaseEntity {
 
   /** 配送状态 */
   private ShippingStatus shippingStatus;
+  
+  /** 退款售后状态*/
+  private AfterSalesStatus afterSalesStatus;
 
   /** 支付手续费 */
   private BigDecimal fee;
@@ -181,10 +189,6 @@ public class Order extends BaseEntity {
    */
   private Long tenantID;
 
-  /**
-   * 父级订单
-   */
-  private Integer parent;
   
   @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public Long getTenantID() {
@@ -202,6 +206,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false, updatable = false, unique = true, length = 100)
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,store=Store.NO,analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getSn() {
     return sn;
   }
@@ -222,6 +227,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
   public OrderStatus getOrderStatus() {
     return orderStatus;
   }
@@ -242,6 +248,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
   public PaymentStatus getPaymentStatus() {
     return paymentStatus;
   }
@@ -262,6 +269,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
   public ShippingStatus getShippingStatus() {
     return shippingStatus;
   }
@@ -273,6 +281,25 @@ public class Order extends BaseEntity {
    */
   public void setShippingStatus(ShippingStatus shippingStatus) {
     this.shippingStatus = shippingStatus;
+  }
+  
+  /**
+   * 获取退款售后状态
+   * 
+   * @return 退款售后状态
+   */
+  @JsonProperty
+  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
+  public AfterSalesStatus getAfterSalesStatus() {
+    return afterSalesStatus;
+  }
+  /**
+   * 设置退款售后状态
+   * 
+   * @param afterSalesStatus 退款售后状态
+   */
+  public void setAfterSalesStatus(AfterSalesStatus afterSalesStatus) {
+    this.afterSalesStatus = afterSalesStatus;
   }
 
   /**
@@ -423,6 +450,7 @@ public class Order extends BaseEntity {
   @NotEmpty
   @Length(max = 200)
   @Column(nullable = false)
+  @JsonProperty
   public String getConsignee() {
     return consignee;
   }
@@ -443,6 +471,7 @@ public class Order extends BaseEntity {
    * @return 地区名称
    */
   @Column(nullable = false)
+  @JsonProperty
   public String getAreaName() {
     return areaName;
   }
@@ -464,6 +493,7 @@ public class Order extends BaseEntity {
   @NotEmpty
   @Length(max = 200)
   @Column(nullable = false)
+  @JsonProperty
   public String getAddress() {
     return address;
   }
@@ -506,6 +536,7 @@ public class Order extends BaseEntity {
   @NotEmpty
   @Length(max = 200)
   @Column(nullable = false)
+  @JsonProperty
   public String getPhone() {
     return phone;
   }
@@ -585,6 +616,7 @@ public class Order extends BaseEntity {
    * @return 附言
    */
   @Length(max = 200)
+  @JsonProperty
   public String getMemo() {
     return memo;
   }
@@ -622,6 +654,7 @@ public class Order extends BaseEntity {
    * 
    * @return 到期时间
    */
+  @JsonProperty
   public Date getExpire() {
     return expire;
   }
@@ -699,6 +732,7 @@ public class Order extends BaseEntity {
    */
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
+  @JsonProperty
   public Area getArea() {
     return area;
   }
@@ -757,6 +791,7 @@ public class Order extends BaseEntity {
    * @return 操作员
    */
   @ManyToOne(fetch = FetchType.LAZY)
+  @JsonProperty
   public TenantAccount getOperator() {
     return operator;
   }
@@ -919,6 +954,7 @@ public class Order extends BaseEntity {
    * @return 订单名称
    */
   @Transient
+  @JsonProperty
   public String getName() {
     StringBuffer name = new StringBuffer();
     if (getOrderItems() != null) {
@@ -940,6 +976,7 @@ public class Order extends BaseEntity {
    * @return 商品重量
    */
   @Transient
+  @JsonProperty
   public int getWeight() {
     int weight = 0;
     if (getOrderItems() != null) {
@@ -958,6 +995,7 @@ public class Order extends BaseEntity {
    * @return 商品数量
    */
   @Transient
+  @JsonProperty
   public int getQuantity() {
     int quantity = 0;
     if (getOrderItems() != null) {
@@ -1012,6 +1050,7 @@ public class Order extends BaseEntity {
    * @return 商品价格
    */
   @Transient
+  @JsonProperty
   public BigDecimal getPrice() {
     BigDecimal price = new BigDecimal(0);
     if (getOrderItems() != null) {
@@ -1030,6 +1069,7 @@ public class Order extends BaseEntity {
    * @return 订单金额
    */
   @Transient
+  @JsonProperty
   public BigDecimal getAmount() {
     BigDecimal amount = getPrice();
     if (getFee() != null) {
@@ -1139,14 +1179,5 @@ public class Order extends BaseEntity {
   public void preRemove() {
 
   }
-
-	public Integer getParent() {
-		return parent;
-	}
-	
-	public void setParent(Integer parent) {
-		this.parent = parent;
-	}
-  
   
 }

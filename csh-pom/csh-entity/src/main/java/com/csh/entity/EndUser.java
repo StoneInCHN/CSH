@@ -186,6 +186,11 @@ public class EndUser extends BaseEntity {
    */
   private BigDecimal accountBalance;
 
+  /**
+   * 平台充值余额
+   */
+  private BigDecimal selfBalance;
+  
   @Transient
   public Boolean getIsGetCoupon() {
     return isGetCoupon;
@@ -193,6 +198,15 @@ public class EndUser extends BaseEntity {
 
   public void setIsGetCoupon(Boolean isGetCoupon) {
     this.isGetCoupon = isGetCoupon;
+  }
+  
+  @Transient
+  public BigDecimal getSelfBalance() {
+    return selfBalance;
+  }
+
+  public void setSelfBalance(BigDecimal selfBalance) {
+    this.selfBalance = selfBalance;
   }
 
   @OneToMany(mappedBy = "endUser")
@@ -516,7 +530,7 @@ public class EndUser extends BaseEntity {
    * @return 收藏商品
    */
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "xx_member_favorite_product")
+  @JoinTable(name = "csh_member_favorite_product")
   @OrderBy("createDate desc")
   public Set<Product> getFavoriteProducts() {
     return favoriteProducts;

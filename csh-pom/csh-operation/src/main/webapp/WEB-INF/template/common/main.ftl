@@ -373,6 +373,21 @@
 				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
+		[#list ["admin:order"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.order")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:order"]
+								<li>
+									<a href="../order/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.order")}</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
        </ul>
       </div>
       <div class="mainbar">

@@ -376,6 +376,7 @@ var messages = {
 	"csh.shippingMethod.defaultDeliveryCorp":"默认物流公司",
 	"csh.shippingMethod.list":"配送方式列表",
 	//发货单
+	"csh.shipping":"发货",
 	"csh.shipping.list":"发货单列表",
 	"csh.shipping.sn":"发货单编号",
 	"csh.shipping.shippingMethod":"配送方式",
@@ -394,8 +395,27 @@ var messages = {
 	"csh.order.paymentTypeName":"支付方式名称",
 	"csh.order.shippingMethodName":"配送方式名称",
 	"csh.order.orderStatus":"订单状态",
+	"csh.order.orderStatus.unconfirmed":"未确认",
+	"csh.order.orderStatus.confirmed":"已确认",
+	"csh.order.orderStatus.completed":"已完成",
+	"csh.order.orderStatus.cancelled":"已取消",
 	"csh.order.paymentStatus":"支付状态",
+	"csh.order.paymentStatus.unpaid":"未支付",
+	"csh.order.paymentStatus.partialPayment":"部分支付",
+	"csh.order.paymentStatus.paid":"已支付",
+	"csh.order.paymentStatus.partialRefunds":"部分退款",
+	"csh.order.paymentStatus.refunded":"已退款",
 	"csh.order.shippingStatus":"配送状态",
+	"csh.order.shippingStatus.unshipped":"未发货",
+	"csh.order.shippingStatus.partialShipment":"部分发货",
+	"csh.order.shippingStatus.shipped":"已发货",
+	"csh.order.shippingStatus.partialReturns":"部分退货",
+	"csh.order.shippingStatus.returned":"已退货",
+	"csh.order.select.addShippingRow" : "请选择要发货的订单",
+	"csh.order.list":"订单列表",
+	"csh.order.amount":"订单金额",
+	"csh.order.member":"会员",
+	"csh.order.paymentType":"支付方式"
 	
 		
 };

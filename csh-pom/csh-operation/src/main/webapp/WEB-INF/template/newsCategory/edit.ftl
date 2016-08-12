@@ -66,6 +66,7 @@ $().ready(function() {
                   <div class="padd">
                     <form id="inputForm" action="update.jhtml" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="id" value="${newsCategory.id}" />
+						<input type="hidden" name="iimgUrld" value="${newsCategory.imgUrl}" />
 						<table class="input tabContent">
                      		<tr>
 								<th>
@@ -73,6 +74,22 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="text" id="name" name="name" class="text" maxlength="20" value="${newsCategory.name}" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.newsCategory.imgUrl")}:
+								</th>
+								<td>
+									<input type="file" id="imgFile" name="imgFile"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.newsCategory.imgUrl")}:
+								</th>
+								<td>
+									<a href="${newsCategory.imgUrl}" target="100"><img src="${newsCategory.imgUrl}" alt="新闻配图" style="width:100px;height:100px"><a>
 								</td>
 							</tr>
 							<tr>

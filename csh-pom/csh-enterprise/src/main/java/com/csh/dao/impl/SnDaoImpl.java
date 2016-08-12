@@ -32,6 +32,9 @@ public class SnDaoImpl implements SnDao, InitializingBean {
 	private HiloOptimizer productHiloOptimizer;
 	private HiloOptimizer clearingHiloOptimizer;
 	private HiloOptimizer deductClearingHiloOptimizer;
+    private HiloOptimizer refundsHiloOptimizer;
+    private HiloOptimizer shippingHiloOptimizer;
+    private HiloOptimizer returnsHiloOptimizer;	
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -43,12 +46,27 @@ public class SnDaoImpl implements SnDao, InitializingBean {
 	private String clearingPrefix;
 	@Value("${sn.clearing.maxLo}")
 	private int clearingMaxLo;
+    @Value("${sn.refunds.prefix}")
+    private String refundsPrefix;
+    @Value("${sn.refunds.maxLo}")
+    private int refundsMaxLo;
+    @Value("${sn.shipping.prefix}")
+    private String shippingPrefix;
+    @Value("${sn.shipping.maxLo}")
+    private int shippingMaxLo;
+    @Value("${sn.returns.prefix}")
+    private String returnsPrefix;
+    @Value("${sn.returns.maxLo}")
+    private int returnsMaxLo;	
 	
 
 	public void afterPropertiesSet() throws Exception {
 		productHiloOptimizer = new HiloOptimizer(Type.product, productPrefix, productMaxLo);
 		clearingHiloOptimizer = new HiloOptimizer(Type.clearing, clearingPrefix, clearingMaxLo);
 		deductClearingHiloOptimizer = new HiloOptimizer(Type.clearing, clearingPrefix, clearingMaxLo);
+	    refundsHiloOptimizer = new HiloOptimizer(Type.refunds, refundsPrefix, refundsMaxLo);
+	    shippingHiloOptimizer = new HiloOptimizer(Type.shipping, shippingPrefix, shippingMaxLo);
+	    returnsHiloOptimizer = new HiloOptimizer(Type.returns, returnsPrefix, returnsMaxLo);
 	}
 
 	public String generate(Type type) {
@@ -58,8 +76,14 @@ public class SnDaoImpl implements SnDao, InitializingBean {
 		} else if (type == Type.clearing) {
 			return clearingHiloOptimizer.generate();
 		}else if (type == Type.deductClearing) {
-      return deductClearingHiloOptimizer.generate();
-    }
+            return deductClearingHiloOptimizer.generate();
+        } else if (type == Type.refunds) {
+            return refundsHiloOptimizer.generate();
+        } else if (type == Type.shipping) {
+            return shippingHiloOptimizer.generate();
+        } else if (type == Type.returns) {
+            return returnsHiloOptimizer.generate();
+        }
 		return null;
 	}
 

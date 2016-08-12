@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.Message;
+import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Area;
 import com.csh.entity.TenantAccount;
@@ -79,8 +79,18 @@ public class CommonController extends BaseController {
    * 验证码
    */
   @RequestMapping(value = "/captcha", method = RequestMethod.GET)
-  public void image(String captchaId, HttpServletRequest request, HttpServletResponse response)
+  public void image(String captchaId, String clientSessionId, String timestamp,
+      HttpServletRequest request, HttpSession session, HttpServletResponse response)
       throws Exception {
+    if (LogUtil.isDebugEnabled(getClass())) {
+      LogUtil.debug(getClass(), "image", "Parameter captchaId=%s, "
+          + "session Id=%s, clientSessionId=%s, timestamp=%s",
+          captchaId, session.getId(), clientSessionId, timestamp);
+    }
+    if (!session.getId().equals(clientSessionId)) {
+      //如果客户端session Id不等于后台代码 session Id,则返回
+      return;
+    }
     if (StringUtils.isEmpty(captchaId)) {
       captchaId = request.getSession().getId();
     }

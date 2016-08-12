@@ -54,5 +54,28 @@
 	<setting name="newsPushUrl" value="http://10.50.40.56:8081/csh-interface/news/pushNews.jhtml" />
 	<setting name="newsDetailsUrl" value="http://10.50.40.82:8888/console/news/details.jhtml" />
 	<!-- <setting name="newsDetailsUrl" value="http://carlife.chcws.com:8080/console/news/details.jhtml" /> -->
+	
+	<!-- 微信的配置参数 -->
+	<!-- 秘钥 -->
+	<setting name="wechatKey" value="a09d313c915246009685239d39b3e416" />
+	<!-- 微信分配的公众账号ID(企业号corpid即为此appId) -->
+	<setting name="wechatAppid" value="wx75b0585936937e4a" />
+	<!-- 商户ID -->
+	<setting name="wechatMchId" value="1249451301" />
+	<!-- 微信申请退款接口 -->
+	<setting name="wechatRefundUrl" value="https://api.mch.weixin.qq.com/secapi/pay/refund" />
+	<!-- 微信Token接口 -->
+	<setting name="wechatTokenUrl" value="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET" />
+	
+	<!-- 支付宝的配置参数 -->
+	<!--支付宝服务URL -->
+	<setting name="alipayServerUrl" value="https://openapi.alipay.com/gateway.do" />
+	<!-- 支付宝分配给开发者的应用ID-->
+	<setting name="alipayAppid" value="2088021552530780" />
+	<!-- 商户的私钥-->
+	<setting name="alipayPrivateKey" value="MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAL4Lx8cgCyPVKxjdr3IBch3JG+/AreSbjhLqN0pM4HlPEkQGmoihzptSVe+o1ywALgkul/1e5fUljqAGAbtyhmxk9dRs3QddKposOzStoX9ReTWmMJPtC5cNXbclg7QbYKrzw25sUkxGHMP9KInZV7qAnhwFg5TDmk87Lab5JrmPAgMBAAECgYBJ0uWuEmKBbuMo66Slkq4zp9W0UpK6RTrxWg5UTHy+YtrjlfUdsk1BxMAhMuMy8nbvlivwfpaxnf9DZlHx8NEKSY+vpj/jZyir1Nscf9Dya7ak5EgvBPBE/5KtJqpx7WD1qJjAoaumTh0ljy9B5G88RcLFNA2U27NjchCO9SjmIQJBAPn/g8omfRGHJoBJHXsIBYripnCld7J1V/Ekyjb8r4rQtH8bS/NK30CR1ToPD0gjcEDTgYkLkONqUUmJ9EWBwOcCQQDCm80BkFTt0TxjxqLSpyEJcsZdp7dHFVUDaHEci/WVVwldcaPdw9THkHybB3KvwzIVzuClq2QYvRptZ+qN6qUZAkA+sHYp0PD33j4nWS5NVbueEivOf4++bnJ5A9K5ay/RzXgVj5DCF3pYRLmFb5VTb5+Mgf0vknjorhZoLHHWpCztAkEAosXuEwDGCKSZGlet0lpKJmIxPoAUXtmIFOftWzjKegqoqhbLmpoUTtBfmtVxu6A7Bl9BjSM3i7N+eMFWzAQJAIfUnYgTQ8RKBZ0gkK98FuGcsYU6aPvKzyGaPeczKdsp4xZgEdlppCzwxn/Kd9kKRrL2PKkgBzQ5Vaygvu8dqNg==" />
+	<!-- 支付宝的公钥，无需修改该值-->
+	<setting name="alipayPublicKey" value="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB" />
+	
 </csh>	
 	

@@ -132,6 +132,10 @@ public class FileServiceImpl implements FileService {
       subPath = File.separator + "vehicleIcon";
     } else if (imageType == ImageType.NEWS) {
       subPath = File.separator + "news";
+    }else if (imageType == ImageType.NEWSGCATEGORY) {
+      subPath = File.separator + "newsCagetory";
+    }else if (imageType == ImageType.Coupon) {
+      subPath = File.separator + "coupon";
     }
 
     imgUploadPath = uploadPath + subPath;
@@ -169,6 +173,69 @@ public class FileServiceImpl implements FileService {
     return webPath;
   }
 
+  @Override
+  public String saveImage(MultipartFile multiFile, ImageType imageType,Boolean hasFullPath) {
+    SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String date = sdFormat.format(new Date());
+    String webPath = null;
+    String imgUploadPath = "";
+    String subPath = "";
+
+    if (multiFile == null || multiFile.getSize() > ImageMaxSize) {
+      return null;
+    }
+    String uuid = UUID.randomUUID().toString();
+    if (imageType == ImageType.LICENSE) {
+      subPath = File.separator + "license";
+    } else if (imageType == ImageType.STOREPICTURE) {
+      subPath = File.separator + "storePicture";
+    } else if (imageType == ImageType.ADVERTISEMENT) {
+      subPath = File.separator + "advertisement";
+    } else if (imageType == ImageType.VEHICLEICON) {
+      subPath = File.separator + "vehicleIcon";
+    } else if (imageType == ImageType.NEWS) {
+      subPath = File.separator + "news";
+    }else if (imageType == ImageType.NEWSGCATEGORY) {
+      subPath = File.separator + "newsCagetory";
+    }else if (imageType == ImageType.Coupon) {
+      subPath = File.separator + "coupon";
+    }
+
+    imgUploadPath = uploadPath + subPath;
+
+    String sourcePath =
+        imgUploadPath + File.separator + date + File.separator + "src_" + uuid + "."
+            + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+    if (hasFullPath) {
+      webPath =
+          projectUploadPath + subPath + File.separator + date + File.separator + "src_" + uuid
+              + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+    } else {
+      webPath =
+          File.separator + "upload" + subPath + File.separator + date + File.separator + "src_"
+              + uuid + "." + FilenameUtils.getExtension(multiFile.getOriginalFilename());
+    }
+
+    String storePath =
+        imgUploadPath + File.separator + date + File.separator + uuid + "." + DEST_EXTENSION;;
+
+    File tempFile =
+        new File(System.getProperty("java.io.tmpdir") + File.separator + "upload_"
+            + UUID.randomUUID() + ".tmp");
+    try {
+      if (!tempFile.getParentFile().exists()) {
+        tempFile.getParentFile().mkdirs();
+      }
+      multiFile.transferTo(tempFile);
+      proccessImage(tempFile, sourcePath, storePath, listImageWidth, listImageHeight, true);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      FileUtils.deleteQuietly(tempFile);
+    }
+    return webPath;
+  }
+  
   public boolean isValid(FileType fileType, MultipartFile multipartFile) {
     if (multipartFile == null) {
       return false;

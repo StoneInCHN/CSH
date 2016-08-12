@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.Message;
+import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.News;
 import com.csh.entity.NewsCategory;
+import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.framework.paging.Pageable;
+import com.csh.service.FileService;
 import com.csh.service.NewsCategoryService;
 
 @RequestMapping("console/newsCategory")
@@ -24,6 +27,8 @@ public class NewsCategoryController extends BaseController {
   @Resource(name = "newsCategoryServiceImpl")
   private NewsCategoryService newsCategoryService;
 
+  @Resource(name = "fileServiceImpl")
+  private FileService fileService;
 
   /**
    * 添加
@@ -38,6 +43,10 @@ public class NewsCategoryController extends BaseController {
    */
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public String save(NewsCategory newsCategory) {
+    if (newsCategory.getImgFile() != null && fileService.isValid(FileType.image,newsCategory.getImgFile())) {
+      String imgUrl = fileService.saveImage(newsCategory.getImgFile(), ImageType.NEWSGCATEGORY,false);
+      newsCategory.setImgUrl(imgUrl);
+    }
     newsCategoryService.save(newsCategory);
     return "redirect:list.jhtml";
   }
@@ -56,6 +65,10 @@ public class NewsCategoryController extends BaseController {
    */
   @RequestMapping(value = "/update", method = RequestMethod.POST)
   public String update(NewsCategory newsCategory) {
+    if (newsCategory.getImgFile() != null && fileService.isValid(FileType.image,newsCategory.getImgFile())) {
+      String imgUrl = fileService.saveImage(newsCategory.getImgFile(), ImageType.NEWSGCATEGORY,false);
+      newsCategory.setImgUrl(imgUrl);
+    }
     newsCategoryService.update(newsCategory);
     return "redirect:list.jhtml";
   }

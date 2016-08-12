@@ -5,7 +5,7 @@
 <!-- 优先使用 IE 最新版本和 Chrome -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <!-- 为移动设备添加 viewport -->
-<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 <!-- iOS 设备适配代码Star-->
 <!-- 添加到主屏后的标题（iOS 6 新增） -->
 <meta name="apple-mobile-web-app-title" content="车生活">
@@ -19,12 +19,71 @@
 <meta name="format-detection" content="telephone=no"><!--电话数字样式去掉 苹果-->
 <link rel="shortcut icon" type="image/x-icon" href="${base}/resources/images/carlife.ico" media="screen" /> 
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	ul,li,p,span,a{padding:0;margin:0}
+	body{
+		max-width:768px;
+		margin:0 auto 20px auto;
+		padding:0 20px;
+	
+	}
+	.top{
+		text-align:center;
+		height:40px;
+		line-height:30px;
+		padding:5px;
+		font-size:18px;
+		border-bottom: 1px solid #E4E4E4;
+	}
+	.top .category{float:left;height:30px;color:#333}
+	.top .time{height:30px;color:#999;font-size:18px;}
+	.top .hits{float:right;height:30px;color:#999}
+	.comFrame{margin-top:20px;color:#343434;}
+	.comFrame h3{border-bottom:1px solid #e6eaed;color:#000;font-weight:400;font-size:18px;line-height:3;}
+	.comFrame ul{list-style:none}
+	.comFrame li{position:relative;padding:10px 0 10px 50px;border-bottom:1px solid #e6eaed;}
+	.comFrame li.hot{background:url(../images/tag_hot.png) right top no-repeat;}
+	.comFrame li.hot span.flo{display:none;}
+	.comFrame li .head{position:absolute;top:10px;left:-5px;width:50px;height:50px;border-radius: 10px;}
+	.comFrame li p{font-size:14px;line-height:1.6;}
+	.comFrame li p.re{padding:0;font-size:16px;line-height:1.6;}
+	.comFrame li p.nameCon{padding-bottom:15px;line-height:12px;}
+	.comFrame li p.nameCon span{display:block;line-height:20px}
+	span.time{font-size:10px;}
+</style>
 </head>
 <body>
-	<div class="container">
-		<h4 style="text-align:center;margin:30px">${news.title}</h4>
-		<p style="text-align:center;margin:30px;font-size:12px;">创建时间：${news.createDate} 浏览次数:${news.readCounts}</p>
+	<p class="top"><span class="category" >${news.newsCategory.name}</span><span class="time">${news.createDate}</span> <span class="hits">浏览次数:${news.readCounts}</span></p>
+	<div>
+		<h3 style="text-align:center;margin:30px">${news.title}</h3>
 		<div style="margin-bottom:80px;">${news.content}</div>
+		<div class="comFrame">
+			<h4>热门评论</h4>
+			<ul id="top_comment">
+				[#if newsComments ??]
+					[#list newsComments as newsComment]
+						 <li>
+						 	 [#if photoUrl??]
+						 	 	<img src="${newsComment.photoUrl}" class="head" alt="头像">
+						 	 [#else]
+						 	 	<img src="/resources/images/default_user.jpg" class="head" alt="头像">
+						 	 [/#if]
+					        <p class="nameCon">
+					            <span class="name">${newsComment.userName}</span>
+								[#if newsComment.createDate??]
+					            <span class="time">${newsComment.createDate?string("yyyy-MM-dd HH:mm:ss")}</span>
+								[/#if]
+					        </p>
+					    	<p class="comCon">${newsComment.content}</p>
+					    </li>
+					[/#list]
+				[#else]
+					<li>
+					    <p class="comCon">暂无评论!</p>
+					 </li>
+				[/#if]
+			</ul>
+		</div>
 	</div>
 </body>
 </html>

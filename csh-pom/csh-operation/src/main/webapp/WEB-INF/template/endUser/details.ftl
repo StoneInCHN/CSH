@@ -163,6 +163,16 @@
 								</td>
 							</tr>
 						</table>
+						<table class="input">
+							<tr>
+								<th>
+									&nbsp;
+								</th>
+								<td>
+									<input type="button" class="button" value="${message("csh.common.back")}" onclick="history.go(-1)" />
+								</td>
+							</tr>
+						</table>
                   </div>
                 </div>
               </div>  

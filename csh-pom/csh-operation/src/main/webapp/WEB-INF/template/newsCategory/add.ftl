@@ -29,6 +29,9 @@ $().ready(function() {
 			},
 			isEnabled: {
 				required: true
+			},
+			imgFile:{
+				required: true
 			}
 		}
 	});
@@ -71,6 +74,14 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="text" id="name" name="name" class="text" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.newsCategory.imgUrl")}:
+								</th>
+								<td>
+									<input type="file" id="imgFile" name="imgFile"/>
 								</td>
 							</tr>
 							<tr>
