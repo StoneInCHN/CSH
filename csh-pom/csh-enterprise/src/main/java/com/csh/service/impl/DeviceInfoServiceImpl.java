@@ -58,9 +58,8 @@ public class DeviceInfoServiceImpl extends BaseServiceImpl<DeviceInfo,Long> impl
         
         List<AdvanceDeposits> advanceDepositsList = advanceDepositsService.findList(null, filters, null);
         
-        if (advanceDepositsList != null && advanceDepositsList.size()== 1) {
-			
-        	AdvanceDeposits advanceDeposits= advanceDepositsList.get(0);
+       for (AdvanceDeposits advanceDeposits:advanceDepositsList) {
+		
         	advanceDeposits.setIsBind(false);
         	advanceDepositsService.update(advanceDeposits);
 		}

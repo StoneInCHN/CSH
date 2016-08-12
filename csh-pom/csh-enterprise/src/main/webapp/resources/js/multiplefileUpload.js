@@ -4,7 +4,8 @@ function multipleUpload(options) {
 
         //$wrap = $('#uploader'),
         $wrap = $('#'+options.warp),
-        
+        //上传文件类型
+        fileType= options.fileType,
         $filePicker2=$('#'+options.filePicker2),
         // 图片容器
         $queue = $('<ul class="filelist"></ul>')
@@ -57,7 +58,6 @@ function multipleUpload(options) {
 
         // WebUploader实例
         uploader;
-
     if ( !WebUploader.Uploader.support() ) {
         alert( 'Web Uploader 不支持您的浏览器！如果你使用的是IE浏览器，请尝试升级 flash 播放器');
         throw new Error( 'WebUploader does not support the browser you are using.' );
@@ -322,7 +322,12 @@ function multipleUpload(options) {
             case 'finish':
                 stats = uploader.getStats();
                 if (stats.successNum ) {
-                	tenantInfo_manager_tool.saveTenantInfo();
+                	debugger;
+                	if(fileType=="TENANTIMAGE"){
+                		tenantInfo_manager_tool.saveTenantInfo();
+                	}else if(fileType=="PRODUCTIMAGELIST"){
+                		product_manager_tool.saveProduct();
+                	}
                 } else {
                     // 没有成功的图片，重设
                     state = 'done';

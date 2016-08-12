@@ -1,5 +1,7 @@
  <form id="addProduct_form" method="post" >
  	<input type="hidden" id="addProductImage_form_file_input" name="image">
+ 	<input type="hidden" id="addProductImageList_form_file_input" name="productImageSrcs">
+ 	
 	<div id="addProductTab" data-options="tabPosition:'top',headerWidth:100" class="easyui-tabs">  
 		<div title="${message("csh.product.baseInfo")}" style="padding:10px"> 
 			  <table class="table table-striped"  border="0">

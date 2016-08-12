@@ -134,6 +134,7 @@ $(function(){
 	            	 compressSize: 0
 	             }
  			},
+ 			fileType:"TENANTIMAGE",
  			//包裹上传组件的div id
  			warp :"tenantInfoConfig_form",
  			filePicker_replace :"filePicker_replace_Photos",
@@ -143,7 +144,7 @@ $(function(){
  			},
  			uploadSuccess:function(file, response){
  				photoUrlList.push(response.content);
- 			}
+ 			},
  	};
  	if($('img[class="preview"]').length>0 && $('img[class="preview"]').length<4){
  		options.createOption.pick.innerHTML="继续添加";

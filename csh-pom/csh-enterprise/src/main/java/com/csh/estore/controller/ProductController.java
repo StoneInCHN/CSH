@@ -1,7 +1,9 @@
 package com.csh.estore.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -19,7 +21,9 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Message;
@@ -28,16 +32,19 @@ import com.csh.controller.DeviceInfoController;
 import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Sn.Type;
+import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.estore.Brand;
 import com.csh.entity.estore.Parameter;
 import com.csh.entity.estore.ParameterGroup;
 import com.csh.entity.estore.Product;
 import com.csh.entity.estore.ProductCategory;
+import com.csh.entity.estore.ProductImage;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.request.PropertyListRequest;
 import com.csh.json.response.PropertyGridResponse;
 import com.csh.service.BrandService;
+import com.csh.service.FileService;
 import com.csh.service.ProductCategoryService;
 import com.csh.service.ProductService;
 import com.csh.service.SnService;
@@ -61,7 +68,8 @@ public class ProductController extends BaseController
   private BrandService brandService;
   @Resource (name = "snServiceImpl")
   private SnService snService;
-
+  @Resource (name = "fileServiceImpl")
+  private FileService fileService;
   /**
    * 界面展示
    * 
@@ -168,8 +176,15 @@ public class ProductController extends BaseController
   }
 
   @RequestMapping (value = "/add",method = RequestMethod.POST)
-  public @ResponseBody Message add (Product product,Long productCategoryId,Long brandId,PropertyListRequest request)
+  public @ResponseBody Message add (Product product,Long productCategoryId,String[] productImageSrcs,Long brandId,PropertyListRequest request)
   {
+	List<ProductImage> productImageList = new ArrayList<ProductImage>();
+	for (String src: productImageSrcs) {
+		ProductImage image = new ProductImage();
+		image.setSource(src);
+		productImageList.add(image);
+	}
+	product.setProductImages(productImageList);
     ProductCategory category =productCategoryService.find (productCategoryId);
     product.setProductCategory (category);
     Brand brand = brandService.find (brandId);
@@ -190,9 +205,7 @@ public class ProductController extends BaseController
               product.getParameterValue().remove(parameter);
             }
           }
-          
         }
-       
       }
     }
     
@@ -203,9 +216,13 @@ public class ProductController extends BaseController
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (Product product,Long parentId,Long[] brandIds)
+  public @ResponseBody Message update (Product product,Long productCategoryId,Long brandId)
   {
-    productService.update (product,"tenantID","createDate","treePath", "grade", "children", "products", "parameterGroups", "attributes");
+	ProductCategory productCategory=  productCategoryService.find(productCategoryId);
+	product.setProductCategory(productCategory);
+	
+    productService.update (product,"image","tenantID","createDate","treePath","isMarketable","hits", 
+    		"grade", "children", "products", "parameterGroups", "attributes","allocatedStock","isGift","isList");
     return SUCCESS_MESSAGE;
   }
 
@@ -233,7 +250,7 @@ public class ProductController extends BaseController
     return SUCCESS_MESSAGE;
   }
   /**
-   * 删除
+   * 上架状态
    */
   @RequestMapping (value = "/marketable", method = RequestMethod.POST)
   public @ResponseBody Message marketable (Long[] ids,Boolean isMarketable)
@@ -249,6 +266,28 @@ public class ProductController extends BaseController
     }
     return SUCCESS_MESSAGE;
   }
+  @RequestMapping (value = "/getCurrentParameter", method = RequestMethod.GET)
+  public @ResponseBody List<PropertyGridResponse> getCurrentParameter (Long productId)
+  {
+    Product product = productService.find(productId);
+    
+    Map<Parameter, String> pramValueMap = product.getParameterValue();
+    
+    List<PropertyGridResponse> responseList = new ArrayList<PropertyGridResponse>();
+    for (Parameter parameter : pramValueMap.keySet())
+    {
+    	String value = pramValueMap.get(parameter);
+        PropertyGridResponse response = new PropertyGridResponse ();
+        response.setId (parameter.getId ());
+        response.setGroup (parameter.getParameterGroup().getName ());
+        response.setName (parameter.getName ());
+        response.setValue(value);
+        responseList.add (response);
+    }
+    return responseList;
+
+  }
+  
   /**
    * 获取数据进入详情页面
    * 
@@ -264,5 +303,21 @@ public class ProductController extends BaseController
     return "estore/product/details";
   }
   
- 
+  @RequestMapping (value = "/uploadImage", method = RequestMethod.POST)
+  public @ResponseBody Message uploadPhoto (
+      @RequestParam ("file") MultipartFile file, Long productId)
+  {
+    String filePath = fileService.saveImage (file, ImageType.PRODUCTIMAGE);
+    if (filePath != null && productId != null)
+    {
+      Product product = productService.find (productId);
+      product.setImage(filePath);
+      productService.update (product);
+      return Message.success (filePath);
+    }
+    else
+    {
+      return ERROR_MESSAGE;
+    }
+  }
 }

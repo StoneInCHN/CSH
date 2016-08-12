@@ -590,7 +590,7 @@ public class Product extends BaseEntity {
 	@Field(store = Store.YES, index = Index.NO)
 	@Min(0)
 	@Digits(integer = 12, fraction = 3)
-	@Column(nullable = false, precision = 21, scale = 6)
+	@Column( precision = 21, scale = 6)
 	public BigDecimal getMarketPrice() {
 		return marketPrice;
 	}
@@ -739,7 +739,7 @@ public class Product extends BaseEntity {
 	 */
 	@Field(store = Store.YES, index = Index.NO)
 	@Min(0)
-	@Column(nullable = false)
+	@Column()
 	public Long getPoint() {
 		return point;
 	}
@@ -818,8 +818,7 @@ public class Product extends BaseEntity {
 	 * @return 是否列出
 	 */
 	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@NotNull
-	@Column(nullable = false)
+	@Column()
 	public Boolean getIsList() {
 		return isList;
 	}
@@ -840,8 +839,7 @@ public class Product extends BaseEntity {
 	 * @return 是否置顶
 	 */
 	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@NotNull
-	@Column(nullable = false)
+	@Column()
 	public Boolean getIsTop() {
 		return isTop;
 	}
@@ -863,8 +861,7 @@ public class Product extends BaseEntity {
 	 */
 	@JsonProperty
 	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@NotNull
-	@Column(nullable = false)
+	@Column()
 	public Boolean getIsGift() {
 		return isGift;
 	}
@@ -1014,7 +1011,7 @@ public class Product extends BaseEntity {
 	 */
 	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
 	@NumericField
-	@Column(nullable = false, precision = 12, scale = 6)
+	@Column(precision = 12, scale = 6)
 	public Float getScore() {
 		return score;
 	}
@@ -1034,7 +1031,6 @@ public class Product extends BaseEntity {
 	 * 
 	 * @return 总评分
 	 */
-	@Column(nullable = false)
 	public Long getTotalScore() {
 		return totalScore;
 	}
@@ -1055,7 +1051,6 @@ public class Product extends BaseEntity {
 	 * @return 评分数
 	 */
 	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@Column(nullable = false)
 	public Long getScoreCount() {
 		return scoreCount;
 	}
@@ -1076,7 +1071,6 @@ public class Product extends BaseEntity {
 	 * @return 点击数
 	 */
 	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@Column(nullable = false)
 	public Long getHits() {
 		return hits;
 	}
@@ -1097,7 +1091,6 @@ public class Product extends BaseEntity {
 	 * @return 周点击数
 	 */
 	@Field(store = Store.YES, index = Index.NO)
-	@Column(nullable = false)
 	public Long getWeekHits() {
 		return weekHits;
 	}
@@ -1118,7 +1111,6 @@ public class Product extends BaseEntity {
 	 * @return 月点击数
 	 */
 	@Field(store = Store.YES, index = Index.NO)
-	@Column(nullable = false)
 	public Long getMonthHits() {
 		return monthHits;
 	}
@@ -1139,7 +1131,6 @@ public class Product extends BaseEntity {
 	 * @return 销量
 	 */
 	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@Column(nullable = false)
 	public Long getSales() {
 		return sales;
 	}
@@ -1160,7 +1151,6 @@ public class Product extends BaseEntity {
 	 * @return 周销量
 	 */
 	@Field(store = Store.YES, index = Index.NO)
-	@Column(nullable = false)
 	public Long getWeekSales() {
 		return weekSales;
 	}
@@ -1181,7 +1171,6 @@ public class Product extends BaseEntity {
 	 * @return 月销量
 	 */
 	@Field(store = Store.YES, index = Index.NO)
-	@Column(nullable = false)
 	public Long getMonthSales() {
 		return monthSales;
 	}
@@ -1201,7 +1190,6 @@ public class Product extends BaseEntity {
 	 * 
 	 * @return 周点击数更新日期
 	 */
-	@Column(nullable = false)
 	public Date getWeekHitsDate() {
 		return weekHitsDate;
 	}
@@ -1221,7 +1209,6 @@ public class Product extends BaseEntity {
 	 * 
 	 * @return 月点击数更新日期
 	 */
-	@Column(nullable = false)
 	public Date getMonthHitsDate() {
 		return monthHitsDate;
 	}
@@ -1241,7 +1228,6 @@ public class Product extends BaseEntity {
 	 * 
 	 * @return 周销量更新日期
 	 */
-	@Column(nullable = false)
 	public Date getWeekSalesDate() {
 		return weekSalesDate;
 	}
@@ -1261,7 +1247,6 @@ public class Product extends BaseEntity {
 	 * 
 	 * @return 月销量更新日期
 	 */
-	@Column(nullable = false)
 	public Date getMonthSalesDate() {
 		return monthSalesDate;
 	}

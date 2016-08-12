@@ -1,5 +1,5 @@
-<form id="editProductCategory_form" method="post">   
-	<input type="hidden" name="id" value="${product.id}">
+<form id="editProduct_form" method="post">   
+	<input type="hidden" id="editProductId" name="id" value="${product.id}">
 	<div id="editProductTab" data-options="tabPosition:'top',headerWidth:100" class="easyui-tabs">  
 		<div title="${message("csh.product.baseInfo")}" style="padding:10px"> 
 			  <table class="table table-striped"  border="0">
@@ -13,17 +13,29 @@
 		    			<input  class="easyui-combobox" required="required" id="editProduct_productCategory" data-value="${product.productCategory.id}" name="productCategoryId"/>
 		    		</td>
 		    		<td rowspan="5" colspan="2">
-		    			<div title="图片上传" class="easyui-tooltip headWarp" id="addProductImageWarp">
-	    				<div id="productImageUploader-add" class="single-uploader">
-						    <div  class="queueList">
-						        <div  class="placeholder">
-						        	<div id="productImageFilePicker-add" ></div>
+	    			
+	    			 <div title="图片上传" class="easyui-tooltip headWarp" id="editProductImageWarp">
+	    				<div id="productImageUploader-edit" class="single-uploader">
+						    <div  class="queueList filled">
+						         <div  class="placeholder element-invisible">
+						        	<div id="productImageFilePicker-edit" ></div>
 						        </div>
-						    </div>
+						 
+							    <div class="show-img">
+						        	<p class="imgWrap img-thumbnail">
+										 <img id ="productImage-edit" src="../../${product.image}" style ="width:80px;hight:80 px"/>
+									</p>
+							    </div>
+							</div>
 						    <div class="btns">
 						        <div class="uploadBtn state-pedding"></div>
 						    </div>
 						</div>
+						<div class="btns">
+					        <div class="uploadBtn state-pedding"></div>
+					        <div id="productImageFilePicker-edit2" class="margin-left-20">选择文件</div>
+					        <div class="btn btn-info savePhoto margin-left-20" style="display:none">保存图片</div>
+					    </div>
 	    			</div>
 		    		</td>
 			  	</tr>
@@ -85,7 +97,7 @@
 		    	<tr>
 		    		<th >${message("csh.product.brand")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" required="required" data-value="${product.brand.id}" id="editProduct_brand" name="brandId"/>
+		    			<input class="easyui-textbox" required="required" data-value="${product.brand.id}" id="editProduct_brand" name="brandId"/>
 		    		</td >
 		    		<th >${message("csh.product.memo")}:</th>
 		    		<td>
