@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
-import com.csh.entity.commonenum.CommonEnum.Type;
 import com.csh.entity.estore.Order;
 import com.csh.entity.estore.OrderLog;
 import com.csh.entity.estore.Refunds;
@@ -70,7 +70,7 @@ public class RefundsServiceImpl extends BaseServiceImpl<Refunds,Long> implements
         orderDao.merge(order);
 
         OrderLog orderLog = new OrderLog();
-        orderLog.setType(Type.refunds);
+        orderLog.setType(OrderLogType.refunds);
         orderLog.setOperator(refunds.getOperator() != null ? refunds.getOperator() : null);
         orderLog.setOrder(order);
         orderLogDao.persist(orderLog);

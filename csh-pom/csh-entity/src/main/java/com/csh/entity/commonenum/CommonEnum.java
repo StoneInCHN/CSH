@@ -718,7 +718,12 @@ public class CommonEnum {
     completed,
 
     /** 已取消 */
-    cancelled
+    cancelled,
+    
+    /**
+     * 已失效
+     */
+    failure
   }
 
   /**
@@ -782,7 +787,7 @@ public class CommonEnum {
   /**
    * 订单日志类型
    */
-  public enum Type {
+  public enum OrderLogType {
 
     /** 订单创建 */
     create,

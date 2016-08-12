@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 import com.csh.entity.commonenum.CommonEnum.ShippingStatus;
-import com.csh.entity.commonenum.CommonEnum.Type;
 import com.csh.entity.estore.Order;
 import com.csh.entity.estore.OrderItem;
 import com.csh.entity.estore.OrderLog;
@@ -63,7 +63,7 @@ public class ReturnsServiceImpl extends BaseServiceImpl<Returns,Long> implements
         orderDao.merge(order);
         //保存订单日志
         OrderLog orderLog = new OrderLog();
-        orderLog.setType(Type.returns);
+        orderLog.setType(OrderLogType.returns);
         orderLog.setOperator(returns.getOperator() != null ? returns.getOperator() : null);
         orderLog.setOrder(order);
         orderLog.setTenantID(tenantAccountService.getCurrentTenantID());

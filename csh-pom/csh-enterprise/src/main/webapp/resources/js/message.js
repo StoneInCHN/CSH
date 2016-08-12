@@ -412,6 +412,10 @@ var messages = {
 	"csh.order.shippingStatus.partialReturns":"部分退货",
 	"csh.order.shippingStatus.returned":"已退货",
 	"csh.order.select.addShippingRow" : "请选择要发货的订单",
+	"csh.order.list":"订单列表",
+	"csh.order.amount":"订单金额",
+	"csh.order.member":"会员",
+	"csh.order.paymentType":"支付方式"
 	
 		
 };

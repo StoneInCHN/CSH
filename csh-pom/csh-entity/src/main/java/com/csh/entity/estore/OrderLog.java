@@ -14,7 +14,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
-import com.csh.entity.commonenum.CommonEnum.Type;
+import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 
 /**
  * Entity - 订单日志
@@ -30,7 +30,7 @@ public class OrderLog extends BaseEntity {
 
 
 	/** 类型 */
-	private Type type;
+	private OrderLogType type;
 
 	/** 操作员 */
 	private String operator;
@@ -58,12 +58,12 @@ public class OrderLog extends BaseEntity {
 	public OrderLog() {
 	}
 
-	public OrderLog(Type type, String operator) {
+	public OrderLog(OrderLogType type, String operator) {
 		this.type = type;
 		this.operator = operator;
 	}
 
-	public OrderLog(Type type, String operator, String content) {
+	public OrderLog(OrderLogType type, String operator, String content) {
 		this.type = type;
 		this.operator = operator;
 		this.content = content;
@@ -75,7 +75,7 @@ public class OrderLog extends BaseEntity {
 	 * @return 类型
 	 */
 	@Column(nullable = false, updatable = false)
-	public Type getType() {
+	public OrderLogType getType() {
 		return type;
 	}
 
@@ -85,7 +85,7 @@ public class OrderLog extends BaseEntity {
 	 * @param type
 	 *            类型
 	 */
-	public void setType(Type type) {
+	public void setType(OrderLogType type) {
 		this.type = type;
 	}
 

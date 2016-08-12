@@ -189,10 +189,6 @@ public class Order extends BaseEntity {
    */
   private Long tenantID;
 
-  /**
-   * 父级订单
-   */
-  private Integer parent;
   
   @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public Long getTenantID() {
@@ -454,6 +450,7 @@ public class Order extends BaseEntity {
   @NotEmpty
   @Length(max = 200)
   @Column(nullable = false)
+  @JsonProperty
   public String getConsignee() {
     return consignee;
   }
@@ -474,6 +471,7 @@ public class Order extends BaseEntity {
    * @return 地区名称
    */
   @Column(nullable = false)
+  @JsonProperty
   public String getAreaName() {
     return areaName;
   }
@@ -495,6 +493,7 @@ public class Order extends BaseEntity {
   @NotEmpty
   @Length(max = 200)
   @Column(nullable = false)
+  @JsonProperty
   public String getAddress() {
     return address;
   }
@@ -537,6 +536,7 @@ public class Order extends BaseEntity {
   @NotEmpty
   @Length(max = 200)
   @Column(nullable = false)
+  @JsonProperty
   public String getPhone() {
     return phone;
   }
@@ -616,6 +616,7 @@ public class Order extends BaseEntity {
    * @return 附言
    */
   @Length(max = 200)
+  @JsonProperty
   public String getMemo() {
     return memo;
   }
@@ -653,6 +654,7 @@ public class Order extends BaseEntity {
    * 
    * @return 到期时间
    */
+  @JsonProperty
   public Date getExpire() {
     return expire;
   }
@@ -730,6 +732,7 @@ public class Order extends BaseEntity {
    */
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
+  @JsonProperty
   public Area getArea() {
     return area;
   }
@@ -788,6 +791,7 @@ public class Order extends BaseEntity {
    * @return 操作员
    */
   @ManyToOne(fetch = FetchType.LAZY)
+  @JsonProperty
   public TenantAccount getOperator() {
     return operator;
   }
@@ -950,6 +954,7 @@ public class Order extends BaseEntity {
    * @return 订单名称
    */
   @Transient
+  @JsonProperty
   public String getName() {
     StringBuffer name = new StringBuffer();
     if (getOrderItems() != null) {
@@ -971,6 +976,7 @@ public class Order extends BaseEntity {
    * @return 商品重量
    */
   @Transient
+  @JsonProperty
   public int getWeight() {
     int weight = 0;
     if (getOrderItems() != null) {
@@ -989,6 +995,7 @@ public class Order extends BaseEntity {
    * @return 商品数量
    */
   @Transient
+  @JsonProperty
   public int getQuantity() {
     int quantity = 0;
     if (getOrderItems() != null) {
@@ -1043,6 +1050,7 @@ public class Order extends BaseEntity {
    * @return 商品价格
    */
   @Transient
+  @JsonProperty
   public BigDecimal getPrice() {
     BigDecimal price = new BigDecimal(0);
     if (getOrderItems() != null) {
@@ -1061,6 +1069,7 @@ public class Order extends BaseEntity {
    * @return 订单金额
    */
   @Transient
+  @JsonProperty
   public BigDecimal getAmount() {
     BigDecimal amount = getPrice();
     if (getFee() != null) {
@@ -1170,14 +1179,5 @@ public class Order extends BaseEntity {
   public void preRemove() {
 
   }
-
-	public Integer getParent() {
-		return parent;
-	}
-	
-	public void setParent(Integer parent) {
-		this.parent = parent;
-	}
-  
   
 }

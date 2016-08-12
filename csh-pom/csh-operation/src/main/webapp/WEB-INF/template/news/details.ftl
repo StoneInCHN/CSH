@@ -5,7 +5,7 @@
 <!-- 优先使用 IE 最新版本和 Chrome -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <!-- 为移动设备添加 viewport -->
-<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 <!-- iOS 设备适配代码Star-->
 <!-- 添加到主屏后的标题（iOS 6 新增） -->
 <meta name="apple-mobile-web-app-title" content="车生活">
@@ -21,8 +21,11 @@
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 	ul,li,p,span,a{padding:0;margin:0}
-	.container{
-		margin-bottom:20px;
+	body{
+		max-width:768px;
+		margin:0 auto 20px auto;
+		padding:0 20px;
+	
 	}
 	.top{
 		text-align:center;
@@ -51,7 +54,7 @@
 </head>
 <body>
 	<p class="top"><span class="category" >${news.newsCategory.name}</span><span class="time">${news.createDate}</span> <span class="hits">浏览次数:${news.readCounts}</span></p>
-	<div class="container">
+	<div>
 		<h3 style="text-align:center;margin:30px">${news.title}</h3>
 		<div style="margin-bottom:80px;">${news.content}</div>
 		<div class="comFrame">
