@@ -19,6 +19,8 @@ import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.Method;
+import com.csh.entity.commonenum.CommonEnum.RefundsStatus;
 
 /**
  * Entity - 退款单
@@ -30,21 +32,6 @@ import com.csh.entity.base.BaseEntity;
 public class Refunds extends BaseEntity {
 
 	private static final long serialVersionUID = 354885216604823632L;
-
-	/**
-	 * 方式
-	 */
-	public enum Method {
-
-		/** 在线支付 */
-		online,
-
-		/** 线下支付 */
-		offline,
-
-		/** 预存款支付 */
-		deposit
-	}
 
 	/** 编号 */
 	private String sn;
@@ -72,6 +59,9 @@ public class Refunds extends BaseEntity {
 
 	/** 备注 */
 	private String memo;
+	
+	/** 退款单状态 */
+	private RefundsStatus refundsStatus;
 
 	/** 订单 */
 	private Order order;
@@ -299,5 +289,21 @@ public class Refunds extends BaseEntity {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
+	/**
+	 * 获取退款单状态
+	 * @return
+	 */
+    public RefundsStatus getRefundsStatus() {
+      return refundsStatus;
+    }
+    /**
+     * 设置退款单状态
+     * @param refundsStatus
+     */
+    public void setRefundsStatus(RefundsStatus refundsStatus) {
+      this.refundsStatus = refundsStatus;
+    }
+	
+	
 
 }

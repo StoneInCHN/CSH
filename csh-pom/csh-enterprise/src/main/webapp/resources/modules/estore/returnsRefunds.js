@@ -116,10 +116,10 @@ $(function(){
 		    	  if(row.shippingStatus == "shipped"){
 		    		  returns='<a href="#" onclick="addReturns('+row.id+');">退货</a>';
 		    	  }
-		    	  var refunds="退款";
-		    	  if(row.paymentStatus == "paid"){
-		    		  returns='<a href="#" onclick="addRefunds('+row.id+');">退款</a>';
-		    	  }
+//		    	  var refunds="退款";
+//		    	  if(row.paymentStatus == "paid"){
+//		    		  returns='<a href="#" onclick="addRefunds('+row.id+');">退款</a>';
+//		    	  }
 		    	  var viewOrder='<a href="#" onclick="viewOrder('+row.id+');">查看</a>';
 				  return returns+"&nbsp;&nbsp;&nbsp;&nbsp;"+refunds+"&nbsp;&nbsp;&nbsp;&nbsp;"+viewOrder;
 					

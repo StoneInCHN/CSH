@@ -213,8 +213,21 @@ $().ready(function() {
 									</select>
 					    		</td>
 								<th>${message("csh.refunds.paymentMethod")}:</td>
-								<td>
-				
+								<td>   				
+									   <input class="easyui-combobox" data-options="
+										valueField: 'label',
+										textField: 'value',
+										data: [{
+											label: 'ALIPAY',
+											value: '支付宝'
+										},{
+											label: 'WECHAT',
+											value: ' 微信'
+										},{
+											label: 'WALLET',
+											value: '钱包余额'
+										}],
+										prompt:'${message("jlr.common.please.select")}',panelMaxHeight:100"   value="paymentType" style="width:110px;" readonly='readonly'/>
 					    		</td>
 					    	</tr>
 					    	<tr>

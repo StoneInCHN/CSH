@@ -26,6 +26,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.RefundsStatus;
+import com.csh.entity.commonenum.CommonEnum.ReturnsStatus;
 
 /**
  * Entity - 退货单
@@ -73,6 +75,9 @@ public class Returns extends BaseEntity {
 
 	/** 备注 */
 	private String memo;
+	
+	/** 退货单状态 */
+    private ReturnsStatus returnsStatus;
 
 	/** 订单 */
 	private Order order;
@@ -348,6 +353,21 @@ public class Returns extends BaseEntity {
 	}
 
 	/**
+	 * 获取退货单
+	 * @return
+	 */
+	public ReturnsStatus getReturnsStatus() {
+      return returnsStatus;
+    }
+	/**
+	 * 设置退货单
+	 * @param returnsStatus
+	 */
+    public void setReturnsStatus(ReturnsStatus returnsStatus) {
+      this.returnsStatus = returnsStatus;
+    }
+
+  /**
 	 * 获取订单
 	 * 
 	 * @return 订单

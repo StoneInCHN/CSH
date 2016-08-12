@@ -785,6 +785,34 @@ public class CommonEnum {
     approvedPartialRefund,
   }
   /**
+   * 退款单状态
+   */
+  public enum RefundsStatus{
+    /** 未退款*/
+    noRefund,
+    /** 退款成功*/
+    refund_success,
+    /** 退款失败*/
+    refund_failed,
+    /** 已取消 */
+    cancelled
+  }
+  /**
+   * 退货单状态
+   */
+  public enum ReturnsStatus{
+    /** 申请退货中...*/
+    applyReturn,
+    /** 已批准退货*/
+    approvedReturn,
+    /** 退货成功*/
+    return_success,
+    /** 退货失败*/
+    return_failed,
+    /** 已取消 */
+    cancelled
+  }
+  /**
    * 订单日志类型
    */
   public enum OrderLogType {
@@ -819,7 +847,20 @@ public class CommonEnum {
     /** 其它 */
     other
   };
+  /**
+   * 方式
+   */
+  public enum Method {
 
+      /** 在线支付 */
+      online,
+
+      /** 线下支付 */
+      offline,
+
+      /** 预存款支付 */
+      deposit
+  }
   /**
    * 商品状态
    */
