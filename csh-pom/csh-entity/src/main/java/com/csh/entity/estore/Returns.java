@@ -78,6 +78,9 @@ public class Returns extends BaseEntity {
 	
 	/** 退货单状态 */
     private ReturnsStatus returnsStatus;
+    
+    /** 申请退款金额（计算所得） */
+    private BigDecimal returnAmount;
 
 	/** 订单 */
 	private Order order;
@@ -365,6 +368,21 @@ public class Returns extends BaseEntity {
 	 */
     public void setReturnsStatus(ReturnsStatus returnsStatus) {
       this.returnsStatus = returnsStatus;
+    }
+    
+    /**
+     * 获取 退款金额
+     * @return
+     */
+    public BigDecimal getReturnAmount() {
+      return returnAmount;
+    }
+    /**
+     * 设置退款金额
+     * @param returnAmount
+     */
+    public void setReturnAmount(BigDecimal returnAmount) {
+      this.returnAmount = returnAmount;
     }
 
   /**
