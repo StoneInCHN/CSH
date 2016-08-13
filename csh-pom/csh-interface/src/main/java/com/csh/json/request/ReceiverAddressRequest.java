@@ -27,10 +27,23 @@ public class ReceiverAddressRequest extends BaseRequest {
   private Boolean isDefault;
 
   /**
+   * 邮编
+   */
+  private String zipCode;
+
+  /**
    * 地址ID
    */
   private Long receiverId;
 
+
+  public String getZipCode() {
+    return zipCode;
+  }
+
+  public void setZipCode(String zipCode) {
+    this.zipCode = zipCode;
+  }
 
   public Long getReceiverId() {
     return receiverId;

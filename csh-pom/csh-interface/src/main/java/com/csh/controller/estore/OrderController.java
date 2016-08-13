@@ -28,6 +28,8 @@ import com.csh.entity.estore.Order;
 import com.csh.entity.estore.OrderItem;
 import com.csh.entity.estore.OrderLog;
 import com.csh.entity.estore.Product;
+import com.csh.entity.estore.Returns;
+import com.csh.entity.estore.ReturnsItem;
 import com.csh.entity.estore.Review;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -41,6 +43,7 @@ import com.csh.service.EndUserService;
 import com.csh.service.OrderLogService;
 import com.csh.service.OrderService;
 import com.csh.service.ProductService;
+import com.csh.service.ReturnsService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TokenGenerator;
 
@@ -66,6 +69,10 @@ public class OrderController extends MobileBaseController {
 
   @Resource(name = "orderLogServiceImpl")
   private OrderLogService orderLogService;
+
+  @Resource(name = "returnsServiceImpl")
+  private ReturnsService returnsService;
+
 
 
   /**
@@ -326,11 +333,11 @@ public class OrderController extends MobileBaseController {
 
 
   /**
-   * 用户申请退款
+   * 用户申请退货/完善退货单
    * 
    * @return
    */
-  @RequestMapping(value = "/returns", method = RequestMethod.POST)
+  @RequestMapping(value = "/applyReturns", method = RequestMethod.POST)
   @UserValidCheck
   public @ResponseBody BaseResponse returns(@RequestBody OrderRequest request) {
 
@@ -340,6 +347,9 @@ public class OrderController extends MobileBaseController {
     String token = request.getToken();
     Long[] orderItemIds = request.getOrderItemIds();
     Long orderId = request.getOrderId();
+    Long returnsId = request.getReturnsId();
+    String trackingNo = request.getTrackingNo();
+    String deliveryCorp = request.getDeliveryCorp();
 
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
@@ -354,11 +364,73 @@ public class OrderController extends MobileBaseController {
       itemIdsStr += itemId + "";
     }
     if (LogUtil.isDebugEnabled(OrderController.class)) {
-      LogUtil.debug(OrderController.class, "returns",
-          "order returns. UserId: %s,orderId: %s,orderItemIds: %s", userId, orderId, itemIdsStr);
+      LogUtil
+          .debug(
+              OrderController.class,
+              "returns",
+              "order returns. UserId: %s,orderId: %s,orderItemIds: %s, returnsId: %s, trackingNo: %s, deliveryCorp: %s",
+              userId, orderId, itemIdsStr, returnsId, trackingNo, deliveryCorp);
     }
 
 
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+
+  /**
+   * 用户查看退货单
+   * 
+   * @return
+   */
+  @RequestMapping(value = "/getReturnsBill", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getReturnsBill(
+      @RequestBody OrderRequest request) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    Integer pageSize = request.getPageSize();
+    Integer pageNumber = request.getPageNumber();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    EndUser endUser = endUserService.find(userId);
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter userFilter = new Filter("operator", Operator.eq, endUser.getUserName());
+    filters.add(userFilter);
+
+    Pageable pageable = new Pageable();
+    pageable.setPageNumber(pageNumber);
+    pageable.setPageSize(pageSize);
+    pageable.setOrderProperty("createDate");
+    pageable.setOrderDirection(Direction.desc);
+    Page<Returns> page = returnsService.findPage(pageable);
+    String[] propertys =
+        {"id", "sn", "deliveryCorp", "trackingNo", "returnsStatus", "returnAmount"};
+
+    String[] itemPropertys = {"id", "name", "price", "thumbnail", "quantity"};
+    List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+    for (Returns returns : page.getContent()) {
+      Map<String, Object> map = FieldFilterUtils.filterEntityMap(propertys, returns);
+      List<ReturnsItem> list = returns.getReturnsItems();
+      List<Map<String, Object>> items = FieldFilterUtils.filterCollectionMap(itemPropertys, list);
+      map.put("returnsItem", items);
+      result.add(map);
+    }
+
+    response.setMsg(result);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);

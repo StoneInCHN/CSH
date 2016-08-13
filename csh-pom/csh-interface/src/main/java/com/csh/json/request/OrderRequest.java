@@ -67,7 +67,29 @@ public class OrderRequest extends BaseRequest {
    */
   private Long returnsId;
 
+  /**
+   * 退款运单号
+   */
+  private String trackingNo;
 
+  /** 物流公司 */
+  private String deliveryCorp;
+
+  public String getTrackingNo() {
+    return trackingNo;
+  }
+
+  public void setTrackingNo(String trackingNo) {
+    this.trackingNo = trackingNo;
+  }
+
+  public String getDeliveryCorp() {
+    return deliveryCorp;
+  }
+
+  public void setDeliveryCorp(String deliveryCorp) {
+    this.deliveryCorp = deliveryCorp;
+  }
 
   public Long getReturnsId() {
     return returnsId;

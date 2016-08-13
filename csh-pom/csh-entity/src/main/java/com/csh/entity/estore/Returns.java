@@ -125,7 +125,7 @@ public class Returns extends BaseEntity {
    * 
    * @return 配送方式
    */
-  @Column(updatable = false)
+  @Column(length = 100)
   public String getShippingMethod() {
     return shippingMethod;
   }
@@ -144,7 +144,7 @@ public class Returns extends BaseEntity {
    * 
    * @return 物流公司
    */
-  @Column(updatable = false)
+  @Column(length = 100)
   public String getDeliveryCorp() {
     return deliveryCorp;
   }
@@ -164,7 +164,6 @@ public class Returns extends BaseEntity {
    * @return 运单号
    */
   @Length(max = 200)
-  @Column(updatable = false)
   public String getTrackingNo() {
     return trackingNo;
   }
@@ -185,7 +184,7 @@ public class Returns extends BaseEntity {
    */
   @Min(0)
   @Digits(integer = 12, fraction = 3)
-  @Column(updatable = false, precision = 21, scale = 6)
+  @Column(precision = 21, scale = 6)
   public BigDecimal getFreight() {
     return freight;
   }
@@ -204,9 +203,7 @@ public class Returns extends BaseEntity {
    * 
    * @return 发货人
    */
-  @NotEmpty
   @Length(max = 200)
-  @Column(nullable = false, updatable = false)
   public String getShipper() {
     return shipper;
   }
@@ -225,8 +222,7 @@ public class Returns extends BaseEntity {
    * 
    * @return 地区
    */
-  @NotEmpty
-  @Column(nullable = false, updatable = false)
+  @Column(length = 100)
   public String getArea() {
     return area;
   }
@@ -245,9 +241,7 @@ public class Returns extends BaseEntity {
    * 
    * @return 地址
    */
-  @NotEmpty
   @Length(max = 200)
-  @Column(nullable = false, updatable = false)
   public String getAddress() {
     return address;
   }
@@ -266,9 +260,7 @@ public class Returns extends BaseEntity {
    * 
    * @return 邮编
    */
-  @NotEmpty
   @Length(max = 200)
-  @Column(nullable = false, updatable = false)
   public String getZipCode() {
     return zipCode;
   }
@@ -287,9 +279,7 @@ public class Returns extends BaseEntity {
    * 
    * @return 电话
    */
-  @NotEmpty
   @Length(max = 200)
-  @Column(nullable = false, updatable = false)
   public String getPhone() {
     return phone;
   }
@@ -308,7 +298,7 @@ public class Returns extends BaseEntity {
    * 
    * @return 操作员
    */
-  @Column(nullable = false, updatable = false)
+  @Column(length = 100)
   public String getOperator() {
     return operator;
   }

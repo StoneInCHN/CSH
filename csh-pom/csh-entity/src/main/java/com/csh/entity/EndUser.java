@@ -171,6 +171,11 @@ public class EndUser extends BaseEntity {
   /** 收货地址 */
   private Set<ReceiverAddress> receivers = new HashSet<ReceiverAddress>();
 
+  /**
+   * 默认收货地址
+   */
+  private ReceiverAddress defaultAddress;
+
   /** 评论 */
   private Set<Review> reviews = new HashSet<Review>();
 
@@ -190,7 +195,23 @@ public class EndUser extends BaseEntity {
    * 平台充值余额
    */
   private BigDecimal selfBalance;
-  
+
+
+  @Transient
+  public ReceiverAddress getDefaultAddress() {
+    for (ReceiverAddress addr : receivers) {
+      if (addr.getIsDefault()) {
+        defaultAddress = addr;
+        break;
+      }
+    }
+    return defaultAddress;
+  }
+
+  public void setDefaultAddress(ReceiverAddress defaultAddress) {
+    this.defaultAddress = defaultAddress;
+  }
+
   @Transient
   public Boolean getIsGetCoupon() {
     return isGetCoupon;
@@ -199,7 +220,7 @@ public class EndUser extends BaseEntity {
   public void setIsGetCoupon(Boolean isGetCoupon) {
     this.isGetCoupon = isGetCoupon;
   }
-  
+
   @Transient
   public BigDecimal getSelfBalance() {
     return selfBalance;

@@ -169,6 +169,7 @@ public class ReceiverAddressController extends MobileBaseController {
     String consignee = request.getConsignee();
     String address = request.getAddress();
     String phone = request.getPhone();
+    String zipCode = request.getZipCode();
     Boolean isDefault = request.getIsDefault();
     Long receiverId = request.getReceiverId();
 
@@ -203,7 +204,7 @@ public class ReceiverAddressController extends MobileBaseController {
     receiverAddress.setPhone(phone);
     receiverAddress.setAddress(address);
     receiverAddress.setIsDefault(isDefault);
-
+    receiverAddress.setZipCode(zipCode);
     receiverAddressService.addOrEditAddress(receiverAddress, endUser);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
