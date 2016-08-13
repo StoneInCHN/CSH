@@ -373,14 +373,19 @@
 				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
-		[#list ["admin:order"] as permission]
+		[#list ["admin:order","admin:refunds"] as permission]
 			[@shiro.hasPermission name = permission]
 				<li class="has_sub" >
 					<a href="#tenant" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.order")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
 						<ul class="sub_ul">
 							 [@shiro.hasPermission name="admin:order"]
 								<li>
-									<a href="../order/list.jhtml" target="iframe"><i class="fa fa-cog"></i>${message("csh.main.order")}</a>
+									<a href="../order/list.jhtml" target="iframe"><i class="fa fa-cog"></i>查看订单</a>
+								</li>
+							 [/@shiro.hasPermission]
+							  [@shiro.hasPermission name="admin:refunds"]
+								<li>
+									<a href="../refunds/list.jhtml" target="iframe"><i class="fa fa-cog"></i>退款单管理</a>
 								</li>
 							 [/@shiro.hasPermission]
 				       </ul>

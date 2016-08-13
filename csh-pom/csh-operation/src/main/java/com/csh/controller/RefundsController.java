@@ -18,18 +18,20 @@ import com.csh.entity.commonenum.CommonEnum.Method;
 import com.csh.entity.commonenum.CommonEnum.RefundsStatus;
 import com.csh.entity.estore.Order;
 import com.csh.entity.estore.Refunds;
+import com.csh.entity.estore.Returns;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdminService;
 import com.csh.service.OrderService;
 import com.csh.service.RefundsService;
+import com.csh.service.ReturnsService;
 import com.csh.service.SnService;
 import com.csh.service.TenantInfoService;
 
-@RequestMapping("console/order")
-@Controller("orderController")
-public class OrderController extends BaseController{
+@RequestMapping("console/refunds")
+@Controller("refundsController")
+public class RefundsController extends BaseController{
 
   @Resource(name="orderServiceImpl")
   private OrderService orderService;
@@ -46,9 +48,11 @@ public class OrderController extends BaseController{
   @Resource (name = "refundsServiceImpl")
   private RefundsService refundsService;
   
+  @Resource (name = "returnsServiceImpl")
+  private ReturnsService returnsService;  
   
   /**
-   * 列表
+   * 退款单列表
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String list(Pageable pageable, ModelMap model,String sn,
@@ -66,65 +70,43 @@ public class OrderController extends BaseController{
     }
     model.addAttribute("beginDate", beginDate);
     model.addAttribute("endDate", endDate);
-    model.addAttribute("page", orderService.findPage(pageable));
-    return "/order/list";
-  }
+    model.addAttribute("page", refundsService.findPage(pageable));
+    return "/refunds/list";
+  } 
   /**
-   * 订单详情
+   * 退款单详情
    */
-  @RequestMapping(value = "/details", method = RequestMethod.GET)
-  public String details(Long id, ModelMap model) {
-    Order order = orderService.find(id);
-    model.addAttribute("order", order);
-    model.addAttribute("tenantName", tenantInfoService.find(order.getTenantID()).getTenantName());
-    return "/order/details";
-  }
-  /**
-   * 查看退款单
-   */
-  @RequestMapping(value = "/viewRefunds", method = RequestMethod.GET)
-  public String viewRefunds(Long orderId, ModelMap model) {
-    Order order = orderService.find(orderId);
-    Set<Refunds> refunds = order.getRefunds();
+  @RequestMapping (value = "/refunds", method = RequestMethod.GET)
+  public String refunds(ModelMap model, Long refundsId, String path) {
+    //获取退款单
+    Refunds refunds = refundsService.find(refundsId);
     model.put ("refunds", refunds);
-    return "/order/viewRefunds";
-  }  
-  /**
-   * 添加退款
-   */
-  @RequestMapping (value = "/addRefunds", method = RequestMethod.GET)
-  public String addRefunds(ModelMap model, Long orderId) {
-    Order order = orderService.find(orderId);
-    model.put ("order", order);
-    model.addAttribute("refundsMethods", Method.values());
-    model.addAttribute("tenantName", tenantInfoService.find(order.getTenantID()).getTenantName());
-    model.addAttribute("paymentType", order.getPaymentType());
-    Set<Refunds> refundsAll = order.getRefunds();
-    Set<Refunds> noRefunds = new HashSet<Refunds>();//未付款的退款单
-    for (Refunds refunds : refundsAll) {
-      if (refunds != null && refunds.getRefundsStatus() == RefundsStatus.noRefund) {
-        noRefunds.add(refunds);
-      }
-    }
-    model.put ("noRefunds", noRefunds);
-    return "order/addRefunds";
+    //获取退货单
+    Returns returns = returnsService.find(refunds.getReturnsID());
+    model.put ("returns", returns);
+    model.put ("returnsItems", returns.getReturnsItems());
+    
+    model.addAttribute("tenantName", tenantInfoService.find(refunds.getTenantID()).getTenantName());
+    return "refunds/" + path;
   }
   /**
-   * 保存退款单
+   * 更新退款单
    */
-  @RequestMapping (value = "/saveRefunds", method = RequestMethod.POST)
-  public String saveRefunds(Long orderId, Long areaId, Refunds refunds) {
+  @RequestMapping (value = "/updateRefunds", method = RequestMethod.POST)
+  public String updateRefunds(Refunds refunds) {
+    Refunds refundsDB = refundsService.find(refunds.getId());
+    //refundsDB.setAmount(refunds.getAmount());
     //获取订单
-    Order order = orderService.find(orderId);
+    Order order = refundsDB.getOrder();
     if (order == null || order.getPaymentType() == null) {
       return "redirect:list.jhtml";
     }
-    refunds.setOrder(order);
-    refunds.setSn(snService.generate(Type.refunds));
-    refunds.setOperator(adminService.getCurrentUsername());
-    refunds.setTenantID(order.getTenantID());
-    //保存退款单退款项，修改订单状态等（事务）
-    refundsService.saveRefunds(order, refunds);
+//    refunds.setOrder(order);
+//    refunds.setSn(snService.generate(Type.refunds));
+//    refunds.setOperator(adminService.getCurrentUsername());
+//    refunds.setTenantID(order.getTenantID());
+    //更新退款单，修改订单状态等（事务）
+    refundsService.saveRefunds(order, refundsDB);
         
     return "redirect:list.jhtml";
   } 

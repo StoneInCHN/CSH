@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> ${message("csh.main.order")}</a> 
+						<a ><i class="fa fa-user"></i> 退款单管理</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.order.list")}(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>退款单列表(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -62,7 +62,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "sn" ] selected="selected" class="active" [/#if] title="sn"><a href="#">${message("csh.order.sn")}</a></li>
+								          <li [#if page.searchProperty == "sn" ] selected="selected" class="active" [/#if] title="sn"><a href="#">退款单编号</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -77,7 +77,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.main.order")}</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>退款单管理</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -92,72 +92,62 @@
 														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="sn">${message("csh.order.sn")}</a>
+														<a href="javascript:;" class="sort" name="sn">退款单编号</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="orderStatus">${message("csh.order.orderStatus")}</a>
+														<a href="javascript:;" class="sort" name="refundsStatus">退款单状态</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="paymentStatus">${message("csh.order.paymentStatus")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="shippingStatus">${message("csh.order.shippingStatus")}</a>
-													</th>
-													<th>
-														<a href="javascript:;" class="sort" name="afterSalesStatus">${message("csh.order.afterSalesStatus")}</a>
-													</th>														
-													<th>
-														<a href="javascript:;" class="sort" name="consignee">${message("csh.order.consignee")}</a>
+														<a href="javascript:;" class="sort" name="method">方式</a>
 													</th>	
 													<th>
-														<a href="javascript:;" class="sort" name="phone">${message("csh.order.phone")}</a>
-													</th>															
+														<a href="javascript:;" class="sort" name="paymentMethod">支付方式</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="amount">退款金额</a>
+													</th>			
+													<th>
+														<a href="javascript:;" class="sort" name="orderSn">所属订单</a>
+													</th>																																					
 													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
 												</tr>
 											</thead>
 											<tbody>
-												[#list page.content as order]
+												[#list page.content as refunds]
 												<tr>
 													<td>
-														<input type="checkbox"  name="ids" value="${order.id}" />
+														<input type="checkbox"  name="ids" value="${refunds.id}" />
 													</td>
 													<td>
-														${order.sn}
+														${refunds.sn}
 													</td>
 													<td>
-														[#if order.orderStatus??]
-															${message("csh.order.orderStatus."+order.orderStatus)}
+														[#if refunds.refundsStatus??]
+															${message("csh.refunds.status."+refunds.refundsStatus)}
 														[/#if]
 													</td>
 													<td>
-														[#if order.paymentStatus??]
-															${message("csh.order.paymentStatus."+order.paymentStatus)}
+														[#if refunds.method??]
+															${message("csh.refunds.method."+refunds.method)}
 														[/#if]
 													</td>
 													<td>
-														[#if order.shippingStatus??]
-															${message("csh.order.shippingStatus."+order.shippingStatus)}
-														[/#if]
+															${refunds.paymentMethod}
 													</td>
 													<td>
-														[#if order.afterSalesStatus??]
-															${message("csh.order.afterSalesStatus."+order.afterSalesStatus)}
-														[#else]
-															-
-														[/#if]
+														${refunds.amount}
+													</td>
+													<td>
+														${refunds.order.sn}
 													</td>													
-													<td>
-														${order.consignee}
-													</td>
-													<td>
-														${order.phone}
-													</td>
-													<td>
-														<a href="details.jhtml?id=${order.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-														[#if order.paymentStatus == 'refunded' || order.paymentStatus == 'partialRefunds']
-															 <a href="viewRefunds.jhtml?orderId=${order.id}" title="${message("csh.refunds.view")}">${message("csh.refunds.view")}</a>
+													<td>    
+														[#if refunds.refundsStatus == 'noRefund' || refunds.refundsStatus == 'refund_failed']
+															<a href="refunds.jhtml?path=refunds&refundsId=${refunds.id}" title="${message("csh.order.refund")}"><i class="fa fa-jpy"></i></a>
+														[/#if]
+														[#if refunds.refundsStatus == 'refund_success' || refunds.refundsStatus == 'cancelled']
+															<a href="refunds.jhtml?path=details&refundsId=${refunds.id}" title="${message("csh.common.details")}">${message("csh.refunds.status."+refunds.refundsStatus)}</a>
 														[/#if]
 													</td>
 												</tr>

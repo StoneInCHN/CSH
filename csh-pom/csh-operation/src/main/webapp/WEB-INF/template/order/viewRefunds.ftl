@@ -54,9 +54,11 @@
 					    		<td>
 					    			 ${refund.paymentMethod}
 					    		</td>	   
-					    		<th>${message("csh.refunds.bank")}:</th>
+					    		<th>${message("csh.refunds.status")}:</th>
 					    		<td>
-					    			 ${refund.bank}
+					    			[#if refund.refundsStatus??]
+											${message("csh.refunds.status."+refund.refundsStatus)}
+									[/#if]
 					    		</td> 			    		
 					    	</tr>
 					    	<tr>
@@ -86,6 +88,7 @@
 					    		</td>	  			    		
 					    	</tr>			    	
 					    	</table>
+					    	<hr>
 					    	[/#list]
 						<table class="input">
 							<tr>

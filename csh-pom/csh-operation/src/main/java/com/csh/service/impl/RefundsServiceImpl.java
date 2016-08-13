@@ -57,15 +57,20 @@ public class RefundsServiceImpl extends BaseServiceImpl<Refunds,Long> implements
       @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
       public void saveRefunds(Order order, Refunds refunds) {
         orderDao.lock(order, LockModeType.PESSIMISTIC_WRITE);
-        refunds.setOrder(order);
+        //refunds.setOrder(order);
         
         /**退款**/
         PaymentType paymentType = order.getPaymentType();
         refunds.setPaymentMethod(paymentType.toString());
+        BigDecimal refundsAmount = refunds.getAmount();//退款金额
+        if (refundsAmount.compareTo(order.getAmountPaid()) == 1) {
+          //如果申请的退款金额大于订单支付金额，那么退款金额最多只能是单支付金额
+          refundsAmount = order.getAmountPaid();
+        }
         //支付宝支付，退款到支付宝
         if (paymentType == PaymentType.ALIPAY) {
           ResponseOne<Map<String, Object>> response = 
-              RefundUtil.alipayRefund(order.getSn(), refunds.getSn(), order.getAmountPaid().doubleValue());
+              RefundUtil.alipayRefund(order.getSn(), refunds.getSn(), refundsAmount.doubleValue());
           if (response.getCode().equals(CommonAttributes.SUCCESS)) {
             refunds.setRefundsStatus(RefundsStatus.refund_success);
             refunds.setMemo(SpringUtils.getMessage("csh.refunds.success",
@@ -78,7 +83,7 @@ public class RefundsServiceImpl extends BaseServiceImpl<Refunds,Long> implements
         //微信支付，退款到微信
         else if (paymentType == PaymentType.WECHAT) {
           ResponseOne<Map<String, Object>> response = 
-              RefundUtil.wechatRefund(order.getSn(), refunds.getSn(), order.getAmount(), order.getAmountPaid());
+              RefundUtil.wechatRefund(order.getSn(), refunds.getSn(), order.getAmountPaid(), refundsAmount);
           if (response.getCode().equals(CommonAttributes.SUCCESS)) {
             refunds.setRefundsStatus(RefundsStatus.refund_success);
             refunds.setMemo(SpringUtils.getMessage("csh.refunds.success",
@@ -90,16 +95,16 @@ public class RefundsServiceImpl extends BaseServiceImpl<Refunds,Long> implements
         }
         //其它或者余额支付，暂时统一退款到余额(用户钱包)
         else {
-          refunds.setAmount(order.getAmountPaid());
+          refunds.setAmount(refundsAmount);
           EndUser endUser = order.getEndUser();
           Wallet wallet = endUser.getWallet();
-          wallet.setBalanceAmount(wallet.getBalanceAmount().add(order.getAmountPaid()));
+          wallet.setBalanceAmount(wallet.getBalanceAmount().add(refundsAmount));
           WalletRecord walletRecord = new WalletRecord();
           walletRecord.setBalanceType(BalanceType.INCOME);
           walletRecord.setWalletType(WalletType.MONEY);
-          walletRecord.setMoney(order.getAmountPaid());
+          walletRecord.setMoney(refundsAmount);
           walletRecord.setRecordNo(null);
-          walletRecord.setRemark(SpringUtils.getMessage("csh.wallet.chargeIn.orderRefunds", order.getSn()));
+          walletRecord.setRemark(SpringUtils.getMessage("csh.walletRecord.chargeIn.orderRefunds", refunds.getSn()));
           walletRecord.setWallet(wallet);
           wallet.getWalletRecords().add(walletRecord);
           walletDao.merge(wallet);
@@ -108,9 +113,10 @@ public class RefundsServiceImpl extends BaseServiceImpl<Refunds,Long> implements
               SpringUtils.getMessage("csh.order.paymentType.WALLET")));
         }
         
-        refundsDao.persist(refunds);
+        refundsDao.merge(refunds);
         //如果退款成功,修改订单 “已付金额” 以及 “支付状态”
         if (refunds.getRefundsStatus() == RefundsStatus.refund_success) {
+          //订单已付金额减去退款金额
           order.setAmountPaid(order.getAmountPaid().subtract(refunds.getAmount()));
           if (order.getAmountPaid().compareTo(new BigDecimal(0)) == 0) {
               order.setPaymentStatus(PaymentStatus.refunded);
@@ -118,7 +124,7 @@ public class RefundsServiceImpl extends BaseServiceImpl<Refunds,Long> implements
               order.setPaymentStatus(PaymentStatus.partialRefunds);
           }
         }
-        order.setExpire(null);
+        //order.setExpire(null);
         orderDao.merge(order);
 
         OrderLog orderLog = new OrderLog();

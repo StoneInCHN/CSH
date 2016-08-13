@@ -33,8 +33,11 @@ public class Refunds extends BaseEntity {
 
 	private static final long serialVersionUID = 354885216604823632L;
 
-	/** 编号 */
+	/** 退款单编号 */
 	private String sn;
+	
+	/**  所属退货单的ID */
+	private Long returnsID;
 
 	/** 方式 */
 	private Method method;
@@ -66,9 +69,9 @@ public class Refunds extends BaseEntity {
 	/** 订单 */
 	private Order order;
 	/**
-   * 租户ID
-   */
-  private Long tenantID;
+    * 租户ID
+    */
+    private Long tenantID;
   
   @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
   public Long getTenantID ()
@@ -253,7 +256,6 @@ public class Refunds extends BaseEntity {
 	 * @return 备注
 	 */
 	@Length(max = 200)
-	@Column(updatable = false)
 	public String getMemo() {
 		return memo;
 	}
@@ -303,7 +305,14 @@ public class Refunds extends BaseEntity {
     public void setRefundsStatus(RefundsStatus refundsStatus) {
       this.refundsStatus = refundsStatus;
     }
-	
+
+    public Long getReturnsID() {
+      return returnsID;
+    }
+
+    public void setReturnsID(Long returnsID) {
+      this.returnsID = returnsID;
+    }
 	
 
 }
