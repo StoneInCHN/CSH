@@ -263,6 +263,45 @@ public class Setting implements Serializable {
    */
   private String newsDetailsUrl;
 
+  /**
+   * 商品订单过期间隔时间(分钟)
+   */
+  private Integer orderTimeOut;
+
+  /**
+   * 商品订单默认自动收货天数(从发货日期计算)
+   */
+  private Integer orderReceiveTimeOut;
+
+  /**
+   * 商品订单默认自动收货天数(从发货日期计算)
+   */
+  private Integer orderCompleteTimeOut;
+
+
+  public Integer getOrderReceiveTimeOut() {
+    return orderReceiveTimeOut;
+  }
+
+  public void setOrderReceiveTimeOut(Integer orderReceiveTimeOut) {
+    this.orderReceiveTimeOut = orderReceiveTimeOut;
+  }
+
+  public Integer getOrderCompleteTimeOut() {
+    return orderCompleteTimeOut;
+  }
+
+  public void setOrderCompleteTimeOut(Integer orderCompleteTimeOut) {
+    this.orderCompleteTimeOut = orderCompleteTimeOut;
+  }
+
+  public Integer getOrderTimeOut() {
+    return orderTimeOut;
+  }
+
+  public void setOrderTimeOut(Integer orderTimeOut) {
+    this.orderTimeOut = orderTimeOut;
+  }
 
   public String getNewsDetailsUrl() {
     return newsDetailsUrl;

@@ -104,5 +104,14 @@
 		<setting name="duibaAppKey" value="2Q3avyPZ3krtR9yTjphyfhoGabvP"/>
 		<setting name="duibaAppSecret" value="gFxZ77QXSSDqBNgQZEFbN6VpLEA"/>
 		<setting name="duibaLoginUrl" value="http://www.duiba.com.cn/autoLogin/autologin?"/>
+		
+		<!-- 商品订单过期时间（分钟） -->
+		<setting name="orderTimeOut" value="60"/>
+		<!-- 商品订单默认自动收货天数(从发货日期计算) -->
+		<setting name="orderReceiveTimeOut" value="14"/>
+		<!-- 商品订单默认自动完成天数(从收货日期计算) -->
+		<setting name="orderCompleteTimeOut" value="15"/>
+		
+		
 	</csh>	
 	

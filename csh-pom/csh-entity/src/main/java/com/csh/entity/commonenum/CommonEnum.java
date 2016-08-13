@@ -719,7 +719,7 @@ public class CommonEnum {
 
     /** 已取消 */
     cancelled,
-    
+
     /**
      * 已失效
      */
@@ -760,6 +760,9 @@ public class CommonEnum {
 
     /** 已发货 */
     shipped,
+
+    /** 已收货 */
+    received,
 
     /** 部分退货 */
     partialReturns,
@@ -835,6 +838,9 @@ public class CommonEnum {
     /** 订单发货 */
     shipping,
 
+    /** 订单收货 */
+    received,
+
     /** 订单退货 */
     returns,
 
@@ -843,6 +849,9 @@ public class CommonEnum {
 
     /** 订单取消 */
     cancel,
+
+    /** 订单过期 */
+    overdue,
 
     /** 其它 */
     other
@@ -911,6 +920,10 @@ public class CommonEnum {
      * 销量由高到低
      */
     SALESDESC,
+    /**
+     * 智能推荐
+     */
+    RECOMMEND,
     /** 其它 */
     OTHER
   }

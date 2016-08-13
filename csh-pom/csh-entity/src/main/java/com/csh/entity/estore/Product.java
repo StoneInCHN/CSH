@@ -548,18 +548,18 @@ public class Product extends BaseEntity {
     this.price = price;
   }
 
-	/**
-	 * 获取市场价
-	 * 
-	 * @return 市场价
-	 */
-	@Field(store = Store.YES, index = Index.NO)
-	@Min(0)
-	@Digits(integer = 12, fraction = 3)
-	@Column( precision = 21, scale = 6)
-	public BigDecimal getMarketPrice() {
-		return marketPrice;
-	}
+  /**
+   * 获取市场价
+   * 
+   * @return 市场价
+   */
+  @Field(store = Store.YES, index = Index.NO)
+  @Min(0)
+  @Digits(integer = 12, fraction = 3)
+  @Column(precision = 21, scale = 6)
+  public BigDecimal getMarketPrice() {
+    return marketPrice;
+  }
 
   public BigDecimal getOriginalPrice() {
     return originalPrice;
@@ -672,17 +672,19 @@ public class Product extends BaseEntity {
   public Integer getStock() {
     return stock;
   }
-	/**
-	 * 获取赠送积分
-	 * 
-	 * @return 赠送积分
-	 */
-	@Field(store = Store.YES, index = Index.NO)
-	@Min(0)
-	@Column()
-	public Long getPoint() {
-		return point;
-	}
+
+  /**
+   * 获取赠送积分
+   * 
+   * @return 赠送积分
+   */
+  @Field(store = Store.YES, index = Index.NO)
+  @Min(0)
+  @Column()
+  public Long getPoint() {
+    return point;
+  }
+
   /**
    * 设置库存
    * 
@@ -782,601 +784,576 @@ public class Product extends BaseEntity {
     this.isRecommend = isRecommend;
   }
 
-   /**
-    * 获取推荐商品是否已经推送
-    * @return isPush
-    */
-	public Boolean getIsPush() {
-		return isPush;
-	}
+  /**
+   * 获取推荐商品是否已经推送
+   * 
+   * @return isPush
+   */
+  public Boolean getIsPush() {
+    return isPush;
+  }
 
-	/**
-	 * 设置推荐商品是否已经推送
-	 * @param isPush
-	 */
-	public void setIsPush(Boolean isPush) {
-		this.isPush = isPush;
-	}
+  /**
+   * 设置推荐商品是否已经推送
+   * 
+   * @param isPush
+   */
+  public void setIsPush(Boolean isPush) {
+    this.isPush = isPush;
+  }
 
-	/**
-	 * 获取是否列出
-	 * 
-	 * @return 是否列出
-	 */
-	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@Column()
-	public Boolean getIsList() {
-		return isList;
-	}
+  /**
+   * 获取是否列出
+   * 
+   * @return 是否列出
+   */
+  @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+  @Column()
+  public Boolean getIsList() {
+    return isList;
+  }
 
-	/**
-	 * 设置是否列出
-	 * 
-	 * @param isList
-	 *            是否列出
-	 */
-	public void setIsList(Boolean isList) {
-		this.isList = isList;
-	}
+  /**
+   * 设置是否列出
+   * 
+   * @param isList 是否列出
+   */
+  public void setIsList(Boolean isList) {
+    this.isList = isList;
+  }
 
-	/**
-	 * 获取是否置顶
-	 * 
-	 * @return 是否置顶
-	 */
-	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@Column()
-	public Boolean getIsTop() {
-		return isTop;
-	}
+  /**
+   * 获取是否置顶
+   * 
+   * @return 是否置顶
+   */
+  @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+  @Column()
+  public Boolean getIsTop() {
+    return isTop;
+  }
 
-	/**
-	 * 设置是否置顶
-	 * 
-	 * @param isTop
-	 *            是否置顶
-	 */
-	public void setIsTop(Boolean isTop) {
-		this.isTop = isTop;
-	}
+  /**
+   * 设置是否置顶
+   * 
+   * @param isTop 是否置顶
+   */
+  public void setIsTop(Boolean isTop) {
+    this.isTop = isTop;
+  }
 
-	/**
-	 * 获取是否为赠品
-	 * 
-	 * @return 是否为赠品
-	 */
-	@JsonProperty
-	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@Column()
-	public Boolean getIsGift() {
-		return isGift;
-	}
+  /**
+   * 获取是否为赠品
+   * 
+   * @return 是否为赠品
+   */
+  @JsonProperty
+  @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+  @Column()
+  public Boolean getIsGift() {
+    return isGift;
+  }
 
-	/**
-	 * 设置是否为赠品
-	 * 
-	 * @param isGift
-	 *            是否为赠品
-	 */
-	public void setIsGift(Boolean isGift) {
-		this.isGift = isGift;
-	}
+  /**
+   * 设置是否为赠品
+   * 
+   * @param isGift 是否为赠品
+   */
+  public void setIsGift(Boolean isGift) {
+    this.isGift = isGift;
+  }
 
-	/**
-	 * 获取介绍
-	 * 
-	 * @return 介绍
-	 */
-	@Field(store = Store.YES, index = Index.YES, analyzer = @Analyzer(impl = IKAnalyzer.class))
-	@Lob
-	public String getIntroduction() {
-		return introduction;
-	}
+  /**
+   * 获取介绍
+   * 
+   * @return 介绍
+   */
+  @Field(store = Store.YES, index = Index.YES, analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Lob
+  public String getIntroduction() {
+    return introduction;
+  }
 
-	/**
-	 * 设置介绍
-	 * 
-	 * @param introduction
-	 *            介绍
-	 */
-	public void setIntroduction(String introduction) {
-		this.introduction = introduction;
-	}
+  /**
+   * 设置介绍
+   * 
+   * @param introduction 介绍
+   */
+  public void setIntroduction(String introduction) {
+    this.introduction = introduction;
+  }
 
-	/**
-	 * 获取备注
-	 * 
-	 * @return 备注
-	 */
-	@Length(max = 200)
-	public String getMemo() {
-		return memo;
-	}
+  /**
+   * 获取备注
+   * 
+   * @return 备注
+   */
+  @Length(max = 200)
+  public String getMemo() {
+    return memo;
+  }
 
-	/**
-	 * 设置备注
-	 * 
-	 * @param memo
-	 *            备注
-	 */
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
+  /**
+   * 设置备注
+   * 
+   * @param memo 备注
+   */
+  public void setMemo(String memo) {
+    this.memo = memo;
+  }
 
-	/**
-	 * 获取搜索关键词
-	 * 
-	 * @return 搜索关键词
-	 */
-	@Field(store = Store.YES, index = Index.YES, analyzer = @Analyzer(impl = IKAnalyzer.class))
-	@Length(max = 200)
-	public String getKeyword() {
-		return keyword;
-	}
+  /**
+   * 获取搜索关键词
+   * 
+   * @return 搜索关键词
+   */
+  @Field(store = Store.YES, index = Index.YES, analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Length(max = 200)
+  public String getKeyword() {
+    return keyword;
+  }
 
-	/**
-	 * 设置搜索关键词
-	 * 
-	 * @param keyword
-	 *            搜索关键词
-	 */
-	public void setKeyword(String keyword) {
-		if (keyword != null) {
-			keyword = keyword.replaceAll("[,\\s]*,[,\\s]*", ",").replaceAll("^,|,$", "");
-		}
-		this.keyword = keyword;
-	}
+  /**
+   * 设置搜索关键词
+   * 
+   * @param keyword 搜索关键词
+   */
+  public void setKeyword(String keyword) {
+    if (keyword != null) {
+      keyword = keyword.replaceAll("[,\\s]*,[,\\s]*", ",").replaceAll("^,|,$", "");
+    }
+    this.keyword = keyword;
+  }
 
-	/**
-	 * 获取页面标题
-	 * 
-	 * @return 页面标题
-	 */
-	@Length(max = 200)
-	public String getSeoTitle() {
-		return seoTitle;
-	}
+  /**
+   * 获取页面标题
+   * 
+   * @return 页面标题
+   */
+  @Length(max = 200)
+  public String getSeoTitle() {
+    return seoTitle;
+  }
 
-	/**
-	 * 设置页面标题
-	 * 
-	 * @param seoTitle
-	 *            页面标题
-	 */
-	public void setSeoTitle(String seoTitle) {
-		this.seoTitle = seoTitle;
-	}
+  /**
+   * 设置页面标题
+   * 
+   * @param seoTitle 页面标题
+   */
+  public void setSeoTitle(String seoTitle) {
+    this.seoTitle = seoTitle;
+  }
 
-	/**
-	 * 获取页面关键词
-	 * 
-	 * @return 页面关键词
-	 */
-	@Length(max = 200)
-	public String getSeoKeywords() {
-		return seoKeywords;
-	}
+  /**
+   * 获取页面关键词
+   * 
+   * @return 页面关键词
+   */
+  @Length(max = 200)
+  public String getSeoKeywords() {
+    return seoKeywords;
+  }
 
-	/**
-	 * 设置页面关键词
-	 * 
-	 * @param seoKeywords
-	 *            页面关键词
-	 */
-	public void setSeoKeywords(String seoKeywords) {
-		if (seoKeywords != null) {
-			seoKeywords = seoKeywords.replaceAll("[,\\s]*,[,\\s]*", ",").replaceAll("^,|,$", "");
-		}
-		this.seoKeywords = seoKeywords;
-	}
+  /**
+   * 设置页面关键词
+   * 
+   * @param seoKeywords 页面关键词
+   */
+  public void setSeoKeywords(String seoKeywords) {
+    if (seoKeywords != null) {
+      seoKeywords = seoKeywords.replaceAll("[,\\s]*,[,\\s]*", ",").replaceAll("^,|,$", "");
+    }
+    this.seoKeywords = seoKeywords;
+  }
 
-	/**
-	 * 获取页面描述
-	 * 
-	 * @return 页面描述
-	 */
-	@Length(max = 200)
-	public String getSeoDescription() {
-		return seoDescription;
-	}
+  /**
+   * 获取页面描述
+   * 
+   * @return 页面描述
+   */
+  @Length(max = 200)
+  public String getSeoDescription() {
+    return seoDescription;
+  }
 
-	/**
-	 * 设置页面描述
-	 * 
-	 * @param seoDescription
-	 *            页面描述
-	 */
-	public void setSeoDescription(String seoDescription) {
-		this.seoDescription = seoDescription;
-	}
+  /**
+   * 设置页面描述
+   * 
+   * @param seoDescription 页面描述
+   */
+  public void setSeoDescription(String seoDescription) {
+    this.seoDescription = seoDescription;
+  }
 
-	/**
-	 * 获取评分
-	 * 
-	 * @return 评分
-	 */
-	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	@NumericField
-	@Column(precision = 12, scale = 6)
-	public Float getScore() {
-		return score;
-	}
+  /**
+   * 获取评分
+   * 
+   * @return 评分
+   */
+  @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+  @NumericField
+  @Column(precision = 12, scale = 6)
+  public Float getScore() {
+    return score;
+  }
 
-	/**
-	 * 设置评分
-	 * 
-	 * @param score
-	 *            评分
-	 */
-	public void setScore(Float score) {
-		this.score = score;
-	}
+  /**
+   * 设置评分
+   * 
+   * @param score 评分
+   */
+  public void setScore(Float score) {
+    this.score = score;
+  }
 
-	/**
-	 * 获取总评分
-	 * 
-	 * @return 总评分
-	 */
-	public Long getTotalScore() {
-		return totalScore;
-	}
+  /**
+   * 获取总评分
+   * 
+   * @return 总评分
+   */
+  public Long getTotalScore() {
+    return totalScore;
+  }
 
-	/**
-	 * 设置总评分
-	 * 
-	 * @param totalScore
-	 *            总评分
-	 */
-	public void setTotalScore(Long totalScore) {
-		this.totalScore = totalScore;
-	}
+  /**
+   * 设置总评分
+   * 
+   * @param totalScore 总评分
+   */
+  public void setTotalScore(Long totalScore) {
+    this.totalScore = totalScore;
+  }
 
-	/**
-	 * 获取评分数
-	 * 
-	 * @return 评分数
-	 */
-	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	public Long getScoreCount() {
-		return scoreCount;
-	}
+  /**
+   * 获取评分数
+   * 
+   * @return 评分数
+   */
+  @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+  public Long getScoreCount() {
+    return scoreCount;
+  }
 
-	/**
-	 * 设置评分数
-	 * 
-	 * @param scoreCount
-	 *            评分数
-	 */
-	public void setScoreCount(Long scoreCount) {
-		this.scoreCount = scoreCount;
-	}
+  /**
+   * 设置评分数
+   * 
+   * @param scoreCount 评分数
+   */
+  public void setScoreCount(Long scoreCount) {
+    this.scoreCount = scoreCount;
+  }
 
-	/**
-	 * 获取点击数
-	 * 
-	 * @return 点击数
-	 */
-	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	public Long getHits() {
-		return hits;
-	}
+  /**
+   * 获取点击数
+   * 
+   * @return 点击数
+   */
+  @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+  public Long getHits() {
+    return hits;
+  }
 
-	/**
-	 * 设置点击数
-	 * 
-	 * @param hits
-	 *            点击数
-	 */
-	public void setHits(Long hits) {
-		this.hits = hits;
-	}
+  /**
+   * 设置点击数
+   * 
+   * @param hits 点击数
+   */
+  public void setHits(Long hits) {
+    this.hits = hits;
+  }
 
-	/**
-	 * 获取周点击数
-	 * 
-	 * @return 周点击数
-	 */
-	@Field(store = Store.YES, index = Index.NO)
-	public Long getWeekHits() {
-		return weekHits;
-	}
+  /**
+   * 获取周点击数
+   * 
+   * @return 周点击数
+   */
+  @Field(store = Store.YES, index = Index.NO)
+  public Long getWeekHits() {
+    return weekHits;
+  }
 
-	/**
-	 * 设置周点击数
-	 * 
-	 * @param weekHits
-	 *            周点击数
-	 */
-	public void setWeekHits(Long weekHits) {
-		this.weekHits = weekHits;
-	}
+  /**
+   * 设置周点击数
+   * 
+   * @param weekHits 周点击数
+   */
+  public void setWeekHits(Long weekHits) {
+    this.weekHits = weekHits;
+  }
 
-	/**
-	 * 获取月点击数
-	 * 
-	 * @return 月点击数
-	 */
-	@Field(store = Store.YES, index = Index.NO)
-	public Long getMonthHits() {
-		return monthHits;
-	}
+  /**
+   * 获取月点击数
+   * 
+   * @return 月点击数
+   */
+  @Field(store = Store.YES, index = Index.NO)
+  public Long getMonthHits() {
+    return monthHits;
+  }
 
-	/**
-	 * 设置月点击数
-	 * 
-	 * @param monthHits
-	 *            月点击数
-	 */
-	public void setMonthHits(Long monthHits) {
-		this.monthHits = monthHits;
-	}
+  /**
+   * 设置月点击数
+   * 
+   * @param monthHits 月点击数
+   */
+  public void setMonthHits(Long monthHits) {
+    this.monthHits = monthHits;
+  }
 
-	/**
-	 * 获取销量
-	 * 
-	 * @return 销量
-	 */
-	@Field(store = Store.YES, index = Index.YES,analyze=Analyze.NO)
-	public Long getSales() {
-		return sales;
-	}
+  /**
+   * 获取销量
+   * 
+   * @return 销量
+   */
+  @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+  public Long getSales() {
+    return sales;
+  }
 
-	/**
-	 * 设置销量
-	 * 
-	 * @param sales
-	 *            销量
-	 */
-	public void setSales(Long sales) {
-		this.sales = sales;
-	}
+  /**
+   * 设置销量
+   * 
+   * @param sales 销量
+   */
+  public void setSales(Long sales) {
+    this.sales = sales;
+  }
 
-	/**
-	 * 获取周销量
-	 * 
-	 * @return 周销量
-	 */
-	@Field(store = Store.YES, index = Index.NO)
-	public Long getWeekSales() {
-		return weekSales;
-	}
+  /**
+   * 获取周销量
+   * 
+   * @return 周销量
+   */
+  @Field(store = Store.YES, index = Index.NO)
+  public Long getWeekSales() {
+    return weekSales;
+  }
 
-	/**
-	 * 设置周销量
-	 * 
-	 * @param weekSales
-	 *            周销量
-	 */
-	public void setWeekSales(Long weekSales) {
-		this.weekSales = weekSales;
-	}
+  /**
+   * 设置周销量
+   * 
+   * @param weekSales 周销量
+   */
+  public void setWeekSales(Long weekSales) {
+    this.weekSales = weekSales;
+  }
 
-	/**
-	 * 获取月销量
-	 * 
-	 * @return 月销量
-	 */
-	@Field(store = Store.YES, index = Index.NO)
-	public Long getMonthSales() {
-		return monthSales;
-	}
+  /**
+   * 获取月销量
+   * 
+   * @return 月销量
+   */
+  @Field(store = Store.YES, index = Index.NO)
+  public Long getMonthSales() {
+    return monthSales;
+  }
 
-	/**
-	 * 设置月销量
-	 * 
-	 * @param monthSales
-	 *            月销量
-	 */
-	public void setMonthSales(Long monthSales) {
-		this.monthSales = monthSales;
-	}
+  /**
+   * 设置月销量
+   * 
+   * @param monthSales 月销量
+   */
+  public void setMonthSales(Long monthSales) {
+    this.monthSales = monthSales;
+  }
 
-	/**
-	 * 获取周点击数更新日期
-	 * 
-	 * @return 周点击数更新日期
-	 */
-	public Date getWeekHitsDate() {
-		return weekHitsDate;
-	}
+  /**
+   * 获取周点击数更新日期
+   * 
+   * @return 周点击数更新日期
+   */
+  public Date getWeekHitsDate() {
+    return weekHitsDate;
+  }
 
-	/**
-	 * 设置周点击数更新日期
-	 * 
-	 * @param weekHitsDate
-	 *            周点击数更新日期
-	 */
-	public void setWeekHitsDate(Date weekHitsDate) {
-		this.weekHitsDate = weekHitsDate;
-	}
+  /**
+   * 设置周点击数更新日期
+   * 
+   * @param weekHitsDate 周点击数更新日期
+   */
+  public void setWeekHitsDate(Date weekHitsDate) {
+    this.weekHitsDate = weekHitsDate;
+  }
 
-	/**
-	 * 获取月点击数更新日期
-	 * 
-	 * @return 月点击数更新日期
-	 */
-	public Date getMonthHitsDate() {
-		return monthHitsDate;
-	}
+  /**
+   * 获取月点击数更新日期
+   * 
+   * @return 月点击数更新日期
+   */
+  public Date getMonthHitsDate() {
+    return monthHitsDate;
+  }
 
-	/**
-	 * 设置月点击数更新日期
-	 * 
-	 * @param monthHitsDate
-	 *            月点击数更新日期
-	 */
-	public void setMonthHitsDate(Date monthHitsDate) {
-		this.monthHitsDate = monthHitsDate;
-	}
+  /**
+   * 设置月点击数更新日期
+   * 
+   * @param monthHitsDate 月点击数更新日期
+   */
+  public void setMonthHitsDate(Date monthHitsDate) {
+    this.monthHitsDate = monthHitsDate;
+  }
 
-	/**
-	 * 获取周销量更新日期
-	 * 
-	 * @return 周销量更新日期
-	 */
-	public Date getWeekSalesDate() {
-		return weekSalesDate;
-	}
+  /**
+   * 获取周销量更新日期
+   * 
+   * @return 周销量更新日期
+   */
+  public Date getWeekSalesDate() {
+    return weekSalesDate;
+  }
 
-	/**
-	 * 设置周销量更新日期
-	 * 
-	 * @param weekSalesDate
-	 *            周销量更新日期
-	 */
-	public void setWeekSalesDate(Date weekSalesDate) {
-		this.weekSalesDate = weekSalesDate;
-	}
+  /**
+   * 设置周销量更新日期
+   * 
+   * @param weekSalesDate 周销量更新日期
+   */
+  public void setWeekSalesDate(Date weekSalesDate) {
+    this.weekSalesDate = weekSalesDate;
+  }
 
-	/**
-	 * 获取月销量更新日期
-	 * 
-	 * @return 月销量更新日期
-	 */
-	public Date getMonthSalesDate() {
-		return monthSalesDate;
-	}
+  /**
+   * 获取月销量更新日期
+   * 
+   * @return 月销量更新日期
+   */
+  public Date getMonthSalesDate() {
+    return monthSalesDate;
+  }
 
-	/**
-	 * 设置月销量更新日期
-	 * 
-	 * @param monthSalesDate
-	 *            月销量更新日期
-	 */
-	public void setMonthSalesDate(Date monthSalesDate) {
-		this.monthSalesDate = monthSalesDate;
-	}
+  /**
+   * 设置月销量更新日期
+   * 
+   * @param monthSalesDate 月销量更新日期
+   */
+  public void setMonthSalesDate(Date monthSalesDate) {
+    this.monthSalesDate = monthSalesDate;
+  }
 
 
 
-	/**
-	 * 获取品牌
-	 * 
-	 * @return 品牌
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	public Brand getBrand() {
-		return brand;
-	}
+  /**
+   * 获取品牌
+   * 
+   * @return 品牌
+   */
+  @ManyToOne(fetch = FetchType.LAZY)
+  public Brand getBrand() {
+    return brand;
+  }
 
-	/**
-	 * 设置品牌
-	 * 
-	 * @param brand
-	 *            品牌
-	 */
-	public void setBrand(Brand brand) {
-		this.brand = brand;
-	}
-	
-//	/**
-//	 * 获取登录用户
-//	 * 
-//	 * @return 登录用户
-//	 */
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	public Admin getAdmin() {
-//		return admin;
-//	}
-//
-//	/**
-//	 * 设置登录用户
-//	 * 
-//	 * @param admin
-//	 *           登录用户
-//	 */
-//	public void setAdmin(Admin admin) {
-//		this.admin = admin;
-//	}
+  /**
+   * 设置品牌
+   * 
+   * @param brand 品牌
+   */
+  public void setBrand(Brand brand) {
+    this.brand = brand;
+  }
+
+  // /**
+  // * 获取登录用户
+  // *
+  // * @return 登录用户
+  // */
+  // @ManyToOne(fetch = FetchType.LAZY)
+  // public Admin getAdmin() {
+  // return admin;
+  // }
+  //
+  // /**
+  // * 设置登录用户
+  // *
+  // * @param admin
+  // * 登录用户
+  // */
+  // public void setAdmin(Admin admin) {
+  // this.admin = admin;
+  // }
 
 
-	/**
-	 * 获取商品图片
-	 * 
-	 * @return 商品图片
-	 */
-	@Valid
-	@ElementCollection
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@CollectionTable(name = "csh_product_product_image")
-	public List<ProductImage> getProductImages() {
-		return productImages;
-	}
+  /**
+   * 获取商品图片
+   * 
+   * @return 商品图片
+   */
+  @Valid
+  @ElementCollection
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @CollectionTable(name = "csh_product_product_image")
+  public List<ProductImage> getProductImages() {
+    return productImages;
+  }
 
-	/**
-	 * 设置商品图片
-	 * 
-	 * @param productImages
-	 *            商品图片
-	 */
-	public void setProductImages(List<ProductImage> productImages) {
-		this.productImages = productImages;
-	}
-	
-	/**
-	 * 获取中间表
-	 * 
-	 * @return 中间表
-	 */
-//	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-//	public Set<ProductPromotionMap> getProductPromotions() {
-//		return productPromotions;
-//	}
+  /**
+   * 设置商品图片
+   * 
+   * @param productImages 商品图片
+   */
+  public void setProductImages(List<ProductImage> productImages) {
+    this.productImages = productImages;
+  }
 
-	/**
-	 * 设置中间表
-	 * 
-	 * @param productPromotions
-	 *            中间表
-	 */
-//	public void setProductPromotions(Set<ProductPromotionMap> productPromotions) {
-//		this.productPromotions = productPromotions;
-//	}
+  /**
+   * 获取中间表
+   * 
+   * @return 中间表
+   */
+  // @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  // public Set<ProductPromotionMap> getProductPromotions() {
+  // return productPromotions;
+  // }
 
-	/**
-	 * 获取评论
-	 * 
-	 * @return 评论
-	 */
-	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-	public Set<Review> getReviews() {
-		return reviews;
-	}
+  /**
+   * 设置中间表
+   * 
+   * @param productPromotions 中间表
+   */
+  // public void setProductPromotions(Set<ProductPromotionMap> productPromotions) {
+  // this.productPromotions = productPromotions;
+  // }
 
-	/**
-	 * 设置评论
-	 * 
-	 * @param reviews
-	 *            评论
-	 */
-	public void setReviews(Set<Review> reviews) {
-		this.reviews = reviews;
-	}
-	
+  /**
+   * 获取评论
+   * 
+   * @return 评论
+   */
+  @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  public Set<Review> getReviews() {
+    return reviews;
+  }
 
-	/**
-	 * 获取标签
-	 * 
-	 * @return 标签
-	 */
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "csh_product_tag")
-	@OrderBy("order asc")
-	public Set<Tag> getTags() {
-		return tags;
-	}
+  /**
+   * 设置评论
+   * 
+   * @param reviews 评论
+   */
+  public void setReviews(Set<Review> reviews) {
+    this.reviews = reviews;
+  }
 
-	/**
-	 * 设置标签
-	 * 
-	 * @param tags
-	 *            标签
-	 */
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
-	}
 
-	
+  /**
+   * 获取标签
+   * 
+   * @return 标签
+   */
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "csh_product_tag")
+  @OrderBy("order asc")
+  public Set<Tag> getTags() {
+    return tags;
+  }
+
+  /**
+   * 设置标签
+   * 
+   * @param tags 标签
+   */
+  public void setTags(Set<Tag> tags) {
+    this.tags = tags;
+  }
+
+
   /**
    * 获取商品属性值0
    * 
@@ -1778,9 +1755,6 @@ public class Product extends BaseEntity {
   public void setProductCategory(ProductCategory productCategory) {
     this.productCategory = productCategory;
   }
-
-
-  
 
   /**
    * 获取收藏会员

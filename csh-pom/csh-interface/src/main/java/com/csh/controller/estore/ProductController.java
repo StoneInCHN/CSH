@@ -27,8 +27,11 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.ProductStatus;
 import com.csh.entity.commonenum.CommonEnum.SortType;
+import com.csh.entity.estore.Cart;
+import com.csh.entity.estore.CartItem;
 import com.csh.entity.estore.Parameter;
 import com.csh.entity.estore.Product;
 import com.csh.entity.estore.ProductCategory;
@@ -160,8 +163,6 @@ public class ProductController extends MobileBaseController {
               categoryId, keyWord, sortType, pageNumber, pageSize);
     }
 
-
-
     IKAnalyzer analyzer = new IKAnalyzer();
     analyzer.setMaxWordLength(true);
     BooleanQuery query = new BooleanQuery();
@@ -202,10 +203,18 @@ public class ProductController extends MobileBaseController {
       }
     }
 
-    if (sortType == null || SortType.SALESDESC.equals(sortType)) {
-      sortField = new SortField("sales", SortField.LONG, true);
+    if (sortType == null || SortType.RECOMMEND.equals(sortType)) {
+      Long tenantId = null;
+      EndUser endUser = endUserService.find(userId);
+      if (endUser.getDefaultVehicle() != null) {
+        tenantId = endUser.getDefaultVehicle().getTenantID();
+        TermQuery tenantTermQuery = new TermQuery(new Term("tenantID", tenantId.toString()));
+        query.add(tenantTermQuery, Occur.MUST);
+      }
     } else if (SortType.PRICEASC.equals(sortType)) {
       sortField = new SortField("price", SortField.STRING, true);
+    } else if (SortType.SALESDESC.equals(sortType)) {
+      sortField = new SortField("sales", SortField.STRING, true);
     }
 
     Pageable pageable = new Pageable();
@@ -241,8 +250,6 @@ public class ProductController extends MobileBaseController {
     Long userId = request.getUserId();
     String token = request.getToken();
     Long productId = request.getProductId();
-    Integer pageSize = request.getPageSize();
-    Integer pageNumber = request.getPageNumber();
 
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
@@ -276,8 +283,8 @@ public class ProductController extends MobileBaseController {
     result.put("productParam", paramMap);
 
     Pageable pageable = new Pageable();
-    pageable.setPageNumber(pageNumber);
-    pageable.setPageSize(pageSize);
+    pageable.setPageNumber(1);
+    pageable.setPageSize(1);
     pageable.setOrderProperty("createDate");
     pageable.setOrderDirection(Direction.desc);
     List<Filter> filters = new ArrayList<Filter>();
@@ -286,11 +293,22 @@ public class ProductController extends MobileBaseController {
     pageable.setFilters(filters);
     Page<Review> reviews = reviewService.findPage(pageable);
     String[] reviewPropertys =
-        {"id", "createDate", "member.userName", "member.photo", "bizReply", "content"};
+        {"id", "createDate", "member.userName", "member.photo", "bizReply", "score", "content"};
     List<Map<String, Object>> reviewList =
         FieldFilterUtils.filterCollectionMap(reviewPropertys, reviews.getContent());
     result.put("reviewCount", product.getReviews().size());
     result.put("reviews", reviewList);
+
+    // 计算购物车内商品数量
+    EndUser endUser = endUserService.find(userId);
+    Cart cart = endUser.getCart();
+    Integer cartProductCount = 0;
+    if (cart != null && cart.getCartItems() != null) {
+      for (CartItem cartItem : cart.getCartItems()) {
+        cartProductCount += cartItem.getQuantity();
+      }
+    }
+    result.put("cartProductCount", cartProductCount);
 
     response.setMsg(result);
 
@@ -301,6 +319,58 @@ public class ProductController extends MobileBaseController {
     return response;
   }
 
+  /**
+   * 评论列表
+   * 
+   * @return
+   */
+  @RequestMapping(value = "/reviewList", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseMultiple<Map<String, Object>> reviewList(
+      @RequestBody ProductRequest request) {
+
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
+
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    Long productId = request.getProductId();
+    Integer pageSize = request.getPageSize();
+    Integer pageNumber = request.getPageNumber();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    if (LogUtil.isDebugEnabled(ProductController.class)) {
+      LogUtil.debug(ProductController.class, "reviewList",
+          "Search Product review List with Params: userId: %s, productId: %s", userId, productId);
+    }
+
+    Pageable pageable = new Pageable();
+    pageable.setPageNumber(pageNumber);
+    pageable.setPageSize(pageSize);
+    pageable.setOrderProperty("createDate");
+    pageable.setOrderDirection(Direction.desc);
+    List<Filter> filters = new ArrayList<Filter>();
+    Filter filter = new Filter("product", Operator.eq, productId);
+    filters.add(filter);
+    pageable.setFilters(filters);
+    Page<Review> reviews = reviewService.findPage(pageable);
+    String[] reviewPropertys =
+        {"id", "createDate", "member.userName", "member.photo", "bizReply", "score", "content"};
+    List<Map<String, Object>> reviewList =
+        FieldFilterUtils.filterCollectionMap(reviewPropertys, reviews.getContent());
+    response.setMsg(reviewList);
+
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
 
   /**

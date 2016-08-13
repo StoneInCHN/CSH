@@ -56,7 +56,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "csh_order", indexes = {@Index(name = "order_tenantid", columnList = "tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_order_sequence")
-@Indexed(index="order")
+@Indexed(index = "order")
 public class Order extends BaseEntity {
 
   private static final long serialVersionUID = 8370942500343156156L;
@@ -76,8 +76,8 @@ public class Order extends BaseEntity {
 
   /** 配送状态 */
   private ShippingStatus shippingStatus;
-  
-  /** 退款售后状态*/
+
+  /** 退款售后状态 */
   private AfterSalesStatus afterSalesStatus;
 
   /** 支付手续费 */
@@ -189,7 +189,21 @@ public class Order extends BaseEntity {
    */
   private Long tenantID;
 
-  
+
+  /**
+   * 备注
+   */
+  private String remark;
+
+  @Column(length = 100)
+  public String getRemark() {
+    return remark;
+  }
+
+  public void setRemark(String remark) {
+    this.remark = remark;
+  }
+
   @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public Long getTenantID() {
     return tenantID;
@@ -206,7 +220,8 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false, updatable = false, unique = true, length = 100)
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.YES,store=Store.NO,analyzer = @Analyzer(impl = IKAnalyzer.class))
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,
+      analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getSn() {
     return sn;
   }
@@ -227,7 +242,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public OrderStatus getOrderStatus() {
     return orderStatus;
   }
@@ -248,7 +263,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public PaymentStatus getPaymentStatus() {
     return paymentStatus;
   }
@@ -269,7 +284,7 @@ public class Order extends BaseEntity {
    */
   @Column(nullable = false)
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public ShippingStatus getShippingStatus() {
     return shippingStatus;
   }
@@ -282,17 +297,18 @@ public class Order extends BaseEntity {
   public void setShippingStatus(ShippingStatus shippingStatus) {
     this.shippingStatus = shippingStatus;
   }
-  
+
   /**
    * 获取退款售后状态
    * 
    * @return 退款售后状态
    */
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public AfterSalesStatus getAfterSalesStatus() {
     return afterSalesStatus;
   }
+
   /**
    * 设置退款售后状态
    * 
@@ -872,7 +888,7 @@ public class Order extends BaseEntity {
    * 
    * @return 订单日志
    */
-  @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @OrderBy("createDate asc")
   public Set<OrderLog> getOrderLogs() {
     return orderLogs;
@@ -1179,5 +1195,7 @@ public class Order extends BaseEntity {
   public void preRemove() {
 
   }
-  
+
+
+
 }
