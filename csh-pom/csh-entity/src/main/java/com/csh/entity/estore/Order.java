@@ -195,6 +195,20 @@ public class Order extends BaseEntity {
    */
   private String remark;
 
+  /**
+   * 线下余额，不参与结算金额
+   */
+  private BigDecimal offlineBalance;
+
+  @Column(scale = 2, precision = 10)
+  public BigDecimal getOfflineBalance() {
+    return offlineBalance;
+  }
+
+  public void setOfflineBalance(BigDecimal offlineBalance) {
+    this.offlineBalance = offlineBalance;
+  }
+
   @Column(length = 100)
   public String getRemark() {
     return remark;

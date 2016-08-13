@@ -1,7 +1,9 @@
 package com.csh.controller.estore;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +21,13 @@ import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
+import com.csh.entity.AccountBalance;
 import com.csh.entity.EndUser;
+import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
+import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.ShippingStatus;
 import com.csh.entity.estore.Order;
 import com.csh.entity.estore.OrderItem;
@@ -38,13 +43,16 @@ import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseResponse;
 import com.csh.json.base.ResponseMultiple;
+import com.csh.json.base.ResponseOne;
 import com.csh.json.request.OrderRequest;
+import com.csh.service.AccountBalanceService;
 import com.csh.service.EndUserService;
 import com.csh.service.OrderLogService;
 import com.csh.service.OrderService;
 import com.csh.service.ProductService;
 import com.csh.service.ReturnsService;
 import com.csh.utils.FieldFilterUtils;
+import com.csh.utils.PayUtil;
 import com.csh.utils.TokenGenerator;
 
 
@@ -73,7 +81,131 @@ public class OrderController extends MobileBaseController {
   @Resource(name = "returnsServiceImpl")
   private ReturnsService returnsService;
 
+  @Resource(name = "accountBalanceServiceImpl")
+  private AccountBalanceService accountBalanceService;
 
+
+
+  /**
+   * 用户支付订单
+   * 
+   * @return
+   */
+  @RequestMapping(value = "/pay", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> pay(@RequestBody OrderRequest request,
+      HttpServletRequest httpReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    Long orderId = request.getOrderId();
+    PaymentType paymentType = request.getPaymentType();
+
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    Order order = orderService.find(orderId);
+    if (LogUtil.isDebugEnabled(OrderController.class)) {
+      LogUtil.debug(OrderController.class, "pay",
+          "pay order.UserId: %s,orderId: %s,paymentType: %s,amount: %s", userId, orderId,
+          paymentType, order.getAmount());
+    }
+
+    EndUser endUser = endUserService.find(userId);
+    if (PaymentType.WALLET.equals(paymentType)) {
+      Wallet wallet = endUser.getWallet();
+      AccountBalance accountBalance =
+          accountBalanceService.getOfflineBalanceByTenant(endUser, order.getTenantID());
+      BigDecimal walletMoney = wallet.getBalanceAmount();
+      if (accountBalance != null) {
+        walletMoney = wallet.getBalanceAmount().add(accountBalance.getBalance());
+      }
+      if (order.getAmount().compareTo(walletMoney) > 0) {// 用户钱包余额不足
+        response.setCode(CommonAttributes.FAIL_COMMON);
+        response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+        return response;
+      }
+    }
+
+    if (PaymentType.WECHAT.equals(paymentType)) {// 微信支付
+      try {
+        BigDecimal weChatPrice = order.getAmount().multiply(new BigDecimal(100));
+        response =
+            PayUtil.wechat(order.getSn(), order.getSn(), httpReq.getRemoteAddr(), order.getId()
+                .toString(), weChatPrice.intValue() + "");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+    } else {// 支付宝和余额支付
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("out_trade_no", order.getSn());
+      response.setMsg(map);
+      response.setCode(CommonAttributes.SUCCESS);
+    }
+
+    order.setPaymentType(paymentType);
+    orderService.update(order);
+
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+  /**
+   * 更新支付状态
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/updatePayStatus", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody BaseResponse updatePayStatus(@RequestBody OrderRequest request) {
+
+    BaseResponse response = new BaseResponse();
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    Long orderId = request.getOrderId();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    EndUser endUser = endUserService.find(userId);
+    Order order = orderService.find(orderId);
+    order.setPaymentStatus(PaymentStatus.paid);
+    order.setAmountPaid(order.getAmount());
+    if (LogUtil.isDebugEnabled(OrderController.class)) {
+      LogUtil
+          .debug(
+              OrderController.class,
+              "updatePayStatus",
+              "Update Order pay status. UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+              endUser.getUserName(), order.getTenantID(), order.getId(), order.getAmount(),
+              order.getPaymentType(), order.getPaymentStatus(), order.getSn());
+    }
+
+    orderService.updatePayStatus(order);
+
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
   /**
    * 用户创建订单
@@ -222,17 +354,7 @@ public class OrderController extends MobileBaseController {
     }
 
     Order order = orderService.find(orderId);
-    if (OrderLogType.cancel.equals(oprType)) {
-      order.setOrderStatus(OrderStatus.cancelled);
-    } else if (OrderLogType.received.equals(oprType)) {
-      order.setShippingStatus(ShippingStatus.received);
-    }
-    OrderLog orderLog = new OrderLog();
-    orderLog.setTenantID(order.getTenantID());
-    orderLog.setType(oprType);
-    orderLog.setOrder(order);
-    order.getOrderLogs().add(orderLog);
-    orderService.update(order);
+    orderService.operation(order, oprType);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);

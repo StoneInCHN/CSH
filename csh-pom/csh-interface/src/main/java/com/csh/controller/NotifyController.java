@@ -19,6 +19,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,13 +28,16 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.CarServiceRecord;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
+import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.entity.estore.Order;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.service.AdvanceDepositsService;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
+import com.csh.service.OrderService;
 import com.csh.service.WalletService;
 import com.csh.utils.ToolsUtils;
 import com.csh.utils.alipay.util.AlipayNotify;
@@ -59,6 +63,9 @@ public class NotifyController extends MobileBaseController {
 
   @Resource(name = "advanceDepositsServiceImpl")
   private AdvanceDepositsService advanceDepositsService;
+
+  @Resource(name = "orderServiceImpl")
+  private OrderService orderService;
 
 
 
@@ -125,7 +132,7 @@ public class NotifyController extends MobileBaseController {
           if (out_trade_no.startsWith("CI")) {
             String userId = out_trade_no.split("_")[1];
             if (LogUtil.isDebugEnabled(NotifyController.class)) {
-              LogUtil.debug(BalanceController.class, "notify_wechat",
+              LogUtil.debug(NotifyController.class, "notify_wechat",
                   "User charge in call back for common charge. UserId: %s, ChargeAmount: %s,",
                   userId, amount);
             }
@@ -137,13 +144,35 @@ public class NotifyController extends MobileBaseController {
             String userId = out_trade_no.split("_")[1];
 
             if (LogUtil.isDebugEnabled(NotifyController.class)) {
-              LogUtil.debug(BalanceController.class, "notify_wechat",
+              LogUtil.debug(NotifyController.class, "notify_wechat",
                   "User charge in call back for purchase device. UserId: %s, ChargeAmount: %s,",
                   userId, amount);
             }
             advanceDepositsService.updateAdvanceDeposit(new Long(userId), amount,
                 out_trade_no.split("_")[2], PaymentType.WECHAT,
                 ToolsUtils.generateRecordNoByParam(recordNo));
+          }
+          // 购买商品
+          else if (out_trade_no.startsWith("E")) {
+            List<Filter> filters = new ArrayList<Filter>();
+            Filter filter = new Filter("sn", Operator.eq, out_trade_no);
+            filters.add(filter);
+            List<Order> records = orderService.findList(null, filters, null);
+            if (!CollectionUtils.isEmpty(records) && records.size() == 1) {
+              Order order = records.get(0);
+              order.setPaymentStatus(PaymentStatus.paid);
+              order.setAmountPaid(order.getAmount());
+              if (LogUtil.isDebugEnabled(NotifyController.class)) {
+                LogUtil
+                    .debug(
+                        NotifyController.class,
+                        "notify_wechat",
+                        "User purchase product call back for product order.UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+                        order.getEndUser().getUserName(), order.getTenantID(), order.getId(),
+                        order.getAmount(), order.getPaymentType(), order.getPaymentStatus());
+              }
+              orderService.updatePayStatus(order);
+            }
           }
           // 购买服务
           else {
@@ -299,6 +328,28 @@ public class NotifyController extends MobileBaseController {
       advanceDepositsService.updateAdvanceDeposit(new Long(userId), amount,
           out_trade_no.split("_")[3], PaymentType.ALIPAY,
           ToolsUtils.generateRecordNoByParam("PD" + out_trade_no.split("_")[1]));
+    }
+    // 购买商品
+    else if (out_trade_no.startsWith("E")) {
+      List<Filter> filters = new ArrayList<Filter>();
+      Filter filter = new Filter("sn", Operator.eq, out_trade_no);
+      filters.add(filter);
+      List<Order> records = orderService.findList(null, filters, null);
+      if (!CollectionUtils.isEmpty(records) && records.size() == 1) {
+        Order order = records.get(0);
+        order.setPaymentStatus(PaymentStatus.paid);
+        order.setAmountPaid(order.getAmount());
+        if (LogUtil.isDebugEnabled(NotifyController.class)) {
+          LogUtil
+              .debug(
+                  NotifyController.class,
+                  "notify_alipay",
+                  "User purchase product call back for product order.UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+                  order.getEndUser().getUserName(), order.getTenantID(), order.getId(),
+                  order.getAmount(), order.getPaymentType(), order.getPaymentStatus());
+        }
+        orderService.updatePayStatus(order);
+      }
     }
     // 购买服务
     else {

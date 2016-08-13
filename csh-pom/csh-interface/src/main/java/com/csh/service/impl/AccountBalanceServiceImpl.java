@@ -12,7 +12,6 @@ import org.springframework.util.CollectionUtils;
 import com.csh.dao.AccountBalanceDao;
 import com.csh.dao.CarServiceDao;
 import com.csh.entity.AccountBalance;
-import com.csh.entity.CarService;
 import com.csh.entity.EndUser;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -49,11 +48,11 @@ public class AccountBalanceServiceImpl extends BaseServiceImpl<AccountBalance, L
   }
 
   @Override
-  public AccountBalance getOfflineBalanceByTenant(EndUser endUser, Long serviceId) {
-    CarService carService = carServiceDao.find(serviceId);
+  public AccountBalance getOfflineBalanceByTenant(EndUser endUser, Long tenantId) {
+    // CarService carService = carServiceDao.find(serviceId);
     List<Filter> filters = new ArrayList<Filter>();
     Filter userFilter = new Filter("endUser", Operator.eq, endUser);
-    Filter tenantFilter = new Filter("tenantID", Operator.eq, carService.getTenantInfo().getId());
+    Filter tenantFilter = new Filter("tenantID", Operator.eq, tenantId);
     filters.add(userFilter);
     filters.add(tenantFilter);
     List<AccountBalance> list = accountBalanceDao.findList(null, null, filters, null);

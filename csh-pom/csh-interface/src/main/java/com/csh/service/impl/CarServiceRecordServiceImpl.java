@@ -211,8 +211,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       Boolean flag = true;
       Wallet wallet = endUser.getWallet();
       AccountBalance accountBalance =
-          accountBalanceService.getOfflineBalanceByTenant(endUser, carServiceRecord.getCarService()
-              .getId());
+          accountBalanceService.getOfflineBalanceByTenant(endUser, carServiceRecord.getTenantID());
       if (accountBalance != null && accountBalance.getBalance().compareTo(new BigDecimal(0)) != 0) {
         if (couponEndUser != null) {
           carServiceRecord.setPaymentType(PaymentType.MIXCOUPONOFFLINE);
@@ -424,8 +423,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       Boolean flag = true;
       Wallet wallet = endUser.getWallet();
       AccountBalance accountBalance =
-          accountBalanceService.getOfflineBalanceByTenant(endUser, carServiceRecord.getCarService()
-              .getId());
+          accountBalanceService.getOfflineBalanceByTenant(endUser, carServiceRecord.getTenantID());
       if (accountBalance != null && accountBalance.getBalance().compareTo(new BigDecimal(0)) != 0) {
         if (couponEndUser != null) {
           carServiceRecord.setPaymentType(PaymentType.MIXCOUPONOFFLINE);

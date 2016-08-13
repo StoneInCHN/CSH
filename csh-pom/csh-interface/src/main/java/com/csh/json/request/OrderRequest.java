@@ -1,6 +1,7 @@
 package com.csh.json.request;
 
 import com.csh.entity.commonenum.CommonEnum.OrderLogType;
+import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.json.base.BaseRequest;
 
 public class OrderRequest extends BaseRequest {
@@ -74,6 +75,20 @@ public class OrderRequest extends BaseRequest {
 
   /** 物流公司 */
   private String deliveryCorp;
+
+  /**
+   * 支付方式
+   */
+  private PaymentType paymentType;
+
+
+  public PaymentType getPaymentType() {
+    return paymentType;
+  }
+
+  public void setPaymentType(PaymentType paymentType) {
+    this.paymentType = paymentType;
+  }
 
   public String getTrackingNo() {
     return trackingNo;

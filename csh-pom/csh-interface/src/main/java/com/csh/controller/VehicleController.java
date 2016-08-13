@@ -329,6 +329,12 @@ public class VehicleController extends MobileBaseController {
       return response;
     }
 
+    if (LogUtil.isDebugEnabled(VehicleController.class)) {
+      LogUtil.debug(VehicleController.class, "bindTenant",
+          "bind vehicle and tenant.TenantID: %s, VehicleId: %s, OrgCode: %s", tenantId, vehicleId,
+          orgCode);
+    }
+
     Vehicle vehicle = vehicleService.find(vehicleId);
     if (vehicle.getDevice() != null
         || (vehicle.getTenantID() != null && advanceDepositsService.isAlreadyPurDevice(tenantId,
@@ -350,13 +356,12 @@ public class VehicleController extends MobileBaseController {
     vehicle.setTenantID(tenantId);
     Vehicle v = vehicleService.bindTenant(vehicle);
 
-    if (LogUtil.isDebugEnabled(VehicleController.class)) {
-      LogUtil.debug(VehicleController.class, "bindTenant",
-          "bind vehicle and tenant.TenantID: %s, VehicleId: %s,", tenantId, vehicleId);
+    Map<String, Object> map = new HashMap<String, Object>();
+    if (v.getIsDefault()) {
+      App app = appService.getTenantAppById(tenantId);
+      String[] properties = {"appTitleName"};
+      map = FieldFilterUtils.filterEntityMap(properties, app);
     }
-    App app = appService.getTenantAppById(tenantId);
-    String[] properties = {"appTitleName"};
-    Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, app);
     map.put("isGetCoupon", v.getIsGetCoupon());
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());

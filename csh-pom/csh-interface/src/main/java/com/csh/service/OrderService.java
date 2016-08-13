@@ -1,6 +1,7 @@
 package com.csh.service;
 
 import com.csh.entity.EndUser;
+import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 import com.csh.entity.estore.Order;
 import com.csh.framework.service.BaseService;
 import com.csh.json.base.BaseResponse;
@@ -31,4 +32,21 @@ public interface OrderService extends BaseService<Order, Long> {
    */
   public BaseResponse createOrderByCart(EndUser endUser, Long[] cartItems, Long receiverId,
       Boolean isInvoice, String invoiceTitle);
+
+  /**
+   * 操作订单（取消订单，确认收货）
+   * 
+   * @param order
+   * @param oprType
+   * @return
+   */
+  public Order operation(Order order, OrderLogType oprType);
+
+  /**
+   * 更新支付状态
+   * 
+   * @param order
+   * @return
+   */
+  public Order updatePayStatus(Order order);
 }

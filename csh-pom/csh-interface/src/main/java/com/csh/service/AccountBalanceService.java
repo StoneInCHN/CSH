@@ -23,5 +23,5 @@ public interface AccountBalanceService extends BaseService<AccountBalance, Long>
    * @param endUser
    * @return
    */
-  AccountBalance getOfflineBalanceByTenant(EndUser endUser, Long serviceId);
+  AccountBalance getOfflineBalanceByTenant(EndUser endUser, Long tenantId);
 }

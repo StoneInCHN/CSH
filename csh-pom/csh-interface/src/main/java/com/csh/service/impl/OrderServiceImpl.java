@@ -15,18 +15,26 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.csh.beans.CommonAttributes;
+import com.csh.beans.Message;
 import com.csh.beans.Setting;
 import com.csh.dao.CartItemDao;
 import com.csh.dao.OrderDao;
 import com.csh.dao.ProductDao;
 import com.csh.dao.ReceiverAddressDao;
 import com.csh.dao.SnDao;
+import com.csh.dao.WalletDao;
+import com.csh.entity.AccountBalance;
 import com.csh.entity.EndUser;
 import com.csh.entity.Sn.Type;
+import com.csh.entity.Wallet;
+import com.csh.entity.WalletRecord;
+import com.csh.entity.commonenum.CommonEnum.BalanceType;
 import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
+import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.ShippingStatus;
+import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.entity.estore.CartItem;
 import com.csh.entity.estore.Order;
 import com.csh.entity.estore.OrderItem;
@@ -35,11 +43,15 @@ import com.csh.entity.estore.Product;
 import com.csh.entity.estore.ReceiverAddress;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.json.base.BaseResponse;
+import com.csh.service.AccountBalanceService;
 import com.csh.service.OrderService;
 import com.csh.utils.SettingUtils;
 
 @Service("orderServiceImpl")
 public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements OrderService {
+
+  @Resource(name = "accountBalanceServiceImpl")
+  private AccountBalanceService accountBalanceService;
 
   @Resource(name = "orderDaoImpl")
   private OrderDao orderDao;
@@ -55,6 +67,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
 
   @Resource(name = "cartItemDaoImpl")
   private CartItemDao cartItemDao;
+
+  @Resource(name = "walletDaoImpl")
+  private WalletDao walletDao;
 
   @Resource(name = "orderDaoImpl")
   public void setBaseDao(OrderDao orderDao) {
@@ -161,7 +176,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
       cartList.add(cartItem);
     }
 
-
     for (Long tenantId : tenantIds) {
       Order order = new Order();
       List<OrderItem> orderItems = order.getOrderItems();
@@ -227,4 +241,102 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public Order updatePayStatus(Order order) {
+    Wallet wallet = order.getEndUser().getWallet();
+
+    if (PaymentType.WALLET.equals(order.getPaymentType())) {
+      BigDecimal walletMoney = new BigDecimal(0);
+      Boolean flag = true;
+      AccountBalance accountBalance =
+          accountBalanceService.getOfflineBalanceByTenant(order.getEndUser(), order.getTenantID());
+      if (accountBalance != null && accountBalance.getBalance().compareTo(new BigDecimal(0)) != 0) {
+        if (accountBalance.getBalance().compareTo(order.getAmount()) >= 0) {// 混合余额支付，线下余额大于等于支付金额
+          order.setOfflineBalance(order.getAmount());
+          accountBalance.setBalance(accountBalance.getBalance().subtract(order.getAmount()));
+          flag = false;
+        } else {// 混合余额支付，线下余额小于支付金额，剩余金额需普通余额支付,还需要支付的金额为walletMoney
+          order.setOfflineBalance(accountBalance.getBalance());
+          walletMoney = order.getAmount().subtract(accountBalance.getBalance());
+          accountBalance.setBalance(new BigDecimal(0));
+        }
+        accountBalanceService.update(accountBalance);
+      }
+
+      WalletRecord walletRecord = new WalletRecord();
+      walletRecord.setBalanceType(BalanceType.OUTCOME);
+      walletRecord.setWallet(wallet);
+      walletRecord.setWalletType(WalletType.MONEY);
+      walletRecord.setRemark(Message.success("csh.wallet.purProduct.record").getContent());
+      walletRecord.setMoney(order.getAmount());
+
+      if (flag) {
+        if (walletMoney.compareTo(new BigDecimal(0)) > 0) {// 余额混合支付
+          wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(walletMoney));
+        } else {// 普通余额支付
+          wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(order.getAmount()));
+        }
+      }
+
+      wallet.getWalletRecords().add(walletRecord);
+      walletDao.merge(wallet);
+    }
+
+    // 消费兑换积分.规则 1元=1积分,不足1元送1积分(余额消费也送积分，因为余额充值时没有送了积分)
+    if (order.getPaymentType() != null) {
+
+      WalletRecord walletRecord = new WalletRecord();
+      walletRecord.setWallet(wallet);
+      walletRecord.setBalanceType(BalanceType.INCOME);
+      walletRecord.setWalletType(WalletType.SCORE);
+      walletRecord.setScore(order.getAmountPaid().setScale(0, BigDecimal.ROUND_UP));
+      walletRecord.setRemark(Message.success("csh.wallet.score.comein.product").getContent());
+      wallet.getWalletRecords().add(walletRecord);
+      wallet.setScore(wallet.getScore().add(walletRecord.getScore())
+          .setScale(0, BigDecimal.ROUND_UP));
+      walletDao.merge(wallet);
+    }
+
+    OrderLog orderLog = new OrderLog();
+    orderLog.setTenantID(order.getTenantID());
+    orderLog.setType(OrderLogType.payment);
+    orderLog.setOrder(order);
+    order.getOrderLogs().add(orderLog);
+    orderDao.merge(order);
+    return order;
+  }
+
+
+  @SuppressWarnings("unused")
+  private synchronized Boolean resetProductForCancelOrder(Product product, Integer quantity) {
+    Integer stock = product.getStock() + quantity;
+    product.setStock(stock);
+    productDao.merge(product);
+    return true;
+
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public Order operation(Order order, OrderLogType oprType) {
+    if (OrderLogType.cancel.equals(oprType)) {
+      order.setOrderStatus(OrderStatus.cancelled);
+      for (OrderItem orderItem : order.getOrderItems()) {
+        Product product = orderItem.getProduct();
+        resetProductForCancelOrder(product, orderItem.getQuantity());
+      }
+    } else if (OrderLogType.received.equals(oprType)) {
+      order.setShippingStatus(ShippingStatus.received);
+    }
+    OrderLog orderLog = new OrderLog();
+    orderLog.setTenantID(order.getTenantID());
+    orderLog.setType(oprType);
+    orderLog.setOrder(order);
+    order.getOrderLogs().add(orderLog);
+    orderDao.merge(order);
+    return order;
+  }
+
 }

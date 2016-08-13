@@ -247,7 +247,8 @@ public class CarServiceController extends MobileBaseController {
      */
     if (PaymentType.WALLET.equals(paymentType)) {
       AccountBalance accountBalance =
-          accountBalanceService.getOfflineBalanceByTenant(endUser, serviceId);
+          accountBalanceService.getOfflineBalanceByTenant(endUser, carService.getTenantInfo()
+              .getId());
       BigDecimal walletMoney = wallet.getBalanceAmount();
       if (accountBalance != null) {
         walletMoney = wallet.getBalanceAmount().add(accountBalance.getBalance());
