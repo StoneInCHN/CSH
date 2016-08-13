@@ -424,6 +424,7 @@ public class Order extends BaseEntity {
    * @return 已付金额
    */
   @Column(nullable = false, precision = 21, scale = 6)
+  @JsonProperty
   public BigDecimal getAmountPaid() {
     return amountPaid;
   }

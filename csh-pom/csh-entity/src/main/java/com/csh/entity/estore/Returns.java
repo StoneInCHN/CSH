@@ -20,13 +20,17 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.ReturnsStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity - 退货单
@@ -36,11 +40,12 @@ import com.csh.entity.commonenum.CommonEnum.ReturnsStatus;
 @Table(name = "csh_returns", indexes = {@javax.persistence.Index(name = "returns_tenantid",
     columnList = "tenantID")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_returns_sequence")
+@Indexed(index = "returns")
 public class Returns extends BaseEntity {
 
   private static final long serialVersionUID = -8019074120457087212L;
 
-  /** 编号 */
+  /** 退货单编号 */
   private String sn;
 
   /** 配送方式 */
@@ -107,6 +112,9 @@ public class Returns extends BaseEntity {
    * @return 编号
    */
   @Column(nullable = false, updatable = false, unique = true, length = 100)
+  @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,
+      analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getSn() {
     return sn;
   }
@@ -126,6 +134,7 @@ public class Returns extends BaseEntity {
    * @return 配送方式
    */
   @Column(length = 100)
+  @JsonProperty
   public String getShippingMethod() {
     return shippingMethod;
   }
@@ -145,6 +154,7 @@ public class Returns extends BaseEntity {
    * @return 物流公司
    */
   @Column(length = 100)
+  @JsonProperty
   public String getDeliveryCorp() {
     return deliveryCorp;
   }
@@ -164,6 +174,9 @@ public class Returns extends BaseEntity {
    * @return 运单号
    */
   @Length(max = 200)
+  @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,
+  analyzer = @Analyzer(impl = IKAnalyzer.class))
   public String getTrackingNo() {
     return trackingNo;
   }
@@ -204,6 +217,7 @@ public class Returns extends BaseEntity {
    * @return 发货人
    */
   @Length(max = 200)
+  @JsonProperty
   public String getShipper() {
     return shipper;
   }
@@ -223,6 +237,7 @@ public class Returns extends BaseEntity {
    * @return 地区
    */
   @Column(length = 100)
+  @JsonProperty
   public String getArea() {
     return area;
   }
@@ -242,6 +257,7 @@ public class Returns extends BaseEntity {
    * @return 地址
    */
   @Length(max = 200)
+  @JsonProperty
   public String getAddress() {
     return address;
   }
@@ -332,16 +348,18 @@ public class Returns extends BaseEntity {
   }
 
   /**
-   * 获取退货单
+   * 获取退货单状态
    * 
    * @return
    */
+  @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public ReturnsStatus getReturnsStatus() {
     return returnsStatus;
   }
 
   /**
-   * 设置退货单
+   * 设置退货单状态
    * 
    * @param returnsStatus
    */
@@ -354,6 +372,7 @@ public class Returns extends BaseEntity {
    * 
    * @return
    */
+  @JsonProperty
   public BigDecimal getReturnAmount() {
     return returnAmount;
   }
