@@ -708,7 +708,7 @@ public class CommonEnum {
      */
     GROUTHFUND_ATTENTION,
     /**
-     * 红包基金--绑定后，每行驶一公里绑定红包
+     * 红包基金--绑定后，每行驶一公里红包
      */
     GROUTHFUND_DRIVING,
     /**
