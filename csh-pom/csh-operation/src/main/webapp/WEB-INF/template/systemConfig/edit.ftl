@@ -21,7 +21,9 @@ $().ready(function() {
 	$inputForm.validate({
 		rules: {
 			configValue:{
-				required: true
+				required: true,
+				number:true,
+				min:0
 			}
 		}	
 	});

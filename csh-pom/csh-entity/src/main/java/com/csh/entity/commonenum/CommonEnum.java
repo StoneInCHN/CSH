@@ -690,7 +690,31 @@ public class CommonEnum {
    */
   public enum SystemConfigKey {
     /** 设备定价 */
-    DEVICE_PRICE
+    DEVICE_PRICE,
+    /**
+     * 红包基金--注册
+     */
+    GROUTHFUND_REG,
+    /**
+     * 红包基金--添加车辆
+     */
+    GROUTHFUND_ADDCAR,
+    /**
+     * 红包基金--绑定车辆
+     */
+    GROUTHFUND_BIND,
+    /**
+     * 红包基金--扫二维码关注
+     */
+    GROUTHFUND_ATTENTION,
+    /**
+     * 红包基金--绑定后，每行驶一公里绑定红包
+     */
+    GROUTHFUND_DRIVING,
+    /**
+     * 红包基金--保险抵扣
+     */
+    GROUTHFUND_INSURANCE
   }
 
   public enum AdType {
