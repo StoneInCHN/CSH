@@ -1,6 +1,5 @@
 package com.csh.estore.controller;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -25,16 +24,14 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Sn.Type;
 import com.csh.entity.commonenum.CommonEnum.Method;
-import com.csh.entity.commonenum.CommonEnum.OrderStatus;
-import com.csh.entity.estore.DeliveryCorp;
+import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.entity.commonenum.CommonEnum.RefundsStatus;
+import com.csh.entity.commonenum.CommonEnum.ReturnsStatus;
 import com.csh.entity.estore.Order;
-import com.csh.entity.estore.OrderItem;
 import com.csh.entity.estore.OrderLog;
 import com.csh.entity.estore.Refunds;
 import com.csh.entity.estore.Returns;
-import com.csh.entity.estore.ReturnsItem;
 import com.csh.entity.estore.Shipping;
-import com.csh.entity.estore.ShippingMethod;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DeliveryCorpService;
@@ -45,6 +42,7 @@ import com.csh.service.ReturnsService;
 import com.csh.service.ShippingMethodService;
 import com.csh.service.SnService;
 import com.csh.service.TenantAccountService;
+import com.csh.utils.SpringUtils;
 
 /**
  * 退货退款
@@ -77,25 +75,26 @@ public class ReturnsRefundsController extends BaseController {
 
   
   /**
-   * 可退货可退款的订单列表
+   * 退货单列表
    */
-  @RequestMapping (value = "/listOrder", method = RequestMethod.POST)
-  public @ResponseBody Page<Order> listOrder (Pageable pageable, String orderSnSearch, ModelMap model) {
-    //订单状态=已确认,支付状态=已支付
-    BooleanQuery booleanQuery = new BooleanQuery();
-    TermQuery orderStatusQuery = new TermQuery 
-        (new Term ("orderStatus",OrderStatus.confirmed.toString ()));
-    booleanQuery.add (orderStatusQuery, Occur.MUST);
-//    TermQuery paymentStatusQuery = new TermQuery 
-//        (new Term ("paymentStatus",PaymentStatus.paid.toString ()));
-//    booleanQuery.add (paymentStatusQuery, Occur.MUST);
+  @RequestMapping (value = "/listReturns", method = RequestMethod.POST)
+  public @ResponseBody Page<Returns> listOrder (Pageable pageable, String returnsSnSearch,
+      ReturnsStatus statusSearch, ModelMap model) {
+    if (returnsSnSearch == null && statusSearch == null) {
+      return returnsService.findPage(pageable, true);
+    }
     
-    IKAnalyzer analyzer = new IKAnalyzer ();
-    analyzer.setMaxWordLength (true);
-    if (orderSnSearch != null) {
+    BooleanQuery booleanQuery = new BooleanQuery();
+    if (statusSearch != null) {
+      TermQuery statusQuery = new TermQuery(new Term ("returnsStatus", statusSearch.toString ()));
+      booleanQuery.add (statusQuery, Occur.MUST);
+    }
+    if (returnsSnSearch != null) {
+        IKAnalyzer analyzer = new IKAnalyzer ();
+        analyzer.setMaxWordLength (true);
         QueryParser snParser = new QueryParser (Version.LUCENE_35, "sn",analyzer);
         snParser.setAllowLeadingWildcard (true);
-        String sn = QueryParser.escape (orderSnSearch);
+        String sn = QueryParser.escape (returnsSnSearch);
         Query snQuery;
         try {
           snQuery = snParser.parse ("*"+sn+"*");
@@ -107,7 +106,7 @@ public class ReturnsRefundsController extends BaseController {
           e.printStackTrace();
         }
     }
-    return orderService.search (booleanQuery, pageable, null, null,true);
+    return returnsService.search (booleanQuery, pageable, null, null,true);
   }  
   
   
@@ -121,105 +120,99 @@ public class ReturnsRefundsController extends BaseController {
   }
   
   /**
-   * 添加退货
+   * 批准退货页面
    */
-  @RequestMapping (value = "/addReturns", method = RequestMethod.GET)
-  public String addReturns(ModelMap model, Long orderId) {
-    Order order = orderService.find(orderId);
-    model.put ("order", order);
-    List<DeliveryCorp> deliveryCorps = deliveryCorpService.findAll(true);
-    model.put ("deliveryCorps", deliveryCorps);
-    List<ShippingMethod> shippingMethods = shippingMethodService.findAll(true);
-    model.put ("shippingMethods", shippingMethods);
-    return "estore/returnsRefunds/addReturns";
+  @RequestMapping (value = "/approvedReturn", method = RequestMethod.GET)
+  public String addReturns(ModelMap model, Long returnsId) {
+    Returns returns = returnsService.find(returnsId);
+    model.put ("returns", returns);
+//    List<DeliveryCorp> deliveryCorps = deliveryCorpService.findAll(true);
+//    model.put ("deliveryCorps", deliveryCorps);
+//    List<ShippingMethod> shippingMethods = shippingMethodService.findAll(true);
+//    model.put ("shippingMethods", shippingMethods);
+    return "estore/returnsRefunds/approvedReturn";
   }
   
   /**
-   * 保存退货单
+   * 批准退货
    */
-  @RequestMapping (value = "/saveReturns", method = RequestMethod.POST)
-  public @ResponseBody Message saveReturns(Long orderId, Long shippingMethodId, Long deliveryCorpId, Long areaId,Returns returns) {
+  @RequestMapping (value = "/updateApprovedReturn", method = RequestMethod.POST)
+  public @ResponseBody Message updateApprovedReturn(Long returnsId) {
     //获取当前租户tenant ID
     Long tenantID = tenantAccountService.getCurrentTenantID();
+    Returns returns = returnsService.find(returnsId);
+    if (returns.getReturnsStatus() != ReturnsStatus.applyReturn) {
+      return ERROR_MESSAGE;
+    }
     //获取订单
-    Order order = orderService.find(orderId);
+    Order order = returns.getOrder();
     if (order == null) {
         return ERROR_MESSAGE;
     }
-    returns.setOrder(order);
-    //配送方式
-    ShippingMethod shippingMethod = shippingMethodService.find(shippingMethodId);
-    returns.setShippingMethod(shippingMethod != null ? shippingMethod.getName() : null);
-    //物流公司
-    DeliveryCorp deliveryCorp = deliveryCorpService.find(deliveryCorpId);
-    returns.setDeliveryCorp(deliveryCorp != null ? deliveryCorp.getName() : null);
-    //生成退货单号
-    returns.setSn(snService.generate(Type.returns));
+    //设置退货单状态为 “已批准退货”
+    returns.setReturnsStatus(ReturnsStatus.approvedReturn);
     //操作人员
     returns.setOperator(tenantAccountService.getCurrentUsername());
-    //地区
-    returns.setArea("");
-    
-    //添加退货项
-    List<ReturnsItem> returnsItems = returns.getReturnsItems();
-    List<OrderItem> orderItems = order.getOrderItems();
-    for (int i = 0; i < orderItems.size(); i++) {
-      OrderItem orderItem = orderItems.get(i);
-      ReturnsItem returnsItem = new ReturnsItem();
-      returnsItem.setName(orderItem.getFullName());
-      returnsItem.setReturns(returns);
-      returnsItem.setQuantity(orderItem.getQuantity());
-      returnsItem.setSn(orderItem.getSn());
-      returnsItem.setTenantID(tenantID);
-      returnsItems.add(returnsItem);
-    }
     returns.setTenantID(tenantID);
-    //保存退货单退货项，修改订单状态等（事务）
-    returnsService.saveReturns(order, returns);
+    //批准退货单，修改订单状态等（事务）
+    returnsService.approvedReturns(order, returns);
         
     return SUCCESS_MESSAGE;
   } 
-  
   /**
-   * 添加退款
+   * 确认退货页面
    */
-  @RequestMapping (value = "/addRefunds", method = RequestMethod.GET)
-  public String addRefunds(ModelMap model, Long orderId) {
-    Order order = orderService.find(orderId);
-    model.put ("order", order);
-    model.addAttribute("refundsMethods", Method.values());
-    //model.addAttribute("paymentMethods", paymentMethodService.findAll());
-    return "estore/returnsRefunds/addRefunds";
-  }
+  @RequestMapping (value = "/confirmReturn", method = RequestMethod.GET)
+  public String confirmReturn(ModelMap model, Long returnsId) {
+    Returns returns = returnsService.find(returnsId);
+    model.put ("returns", returns);
+    return "estore/returnsRefunds/confirmReturn";
+  }  
   /**
-   * 保存退款单
+   * 确认收到退货并批准退款
    */
-  @RequestMapping (value = "/saveRefunds", method = RequestMethod.POST)
-  public @ResponseBody Message saveRefunds(Long orderId, Long paymentMethodId, Long areaId,Refunds refunds) {
+  @RequestMapping (value = "/confirmApprovedRefunds", method = RequestMethod.POST)
+  public @ResponseBody Message confirmApprovedRefunds(Long returnsId) {
     //获取当前租户tenant ID
     Long tenantID = tenantAccountService.getCurrentTenantID();
+    Returns returns = returnsService.find(returnsId);
+    if (returns.getReturnsStatus() != ReturnsStatus.approvedReturn) {
+      return ERROR_MESSAGE;
+    }
     //获取订单
-    Order order = orderService.find(orderId);
+    Order order = returns.getOrder();
     if (order == null) {
         return ERROR_MESSAGE;
     }
-    refunds.setOrder(order);
-    if (paymentMethodId != null) {//支付方式
-      //PaymentMethod paymentMethod = paymentMethodService.find(paymentMethodId);
-      //refunds.setPaymentMethod(paymentMethod != null ? paymentMethod.getName() : null);
+    //设置退货单状态为 “退货成功”
+    returns.setReturnsStatus(ReturnsStatus.return_success);
+    //操作人员
+    returns.setOperator(tenantAccountService.getCurrentUsername());
+    returns.setTenantID(tenantID);
+    //创建初始退款单
+    Refunds refunds = new Refunds();
+    refunds.setAmount(returns.getReturnAmount());
+    if (order.getPaymentType() == PaymentType.ALIPAY || order.getPaymentType() == PaymentType.WECHAT) {
+      refunds.setMethod(Method.online);
+    }else {
+      refunds.setMethod(Method.deposit);
     }
-    
-    refunds.setSn(snService.generate(Type.refunds));
+    refunds.setReturnsID(returnsId);
+    refunds.setRefundsStatus(RefundsStatus.noRefund);
     refunds.setOperator(tenantAccountService.getCurrentUsername());
+    refunds.setOrder(order);
+    refunds.setPayee(order.getEndUser().getUserName());
+    refunds.setPaymentMethod(SpringUtils.getMessage("csh.commonEnum.PaymentType."+order.getPaymentType().toString()));
+    refunds.setSn(snService.generate(Type.refunds));
     refunds.setTenantID(tenantID);
-    //保存退款单退款项，修改订单状态等（事务）
-    refundsService.saveRefunds(order, refunds);
+    //确认退货成功，批准退款，修改订单状态等（事务）
+    returnsService.confirmApprovedRefunds(order, returns, refunds);
         
     return SUCCESS_MESSAGE;
   } 
   
   /**
-   * 查看 订单
+   * 查看订单页面
    */
   @RequestMapping (value = "/viewOrder", method = RequestMethod.GET)
   public String viewOrder(ModelMap model, Long orderId) {

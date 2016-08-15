@@ -2,17 +2,17 @@
 		<input type="hidden" name="orderId" value="${order.id}">
 	    <table class="table table-striped"  border="0">
 	    	<tr>
-	    		<th>订单编号:</th>
+	    		<th>${message("csh.order.sn")}:</th>
 	    		<td  width="200">
 	    			 ${order.sn}
 	    		</td>	   
-	    		<th>创建时间:</th>
+	    		<th>${message("csh.createDate")}:</th>
 	    		<td>
 	    			 ${order.createDate?string("yyyy-MM-dd HH:mm:ss")}
 	    		</td> 			    		
 	    	</tr>
 	    	<tr>
-	    		<th>配送方式:</th>
+	    		<th>${message("csh.shippingManager.shippingMethod")}:</th>
 	    		<td>
 	    			 <select  class="easyui-combobox" name="shippingMethodId" style="width:110px;" data-options="required:true">
 	    				[#list shippingMethods as shippingMethod]
@@ -20,7 +20,7 @@
 	    				[/#list]   
 				  	</select> 
 	    		</td>
-				<th>物流公司:</td>
+				<th>${message("csh.shippingManager.deliveryCorp")}:</td>
 				<td>
 	    			 <select  class="easyui-combobox" name="deliveryCorpId" style="width:110px;" data-options="required:true">
 	    				[#list deliveryCorps as deliveryCorp]
@@ -30,43 +30,41 @@
 	    		</td>
 	    	</tr>
 	    	<tr>
-	    		<th>运单号 :</th>
+	    		<th>${message("csh.order.trackingNo")} :</th>
 	    		<td>
-	    			 <input class="easyui-textbox" type="text"  name="trackingNo"  data-options="required:true" validtype="length[0,200]"/> 
+	    			 <input class="easyui-textbox" type="text"  name="trackingNo"  data-options="required:true" validtype="length[0,20]"/> 
 	    		</td>	  
-	    		<th>物流费用 :</th>
+	    		<th>${message("csh.order.freight")} :</th>
 	    		<td>
 	    			 <input class="easyui-numberbox" type="text"  name="freight"  data-options="min:0,max:100000,precision:2,required:true"/> 
 	    		</td>	  			    		
 	    	</tr>	    	
 	    	<tr>
-	    		<th>收货人 :</th>
+	    		<th>${message("csh.order.consignee")} :</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text"  name="consignee" value="${order.consignee}"   data-options="required:true" validtype="length[0,200]"/> 
 	    		</td>	  
-	    		<th>邮编 :</th>
+	    		<th>${message("csh.zipCode")} :</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text"  name="zipCode" value="${order.zipCode}"  data-options="required:true" validtype="length[0,200]"/>
 	    		</td>	  			    		
 	    	</tr>	
 	    	<tr>
-	    		<th>地区 :</th>
+	    		<th>${message("csh.tenantInfo.area")} :</th>
 	    		<td>
-	    			<span class="fieldSet">
-	    			 <input type="hidden" id="areaId"  value="${(order.area.id)!}" treePath="${(order.area.treePath)!}"/>
-	    			</span>
+	    			<input class="easyui-textbox" type="text"  name="area" value="${order.areaName}"  data-options="required:true" validtype="length[0,200]"/>
 	    		</td>	  
-	    		<th>地址 :</th>
+	    		<th>${message("csh.address")} :</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text"  name="address" value="${order.address}"  data-options="required:true" validtype="length[0,200]"/>
 	    		</td>	  			    		
 	    	</tr>		    	
 	    	<tr>
-	    		<th>电话 :</th>
+	    		<th>${message("csh.phoneNumber")} :</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text"  name="phone" value="${order.phone}"   data-options="required:true" validtype="length[0,200]"/> 
 	    		</td>	  
-	    		<th>备注 :</th>
+	    		<th>${message("csh.remark")} :</th>
 	    		<td>
 	    			 <input class="easyui-textbox" type="text"  name="memo" value="${order.memo}"  data-options="required:true" validtype="length[0,200]"/>
 	    		</td>	  			    		

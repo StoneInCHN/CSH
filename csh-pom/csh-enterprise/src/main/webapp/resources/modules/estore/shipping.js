@@ -232,13 +232,14 @@ $(function(){
 		   [
 		      {field:'ck',checkbox:true},		      
 		      {title:message("csh.order.sn"),field:"sn",sortable:true},
-		      {title:message("csh.order.totalAmount"),field:"totalAmount",sortable:true},		     
+		      {title:message("csh.order.amountPaid"),field:"amountPaid",sortable:true},		     
 		      {title:message("csh.order.endUser"),field:"endUser",sortable:true,formatter:function(value,row,index){
-		    	  if(value){
+		    	  if(value !=null && value.userName != null){
 		    		  return value.userName;
+		    	  }else{
+		    		  return "-";
 		    	  }
 		      }},
-		      {title:message("csh.order.consignee"),field:"consignee",sortable:true},
 		      {title:message("csh.order.shippingStatus"),field:"shippingStatus",sortable:true,formatter:function(value,row,index){
 		    	  if(value){
 		    		  return message("csh.order.shippingStatus."+value);

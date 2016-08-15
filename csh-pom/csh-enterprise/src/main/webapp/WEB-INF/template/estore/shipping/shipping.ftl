@@ -1,6 +1,6 @@
 <script src="${base}/resources/modules/estore/shipping.js"></script>
 <div class="easyui-layout" data-options="fit:true">
-      		<div data-options="region:'west',split:true" style="width:50%">
+      		<div data-options="region:'west',split:true" style="width:45%">
              			<div id="order-panel" class="easyui-panel" title="${message("csh.shipping.order")}"    style="width:100%;height:55%;background:#fafafa;"  data-options="collapsible:true">									
 									<fieldset style="padding:5px 0px 4px 4px;margin:0px">
 								        <form id="shipping-order-search-form" class="search-form">
@@ -26,8 +26,8 @@
 											<thead>
 												<tr>
 													<th field="orderSn" width="20%"  align="center">${message("csh.order.sn")}</th>
-													<th field="productSn" width="20%"  align="center">${message("csh.product.sn")}</th>
-													<th field="name"  width="40%"  align="center">${message("csh.order.name")}</th>
+													<th field="productSn" width="15%"  align="center">${message("csh.product.sn")}</th>
+													<th field="name"  width="45%"  align="center">${message("csh.order.name")}</th>
 													<th field="quantity" width="10%"   align="center">${message("csh.quantity")}</th>
 													<th field="price" width="10%"   align="center">${message("csh.price")}</th>
 												</tr>
@@ -35,7 +35,7 @@
 										</table>
 						</div>
 			</div>
-			<div data-options="region:'center'" style="width:50%">
+			<div data-options="region:'center'" style="width:55%">
              			<div id="shipping-panel" class="easyui-panel" title="${message("csh.shipping.shipping")}"    style="width:100%;height:55%;background:#fafafa;"  data-options="collapsible:true">	
 									<fieldset style="padding:5px 0px 4px 4px;margin:0px">
 								        <form id="shipping-search-form" class="search-form">

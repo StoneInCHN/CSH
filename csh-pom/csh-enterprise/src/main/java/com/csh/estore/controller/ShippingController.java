@@ -22,7 +22,6 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.entity.Sn.Type;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
-import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
@@ -165,10 +164,8 @@ public class ShippingController extends BaseController {
     shipping.setSn(snService.generate(Type.shipping));
     //操作人员
     shipping.setOperator(tenantAccountService.getCurrentUsername());
-    //地区
-    shipping.setArea("");
     
-    //添加发货项
+    //添加发货项，现在只做全部发货
     List<ShippingItem> shippingItems = shipping.getShippingItems();
     List<OrderItem> orderItems = order.getOrderItems();
     for (int i = 0; i < orderItems.size(); i++) {
@@ -211,23 +208,23 @@ public class ShippingController extends BaseController {
     return "estore/shipping/addShipping";
   }
   
-  /**
-   * 更新发货单
-   */
-  @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message updateShipping(Shipping shipping) {   
-    shippingService.update(shipping,"shippingMethods");
-    return SUCCESS_MESSAGE;
-  } 
-  /**
-   * 删除发货单
-   */
-  @RequestMapping (value = "/delete", method = RequestMethod.POST)
-  public @ResponseBody Message deleteShipping (Long[] ids) {
-    if (ids != null) {
-      shippingService.delete(ids);
-    }
-    return SUCCESS_MESSAGE;
-  }
+//  /**
+//   * 更新发货单
+//   */
+//  @RequestMapping (value = "/update", method = RequestMethod.POST)
+//  public @ResponseBody Message updateShipping(Shipping shipping) {   
+//    shippingService.update(shipping,"shippingMethods");
+//    return SUCCESS_MESSAGE;
+//  } 
+//  /**
+//   * 删除发货单
+//   */
+//  @RequestMapping (value = "/delete", method = RequestMethod.POST)
+//  public @ResponseBody Message deleteShipping (Long[] ids) {
+//    if (ids != null) {
+//      shippingService.delete(ids);
+//    }
+//    return SUCCESS_MESSAGE;
+//  }
 
 }

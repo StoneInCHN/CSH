@@ -27,7 +27,6 @@ var messages = {
 	"csh.common.name":"姓名",
 	"csh.common.age":"年龄",
 	"csh.common.birthday":"出生日期",
-	"csh.common.relation":"与老人关系",
 	"csh.common.infoChannel":"信息来源",
 	"csh.common.remark":"备注",
 	"csh.common.phonenumber":"电话号码",
@@ -37,23 +36,9 @@ var messages = {
 	"csh.common.yes":"是",
 	"csh.common.no":"否",
 	"csh.common.detail":"详情",
-	"csh.common.relation.self":"本人",
-	"csh.common.relation.children":"子女",
-	"csh.common.relation.marriage_relationship":"夫妻",
-	"csh.common.relation.grandparents_and_grandchildren":"祖孙",
-	"csh.common.relation.brothers_or_sisters":"兄弟或姐妹",
-	"csh.common.relation.daughterinlaw_or_soninlaw":"儿媳或女婿",
-	"csh.common.relation.friend":"朋友",
-	"csh.common.relation.infochannel.network":"网络",
-	"csh.common.relation.infochannel.community":"社区",
-	"csh.common.relation.infochannel.ohter_introduct":"他人介绍",
-	"csh.common.relation.infochannel.advertisement":"广告",
 	"csh.common.idcard":"身份证号码",
 	"csh.common.disable":"禁用",
 	"csh.common.enable":"启用",
-	"csh.common.elderlyname":"老人姓名",
-	"csh.common.bedRoom":"房间",
-	"csh.common.nurseLevel":"护理等级",
 	"csh.common.please.select":"请选择...",
 	"csh.common.insertDate": "录入时间",
 	"csh.common.notice":"注意",
@@ -66,7 +51,6 @@ var messages = {
 	"csh.common.action":"操作",
 	"csh.common.notice":"注意",
 	"csh.common.dateFormatChina":"yyyy年MM月dd日",
-	"csh.common.elderlyInfo":"老人基本信息",
 	"csh.name":"名称",
 	"csh.icon":"图标",
 	"csh.description":"描述",
@@ -74,7 +58,12 @@ var messages = {
 	"yly.common.notice.comfirm_export_data":"确定导出 {0} 条记录？",
 	"yly.common.notice.export_data_too_much_advice_use_filter":"导出数据超过 {0} 条数据，建议搜索查询条件以缩小查询范围，再导出。",
 	"yly.common.notice.need_wait_export_too_much_data":"导出共有 {0} 条数据，导出超过 {1} 条数据可能需要您耐心等待，仍需操作请确定继续。",
-	
+	"csh.common.sn":"编号",
+	"csh.common.list":"列表",
+	"csh.common.area":"地区",
+	"csh.common.status":"状态",
+	"csh.common.approved":"批准",
+	"csh.common.received":"收到",
 	
 	
 	//租户用户
@@ -388,6 +377,7 @@ var messages = {
 	//发货项
 	"csh.shippingItem.list":"发货项列表",
 	//订单
+	"csh.order":"订单",
 	"csh.order.sn":"订单编号",
 	"csh.order.totalAmount":"订单金额",
 	"csh.order.endUser":"会员",
@@ -415,7 +405,21 @@ var messages = {
 	"csh.order.list":"订单列表",
 	"csh.order.amount":"订单金额",
 	"csh.order.member":"会员",
-	"csh.order.paymentType":"支付方式"
+	"csh.order.paymentType":"支付方式",
+	"csh.order.amountPaid":"已付金额",
+	"csh.order.shipper":"发货人",
+	"csh.belong.order":"所属订单",
+	
+	//退货
+	"csh.returns":"退货",
+	"csh.returns.returns":"退货单",
+	"csh.returns.status.applyReturn":"申请退货中...",
+	"csh.returns.status.approvedReturn":"已批准退货",
+	"csh.returns.status.return_success":"退货成功",
+	"csh.returns.status.return_failed":"退货失败",
+	"csh.returns.status.cancelled":"已取消",
+	"csh.returns.returnAmount":"申请退款金额",
+	"csh.confirm.returns.approved.refunds":"确认并批准退款",
 	
 		
 };

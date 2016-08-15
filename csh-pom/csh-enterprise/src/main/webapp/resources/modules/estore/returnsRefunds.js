@@ -1,64 +1,11 @@
-var deliveryCorp_manager_tool = {
-		edit:function(){
-			var _edit_row = $('#deliveryCorp-table-list').datagrid('getSelected');
-			if( _edit_row == null ){
-				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');  
-				return false;
-			}
-			var _dialog = $('#editDeliveryCorp').dialog({    
-				title: message("csh.common.edit"),     
-			    width: 400,    
-			    height: 500,
-			    modal: true,
-			    iconCls:'icon-mini-edit',
-			    href:'../deliveryCorp/details.jhtml?id='+_edit_row.id+'&path=edit',
-			    buttons:[{
-			    	text:message("csh.common.save"),
-			    	iconCls:'icon-save',
-					handler:function(){
-						var validate = $('#editDeliveryCorp_form').form('validate');
-						if(validate){
-							$.ajax({
-								url:"../deliveryCorp/update.jhtml",
-								type:"post",
-								data:$("#editDeliveryCorp_form").serialize(),
-								beforeSend:function(){
-									$.messager.progress({
-										text:message("csh.common.saving")
-									});
-								},
-								success:function(result,response,status){
-									$.messager.progress('close');
-										showSuccessMsg(result.content);
-										$('#editDeliveryCorp').dialog("close");
-										$("#deliveryCorp-table-list").datagrid('reload');
-								}
-							});
-						};
-					}
-				},{
-					text:message("csh.common.close"),
-					iconCls:'icon-cancel',
-					handler:function(){
-						 $('#editDeliveryCorp').dialog("close").form("reset");
-					}
-			    }],
-			    onLoad:function(){
-			    	
-			    }
-			});  
-		},
-		remove:function(){
-			listRemove('deliveryCorp-table-list','../deliveryCorp/delete.jhtml');
-		}
-};
+
 
 $(function(){	
-	//可退货可退款订单列表
+	//退货单列表
 	$("#returnsRefunds-table-list").datagrid({
-		title:"可退货可退款订单列表",
+		title:message("csh.returns.returns")+message("csh.common.list"),
 		fitColumns:true,
-		url:'../returnsRefunds/listOrder.jhtml',  
+		url:'../returnsRefunds/listReturns.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
@@ -85,47 +32,43 @@ $(function(){
 		},
 		columns:[
 		   [
-		      {title:message("csh.order.sn"),field:"sn",width:50,sortable:true},
-		      {title:message("csh.order.totalAmount"),field:"totalAmount",width:50,sortable:true},		     
-		      {title:message("csh.order.endUser"),field:"endUser",sortable:true,width:50,formatter:function(value,row,index){
+		      {field:'ck',checkbox:true},
+		      {title:message("csh.returns.returns")+message("csh.common.sn"),field:"sn",width:50,sortable:true},
+		      {title:message("csh.shipping.shippingMethod"),field:"shippingMethod",width:50,sortable:true},		     
+		      {title:message("csh.shipping.trackingNo"),field:"trackingNo",width:50,sortable:true},	
+		      {title:message("csh.order.shipper"),field:"shipper",width:40,sortable:true},	
+		      {title:message("csh.common.area"),field:"area",width:50,sortable:true},	
+		      {title:message("csh.common.phonenumber"),field:"phone",width:50,sortable:true},	
+		      {title:message("csh.returns.returnAmount"),field:"returnAmount",width:40,sortable:true},	
+		      {title:message("csh.returns.returns")+message("csh.common.status"),field:"returnsStatus",width:40,sortable:true,formatter:function(value,row,index){
 		    	  if(value){
-		    		  return value.userName;
+		    		  return message("csh.returns.status."+value);
 		    	  }
 		      }},
-		      {title:message("csh.order.consignee"),field:"consignee",sortable:true,width:50},
-		      {title:message("csh.order.shippingStatus"),field:"shippingStatus",sortable:true,width:50,formatter:function(value,row,index){
-		    	  if(value){
-		    		  return message("csh.order.shippingStatus."+value);
+		      {title:message("csh.belong.order"),field:"order",width:50,sortable:true,formatter:function(value,row,index){
+		    	  if(value !=null && value.sn != null){
+		    		  return value.sn;
+		    	  }else{
+		    		  return "-";
 		    	  }
+		    		  
 		      }},
-		      {title:message("csh.order.orderStatus"),field:"orderStatus",sortable:true,width:50,formatter:function(value,row,index){
-		    	  if(value){
-		    		  return message("csh.order.orderStatus."+value);
+		      {title:message("csh.common.action"),field:"handle",sortable:true,width:100,align:"center",formatter: function(value,row,index){
+		    	  var approved='<div class="linkbtn_grey">'+message("csh.common.approved")+message("csh.returns")+'</div>';
+		    	  if(row.returnsStatus == "applyReturn"){
+		    		  approved='<div class="linkbtn_green" onclick="approvedReturn('+row.id+');">'+message("csh.common.approved")+message("csh.returns")+'</div>';
 		    	  }
-		      }},
-		      {title:message("csh.order.paymentStatus"),field:"paymentStatus",sortable:true,width:50,formatter:function(value,row,index){
-		    	  if(value){
-		    		  return message("csh.order.paymentStatus."+value);
+		    	  var confirm='<div class="linkbtn_grey">'+message("csh.common.confirm")+message("csh.returns")+'</div>';
+		    	  if(row.returnsStatus == "approvedReturn"){
+		    		  confirm='<div class="linkbtn_green" onclick="confirmReturn('+row.id+');">'+message("csh.common.confirm")+message("csh.returns")+'</div>';
 		    	  }
-		      }},
-		      {title:message("csh.common.createDate"),field:"createDate",sortable:true,width:50,formatter: function(value,row,index){
-					return new Date(value).Format("yyyy-MM-dd");
-		      }},
-		      {title:"操作",field:"handle",sortable:true,width:100,formatter: function(value,row,index){
-		    	  var returns="退货";
-		    	  if(row.shippingStatus == "shipped"){
-		    		  returns='<a href="#" onclick="addReturns('+row.id+');">退货</a>';
-		    	  }
-//		    	  var refunds="退款";
-//		    	  if(row.paymentStatus == "paid"){
-//		    		  returns='<a href="#" onclick="addRefunds('+row.id+');">退款</a>';
-//		    	  }
-		    	  var viewOrder='<a href="#" onclick="viewOrder('+row.id+');">查看</a>';
-				  return returns+"&nbsp;&nbsp;&nbsp;&nbsp;"+refunds+"&nbsp;&nbsp;&nbsp;&nbsp;"+viewOrder;
-					
+		    	  var viewOrder='<div class="linkbtn_green" onclick="viewOrder('+row.order.id+');">'+message("csh.order")+message("csh.common.detail")+'</div>';
+				  return "<table><tr><td>"+approved+"</td><td>"+confirm+"</td><td>"+viewOrder+"</td></tr></table>";
 		      }},
 		   ]
-		]
+		],
+		onLoadSuccess:function(result){
+	    }
 	});	
 	$("#returnsRefunds-search-btn").click(function(){
 	  var _queryParams = $("#returnsRefunds-search-form").serializeJSON();
@@ -134,25 +77,25 @@ $(function(){
 	});
 
 });
-function addReturns(id){
-	//退货对话框
-	$('#addReturns').dialog({
-	    title: "退货",    
-	    width: 600,    
+function approvedReturn(id){
+	//批准退货对话框
+	$('#approvedReturn').dialog({
+	    title: message("csh.common.approved")+message("csh.returns"),    
+	    width: 800,    
 	    height: 450,
 	    iconCls:'icon-mini-add',
 	    cache: false, 
-	    href:'../returnsRefunds/addReturns.jhtml?orderId='+id,
+	    href:'../returnsRefunds/approvedReturn.jhtml?returnsId='+id,
 	    buttons:[{
-	    	text:message("csh.common.save"),
+	    	text:message("csh.common.approved"),
 	    	iconCls:'icon-save',
 			handler:function(){
-				var validate = $('#addReturns_form').form('validate');
+				var validate = $('#approvedReturn_form').form('validate');
 				if(validate){
 						$.ajax({
-							url:"../returnsRefunds/saveReturns.jhtml",
+							url:"../returnsRefunds/updateApprovedReturn.jhtml",
 							type:"post",
-							data:$("#addReturns_form").serialize(),
+							data:$("#approvedReturn_form").serialize(),
 							beforeSend:function(){
 								$.messager.progress({
 									text:message("csh.common.saving")
@@ -161,11 +104,11 @@ function addReturns(id){
 							success:function(result,response,status){
 								$.messager.progress('close');
 								if(response == "success"){
-									$('#addReturns').dialog("close");
-									$('#addReturns_form').form("reset");
+									$('#approvedReturn').dialog("close");
+									$('#approvedReturn_form').form("reset");
 									$("#returnsRefunds-table-list").datagrid('reload');
 									showSuccessMsg(result.content);
-									//$.messager.alert(message("csh.common.prompt"),result.content,'info');
+									$.messager.alert(message("csh.common.prompt"),result.content,'info');
 								}else{
 									alertErrorMsg();
 								}
@@ -177,67 +120,68 @@ function addReturns(id){
 			text:message("csh.common.cancel"),
 			iconCls:'icon-cancel',
 			handler:function(){
-				 $('#addReturns').dialog("close").form("reset");
+				 $('#approvedReturn').dialog("close").form("reset");
 			}
 	    }],
 	    onOpen:function(){}
 	});  
 }
-function addRefunds(id){
-	//退款对话框
-	$('#addRefunds').dialog({
-	    title: "退款",    
-	    width: 600,    
-	    height: 550,
-	    iconCls:'icon-mini-add',
-	    cache: false, 
-	    href:'../returnsRefunds/addRefunds.jhtml?orderId='+id,
-	    buttons:[{
-	    	text:message("csh.common.save"),
-	    	iconCls:'icon-save',
-			handler:function(){
-				var validate = $('#addRefunds_form').form('validate');
-				if(validate){
-						$.ajax({
-							url:"../returnsRefunds/saveRefunds.jhtml",
-							type:"post",
-							data:$("#addRefunds_form").serialize(),
-							beforeSend:function(){
-								$.messager.progress({
-									text:message("csh.common.saving")
-								});
-							},
-							success:function(result,response,status){
-								$.messager.progress('close');
-								if(response == "success"){
-									$('#addRefunds').dialog("close");
-									$('#addRefunds_form').form("reset");
-									$("#returnsRefunds-table-list").datagrid('reload');
-									showSuccessMsg(result.content);
-									//$.messager.alert(message("csh.common.prompt"),result.content,'info');
-								}else{
-									alertErrorMsg();
+//确认收到退货对话框
+function confirmReturn(id){
+		$('#confirmReturn').dialog({
+		    title: message("csh.common.confirm")+message("csh.common.received")+message("csh.returns"),    
+		    width: 800,    
+		    height: 450,
+		    iconCls:'icon-mini-add',
+		    cache: false, 
+		    href:'../returnsRefunds/confirmReturn.jhtml?returnsId='+id,
+		    buttons:[{
+		    	text:message("csh.confirm.returns.approved.refunds"),
+		    	iconCls:'icon-save',
+				handler:function(){
+					var validate = $('#confirmReturn_form').form('validate');
+					if(validate){
+							$.ajax({
+								url:"../returnsRefunds/confirmApprovedRefunds.jhtml",
+								type:"post",
+								data:$("#confirmReturn_form").serialize(),
+								beforeSend:function(){
+									$.messager.progress({
+										text:message("csh.common.saving")
+									});
+								},
+								success:function(result,response,status){
+									$.messager.progress('close');
+									if(response == "success"){
+										$('#confirmReturn').dialog("close");
+										$('#confirmReturn_form').form("reset");
+										$("#returnsRefunds-table-list").datagrid('reload');
+										showSuccessMsg(result.content);
+										$.messager.alert(message("csh.common.prompt"),result.content,'info');
+									}else{
+										alertErrorMsg();
+									}
 								}
-							}
-						});
-				};
-			}
-		},{
-			text:message("csh.common.cancel"),
-			iconCls:'icon-cancel',
-			handler:function(){
-				 $('#addRefunds').dialog("close").form("reset");
-			}
-	    }],
-	    onOpen:function(){}
-	});  
+							});
+					};
+				}
+			},{
+				text:message("csh.common.cancel"),
+				iconCls:'icon-cancel',
+				handler:function(){
+					 $('#confirmReturn').dialog("close").form("reset");
+				}
+		    }],
+		    onOpen:function(){}
+		});  
 }
+
+//订单及其退货退款详情
 function viewOrder(id){
-	//订单及其退货退款详情
 	$('#returnsRefundsDetail').dialog({
-	    title: "详情",    
-	    width: 600,    
-	    height: 550,
+	    title:message("csh.order")+message("csh.common.detail"),    
+	    width: 800,    
+	    height: 600,
 	    cache: false, 
 	    href:'../returnsRefunds/viewOrder.jhtml?orderId='+id,
 	    buttons:[{

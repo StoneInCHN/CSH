@@ -368,7 +368,7 @@ public class Returns extends BaseEntity {
   }
 
   /**
-   * 获取 退款金额
+   * 获取 申请退款金额
    * 
    * @return
    */
@@ -378,7 +378,7 @@ public class Returns extends BaseEntity {
   }
 
   /**
-   * 设置退款金额
+   * 设置 申请退款金额
    * 
    * @param returnAmount
    */
@@ -394,6 +394,7 @@ public class Returns extends BaseEntity {
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "orders", nullable = false, updatable = false)
+  @JsonProperty
   public Order getOrder() {
     return order;
   }

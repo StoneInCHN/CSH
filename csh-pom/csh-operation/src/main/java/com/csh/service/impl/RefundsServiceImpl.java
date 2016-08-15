@@ -131,6 +131,7 @@ public class RefundsServiceImpl extends BaseServiceImpl<Refunds,Long> implements
         orderLog.setType(OrderLogType.refunds);
         orderLog.setOperator(refunds.getOperator() != null ? refunds.getOperator() : null);
         orderLog.setOrder(order);
+        orderLog.setTenantID(refunds.getTenantID());
         orderLog.setContent(refunds.getMemo());
         orderLogDao.persist(orderLog);
         

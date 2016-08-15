@@ -1,0 +1,22 @@
+.returnsItemsTable{
+     width:80%;
+     border: 1px solid #ddd;
+     margin:20px auto 30px 5%;
+}
+.linkbtn_green{
+	padding:5px;
+	margin:5px;
+	background-color:green;
+	color:#fff;
+	border-radius:3px;
+	width:60px;
+	cursor:pointer;
+}
+.linkbtn_grey{
+	padding:5px;
+	margin:5px;
+	background-color:#c0c0c0;
+	color:#575757;
+	border-radius:3px;
+	width:60px;
+}

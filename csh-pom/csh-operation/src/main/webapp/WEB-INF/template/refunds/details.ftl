@@ -50,7 +50,7 @@
 									${refunds.order.sn}
 								</td>
 								<th>
-									订单${message("csh.common.createDate")}:
+									${message("csh.order")}${message("csh.common.createDate")}:
 								</th>
 								<td>
 									[#if refunds.order.createDate??]
@@ -65,13 +65,13 @@
 						<table class="input tabContent">
 							<tr>
 								<th>
-									退货单号:
+									${message("csh.returns.sn")}:
 								</th>
 								<td>
 									${returns.sn}
 								</td>
 								<th>
-									退货单${message("csh.common.createDate")}:
+									${message("csh.returns.returns")}${message("csh.common.createDate")}:
 								</th>
 								<td>
 									[#if returns.createDate??]
@@ -82,20 +82,20 @@
 								</td>
 							</tr>		
 							<tr>
-								<th>退货单状态:</th>
+								<th>${message("csh.returns.returns")}${message("csh.status")}:</th>
 								<td>
 										[#if returns.returnsStatus??]${message("csh.returns.status."+returns.returnsStatus)}[/#if]
 								</td>
-								<th>申请退款金额:</th>
-								<td>￥${returns.returnAmount}</td>
+								<th>${message("csh.returns.returnAmount")}:</th>
+								<td>${message("csh.RMB")}${returns.returnAmount}</td>
 							</tr>							
 						</table>
 						<table class="table table-bordered" style="width:80%;border: 1px solid #ddd;margin:20px auto 30px 5%;">
 							<thead>
 									<tr>
-										<th>退货商品编号</th>
-										<th>退货商品名称</th>
-										<th>退货数量</th>
+										<th>${message("csh.returns")}${message("csh.product.sn")}</th>
+										<th>${message("csh.returns")}${message("csh.product.name")}</th>
+										<th>${message("csh.returns")}${message("csh.quantity")}</th>
 									</tr>
 							</thead>
 							<tbody>
@@ -111,9 +111,9 @@
 						<hr>
 						<table class="input tabContent">
 							<tr>
-								<th>退款单号:</th>
+								<th>${message("csh.returns.sn")}:</th>
 								<td>${refunds.sn}</td>
-								<th>退款单${message("csh.common.createDate")}:</th>
+								<th>${message("csh.returns.returns")}${message("csh.common.createDate")}:</th>
 								<td>
 									[#if refunds.createDate??]
 										<span title="${refunds.createDate?string("yyyy-MM-dd HH:mm:ss")}">${refunds.createDate}</span>
@@ -123,20 +123,20 @@
 								</td>
 							</tr>
 							<tr>
-								<th>方式:</th>
+								<th>${message("csh.refunds.method")}:</th>
 								<td>
 											[#if refunds.method??]${message("csh.refunds.method."+refunds.method)}[/#if]
 								</td>
-								<th>支付方式:</th>
+								<th>${message("csh.refunds.paymentMethod")}:</th>
 								<td>${refunds.paymentMethod}</td>
 							</tr>		
 							<tr>
-								<th>退款单状态:</th>
+								<th>${message("csh.returns.returns")}${message("csh.status")}:</th>
 								<td>	
 											[#if refunds.refundsStatus??]${message("csh.refunds.status."+refunds.refundsStatus)}[/#if]
 								</td>
-								<th>退款金额:</th>
-								<td>￥${refunds.amount}</td>
+								<th>${message("csh.refunds.amount")}:</th>
+								<td>${message("csh.RMB")}${refunds.amount}</td>
 							</tr>	
 							<tr>
 					    		<th>${message("csh.order.memo")}:</th>

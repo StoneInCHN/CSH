@@ -19,9 +19,9 @@
 <div class="mainbar">
 				<div class="page-head">
 					<div class="bread-crumb">
-						<a ><i class="fa fa-user"></i> 退款单管理</a> 
+						<a ><i class="fa fa-user"></i> ${message("csh.refunds.refunds")} ${message("csh.manage")}</a> 
 						<span class="divider">/</span> 
-						<span  class="bread-current"><i class="fa fa-list"></i>退款单列表(${message("csh.page.total", page.total)})</span>
+						<span  class="bread-current"><i class="fa fa-list"></i>${message("csh.refunds.refunds")}${message("csh.list")}(${message("csh.page.total", page.total)})</span>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -62,7 +62,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "sn" ] selected="selected" class="active" [/#if] title="sn"><a href="#">退款单编号</a></li>
+								          <li [#if page.searchProperty == "sn" ] selected="selected" class="active" [/#if] title="sn"><a href="#"> ${message("csh.refunds.sn")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -77,7 +77,7 @@
 			              <div class="col-md-12">
 			                <div class="widget">
 									 <div class="widget-head">
-						                  <div class="pull-left"><i class="fa fa-list"></i>退款单管理</div>
+						                  <div class="pull-left"><i class="fa fa-list"></i>${message("csh.refunds.refunds")} ${message("csh.manage")}</div>
 						                  <div class="widget-icons pull-right">
 						                    <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
 						                    <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -92,22 +92,22 @@
 														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="sn">退款单编号</a>
+														<a href="javascript:;" class="sort" name="sn">${message("csh.refunds.sn")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="refundsStatus">退款单状态</a>
+														<a href="javascript:;" class="sort" name="refundsStatus">${message("csh.refunds.refunds")}${message("csh.status")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="method">方式</a>
+														<a href="javascript:;" class="sort" name="method">${message("csh.refunds.method")}</a>
 													</th>	
 													<th>
-														<a href="javascript:;" class="sort" name="paymentMethod">支付方式</a>
+														<a href="javascript:;" class="sort" name="paymentMethod">${message("csh.refunds.paymentMethod")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="amount">退款金额</a>
+														<a href="javascript:;" class="sort" name="amount">${message("csh.refunds.amount")}</a>
 													</th>			
 													<th>
-														<a href="javascript:;" class="sort" name="orderSn">所属订单</a>
+														<a href="javascript:;" class="sort" name="orderSn">${message("csh.belong.order")}</a>
 													</th>																																					
 													<th>
 														<span>${message("csh.common.handle")}</span>

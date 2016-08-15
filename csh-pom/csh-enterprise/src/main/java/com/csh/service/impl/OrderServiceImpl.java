@@ -42,6 +42,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     orderLog.setType(OrderLogType.confirm);
     orderLog.setOperator(operator != null ? operator.getUserName() : null);
     orderLog.setOrder(order);
+    orderLog.setTenantID(tenantAccountService.getCurrentTenantID());
     orderLog.setContent(SpringUtils.getMessage("csh.order.orderStatus.change.confirmed"));
     orderLogDao.persist(orderLog);
   }
