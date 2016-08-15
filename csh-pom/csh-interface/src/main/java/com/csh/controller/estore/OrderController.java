@@ -53,6 +53,7 @@ import com.csh.service.ProductService;
 import com.csh.service.ReturnsService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.PayUtil;
+import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
 
 
@@ -139,15 +140,17 @@ public class OrderController extends MobileBaseController {
       try {
         BigDecimal weChatPrice = order.getAmount().multiply(new BigDecimal(100));
         response =
-            PayUtil.wechat(order.getSn(), order.getSn(), httpReq.getRemoteAddr(), order.getId()
-                .toString(), weChatPrice.intValue() + "");
+            PayUtil.wechat(
+                "E" + order.getSn() + "_" + TimeUtils.format("mmss", new Date().getTime()),
+                order.getSn(), httpReq.getRemoteAddr(), order.getId().toString(),
+                weChatPrice.intValue() + "");
       } catch (Exception e) {
         e.printStackTrace();
       }
 
     } else {// 支付宝和余额支付
       Map<String, Object> map = new HashMap<String, Object>();
-      map.put("out_trade_no", order.getSn());
+      map.put("out_trade_no", "2_" + order.getSn());
       response.setMsg(map);
       response.setCode(CommonAttributes.SUCCESS);
     }

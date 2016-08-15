@@ -100,7 +100,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     Order order = new Order();
     order.setIsInvoice(isInvoice);
     order.setInvoiceTitle(invoiceTitle);
-    order.setSn("E" + snDao.generate(Type.order));
+    order.setSn(snDao.generate(Type.order));
     order.setOrderStatus(OrderStatus.unconfirmed);
     order.setPaymentStatus(PaymentStatus.unpaid);
     order.setShippingStatus(ShippingStatus.unshipped);
@@ -179,7 +179,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     for (Long tenantId : tenantIds) {
       Order order = new Order();
       List<OrderItem> orderItems = order.getOrderItems();
-      order.setSn("E" + snDao.generate(Type.order));
+      order.setSn(snDao.generate(Type.order));
       order.setIsInvoice(isInvoice);
       order.setInvoiceTitle(invoiceTitle);
       order.setOrderStatus(OrderStatus.unconfirmed);

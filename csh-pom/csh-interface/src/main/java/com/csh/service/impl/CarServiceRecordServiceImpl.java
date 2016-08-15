@@ -207,9 +207,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
 
 
     if (PaymentType.WALLET.equals(paymentType)) {
-      BigDecimal walletMoney = new BigDecimal(0);
-      Boolean flag = true;
-      Wallet wallet = endUser.getWallet();
+      // BigDecimal walletMoney = new BigDecimal(0);
+      // Boolean flag = true;
+      // Wallet wallet = endUser.getWallet();
       AccountBalance accountBalance =
           accountBalanceService.getOfflineBalanceByTenant(endUser, carServiceRecord.getTenantID());
       if (accountBalance != null && accountBalance.getBalance().compareTo(new BigDecimal(0)) != 0) {
@@ -220,34 +220,35 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         }
         if (accountBalance.getBalance().compareTo(carServiceRecord.getDiscountPrice()) >= 0) {// 混合余额支付，线下余额大于等于支付金额
           carServiceRecord.setOfflineBalance(carServiceRecord.getDiscountPrice());
-          accountBalance.setBalance(accountBalance.getBalance().subtract(
-              carServiceRecord.getDiscountPrice()));
-          flag = false;
+          // accountBalance.setBalance(accountBalance.getBalance().subtract(
+          // carServiceRecord.getDiscountPrice()));
+          // flag = false;
         } else {// 混合余额支付，线下余额小于支付金额，剩余金额需普通余额支付,还需要支付的金额为walletMoney
           carServiceRecord.setOfflineBalance(accountBalance.getBalance());
-          walletMoney = carServiceRecord.getDiscountPrice().subtract(accountBalance.getBalance());
-          accountBalance.setBalance(new BigDecimal(0));
+          // walletMoney =
+          // carServiceRecord.getDiscountPrice().subtract(accountBalance.getBalance());
+          // accountBalance.setBalance(new BigDecimal(0));
         }
-        accountBalanceService.update(accountBalance);
+        // accountBalanceService.update(accountBalance);
       }
 
-      WalletRecord walletRecord = new WalletRecord();
-      walletRecord.setBalanceType(BalanceType.OUTCOME);
-      walletRecord.setWallet(wallet);
-      walletRecord.setWalletType(WalletType.MONEY);
-      walletRecord.setRemark(Message.success("csh.wallet.purService.record",
-          carServiceRecord.getCarService().getServiceName()).getContent());
-      walletRecord.setMoney(carServiceRecord.getDiscountPrice());
-      if (flag) {
-        if (walletMoney.compareTo(new BigDecimal(0)) > 0) {// 余额混合支付
-          wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(walletMoney));
-        } else {// 普通余额支付
-          wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(
-              carServiceRecord.getDiscountPrice()));
-        }
-      }
-      wallet.getWalletRecords().add(walletRecord);
-      walletDao.merge(wallet);
+      // WalletRecord walletRecord = new WalletRecord();
+      // walletRecord.setBalanceType(BalanceType.OUTCOME);
+      // walletRecord.setWallet(wallet);
+      // walletRecord.setWalletType(WalletType.MONEY);
+      // walletRecord.setRemark(Message.success("csh.wallet.purService.record",
+      // carServiceRecord.getCarService().getServiceName()).getContent());
+      // walletRecord.setMoney(carServiceRecord.getDiscountPrice());
+      // if (flag) {
+      // if (walletMoney.compareTo(new BigDecimal(0)) > 0) {// 余额混合支付
+      // wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(walletMoney));
+      // } else {// 普通余额支付
+      // wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(
+      // carServiceRecord.getDiscountPrice()));
+      // }
+      // }
+      // wallet.getWalletRecords().add(walletRecord);
+      // walletDao.merge(wallet);
 
     }
 
@@ -304,6 +305,47 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public CarServiceRecord updatePayStatus(CarServiceRecord carServiceRecord) {
     Setting setting = SettingUtils.get();
+    if (PaymentType.WALLET.equals(carServiceRecord.getPaymentType())
+        || PaymentType.MIXCOUPONOFFLINE.equals(carServiceRecord.getPaymentType())
+        || PaymentType.OFFLINEBALLANCE.equals(carServiceRecord.getPaymentType())) {
+
+      BigDecimal walletMoney = new BigDecimal(0);
+      Boolean flag = true;
+      EndUser endUser = carServiceRecord.getEndUser();
+      Wallet wallet = endUser.getWallet();
+      AccountBalance accountBalance =
+          accountBalanceService.getOfflineBalanceByTenant(endUser, carServiceRecord.getTenantID());
+      if (accountBalance != null && accountBalance.getBalance().compareTo(new BigDecimal(0)) != 0) {
+        if (accountBalance.getBalance().compareTo(carServiceRecord.getDiscountPrice()) >= 0) {// 混合余额支付，线下余额大于等于支付金额
+          accountBalance.setBalance(accountBalance.getBalance().subtract(
+              carServiceRecord.getOfflineBalance()));
+          flag = false;
+        } else {// 混合余额支付，线下余额小于支付金额，剩余金额需普通余额支付,还需要支付的金额为walletMoney
+          walletMoney = carServiceRecord.getDiscountPrice().subtract(accountBalance.getBalance());
+          accountBalance.setBalance(new BigDecimal(0));
+        }
+        accountBalanceService.update(accountBalance);
+      }
+
+      WalletRecord walletRecord = new WalletRecord();
+      walletRecord.setBalanceType(BalanceType.OUTCOME);
+      walletRecord.setWallet(wallet);
+      walletRecord.setWalletType(WalletType.MONEY);
+      walletRecord.setRemark(Message.success("csh.wallet.purService.record",
+          carServiceRecord.getCarService().getServiceName()).getContent());
+      walletRecord.setMoney(carServiceRecord.getDiscountPrice());
+      if (flag) {
+        if (walletMoney.compareTo(new BigDecimal(0)) > 0) {// 余额混合支付
+          wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(walletMoney));
+        } else {// 普通余额支付
+          wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(
+              carServiceRecord.getDiscountPrice()));
+        }
+      }
+      wallet.getWalletRecords().add(walletRecord);
+      walletDao.merge(wallet);
+    }
+
     // 消费兑换积分.规则 1元=1积分,不足1元送1积分(余额消费也送积分，因为余额充值时没有送了积分)
     if (carServiceRecord.getPaymentType() != null) {
       Wallet wallet = carServiceRecord.getEndUser().getWallet();
@@ -382,7 +424,6 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
           carServiceRecord.getCarService().getTenantInfo().getAddress(), tokenNo.toString());
 
     }
-
     return carServiceRecord;
   }
 
@@ -419,9 +460,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     }
 
     if (PaymentType.WALLET.equals(paymentType)) {
-      BigDecimal walletMoney = new BigDecimal(0);
-      Boolean flag = true;
-      Wallet wallet = endUser.getWallet();
+      // BigDecimal walletMoney = new BigDecimal(0);
+      // Boolean flag = true;
+      // Wallet wallet = endUser.getWallet();
       AccountBalance accountBalance =
           accountBalanceService.getOfflineBalanceByTenant(endUser, carServiceRecord.getTenantID());
       if (accountBalance != null && accountBalance.getBalance().compareTo(new BigDecimal(0)) != 0) {
@@ -432,34 +473,35 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         }
         if (accountBalance.getBalance().compareTo(carServiceRecord.getDiscountPrice()) >= 0) {// 混合余额支付，线下余额大于等于支付金额
           carServiceRecord.setOfflineBalance(carServiceRecord.getDiscountPrice());
-          accountBalance.setBalance(accountBalance.getBalance().subtract(
-              carServiceRecord.getDiscountPrice()));
-          flag = false;
+          // accountBalance.setBalance(accountBalance.getBalance().subtract(
+          // carServiceRecord.getDiscountPrice()));
+          // flag = false;
         } else {// 混合余额支付，线下余额小于支付金额，剩余金额需普通余额支付,还需要支付的金额为walletMoney
           carServiceRecord.setOfflineBalance(accountBalance.getBalance());
-          walletMoney = carServiceRecord.getDiscountPrice().subtract(accountBalance.getBalance());
-          accountBalance.setBalance(new BigDecimal(0));
+          // walletMoney =
+          // carServiceRecord.getDiscountPrice().subtract(accountBalance.getBalance());
+          // accountBalance.setBalance(new BigDecimal(0));
         }
-        accountBalanceService.update(accountBalance);
+        // accountBalanceService.update(accountBalance);
       }
 
-      WalletRecord walletRecord = new WalletRecord();
-      walletRecord.setBalanceType(BalanceType.OUTCOME);
-      walletRecord.setWallet(wallet);
-      walletRecord.setWalletType(WalletType.MONEY);
-      walletRecord.setRemark(Message.success("csh.wallet.purService.record",
-          carServiceRecord.getCarService().getServiceName()).getContent());
-      walletRecord.setMoney(carServiceRecord.getDiscountPrice());
-      if (flag) {
-        if (walletMoney.compareTo(new BigDecimal(0)) > 0) {// 余额混合支付
-          wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(walletMoney));
-        } else {// 普通余额支付
-          wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(
-              carServiceRecord.getDiscountPrice()));
-        }
-      }
-      wallet.getWalletRecords().add(walletRecord);
-      walletDao.merge(wallet);
+      // WalletRecord walletRecord = new WalletRecord();
+      // walletRecord.setBalanceType(BalanceType.OUTCOME);
+      // walletRecord.setWallet(wallet);
+      // walletRecord.setWalletType(WalletType.MONEY);
+      // walletRecord.setRemark(Message.success("csh.wallet.purService.record",
+      // carServiceRecord.getCarService().getServiceName()).getContent());
+      // walletRecord.setMoney(carServiceRecord.getDiscountPrice());
+      // if (flag) {
+      // if (walletMoney.compareTo(new BigDecimal(0)) > 0) {// 余额混合支付
+      // wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(walletMoney));
+      // } else {// 普通余额支付
+      // wallet.setBalanceAmount(wallet.getBalanceAmount().subtract(
+      // carServiceRecord.getDiscountPrice()));
+      // }
+      // }
+      // wallet.getWalletRecords().add(walletRecord);
+      // walletDao.merge(wallet);
 
     }
 

@@ -155,7 +155,7 @@ public class NotifyController extends MobileBaseController {
           // 购买商品
           else if (out_trade_no.startsWith("E")) {
             List<Filter> filters = new ArrayList<Filter>();
-            Filter filter = new Filter("sn", Operator.eq, out_trade_no);
+            Filter filter = new Filter("sn", Operator.eq, recordNo.substring(1));
             filters.add(filter);
             List<Order> records = orderService.findList(null, filters, null);
             if (!CollectionUtils.isEmpty(records) && records.size() == 1) {
@@ -330,9 +330,10 @@ public class NotifyController extends MobileBaseController {
           ToolsUtils.generateRecordNoByParam("PD" + out_trade_no.split("_")[1]));
     }
     // 购买商品
-    else if (out_trade_no.startsWith("E")) {
+    else if (out_trade_no.split("_").length == 2 && recordNo.equals("2")) {
+      String orderSn = out_trade_no.split("_")[1];
       List<Filter> filters = new ArrayList<Filter>();
-      Filter filter = new Filter("sn", Operator.eq, out_trade_no);
+      Filter filter = new Filter("sn", Operator.eq, orderSn);
       filters.add(filter);
       List<Order> records = orderService.findList(null, filters, null);
       if (!CollectionUtils.isEmpty(records) && records.size() == 1) {

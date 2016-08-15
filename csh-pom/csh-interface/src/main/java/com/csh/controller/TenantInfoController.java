@@ -99,9 +99,13 @@ public class TenantInfoController extends MobileBaseController {
     }
 
     if (LogUtil.isDebugEnabled(TenantInfoController.class)) {
-      LogUtil.debug(TenantInfoController.class, "getTenantList",
-          "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s",
-          endUser.getUserName(), endUser.getId(), longitude, latitude);
+      LogUtil
+          .debug(
+              TenantInfoController.class,
+              "getTenantList",
+              "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s,radius: %s, serviceCategoryId: %s",
+              endUser.getUserName(), endUser.getId(), longitude, latitude, radius,
+              serviceCategoryId);
     }
     Pageable pageable = new Pageable(tenantInfoReq.getPageNumber(), tenantInfoReq.getPageSize());
     Page<Map<String, Object>> tenantPage =
@@ -212,8 +216,9 @@ public class TenantInfoController extends MobileBaseController {
           .debug(
               TenantInfoController.class,
               "getTenantList",
-              "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s, SortType: %s",
-              endUser.getUserName(), endUser.getId(), longitude, latitude, sortType);
+              "search tenant for User with UserName: %s,UserId: %s,Longitude: %s,Latitude: %s, SortType: %s, radius: %s, serviceCategoryId: %s",
+              endUser.getUserName(), endUser.getId(), longitude, latitude, sortType, radius,
+              serviceCategoryId);
     }
     Pageable pageable = new Pageable(tenantInfoReq.getPageNumber(), tenantInfoReq.getPageSize());
     Page<Map<String, Object>> tenantPage =
@@ -360,28 +365,30 @@ public class TenantInfoController extends MobileBaseController {
     String[] service_properties =
         {"id", "serviceName", "price", "promotionPrice", "serviceDesc", "imgPath"};
     for (CarService carService : tenantInfo.getCarServices()) {
-      List<Map<String, Object>> sub_service_maps = new ArrayList<Map<String, Object>>();
-      Map<String, Object> sub_service_map = new HashMap<String, Object>();
-      Map<String, Object> category_map = new HashMap<String, Object>();
-      if (!categoryNames.contains(carService.getServiceCategory().getCategoryName())
-          && ServiceStatus.ENABLED.equals(carService.getServiceStatus())) {
-        categoryNames.add(carService.getServiceCategory().getCategoryName());
-        category_map.put("categoryId", carService.getServiceCategory().getId());
-        category_map.put("categoryName", carService.getServiceCategory().getCategoryName());
-        sub_service_map = FieldFilterUtils.filterEntityMap(service_properties, carService);
+      if (ServiceStatus.ENABLED.equals(carService.getServiceStatus())) {
+        List<Map<String, Object>> sub_service_maps = new ArrayList<Map<String, Object>>();
+        Map<String, Object> sub_service_map = new HashMap<String, Object>();
+        Map<String, Object> category_map = new HashMap<String, Object>();
+        if (!categoryNames.contains(carService.getServiceCategory().getCategoryName())) {
+          categoryNames.add(carService.getServiceCategory().getCategoryName());
+          category_map.put("categoryId", carService.getServiceCategory().getId());
+          category_map.put("categoryName", carService.getServiceCategory().getCategoryName());
+          sub_service_map = FieldFilterUtils.filterEntityMap(service_properties, carService);
 
-        service_map.add(category_map);
-      } else {
-        for (Map<String, Object> serviceMap : service_map) {
-          if (serviceMap.get("categoryName").equals(
-              carService.getServiceCategory().getCategoryName())) {
-            sub_service_maps = (List<Map<String, Object>>) serviceMap.get("subServices");
-            sub_service_map = FieldFilterUtils.filterEntityMap(service_properties, carService);
+          service_map.add(category_map);
+        } else {
+          for (Map<String, Object> serviceMap : service_map) {
+            if (serviceMap.get("categoryName").equals(
+                carService.getServiceCategory().getCategoryName())) {
+              sub_service_maps = (List<Map<String, Object>>) serviceMap.get("subServices");
+              sub_service_map = FieldFilterUtils.filterEntityMap(service_properties, carService);
+            }
           }
         }
+        sub_service_maps.add(sub_service_map);
+        category_map.put("subServices", sub_service_maps);
       }
-      sub_service_maps.add(sub_service_map);
-      category_map.put("subServices", sub_service_maps);
+
     }
 
     map.put("carServices", service_map);
