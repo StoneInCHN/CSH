@@ -36,6 +36,27 @@
 				     }],
 				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="serviceStatus" style="width:110px;" required=true/>
     		</td>
+    		
+    	</tr>
+    	<tr>
+    		<th>${message("csh.carService.isAllowedRedPackage")}:</th>
+    		<td >
+    			 <input class="easyui-combobox" data-options="
+				     valueField: 'label',
+				     textField: 'value',
+				     data: [{
+				      label: 'true',
+				      value: '${message("csh.carService.isAllowedRedPackage.true")}'
+				     },{
+				      label: 'false',
+				      value: '${message("csh.carService.isAllowedRedPackage.false")}'
+				     }],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="isAllowedRedPackage" style="width:110px;" required=true/>
+    		</td>
+    		<th>${message("csh.carService.redPackageMax")}:</th>
+    		<td>
+    			 <input  class="easyui-numberbox" name="redPackageMax" id= "addRedPackageMax"  data-options="min:0,precision:2"/>
+    		</td>
     	</tr>
     	<tr rowspan="4">
     		

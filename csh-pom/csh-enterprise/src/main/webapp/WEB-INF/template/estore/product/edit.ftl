@@ -95,6 +95,32 @@
 		    		</td >
 		    	</tr>
 		    	<tr>
+		    		<th>${message("csh.product.isAllowedRedPackage")}:</th>
+		    		<td >
+		    			 <input class="easyui-combobox" data-options="
+						     valueField: 'label',
+						     textField: 'value',
+						     data: [{
+						      label: 'true',
+						      value: '${message("csh.product.isAllowedRedPackage.true")}'
+						      [#if product.isAllowedRedPackage == true]
+						      	,'selected':true
+						      [/#if]
+						     },{
+						      label: 'false',
+						      value: '${message("csh.product.isAllowedRedPackage.false")}'
+						      [#if product.isAllowedRedPackage == false]
+						      	,'selected':true
+						      [/#if]
+						     }],
+						     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="isAllowedRedPackage" style="width:110px;" required=true/>
+		    		</td>
+		    		<th>${message("csh.product.redPackageMax")}:</th>
+		    		<td>
+		    			 <input  class="easyui-numberbox" value="${product.redPackageMax}" name="redPackageMax" id= "addRedPackageMax" data-options="min:0,precision:2"/>
+		    		</td>
+		    	</tr>
+		    	<tr>
 		    		<th >${message("csh.product.brand")}:</th>
 		    		<td>
 		    			<input class="easyui-textbox" required="required" data-value="${product.brand.id}" id="editProduct_brand" name="brandId"/>

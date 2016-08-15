@@ -193,8 +193,11 @@ public class Product extends BaseEntity {
 
   /** 是否上架 */
   private Boolean isMarketable;
-
-
+  /** 是否支持红包*/
+  private Boolean isAllowedRedPackage;
+  /**红包最大抵扣额度*/
+  private BigDecimal redPackageMax;
+  
   /** 是否为推荐商品，如果为推荐商品的话手机端可以看见 */
   private Boolean isRecommend;
 
@@ -407,6 +410,8 @@ public class Product extends BaseEntity {
    * 租户ID
    */
   private Long tenantID;
+
+  
 
   @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO, store = Store.NO)
   public Long getTenantID() {
@@ -2015,6 +2020,14 @@ public class Product extends BaseEntity {
     this.barCode = barCode;
   }
 
+  @Column(scale = 2, precision = 10)
+  public BigDecimal getRedPackageMax() {
+	return redPackageMax;
+  }
+
+  public void setRedPackageMax(BigDecimal redPackageMax) {
+	this.redPackageMax = redPackageMax;
+  }
   /**
    * 获取参数值
    * 
@@ -2035,7 +2048,16 @@ public class Product extends BaseEntity {
     this.parameterValue = parameterValue;
   }
 
-  /**
+  
+  public Boolean getIsAllowedRedPackage() {
+	return isAllowedRedPackage;
+  }
+
+  public void setIsAllowedRedPackage(Boolean isAllowedRedPackage) {
+	this.isAllowedRedPackage = isAllowedRedPackage;
+  }
+
+/**
    * 获取商品属性值
    * 
    * @param attribute 商品属性

@@ -280,7 +280,7 @@ var carService_manager_tool = {
 							$('#editCarServiceCategory').combobox("setValue",serviceCategoryId);
 						},
 						 onChange:function(newValue, oldValue){
-							 if(!(record.id == 2 || record.id == 1)){
+							 if(!(newValue == 2 || newValue == 1)){
 						    		$("#editCarServicePrice").textbox('setValue',-1);
 						    		$("#editCarServicePrice").textbox({
 						    			readonly:true,

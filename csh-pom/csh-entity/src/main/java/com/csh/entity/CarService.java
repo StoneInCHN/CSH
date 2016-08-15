@@ -102,6 +102,16 @@ public class CarService extends BaseEntity {
    */
   private Integer purchaseCounts = 0;
 
+  /**
+   * 是否支持红包
+   */
+  private Boolean isAllowedRedPackage;
+  
+  /**
+   * 红包最多抵扣额度
+   */
+  private BigDecimal redPackageMax;
+  
   private Set<CarServiceItem> carServiceItems = new HashSet<CarServiceItem>();
 
 
@@ -230,5 +240,21 @@ public class CarService extends BaseEntity {
     this.carServiceItems = carServiceItems;
   }
 
+  public Boolean getIsAllowedRedPackage() {
+	return isAllowedRedPackage;
+  }
 
+  public void setIsAllowedRedPackage(Boolean isAllowedRedPackage) {
+	this.isAllowedRedPackage = isAllowedRedPackage;
+  }
+
+  @Column(scale = 2, precision = 10)
+  public BigDecimal getRedPackageMax() {
+	return redPackageMax;
+  }
+
+  public void setRedPackageMax(BigDecimal redPackageMax) {
+	this.redPackageMax = redPackageMax;
+  }
+  
 }

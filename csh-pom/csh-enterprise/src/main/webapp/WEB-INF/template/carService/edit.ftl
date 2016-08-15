@@ -44,6 +44,32 @@
 				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="serviceStatus" style="width:110px;" required=true/>
     		</td>
     	</tr>
+    	<tr>
+    		<th>${message("csh.carService.isAllowedRedPackage")}:</th>
+    		<td >
+    			 <input class="easyui-combobox" data-options="
+				     valueField: 'label',
+				     textField: 'value',
+				     data: [{
+				      label: 'true',
+				      value: '${message("csh.carService.isAllowedRedPackage.true")}'
+				      [#if carService.isAllowedRedPackage == true]
+				      	,'selected':true
+				      [/#if]
+				     },{
+				      label: 'false',
+				      value: '${message("csh.carService.isAllowedRedPackage.false")}'
+				      [#if carService.isAllowedRedPackage == false]
+				      	,'selected':true
+				      [/#if]
+				     }],
+				     prompt:'${message("csh.common.please.select")}',panelMaxHeight:100"  name="isAllowedRedPackage" style="width:110px;" required=true/>
+    		</td>
+    		<th>${message("csh.carService.redPackageMax")}:</th>
+    		<td>
+    			 <input  class="easyui-numberbox" value="${carService.redPackageMax}" name="redPackageMax" id= "addRedPackageMax" data-options="min:0,precision:2"/>
+    		</td>
+    	</tr>
     	<tr rowspan="4">
     		
     		<th>${message("csh.carService.imgPath")}:</th>
