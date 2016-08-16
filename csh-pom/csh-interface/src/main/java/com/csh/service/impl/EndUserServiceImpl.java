@@ -17,9 +17,11 @@ import com.csh.entity.Wallet;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.entity.commonenum.CommonEnum.AppPlatform;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
+import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CouponService;
 import com.csh.service.EndUserService;
+import com.csh.service.WalletService;
 import com.csh.utils.TimeUtils;
 
 @Service("endUserServiceImpl")
@@ -36,6 +38,9 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
 
   @Resource(name = "reportUserRegStatisticsDaoImpl")
   private ReportUserRegStatisticsDao reportUserRegStatisticsDao;
+
+  @Resource(name = "walletServiceImpl")
+  private WalletService walletService;
 
   @Resource(name = "endUserDaoImpl")
   public void setBaseDao(EndUserDao endUserDao) {
@@ -107,6 +112,12 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
 
     Boolean flag = couponService.takeCouponBySendType(null, regUser, CouponSendType.REG);
     regUser.setIsGetCoupon(flag);
+
+    /**
+     * 注册送基金红包
+     */
+    walletService.giftRedPacket(wallet, SystemConfigKey.GROUTHFUND_REG,
+        "csh.wallet.reg.comein.redPacket");
     return regUser;
   }
 

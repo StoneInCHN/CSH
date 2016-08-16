@@ -1,8 +1,10 @@
 package com.csh.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.csh.entity.CarService;
+import com.csh.entity.EndUser;
 import com.csh.entity.TenantInfo;
 import com.csh.framework.service.BaseService;
 
@@ -16,4 +18,14 @@ public interface CarServiceService extends BaseService<CarService, Long> {
    * @return
    */
   List<CarService> getServicesByTenantAndCategory(TenantInfo tenantInfo, Long categoryId);
+
+
+  /**
+   * 获取服务可使用的红包金额
+   * 
+   * @param carService
+   * @param endUser
+   * @return
+   */
+  Map<String, Object> getGiftAmount(CarService carService, EndUser endUser);
 }

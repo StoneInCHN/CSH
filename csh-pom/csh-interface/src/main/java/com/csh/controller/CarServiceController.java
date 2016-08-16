@@ -136,7 +136,7 @@ public class CarServiceController extends MobileBaseController {
 
     CarServiceRecord carServiceRecord =
         carServiceRecordService.createServiceRecord(endUser, carService, chargeStatus,
-            new BigDecimal(-1), null, subscribeDate, null, itemIds);
+            new BigDecimal(-1), null, subscribeDate, null, itemIds, null);
 
 
     String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
@@ -195,6 +195,73 @@ public class CarServiceController extends MobileBaseController {
 
 
   /**
+   * 获取支付时可用的优惠券及可支付的红包金额
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/getCouponAndGiftForPay", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> getCouponAndGiftForPay(
+      @RequestBody CarServiceRequest serviceReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = serviceReq.getUserId();
+    String token = serviceReq.getToken();
+    Long serviceId = serviceReq.getServiceId();
+    Integer pageNum = serviceReq.getPageNumber();
+    Integer pageSiaze = serviceReq.getPageSize();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    CarService carService = carServiceService.find(serviceId);
+    EndUser endUser = endUserService.find(userId);
+
+    Pageable pageable = new Pageable(pageNum, pageSiaze);
+    if (LogUtil.isDebugEnabled(CarServiceController.class)) {
+      LogUtil
+          .debug(
+              CarServiceController.class,
+              "getAvailableGift",
+              "search my coupon list and red packet for special service. UserName: %s,CarServiceId: %s",
+              endUser.getUserName(), serviceId);
+    }
+
+    List<CouponEndUser> coupons =
+        couponEndUserService.getMyCouponsForPay(pageable, endUser, serviceId);
+
+    String[] properties = {"id", "overDueTime", "coupon.remark", "coupon.amount", "coupon.type"};
+    List<Map<String, Object>> couponList =
+        FieldFilterUtils.filterCollectionMap(properties, coupons);
+
+    Map<String, Object> resMap = new HashMap<String, Object>();
+    resMap.put("couponList", couponList);
+
+
+    CarWashingCouponEndUser carWashingCoupon =
+        carWashingCouponEndUserService.getWashingCouponPay(endUser, serviceId);
+    if (carWashingCoupon != null) {
+      resMap.put("existWashing", true);
+    } else {
+      resMap.put("existWashing", false);
+    }
+
+    Map<String, Object> giftMap = carServiceService.getGiftAmount(carService, endUser);
+    resMap.putAll(giftMap);
+    response.setMsg(resMap);
+    String newtoken = TokenGenerator.generateToken(serviceReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
+
+  /**
    * 支付(余额支付直接支付)
    * 
    * @param req
@@ -214,6 +281,8 @@ public class CarServiceController extends MobileBaseController {
     Long serviceId = serviceReq.getServiceId();
     Long recordId = serviceReq.getRecordId();
     Long couponEndUserId = serviceReq.getCouponId();
+    Boolean isRedPacket = serviceReq.getIsRedPacket();
+
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -293,7 +362,7 @@ public class CarServiceController extends MobileBaseController {
       }
       carServiceRecord =
           carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
-              carService.getPromotionPrice(), paymentType, null, couponEndUser, null);
+              carService.getPromotionPrice(), paymentType, null, couponEndUser, null, isRedPacket);
 
     } else {
       carServiceRecord = carServiceRecordService.find(recordId);
@@ -308,7 +377,7 @@ public class CarServiceController extends MobileBaseController {
                 carService.getServiceName(), carServiceRecord.getPrice(), couponEndUserId,
                 carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
       }
-      carServiceRecordService.updateServiceRecord(carServiceRecord, couponEndUser);
+      carServiceRecordService.updateServiceRecord(carServiceRecord, couponEndUser, isRedPacket);
       // if (PaymentType.WALLET.equals(paymentType)) {// 余额支付
       // if (carServiceRecord.getPrice().compareTo(wallet.getBalanceAmount()) > 0) {
       // response.setCode(CommonAttributes.FAIL_COMMON);

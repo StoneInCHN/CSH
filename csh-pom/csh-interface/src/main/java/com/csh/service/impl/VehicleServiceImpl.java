@@ -21,11 +21,13 @@ import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.CouponSendType;
+import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.CouponService;
 import com.csh.service.VehicleService;
+import com.csh.service.WalletService;
 
 @Service("vehicleServiceImpl")
 public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implements VehicleService {
@@ -38,6 +40,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
 
   @Resource(name = "couponServiceImpl")
   private CouponService couponService;
+
+  @Resource(name = "walletServiceImpl")
+  private WalletService walletService;
 
   @Resource(name = "reportDeviceBindStatisticsDaoImpl")
   private ReportDeviceBindStatisticsDao reportDeviceBindStatisticsDao;
@@ -57,6 +62,14 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     deviceInfo.setBindStatus(BindStatus.BINDED);
     vehicle.setDevice(deviceInfo);
     vehicle.setTenantID(deviceInfo.getTenantID());
+    /**
+     * 车辆第一次绑定设备送基金红包
+     */
+    if (vehicle.getIsFirstBindDevice()) {
+      walletService.giftRedPacket(vehicle.getEndUser().getWallet(),
+          SystemConfigKey.GROUTHFUND_BIND, "csh.wallet.bindDevice.comein.redPacket");
+      vehicle.setIsFirstBindDevice(false);
+    }
     vehicleDao.merge(vehicle);
 
     List<Filter> filters = new ArrayList<Filter>();
@@ -90,6 +103,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     Boolean flag =
         couponService.takeCouponBySendType(null, vehicle.getEndUser(), CouponSendType.DEVICEBIND);
     vehicle.setIsGetCoupon(flag);
+
     return vehicle;
   }
 
@@ -106,11 +120,20 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public Vehicle bindTenant(Vehicle vehicle) {
+    /**
+     * 第一次扫码关注租户送基金红包
+     */
+    if (vehicle.getIsFirstBindTenant()) {
+      walletService.giftRedPacket(vehicle.getEndUser().getWallet(),
+          SystemConfigKey.GROUTHFUND_ATTENTION, "csh.wallet.bindTenant.comein.redPacket");
+      vehicle.setIsFirstBindTenant(false);
+    }
     vehicleDao.merge(vehicle);
     Boolean flag =
         couponService.takeCouponBySendType(vehicle.getTenantID(), vehicle.getEndUser(),
             CouponSendType.TENANTBIND);
     vehicle.setIsGetCoupon(flag);
+
     return vehicle;
   }
 
@@ -119,6 +142,11 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   public Vehicle addVehicle(Vehicle vehicle, EndUser endUser, Boolean isDefault) {
     if (endUser.getVehicles() == null || endUser.getVehicles().size() <= 0) {
       vehicle.setIsDefault(true);
+      /**
+       * 首次添加车辆送基金红包
+       */
+      walletService.giftRedPacket(endUser.getWallet(), SystemConfigKey.GROUTHFUND_ADDCAR,
+          "csh.wallet.addVehicle.comein.redPacket");
     } else {
       if (isDefault != null) {
         vehicle.setIsDefault(isDefault);

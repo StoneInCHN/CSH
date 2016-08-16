@@ -249,7 +249,7 @@ public class ObdController extends MobileBaseController {
 
   /**
    * 获取故障码信息
-   * 
+   *
    * @return
    */
   @RequestMapping(value = "/getObdCode", method = RequestMethod.POST)
@@ -289,4 +289,5 @@ public class ObdController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
+
 }

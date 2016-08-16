@@ -48,6 +48,18 @@ public class CarServiceRequest extends BaseRequest {
    */
   private Long[] itemIds;
 
+  /**
+   * 是否红包支付
+   */
+  private Boolean isRedPacket;
+
+  public Boolean getIsRedPacket() {
+    return isRedPacket;
+  }
+
+  public void setIsRedPacket(Boolean isRedPacket) {
+    this.isRedPacket = isRedPacket;
+  }
 
   public Long[] getItemIds() {
     return itemIds;

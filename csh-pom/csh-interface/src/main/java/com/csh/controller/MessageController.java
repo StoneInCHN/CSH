@@ -24,6 +24,7 @@ import com.csh.entity.EndUser;
 import com.csh.entity.MessageInfo;
 import com.csh.entity.MsgEndUser;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
+import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseRequest;
@@ -35,6 +36,7 @@ import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
+import com.csh.service.WalletService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
@@ -61,6 +63,9 @@ public class MessageController extends MobileBaseController {
 
   @Resource(name = "msgEndUserServiceImpl")
   private MsgEndUserService msgEndUserService;
+
+  @Resource(name = "walletServiceImpl")
+  private WalletService walletService;
 
 
   /**
@@ -256,11 +261,21 @@ public class MessageController extends MobileBaseController {
             Message.warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
                 msgReq.getMsgContent()).getContent();
-      } else if (msgType.equals("2")) {
+      } else if (msgType.equals("2")) {// 熄火指令
+        String mile = msgReq.getGpsMileage();
+        if (mile == null) {
+          mile = "";
+        }
         msgContent =
             Message.warn("csh.obd.shutdown.message", deviceInfo.getVehicle().getPlate(),
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
-                msgReq.getTravelTime(), msgReq.getGpsMileage()).getContent();
+                msgReq.getTravelTime(), mile).getContent();
+        /**
+         * 行驶公里数送基金红包
+         */
+
+        walletService.giftRedPacket(endUser.getWallet(), SystemConfigKey.GROUTHFUND_DRIVING, mile
+            + "_csh.wallet.obdDriver.comein.redPacket");
       } else if (msgType.equals("1")) {
         msgContent =
             Message.warn("csh.obd.fire.message",

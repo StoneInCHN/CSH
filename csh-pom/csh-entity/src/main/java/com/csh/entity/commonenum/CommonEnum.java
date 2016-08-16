@@ -489,7 +489,7 @@ public class CommonEnum {
   public enum WalletType {
     /** 余额 */
     MONEY,
-    /** 优惠劵 */
+    /** 红包 */
     REDPACKET,
     /** 积分 */
     SCORE
@@ -502,7 +502,7 @@ public class CommonEnum {
     WECHAT,
     /** 钱包余额 */
     WALLET,
-    /** 优惠券钱包混合 */
+    /** 优惠券与阿里，微信，钱包余额支付混合 */
     COUPON,
     /** 洗车券 */
     WASHCOUPON,
@@ -510,9 +510,9 @@ public class CommonEnum {
     OFFLINEBALLANCE,
     /** 线下钱包优惠券混合 */
     MIXCOUPONOFFLINE,
-    /**直接支付（阿里，微信，钱包余额支付）和红包  */
+    /** 直接支付（阿里，微信，钱包余额支付）和红包 */
     DIRECTREDPACKAGE,
-    /**优惠券，红包混合*/
+    /** 优惠券，红包混合 */
     COUPONREDPACKAGE,
     /** 线下,钱包,红包混合 */
     OFFLINEBALLANCEREDPACKAGE,
@@ -822,12 +822,12 @@ public class CommonEnum {
   /**
    * 退款单状态
    */
-  public enum RefundsStatus{
-    /** 未退款*/
+  public enum RefundsStatus {
+    /** 未退款 */
     noRefund,
-    /** 退款成功*/
+    /** 退款成功 */
     refund_success,
-    /** 退款失败*/
+    /** 退款失败 */
     refund_failed,
     /** 已取消 */
     cancelled
@@ -835,14 +835,14 @@ public class CommonEnum {
   /**
    * 退货单状态
    */
-  public enum ReturnsStatus{
-    /** 申请退货中...*/
+  public enum ReturnsStatus {
+    /** 申请退货中... */
     applyReturn,
-    /** 已批准退货*/
+    /** 已批准退货 */
     approvedReturn,
-    /** 退货成功*/
+    /** 退货成功 */
     return_success,
-    /** 退货失败*/
+    /** 退货失败 */
     return_failed,
     /** 已取消 */
     cancelled
@@ -893,14 +893,14 @@ public class CommonEnum {
    */
   public enum Method {
 
-      /** 在线支付 */
-      online,
+    /** 在线支付 */
+    online,
 
-      /** 线下支付 */
-      offline,
+    /** 线下支付 */
+    offline,
 
-      /** 预存款支付 */
-      deposit
+    /** 预存款支付 */
+    deposit
   }
   /**
    * 商品状态

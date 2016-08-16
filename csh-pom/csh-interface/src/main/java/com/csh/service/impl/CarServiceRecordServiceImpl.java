@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csh.beans.Message;
 import com.csh.beans.Setting;
 import com.csh.dao.BeautifyReservationDao;
-import com.csh.dao.CarServiceDao;
 import com.csh.dao.CarServiceRecordDao;
 import com.csh.dao.CarServiceRecordPartInstDao;
 import com.csh.dao.CarWashingCouponEndUserDao;
@@ -51,6 +52,7 @@ import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.service.AccountBalanceService;
 import com.csh.service.CarServiceRecordService;
+import com.csh.service.CarServiceService;
 import com.csh.service.MessageInfoService;
 import com.csh.utils.SettingUtils;
 import com.csh.utils.TimeUtils;
@@ -91,8 +93,8 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Resource(name = "carWashingCouponEndUserDaoImpl")
   private CarWashingCouponEndUserDao carWashingCouponEndUserDao;
 
-  @Resource(name = "carServiceDaoImpl")
-  private CarServiceDao carServiceDao;
+  @Resource(name = "carServiceServiceImpl")
+  private CarServiceService carServiceService;
 
 
   @Resource(name = "carServiceRecordDaoImpl")
@@ -110,7 +112,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public CarServiceRecord createServiceRecord(EndUser endUser, CarService carService,
       ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType, Date subscribeDate,
-      CouponEndUser couponEndUser, Long[] itemIds) {
+      CouponEndUser couponEndUser, Long[] itemIds, Boolean isRedPacket) {
     Setting setting = SettingUtils.get();
     CarServiceRecord carServiceRecord = new CarServiceRecord();
     carServiceRecord.setTenantID(carService.getTenantInfo().getId());
@@ -121,10 +123,12 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carServiceRecord.setVehicle(endUser.getDefaultVehicle());
     carServiceRecord.setChargeStatus(chargeStatus);
     carServiceRecord.setPrice(price);
+    carServiceRecord.setDiscountPrice(price);
     carServiceRecord.setTenantName(carService.getTenantInfo().getTenantName());
     carServiceRecord.setTenantPhoto(carService.getTenantInfo().getPhoto());
     carServiceRecord.setSubscribeDate(subscribeDate);
     carServiceRecord.setPaymentType(paymentType);
+    carServiceRecord.setRedPackageUsage(new BigDecimal(0));
 
     if (itemIds != null && itemIds.length > 0) {
       carServiceRecord.setPrice(new BigDecimal(0));
@@ -138,11 +142,25 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
         inst.setTenantID(item.getTenantID());
         BigDecimal instPrice = carServiceRecord.getPrice().add(inst.getPrice());
         carServiceRecord.setPrice(instPrice);
+        carServiceRecord.setDiscountPrice(instPrice);
         carServiceRecord.getRecordItemPartInsts().add(inst);
       }
       price = carServiceRecord.getPrice();
     }
 
+    if (BooleanUtils.isTrue(isRedPacket)) {
+      carServiceRecord.setPaymentType(PaymentType.DIRECTREDPACKAGE);
+      Map<String, Object> giftMap = carServiceService.getGiftAmount(carService, endUser);
+      BigDecimal redPacketAmount = new BigDecimal(giftMap.get("redPacketAmount").toString());
+      if (carServiceRecord.getDiscountPrice().compareTo(redPacketAmount) >= 0) {
+        carServiceRecord.setRedPackageUsage(redPacketAmount);
+        carServiceRecord.setDiscountPrice(carServiceRecord.getDiscountPrice().subtract(
+            redPacketAmount));
+      } else {
+        carServiceRecord.setRedPackageUsage(carServiceRecord.getDiscountPrice());
+        carServiceRecord.setDiscountPrice(new BigDecimal(0));
+      }
+    }
 
     /**
      * 优惠券支付
@@ -160,15 +178,19 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       }
       carServiceRecord.setCouponEndUser(couponEndUser);
       BigDecimal discountPrice =
-          carServiceRecord.getPrice().subtract(couponEndUser.getCoupon().getAmount());
+          carServiceRecord.getDiscountPrice().subtract(couponEndUser.getCoupon().getAmount());
       discountPrice =
           discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
       carServiceRecord.setDiscountPrice(discountPrice);
       carServiceRecord.setCouponSource(couponEndUser.getCoupon().getSystemType());
       carServiceRecord.setPaymentType(PaymentType.COUPON);
+      if (BooleanUtils.isTrue(isRedPacket)) {
+        carServiceRecord.setPaymentType(PaymentType.COUPONREDPACKAGE);
+      }
       // couponEndUser.setIsUsed(true);
       // couponEndUserDao.merge(couponEndUser);
     }
+
     /**
      * 洗车券支付
      */
@@ -207,6 +229,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
 
 
     if (PaymentType.WALLET.equals(paymentType)) {
+      // if (BooleanUtils.isTrue(isRedPacket)) {
+      // carServiceRecord.setPaymentType(PaymentType);
+      // }
       // BigDecimal walletMoney = new BigDecimal(0);
       // Boolean flag = true;
       // Wallet wallet = endUser.getWallet();
@@ -215,8 +240,14 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       if (accountBalance != null && accountBalance.getBalance().compareTo(new BigDecimal(0)) != 0) {
         if (couponEndUser != null) {
           carServiceRecord.setPaymentType(PaymentType.MIXCOUPONOFFLINE);
+          if (BooleanUtils.isTrue(isRedPacket)) {
+            carServiceRecord.setPaymentType(PaymentType.MIXCOUPONOFFLINEREDPACKAGE);
+          }
         } else {
           carServiceRecord.setPaymentType(PaymentType.OFFLINEBALLANCE);
+          if (BooleanUtils.isTrue(isRedPacket)) {
+            carServiceRecord.setPaymentType(PaymentType.OFFLINEBALLANCEREDPACKAGE);
+          }
         }
         if (accountBalance.getBalance().compareTo(carServiceRecord.getDiscountPrice()) >= 0) {// 混合余额支付，线下余额大于等于支付金额
           carServiceRecord.setOfflineBalance(carServiceRecord.getDiscountPrice());
@@ -374,7 +405,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
      */
     CarService carService = carServiceRecord.getCarService();
     carService.setPurchaseCounts(carService.getPurchaseCounts() + 1);
-    carServiceDao.merge(carService);
+    carServiceService.update(carService);
 
     if (setting.getServiceCateWash().equals(
         carServiceRecord.getCarService().getServiceCategory().getId())) {
@@ -429,9 +460,25 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
 
   @Override
   public CarServiceRecord updateServiceRecord(CarServiceRecord carServiceRecord,
-      CouponEndUser couponEndUser) {
+      CouponEndUser couponEndUser, Boolean isRedPacket) {
     PaymentType paymentType = carServiceRecord.getPaymentType();
     EndUser endUser = carServiceRecord.getEndUser();
+
+    if (BooleanUtils.isTrue(isRedPacket)) {
+      carServiceRecord.setPaymentType(PaymentType.DIRECTREDPACKAGE);
+      Map<String, Object> giftMap =
+          carServiceService.getGiftAmount(carServiceRecord.getCarService(), endUser);
+      BigDecimal redPacketAmount = new BigDecimal(giftMap.get("redPacketAmount").toString());
+      if (carServiceRecord.getDiscountPrice().compareTo(redPacketAmount) >= 0) {
+        carServiceRecord.setRedPackageUsage(redPacketAmount);
+        carServiceRecord.setDiscountPrice(carServiceRecord.getDiscountPrice().subtract(
+            redPacketAmount));
+      } else {
+        carServiceRecord.setRedPackageUsage(carServiceRecord.getDiscountPrice());
+        carServiceRecord.setDiscountPrice(new BigDecimal(0));
+      }
+    }
+
     if (couponEndUser != null) {
       List<Filter> filters = new ArrayList<Filter>();
       Filter filter = new Filter("couponEndUser", Operator.eq, couponEndUser);
@@ -445,7 +492,7 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       }
       carServiceRecord.setCouponEndUser(couponEndUser);
       BigDecimal discountPrice =
-          carServiceRecord.getPrice().subtract(couponEndUser.getCoupon().getAmount());
+          carServiceRecord.getDiscountPrice().subtract(couponEndUser.getCoupon().getAmount());
       discountPrice =
           discountPrice.compareTo(new BigDecimal(0)) >= 0 ? discountPrice : new BigDecimal(0);
       carServiceRecord.setDiscountPrice(discountPrice);
@@ -453,6 +500,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       carServiceRecord.setPaymentType(PaymentType.COUPON);
       // couponEndUser.setIsUsed(true);
       // couponEndUserDao.merge(couponEndUser);
+      if (BooleanUtils.isTrue(isRedPacket)) {
+        carServiceRecord.setPaymentType(PaymentType.COUPONREDPACKAGE);
+      }
     } else {
       carServiceRecord.setCouponSource(null);
       carServiceRecord.setCouponEndUser(null);
@@ -468,8 +518,14 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
       if (accountBalance != null && accountBalance.getBalance().compareTo(new BigDecimal(0)) != 0) {
         if (couponEndUser != null) {
           carServiceRecord.setPaymentType(PaymentType.MIXCOUPONOFFLINE);
+          if (BooleanUtils.isTrue(isRedPacket)) {
+            carServiceRecord.setPaymentType(PaymentType.MIXCOUPONOFFLINEREDPACKAGE);
+          }
         } else {
           carServiceRecord.setPaymentType(PaymentType.OFFLINEBALLANCE);
+          if (BooleanUtils.isTrue(isRedPacket)) {
+            carServiceRecord.setPaymentType(PaymentType.OFFLINEBALLANCEREDPACKAGE);
+          }
         }
         if (accountBalance.getBalance().compareTo(carServiceRecord.getDiscountPrice()) >= 0) {// 混合余额支付，线下余额大于等于支付金额
           carServiceRecord.setOfflineBalance(carServiceRecord.getDiscountPrice());

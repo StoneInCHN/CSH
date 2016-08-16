@@ -39,7 +39,7 @@ public interface CarServiceRecordService extends BaseService<CarServiceRecord, L
    */
   public CarServiceRecord createServiceRecord(EndUser endUser, CarService carService,
       ChargeStatus chargeStatus, BigDecimal price, PaymentType paymentType, Date subscribeDate,
-      CouponEndUser couponEndUser, Long[] itemIds);
+      CouponEndUser couponEndUser, Long[] itemIds, Boolean isRedPacket);
 
 
   /**
@@ -80,11 +80,11 @@ public interface CarServiceRecordService extends BaseService<CarServiceRecord, L
 
 
   /**
-   * 更新预约的支付记录
+   * 更新已经产生的支付记录
    * 
    * @param carServiceRecord
    * @return
    */
   public CarServiceRecord updateServiceRecord(CarServiceRecord carServiceRecord,
-      CouponEndUser couponEndUser);
+      CouponEndUser couponEndUser, Boolean isRedPacket);
 }

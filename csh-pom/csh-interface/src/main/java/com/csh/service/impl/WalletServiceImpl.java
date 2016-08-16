@@ -11,13 +11,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.csh.beans.Message;
 import com.csh.dao.AdvanceDepositsDao;
 import com.csh.dao.EndUserDao;
+import com.csh.dao.SystemConfigDao;
 import com.csh.dao.WalletDao;
 import com.csh.entity.EndUser;
+import com.csh.entity.MessageInfo;
+import com.csh.entity.MsgEndUser;
+import com.csh.entity.SystemConfig;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.BalanceType;
+import com.csh.entity.commonenum.CommonEnum.MessageType;
+import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.service.MessageInfoService;
 import com.csh.service.WalletService;
 
 @Service("walletServiceImpl")
@@ -31,6 +38,12 @@ public class WalletServiceImpl extends BaseServiceImpl<Wallet, Long> implements 
 
   @Resource(name = "advanceDepositsDaoImpl")
   private AdvanceDepositsDao advanceDepositsDao;
+
+  @Resource(name = "systemConfigDaoImpl")
+  private SystemConfigDao systemConfigDao;
+
+  @Resource(name = "messageInfoServiceImpl")
+  private MessageInfoService messageInfoService;
 
 
   @Resource(name = "walletDaoImpl")
@@ -53,5 +66,49 @@ public class WalletServiceImpl extends BaseServiceImpl<Wallet, Long> implements 
     wallet.getWalletRecords().add(walletRecord);
     walletDao.merge(wallet);
   }
+
+  @Override
+  public Wallet giftRedPacket(Wallet wallet, SystemConfigKey systemConfigKey, String remark) {
+    SystemConfig systemConfig = systemConfigDao.getConfigByKey(systemConfigKey, null);
+    if (systemConfig != null) {
+      WalletRecord walletRecord = new WalletRecord();
+      walletRecord.setWallet(wallet);
+      walletRecord.setBalanceType(BalanceType.INCOME);
+      walletRecord.setWalletType(WalletType.REDPACKET);
+      if (systemConfigKey.equals(SystemConfigKey.GROUTHFUND_DRIVING)) {
+        String[] content = remark.split("_");
+        if (content[0] != "") {
+          BigDecimal drivingRedPacket =
+              new BigDecimal(systemConfig.getConfigValue()).multiply(new BigDecimal(content[0]));
+          walletRecord.setRedPacket(drivingRedPacket);
+          walletRecord.setRemark(Message.success(content[1], drivingRedPacket).getContent());
+        }
+      } else {
+        walletRecord.setRedPacket(new BigDecimal(systemConfig.getConfigValue()));
+        walletRecord.setRemark(Message.success(remark, walletRecord.getRedPacket()).getContent());
+      }
+      wallet.getWalletRecords().add(walletRecord);
+      wallet.setGiftAmount(wallet.getGiftAmount().add(walletRecord.getRedPacket()));
+      walletDao.merge(wallet);
+
+      MessageInfo msg = new MessageInfo();
+      msg.setMessageType(MessageType.PERSONALMSG);
+      msg.setMessageContent(walletRecord.getRemark());
+      MsgEndUser msgEndUser = new MsgEndUser();
+      msgEndUser.setEndUser(wallet.getEndUser());
+      msgEndUser.setIsPush(false);
+      msgEndUser.setIsRead(false);
+      msgEndUser.setMessage(msg);
+      msg.getMsgUser().add(msgEndUser);
+      messageInfoService.save(msg);
+
+      /**
+       * 极光推送
+       */
+      messageInfoService.jpushMsg(msg);
+    }
+    return wallet;
+  }
+
 
 }

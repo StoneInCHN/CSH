@@ -174,7 +174,7 @@ public class Vehicle extends BaseEntity {
    * 分销商名字
    */
   private String distributorName;
-  
+
   /**
    * 当前车辆纬度
    */
@@ -183,12 +183,39 @@ public class Vehicle extends BaseEntity {
    * 当前车辆经度
    */
   private Float lon;
-  
+
   /**
    * 设备信息上传时间
    */
   private Date obdStatusTime;
-  
+
+  /**
+   * 是否是首次绑定租户
+   */
+  private Boolean isFirstBindTenant = true;
+
+  /**
+   * 是否是首次绑定设备
+   */
+  private Boolean isFirstBindDevice = true;
+
+
+  public Boolean getIsFirstBindTenant() {
+    return isFirstBindTenant;
+  }
+
+  public void setIsFirstBindTenant(Boolean isFirstBindTenant) {
+    this.isFirstBindTenant = isFirstBindTenant;
+  }
+
+  public Boolean getIsFirstBindDevice() {
+    return isFirstBindDevice;
+  }
+
+  public void setIsFirstBindDevice(Boolean isFirstBindDevice) {
+    this.isFirstBindDevice = isFirstBindDevice;
+  }
+
   @Transient
   public Boolean getIsGetCoupon() {
     return isGetCoupon;
@@ -455,60 +482,54 @@ public class Vehicle extends BaseEntity {
   }
 
   @Transient
-	public String getTenantName() {
-    
-    
-		return tenantName;
-	}
-	
-	public void setTenantName(String tenantName) {
-		this.tenantName = tenantName;
-	}
-	
-	@Transient
-	public String getDistributorName() {
-		return distributorName;
-	}
-	
-	public void setDistributorName(String distributorName) {
-		this.distributorName = distributorName;
-	}
+  public String getTenantName() {
 
-	@Transient
-	@JsonProperty
-  public Float getLat ()
-  {
+
+    return tenantName;
+  }
+
+  public void setTenantName(String tenantName) {
+    this.tenantName = tenantName;
+  }
+
+  @Transient
+  public String getDistributorName() {
+    return distributorName;
+  }
+
+  public void setDistributorName(String distributorName) {
+    this.distributorName = distributorName;
+  }
+
+  @Transient
+  @JsonProperty
+  public Float getLat() {
     return lat;
   }
 
-  public void setLat (Float lat)
-  {
+  public void setLat(Float lat) {
     this.lat = lat;
   }
 
   @Transient
   @JsonProperty
-  public Float getLon ()
-  {
+  public Float getLon() {
     return lon;
   }
 
-  public void setLon (Float lon)
-  {
+  public void setLon(Float lon) {
     this.lon = lon;
   }
 
   @Transient
   @JsonProperty
-  public Date getObdStatusTime ()
-  {
+  public Date getObdStatusTime() {
     return obdStatusTime;
   }
 
-  public void setObdStatusTime (Date obdStatusTime)
-  {
+  public void setObdStatusTime(Date obdStatusTime) {
     this.obdStatusTime = obdStatusTime;
   }
-  
-	
+
+
 }
