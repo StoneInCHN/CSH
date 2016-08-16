@@ -509,7 +509,15 @@ public class CommonEnum {
     /** 线下钱包混合 */
     OFFLINEBALLANCE,
     /** 线下钱包优惠券混合 */
-    MIXCOUPONOFFLINE
+    MIXCOUPONOFFLINE,
+    /**直接支付（阿里，微信，钱包余额支付）和红包  */
+    DIRECTREDPACKAGE,
+    /**优惠券，红包混合*/
+    COUPONREDPACKAGE,
+    /** 线下,钱包,红包混合 */
+    OFFLINEBALLANCEREDPACKAGE,
+    /** 线下，钱包，优惠券，红包混合 */
+    MIXCOUPONOFFLINEREDPACKAGE
   }
 
   public enum ChargeStatus {
