@@ -30,8 +30,8 @@ import com.csh.entity.MsgEndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
-import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.SendType;
+import com.csh.entity.commonenum.CommonEnum.SystemType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -117,21 +117,70 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
             distributorDeductRecord.setFinishDate (oldCarServiceRecord.getFinishDate ());
             distributorDeductRecord.setPaymentDate (oldCarServiceRecord.getPaymentDate ());
             distributorDeductRecord.setPaymentType (oldCarServiceRecord.getPaymentType ());
-            //如果用洗车券，提成金额为0
-            if (oldCarServiceRecord.getPaymentType ()== PaymentType.WASHCOUPON)
+            switch (oldCarServiceRecord.getPaymentType ())
             {
-              distributorDeductRecord.setPrice (new BigDecimal (0));
+              case ALIPAY:
+              case WECHAT:
+              case WALLET:
+                //全额支付，全额结算
+                distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
+                break;
+              case DIRECTREDPACKAGE:
+                //直接支付加上红包支付，结算金额为优惠后金额
+                distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
+              case COUPON:
+                //根据优惠券来源结算，平台优惠券，结算全额，租户优惠券结算discountPrice
+                if(oldCarServiceRecord .getCouponSource () == SystemType.ENTERPRISE){
+                  distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
+                }else if(oldCarServiceRecord .getCouponSource () == SystemType.OPERATION){
+                  //优惠券优惠金额
+                  distributorDeductRecord.setPrice (oldCarServiceRecord.getDiscountPrice ());
+                }
+              break;
+              case COUPONREDPACKAGE:
+                 //优惠券加红包，平台优惠券结算原价减红包，
+                //租户优惠券
+                if(oldCarServiceRecord .getCouponSource () == SystemType.ENTERPRISE){
+                  distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
+                }else if(oldCarServiceRecord .getCouponSource () == SystemType.OPERATION){
+                  //优惠券优惠金额
+                  BigDecimal couponMoney=oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getDiscountPrice ()).subtract (oldCarServiceRecord.getRedPackageUsage ());
+                  
+                  distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (couponMoney));
+                }
+                break;
+              case WASHCOUPON:break;//洗车券支付，结算金额为0
+              case OFFLINEBALLANCE:
+                //线下余额支付,减去clearBalance
+                oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+              break;
+              case OFFLINEBALLANCEREDPACKAGE:
+                //线下余额,红包支付,减去clearBalance
+                oldCarServiceRecord.setPrice (oldCarServiceRecord.getDiscountPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+              case MIXCOUPONOFFLINE:
+                //结算clearBalance,根据优惠券来源，判断是否结算discountPrice
+                if(oldCarServiceRecord .getCouponSource () == SystemType.ENTERPRISE){
+                  oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+                }else if(oldCarServiceRecord .getCouponSource () == SystemType.OPERATION){
+                  //优惠券优惠金额
+                  BigDecimal couponMoney=oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getDiscountPrice ()).subtract (oldCarServiceRecord.getRedPackageUsage ());
+                  oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (couponMoney).subtract (oldCarServiceRecord.getOfflineBalance ()));
+                }
+               break;
+              case MIXCOUPONOFFLINEREDPACKAGE:
+                //在COUPONREDPACKAGE 基础上减去线下余额部分
+                if(oldCarServiceRecord .getCouponSource () == SystemType.ENTERPRISE){
+                oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+              }else if(oldCarServiceRecord .getCouponSource () == SystemType.OPERATION){
+              //优惠券优惠金额
+                BigDecimal couponMoney=oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getDiscountPrice ()).subtract (oldCarServiceRecord.getRedPackageUsage ());
+                oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (couponMoney).subtract (oldCarServiceRecord.getOfflineBalance ()));
+              }
+              default:
+                break;
             }
-            //如果线下余额抵用部分
-            else if (oldCarServiceRecord.getPaymentType ()== PaymentType.OFFLINEBALLANCE)
-            {
-              distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
-            }else if (oldCarServiceRecord.getPaymentType ()== PaymentType.MIXCOUPONOFFLINE) {
-              distributorDeductRecord.setPrice (oldCarServiceRecord.getDiscountPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
-            }
-            else {
-              distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ());
-            }
+            
+            
             distributorDeductRecord.setRecordNo (oldCarServiceRecord.getRecordNo ());
             distributorDeductRecord.setDistributorId (distributor.getId ());
             

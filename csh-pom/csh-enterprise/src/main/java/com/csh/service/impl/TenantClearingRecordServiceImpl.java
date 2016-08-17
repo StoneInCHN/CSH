@@ -104,6 +104,7 @@ TenantClearingRecordService {
       return false;
     }
     BigDecimal totalMoney = new BigDecimal (0);
+    BigDecimal totalDeductMoney = new BigDecimal (0);
     BigDecimal totalRealIncome = new BigDecimal (0);
     
     List<CarServiceRecord> carServiceRecordList = new ArrayList<CarServiceRecord>();
@@ -118,28 +119,69 @@ TenantClearingRecordService {
         case WALLET:
           //全额支付，全额结算
           totalMoney = totalMoney.add (record.getPrice ());
+          totalDeductMoney = totalDeductMoney.add (record.getPrice ());
           break;
+        case DIRECTREDPACKAGE:
+          //直接支付加上红包支付，结算金额为优惠后金额
+          totalMoney = totalMoney.add (record.getPrice ());
+          totalDeductMoney = totalDeductMoney.add (record.getPrice ());
         case COUPON:
           //根据优惠券来源结算，平台优惠券，结算全额，租户优惠券结算discountPrice
           if(record .getCouponSource () == SystemType.ENTERPRISE){
             totalMoney = totalMoney.add (record.getDiscountPrice ());
+            totalDeductMoney = totalDeductMoney.add (record.getPrice ());
           }else if(record .getCouponSource () == SystemType.OPERATION){
             totalMoney = totalMoney.add (record.getPrice ());
+            //优惠券优惠金额
+            totalDeductMoney = totalDeductMoney.add (record.getDiscountPrice ());
           }
-          // 结算discountPrice
         break;
+        case COUPONREDPACKAGE:
+           //优惠券加红包，平台优惠券结算原价减红包，
+          //租户优惠券
+          if(record .getCouponSource () == SystemType.ENTERPRISE){
+            totalMoney = totalMoney.add (record.getDiscountPrice ());
+            totalDeductMoney = totalDeductMoney.add (record.getPrice ());
+          }else if(record .getCouponSource () == SystemType.OPERATION){
+            totalMoney = totalMoney.add (record.getPrice ().subtract (record.getRedPackageUsage ()));
+            //优惠券优惠金额
+            BigDecimal couponMoney=record.getPrice ().subtract (record.getDiscountPrice ()).subtract (record.getRedPackageUsage ());
+            totalDeductMoney = totalDeductMoney.add (record.getPrice ().subtract (couponMoney));
+          }
+          break;
         case WASHCOUPON:break;//洗车券支付，结算金额为0
         case OFFLINEBALLANCE:
           //线下余额支付,减去clearBalance
           totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
+          totalDeductMoney = totalDeductMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
         break;
+        case OFFLINEBALLANCEREDPACKAGE:
+          //线下余额,红包支付,减去clearBalance
+          totalMoney = totalMoney.add (record.getDiscountPrice ().subtract (record.getOfflineBalance ()));
+          totalDeductMoney = totalDeductMoney.add (record.getDiscountPrice ().subtract (record.getOfflineBalance ()));
         case MIXCOUPONOFFLINE:
           //结算clearBalance,根据优惠券来源，判断是否结算discountPrice
           if(record .getCouponSource () == SystemType.ENTERPRISE){
             totalMoney = totalMoney.add (record.getDiscountPrice ().subtract (record.getOfflineBalance ()));
+            totalDeductMoney = totalDeductMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
           }else if(record .getCouponSource () == SystemType.OPERATION){
             totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
+            //优惠券优惠金额
+            BigDecimal couponMoney=record.getPrice ().subtract (record.getDiscountPrice ()).subtract (record.getRedPackageUsage ());
+            totalDeductMoney = totalDeductMoney.add (record.getPrice ().subtract (couponMoney).subtract (record.getOfflineBalance ()));
           }
+         break;
+        case MIXCOUPONOFFLINEREDPACKAGE:
+          //在COUPONREDPACKAGE 基础上减去线下余额部分
+          if(record .getCouponSource () == SystemType.ENTERPRISE){
+          totalMoney = totalMoney.add (record.getDiscountPrice ().subtract (record.getOfflineBalance ()));
+          totalDeductMoney = totalDeductMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
+        }else if(record .getCouponSource () == SystemType.OPERATION){
+          totalMoney = totalMoney.add (record.getPrice ().subtract (record.getRedPackageUsage ()).subtract (record.getOfflineBalance ()));
+        //优惠券优惠金额
+          BigDecimal couponMoney=record.getPrice ().subtract (record.getDiscountPrice ()).subtract (record.getRedPackageUsage ());
+          totalDeductMoney = totalDeductMoney.add (record.getPrice ().subtract (couponMoney).subtract (record.getOfflineBalance ()));
+        }
         default:
           break;
       }
@@ -147,7 +189,7 @@ TenantClearingRecordService {
     }
     //格式化数据
     DecimalFormat format=new DecimalFormat("0.00");
-    String str = format.format(totalMoney.doubleValue ()* (1-commissionRateList.get (0).getPlatformRate ()));    
+    String str = format.format(totalMoney.doubleValue ()-(commissionRateList.get (0).getPlatformRate ()*totalDeductMoney.doubleValue ()));    
     totalRealIncome = new BigDecimal(str);
     totalMoney = new BigDecimal (format.format (totalMoney));
     if (!totalMoney.equals (new BigDecimal (format.format (tenantClearingRecord.getAmountOfCurrentPeriod ()))) 
@@ -168,5 +210,4 @@ TenantClearingRecordService {
     
     return true;
   }
-
 }

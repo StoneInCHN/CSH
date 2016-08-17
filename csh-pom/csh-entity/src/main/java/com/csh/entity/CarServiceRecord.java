@@ -186,6 +186,7 @@ public class CarServiceRecord extends BaseEntity {
   }
 
   @Column(scale = 2, precision = 10)
+  @JsonProperty
   public BigDecimal getRedPackageUsage ()
   {
     return redPackageUsage;

@@ -58,6 +58,8 @@ var tenantClearingRecord_manager_tool = {
 				onLoad:function(){
 					//总金额
 					var totalMoney = 0;
+					//总提成金额
+					var totalDeductMoney = 0;
 					//结算账单清单
 					$("#clearingCarServiceRecord-table-list").datagrid({
 						title:message("csh.carServiceRecord.list"),
@@ -94,40 +96,79 @@ var tenantClearingRecord_manager_tool = {
 							    	  formatter: function(value,row,index){
 							    		  if(value == "ALIPAY"){
 							    			  totalMoney = totalMoney+row.price;
+							    			  totalDeductMoney = totalDeductMoney+row.price;
 							    			  return "支付宝"
 							    		  }else if(value == "WECHAT"){
 							    			  totalMoney = totalMoney+row.price;
+							    			  totalDeductMoney = totalDeductMoney+row.price;
 							    			  return "微信"
 							    		  }else if(value == "WALLET"){
 							    			  totalMoney = totalMoney+row.price;
+							    			  totalDeductMoney = totalDeductMoney+row.price;
 							    			  return "钱包"
-							    		  }else if(value == "COUPON"){
+							    		  } else if(value == "DIRECTREDPACKAGE") {
+							    			  //直接支付加上红包支付，结算金额为优惠后金额
+							    			  totalMoney = totalMoney+row.price;
+							    	          totalDeductMoney = totalDeductMoney+row.price;
+							    	          return "直接支付红包混合"
+							    		  }
+							    		  else if(value == "COUPON"){
 							    			  if(row.couponSource == 'OPERATION'){
 							    				  totalMoney = totalMoney+row.price;
-							    			  }else if(row.couponSource == 'OPERATION'){
+							    				  totalDeductMoney = totalDeductMoney+row.discountPrice;
+							    			  }else if(row.couponSource == 'ENTERPRISE'){
 							    				  totalMoney = totalMoney+row.discountPrice;
+							    				  totalDeductMoney = totalDeductMoney+row.price;
 							    			  }
 							    			  return "优惠券";
-							    		  }else if(value == "MIXCOUPON"){
+							    		  }else if(value == "COUPONREDPACKAGE"){
+							    			  debugger;
 							    			  if(row.couponSource == 'OPERATION'){
-							    				  totalMoney = totalMoney+row.price;
-							    			  }else if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+row.price-row.redPackageUsage;
+							    				  totalDeductMoney = totalDeductMoney+row.discountPrice+row.redPackageUsage;
+							    			  }else if(row.couponSource == 'ENTERPRISE'){
 							    				  totalMoney = totalMoney+row.discountPrice;
+							    				  totalDeductMoney = totalDeductMoney+row.price;
 							    			  }
-							    			  return "*优惠券钱包混合";
+							    			  return "优惠券红包";
+							    		  }else if(value == "OFFLINEBALLANCEREDPACKAGE"){
+						    				  totalMoney = totalMoney+row.discountPrice-row.offlineBalance;
+						    				  totalDeductMoney = totalDeductMoney+row.discountPrice-row.offlineBalance;
+							    			  return "线下钱包红包";
 							    		  }else if(value == "WASHCOUPON"){
-							    			  totalMoney = totalMoney+row.offlineBalance;
+//							    			  totalMoney = totalMoney+row.offlineBalance;
 							    			  return "洗车券";
 							    		  }else if(value == "OFFLINEBALLANCE"){
 							    			  totalMoney = totalMoney+(row.price-row.offlineBalance);
+							    			  totalDeductMoney = totalDeductMoney+(row.price-row.offlineBalance);
 							    			  return "线下余额";
 							    		  }else if(value == "MIXCOUPONOFFLINE"){
 							    			  if(row.couponSource == 'OPERATION'){
 							    				  totalMoney = totalMoney+(row.price-row.offlineBalance);
-							    			  }else if(row.couponSource == 'OPERATION'){
+							    				  totalDeductMoney = totalDeductMoney+(row.discountPrice-row.offlineBalance);
+							    			  }else if(row.couponSource == 'ENTERPRISE'){
 							    				  totalMoney = totalMoney+(row.discountPrice-row.offlineBalance);
+							    				  totalDeductMoney = totalDeductMoney+(row.price-row.offlineBalance);
 							    			  }
 							    			  return "线下钱包优惠券混合";
+							    		  }else if(value == "MIXCOUPONOFFLINE"){
+							    			  if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+(row.price-row.offlineBalance);
+							    				  totalDeductMoney = totalDeductMoney+(row.discountPrice-row.offlineBalance);
+							    			  }else if(row.couponSource == 'ENTERPRISE'){
+							    				  totalMoney = totalMoney+(row.discountPrice-row.offlineBalance);
+							    				  totalDeductMoney = totalDeductMoney+(row.price-row.offlineBalance);
+							    			  }
+							    			  return "线下钱包优惠券混合";
+							    		  }else if(value == "MIXCOUPONOFFLINEREDPACKAGE"){
+							    			  if(row.couponSource == 'OPERATION'){
+							    				  totalMoney = totalMoney+(row.price-row.offlineBalance-row.redPackageUsage);
+							    				  totalDeductMoney = totalDeductMoney+(row.discountPrice-row.offlineBalance+row.redPackageUsage);
+							    			  }else if(row.couponSource == 'ENTERPRISE'){
+							    				  totalMoney = totalMoney+(row.discountPrice-row.offlineBalance);
+							    				  totalDeductMoney = totalDeductMoney+(row.price-row.offlineBalance);
+							    			  }
+							    			  return "线下钱包优惠券红包混合";
 							    		  }
 							    	  }},
 					    	  {title:message("csh.carServiceRecord.endUser"),field:"endUser",sortable:true,
@@ -159,7 +200,7 @@ var tenantClearingRecord_manager_tool = {
 						onLoadSuccess:function(){
 							$("#amountOfCurrentPeriod").textbox('setValue',totalMoney);
 							var rate = $('#platformRate').val();
-							$("#amountRealIncome").textbox('setValue',math.mul(totalMoney,parseFloat(1-rate)));
+							$("#amountRealIncome").textbox('setValue',(totalMoney-math.mul(totalDeductMoney,parseFloat(rate))));
 							$("#platformRate").textbox('setText',Number(rate).toPercent());
 						}
 					});
