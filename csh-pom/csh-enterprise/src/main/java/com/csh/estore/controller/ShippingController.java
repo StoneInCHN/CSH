@@ -1,5 +1,6 @@
 package com.csh.estore.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,6 +20,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+
+
+
+
+
 import com.csh.entity.Sn.Type;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
@@ -32,6 +38,9 @@ import com.csh.entity.estore.OrderItem;
 import com.csh.entity.estore.Shipping;
 import com.csh.entity.estore.ShippingItem;
 import com.csh.entity.estore.ShippingMethod;
+import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.ordering.Ordering;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.DeliveryCorpService;
@@ -106,36 +115,50 @@ public class ShippingController extends BaseController {
    */
   @RequestMapping (value = "/listUnshippedOrder", method = RequestMethod.POST)
   public @ResponseBody Page<Order> listUnshippedOrder (Pageable pageable, String orderSnSearch, ModelMap model) {
-    //订单状态=已确认,支付状态=已支付,配送状态=未发货 的所有订单(是否时间倒序?)
-    BooleanQuery booleanQuery = new BooleanQuery();
-    TermQuery orderStatusQuery = new TermQuery 
-        (new Term ("orderStatus",OrderStatus.confirmed.toString ()));
-    booleanQuery.add (orderStatusQuery, Occur.MUST);
-    TermQuery paymentStatusQuery = new TermQuery 
-        (new Term ("paymentStatus",PaymentStatus.paid.toString ()));
-    booleanQuery.add (paymentStatusQuery, Occur.MUST);
-    TermQuery shippingStatusQuery = new TermQuery 
-        (new Term ("shippingStatus",ShippingStatus.unshipped.toString ()));
-    booleanQuery.add (shippingStatusQuery, Occur.MUST);
-    
-    IKAnalyzer analyzer = new IKAnalyzer ();
-    analyzer.setMaxWordLength (true);
-    if (orderSnSearch != null) {
-        QueryParser snParser = new QueryParser (Version.LUCENE_35, "sn",analyzer);
-        snParser.setAllowLeadingWildcard (true);
-        String sn = QueryParser.escape (orderSnSearch);
-        Query snQuery;
-        try {
-          snQuery = snParser.parse ("*"+sn+"*");
-          booleanQuery.add (snQuery, Occur.MUST);
-          if (LogUtil.isDebugEnabled (getClass())){
-            LogUtil.debug (getClass(), "listUnshippedOrder", "Search Order sn: %s", snQuery);
-          }
-        } catch (ParseException e) {
-          e.printStackTrace();
-        }
+/*不用lucene查询，因为代码中更新Order的发货状态shippingStatus字段老是不能生成索引，暂时改成用传统的Filter过滤
+//    //订单状态=已确认,支付状态=已支付,配送状态=未发货 的所有订单(是否时间倒序?)
+//    BooleanQuery booleanQuery = new BooleanQuery();
+//    TermQuery orderStatusQuery = new TermQuery 
+//        (new Term ("orderStatus",OrderStatus.confirmed.toString ()));
+//    booleanQuery.add (orderStatusQuery, Occur.MUST);
+//    TermQuery paymentStatusQuery = new TermQuery 
+//        (new Term ("paymentStatus",PaymentStatus.paid.toString ()));
+//    booleanQuery.add (paymentStatusQuery, Occur.MUST);
+//    TermQuery shippingStatusQuery = new TermQuery 
+//        (new Term ("shippingStatus",ShippingStatus.unshipped.toString ()));
+//    booleanQuery.add (shippingStatusQuery, Occur.MUST);
+//    
+//    IKAnalyzer analyzer = new IKAnalyzer ();
+//    analyzer.setMaxWordLength (true);
+//    if (orderSnSearch != null) {
+//        QueryParser snParser = new QueryParser (Version.LUCENE_35, "sn",analyzer);
+//        snParser.setAllowLeadingWildcard (true);
+//        String sn = QueryParser.escape (orderSnSearch);
+//        Query snQuery;
+//        try {
+//          snQuery = snParser.parse ("*"+sn+"*");
+//          booleanQuery.add (snQuery, Occur.MUST);
+//          if (LogUtil.isDebugEnabled (getClass())){
+//            LogUtil.debug (getClass(), "listUnshippedOrder", "Search Order sn: %s", snQuery);
+//          }
+//        } catch (ParseException e) {
+//          e.printStackTrace();
+//        }
+//    }
+//    return orderService.search (booleanQuery, pageable, null, null,true);
+*/
+    List<Filter> filters = pageable.getFilters();
+    //订单状态=已确认,支付状态=已支付,配送状态=未发货 的所有订单(按照订单创建时间倒序)
+    filters.add(Filter.eq("orderStatus", OrderStatus.confirmed));
+    filters.add(Filter.eq("paymentStatus", PaymentStatus.paid));
+    filters.add(Filter.eq("shippingStatus", ShippingStatus.unshipped));
+    List<Ordering> ordering = pageable.getOrderings();
+    ordering.add(Ordering.desc("createDate"));
+    if (orderSnSearch != null) {//如果查询条件 “订单号”不为空
+      filters.add(Filter.like("sn", "%"+orderSnSearch+"%"));
     }
-    return orderService.search (booleanQuery, pageable, null, null,true);
+    return orderService.findPage(pageable, true);
+    
   }  
     
   
@@ -206,25 +229,6 @@ public class ShippingController extends BaseController {
     List<ShippingMethod> shippingMethods = shippingMethodService.findAll(true);
     model.put ("shippingMethods", shippingMethods);
     return "estore/shipping/addShipping";
-  }
-  
-//  /**
-//   * 更新发货单
-//   */
-//  @RequestMapping (value = "/update", method = RequestMethod.POST)
-//  public @ResponseBody Message updateShipping(Shipping shipping) {   
-//    shippingService.update(shipping,"shippingMethods");
-//    return SUCCESS_MESSAGE;
-//  } 
-//  /**
-//   * 删除发货单
-//   */
-//  @RequestMapping (value = "/delete", method = RequestMethod.POST)
-//  public @ResponseBody Message deleteShipping (Long[] ids) {
-//    if (ids != null) {
-//      shippingService.delete(ids);
-//    }
-//    return SUCCESS_MESSAGE;
-//  }
+  }  
 
 }

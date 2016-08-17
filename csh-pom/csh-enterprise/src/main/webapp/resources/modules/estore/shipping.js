@@ -32,6 +32,8 @@ var shipping_manager_tool = {
 										if(response == "success"){
 											$('#addShipping').dialog("close");
 											$('#addShipping_form').form("reset");
+											var orderItemData = {"total":0,"rows":[]};
+											$('#shipping-orderItem-table-list').datagrid('loadData', orderItemData);
 											$("#shipping-order-table-list").datagrid('reload');
 											$("#shipping-table-list").datagrid('reload');
 											showSuccessMsg(result.content);

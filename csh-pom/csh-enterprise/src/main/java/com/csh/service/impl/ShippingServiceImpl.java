@@ -54,7 +54,7 @@ public class ShippingServiceImpl extends BaseServiceImpl<Shipping,Long> implemen
                   if (product != null && product.getStock() != null) {
                       product.setAllocatedStock(product.getAllocatedStock() + (orderItem.getQuantity() - orderItem.getShippedQuantity()));
                       productDao.merge(product);
-                      orderDao.flush();
+                      //orderDao.flush();
                   }
               }
           }
@@ -75,7 +75,7 @@ public class ShippingServiceImpl extends BaseServiceImpl<Shipping,Long> implemen
                       }
                   }
                   productDao.merge(product);
-                  orderDao.flush();
+//                  orderDao.flush();
               }
               orderItemDao.lock(orderItem, LockModeType.PESSIMISTIC_WRITE);
               orderItem.setShippedQuantity(orderItem.getShippedQuantity() + shippingItem.getQuantity());
