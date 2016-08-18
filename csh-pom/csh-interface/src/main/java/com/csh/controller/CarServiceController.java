@@ -355,10 +355,10 @@ public class CarServiceController extends MobileBaseController {
             .debug(
                 CarServiceController.class,
                 "payService",
-                "User buy Car Service without exist record. UserName: %s, Tenant: %s, Service: %s, price: %s, couponEndUserId: %s, paymentType: %s, chargeStatus: %s",
+                "User buy Car Service without exist record. UserName: %s, Tenant: %s, Service: %s, price: %s, couponEndUserId: %s, paymentType: %s, chargeStatus: %s, isRedPacket: %s",
                 endUser.getUserName(), carService.getTenantInfo().getTenantName(),
                 carService.getServiceName(), carService.getPromotionPrice(), couponEndUserId,
-                paymentType, ChargeStatus.UNPAID);
+                paymentType, ChargeStatus.UNPAID, isRedPacket);
       }
       carServiceRecord =
           carServiceRecordService.createServiceRecord(endUser, carService, ChargeStatus.UNPAID,
@@ -372,10 +372,10 @@ public class CarServiceController extends MobileBaseController {
             .debug(
                 CarServiceController.class,
                 "payService",
-                "User buy Car Service with exist record. UserName: %s, Tenant: %s, Service: %s, price: %s, couponEndUserId: %s, paymentType: %s, chargeStatus: %s",
+                "User buy Car Service with exist record. UserName: %s, Tenant: %s, Service: %s, price: %s, couponEndUserId: %s, paymentType: %s, chargeStatus: %s, isRedPacket: %s",
                 endUser.getUserName(), carServiceRecord.getTenantName(),
                 carService.getServiceName(), carServiceRecord.getPrice(), couponEndUserId,
-                carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus());
+                carServiceRecord.getPaymentType(), carServiceRecord.getChargeStatus(), isRedPacket);
       }
       carServiceRecordService.updateServiceRecord(carServiceRecord, couponEndUser, isRedPacket);
       // if (PaymentType.WALLET.equals(paymentType)) {// 余额支付

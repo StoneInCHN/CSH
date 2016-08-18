@@ -169,9 +169,24 @@ public class CarServiceRecord extends BaseEntity {
    */
   private BigDecimal offlineBalance;
   /**
-   * 红包抵扣金额   */
+   * 红包抵扣金额
+   */
   private BigDecimal redPackageUsage;
-  
+
+  /**
+   * 手机端是否选择了余额支付
+   */
+  private Boolean useBalance;
+
+
+  public Boolean getUseBalance() {
+    return useBalance;
+  }
+
+  public void setUseBalance(Boolean useBalance) {
+    this.useBalance = useBalance;
+  }
+
   private Set<CarServiceRecordPartInst> recordItemPartInsts =
       new HashSet<CarServiceRecordPartInst>();
 
@@ -187,13 +202,11 @@ public class CarServiceRecord extends BaseEntity {
 
   @Column(scale = 2, precision = 10)
   @JsonProperty
-  public BigDecimal getRedPackageUsage ()
-  {
+  public BigDecimal getRedPackageUsage() {
     return redPackageUsage;
   }
 
-  public void setRedPackageUsage (BigDecimal redPackageUsage)
-  {
+  public void setRedPackageUsage(BigDecimal redPackageUsage) {
     this.redPackageUsage = redPackageUsage;
   }
 
