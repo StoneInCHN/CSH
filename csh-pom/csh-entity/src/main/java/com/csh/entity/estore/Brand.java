@@ -22,6 +22,7 @@ import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.csh.entity.base.BaseEntity;
 import com.csh.entity.base.OrderEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

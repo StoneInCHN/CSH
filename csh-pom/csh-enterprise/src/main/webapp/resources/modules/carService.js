@@ -215,6 +215,21 @@ var carService_manager_tool = {
 					});	 
 			    	
 			    	editor.sync();
+			    	$("#addCarServiceIsAllowedRedPackage").combobox({
+			    		onChange:function(newValue, oldValue){
+			    			if(newValue == 'true'){
+			    				$('#addCarServiceRedPackageMax').textbox({
+			    					disabled:false,
+			    					required:true
+			    				});
+			    			}else {
+			    				$('#addCarServiceRedPackageMax').textbox({
+			    					disabled:true
+			    				});
+			    				$('#addCarServiceRedPackageMax').textbox('setValue','');
+			    			}
+			    		} 
+			    	})
 				},
 			    onClose:function(){
 			    	$("#carServiceUploader-add .uploadBtn").trigger("clearFileQuene");
@@ -423,6 +438,22 @@ var carService_manager_tool = {
 					});	 
 			    	
 			    	editor.sync();
+			    	
+			    	$("#editCarServiceIsAllowedRedPackage").combobox({
+			    		onChange:function(newValue, oldValue){
+			    			if(newValue == 'true'){
+			    				$('#editCarServiceRedPackageMax').textbox({
+			    					disabled:false,
+			    					required:true
+			    				});
+			    			}else {
+			    				$('#editCarServiceRedPackageMax').textbox({
+			    					disabled:true
+			    				});
+			    				$('#editCarServiceRedPackageMax').textbox('setValue','');
+			    			}
+			    		}
+			    	});
 			    },
 			    onClose:function(){
 			    	$('#editCarService').empty();
@@ -521,6 +552,7 @@ $(function(){
 		    			  return message("csh.carService.serviceStatus.DISABLED")
 		    		  }
 		    	  }},
+	    	  {title:message("csh.carService.redPackageMax"),field:"redPackageMax",width:100,sortable:true},	  
 		      {title:message("csh.common.createDate"),field:"createDate",width:100,sortable:true,formatter: function(value,row,index){
 		    	  if(value != null){
 						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");

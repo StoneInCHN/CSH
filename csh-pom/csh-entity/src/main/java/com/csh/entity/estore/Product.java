@@ -95,8 +95,6 @@ public class Product extends BaseEntity {
   /** 全称规格分隔符 */
   public static final String FULL_NAME_SPECIFICATION_SEPARATOR = " ";
 
-  /** 静态路径 */
-  private static String staticPath;
 
   /**
    * 排序类型
@@ -369,8 +367,6 @@ public class Product extends BaseEntity {
   /** 条形码 */
   private String barCode;
 
-  /** 促销中间表 */
-  // private Set<ProductPromotionMap> productPromotions = new HashSet<ProductPromotionMap>();
 
   /** 商品图片 */
   private List<ProductImage> productImages = new ArrayList<ProductImage>();
@@ -384,14 +380,6 @@ public class Product extends BaseEntity {
   /** 收藏会员 */
   private Set<EndUser> favoriteMembers = new HashSet<EndUser>();
 
-  // /** 规格 */
-  // private Set<Specification> specifications = new HashSet<Specification>();
-  //
-  // /** 规格值 */
-  // private Set<SpecificationValue> specificationValues = new HashSet<SpecificationValue>();
-
-  /** 促销 */
-  // private Set<Promotion> promotions = new HashSet<Promotion>();
 
   /** 购物车项 */
   private Set<CartItem> cartItems = new HashSet<CartItem>();
@@ -399,11 +387,6 @@ public class Product extends BaseEntity {
   /** 订单项 */
   private Set<OrderItem> orderItems = new HashSet<OrderItem>();
 
-  /** 赠品项 */
-  // private Set<GiftItem> giftItems = new HashSet<GiftItem>();
-
-  // /** 会员价 */
-  // private Map<MemberRank, BigDecimal> memberPrice = new HashMap<MemberRank, BigDecimal>();
   private Map<Parameter, String> parameterValue = new HashMap<Parameter, String>();
 
   /**
@@ -539,7 +522,7 @@ public class Product extends BaseEntity {
   @NotNull
   @Min(0)
   @Digits(integer = 12, fraction = 3)
-  @Column(nullable = false, precision = 2, scale = 6)
+  @Column(nullable = false, precision = 21, scale = 6)
   public BigDecimal getPrice() {
     return price;
   }
@@ -685,7 +668,6 @@ public class Product extends BaseEntity {
    */
   @Field(store = Store.YES, index = Index.NO)
   @Min(0)
-  @Column()
   public Long getPoint() {
     return point;
   }
@@ -813,7 +795,6 @@ public class Product extends BaseEntity {
    * @return 是否列出
    */
   @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-  @Column()
   public Boolean getIsList() {
     return isList;
   }
@@ -833,7 +814,6 @@ public class Product extends BaseEntity {
    * @return 是否置顶
    */
   @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-  @Column()
   public Boolean getIsTop() {
     return isTop;
   }
@@ -854,7 +834,6 @@ public class Product extends BaseEntity {
    */
   @JsonProperty
   @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-  @Column()
   public Boolean getIsGift() {
     return isGift;
   }
@@ -1241,7 +1220,7 @@ public class Product extends BaseEntity {
    * 
    * @return 品牌
    */
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch=FetchType.LAZY)
   public Brand getBrand() {
     return brand;
   }
@@ -1255,25 +1234,6 @@ public class Product extends BaseEntity {
     this.brand = brand;
   }
 
-  // /**
-  // * 获取登录用户
-  // *
-  // * @return 登录用户
-  // */
-  // @ManyToOne(fetch = FetchType.LAZY)
-  // public Admin getAdmin() {
-  // return admin;
-  // }
-  //
-  // /**
-  // * 设置登录用户
-  // *
-  // * @param admin
-  // * 登录用户
-  // */
-  // public void setAdmin(Admin admin) {
-  // this.admin = admin;
-  // }
 
 
   /**
@@ -1282,9 +1242,8 @@ public class Product extends BaseEntity {
    * @return 商品图片
    */
   @Valid
-  @ElementCollection
   @LazyCollection(LazyCollectionOption.FALSE)
-  @CollectionTable(name = "csh_product_product_image")
+  @OneToMany(mappedBy="product",cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
   public List<ProductImage> getProductImages() {
     return productImages;
   }
@@ -1298,24 +1257,6 @@ public class Product extends BaseEntity {
     this.productImages = productImages;
   }
 
-  /**
-   * 获取中间表
-   * 
-   * @return 中间表
-   */
-  // @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-  // public Set<ProductPromotionMap> getProductPromotions() {
-  // return productPromotions;
-  // }
-
-  /**
-   * 设置中间表
-   * 
-   * @param productPromotions 中间表
-   */
-  // public void setProductPromotions(Set<ProductPromotionMap> productPromotions) {
-  // this.productPromotions = productPromotions;
-  // }
 
   /**
    * 获取评论

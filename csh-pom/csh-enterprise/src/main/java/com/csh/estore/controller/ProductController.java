@@ -182,6 +182,7 @@ public class ProductController extends BaseController
 	for (String src: productImageSrcs) {
 		ProductImage image = new ProductImage();
 		image.setSource(src);
+		image.setProduct (product);
 		productImageList.add(image);
 	}
 	product.setProductImages(productImageList);
@@ -216,13 +217,13 @@ public class ProductController extends BaseController
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (Product product,Long productCategoryId,Long brandId)
+  public @ResponseBody Message update (Product product,Long productCategoryId,String[] productImageListSrcs,Long brandId,Long[] deleteImageIdList)
   {
 	ProductCategory productCategory=  productCategoryService.find(productCategoryId);
 	product.setProductCategory(productCategory);
-	
-    productService.update (product,"image","tenantID","createDate","treePath","isMarketable","hits", 
-    		"grade", "children", "products", "parameterGroups", "attributes","allocatedStock","isGift","isList");
+	Brand brand = brandService.find (brandId);
+	product.setBrand (brand);
+  productService.updateProduct (product,productImageListSrcs, deleteImageIdList);
     return SUCCESS_MESSAGE;
   }
 

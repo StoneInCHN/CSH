@@ -216,6 +216,7 @@ var messages = {
 	"csh.carService.list":"服务列表",
 	"csh.carService.serviceCategory":"服务类型",
 	"csh.carService.price.postpaid":"价格待定",
+	"csh.carService.redPackageMax":"红包限额",
 	//车辆保险
 	"csh.vehicleInsurance.add":"保险添加",
 	"csh.vehicleInsurance.userName":"投保人",

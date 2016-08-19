@@ -190,8 +190,6 @@ public class DeviceInfoController extends BaseController
   {
     if (ids != null)
     {
-      // 检查是否能被删除
-      // if()
      List<DeviceInfo> deviceInfos =  deviceInfoService.findList (ids);
      for (DeviceInfo deviceInfo : deviceInfos)
      {
@@ -200,11 +198,16 @@ public class DeviceInfoController extends BaseController
         {
           return ERROR_MESSAGE;
         }
-        if (deviceStatus == DeviceStatus.REFUNDED 
-            && !(deviceInfo.getDeviceStatus () == DeviceStatus.STORAGEOUT 
-            || deviceInfo.getDeviceStatus () == DeviceStatus.SALEOUT ))
+        if (deviceStatus == DeviceStatus.REFUNDED )
         {
-          return ERROR_MESSAGE;
+          if (deviceInfo.getDeviceStatus () != DeviceStatus.STORAGEOUT )
+          {
+            return ERROR_MESSAGE;
+          }else {
+            deviceStatus= DeviceStatus.SENDOUT;
+            deviceInfo.setTenantID (null);
+          }
+         
         }
         deviceInfo.setDeviceStatus (deviceStatus);
      }

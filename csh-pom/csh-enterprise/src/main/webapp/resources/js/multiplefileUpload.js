@@ -1,11 +1,13 @@
 var photoUrlList = new Array();
 function multipleUpload(options) {
+	photoUrlList = new Array();
     var $ = jQuery,    // just in case. Make sure it's not an other libaray.
 
         //$wrap = $('#uploader'),
         $wrap = $('#'+options.warp),
         //上传文件类型
         fileType= options.fileType,
+        method = options.method,
         $filePicker2=$('#'+options.filePicker2),
         // 图片容器
         $queue = $('<ul class="filelist"></ul>')
@@ -326,7 +328,12 @@ function multipleUpload(options) {
                 	if(fileType=="TENANTIMAGE"){
                 		tenantInfo_manager_tool.saveTenantInfo();
                 	}else if(fileType=="PRODUCTIMAGELIST"){
-                		product_manager_tool.saveProduct();
+                		if(method == "save"){
+                			product_manager_tool.saveProduct();
+                		}
+                		else if(method == "update"){
+                			product_manager_tool.updateProduct();
+                		}
                 	}
                 } else {
                     // 没有成功的图片，重设

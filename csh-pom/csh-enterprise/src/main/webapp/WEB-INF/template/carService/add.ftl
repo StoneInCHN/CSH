@@ -24,7 +24,7 @@
     	<tr>
     		<th>${message("csh.carService.serviceStatus")}:</th>
     		<td >
-    			 <input class="easyui-combobox" data-options="
+    			 <input class="easyui-combobox"  data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
@@ -41,7 +41,7 @@
     	<tr>
     		<th>${message("csh.carService.isAllowedRedPackage")}:</th>
     		<td >
-    			 <input class="easyui-combobox" data-options="
+    			 <input class="easyui-combobox" id="addCarServiceIsAllowedRedPackage" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
@@ -55,7 +55,7 @@
     		</td>
     		<th>${message("csh.carService.redPackageMax")}:</th>
     		<td>
-    			 <input  class="easyui-numberbox" name="redPackageMax" id= "addRedPackageMax"  data-options="min:0,precision:2"/>
+    			 <input  class="easyui-numberbox" name="redPackageMax" disabled="disabled" id= "addCarServiceRedPackageMax"  data-options="min:0,precision:2"/>
     		</td>
     	</tr>
     	<tr rowspan="4">

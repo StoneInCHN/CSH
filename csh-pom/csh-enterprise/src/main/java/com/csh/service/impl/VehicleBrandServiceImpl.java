@@ -79,13 +79,16 @@ public class VehicleBrandServiceImpl extends BaseServiceImpl<VehicleBrand,Long> 
           ordering.setProperty ("id");
           ordering.setDirection (Direction.asc);
           orderings.add (ordering);
+          Integer first = 0;
           if (selectCount == null)
           {
-            selectCount =0;
+            first = 0;
+          }else {
+            first = size*selectCount;
           }
           if (size != null)
           {
-            vehicleBrandList = this.findList ((size*selectCount+1), size, null, orderings);
+            vehicleBrandList = this.findList (first, size, null, orderings);
 //            size = 10;
           }else {
              vehicleBrandList = this.findList (null,null, orderings);

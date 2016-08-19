@@ -47,7 +47,7 @@
     	<tr>
     		<th>${message("csh.carService.isAllowedRedPackage")}:</th>
     		<td >
-    			 <input class="easyui-combobox" data-options="
+    			 <input class="easyui-combobox" id="editCarServiceIsAllowedRedPackage" data-options="
 				     valueField: 'label',
 				     textField: 'value',
 				     data: [{
@@ -67,7 +67,7 @@
     		</td>
     		<th>${message("csh.carService.redPackageMax")}:</th>
     		<td>
-    			 <input  class="easyui-numberbox" value="${carService.redPackageMax}" name="redPackageMax" id= "addRedPackageMax" data-options="min:0,precision:2"/>
+    			 <input  class="easyui-numberbox" value="${carService.redPackageMax}" name="redPackageMax" id= "editCarServiceRedPackageMax" data-options="min:0,precision:2"/>
     		</td>
     	</tr>
     	<tr rowspan="4">

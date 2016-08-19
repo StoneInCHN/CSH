@@ -1,4 +1,4 @@
-
+var deleteImageIdList = new Array();
 var product_manager_tool = {
 		add:function(){
 			$('#addProduct').dialog({
@@ -269,7 +269,7 @@ var product_manager_tool = {
 						    	             swf: BASE_URL + '/js/Uploader.swf',
 						    	             disableGlobalDnd: true,
 						    	             server: '../file/uploadPhoto.jhtml',
-						    	             fileNumLimit: 4-$('img[class="preview"]').length,
+//						    	             fileNumLimit: 4-$('img[class="preview"]').length,
 						    	             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
 						    	             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
 						    	             //图片裁剪
@@ -294,6 +294,7 @@ var product_manager_tool = {
 						     			//包裹上传组件的div id
 						     			warp :"addProductImageListWarp",
 						     			fileType:"PRODUCTIMAGELIST",
+						     			method:"save",
 						     			filePicker_replace :"filePicker_replace_Photos",
 						     			filePicker2 :"filePicker2_productImageList",
 						     			uploadBeforeSend:function(object, data, headers){
@@ -324,7 +325,7 @@ var product_manager_tool = {
 			}
 			var _dialog = $('#editProduct').dialog({    
 				title: message("csh.common.edit"),     
-			    width: 750,    
+			    width: 1024,    
 			    height: 600,    
 			    modal: true,
 			    iconCls:'icon-mini-edit',
@@ -333,8 +334,15 @@ var product_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
+						
+						$("#deleteImageIdList").val(deleteImageIdList.join(","));
 						var validate = $('#product_form').form('validate');
 						if(validate){
+							var $photoLi = $("#productImageListUploader-edit ul.filelist li");
+							if($photoLi.length >0){
+								$("#productImageListUploader-edit .uploadBtn").trigger("upload");
+							}else{
+							
 								$.ajax({
 									url:"../product/update.jhtml",
 									type:"post",
@@ -351,6 +359,7 @@ var product_manager_tool = {
 											$("#product-table-list").datagrid('reload');
 									}
 								});
+							}
 						};
 					}
 				},{
@@ -371,8 +380,11 @@ var product_manager_tool = {
 			    	    	node.text = node.name;
 			    			return node.name;
 			    		},
+			    		onSelect:function(){
+			    			debugger;
+			    		},
 			    		onChange:function(newValue, oldValue){
-			    			$('#addProductProductParameter').propertygrid({    
+			    			$('#editProductProductParameter').propertygrid({    
 					    	    url: '../parameterGroup/findAll.jhtml', 
 					    	    method:"get",
 					    	    showGroup: true,
@@ -389,7 +401,7 @@ var product_manager_tool = {
 					    	});
 			    		}
 			    	});
-
+			    	$('#editProduct_productCategory').combobox("setValue",$("#editProduct_productCategory").attr("data-value"));
 	    			$('#editProductProductParameter').propertygrid({    
 			    	    url: '../product/getCurrentParameter.jhtml', 
 			    	    method:"get",
@@ -412,15 +424,13 @@ var product_manager_tool = {
 			    	    method:"get",
 			    	    animate:true,
 			    	    lines:true,
+			    	    valueField:'id',    
+			    	    textField:'name',
 			    	    prompt:message("csh.common.please.select"),
-			    	    formatter:function(node){
-			    	    	debugger;
-			    	    	node.text = node.name;
-			    			return node.name;
-			    		},
+			    		onLoadSuccess:function(){
+			    			$('#editProduct_brand').combobox("setValue",$("#editProduct_brand").attr("data-value"));
+			    		}
 			    	});
-			    	$('#editProduct_productCategory').combobox("setValue",$("#editProduct_productCategory").attr("data-value"));
-			    	$('#editProduct_brand').combobox("setValue",$("#editProduct_brand").attr("data-value"));
 			    	
 			    	var editor = KindEditor.create('#edit_product_introduction', {
 						resizeType : 1,
@@ -475,7 +485,7 @@ var product_manager_tool = {
 					             swf: BASE_URL + '/js/Uploader.swf',
 					             disableGlobalDnd: true,
 					             server: '../product/uploadImage.jhtml',
-					             fileNumLimit: 100,
+					             fileNumLimit: 1,
 					             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
 					             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
 					             compress:{
@@ -515,7 +525,77 @@ var product_manager_tool = {
 			     		}); 
 			     		//alert("保存图片");
 			     	});
-			     	
+			     	$("#editProductTab").tabs({    
+			    		onSelect:function(title){    
+			    	        if(title == "商品图片展示列表"){
+			    	        	//图片上传
+						     	var multipleOptions ={
+						     			createOption:{
+						     				pick: {
+						    	                 id: '#productImageListFilePicker-edit',
+						    	                 label: '继续添加',
+						    	                 multiple :true
+						    	             },
+						    	             dnd: '#productImageListUploader-edit .queueList',
+						    	             accept: {
+						    	                 title: 'Images',
+						    	                 extensions: 'gif,jpg,jpeg,bmp,png',
+						    	                 mimeTypes: 'image/*'
+						    	             },
+						    	             //缩略图
+						    	             thumb:{
+						    	            	    width: 110,
+						    	            	    height: 110,
+						    	            	    quality: 90,
+						    	            	    allowMagnify: false,
+						    	            	    crop: false,
+						    	            	    type: 'image/jpeg'
+						    	              },
+						    	             // swf文件路径
+						    	             swf: BASE_URL + '/js/Uploader.swf',
+						    	             disableGlobalDnd: true,
+						    	             server: '../file/uploadPhoto.jhtml',
+//						    	             fileNumLimit: 4-$('img[class="preview"]').length,
+						    	             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
+						    	             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
+						    	             //图片裁剪
+						    	             compress:{
+						    	            	 width: 300,
+						    	            	 height: 300,
+						    	            	 // 图片质量，只有type为`image/jpeg`的时候才有效。
+						    	            	 quality: 90,
+						    	            	 // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+						    	            	 allowMagnify: false,
+						    	            	 // 是否允许裁剪。
+						    	            	 crop: false,
+						    	            	 // 是否保留头部meta信息。
+						    	            	 preserveHeaders: true,
+						    	            	 // 如果发现压缩后文件大小比原来还大，则使用原来图片
+						    	            	 // 此属性可能会影响图片自动纠正功能
+						    	            	 noCompressIfLarger: false,
+						    	            	 // 单位字节，如果图片大小小于此值，不会采用压缩。
+						    	            	 compressSize: 0
+						    	             }
+						     			},
+						     			//包裹上传组件的div id
+						     			warp :"editProductImageListWarp",
+						     			fileType:"PRODUCTIMAGELIST",
+						     			method:"update",
+						     			filePicker_replace :"filePicker_replace_Photos",
+//						     			filePicker2 :"filePicker2_productImageList",
+						     			uploadBeforeSend:function(object, data, headers){
+						     				 data.imageType ='PRODUCTIMAGELIST';
+						     			},
+						     			uploadSuccess:function(file, response){
+						     				photoUrlList.push(response.content);
+						     			},
+						     			uploadFinished:function(){}
+						     	};
+						     	
+						     	multipleUpload(multipleOptions);
+			    	        }   
+			    	    }  
+			    	});	
 			    },
 			    onClose:function(){
 			    	$('#editProduct').empty();
@@ -557,7 +637,6 @@ var product_manager_tool = {
 		saveProduct:function(){
 
 				//将返回的图片路径放到隐藏的input中，用于表单保存
-			debugger;
 			$("#addProductImageList_form_file_input").val(photoUrlList.join(","));
 			var requestParameters = $('#addProductProductParameter').propertygrid('getData').rows;
 			var request ="";
@@ -589,8 +668,31 @@ var product_manager_tool = {
 			});
 			
 		},
+		updateProduct:function(){
+			$("#editProductImageList_form_file_input").val(photoUrlList.join(","));
+			$.ajax({
+				url:"../product/update.jhtml",
+				type:"post",
+				data:$("#editProduct_form").serialize(),
+				beforeSend:function(){
+					$.messager.progress({
+						text:message("csh.common.saving")
+					});
+				},
+				success:function(result,response,status){
+					$.messager.progress('close');
+						showSuccessMsg(result.content);
+						$('#editProduct').dialog("close");
+						$("#product-table-list").datagrid('reload');
+				}
+			});
+		},
 		remove:function(){
 			listRemove('product-table-list','../product/delete.jhtml');
+		},
+		deleteProductImageList:function(id){
+			$(".productImage_edit"+id).remove();
+			deleteImageIdList.push(id);
 		}
 };
 

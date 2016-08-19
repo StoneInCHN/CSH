@@ -1,9 +1,10 @@
 package com.csh.entity.estore;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 
@@ -12,12 +13,16 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.csh.entity.base.BaseEntity;
+
 /**
  * Entity - 商品图片
  * 
  */
-@Embeddable
-public class ProductImage implements Serializable, Comparable<ProductImage> {
+@Entity
+@Table(name = "csh_productImage")
+@SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_productImage")
+public class ProductImage extends BaseEntity {
 
 	private static final long serialVersionUID = -673883300094536107L;
 
@@ -54,7 +59,20 @@ public class ProductImage implements Serializable, Comparable<ProductImage> {
 	/** 文件 */
 	private MultipartFile file;
 
-	/**
+	private Product product;
+	
+	@ManyToOne
+	public Product getProduct ()
+  {
+    return product;
+  }
+
+  public void setProduct (Product product)
+  {
+    this.product = product;
+  }
+
+  /**
 	 * 获取标题
 	 * 
 	 * @return 标题
