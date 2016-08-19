@@ -1,5 +1,6 @@
 package com.csh.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class ReturnsServiceImpl extends BaseServiceImpl<Returns, Long> implement
       returns.setReturnsStatus(ReturnsStatus.applyReturn);
 
       List<ReturnsItem> returnsItems = new ArrayList<ReturnsItem>();
+      BigDecimal returnsAmount = new BigDecimal(0);
       for (Long orderItemId : orderItemIds) {
         ReturnsItem returnsItem = new ReturnsItem();
         OrderItem orderItem = orderItemDao.find(orderItemId);
@@ -80,8 +82,13 @@ public class ReturnsServiceImpl extends BaseServiceImpl<Returns, Long> implement
         returnsItem.setThumbnail(orderItem.getThumbnail());
         returnsItem.setTenantID(orderItem.getTenantID());
         returnsItem.setReturns(returns);
+        returnsAmount =
+            returnsAmount.add(returnsItem.getPrice().multiply(
+                new BigDecimal(returnsItem.getQuantity())));
         returnsItems.add(returnsItem);
       }
+
+      returns.setReturnAmount(returnsAmount);
       returnsDao.persist(returns);
 
       if (returnsItems.size() == order.getOrderItems().size()) {

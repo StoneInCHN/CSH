@@ -497,7 +497,7 @@ public class OrderController extends MobileBaseController {
               userId, orderId, itemIdsStr, returnsId, trackingNo, deliveryCorp);
     }
 
-
+    returnsService.createOrEdit(orderId, orderItemIds, returnsId, userId, trackingNo, deliveryCorp);
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
