@@ -16,6 +16,14 @@
 				<input type="hidden" id="tenantImageList_input" name="tenantImageList"/>
 				<input type="hidden" id="deleteImageIdList" name="deleteImageIdList"/>
 		 		<tr>
+		 			<th>
+						${message("csh.tenantInfo.systemName")}:
+					</th>
+					<td>
+						<input class="easyui-textbox" value="${tenantInfo.systemName}" name="systemName"  maxlength="6" />
+					</td>
+		 		</tr>
+		 		<tr>
 					<th>
 						${message("csh.tenantInfo.tenantName")}:
 					</th>

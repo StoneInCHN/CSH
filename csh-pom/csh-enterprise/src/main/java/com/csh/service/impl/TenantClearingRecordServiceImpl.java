@@ -125,6 +125,7 @@ TenantClearingRecordService {
           //直接支付加上红包支付，结算金额为优惠后金额
           totalMoney = totalMoney.add (record.getPrice ());
           totalDeductMoney = totalDeductMoney.add (record.getPrice ());
+          break;
         case COUPON:
           //根据优惠券来源结算，平台优惠券，结算全额，租户优惠券结算discountPrice
           if(record .getCouponSource () == SystemType.ENTERPRISE){
@@ -159,6 +160,7 @@ TenantClearingRecordService {
           //线下余额,红包支付,减去clearBalance
           totalMoney = totalMoney.add (record.getDiscountPrice ().subtract (record.getOfflineBalance ()));
           totalDeductMoney = totalDeductMoney.add (record.getDiscountPrice ().subtract (record.getOfflineBalance ()));
+          break;
         case MIXCOUPONOFFLINE:
           //结算clearBalance,根据优惠券来源，判断是否结算discountPrice
           if(record .getCouponSource () == SystemType.ENTERPRISE){
@@ -167,8 +169,7 @@ TenantClearingRecordService {
           }else if(record .getCouponSource () == SystemType.OPERATION){
             totalMoney = totalMoney.add (record.getPrice ().subtract (record.getOfflineBalance ()));
             //优惠券优惠金额
-            BigDecimal couponMoney=record.getPrice ().subtract (record.getDiscountPrice ()).subtract (record.getRedPackageUsage ());
-            totalDeductMoney = totalDeductMoney.add (record.getPrice ().subtract (couponMoney).subtract (record.getOfflineBalance ()));
+            totalDeductMoney = totalDeductMoney.add (record.getDiscountPrice ().subtract (record.getOfflineBalance ()));
           }
          break;
         case MIXCOUPONOFFLINEREDPACKAGE:
@@ -182,6 +183,7 @@ TenantClearingRecordService {
           BigDecimal couponMoney=record.getPrice ().subtract (record.getDiscountPrice ()).subtract (record.getRedPackageUsage ());
           totalDeductMoney = totalDeductMoney.add (record.getPrice ().subtract (couponMoney).subtract (record.getOfflineBalance ()));
         }
+          break;
         default:
           break;
       }

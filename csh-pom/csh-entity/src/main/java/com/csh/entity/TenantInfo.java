@@ -152,7 +152,11 @@ public class TenantInfo extends BaseEntity {
    */
   private Integer rateCounts = 0;
 
-
+  /**
+   * 租户系统展示名称
+   */
+  private String systemName;
+  
   public Integer getRateCounts() {
     return rateCounts;
   }
@@ -392,6 +396,17 @@ public class TenantInfo extends BaseEntity {
     this.tenantImages = tenantImages;
   }
 
+  @Column(length=6)
+  public String getSystemName ()
+  {
+    return systemName;
+  }
 
+  public void setSystemName (String systemName)
+  {
+    this.systemName = systemName;
+  }
+
+  
 
 }

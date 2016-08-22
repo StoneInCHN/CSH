@@ -35,7 +35,12 @@
 
   <body class="easyui-layout" >   
 	<div class="header" data-options="region:'north',split:true,noheader:true,collapse:'west'">
-		<div class="logo">商铺管理中心</div>
+		<div class="logo">
+			[#if (tenantInfo.systemName)??]${tenantInfo.systemName}
+			[#else]
+				商铺管理中心,${tenantInfo.systemName}
+			[/#if]
+		</div>
 		<div id="nav-wrap" class="nav-wrap"  style="width:730px">
 			<ul class="nav nav-pills">
 				<li><a href="#main"><i class="fa fa-home fa-1x"></i>首页</a></li>

@@ -152,29 +152,28 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
               case WASHCOUPON:break;//洗车券支付，结算金额为0
               case OFFLINEBALLANCE:
                 //线下余额支付,减去clearBalance
-                oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+                distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
               break;
               case OFFLINEBALLANCEREDPACKAGE:
                 //线下余额,红包支付,减去clearBalance
-                oldCarServiceRecord.setPrice (oldCarServiceRecord.getDiscountPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+                distributorDeductRecord.setPrice (oldCarServiceRecord.getDiscountPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
               case MIXCOUPONOFFLINE:
                 //结算clearBalance,根据优惠券来源，判断是否结算discountPrice
                 if(oldCarServiceRecord .getCouponSource () == SystemType.ENTERPRISE){
-                  oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+                  distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
                 }else if(oldCarServiceRecord .getCouponSource () == SystemType.OPERATION){
                   //优惠券优惠金额
-                  BigDecimal couponMoney=oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getDiscountPrice ()).subtract (oldCarServiceRecord.getRedPackageUsage ());
-                  oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (couponMoney).subtract (oldCarServiceRecord.getOfflineBalance ()));
+                  distributorDeductRecord.setPrice (oldCarServiceRecord.getDiscountPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
                 }
                break;
               case MIXCOUPONOFFLINEREDPACKAGE:
                 //在COUPONREDPACKAGE 基础上减去线下余额部分
                 if(oldCarServiceRecord .getCouponSource () == SystemType.ENTERPRISE){
-                oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
+                  distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getOfflineBalance ()));
               }else if(oldCarServiceRecord .getCouponSource () == SystemType.OPERATION){
               //优惠券优惠金额
                 BigDecimal couponMoney=oldCarServiceRecord.getPrice ().subtract (oldCarServiceRecord.getDiscountPrice ()).subtract (oldCarServiceRecord.getRedPackageUsage ());
-                oldCarServiceRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (couponMoney).subtract (oldCarServiceRecord.getOfflineBalance ()));
+                distributorDeductRecord.setPrice (oldCarServiceRecord.getPrice ().subtract (couponMoney).subtract (oldCarServiceRecord.getOfflineBalance ()));
               }
               default:
                 break;

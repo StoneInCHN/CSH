@@ -115,7 +115,6 @@ $(function(){
 	$("#carService_carServiceItem-table-list").datagrid({
 		title:message("csh.carService.list"),
 		fitColumns:true,
-		toolbar:"#carService_manager_tool",
 		url:'../carService/list.jhtml?serviceCategorySearch='+'1',  
 		pagination:true,
 		singleSelect:true,

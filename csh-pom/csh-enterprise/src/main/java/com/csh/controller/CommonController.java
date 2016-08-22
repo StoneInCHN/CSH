@@ -143,6 +143,7 @@ public String main(ModelMap model,  HttpSession session) {
     response.setEndUserCount (endUserService.countUserByTenantID (tenantAccount.getTenantID ()));
     model.addAttribute ("response",response);
     model.addAttribute("tenantAccount", tenantAccount);
+    model.addAttribute ("tenantInfo",tenantInfo);
     
   return "/common/main";
 }
