@@ -140,8 +140,8 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#shippingDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 400,    
-			    height: 450,
+			    width: 700,    
+			    height: 600,
 			    cache: false,
 			    modal: true,
 			    href:'../shipping/details.jhtml?id='+rowData.id+'&path=details',
@@ -188,7 +188,7 @@ $(function(){
 		title:message("csh.shipping.order.list"),
 		fitColumns:true,
 		toolbar:"#shipping-order_manager_tool",
-		url:'../shipping/listUnshippedOrder.jhtml',  
+		url:'../estore/order/listUnshippedOrder.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
@@ -213,11 +213,11 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#shippingOrderDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 400,    
-			    height: 450,
+			    width: 800,    
+			    height: 600,
 			    cache: false,
 			    modal: true,
-			    href:'../order/details.jhtml?id='+rowData.id+'&path=details',
+			    href:'../estore/order/details.jhtml?id='+rowData.id+'&sn='+rowData.sn,
 			    buttons:[{
 					text:message("csh.common.close"),
 					iconCls:'icon-cancel',
