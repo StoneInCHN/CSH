@@ -135,9 +135,9 @@ public class BrandController extends BaseController
    
     if (nameQuery != null || rangeQuery != null)
     {
-      return brandService.search (query, pageable, analyzer, filter,true);
+      return brandService.search (query, pageable, analyzer, filter);
     }else{
-      return brandService.findPage (pageable,true);
+      return brandService.findPage (pageable);
     }
 
   }
@@ -231,7 +231,7 @@ public class BrandController extends BaseController
   @RequestMapping (value = "/findAll", method = RequestMethod.GET)
   public @ResponseBody List<Map<String, Object>> findAll (ModelMap model)
   {
-    List<Brand> brandlist = brandService.findAll (true);
+    List<Brand> brandlist = brandService.findAll ();
     String[] propertys = {"id", "name"};
     return FieldFilterUtils.filterCollectionMap(propertys, brandlist);
   }

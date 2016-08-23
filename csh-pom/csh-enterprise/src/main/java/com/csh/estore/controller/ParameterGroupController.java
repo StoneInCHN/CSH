@@ -136,7 +136,7 @@ public class ParameterGroupController extends BaseController
     {
       return parameterGroupService.search (query, pageable, analyzer, filter,true);
     }else{
-      return parameterGroupService.findPage (pageable,true);
+      return parameterGroupService.findPage (pageable);
     }
 
   }
@@ -216,14 +216,14 @@ public class ParameterGroupController extends BaseController
    * @return
    */
   @RequestMapping (value = "/findAll", method = RequestMethod.GET)
-  public @ResponseBody Page<PropertyGridResponse> details (ModelMap model,Pageable pageable,Long productCategoryId)
+  public @ResponseBody Page<PropertyGridResponse> findAll (ModelMap model,Pageable pageable,Long productCategoryId)
   {
     ProductCategory productCategory = productCategoryService.find (productCategoryId);
     List<com.csh.framework.filter.Filter> filters = new ArrayList<com.csh.framework.filter.Filter> ();
     com.csh.framework.filter.Filter categoryFilter = new com.csh.framework.filter.Filter ("productCategory", Operator.eq, productCategory);
     filters.add (categoryFilter);
     pageable.setFilters (filters);
-    Page<ParameterGroup> parameterGroupPage = parameterGroupService.findPage (pageable,true);
+    Page<ParameterGroup> parameterGroupPage = parameterGroupService.findPage (pageable);
     
     List<PropertyGridResponse> responseList = new ArrayList<PropertyGridResponse>();
     for (ParameterGroup parameterGroup : parameterGroupPage.getRows ())

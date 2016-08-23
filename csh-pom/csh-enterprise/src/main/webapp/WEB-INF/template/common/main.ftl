@@ -38,7 +38,7 @@
 		<div class="logo">
 			[#if (tenantInfo.systemName)??]${tenantInfo.systemName}
 			[#else]
-				商铺管理中心,${tenantInfo.systemName}
+				商铺管理中心
 			[/#if]
 		</div>
 		<div id="nav-wrap" class="nav-wrap"  style="width:730px">

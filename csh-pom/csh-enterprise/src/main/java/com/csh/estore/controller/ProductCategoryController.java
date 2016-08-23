@@ -134,7 +134,7 @@ public class ProductCategoryController extends BaseController
     {
       return productCategoryService.search (query, pageable, analyzer, filter,true);
     }else{
-      return productCategoryService.findPage (pageable,true);
+      return productCategoryService.findPage (pageable);
     }
 
   }
@@ -241,7 +241,7 @@ public class ProductCategoryController extends BaseController
   @RequestMapping (value = "/findAll", method = RequestMethod.GET)
   public @ResponseBody List<ProductCategory> findAll (ModelMap model, Long id)
   {
-    List<ProductCategory> productCategoryList = productCategoryService.findRoots (true);
+    List<ProductCategory> productCategoryList = productCategoryService.findRoots ();
     return productCategoryList;
   }
  
