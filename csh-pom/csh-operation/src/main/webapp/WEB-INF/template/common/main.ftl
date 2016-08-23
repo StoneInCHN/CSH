@@ -413,6 +413,11 @@
 									<a href="../attribute/list.jhtml" target="iframe"><i class="fa fa-cog"></i>商品属性</a>
 								</li>
 							 [/@shiro.hasPermission]
+							 [@shiro.hasPermission name="admin:brand"]
+								<li>
+									<a href="../brand/list.jhtml" target="iframe"><i class="fa fa-cog"></i>商品品牌</a>
+								</li>
+							 [/@shiro.hasPermission]
 				       </ul>
 				</li>
 				[#break /]

@@ -136,6 +136,8 @@ public class FileServiceImpl implements FileService {
       subPath = File.separator + "newsCagetory";
     }else if (imageType == ImageType.Coupon) {
       subPath = File.separator + "coupon";
+    }else if (imageType == ImageType.BrandLogo) {
+      subPath = File.separator + "logo";
     }
 
     imgUploadPath = uploadPath + subPath;
@@ -199,6 +201,8 @@ public class FileServiceImpl implements FileService {
       subPath = File.separator + "newsCagetory";
     }else if (imageType == ImageType.Coupon) {
       subPath = File.separator + "coupon";
+    }else if (imageType == ImageType.BrandLogo) {
+      subPath = File.separator + "logo";
     }
 
     imgUploadPath = uploadPath + subPath;

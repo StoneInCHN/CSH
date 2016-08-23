@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.Message;
+import com.csh.beans.Setting.ImageType;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.commonenum.CommonEnum.FileType;
 import com.csh.entity.estore.Brand;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.BrandService;
+import com.csh.service.FileService;
 
 @Controller("brandController")
 @RequestMapping("console/brand")
@@ -21,12 +24,15 @@ public class BrandController extends BaseController {
   @Resource(name = "brandServiceImpl")
   private BrandService brandService;
 
+  @Resource(name = "fileServiceImpl")
+  private FileService fileService;
+  
   /**
    * 添加
    */
   @RequestMapping(value = "/add", method = RequestMethod.GET)
   public String add() {
-    return "/deviceType/add";
+    return "/brand/add";
   }
 
   /**
@@ -36,6 +42,10 @@ public class BrandController extends BaseController {
   public String save(Brand brand) {
     if (!isValid(brand)) {
       return ERROR_VIEW;
+    }
+    if (brand.getImgFile() != null && fileService.isValid(FileType.image,brand.getImgFile())) {
+      String imgUrl = fileService.saveImage(brand.getImgFile(), ImageType.BrandLogo,false);
+      brand.setLogo(imgUrl);;
     }
     brandService.save(brand);
     return "redirect:list.jhtml";
@@ -60,6 +70,15 @@ public class BrandController extends BaseController {
     }
     Brand temp = brandService.find(brand.getId());
     temp.setName(brand.getName());
+    if (brand.getIntroduction() !=null) {
+      temp.setIntroduction(brand.getIntroduction());
+    }
+    temp.setUrl(brand.getUrl());
+    temp.setOrder(brand.getOrder());
+    if (brand.getImgFile() != null && fileService.isValid(FileType.image,brand.getImgFile())) {
+      String imgUrl = fileService.saveImage(brand.getImgFile(), ImageType.BrandLogo,false);
+      temp.setLogo(imgUrl);
+    }
     brandService.update(temp);
     return "redirect:list.jhtml";
   }

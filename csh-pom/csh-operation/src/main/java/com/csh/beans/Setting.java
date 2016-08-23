@@ -68,7 +68,11 @@ public class Setting implements Serializable {
     /**
      * 优惠券
      */
-    Coupon
+    Coupon,
+   /**
+    * 品牌logo
+    */
+    BrandLogo
   }
 
 
