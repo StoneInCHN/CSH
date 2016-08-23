@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Indexed(index="brand")
 @Entity
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_brand_sequence")
-@Table(name = "csh_brand" ,indexes={@Index(name="brand_tenantid",columnList="tenantID")})
+@Table(name = "csh_brand")
 public class Brand extends OrderEntity {
 
 	private static final long serialVersionUID = -6109590619136943215L;
@@ -57,10 +57,6 @@ public class Brand extends OrderEntity {
 	/** 商品分类 */
 	private Set<ProductCategory> productCategories = new HashSet<ProductCategory>();
 
-  /**
-   * 租户ID
-   */
-  private Long tenantID;
 	/**
 	 * 获取名称
 	 * 
@@ -187,18 +183,6 @@ public class Brand extends OrderEntity {
 	public void setProductCategories(Set<ProductCategory> productCategories) {
 		this.productCategories = productCategories;
 	}
-
-
-	@Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store = Store.NO)
-	public Long getTenantID ()
-  {
-    return tenantID;
-  }
-
-  public void setTenantID (Long tenantID)
-  {
-    this.tenantID = tenantID;
-  }
 
   /**
 	 * 删除前处理

@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Indexed(index="productCategory")
 @Entity
-@Table(name = "csh_product_category",indexes={@javax.persistence.Index(name="productCategory_tenantid",columnList="tenantID")})
+@Table(name = "csh_product_category",indexes={@javax.persistence.Index(name="productCategory_name",columnList="name")})
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_product_category_sequence")
 public class ProductCategory extends OrderEntity {
 
@@ -77,21 +77,7 @@ public class ProductCategory extends OrderEntity {
 
 	/** 参数组 */
   private Set<ParameterGroup> parameterGroups = new HashSet<ParameterGroup>();
-	/**
-   * 租户ID
-   */
-  private Long tenantID;
-  
-  @Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
-  public Long getTenantID ()
-  {
-    return tenantID;
-  }
-  
-  public void setTenantID (Long tenantID)
-  {
-    this.tenantID = tenantID;
-  }
+ 
 	/**
 	 * 获取名称
 	 * 

@@ -393,6 +393,31 @@
 				[#break /]
 			[/@shiro.hasPermission]
 		[/#list]
+		[#list ["admin:productCategory"] as permission]
+			[@shiro.hasPermission name = permission]
+				<li class="has_sub" >
+					<a href="#productCategory" ><i class="fa fa-cog"></i>&nbsp;&nbsp;${message("csh.main.productCategory")}<span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
+						<ul class="sub_ul">
+							 [@shiro.hasPermission name="admin:productCategory"]
+								<li>
+									<a href="../productCategory/list.jhtml" target="iframe"><i class="fa fa-cog"></i>商品类型</a>
+								</li>
+							 [/@shiro.hasPermission]
+							 [@shiro.hasPermission name="admin:parameterGroup"]
+								<li>
+									<a href="../parameterGroup/list.jhtml" target="iframe"><i class="fa fa-cog"></i>商品参数</a>
+								</li>
+							 [/@shiro.hasPermission]
+							 [@shiro.hasPermission name="admin:attribute"]
+								<li>
+									<a href="../attribute/list.jhtml" target="iframe"><i class="fa fa-cog"></i>商品属性</a>
+								</li>
+							 [/@shiro.hasPermission]
+				       </ul>
+				</li>
+				[#break /]
+			[/@shiro.hasPermission]
+		[/#list]
        </ul>
       </div>
       <div class="mainbar">

@@ -46,6 +46,7 @@ public class SystemConfigController extends BaseController {
   public String update(SystemConfig systemConfig) {
     SystemConfig temp = systemConfigService.find(systemConfig.getId());
     temp.setConfigValue(systemConfig.getConfigValue());
+    temp.setIsEnabled(systemConfig.getIsEnabled());
     systemConfigService.update(temp);
     return "redirect:list.jhtml";
   }

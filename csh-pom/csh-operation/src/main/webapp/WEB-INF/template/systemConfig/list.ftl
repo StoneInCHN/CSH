@@ -86,10 +86,10 @@
 														${systemConfig.configValue}
 													</td>
 													<td>
-														[#if systemConfig.isEnabled??]
-															${message("csh.systemConfig.isEnabled."+systemConfig.isEnabled)}
+														[#if systemConfig.isEnabled?? && systemConfig.isEnabled]
+															${message("csh.systemConfig.isEnabled.true")}
 														[#else]
-															-
+															${message("csh.systemConfig.isEnabled.false")}
 														[/#if]
 													</td>
 													<td>

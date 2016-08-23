@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Indexed(index="parameterGroup")
 @Entity
-@Table(name = "csh_parameter_group",indexes={@javax.persistence.Index(name="parameterGroup_tenantid",columnList="tenantID")})
+@Table(name = "csh_parameter_group")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_parameter_group_sequence")
 public class ParameterGroup extends OrderEntity {
 
@@ -46,19 +46,7 @@ public class ParameterGroup extends OrderEntity {
 
 	/** 参数 */
 	private List<Parameter> parameters = new ArrayList<Parameter>();
-
-	private Long tenantID;
 	
-	@Field(index=org.hibernate.search.annotations.Index.YES,analyze=Analyze.NO,store=Store.NO)
-  public Long getTenantID ()
-  {
-    return tenantID;
-  }
-  
-  public void setTenantID (Long tenantID)
-  {
-    this.tenantID = tenantID;
-  }
 	/**
 	 * 获取名称
 	 * 

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>${message("csh.systemConfig.edit")}</title>
+<title>${message("csh.productCategory.edit")}</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
@@ -16,18 +16,17 @@
 <script type="text/javascript">
 $().ready(function() {
 
-	var $inputForm = $("#inputForm");	
+	var $inputForm = $("#inputForm");
+	
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			configValue:{
-				required: true,
-				number:true,
-				min:0
+			name: {
+				required: true
 			}
-		}	
+		}
 	});
-	
+
 });
 </script>
 </head>
@@ -35,11 +34,11 @@ $().ready(function() {
 	<div class="mainbar">
 		<div class="page-head">
 			<div class="bread-crumb">
-				<a ><i class="fa fa-user"></i> ${message("csh.main.systemConfig")}</a> 
+				<a ><i class="fa fa-user"></i> ${message("csh.main.productCategory")}</a> 
 				<span class="divider">/</span> 
-				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.systemConfig.list")}</a>
+				<a href="list.jhtml" ><i class="fa fa-list"></i>${message("csh.productCategory.list")}</a>
 				<span class="divider">/</span>
-				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.systemConfig.edit")}</a>
+				<a  class="bread-current"><i class="fa fa-pencil-square-o"></i>${message("csh.productCategory.edit")}</a>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -49,7 +48,7 @@ $().ready(function() {
             <div class="col-md-12">
               <div class="widget wgreen">
                 <div class="widget-head">
-                  <div class="pull-left">${message("csh.systemConfig.edit")}</div>
+                  <div class="pull-left">${message("csh.productCategory.edit")}i</div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 
                     <a href="#" class="wclose"><i class="fa fa-times"></i></a>
@@ -58,37 +57,36 @@ $().ready(function() {
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                    <form id="inputForm" action="update.jhtml" method="post">
-						<input type="hidden" name="id" value="${systemConfig.id}" />
+                    <form id="inputForm" action="update.jhtml" method="post" enctype="multipart/form-data">
+						<input type="hidden" name="id" value="${productCategory.id}" />
 						<table class="input tabContent">
-							<tr>
+                     		<tr>
 								<th>
-									${message("csh.systemConfig.configKey")}:
+									<span class="requiredField">*</span>${message("csh.productCategory.name")}:
 								</th>
 								<td>
-									[#if systemConfig.configKey??]
-										${message("csh.systemConfig.configKey."+systemConfig.configKey)}
-									[#else]
-										-
-									[/#if]
+									<input type="text" id="name" name="name" class="text" maxlength="20" value="${productCategory.name}" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.systemConfig.configValue")}:
+									${message("csh.productCategory.parent")}:
 								</th>
 								<td>
-									<input type="text" name="configValue" class="text " value="${systemConfig.configValue}"  maxlength="20" />
-								</td>
-							</tr>
-							<tr>
-								<th>
-									<span class="requiredField">*</span>${message("csh.systemConfig.isEnabled")}:
-								</th>
-								<td>
-									<select name="isEnabled">
-										<option value="true" [#if systemConfig.isEnabled ?? && systemConfig.isEnabled] selected="selected" [/#if]>${message("csh.systemConfig.isEnabled.true")}</option>
-										<option value="false" [#if systemConfig.isEnabled ?? && !systemConfig.isEnabled] selected="selected" [/#if]>${message("csh.systemConfig.isEnabled.false")}</option>
+									<select name="parentId">
+										<option value="">${message("csh.productCategory.root")}</option>
+										[#list productCategoryTree as category]
+											[#if category != productCategory && !children?seq_contains(category)]
+												<option value="${category.id}"[#if category == productCategory.parent] selected="selected"[/#if]>
+													[#if category.grade != 0]
+														[#list 1..category.grade as i]
+															&nbsp;&nbsp;
+														[/#list]
+													[/#if]
+													${category.name}
+												</option>
+											[/#if]
+										[/#list]
 									</select>
 								</td>
 							</tr>
