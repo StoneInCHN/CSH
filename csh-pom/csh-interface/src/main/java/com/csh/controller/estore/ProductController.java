@@ -44,6 +44,7 @@ import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseRequest;
 import com.csh.json.base.BaseResponse;
+import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.ProductRequest;
@@ -146,6 +147,7 @@ public class ProductController extends MobileBaseController {
     SortType sortType = request.getSortType();
     Integer pageSize = request.getPageSize();
     Integer pageNumber = request.getPageNumber();
+
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -203,29 +205,37 @@ public class ProductController extends MobileBaseController {
       }
     }
 
-    if (sortType == null || SortType.RECOMMEND.equals(sortType)) {
+    if (SortType.RECOMMEND.equals(sortType)) {
       Long tenantId = null;
       EndUser endUser = endUserService.find(userId);
       if (endUser.getDefaultVehicle() != null) {
         tenantId = endUser.getDefaultVehicle().getTenantID();
-        TermQuery tenantTermQuery = new TermQuery(new Term("tenantID", tenantId.toString()));
-        query.add(tenantTermQuery, Occur.MUST);
+        if (tenantId != null) {
+          TermQuery tenantTermQuery = new TermQuery(new Term("tenantID", tenantId.toString()));
+          query.add(tenantTermQuery, Occur.MUST);
+        }
       }
     } else if (SortType.PRICEASC.equals(sortType)) {
-      sortField = new SortField("price", SortField.STRING, true);
-    } else if (SortType.SALESDESC.equals(sortType)) {
-      sortField = new SortField("sales", SortField.STRING, true);
+      sortField = new SortField("price", SortField.STRING, false);
+    } else if (sortType == null || SortType.SALESDESC.equals(sortType)) {
+      sortField = new SortField("sales", SortField.LONG, true);
     }
 
     Pageable pageable = new Pageable();
     pageable.setPageNumber(pageNumber);
     pageable.setPageSize(pageSize);
-    Page<Product> page = productService.search(query, pageable, analyzer, null, sortField);
+    Page<Product> products = productService.search(query, pageable, analyzer, null, sortField);
 
     String[] propertys = {"id", "name", "price", "image", "sales"};
     List<Map<String, Object>> result =
-        FieldFilterUtils.filterCollectionMap(propertys, page.getContent());
+        FieldFilterUtils.filterCollectionMap(propertys, products.getContent());
     response.setMsg(result);
+
+    PageResponse page = new PageResponse();
+    page.setPageNumber(request.getPageNumber());
+    page.setPageSize(request.getPageSize());
+    page.setTotal((int) products.getTotal());
+    response.setPage(page);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
@@ -356,7 +366,9 @@ public class ProductController extends MobileBaseController {
     pageable.setOrderDirection(Direction.desc);
     List<Filter> filters = new ArrayList<Filter>();
     Filter filter = new Filter("product", Operator.eq, productId);
+    Filter showfilter = new Filter("isShow", Operator.eq, true);
     filters.add(filter);
+    filters.add(showfilter);
     pageable.setFilters(filters);
     Page<Review> reviews = reviewService.findPage(pageable);
     String[] reviewPropertys =
@@ -364,6 +376,12 @@ public class ProductController extends MobileBaseController {
     List<Map<String, Object>> reviewList =
         FieldFilterUtils.filterCollectionMap(reviewPropertys, reviews.getContent());
     response.setMsg(reviewList);
+
+    PageResponse page = new PageResponse();
+    page.setPageNumber(request.getPageNumber());
+    page.setPageSize(request.getPageSize());
+    page.setTotal((int) reviews.getTotal());
+    response.setPage(page);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
