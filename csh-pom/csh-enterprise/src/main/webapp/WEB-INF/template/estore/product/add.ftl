@@ -43,21 +43,21 @@
 		    	 <tr>
 		    		<th >${message("csh.product.price")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" required="required" name="price"/>
+		    			<input  class="easyui-numberbox" required="required" name="price" data-options="min:0,max:100000,precision:2"/>
 		    		</td>
 		    		<th >${message("csh.product.cost")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox"  name="cost"/>
+		    			<input  class="easyui-numberbox"  name="cost" data-options="min:0,max:100000,precision:2"/>
 		    		</td>
 		    	</tr>
 		    	<tr>
 		    		<th >${message("csh.product.marketPrice")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="marketPrice"/>
+		    			<input  class="easyui-numberbox" name="marketPrice" data-options="min:0,max:100000,precision:2"/>
 		    		</td>
 		    		<th >${message("csh.product.point")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="point" data-options="min:0"/>
+		    			<input  class="easyui-numberbox" name="point" data-options="min:0"/>
 		    		</td>
 		    	</tr>
 		    	<tr>
@@ -73,15 +73,15 @@
 		    	<tr>
 		    		<th >${message("csh.product.stock")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stock" data-options="min:0"/>
+		    			<input  class="easyui-numberbox" name="stock" data-options="min:0"/>
 		    		</td>
 		    		<th >${message("csh.product.stockMemo")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stockMemo" data-options="min:0"/>
+		    			<input  class="easyui-numberbox" name="stockMemo" data-options="min:0"/>
 		    		</td >
 		    		<th >${message("csh.product.stockAlertCount")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stockAlertCount" data-options="min:0"/>
+		    			<input  class="easyui-numberbox" name="stockAlertCount" data-options="min:0"/>
 		    		</td >
 		    	</tr>
 		    	<tr>

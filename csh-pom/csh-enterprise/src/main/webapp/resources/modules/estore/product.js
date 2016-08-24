@@ -342,11 +342,18 @@ var product_manager_tool = {
 							if($photoLi.length >0){
 								$("#productImageListUploader-edit .uploadBtn").trigger("upload");
 							}else{
-							
+								
+								var requestParameters = $('#editProductProductParameter').propertygrid('getData').rows;
+								var request ="";
+								for(var i=0;i<requestParameters.length;i++){
+									request = request +'&propertyGridResponses['+i+'].name='+requestParameters[i].name+
+											'&propertyGridResponses['+i+'].value='+requestParameters[i].value+
+											'&propertyGridResponses['+i+'].id='+requestParameters[i].id;
+								}
 								$.ajax({
 									url:"../product/update.jhtml",
 									type:"post",
-									data:$("#editProduct_form").serialize(),
+									data:$("#editProduct_form").serialize()+request,
 									beforeSend:function(){
 										$.messager.progress({
 											text:message("csh.common.saving")
@@ -380,10 +387,27 @@ var product_manager_tool = {
 			    	    	node.text = node.name;
 			    			return node.name;
 			    		},
-			    		onSelect:function(){
-			    			debugger;
-			    		},
-			    		onChange:function(newValue, oldValue){
+						onLoadSuccess:function(){
+							$('#editProduct_productCategory').combotree("setValue",$("#editProduct_productCategory").attr("data-value"));
+							$('#editProductProductParameter').propertygrid({    
+	    			    	    url: '../product/getCurrentParameter.jhtml', 
+	    			    	    method:"get",
+	    			    	    showGroup: true,
+	    			    	    showHeader:false,
+	    			    	    scrollbarSize: 0,
+	    			    	    columns:[[
+	    							{field:'name',width:100,sortable:true},
+	    							{field:'value',width:100,resizable:false},
+	    							{field:'id',width:100,resizable:false,hidden:true}
+	    			    	    ]],
+	    			    	    onBeforeLoad:function(param){
+	    							param.productId = $('#editProductId').val();
+	    						},
+	    						onLoadSuccess:function(){
+	    	    				}
+	    			    	});
+						},
+						onSelect:function(node){
 			    			$('#editProductProductParameter').propertygrid({    
 					    	    url: '../parameterGroup/findAll.jhtml', 
 					    	    method:"get",
@@ -396,27 +420,18 @@ var product_manager_tool = {
 									{field:'id',width:100,resizable:false,hidden:true}
 					    	    ]],
 					    	    onBeforeLoad:function(param){
-									param.productCategoryId = newValue;
+									param.productCategoryId = node.id;
 								},
+			    				onLoadSuccess:function(){
+			    					
+			    				}
 					    	});
 			    		}
 			    	});
-			    	$('#editProduct_productCategory').combobox("setValue",$("#editProduct_productCategory").attr("data-value"));
-	    			$('#editProductProductParameter').propertygrid({    
-			    	    url: '../product/getCurrentParameter.jhtml', 
-			    	    method:"get",
-			    	    showGroup: true,
-			    	    showHeader:false,
-			    	    scrollbarSize: 0,
-			    	    columns:[[
-							{field:'name',width:100,sortable:true},
-							{field:'value',width:100,resizable:false},
-							{field:'id',width:100,resizable:false,hidden:true}
-			    	    ]],
-			    	    onBeforeLoad:function(param){
-							param.productId = $('#editProductId').val();
-						},
-			    	});
+
+					
+				
+	    			
 	    		
 			    	
 			    	$("#editProduct_brand").combobox({    
@@ -669,11 +684,18 @@ var product_manager_tool = {
 			
 		},
 		updateProduct:function(){
+			var requestParameters = $('#editProductProductParameter').propertygrid('getData').rows;
+			var request ="";
+			for(var i=0;i<requestParameters.length;i++){
+				request = request +'&propertyGridResponses['+i+'].name='+requestParameters[i].name+
+						'&propertyGridResponses['+i+'].value='+requestParameters[i].value+
+						'&propertyGridResponses['+i+'].id='+requestParameters[i].id;
+			}
 			$("#editProductImageList_form_file_input").val(photoUrlList.join(","));
 			$.ajax({
 				url:"../product/update.jhtml",
 				type:"post",
-				data:$("#editProduct_form").serialize(),
+				data:$("#editProduct_form").serialize()+request,
 				beforeSend:function(){
 					$.messager.progress({
 						text:message("csh.common.saving")
@@ -748,11 +770,19 @@ $(function(){
 		      {title:message("csh.product.sn"),field:"sn",sortable:true},
 		      {title:message("csh.product.name"),field:"name",sortable:true},
 		      {title:message("csh.product.fullName"),field:"fullName",sortable:true},
-		      {title:message("csh.product.marketable"),field:"isMarketable",sortable:true,formatter: function(value,row,index){
-		    	  if(value){
-		    		  return message("csh.product.marketable.up");
-		    	  }else{
-		    		  return message("csh.product.marketable.down");
+		      {title:message("csh.product.productStatus"),field:"productStatus",sortable:true,formatter: function(value,row,index){
+		    	  if(value == "created"){
+		    		  return message("csh.product.productStatus.created");
+		    	  }else if(value == "supply"){
+		    		  return message("csh.product.productStatus.supply");
+		    	  }else if(value == "approvedPass"){
+		    		  return message("csh.product.productStatus.approvedPass");
+		    	  }else if(value == "approvedFailed"){
+		    		  return message("csh.product.productStatus.approvedFailed");
+		    	  }else if(value == "marketed"){
+		    		  return message("csh.product.productStatus.marketed");
+		    	  }else if(value == "unmarketed"){
+		    		  return message("csh.product.productStatus.unmarketed");
 		    	  }
 		      }},
 //		      {title:message("csh.product.parent"),field:"parent",sortable:true,formatter: function(value,row,index){

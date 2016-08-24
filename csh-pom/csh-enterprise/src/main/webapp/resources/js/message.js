@@ -347,9 +347,13 @@ var messages = {
 	"csh.product.list":"商品列表",
 	"csh.product.add":"添加商品",
 
-	"csh.product.marketable":"上架状态",
-	"csh.product.marketable.up":"上架",
-	"csh.product.marketable.down":"下架",
+	"csh.product.productStatus":"商品状态",
+	"csh.product.productStatus.created":"新建状态",
+	"csh.product.productStatus.supply":"提交审核",
+	"csh.product.productStatus.approvedPass":"审核通过",
+	"csh.product.productStatus.approvedFailed":"审核退回",
+	"csh.product.productStatus.marketed":"上架 ",
+	"csh.product.productStatus.unmarketed":"下架 ",
 	"csh.product.fullName":"全称",
 	"csh.product.sn":"商品编号",
 

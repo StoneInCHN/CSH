@@ -1768,6 +1768,7 @@ public class Product extends BaseEntity {
    * @return 商品状态
    */
   @Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+  @JsonProperty
   public ProductStatus getProductStatus() {
     return productStatus;
   }
@@ -2175,6 +2176,7 @@ public class Product extends BaseEntity {
     if (getIsTop() == null) {
       setIsTop(false);
     }
+    setProductStatus (ProductStatus.created);
     setAllocatedStock(0);
     setScore(0F);
     setTotalScore(0L);

@@ -35,7 +35,7 @@
 						</div>
 						<div class="btns">
 					        <div class="uploadBtn state-pedding"></div>
-					        <!--<div id="productImageFilePicker-edit2" class="margin-left-20">选择文件</div>-->
+					        <div id="productImageFilePicker-edit2" class="margin-left-20">选择文件</div>
 					        <div class="btn btn-info savePhoto margin-left-20" style="display:none">保存图片</div>
 					    </div>
 	    			</div>
@@ -55,21 +55,21 @@
 		    	 <tr>
 		    		<th >${message("csh.product.price")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" required="required" value="${product.price}" name="price"/>
+		    			<input  class="easyui-numberbox" required="required" value="${product.price}" name="price" data-options="min:0,max:100000,precision:2"/>
 		    		</td>
 		    		<th >${message("csh.product.cost")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox"  name="cost" value="${product.cost}"/>
+		    			<input  class="easyui-numberbox"  name="cost" value="${product.cost}" data-options="min:0,max:100000,precision:2"/>
 		    		</td>
 		    	</tr>
 		    	<tr>
 		    		<th >${message("csh.product.marketPrice")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="marketPrice" value="${product.marketPrice}"/>
+		    			<input  class="easyui-numberbox" name="marketPrice" value="${product.marketPrice}" data-options="min:0,max:100000,precision:2"/>
 		    		</td>
 		    		<th >${message("csh.product.point")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="point" value="${product.point}" data-options="min:0"/>
+		    			<input  class="easyui-numberbox" name="point" value="${product.point}" data-options="min:0"/>
 		    		</td>
 		    	</tr>
 		    	<tr>
@@ -85,15 +85,15 @@
 		    	<tr>
 		    		<th >${message("csh.product.stock")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stock" value="${product.stock}" data-options="min:0"/>
+		    			<input  class="easyui-numberbox" name="stock" value="${product.stock}" data-options="min:0"/>
 		    		</td>
 		    		<th >${message("csh.product.stockMemo")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stockMemo" value="${product.stockMemo}" data-options="min:0"/>
+		    			<input  class="easyui-numberbox" name="stockMemo" value="${product.stockMemo}" data-options="min:0"/>
 		    		</td >
 		    		<th >${message("csh.product.stockAlertCount")}:</th>
 		    		<td>
-		    			<input  class="easyui-textbox" name="stockAlertCount" value="${product.stockAlertCount}" data-options="min:0"/>
+		    			<input  class="easyui-numberbox" name="stockAlertCount" value="${product.stockAlertCount}" data-options="min:0"/>
 		    		</td >
 		    	</tr>
 		    	<tr>
@@ -163,7 +163,7 @@
     	  		<tr>
 				 	<td colspan="5">
 	    			 	<textarea id= "edit_product_introduction"  
-	    			 	style="height:200px;width:300px" name="introduction"></textarea>   
+	    			 	style="height:200px;width:300px" name="introduction">${product.introduction}</textarea>   
 	    			</td>
     			</tr>
 	    	</table>

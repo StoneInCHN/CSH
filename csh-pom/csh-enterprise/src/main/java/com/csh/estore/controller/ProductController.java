@@ -33,6 +33,7 @@ import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Sn.Type;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
+import com.csh.entity.commonenum.CommonEnum.ProductStatus;
 import com.csh.entity.estore.Brand;
 import com.csh.entity.estore.Parameter;
 import com.csh.entity.estore.ParameterGroup;
@@ -185,7 +186,7 @@ public class ProductController extends BaseController
 		image.setProduct (product);
 		productImageList.add(image);
 	}
-	product.setProductImages(productImageList);
+	  product.setProductImages(productImageList);
     ProductCategory category =productCategoryService.find (productCategoryId);
     product.setProductCategory (category);
     Brand brand = brandService.find (brandId);
@@ -200,11 +201,10 @@ public class ProductController extends BaseController
           if (propertyGridResponse.getId () == parameter.getId ())
           {
             String parameterValue = propertyGridResponse.getValue ();
-            if (StringUtils.isNotEmpty(parameterValue) && !"null".equals (parameterValue)) {
-              product.getParameterValue().put(parameter, parameterValue);
-            } else {
-              product.getParameterValue().remove(parameter);
+            if (StringUtils.isEmpty (parameterValue) || "null".equals (parameterValue)) {
+              parameterValue="";
             }
+            product.getParameterValue().put(parameter, parameterValue);
           }
         }
       }
@@ -217,12 +217,33 @@ public class ProductController extends BaseController
   }
 
   @RequestMapping (value = "/update", method = RequestMethod.POST)
-  public @ResponseBody Message update (Product product,Long productCategoryId,String[] productImageListSrcs,Long brandId,Long[] deleteImageIdList)
+  public @ResponseBody Message update (Product product,Long productCategoryId,String[] productImageListSrcs,Long brandId,
+      Long[] deleteImageIdList,PropertyListRequest request)
   {
 	ProductCategory productCategory=  productCategoryService.find(productCategoryId);
 	product.setProductCategory(productCategory);
 	Brand brand = brandService.find (brandId);
 	product.setBrand (brand);
+	
+	//商品参数配置
+  PropertyGridResponse[] propertyGrids = request.getPropertyGridResponses ();
+  for (ParameterGroup parameterGroup : product.getProductCategory().getParameterGroups()) {
+    for (Parameter parameter : parameterGroup.getParameters()) {
+      for (PropertyGridResponse propertyGridResponse : propertyGrids)
+      {
+        if (propertyGridResponse.getId () == parameter.getId ())
+        {
+          String parameterValue = propertyGridResponse.getValue ();
+          if (StringUtils.isEmpty (parameterValue) || "null".equals (parameterValue)) {
+            parameterValue="";
+          }
+          product.getParameterValue().put(parameter, parameterValue);
+        }
+      }
+    }
+  }
+  
+	
   productService.updateProduct (product,productImageListSrcs, deleteImageIdList);
     return SUCCESS_MESSAGE;
   }
@@ -261,7 +282,13 @@ public class ProductController extends BaseController
       List<Product > prudoctList =productService.findList (ids);
       for (Product product : prudoctList)
       {
-        product.setIsMarketable (isMarketable);
+        if (isMarketable)
+        {
+          product.setProductStatus (ProductStatus.marketed);
+        }else {
+          product.setProductStatus (ProductStatus.unmarketed);
+        }
+       
       }
       productService.update (prudoctList);
     }
