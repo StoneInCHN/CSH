@@ -26,6 +26,7 @@ import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseResponse;
+import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.request.CartRequest;
 import com.csh.service.CartItemService;
@@ -107,6 +108,7 @@ public class CartController extends MobileBaseController {
       cartItem.setProduct(product);
       cartItem.setQuantity(quantity);
       cartItem.setTenantID(product.getTenantID());
+      cartItem.setCart(cart);
       cart.getCartItems().add(cartItem);
     }
 
@@ -156,14 +158,19 @@ public class CartController extends MobileBaseController {
     pageable.setPageSize(pageSize);
     pageable.setOrderProperty("createDate");
     pageable.setOrderDirection(Direction.desc);
-    Page<CartItem> page = cartItemService.findPage(pageable);
+    Page<CartItem> cartItems = cartItemService.findPage(pageable);
     String[] propertys =
-        {"id", "quantity", "product.id", "product.name", "product.price", "product.image",
-            "product.stock"};
+        {"id", "quantity", "product.id", "product.fullName", "product.price", "product.image"};
     List<Map<String, Object>> result =
-        FieldFilterUtils.filterCollectionMap(propertys, page.getContent());
-
+        FieldFilterUtils.filterCollectionMap(propertys, cartItems.getContent());
     response.setMsg(result);
+
+    PageResponse page = new PageResponse();
+    page.setPageNumber(request.getPageNumber());
+    page.setPageSize(request.getPageSize());
+    page.setTotal((int) cartItems.getTotal());
+    response.setPage(page);
+
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
@@ -177,7 +184,7 @@ public class CartController extends MobileBaseController {
    * 
    * @return
    */
-  @RequestMapping(value = "/edit", method = RequestMethod.POST)
+  @RequestMapping(value = "/delete", method = RequestMethod.POST)
   @UserValidCheck
   public @ResponseBody BaseResponse details(@RequestBody CartRequest request) {
 
@@ -230,6 +237,11 @@ public class CartController extends MobileBaseController {
 
     CartItem cartItem = cartItemService.find(itemId);
     cartItem.setQuantity(cartItem.getQuantity() + opr);
+    if (cartItem.getQuantity() < 1) {
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc(Message.error("csh.estore.cartItem.quantity.invaild").getContent());
+      return response;
+    }
     cartItemService.update(cartItem);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());

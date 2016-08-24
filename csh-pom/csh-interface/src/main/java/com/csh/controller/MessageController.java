@@ -285,7 +285,7 @@ public class MessageController extends MobileBaseController {
         Set<String> codeSet = new HashSet<String>();
         String[] codes = content.split(",");
         for (String code : codes) {
-          codeSet.add(code.split(":")[0].trim());
+          codeSet.add("<a>" + code.split(":")[0].trim() + "<a>");
         }
         String obdCode = codeSet.toString().substring(1, codeSet.toString().length() - 1);
         msgContent =

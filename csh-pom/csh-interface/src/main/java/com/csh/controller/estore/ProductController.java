@@ -177,7 +177,7 @@ public class ProductController extends MobileBaseController {
     if (keyWord != null) {
       try {
         String text = QueryParser.escape(keyWord);
-        QueryParser filterParser = new QueryParser(Version.LUCENE_35, "name", analyzer);
+        QueryParser filterParser = new QueryParser(Version.LUCENE_35, "fullName", analyzer);
         Query filterQuery = filterParser.parse(text);
         query.add(filterQuery, Occur.MUST);
       } catch (Exception e) {
@@ -226,7 +226,7 @@ public class ProductController extends MobileBaseController {
     pageable.setPageSize(pageSize);
     Page<Product> products = productService.search(query, pageable, analyzer, null, sortField);
 
-    String[] propertys = {"id", "name", "price", "image", "sales"};
+    String[] propertys = {"id", "fullName", "price", "image", "sales"};
     List<Map<String, Object>> result =
         FieldFilterUtils.filterCollectionMap(propertys, products.getContent());
     response.setMsg(result);
@@ -278,7 +278,7 @@ public class ProductController extends MobileBaseController {
     product.setHits(product.getHits() + 1);
     productService.update(product);
 
-    String[] propertys = {"id", "name", "price", "image", "sales", "introduction"};
+    String[] propertys = {"id", "fullName", "price", "image", "sales", "introduction"};
     Map<String, Object> result = FieldFilterUtils.filterEntityMap(propertys, product);
 
     String[] imagePropertys = {"id", "mobileicon"};
