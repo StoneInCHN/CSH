@@ -89,8 +89,8 @@ var product_manager_tool = {
 					             },
 					             //缩略图
 					             thumb:{
-					            	    width: 110,
-					            	    height: 110,
+					            	    width: 300,
+					            	    height: 300,
 					            	    quality: 90,
 					            	    allowMagnify: false,
 					            	    crop: false,
@@ -105,8 +105,8 @@ var product_manager_tool = {
 					             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
 					             //图片裁剪
 					             compress:{
-					            	 width: 110,
-					            	 height: 110,
+					            	 width: 300,
+					            	 height: 300,
 					            	 // 图片质量，只有type为`image/jpeg`的时候才有效。
 					            	 quality: 90,
 					            	 // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
@@ -258,8 +258,8 @@ var product_manager_tool = {
 						    	             },
 						    	             //缩略图
 						    	             thumb:{
-						    	            	    width: 110,
-						    	            	    height: 110,
+						    	            	    width: 300,
+						    	            	    height: 300,
 						    	            	    quality: 90,
 						    	            	    allowMagnify: false,
 						    	            	    crop: false,
@@ -489,8 +489,8 @@ var product_manager_tool = {
 					                 mimeTypes: 'image/*'
 					             },
 					             thumb:{
-					            	    width: 150,
-					            	    height: 150,
+					            	    width: 300,
+					            	    height: 300,
 					            	    quality: 90,
 					            	    allowMagnify: false,
 					            	    crop: false,
@@ -504,8 +504,8 @@ var product_manager_tool = {
 					             fileSizeLimit: 10 * 1024 * 1024,    // 10 M
 					             fileSingleSizeLimit: 10 * 1024 * 1024,    //单个文件上传大小  10 M
 					             compress:{
-					            	 width: 110,
-					            	    height: 110,
+					            	 width: 300,
+					            	    height: 300,
 					            	    // 图片质量，只有type为`image/jpeg`的时候才有效。
 					            	    quality: 90,
 					            	    // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
@@ -559,8 +559,8 @@ var product_manager_tool = {
 						    	             },
 						    	             //缩略图
 						    	             thumb:{
-						    	            	    width: 110,
-						    	            	    height: 110,
+						    	            	    width: 300,
+						    	            	    height: 300,
 						    	            	    quality: 90,
 						    	            	    allowMagnify: false,
 						    	            	    crop: false,

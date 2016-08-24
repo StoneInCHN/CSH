@@ -477,7 +477,7 @@ public class Product extends BaseEntity {
    * @return 全称
    */
   @JsonProperty
-  @Field(store = Store.YES, index = Index.NO)
+  @Field(store = Store.YES, index = Index.YES,analyze=Analyze.YES,analyzer=@Analyzer(impl=IKAnalyzer.class))
   @Column(nullable = false)
   public String getFullName() {
     return fullName;
