@@ -403,6 +403,7 @@
 	<script type="text/javascript" src="${base}/resources/js/easyui-extends.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/validator.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/highcharts.js"></script>
+	<script type="text/javascript" src="${base}/resources/js/modules/exporting.src.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/common.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/message.js"></script>
 	<script type="text/javascript" src="${base}/resources/js/main.js"></script>

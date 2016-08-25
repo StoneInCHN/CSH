@@ -84,7 +84,7 @@ public class ReportMaintainStatisticsController extends BaseController {
       filters.add (endDateFilter);
     }
     
-    List<ReportMaintainStatistics>  reportMaintainStatisticList = reportMaintainStatisticsService.findList (12, filters, orderings, true,null);
+    List<ReportMaintainStatistics>  reportMaintainStatisticList = reportMaintainStatisticsService.findList (30, filters, orderings, true,null);
     ReportDataComparator comparator =new ReportDataComparator ("statisticsDate");
     Collections.sort (reportMaintainStatisticList, comparator);
     return reportMaintainStatisticList;

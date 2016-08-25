@@ -83,7 +83,7 @@ public class ReportRepareStatisticsController extends BaseController {
       filters.add (endDateFilter);
     }
     
-    List<ReportRepareStatistics>  reportRepareStatisticsList = repareStatisticsService.findList (12, filters, orderings, true,null);
+    List<ReportRepareStatistics>  reportRepareStatisticsList = repareStatisticsService.findList (30, filters, orderings, true,null);
     ReportDataComparator comparator =new ReportDataComparator ("statisticsDate");
     Collections.sort (reportRepareStatisticsList, comparator);
     return reportRepareStatisticsList;

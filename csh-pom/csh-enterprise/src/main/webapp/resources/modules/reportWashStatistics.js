@@ -1,27 +1,13 @@
 //洗车记录统计
 var reportWashStatistics = {
-	colors : [ '#008000', '#FF0000', '#FFFF00', '#DDDF00', '#24CBE5',
-			'#64E572', '#FF9655', '#FFF263', '#6AF9C4' ],
-	chart : {
-		type: 'line',
-		renderTo : 'washStatisticsReportId',
-		backgroundColor : {
-			linearGradient : {
-				x1 : 0,
-				y1 : 0,
-				x2 : 1,
-				y2 : 1
-			},
-			stops : [ [ 0, 'rgb(255, 255, 255)' ], [ 1, 'rgb(240, 240, 255)' ] ]
-		},
-		plotBackgroundColor : 'rgba(255, 255, 255, .9)',
-		plotBorderWidth : 1
-	},
-	title : {
-		text : '洗车记录统计',
-		x : -20
-	// center
-	},
+	chart: {type: 'spline', renderTo : "washStatisticsReportId"},
+	title: {text: '<a href="#" style="color: #222222"}>洗车记录统计</a>',useHTML:true},
+	subtitle: {text: '周期：按天统计'},
+    plotOptions: {
+        spline: {
+            marker: {radius: 4,lineColor: '#666666',lineWidth: 1}
+        }
+    },
 	credits : {
 		enabled : false
 	// 禁用版权信息
@@ -68,8 +54,8 @@ $("#reportWashStatistics-table-list").datagrid({
 	pagination:false,
 	columns:[
 		    [
-		     {title:"收入",field:"totalIncome",width:100,sortable:true},
-		     {title:"统计周期",field:"statisticsDate",width:100,sortable:true,
+		     {title:"收入",field:"totalIncome",width:100,align:"center",sortable:true},
+		     {title:"统计时间",field:"statisticsDate",width:100,align:"center",sortable:true,
 		    	 formatter: function(value,row,index){
 		    		 if(value != null){
 							return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
@@ -81,11 +67,12 @@ $("#reportWashStatistics-table-list").datagrid({
 		 
 		 ]
 	],
-	rowStyler: function(index,row){
-		if (index % 2 == 0){
-			return 'background-color:#D4D4D4;';
-		}
-	},onLoadSuccess:function(data){
+//	rowStyler: function(index,row){
+//		if (index % 2 == 0){
+//			return 'background-color:#D4D4D4;';
+//		}
+//	},
+	onLoadSuccess:function(data){
 		reportWashStatistics.series= [ ];
 		refreshLine(reportWashStatistics,data.rows,
 				'statisticsDate',

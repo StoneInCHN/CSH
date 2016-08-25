@@ -1,6 +1,7 @@
 <script src="${base}/resources/modules/reportRepareStatistics.js"></script>
 <div>
 	  <fieldset>
+	  <legend>报表查询</legend>
 	    <form id="report_repare_statistics_search_form" class="search-form">
 			<div class="search-item">
 			    <label> 筛选时间:</label>
@@ -17,8 +18,8 @@
 	  </fieldset>
 </div>
 <div id="reportRepareStatistics">
-	<div id="repareStatisticsReportId" style="height:300px;width: 680px;">
+	<div id="repareStatisticsReportId" style="height:65%;width: 90%;margin:2%">
 	</div>
-	<table id = "reportRepareStatistics-table-list" class="table table-striped" >   
+	<table id = "reportRepareStatistics-table-list" class="table table-striped" style="height:auto;width: 98%;">   
 	</table>
 </div>
