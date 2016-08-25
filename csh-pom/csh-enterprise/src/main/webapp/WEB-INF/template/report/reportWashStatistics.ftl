@@ -1,6 +1,7 @@
 <script src="${base}/resources/modules/reportWashStatistics.js"></script>
 <div>
 	  <fieldset>
+	  <legend>报表查询</legend>
 	    <form id="report_wash_statistics_search_form" class="search-form">
 			<div class="search-item">
 			    <label> 筛选时间:</label>
@@ -17,8 +18,8 @@
 	  </fieldset>
 </div>
 <div id="reportWashStatistics">
-	<div id="washStatisticsReportId" style="height:300px;width: 680px;">
+	<div id="washStatisticsReportId" style="height:65%;width: 90%;margin:2%">
 	</div>
-	<table id = "reportWashStatistics-table-list" class="table table-striped" >   
+	<table id = "reportWashStatistics-table-list" class="table table-striped" style="height:auto;width: 98%;">   
 	</table>
 </div>

@@ -851,7 +851,7 @@ function refreshLine(id, data, categoryName, valueName, viewName) {
 		}
 		for (var i = 0; i < data.length; i++) {
 			id.xAxis.categories.push(new Date(data[i][categoryName])
-					.Format("yyyy年MM月"));
+					.Format("yyyy年MM月dd日"));
 			if (valueName instanceof Array) {
 				for (var j = 0; j < valueName.length; j++) {
 					id.series[j].data.push(data[i][valueName[j]]);

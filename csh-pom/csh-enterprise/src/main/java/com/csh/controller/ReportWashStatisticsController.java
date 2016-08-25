@@ -86,7 +86,7 @@ public class ReportWashStatisticsController extends BaseController {
       filters.add (endDateFilter);
     }
     
-    List<ReportWashStatistics>  reportWashStatisticList = reportWashStatisticsService.findList (12, filters, orderings, true,null);
+    List<ReportWashStatistics>  reportWashStatisticList = reportWashStatisticsService.findList (30, filters, orderings, true,null);
     ReportDataComparator comparator =new ReportDataComparator ("statisticsDate");
     Collections.sort (reportWashStatisticList, comparator);
     return reportWashStatisticList;
