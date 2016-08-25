@@ -284,7 +284,7 @@ var reportMaintainStatistics = {
 				tickWidth : 1,
 				tickColor : '#000',
 				title : {
-					text : '次'
+					text : '元'
 				},
 				plotLines : [ {
 					value : 0,
@@ -293,7 +293,7 @@ var reportMaintainStatistics = {
 				} ]
 			},
 			tooltip : {
-				valueSuffix : '次'
+				valueSuffix : '元'
 			},
 			legend : {
 				layout : 'vertical',
@@ -538,7 +538,7 @@ var beautifyReservationStatistics={
 					for (var k = 0; k < data.length; k++) {
 						var name = data[k]["serviceCategory"].categoryName;
 						var category = new Date(data[k]["statisticsDate"])
-								.Format("yyyy年MM月");
+								.Format("yyyy年MM月dd日");
 						if (categoryValue.indexOf(category) == -1) {
 							categoryValue.push(category);
 						}
@@ -558,7 +558,7 @@ var beautifyReservationStatistics={
 							for (var i = 0; i < data.length; i++) {
 								var date = new Date(
 										data[i]["statisticsDate"])
-										.Format("yyyy年MM月");
+										.Format("yyyy年MM月dd日");
 								if (viewName[j] == data[i]["serviceCategory"].categoryName
 										&& date == categoryValue[k]) {
 									viewValue = data[i]["totalCount"]

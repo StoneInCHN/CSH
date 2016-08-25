@@ -10,10 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javassist.expr.Instanceof;
+
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
+import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -718,24 +722,10 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
   @Override
   public void callProcedure (String procName ,Object...args)
   {
-    StringBuffer sb = new StringBuffer ();
-    sb.append ("{call "+procName+"(");
-    if (args != null && args.length > 0){
-      for (int i=0; i < args.length; i++){
-        if (i == 0){
-          sb.append ("?");
-        }else{
-          sb.append (",?");
-        }
-        
-      }
-    }
-    sb.append (")}");
-    javax.persistence.Query query = entityManager.createNativeQuery(sb.toString ());
-    for (int i=0; i < args.length; i++) {
-      query.setParameter(i+1, args[i]);
-    }
-    query.executeUpdate();    
+    StoredProcedureQuery storedProcedure = entityManager.createStoredProcedureQuery(procName);
+    storedProcedure.registerStoredProcedureParameter(0 , String.class , ParameterMode.IN);
+    storedProcedure .setParameter(0, args[0]);
+    storedProcedure.executeUpdate ();
   }
   @Override
   public List<T> callProcedureWithResult (String procName, Object... args)
