@@ -122,6 +122,9 @@ public class OrderController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
+    /**
+     * 余额支付
+     */
     if (PaymentType.WALLET.equals(paymentType)) {
       Wallet wallet = endUser.getWallet();
       AccountBalance accountBalance =
@@ -130,6 +133,7 @@ public class OrderController extends MobileBaseController {
       if (accountBalance != null) {
         walletMoney = wallet.getBalanceAmount().add(accountBalance.getBalance());
       }
+
       if (order.getAmount().compareTo(walletMoney) > 0) {// 用户钱包余额不足
         response.setCode(CommonAttributes.FAIL_COMMON);
         response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
@@ -137,23 +141,34 @@ public class OrderController extends MobileBaseController {
       }
     }
 
-    if (PaymentType.WECHAT.equals(paymentType)) {// 微信支付
-      try {
-        BigDecimal weChatPrice = order.getAmount().multiply(new BigDecimal(100));
-        response =
-            PayUtil.wechat(
-                "E" + order.getSn() + "_" + TimeUtils.format("mmss", new Date().getTime()),
-                order.getSn(), httpReq.getRemoteAddr(), order.getId().toString(),
-                weChatPrice.intValue() + "");
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-
-    } else {// 支付宝和余额支付
+    BigDecimal amount = order.getAmount();
+    if (amount.compareTo(new BigDecimal(0)) <= 0) {// 抵扣完之后订单金额
       Map<String, Object> map = new HashMap<String, Object>();
-      map.put("out_trade_no", "2_" + order.getSn());
+      map.put("out_trade_no", order.getSn());
+      map.put("isNeedPay", false);
       response.setMsg(map);
       response.setCode(CommonAttributes.SUCCESS);
+    } else {
+      if (PaymentType.WECHAT.equals(paymentType)) {// 微信支付
+        try {
+          BigDecimal weChatPrice = order.getAmount().multiply(new BigDecimal(100));
+          response =
+              PayUtil.wechat(
+                  "E" + order.getSn() + "_" + TimeUtils.format("mmss", new Date().getTime()),
+                  order.getSn(), httpReq.getRemoteAddr(), order.getId().toString(),
+                  weChatPrice.intValue() + "");
+          response.getMsg().put("isNeedPay", true);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
+      } else {// 支付宝和余额支付
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("out_trade_no", "2_" + order.getSn());
+        map.put("isNeedPay", true);
+        response.setMsg(map);
+        response.setCode(CommonAttributes.SUCCESS);
+      }
     }
 
     order.setPaymentType(paymentType);
@@ -162,7 +177,6 @@ public class OrderController extends MobileBaseController {
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
-    response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
 
@@ -210,6 +224,7 @@ public class OrderController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
+
 
   /**
    * 用户创建订单
@@ -360,7 +375,20 @@ public class OrderController extends MobileBaseController {
           "operation order. UserId: %s,orderId: %s,operation: %s", userId, orderId, oprType);
     }
 
+
     Order order = orderService.find(orderId);
+    if (OrderLogType.cancel.equals(oprType)
+        && !PaymentStatus.unpaid.equals(order.getPaymentStatus())) {
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc(Message.error("csh.estore.order.opr.invalid").getContent());
+      return response;
+
+    } else if (OrderLogType.received.equals(oprType)
+        && !ShippingStatus.shipped.equals(order.getShippingStatus())) {
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc(Message.error("csh.estore.order.opr.invalid").getContent());
+      return response;
+    }
     orderService.operation(order, oprType);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
@@ -495,9 +523,12 @@ public class OrderController extends MobileBaseController {
     }
 
     String itemIdsStr = null;
-    for (Long itemId : orderItemIds) {
-      itemIdsStr += itemId + "";
+    if (orderItemIds != null) {
+      for (Long itemId : orderItemIds) {
+        itemIdsStr += itemId + "";
+      }
     }
+
     if (LogUtil.isDebugEnabled(OrderController.class)) {
       LogUtil
           .debug(
@@ -551,21 +582,26 @@ public class OrderController extends MobileBaseController {
     pageable.setPageSize(pageSize);
     pageable.setOrderProperty("createDate");
     pageable.setOrderDirection(Direction.desc);
-    Page<Returns> page = returnsService.findPage(pageable);
+    Page<Returns> returnsList = returnsService.findPage(pageable);
     String[] propertys =
         {"id", "sn", "deliveryCorp", "trackingNo", "returnsStatus", "returnAmount"};
 
     String[] itemPropertys = {"id", "name", "price", "thumbnail", "quantity"};
     List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-    for (Returns returns : page.getContent()) {
+    for (Returns returns : returnsList.getContent()) {
       Map<String, Object> map = FieldFilterUtils.filterEntityMap(propertys, returns);
       List<ReturnsItem> list = returns.getReturnsItems();
       List<Map<String, Object>> items = FieldFilterUtils.filterCollectionMap(itemPropertys, list);
       map.put("returnsItem", items);
       result.add(map);
     }
-
     response.setMsg(result);
+
+    PageResponse page = new PageResponse();
+    page.setPageNumber(request.getPageNumber());
+    page.setPageSize(request.getPageSize());
+    page.setTotal((int) returnsList.getTotal());
+    response.setPage(page);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);

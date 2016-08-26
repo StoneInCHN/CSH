@@ -457,9 +457,6 @@ public class Order extends BaseEntity {
    * 
    * @return 赠送积分
    */
-  @NotNull
-  @Min(0)
-  @Column(nullable = false)
   public Long getPoint() {
     return point;
   }

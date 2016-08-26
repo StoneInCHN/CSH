@@ -1,8 +1,6 @@
 package com.csh.service.impl;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -70,7 +68,6 @@ public class ReturnsServiceImpl extends BaseServiceImpl<Returns, Long> implement
       returns.setOrder(order);
       returns.setReturnsStatus(ReturnsStatus.applyReturn);
 
-      List<ReturnsItem> returnsItems = new ArrayList<ReturnsItem>();
       BigDecimal returnsAmount = new BigDecimal(0);
       for (Long orderItemId : orderItemIds) {
         ReturnsItem returnsItem = new ReturnsItem();
@@ -85,13 +82,13 @@ public class ReturnsServiceImpl extends BaseServiceImpl<Returns, Long> implement
         returnsAmount =
             returnsAmount.add(returnsItem.getPrice().multiply(
                 new BigDecimal(returnsItem.getQuantity())));
-        returnsItems.add(returnsItem);
+        returns.getReturnsItems().add(returnsItem);
       }
 
       returns.setReturnAmount(returnsAmount);
       returnsDao.persist(returns);
 
-      if (returnsItems.size() == order.getOrderItems().size()) {
+      if (returns.getReturnsItems().size() == order.getOrderItems().size()) {
         order.setAfterSalesStatus(AfterSalesStatus.applyRefund);
       } else {
         order.setAfterSalesStatus(AfterSalesStatus.applyPartialRefund);
