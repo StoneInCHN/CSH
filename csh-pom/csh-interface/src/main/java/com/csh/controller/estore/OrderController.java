@@ -42,6 +42,7 @@ import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseResponse;
+import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.OrderRequest;
@@ -239,9 +240,12 @@ public class OrderController extends MobileBaseController {
     }
 
     String cartItemIdsStr = null;
-    for (Long cartItemId : cartItemIds) {
-      cartItemIdsStr += cartItemId + " ";
+    if (cartItemIds != null) {
+      for (Long cartItemId : cartItemIds) {
+        cartItemIdsStr += cartItemId + " ";
+      }
     }
+
     if (LogUtil.isDebugEnabled(OrderController.class)) {
       LogUtil.debug(OrderController.class, "create",
           "confirm order.UserId: %s,productId: %s,quantity: %s,cartItemIds: %s", userId, productId,
@@ -402,18 +406,18 @@ public class OrderController extends MobileBaseController {
     Filter userFilter = new Filter("endUser", Operator.eq, userId);
     filters.add(userFilter);
 
-    if ("1".equals(status)) {// 待付款（PaymentStatus为unpaid）
+    if ("1".equals(status.toString())) {// 待付款（PaymentStatus为unpaid）
       Filter paymentFilter = new Filter("paymentStatus", Operator.eq, PaymentStatus.unpaid);
       filters.add(paymentFilter);
-    } else if ("2".equals(status)) {// 待发货（PaymentStatus为paid且OrderStatus为confirmed）
+    } else if ("2".equals(status.toString())) {// 待发货（PaymentStatus为paid且OrderStatus为confirmed）
       Filter paymentFilter = new Filter("paymentStatus", Operator.eq, PaymentStatus.paid);
       Filter statusFilter = new Filter("orderStatus", Operator.eq, OrderStatus.confirmed);
       filters.add(paymentFilter);
       filters.add(statusFilter);
-    } else if ("3".equals(status)) {// 待收货（ShippingStatus为shipped）
+    } else if ("3".equals(status.toString())) {// 待收货（ShippingStatus为shipped）
       Filter shippedFilter = new Filter("shippingStatus", Operator.eq, ShippingStatus.shipped);
       filters.add(shippedFilter);
-    } else if ("4".equals(status)) {// 待评价（ShippingStatus为received）
+    } else if ("4".equals(status.toString())) {// 待评价（ShippingStatus为received）
       Filter shippedFilter = new Filter("shippingStatus", Operator.eq, ShippingStatus.received);
       filters.add(shippedFilter);
     }
@@ -424,8 +428,8 @@ public class OrderController extends MobileBaseController {
     pageable.setFilters(filters);
     pageable.setOrderProperty("createDate");
     pageable.setOrderDirection(Direction.desc);
-    Page<Order> page = orderService.findPage(pageable);
-    checkOverDue(page.getContent());
+    Page<Order> orderList = orderService.findPage(pageable);
+    checkOverDue(orderList.getContent());
 
     String[] propertys =
         {"id", "createDate", "sn", "consignee", "phone", "areaName", "address", "paymentStatus",
@@ -435,7 +439,7 @@ public class OrderController extends MobileBaseController {
 
     List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
-    for (Order order : page.getContent()) {
+    for (Order order : orderList.getContent()) {
       Map<String, Object> map = FieldFilterUtils.filterEntityMap(propertys, order);
       Integer productCount = 0;
       for (OrderItem item : order.getOrderItems()) {
@@ -448,6 +452,12 @@ public class OrderController extends MobileBaseController {
       result.add(map);
     }
     response.setMsg(result);
+
+    PageResponse page = new PageResponse();
+    page.setPageNumber(request.getPageNumber());
+    page.setPageSize(request.getPageSize());
+    page.setTotal((int) orderList.getTotal());
+    response.setPage(page);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);

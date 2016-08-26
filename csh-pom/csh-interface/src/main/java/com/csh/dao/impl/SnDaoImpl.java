@@ -7,6 +7,7 @@ import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -14,13 +15,12 @@ import org.springframework.util.Assert;
 import com.csh.dao.SnDao;
 import com.csh.entity.Sn;
 import com.csh.entity.Sn.Type;
-import com.csh.framework.dao.impl.BaseDaoImpl;
 import com.csh.utils.FreemarkerUtils;
 
 import freemarker.template.TemplateException;
 
 @Repository("snDaoImpl")
-public class SnDaoImpl extends BaseDaoImpl<Sn, Long> implements SnDao {
+public class SnDaoImpl implements SnDao, InitializingBean {
 
   private HiloOptimizer productHiloOptimizer;
   private HiloOptimizer clearingHiloOptimizer;

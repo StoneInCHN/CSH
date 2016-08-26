@@ -226,7 +226,7 @@ public class ProductController extends MobileBaseController {
     pageable.setPageSize(pageSize);
     Page<Product> products = productService.search(query, pageable, analyzer, null, sortField);
 
-    String[] propertys = {"id", "fullName", "price", "image", "sales"};
+    String[] propertys = {"id", "fullName", "price", "image", "stock", "sales"};
     List<Map<String, Object>> result =
         FieldFilterUtils.filterCollectionMap(propertys, products.getContent());
     response.setMsg(result);
@@ -278,7 +278,7 @@ public class ProductController extends MobileBaseController {
     product.setHits(product.getHits() + 1);
     productService.update(product);
 
-    String[] propertys = {"id", "fullName", "price", "image", "sales", "introduction"};
+    String[] propertys = {"id", "fullName", "price", "image", "sales", "stock", "introduction"};
     Map<String, Object> result = FieldFilterUtils.filterEntityMap(propertys, product);
 
     String[] imagePropertys = {"id", "mobileicon"};
@@ -286,11 +286,14 @@ public class ProductController extends MobileBaseController {
         FieldFilterUtils.filterCollectionMap(imagePropertys, product.getProductImages());
     result.put("productImages", productImages);
     Map<Parameter, String> productParam = product.getParameterValue();
-    Map<String, String> paramMap = new HashMap<String, String>();
+    List<Map<String, String>> paramMaps = new ArrayList<Map<String, String>>();
     for (Map.Entry<Parameter, String> entry : productParam.entrySet()) {
-      paramMap.put(entry.getKey().getName(), entry.getValue());
+      Map<String, String> paramMap = new HashMap<String, String>();
+      paramMap.put("name", entry.getKey().getName());
+      paramMap.put("value", entry.getValue());
+      paramMaps.add(paramMap);
     }
-    result.put("productParam", paramMap);
+    result.put("productParam", paramMaps);
 
     Pageable pageable = new Pageable();
     pageable.setPageNumber(1);

@@ -1,10 +1,8 @@
 package com.csh.service;
 
-import com.csh.entity.Sn;
 import com.csh.entity.Sn.Type;
-import com.csh.framework.service.BaseService;
 
-public interface SnService extends BaseService<Sn, Long> {
+public interface SnService {
 
   /**
    * 生成序列号

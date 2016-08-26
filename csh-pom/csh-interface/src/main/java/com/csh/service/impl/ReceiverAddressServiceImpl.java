@@ -2,6 +2,7 @@ package com.csh.service.impl;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +32,10 @@ public class ReceiverAddressServiceImpl extends BaseServiceImpl<ReceiverAddress,
     if (CollectionUtils.isEmpty(endUser.getReceivers())) {
       receiverAddress.setIsDefault(true);
     } else {
-      if (receiverAddress.getIsDefault()) {
+      if (BooleanUtils.isTrue(receiverAddress.getIsDefault())) {
         for (ReceiverAddress receiver : endUser.getReceivers()) {
-          if (receiver.getIsDefault()) {
+          if (BooleanUtils.isTrue(receiver.getIsDefault())
+              && !receiver.getId().equals(receiverAddress.getId())) {
             receiver.setIsDefault(false);
             receiverAddressDao.merge(receiver);
           }

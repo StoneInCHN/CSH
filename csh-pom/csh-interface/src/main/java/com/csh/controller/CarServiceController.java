@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.dom4j.DocumentException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -322,19 +323,25 @@ public class CarServiceController extends MobileBaseController {
       if (accountBalance != null) {
         walletMoney = wallet.getBalanceAmount().add(accountBalance.getBalance());
       }
+
+      BigDecimal servicePrice = carService.getPromotionPrice();
+      if (servicePrice.compareTo(new BigDecimal("0")) <= 0 && recordId != null) {
+        carServiceRecord = carServiceRecordService.find(recordId);
+        servicePrice = carServiceRecord.getPrice();
+      }
+      if (BooleanUtils.isTrue(isRedPacket)) {
+        Map<String, Object> giftMap = carServiceService.getGiftAmount(carService, endUser);
+        BigDecimal redPacketAmount = new BigDecimal(giftMap.get("redPacketAmount").toString());
+        servicePrice = servicePrice.subtract(redPacketAmount);
+      }
       if (couponEndUser != null) {
-        if (carService.getPromotionPrice().subtract(couponEndUser.getCoupon().getAmount())
-            .compareTo(walletMoney) > 0) {
-          response.setCode(CommonAttributes.FAIL_COMMON);
-          response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
-          return response;
-        }
-      } else {
-        if (carService.getPromotionPrice().compareTo(walletMoney) > 0) {
-          response.setCode(CommonAttributes.FAIL_COMMON);
-          response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
-          return response;
-        }
+        servicePrice = servicePrice.subtract(couponEndUser.getCoupon().getAmount());
+      }
+
+      if (servicePrice.compareTo(walletMoney) > 0) {
+        response.setCode(CommonAttributes.FAIL_COMMON);
+        response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+        return response;
       }
 
     }

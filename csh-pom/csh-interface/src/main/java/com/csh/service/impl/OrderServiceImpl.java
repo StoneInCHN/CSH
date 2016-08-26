@@ -21,7 +21,6 @@ import com.csh.dao.CartItemDao;
 import com.csh.dao.OrderDao;
 import com.csh.dao.ProductDao;
 import com.csh.dao.ReceiverAddressDao;
-import com.csh.dao.SnDao;
 import com.csh.dao.WalletDao;
 import com.csh.entity.AccountBalance;
 import com.csh.entity.EndUser;
@@ -45,6 +44,7 @@ import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.json.base.BaseResponse;
 import com.csh.service.AccountBalanceService;
 import com.csh.service.OrderService;
+import com.csh.service.SnService;
 import com.csh.utils.SettingUtils;
 
 @Service("orderServiceImpl")
@@ -56,8 +56,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
   @Resource(name = "orderDaoImpl")
   private OrderDao orderDao;
 
-  @Resource(name = "snDaoImpl")
-  private SnDao snDao;
+  @Resource(name = "snServiceImpl")
+  private SnService snService;
 
   @Resource(name = "productDaoImpl")
   private ProductDao productDao;
@@ -100,7 +100,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     Order order = new Order();
     order.setIsInvoice(isInvoice);
     order.setInvoiceTitle(invoiceTitle);
-    order.setSn(snDao.generate(Type.order));
+    order.setSn(snService.generate(Type.order));
     order.setOrderStatus(OrderStatus.unconfirmed);
     order.setPaymentStatus(PaymentStatus.unpaid);
     order.setShippingStatus(ShippingStatus.unshipped);
@@ -108,9 +108,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     order.setAmountPaid(new BigDecimal(0));
     order.setFee(new BigDecimal(0));
     order.setTax(new BigDecimal(0));
+    order.setFreight(new BigDecimal(0));
     order.setPromotionDiscount(new BigDecimal(0));
     order.setCouponDiscount(new BigDecimal(0));
     order.setOffsetAmount(new BigDecimal(0));
+    order.setIsAllocatedStock(false);
+    order.setShippingMethodName("免运费");
     order.setEndUser(endUser);
     order.setExpire(DateUtils.addMinutes(new Date(), setting.getOrderTimeOut()));
     if (receiver != null) {
@@ -179,7 +182,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     for (Long tenantId : tenantIds) {
       Order order = new Order();
       List<OrderItem> orderItems = order.getOrderItems();
-      order.setSn(snDao.generate(Type.order));
+      order.setSn(snService.generate(Type.order));
       order.setIsInvoice(isInvoice);
       order.setInvoiceTitle(invoiceTitle);
       order.setOrderStatus(OrderStatus.unconfirmed);
@@ -189,9 +192,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
       order.setAmountPaid(new BigDecimal(0));
       order.setFee(new BigDecimal(0));
       order.setTax(new BigDecimal(0));
+      order.setFreight(new BigDecimal(0));
       order.setPromotionDiscount(new BigDecimal(0));
       order.setCouponDiscount(new BigDecimal(0));
       order.setOffsetAmount(new BigDecimal(0));
+      order.setIsAllocatedStock(false);
+      order.setShippingMethodName("免运费");
       order.setEndUser(endUser);
       order.setExpire(DateUtils.addMinutes(new Date(), setting.getOrderTimeOut()));
       if (receiver != null) {
@@ -235,6 +241,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
             return response;
           }
         }
+      }
+      for (CartItem cartItem : cartList) {
+        cartItemDao.remove(cartItem);
       }
       orderDao.persist(order);
     }

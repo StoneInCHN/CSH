@@ -186,7 +186,7 @@ public class CartController extends MobileBaseController {
    */
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody BaseResponse details(@RequestBody CartRequest request) {
+  public @ResponseBody BaseResponse delete(@RequestBody CartRequest request) {
 
     BaseResponse response = new BaseResponse();
 

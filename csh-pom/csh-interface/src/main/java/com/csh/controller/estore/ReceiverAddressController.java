@@ -27,6 +27,7 @@ import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseResponse;
+import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.ReceiverAddressRequest;
@@ -92,12 +93,18 @@ public class ReceiverAddressController extends MobileBaseController {
     pageable.setPageSize(pageSize);
     pageable.setOrderProperty("isDefault");
     pageable.setOrderDirection(Direction.desc);
-    Page<ReceiverAddress> page = receiverAddressService.findPage(pageable);
+    Page<ReceiverAddress> addresses = receiverAddressService.findPage(pageable);
     String[] propertys = {"id", "consignee", "areaName", "address", "phone", "isDefault"};
     List<Map<String, Object>> result =
-        FieldFilterUtils.filterCollectionMap(propertys, page.getContent());
-
+        FieldFilterUtils.filterCollectionMap(propertys, addresses.getContent());
     response.setMsg(result);
+
+    PageResponse page = new PageResponse();
+    page.setPageNumber(request.getPageNumber());
+    page.setPageSize(request.getPageSize());
+    page.setTotal((int) addresses.getTotal());
+    response.setPage(page);
+
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);
