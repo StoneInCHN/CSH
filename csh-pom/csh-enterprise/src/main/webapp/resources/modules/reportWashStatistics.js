@@ -1,7 +1,7 @@
 //洗车记录统计
 var reportWashStatistics = {
 	chart: {type: 'spline', renderTo : "washStatisticsReportId"},
-	title: {text: '<a href="#" style="color: #222222"}>洗车记录统计</a>',useHTML:true},
+	title: {text: '洗车记录统计',useHTML:true},
 	subtitle: {text: '周期：按天统计'},
     plotOptions: {
         spline: {

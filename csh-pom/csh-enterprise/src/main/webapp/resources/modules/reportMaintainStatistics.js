@@ -1,7 +1,7 @@
 //维修记录统计
 var reportMaintainStatistics = {
 	chart: {type: 'spline', renderTo : "maintainStatisticsReportId"},
-	title: {text: '<a href="#" style="color: #222222"}>保养记录统计</a>',useHTML:true},
+	title: {text: '保养记录统计',useHTML:true},
 	subtitle: {text: '周期：按天统计'},
     plotOptions: {
         spline: {
