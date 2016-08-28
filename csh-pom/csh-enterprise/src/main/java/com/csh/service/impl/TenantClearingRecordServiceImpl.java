@@ -191,8 +191,9 @@ TenantClearingRecordService {
     }
     //格式化数据
     DecimalFormat format=new DecimalFormat("0.00");
-    String str = format.format(totalMoney.doubleValue ()-(commissionRateList.get (0).getPlatformRate ()*totalDeductMoney.doubleValue ()));    
-    totalRealIncome = new BigDecimal(str);
+    BigDecimal rateMoney = new BigDecimal(format.format(commissionRateList.get (0).getPlatformRate ()*totalDeductMoney.doubleValue ()));
+    
+    totalRealIncome = totalMoney.subtract(rateMoney);
     totalMoney = new BigDecimal (format.format (totalMoney));
     if (!totalMoney.equals (new BigDecimal (format.format (tenantClearingRecord.getAmountOfCurrentPeriod ()))) 
         || !totalRealIncome.equals (new BigDecimal (format.format (tenantClearingRecord.getAmountRealIncome ()))))
