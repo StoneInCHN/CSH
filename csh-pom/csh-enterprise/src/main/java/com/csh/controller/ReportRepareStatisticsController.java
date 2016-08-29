@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.controller.base.BaseController;
+import com.csh.dao.ReportRepareStatisticsDao;
 import com.csh.entity.ReportRepareStatistics;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -22,6 +23,7 @@ import com.csh.framework.ordering.Ordering;
 import com.csh.framework.ordering.Ordering.Direction;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.ReportRepareStatisticsService;
+import com.csh.service.TenantAccountService;
 import com.csh.utils.ReportDataComparator;
 
 /**
@@ -35,6 +37,11 @@ import com.csh.utils.ReportDataComparator;
 public class ReportRepareStatisticsController extends BaseController {
   @Resource(name = "reportRepareStatisticsServiceImpl")
   private ReportRepareStatisticsService repareStatisticsService;
+  
+  @Resource(name = "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;  
+  @Resource(name = "reportRepareStatisticsDaoImpl")
+  private ReportRepareStatisticsDao reportRepareStatisticsDao;
 
   /**
    * 界面展示
@@ -54,8 +61,8 @@ public class ReportRepareStatisticsController extends BaseController {
    * @param pageable
    * @return
    */
-  @RequestMapping(value = "/report", method = RequestMethod.POST)
-  public @ResponseBody List<ReportRepareStatistics> list(Model model, Pageable pageable
+  @RequestMapping(value = "/dailyReport", method = RequestMethod.POST)
+  public @ResponseBody List<ReportRepareStatistics> dailyReport(Model model, Pageable pageable
       ,Date beginDate, Date endDate) {
     
     //时间倒序
@@ -87,5 +94,23 @@ public class ReportRepareStatisticsController extends BaseController {
     ReportDataComparator comparator =new ReportDataComparator ("statisticsDate");
     Collections.sort (reportRepareStatisticsList, comparator);
     return reportRepareStatisticsList;
+  }
+  /**
+   * 按月统计
+   * 
+   * @param maximum 最近多少个月
+   * @return
+   */
+  @RequestMapping(value = "/monthlyReport", method = RequestMethod.POST)
+  public @ResponseBody List<ReportRepareStatistics> monthlyReport(Integer maximum) {   
+    if (maximum == null || maximum <= 0) {
+      maximum = 12;//默认查询最近12个月数据
+    }
+    Long tenantID = tenantAccountService.getCurrentTenantID();
+    List<ReportRepareStatistics>  reportRepareStatisticList = 
+        reportRepareStatisticsDao.monthlyReport(maximum, tenantID);
+    ReportDataComparator comparator = new ReportDataComparator("statisticsDate");
+    Collections.sort (reportRepareStatisticList, comparator);
+    return reportRepareStatisticList;
   }
 }

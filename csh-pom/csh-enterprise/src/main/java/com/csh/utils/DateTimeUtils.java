@@ -16,6 +16,8 @@ public class DateTimeUtils implements Serializable {
       new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   public static final SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  
+  public static final SimpleDateFormat yearMonthFormat = new SimpleDateFormat("yyyy-MM");
 
   public static final SimpleDateFormat shortPointDateFormat = new SimpleDateFormat("yyyy.MM.dd");
   public static final SimpleDateFormat filePostfixFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -450,5 +452,18 @@ public class DateTimeUtils implements Serializable {
           
      return Integer.parseInt(String.valueOf(between_days));           
   } 
-  
+  /**
+   * 字符串转日期
+   * @param dateStr
+   * @return
+   */
+  public static Date getDateFromString(SimpleDateFormat format, String dateStr){
+    Date date = null;
+    try {
+      date = format.parse(dateStr);
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return date;
+  }
 }
