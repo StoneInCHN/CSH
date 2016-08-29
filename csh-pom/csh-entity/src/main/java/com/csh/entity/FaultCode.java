@@ -1,5 +1,6 @@
 package com.csh.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -19,27 +20,71 @@ public class FaultCode extends BaseEntity{
   /**
    * 故障代码关键字
    */
-  private String codeKey;
+  private String code;
   
   /**
-   * 故障代码值
+   * 中文定义
    */
-  private String codeValue;
+  private String defineCh;
 
-  public String getCodeKey() {
-    return codeKey;
+  /**
+   * 英文定义
+   */
+  private String  defineEn;
+  
+  /**
+   * 范畴
+   */
+  private String scope;
+  
+  /**
+   * 背景知识
+   */
+  private String info;
+
+  @Column(length=20,nullable=false)
+  public String getCode() {
+    return code;
   }
 
-  public void setCodeKey(String codeKey) {
-    this.codeKey = codeKey;
+  public void setCode(String code) {
+    this.code = code;
   }
 
-  public String getCodeValue() {
-    return codeValue;
+  @Column(length=200)
+  public String getDefineCh() {
+    return defineCh;
   }
 
-  public void setCodeValue(String codeValue) {
-    this.codeValue = codeValue;
+  public void setDefineCh(String defineCh) {
+    this.defineCh = defineCh;
+  }
+
+  @Column(length=200)
+  public String getDefineEn() {
+    return defineEn;
+  }
+
+  public void setDefineEn(String defineEn) {
+    this.defineEn = defineEn;
+  }
+
+  @Column(length=200)
+  public String getScope() {
+    return scope;
+  }
+
+  public void setScope(String scope) {
+    this.scope = scope;
+  }
+
+  @Column(length=500)
+  public String getInfo() {
+    return info;
+  }
+
+  public void setInfo(String info) {
+    this.info = info;
   }
   
 }

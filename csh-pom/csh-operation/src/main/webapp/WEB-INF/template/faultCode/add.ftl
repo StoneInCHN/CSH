@@ -13,19 +13,35 @@
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<style type="text/css">
+	.wid380{
+		width:380px !important;
+	}
+</style>
 <script type="text/javascript">
 $().ready(function() {
-
 	var $inputForm = $("#inputForm");
-
 	// 表单验证
 	$inputForm.validate({
 		rules: {
-			codeKey: {
-				required: true
+			code: {
+				required: true,
+				maxlength:20
 			},
-			codeValue: {
-				required: true
+			defineCh: {
+				required: true,
+				maxlength:200
+			},
+			defineEn: {
+				required: true,
+				maxlength:200
+			},
+			scope: {
+				required: true,
+				maxlength:200
+			},
+			info:{
+				maxlength:500
 			}
 		}
 	});
@@ -64,18 +80,42 @@ $().ready(function() {
                      	<table class="input tabContent">
                      		<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.faultCode.codeKey")}:
+									<span class="requiredField">*</span>${message("csh.faultCode.code")}:
 								</th>
 								<td>
-									<input type="text" name="codeKey" class="text" maxlength="20" />
+									<input type="text" name="code" class="text wid380" maxlength="20" />
 								</td>
 							</tr>
 							<tr>
 								<th>
-									<span class="requiredField">*</span>${message("csh.faultCode.codeValue")}:
+									<span class="requiredField">*</span>${message("csh.faultCode.defineCh")}:
 								</th>
 								<td>
-									<input type="text"  name="codeValue" class="text" />
+									<input type="text"  name="defineCh" class="text wid380" maxlength="200"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.faultCode.defineEn")}:
+								</th>
+								<td>
+									<input type="text"  name="defineEn" class="text wid380" maxlength="200"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.faultCode.scope")}:
+								</th>
+								<td>
+									<input type="text"  name="scope" class="text wid380" maxlength="200"/>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									${message("csh.faultCode.info")}:
+								</th>
+								<td>
+									<textarea name="info" cols="60" rows="5" maxlength="500"></textarea>
 								</td>
 							</tr>
 						</table>

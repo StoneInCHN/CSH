@@ -98,7 +98,12 @@ public class BrandController extends BaseController {
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
   public @ResponseBody Message delete(Long[] ids) {
     if (ids != null) {
-      brandService.delete(ids);
+      for (Long id : ids) {
+        Brand brand = brandService.find(id);
+        if (brand.getProducts()!=null && brand.getProducts().size() <1 ) {
+          brandService.delete(id);
+        }
+      }
     }
     return SUCCESS_MESSAGE;
   }

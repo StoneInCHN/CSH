@@ -35,11 +35,9 @@
 										<div class="btn-group operationButton">
 										  <button type="button" id="addButton" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;&nbsp;${message("csh.common.add")}</button>
 										</div>
-										<!--
 										<div class="btn-group operationButton">
 										  <button type="button" id="deleteButton" class="btn btn-default disabled"><i class="fa fa-trash-o"></i>&nbsp;&nbsp;${message("csh.common.delete")}</button>
 										</div>
-										-->
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
 										</div>
@@ -70,7 +68,7 @@
 								      <div class="input-group-btn">
 								        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">${message("csh.common.choose")} <span class="caret"></span></button>
 								        <ul class="dropdown-menu menuWrap" id="searchPropertyOption" role="menu">
-								          <li [#if page.searchProperty == "codeKey" ] selected="selected" class="active" [/#if] title="codeKey"><a href="#">${message("csh.faultCode.codeKey")}</a></li>
+								          <li [#if page.searchProperty == "code" ] selected="selected" class="active" [/#if] title="code"><a href="#">${message("csh.faultCode.code")}</a></li>
 								        </ul>
 								      </div>
 								      <input type="text" class="form-control" id="searchValue" name="searchValue" value="${page.searchValue}" maxlength="200" />
@@ -100,10 +98,19 @@
 														<input type="checkbox" id="selectAll" />
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="name">${message("csh.faultCode.codeKey")}</a>
+														<a href="javascript:;" class="sort" name="code">${message("csh.faultCode.code")}</a>
 													</th>
 													<th>
-														<a href="javascript:;" class="sort" name="categoryDesc">${message("csh.faultCode.codeValue")}</a>
+														<a href="javascript:;" class="sort" name="defineCh">${message("csh.faultCode.defineCh")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="defineEn">${message("csh.faultCode.defineEn")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="scope">${message("csh.faultCode.scope")}</a>
+													</th>
+													<th>
+														<a href="javascript:;" class="sort" name="info">${message("csh.faultCode.info")}</a>
 													</th>
 													<th>
 														<span>${message("csh.common.handle")}</span>
@@ -117,10 +124,25 @@
 														<input type="checkbox"  name="ids" value="${faultCode.id}" />
 													</td>
 													<td>
-														${faultCode.codeKey}
+														${faultCode.code}
 													</td>
 													<td>
-														${faultCode.codeValue}
+														<span title="${faultCode.defineCh}">
+															${abbreviate(faultCode.defineCh, 50, "...")}
+														</span>		
+													</td>
+													<td>
+														<span title="${faultCode.defineEn}">
+															${abbreviate(faultCode.defineEn, 50, "...")}
+														</span>		
+													</td>
+													<td>
+														${faultCode.scope}
+													</td>
+													<td>
+														<span title="${faultCode.info}">
+															${abbreviate(faultCode.info, 30, "...")}
+														</span>															
 													</td>
 													<td>
 														<a href="edit.jhtml?id=${faultCode.id}" title="${message("csh.common.edit")}"><i class="fa fa-pencil-square-o"></i></a>

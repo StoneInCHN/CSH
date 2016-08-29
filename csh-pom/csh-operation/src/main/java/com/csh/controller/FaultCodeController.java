@@ -1,5 +1,7 @@
 package com.csh.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import com.csh.controller.base.BaseController;
 import com.csh.entity.FaultCode;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.FaultCodeService;
+import com.csh.utils.FaultcodeUtils;
 
 @Controller("faultCodeController")
 @RequestMapping("console/faultCode")
@@ -77,4 +80,16 @@ public class FaultCodeController extends BaseController {
     }
     return SUCCESS_MESSAGE;
   }
+  
+  
+  @RequestMapping(value = "/dataImport", method = RequestMethod.GET)
+  public @ResponseBody Message dataImport() {
+    List<FaultCode> lists = FaultcodeUtils.readCode();
+    for (FaultCode faultCode : lists) {
+      faultCodeService.save(faultCode);
+    }
+    return SUCCESS_MESSAGE;
+  }
+  
+  
 }
