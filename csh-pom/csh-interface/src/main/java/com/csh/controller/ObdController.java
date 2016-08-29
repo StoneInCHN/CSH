@@ -31,6 +31,7 @@ import com.csh.service.EndUserService;
 import com.csh.service.FaultCodeService;
 import com.csh.service.VehicleOilService;
 import com.csh.utils.ApiUtils;
+import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.LatLonUtil;
 import com.csh.utils.TokenGenerator;
 import com.csh.utils.ToolsUtils;
@@ -276,15 +277,13 @@ public class ObdController extends MobileBaseController {
     }
 
     List<Filter> filters = new ArrayList<Filter>();
-    Filter filter = new Filter("codeKey", Operator.eq, faultCode);
+    Filter filter = new Filter("code", Operator.eq, faultCode);
     filters.add(filter);
     List<FaultCode> codes = faultCodeService.findList(null, filters, null);
     Map<String, Object> map = new HashMap<String, Object>();
-    map.put("codeKey", faultCode);
     if (!CollectionUtils.isEmpty(codes)) {
-      map.put("codeDesc", codes.get(0).getCodeValue());
-    } else {
-      map.put("codeDesc", Message.success("csh.obd.code.noexist").getContent());
+      String[] propertys = {"id", "code", "defineCh", "defineEn", "scope", "info"};
+      map = FieldFilterUtils.filterEntityMap(propertys, codes.get(0));
     }
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(deviceReq.getToken());
