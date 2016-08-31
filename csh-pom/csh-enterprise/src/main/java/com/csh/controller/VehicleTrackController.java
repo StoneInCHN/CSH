@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.beans.Setting;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.Vehicle;
+import com.csh.json.response.VehicleTrack;
 import com.csh.service.VehicleService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
@@ -78,5 +80,40 @@ public class VehicleTrackController extends BaseController {
 
   }
 
+  @RequestMapping(value = "/drawVehicleTrackMultiple", method = RequestMethod.POST)
+  @SuppressWarnings ("unchecked")
+  public @ResponseBody List<List<Map<String, Object>>> multipleVehicleTrack(Model model, Long vehicleID,
+      Date searchDate) {
+    if (vehicleID == null || searchDate == null) {
+      return null;
+    }
+    List<List<Map<String, Object>>> responseTrackList = new ArrayList<List<Map<String,Object>>>();
+    Vehicle vehicle = vehicleService.find(vehicleID);
+    String deviceNo = vehicle.getDeviceNo();
+    String date = DateTimeUtils.getSimpleFormatString(DateTimeUtils.shortDateFormat, searchDate);
+    Setting set = SettingUtils.get();
+    String url =
+        set.getObdServiceUrl () + "/appVehicleData/vehicleTrackFragment.jhtml?date=" + date + "&deviceId="
+            + deviceNo;
+//    String url = "http://139.129.5.114:20001/obd-data/appVehicleData/vehicleTrack.jhtml?deviceId=8856017290&date=2016-07-11";
+    String res = ApiUtils.post(url);
 
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> map = mapper.readValue(res, Map.class);
+//      List<Map<String, Object>> trackList =  (List<Map<String, Object>>) map.get("msg");
+      List<VehicleTrack> trackList = mapper.readValue (mapper.writeValueAsString (map),List.class);
+      for (VehicleTrack track : trackList)
+      {
+        List<Map<String, Object>> maps = track.getTracks ();
+        responseTrackList.add (LatLonUtil.convertCoordinates (maps));
+         
+      }
+      return responseTrackList;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+
+  }
 }

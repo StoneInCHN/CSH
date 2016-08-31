@@ -29,6 +29,7 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.DeviceInfoController;
 import com.csh.controller.VehicleController;
 import com.csh.controller.base.BaseController;
+import com.csh.entity.CarService;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.estore.Brand;
 import com.csh.framework.paging.Page;
@@ -234,5 +235,12 @@ public class BrandController extends BaseController
     List<Brand> brandlist = brandService.findAll ();
     String[] propertys = {"id", "name"};
     return FieldFilterUtils.filterCollectionMap(propertys, brandlist);
+  }
+  
+  @RequestMapping (value = "/showIntroduction", method = RequestMethod.GET)
+  public String showIntroduction(ModelMap model, Long brandId){
+    Brand brand = brandService.find (brandId);
+    model.put ("brand", brand);
+    return "estore/brand/introduction";
   }
 }

@@ -51,6 +51,9 @@ public class ProductServiceImpl extends BaseServiceImpl<Product, Long>
     
     this.update (product, "image", "tenantID", "createDate", "treePath",
         "isMarketable", "hits", "grade", "children", "products",
-        "parameterGroups", "attributes", "allocatedStock", "isGift", "isList","productStatus");
+        "parameterGroups", "attributes", "allocatedStock", "isGift", 
+        "isList","productStatus","isGift","score","totalScore","totalScore",
+        "scoreCount","weekHits","monthHits","sales","weekSales","monthSales",
+        "weekHitsDate","monthHitsDate","weekSalesDate","monthSalesDate");
   }
 }

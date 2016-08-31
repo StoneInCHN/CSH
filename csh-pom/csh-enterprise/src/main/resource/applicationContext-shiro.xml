@@ -20,6 +20,9 @@
 				/console/common/captcha.jhtml = anon
 				/console/common/captchaCheck.jhtml = anon
 				/console/vehicle/pushVehicleWainingInfo.jhtml = anon
+				/console/brand/showIntroduction.jhtml = anon
+				/console/carService/showIntroduction.jhtml = anon
+				/console/product/showIntroduction.jhtml = anon
 				<!--系统管理  -->
 				/console/tenantAccount/** = perms["tenantAccount"]
 				/console/tenantInfo/** = perms["tenantInfo"]

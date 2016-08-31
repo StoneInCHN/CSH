@@ -7,7 +7,7 @@ $("#track_search_btn").click(function(){
 	  }
 	  
 	  $.ajax({
-			url:"../vehicleTrack/drawVehicleTrack.jhtml",
+			url:"../vehicleTrack/drawVehicleTrackMultiple.jhtml",
 			type:"post",
 			data:_queryParams,
 			beforeSend:function(){
@@ -34,7 +34,7 @@ $("#track_search_btn").click(function(){
 		});
 });
 
-function createMarker(point, icon,map){  // 创建图标对象   
+function createMarker(point, icon,map,isEndPoint){  // 创建图标对象   
 	var myIcon = new BMap.Icon(icon, new BMap.Size(30, 90), {    
 	// 指定定位位置。   
 	// 当标注显示在地图上时，其所指向的地理位置距离图标左上    
@@ -49,37 +49,59 @@ function createMarker(point, icon,map){  // 创建图标对象
 	// 创建标注对象并添加到地图   
 	 var marker = new BMap.Marker(point, {icon: myIcon});  
 	 map.addOverlay(marker);
+	 var opts=new Object();
+	 if(isEndPoint){
+		 opts.offset=new BMap.Size(20,-10);
+	 }else{
+		 opts.offset=new BMap.Size(-20,-10);
+	 }
+	 var label = new BMap.Label("12:30",opts);
+	 marker.setLabel(label);
 }  
 
 
 
-function createMap(track){
+function createMap(trackList){
 	debugger;
-	var s_point = track[0];
-	var e_point = track[track.length-1];
-	var startPoint = new BMap.Point(s_point["x"], s_point["y"]);
-	var endPoint = new BMap.Point(e_point["x"], e_point["y"]);
 	var map = new BMap.Map("vehicleTrackMap");  
-	map.centerAndZoom(startPoint,13);// 初始化地图,设置中心点坐标和地图级别。
+	
+	var trackMap=[];
+	for(var i=0;i<trackList.length;i++){
+		var track = trackList[i];
+		
+		var s_point = track[0];
+		var e_point = track[track.length-1];
+		
+		var startPoint = new BMap.Point(s_point["x"], s_point["y"]);
+		var endPoint = new BMap.Point(e_point["x"], e_point["y"]);
+		
+		createMarker(startPoint,"../../resources/images/start.png",map,false);
+		createMarker(endPoint,"../../resources/images/end.png",map,true);
+		
+		var flag = 0;
+		for(var j=0;j<track.length;j++){
+			var m = new BMap.Point(track[j]["x"], track[j]["y"]);
+			trackMap.push(m);
+		}
+		map.centerAndZoom(startPoint,13);// 初始化地图,设置中心点坐标和地图级别。
+	}
+	
+	
+	
+	
 	map.enableScrollWheelZoom();//启用滚轮放大缩小
 	map.addControl(new BMap.NavigationControl()); // 添加平移缩放控件
 	map.addControl(new BMap.ScaleControl()); // 添加比例尺控件
 	map.addControl(new BMap.OverviewMapControl()); //添加缩略地图控件
 	
-	var trackMap=[];
-	var flag = 0;
-	for(var i=0;i<track.length;i++){
-		var m = new BMap.Point(track[i]["x"], track[i]["y"]);
-		trackMap.push(m);
-	}	
+	
 	var polyline = new BMap.Polyline(trackMap,{strokeColor:"blue", strokeWeight:3, strokeOpacity:0.5});    
 	map.addOverlay(polyline);
 	map.addEventListener("click",function(e){
 		console.log(e.point.lng + "," + e.point.lat);
 	});
 	
-	createMarker(startPoint,"../../resources/images/start.png",map);
-	createMarker(endPoint,"../../resources/images/end.png",map);
+	
 	
 }
 

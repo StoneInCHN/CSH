@@ -367,7 +367,11 @@ public class Product extends BaseEntity {
   /** 条形码 */
   private String barCode;
 
-
+  /**
+   * 访问商品详情URL
+   */
+  private String accessUrl;
+  
   /** 商品图片 */
   private List<ProductImage> productImages = new ArrayList<ProductImage>();
 
@@ -1999,6 +2003,17 @@ public class Product extends BaseEntity {
 	this.isAllowedRedPackage = isAllowedRedPackage;
   }
 
+  
+  public String getAccessUrl ()
+  {
+    return accessUrl;
+  }
+
+  public void setAccessUrl (String accessUrl)
+  {
+    this.accessUrl = accessUrl;
+  }
+
 /**
    * 获取商品属性值
    * 
@@ -2191,6 +2206,7 @@ public class Product extends BaseEntity {
     setMonthHitsDate(new Date());
     setWeekSalesDate(new Date());
     setMonthSalesDate(new Date());
+    setAccessUrl ("/estor");
   }
 
   /**

@@ -34,6 +34,7 @@ import com.csh.entity.ServiceCategory;
 import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.ServiceStatus;
+import com.csh.entity.estore.Product;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.ordering.Ordering;
 import com.csh.framework.ordering.Ordering.Direction;
@@ -324,5 +325,12 @@ public class CarServiceController extends BaseController
         return !carServiceService.exists (tenantFilter,serviceCategoryFilter);
       }
     }
+  }
+  
+  @RequestMapping (value = "/showIntroduction", method = RequestMethod.GET)
+  public String showIntroduction(ModelMap model, Long carServiceId){
+    CarService carService = carServiceService.find (carServiceId);
+    model.put ("carService", carService);
+    return "carService/introduction";
   }
 }

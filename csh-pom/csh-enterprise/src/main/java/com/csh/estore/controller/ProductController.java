@@ -348,4 +348,11 @@ public class ProductController extends BaseController
       return ERROR_MESSAGE;
     }
   }
+  
+  @RequestMapping (value = "/showIntroduction", method = RequestMethod.GET)
+  public String showIntroduction(ModelMap model, Long productId){
+    Product product = productService.find (productId);
+    model.put ("product", product);
+    return "estore/product/introduction";
+  }
 }
