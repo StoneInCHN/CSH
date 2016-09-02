@@ -94,7 +94,7 @@ public class ReceiverAddressController extends MobileBaseController {
     pageable.setOrderProperty("isDefault");
     pageable.setOrderDirection(Direction.desc);
     Page<ReceiverAddress> addresses = receiverAddressService.findPage(pageable);
-    String[] propertys = {"id", "consignee", "areaName", "address", "phone", "isDefault"};
+    String[] propertys = {"id", "consignee", "areaName", "areaId", "address", "phone", "isDefault"};
     List<Map<String, Object>> result =
         FieldFilterUtils.filterCollectionMap(propertys, addresses.getContent());
     response.setMsg(result);
@@ -193,8 +193,8 @@ public class ReceiverAddressController extends MobileBaseController {
           .debug(
               ReceiverAddressController.class,
               "addOrEdit",
-              "add or Edit receiver address. receiverId: %s,areaId: %s,consignee: %s,address: %s，phone: %s,isDefault: %s",
-              receiverId, areaId, consignee, address, phone, isDefault);
+              "add or Edit receiver address. receiverId: %s,areaId: %s,consignee: %s,address: %s，phone: %s,zipCode:%s,isDefault: %s",
+              receiverId, areaId, consignee, address, phone, zipCode, isDefault);
     }
 
     Area area = areaService.find(areaId);
@@ -211,7 +211,7 @@ public class ReceiverAddressController extends MobileBaseController {
     receiverAddress.setPhone(phone);
     receiverAddress.setAddress(address);
     receiverAddress.setIsDefault(isDefault);
-    receiverAddress.setZipCode(zipCode);
+    receiverAddress.setZipCode(zipCode != null ? zipCode : "");
     receiverAddressService.addOrEditAddress(receiverAddress, endUser);
 
     String newtoken = TokenGenerator.generateToken(request.getToken());

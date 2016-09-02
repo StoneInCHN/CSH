@@ -3,8 +3,10 @@ package com.csh.controller;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -180,6 +182,15 @@ public class ObdController extends MobileBaseController {
               vehicleOilService.calOilCost(new BigDecimal((Double) msg.get("fuelConsumption")),
                   deviceInfo);
           msg.put("cost", cost);
+
+          String pcodes = msg.get("faultcode").toString();
+          Set<String> codeSet = new HashSet<String>();
+          String[] codes = pcodes.split(",");
+          for (String code : codes) {
+            codeSet.add("<a>" + code.split(":")[0].trim() + "<a>");
+          }
+          String obdCode = codeSet.toString().substring(1, codeSet.toString().length() - 1);
+          msg.put("faultcode", obdCode);
         }
         response.setMsg(msg);
       }
