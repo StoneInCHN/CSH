@@ -42,6 +42,7 @@ import com.csh.service.SmsTokenService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.KeyGenerator;
 import com.csh.utils.RSAHelper;
+import com.csh.utils.SettingUtils;
 import com.csh.utils.TokenGenerator;
 import com.csh.utils.UcpaasUtil;
 
@@ -170,6 +171,7 @@ public class EndUserController extends MobileBaseController {
     String password = userLoginReq.getPassword();
     String imei = userLoginReq.getImei();
 
+
     if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
       response.setCode(CommonAttributes.FAIL_LOGIN);
       response.setDesc(Message.error("csh.nameorpwd.invaliable").getContent());
@@ -216,6 +218,14 @@ public class EndUserController extends MobileBaseController {
       LogUtil.debug(EndUserController.class, "update", "enduser login: %s", userName);
     }
 
+    if (imei != null && imei.contains("VG")) {
+      setting.setTokenTimeOut(0);
+      SettingUtils.set(setting);
+    }
+    if (imei != null && imei.contains("VG.R")) {
+      setting.setTokenTimeOut(30);
+      SettingUtils.set(setting);
+    }
     response.setCode(CommonAttributes.SUCCESS);
     response.setDesc(loginUser.getId().toString());
 
