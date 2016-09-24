@@ -324,6 +324,25 @@ var vehicle_manager_tool = {
 			    	$('#vehicleDailyReport_form').show();
 			    },
 			});  
+		},
+		showFaultDetail:function(faultCode){
+			$('#faultCodeDetail').dialog({
+			    title: message("csh.vehicle.faultCode"),    
+			    width: 600,    
+			    height: 400,
+			    iconCls:'icon-mini-add',
+			    cache: false,
+			    href:'../vehicle/showFaultDetail.jhtml?faultCode='+faultCode,
+			    buttons:[{
+					text:message("csh.common.cancel"),
+					iconCls:'icon-cancel',
+					handler:function(){
+						 $('#faultCodeDetail').dialog("close");
+						 $("#realTimeCarCondition_form").form("reset");
+					}
+			    }],
+			    onLoad:function(){}
+			});
 		}
 		
 };
@@ -425,7 +444,7 @@ $(function(){
 		      {title:message("csh.vehicle.wainingInfo"),field:"wainingInfo",sortable:true},
 	      	  {title:message("csh.vehicle.dashboardMileage"),field:"dashboardMileage",sortable:true},
 	      	  {title:message("csh.vehicle.dashboardBV"),field:"dashboardBV",sortable:true},
-		      {title:message("csh.vehicle.device"),field:"deviceNo",width:100,sortable:false},
+		      {title:message("csh.vehicle.device"),field:"deviceNo",sortable:false},
 		      {title:message("csh.vehicle.deviceOnLine"),field:"isOnline",width:70,sortable:false,
 		    	  formatter: function(value,row,index){
 			    	  if(value ){
@@ -442,6 +461,14 @@ $(function(){
 						}
 					}  
 		      },
+		      {title:message("csh.vehicle.faultCode"),field:"faultCodeSet",sortable:false,
+		    	  formatter:  function(value,row,index){
+		    		  var str = "";
+		    		  for(var i=0; i< value.length;i++){
+		    			  str=str+"<a href='#' onclick='vehicle_manager_tool.showFaultDetail(\""+value[i]+"\")'>"+value[i]+"</a> "
+		    		  }
+		    		  return str;
+				}},
 		      {title:message("csh.vehicle.obdStatusTime"),field:"obdStatusTime",width:130,sortable:true,formatter: function(value,row,index){
 		    	  if(value != null){
 						return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");

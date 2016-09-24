@@ -3,8 +3,10 @@ package com.csh.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +34,7 @@ import com.csh.beans.Setting;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
+import com.csh.entity.FaultCode;
 import com.csh.entity.Vehicle;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
@@ -42,6 +45,7 @@ import com.csh.json.response.VehicleDailyReport;
 import com.csh.json.response.VehicleStatus;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
+import com.csh.service.FaultCodeService;
 import com.csh.service.VehicleBrandDetailService;
 import com.csh.service.VehicleOilService;
 import com.csh.service.VehicleService;
@@ -72,6 +76,8 @@ public class VehicleController extends BaseController
   private VehicleBrandDetailService vehicleBrandDetailService;
   @Resource (name = "vehicleOilServiceImpl")
   private VehicleOilService vehicleOilService;
+  @Resource(name="faultCodeServiceImpl")
+  private FaultCodeService faultCodeService;
   private Setting setting = SettingUtils.get();
   
   @RequestMapping (value = "/vehicle", method = RequestMethod.GET)
@@ -478,6 +484,19 @@ public class VehicleController extends BaseController
               vehicle.setLat (vehicleStatus.getLat ());
               vehicle.setLon (vehicleStatus.getLon ());
               vehicle.setObdStatusTime (vehicleStatus.getCreatetime ());
+              //解析故障码
+              if (vehicleStatus.getFaultcode()!= null) {
+            	  String[] faultCodes = vehicleStatus.getFaultcode().split(",");
+                  Set<String> faultCodeSet = new HashSet<String>();
+                  for (String faultCode :faultCodes) {
+                	  String code = faultCode.split(":")[0].trim();
+                	  if (!faultCodeSet.contains(code)) {
+                		  faultCodeSet.add(code);
+                	  }
+                  }
+                  vehicle.setFaultCodeSet(faultCodeSet);
+              }
+              
             }
           }
         }
@@ -515,5 +534,13 @@ public class VehicleController extends BaseController
 
     return vehicleService.listUnBuindVehicle (vehiclePlateSearch,
         motorcadeSearch, vehicleFullBrandSearch, pageable);
+  }
+  
+  @RequestMapping (value = "/showFaultDetail", method = RequestMethod.GET)
+  public String  showFaultDetail (ModelMap model,String faultCode)
+  {
+
+	 model.put("faultCode", faultCodeService.findByCode(faultCode));
+	 return "vehicle/faultCode";
   }
 }

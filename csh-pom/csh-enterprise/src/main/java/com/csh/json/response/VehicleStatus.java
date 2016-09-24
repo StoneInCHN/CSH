@@ -57,6 +57,11 @@ public class VehicleStatus {
    */
   private Date createtime;
   
+  /**
+   * 车辆故障码
+   */
+  private String faultcode;
+  
   public Long getDeviceId() {
     return deviceId;
   }
@@ -143,6 +148,14 @@ public class VehicleStatus {
   public void setCreatetime (Date createtime)
   {
     this.createtime = createtime;
+  }
+
+  public String getFaultcode() {
+	return faultcode;
+  }
+
+  public void setFaultcode(String faultcode) {
+	this.faultcode = faultcode;
   }
   
 }

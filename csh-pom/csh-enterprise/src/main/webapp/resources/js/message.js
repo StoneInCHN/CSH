@@ -177,6 +177,7 @@ var messages = {
 	"csh.vehicle.realTimeCarCondition":"实时车况",
 	"csh.vehicle.vehicleFullBrand":"车型",
 	"csh.vehicle.wainingInfo":"车辆异常警告",
+	"csh.vehicle.faultCode":"故障码",
 	"csh.vehicle.no.track":"该车辆今日没有轨迹",
 	"csh.vehicle.miss.param":"请选择查询车辆和时间",
 	"csh.vehicle.location":"当前位置",

@@ -87,7 +87,9 @@
 	    </table>
 	</form>
 </div>
+
 <div id="editVehicle"></div>
+<div id="faultCodeDetail"></div>
 <div id="vehicleDetail"></div>
 <div id="realTimeCarCondition"></div>
 <div id="vehicleDailyReport"></div>

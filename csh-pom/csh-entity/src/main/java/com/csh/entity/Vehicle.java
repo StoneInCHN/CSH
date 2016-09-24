@@ -110,7 +110,7 @@ public class Vehicle extends BaseEntity {
   private Long tenantID;
 
   private Set<VehicleMaintain> vehicleMaintain = new HashSet<VehicleMaintain>();
-
+  private Set<String> faultCodeSet = new HashSet<String>();
   /**
    * 设备编号，冗余字段，方便查询
    */
@@ -530,6 +530,15 @@ public class Vehicle extends BaseEntity {
   public void setObdStatusTime(Date obdStatusTime) {
     this.obdStatusTime = obdStatusTime;
   }
+  @Transient
+  @JsonProperty
+  public Set<String> getFaultCodeSet() {
+	return faultCodeSet;
+  }
 
+  public void setFaultCodeSet(Set<String> faultCodeSet) {
+	this.faultCodeSet = faultCodeSet;
+  }
 
+  
 }
