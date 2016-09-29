@@ -1,11 +1,11 @@
 <script src="${base}/resources/js/common.js"></script>
 <script src="${base}/resources/modules/vehicle.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
-
+<script type="text/javascript" src="${base}/resources/js/LuShu.js"/>
 <div>
 	  <fieldset>
 	    <legend>${message("csh.vehicle.search")}</legend>
-	    <form id="vehicle-search-form" class="search-form">
+	    <form id="vehicle-search-form" class="search-form" >
 	    <input type="hidden" name="totalRecord" id="totalRecord"/>
 	    	<div class="search-item">
 			    <label> ${message("csh.vehicle.plate")}:</label>
@@ -38,6 +38,7 @@
 	<div class="tool-button">
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="vehicle_manager_tool.vehicleDailyReport();">车辆每日数据</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="vehicle_manager_tool.realTimeCarCondition();">实时车况</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="vehicle_manager_tool.showAllVehicle();">全地图</a>
 		<a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-redo',plain:true" onclick="exportExcel('vehicle','vehicle-search-form','totalRecord');">导出</a>
 	</div>
 	<div class="tool-filter"></div>
@@ -93,7 +94,7 @@
 <div id="vehicleDetail"></div>
 <div id="realTimeCarCondition"></div>
 <div id="vehicleDailyReport"></div>
-
+<div id="allVehicleStatus"></div>
 
 
 

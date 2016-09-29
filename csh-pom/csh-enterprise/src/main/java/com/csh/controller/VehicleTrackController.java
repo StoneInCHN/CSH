@@ -101,8 +101,11 @@ public class VehicleTrackController extends BaseController {
     try {
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> map = mapper.readValue(res, Map.class);
-//      List<Map<String, Object>> trackList =  (List<Map<String, Object>>) map.get("msg");
-      List<VehicleTrack> trackList = mapper.readValue (mapper.writeValueAsString (map),List.class);
+      List<Map<String, Object>> trackMapList =  (List<Map<String, Object>>) map.get("msg");
+      String value = mapper.writeValueAsString (trackMapList);
+      
+      
+      List<VehicleTrack> trackList = mapper.readValue (value,mapper.getTypeFactory().constructParametricType(List.class, VehicleTrack.class));
       for (VehicleTrack track : trackList)
       {
         List<Map<String, Object>> maps = track.getTracks ();

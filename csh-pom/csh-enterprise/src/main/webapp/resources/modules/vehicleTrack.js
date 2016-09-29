@@ -49,14 +49,14 @@ function createMarker(point, icon,map,isEndPoint){  // 创建图标对象
 	// 创建标注对象并添加到地图   
 	 var marker = new BMap.Marker(point, {icon: myIcon});  
 	 map.addOverlay(marker);
-	 var opts=new Object();
-	 if(isEndPoint){
-		 opts.offset=new BMap.Size(20,-10);
-	 }else{
-		 opts.offset=new BMap.Size(-20,-10);
-	 }
-	 var label = new BMap.Label("12:30",opts);
-	 marker.setLabel(label);
+//	 var opts=new Object();
+//	 if(isEndPoint){
+//		 opts.offset=new BMap.Size(20,-10);
+//	 }else{
+//		 opts.offset=new BMap.Size(-20,-10);
+//	 }
+//	 var label = new BMap.Label("12:30",opts);
+//	 marker.setLabel(label);
 }  
 
 

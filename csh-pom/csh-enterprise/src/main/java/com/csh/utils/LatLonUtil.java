@@ -9,6 +9,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.csh.beans.Setting;
+import com.csh.entity.Vehicle;
 
 
 public class LatLonUtil {
@@ -193,10 +194,13 @@ public class LatLonUtil {
         StringBuffer corrds = new StringBuffer ();
         for (Map<String, Object> gpsMap : newMapsList.get (i))
         {
-          String x = gpsMap.get ("lon").toString ();
-          String y = gpsMap.get ("lat").toString ();
-          corrds.append (x + ",");
-          corrds.append (y + ";");
+          if (gpsMap.get ("lon") != null && gpsMap.get ("lat")!= null)
+          {
+            String x = gpsMap.get ("lon").toString ();
+            String y = gpsMap.get ("lat").toString ();
+            corrds.append (x + ",");
+            corrds.append (y + ";");
+          }
         }
         String url = setting.getConvertMutipleMapUrl () + "?from=1&to=5&ak="
             + setting.getMapAk () + "&coords="
@@ -219,6 +223,9 @@ public class LatLonUtil {
     }
     return null;
   }
+  
+
+  
   @SuppressWarnings ("unchecked")
   public static Map<String, Object> convertAddress(String address) {
     try {

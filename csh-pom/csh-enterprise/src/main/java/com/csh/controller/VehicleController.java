@@ -46,11 +46,13 @@ import com.csh.json.response.VehicleStatus;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.FaultCodeService;
+import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleBrandDetailService;
 import com.csh.service.VehicleOilService;
 import com.csh.service.VehicleService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.LatLonUtil;
 import com.csh.utils.SettingUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -78,6 +80,9 @@ public class VehicleController extends BaseController
   private VehicleOilService vehicleOilService;
   @Resource(name="faultCodeServiceImpl")
   private FaultCodeService faultCodeService;
+  @Resource (name = "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
+  
   private Setting setting = SettingUtils.get();
   
   @RequestMapping (value = "/vehicle", method = RequestMethod.GET)
@@ -542,5 +547,36 @@ public class VehicleController extends BaseController
 
 	 model.put("faultCode", faultCodeService.findByCode(faultCode));
 	 return "vehicle/faultCode";
+  }
+  @RequestMapping (value = "/allVehicleStatus", method = RequestMethod.GET)
+  public String  allVehicleStatus (ModelMap model)
+  {
+    model.put ("tenantInfo", tenantAccountService.getCurrentTenantInfo ());
+   return "vehicle/allVehicleStatus";
+  }
+  
+  @RequestMapping (value = "/allVehicleStatus", method = RequestMethod.POST)
+  public @ResponseBody List<Vehicle>  allVehicleStatus ()
+  {
+    List<com.csh.framework.filter.Filter > filters = new ArrayList<com.csh.framework.filter.Filter > ();
+    com.csh.framework.filter.Filter exceptFilter = new com.csh.framework.filter.Filter("plate",Operator.ne,"0000000");
+    filters.add (exceptFilter);
+    
+    List<Vehicle> vehicleList = prepareVehicleList(vehicleService.findList (null, filters, null, true,null));
+    List<Map<String, Object>> mapList = new ArrayList<Map<String,Object>> ();
+    for (Vehicle vehicle : vehicleList)
+    {
+      Map<String, Object> map = new HashMap<String, Object> ();
+      map.put ("lon", vehicle.getLon ());
+      map.put ("lat", vehicle.getLat ());
+      mapList.add (map);
+    }
+    List<Map<String, Object>> newMapList = LatLonUtil.convertCoordinates (mapList);
+    for (int i=0;i<newMapList.size ();i++)
+    {
+      vehicleList.get (i).setLon (Float.parseFloat (newMapList.get (i).get ("x").toString ()));
+      vehicleList.get (i).setLat (Float.parseFloat ( newMapList.get (i).get ("y").toString ()));
+    }
+    return vehicleList;
   }
 }
