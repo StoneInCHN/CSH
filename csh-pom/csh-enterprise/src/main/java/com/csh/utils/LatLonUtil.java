@@ -192,6 +192,7 @@ public class LatLonUtil {
       for (int i = 0; i < newMapsList.size (); i++)
       {
         StringBuffer corrds = new StringBuffer ();
+        List<Object> vehicleListInCover = new ArrayList<Object>();
         for (Map<String, Object> gpsMap : newMapsList.get (i))
         {
           if (gpsMap.get ("lon") != null && gpsMap.get ("lat")!= null)
@@ -200,6 +201,7 @@ public class LatLonUtil {
             String y = gpsMap.get ("lat").toString ();
             corrds.append (x + ",");
             corrds.append (y + ";");
+            vehicleListInCover.add( gpsMap.get("vehicleId"));
           }
         }
         String url = setting.getConvertMutipleMapUrl () + "?from=1&to=5&ak="
@@ -212,6 +214,9 @@ public class LatLonUtil {
             res, Map.class);
         List<Map<String, Object>> listMap = (List<Map<String, Object>>) resMap
             .get ("result");
+        for (int k = 0;k<listMap.size();k++) {
+        	listMap.get(k).put("vehicleId", vehicleListInCover.get(k));
+		}
         resultMapsList.addAll (listMap);
       }
 

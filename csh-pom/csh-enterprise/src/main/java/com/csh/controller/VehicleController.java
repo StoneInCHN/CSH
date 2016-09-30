@@ -569,13 +569,20 @@ public class VehicleController extends BaseController
       Map<String, Object> map = new HashMap<String, Object> ();
       map.put ("lon", vehicle.getLon ());
       map.put ("lat", vehicle.getLat ());
+      map.put("vehicleId", vehicle.getId());
       mapList.add (map);
     }
     List<Map<String, Object>> newMapList = LatLonUtil.convertCoordinates (mapList);
     for (int i=0;i<newMapList.size ();i++)
     {
-      vehicleList.get (i).setLon (Float.parseFloat (newMapList.get (i).get ("x").toString ()));
-      vehicleList.get (i).setLat (Float.parseFloat ( newMapList.get (i).get ("y").toString ()));
+    	for (int j = 0; j < vehicleList.size(); j++) {
+    		if(vehicleList.get(j).getId().equals(newMapList.get(i).get("vehicleId"))){
+    			 vehicleList.get (j).setLon (Float.parseFloat (newMapList.get (i).get ("x").toString ()));
+    		     vehicleList.get (j).setLat (Float.parseFloat ( newMapList.get (i).get ("y").toString ()));
+    		     break;
+    		}
+		}
+     
     }
     return vehicleList;
   }
