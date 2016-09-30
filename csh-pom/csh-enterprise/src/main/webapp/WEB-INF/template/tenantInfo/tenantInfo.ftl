@@ -20,7 +20,7 @@
 						${message("csh.tenantInfo.systemName")}:
 					</th>
 					<td>
-						<input class="easyui-textbox" value="${tenantInfo.systemName}" name="systemName"  maxlength="6" />
+						<input class="easyui-textbox" value="${tenantInfo.systemName}" name="systemName"  validType="maxLength[6]"/>
 					</td>
 		 		</tr>
 		 		<tr>
@@ -28,14 +28,14 @@
 						${message("csh.tenantInfo.tenantName")}:
 					</th>
 					<td>
-						<input class="easyui-textbox" disabled="disabled" id="tenantName" value="${tenantInfo.tenantName}" name="tenantName"  maxlength="20" />
+						<input class="easyui-textbox" disabled="disabled" id="tenantName" value="${tenantInfo.tenantName}" name="tenantName"  validType="maxLength[20]" />
 					</td>
 				
 					<th>
 						${message("csh.tenantInfo.contactPerson")}:
 					</th>
 					<td>
-						<input type="text" name="contactPerson" value="${tenantInfo.contactPerson}" class="easyui-textbox" maxlength="20" />
+						<input type="text" name="contactPerson" value="${tenantInfo.contactPerson}" class="easyui-textbox" validType="maxLength[20]" />
 					</td>
 				</tr>
 				<tr>
@@ -43,7 +43,7 @@
 						${message("csh.tenantInfo.contactPhone")}:
 					</th>
 					<td>
-						<input type="text" name="contactPhone" value="${tenantInfo.contactPhone}" class="easyui-textbox" maxlength="20" />
+						<input type="text" name="contactPhone" value="${tenantInfo.contactPhone}" class="easyui-textbox" validType="maxLength[20]"/>
 					</td>
 				
 					<th>
@@ -58,7 +58,7 @@
 						${message("csh.tenantInfo.address")}:
 					</th>
 					<td>
-						<input type="text" name="address" value="${tenantInfo.address}" disabled="disabled" class="easyui-textbox" maxlength="20" />
+						<input type="text" name="address" value="${tenantInfo.address}" disabled="disabled" class="easyui-textbox" validType="maxLength[20]" />
 					</td>
 				
 				<!--<tr>
@@ -77,7 +77,7 @@
 						${message("csh.tenantInfo.email")}:
 					</th>
 					<td>
-						<input type="text" name="email" value="${tenantInfo.email}" class="easyui-textbox" maxlength="20" />
+						<input type="text" name="email" value="${tenantInfo.email}" class="easyui-textbox" validType="maxLength[20]" />
 					</td>
 				</tr>
 				<tr>
@@ -98,7 +98,7 @@
 						${message("csh.tenantInfo.description")}:
 					</th>
 					<td>
-						<input type="text" name="description" value="${tenantInfo.description}" class="easyui-textbox" maxlength="20" />
+						<input type="text" name="description" value="${tenantInfo.description}" class="easyui-textbox" validType="maxLength[20]" />
 					</td>
 				</tr>
 				<tr>
@@ -106,7 +106,7 @@
 						${message("csh.tenantInfo.ownerName")}:
 					</th>
 					<td>
-						<input type="text" name="ownerName" disabled="disabled" value="${tenantInfo.ownerName}" class="easyui-textbox" maxlength="20" />
+						<input type="text" name="ownerName" disabled="disabled" value="${tenantInfo.ownerName}" class="easyui-textbox" validType="maxLength[20]" />
 					</td>
 				
 					<th>
@@ -150,7 +150,7 @@
 						${message("csh.tenantInfo.remark")}:
 					</th>
 					<td>
-						<input type="text" name="remark" value="${tenantInfo.remark}" class="easyui-textbox" maxlength="200" />
+						<input type="text" name="remark" value="${tenantInfo.remark}" class="easyui-textbox" validType="maxLength[200]" />
 					</td>
 				</tr>
 				<tr>

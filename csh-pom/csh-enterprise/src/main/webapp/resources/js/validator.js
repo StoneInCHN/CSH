@@ -32,7 +32,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 $.extend($.fn.validatebox.defaults.rules, {    
     maxLength: {    
         validator: function(value, param){    
-            return value.length < param[0];    
+            return value.length <= param[0];    
         },    
         message: '最多输入 {0}位'   
     }    
