@@ -91,6 +91,8 @@ public class DeviceInfo extends BaseEntity {
   /** 文件 */
   private MultipartFile file;
   
+  private String tenantName;
+  
   @JsonProperty
   public Date getBindTime() {
     return bindTime;
@@ -200,5 +202,16 @@ public class DeviceInfo extends BaseEntity {
   public void setFile(MultipartFile file) {
     this.file = file;
   }
+
+  @Transient
+  public String getTenantName() {
+    return tenantName;
+  }
+
+  public void setTenantName(String tenantName) {
+    this.tenantName = tenantName;
+  }
+  
+  
   
 }

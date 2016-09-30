@@ -169,6 +169,9 @@
 														<a href="javascript:;" class="sort" name="distributor">${message("csh.deviceInfo.distributorId")}</a>
 													</th>
 													<th>
+														<span>${message("csh.deviceInfo.tenantName")}</span>
+													</th>
+													<th>
 														<a href="javascript:;" class="sort" name="createDate">${message("csh.common.createDate")}</a>
 													</th>
 													<th>
@@ -228,6 +231,13 @@
 													<td>
 														[#if deviceInfo.distributor ??]
 															${deviceInfo.distributor.distributorName}
+														[#else]
+															--
+														[/#if]
+													</td>
+													<td>
+														[#if deviceInfo.tenantName ??]
+															${deviceInfo.tenantName}
 														[#else]
 															--
 														[/#if]

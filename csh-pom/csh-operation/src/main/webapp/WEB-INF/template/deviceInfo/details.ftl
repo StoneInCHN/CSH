@@ -119,10 +119,14 @@
 							</tr>
 							<tr>
 								<th>
-									${message("csh.deviceInfo.tenantID")}:
+									${message("csh.deviceInfo.tenantName")}:
 								</th>
 								<td>
-									${deviceInfo.tenantID}
+										[#if deviceInfo.tenantName ??]
+											${deviceInfo.tenantName}
+										[#else]
+											--
+										[/#if]
 								</td>
 							</tr>
 							<tr>

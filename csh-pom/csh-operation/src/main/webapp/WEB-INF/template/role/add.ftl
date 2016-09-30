@@ -186,6 +186,9 @@ $().ready(function() {
 											<label>
 												<input type="checkbox" name="authorities" value="admin:reportDeviceBind" /><span>${message("csh.report.reportDeviceBind")}</span>
 											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:faultCode" /><span>${message("csh.main.faultCode")}</span>
+											</label>
 										</span>
 									</td>
 								</tr>

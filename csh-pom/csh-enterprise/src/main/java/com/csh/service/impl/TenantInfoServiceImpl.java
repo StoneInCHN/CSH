@@ -113,7 +113,7 @@ public class TenantInfoServiceImpl extends BaseServiceImpl<TenantInfo, Long> imp
   public void saveTenantInfo (TenantInfo tenantInfo, String[] tenantImageList,Long[] deleteImageIdList)
   {
     this.update (tenantInfo, "tenantName","ownerName","address","createDate","orgCode","accountStatus",
-        "versionConfig","area","praiseRate","isHaveAccount","distributor","qrImage");
+        "versionConfig","area","storeLogo","license","photo","praiseRate","isHaveAccount","distributor","qrImage");
     for (String image : tenantImageList)
     {
       TenantImage tenantImage = new TenantImage ();

@@ -22,11 +22,13 @@ import com.csh.entity.Admin;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.DeviceType;
 import com.csh.entity.Distributor;
+import com.csh.entity.TenantInfo;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
 import com.csh.entity.commonenum.CommonEnum.DeviceStatus;
 import com.csh.entity.commonenum.CommonEnum.Status;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.service.AdminService;
 import com.csh.service.DeviceInfoService;
@@ -146,7 +148,17 @@ public class DeviceInfoController extends BaseController {
       filters.add(filter);
     }
     pageable.setFilters(filters);
-    model.addAttribute("page", deviceInfoService.findPage(pageable));
+    Page<DeviceInfo>  page = deviceInfoService.findPage(pageable);
+    List<DeviceInfo> lists = page.getContent();
+    for (DeviceInfo deviceInfo : lists) {
+      if (deviceInfo.getTenantID() !=null) {
+        TenantInfo tenantInfo = tenantInfoService.find(deviceInfo.getTenantID());
+        if(tenantInfo !=null && tenantInfo.getTenantName() !=null){
+          deviceInfo.setTenantName(tenantInfo.getTenantName());
+        }
+      }
+    }
+    model.addAttribute("page", new Page<DeviceInfo>(lists, page.getTotal(), pageable));
     return "/deviceInfo/list";
   }
 
@@ -181,7 +193,17 @@ public class DeviceInfoController extends BaseController {
       filters.add(distributorFilter);
     }
     pageable.setFilters(filters);
-    model.addAttribute("page", deviceInfoService.findPage(pageable));
+    Page<DeviceInfo>  page = deviceInfoService.findPage(pageable);
+    List<DeviceInfo> lists = page.getContent();
+    for (DeviceInfo deviceInfo : lists) {
+      if (deviceInfo.getTenantID() !=null) {
+        TenantInfo tenantInfo = tenantInfoService.find(deviceInfo.getTenantID());
+        if(tenantInfo !=null && tenantInfo.getTenantName() !=null){
+          deviceInfo.setTenantName(tenantInfo.getTenantName());
+        }
+      }
+    }
+    model.addAttribute("page", new Page<DeviceInfo>(lists, page.getTotal(), pageable));
     return "/deviceInfo/list4distributor";
   }
 
@@ -298,7 +320,14 @@ public class DeviceInfoController extends BaseController {
    */
   @RequestMapping(value = "/details", method = RequestMethod.GET)
   public String details(Long id, ModelMap model) {
-    model.addAttribute("deviceInfo", deviceInfoService.find(id));
+    DeviceInfo deviceInfo = deviceInfoService.find(id);
+    if (deviceInfo.getTenantID() !=null) {
+      TenantInfo tenantInfo = tenantInfoService.find(deviceInfo.getTenantID());
+      if(tenantInfo !=null && tenantInfo.getTenantName() !=null){
+        deviceInfo.setTenantName(tenantInfo.getTenantName());
+      }
+    }
+    model.addAttribute("deviceInfo",deviceInfo );
     return "/deviceInfo/details";
   }
 
@@ -410,7 +439,7 @@ public class DeviceInfoController extends BaseController {
     }
     DeviceInfo deviceInfo = deviceInfoService.findByDeviceNo(deviceNo);
     if (deviceInfo != null) {
-      if (id != null && deviceInfo.getId() == id) {
+      if (id != null && deviceInfo.getId().longValue() == id.longValue()) {
         return true;
       } else {
         return false;

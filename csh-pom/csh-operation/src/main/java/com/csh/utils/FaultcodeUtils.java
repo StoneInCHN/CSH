@@ -13,11 +13,10 @@ import com.csh.entity.FaultCode;
 
 public class FaultcodeUtils {
   public static List<FaultCode> readCode(){
-    System.out.println("read ...");
     List<FaultCode> lists = new ArrayList<FaultCode>(); 
     int count = 0;
     try {
-      File f = new File("C:\\Users\\tanbiao\\Desktop\\csh\\OBD-II.txt");
+      File f = new File("C:\\Users\\tanbiao\\Desktop\\csh\\OBD-II-2.1.txt");
       InputStream input = new FileInputStream(f);
       BufferedReader b = new BufferedReader(new InputStreamReader(input,"gbk"));
       String value = b.readLine();
@@ -47,26 +46,26 @@ public class FaultcodeUtils {
        
          switch (count%6){
            case 1:
-             faultCode.setCode(value.substring(5, value.length()));
+             faultCode.setCode(value.substring(5, value.length()).trim());
              break;
            case 2:
              if (value.length() >6) {
-               faultCode.setDefineCh(value.substring(6, value.length()));
+               faultCode.setDefineCh(value.substring(6, value.length()).trim());
              }
              break;
            case 3:
              if (value.length() >6) {
-               faultCode.setDefineEn(value.substring(6, value.length()));
+               faultCode.setDefineEn(value.substring(6, value.length()).trim());
              }
              break;
            case 4:
              if (value.length() >4) {
-               faultCode.setScope(value.substring(4, value.length()));
+               faultCode.setScope(value.substring(4, value.length()).trim());
              }
              break;
            case 5:
              if (value.length() >6) {
-               faultCode.setInfo(value.substring(6, value.length()));
+               faultCode.setInfo(value.substring(6, value.length()).trim());
              }
              break;
            default:
@@ -80,9 +79,7 @@ public class FaultcodeUtils {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    
     System.out.println("该txt文件的总行数为 :" +count);
-    
     return lists;
   }
 }

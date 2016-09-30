@@ -135,6 +135,9 @@
 														<a href="javascript:;" class="sort" name="bindStatus">${message("csh.deviceInfo.bindStatus")}</a>
 													</th>
 													<th>
+														<span>${message("csh.deviceInfo.tenantName")}</span>
+													</th>
+													<th>
 														<span>${message("csh.common.handle")}</span>
 													</th>
 												</tr>
@@ -177,6 +180,13 @@
 													</td>
 													<td>
 														${message("csh.deviceInfo.bindStatus."+deviceInfo.bindStatus)}
+													</td>
+													<td>
+														[#if deviceInfo.tenantName ??]
+															${deviceInfo.tenantName}
+														[#else]
+															--
+														[/#if]
 													</td>
 													<td>
 														<a href="details.jhtml?id=${deviceInfo.id}" title="${message("csh.common.details")}"><i class="fa fa-eye"></i></a>

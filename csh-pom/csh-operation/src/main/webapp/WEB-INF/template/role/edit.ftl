@@ -204,6 +204,9 @@ $().ready(function() {
 											<label>
 												<input type="checkbox" name="authorities" value="admin:distributorDeductClearingRecord" [#if role.authorities?seq_contains("admin:distributorDeductClearingRecord")] checked="checked"[/#if] /><span>${message("csh.main.distributorDeductClearingRecord")}</span>
 											</label>
+											<label>
+												<input type="checkbox" name="authorities" value="admin:faultCode" [#if role.authorities?seq_contains("admin:faultCode")] checked="checked"[/#if] /><span>${message("csh.main.faultCode")}</span>
+											</label>
 										</span>
 									</td>
 								</tr>
