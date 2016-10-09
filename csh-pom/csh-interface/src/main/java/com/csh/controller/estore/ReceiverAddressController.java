@@ -94,7 +94,8 @@ public class ReceiverAddressController extends MobileBaseController {
     pageable.setOrderProperty("isDefault");
     pageable.setOrderDirection(Direction.desc);
     Page<ReceiverAddress> addresses = receiverAddressService.findPage(pageable);
-    String[] propertys = {"id", "consignee", "areaName", "areaId", "address", "phone", "isDefault"};
+    String[] propertys =
+        {"id", "consignee", "areaName", "area.id", "address", "phone", "isDefault"};
     List<Map<String, Object>> result =
         FieldFilterUtils.filterCollectionMap(propertys, addresses.getContent());
     response.setMsg(result);
