@@ -31,12 +31,14 @@ import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.estore.Order;
+import com.csh.entity.estore.OrderRelation;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.service.AdvanceDepositsService;
 import com.csh.service.CarServiceRecordService;
 import com.csh.service.CarServiceService;
 import com.csh.service.EndUserService;
+import com.csh.service.OrderRelationService;
 import com.csh.service.OrderService;
 import com.csh.service.WalletService;
 import com.csh.utils.ToolsUtils;
@@ -66,6 +68,9 @@ public class NotifyController extends MobileBaseController {
 
   @Resource(name = "orderServiceImpl")
   private OrderService orderService;
+
+  @Resource(name = "orderRelationServiceImpl")
+  private OrderRelationService orderRelationService;
 
 
 
@@ -160,18 +165,43 @@ public class NotifyController extends MobileBaseController {
             List<Order> records = orderService.findList(null, filters, null);
             if (!CollectionUtils.isEmpty(records) && records.size() == 1) {
               Order order = records.get(0);
-              order.setPaymentStatus(PaymentStatus.paid);
-              order.setAmountPaid(order.getAmount());
-              if (LogUtil.isDebugEnabled(NotifyController.class)) {
-                LogUtil
-                    .debug(
-                        NotifyController.class,
-                        "notify_wechat",
-                        "User purchase product call back for product order.UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
-                        order.getEndUser().getUserName(), order.getTenantID(), order.getId(),
-                        order.getAmount(), order.getPaymentType(), order.getPaymentStatus());
+              List<Filter> relationFilters = new ArrayList<Filter>();
+              Filter rfilter = new Filter("mainOrderId", Operator.eq, order.getId());
+              relationFilters.add(rfilter);
+              List<OrderRelation> orderRelations =
+                  orderRelationService.findList(null, filters, null);
+              if (!CollectionUtils.isEmpty(orderRelations)) {// 有关联订单,一次购买涉及多个租户订单
+                for (OrderRelation orderRelation : orderRelations) {
+                  Order rOrder = orderService.find(orderRelation.getOrderId());
+                  rOrder.setPaymentStatus(PaymentStatus.paid);
+                  rOrder.setAmountPaid(rOrder.getAmount());
+                  if (LogUtil.isDebugEnabled(NotifyController.class)) {
+                    LogUtil
+                        .debug(
+                            NotifyController.class,
+                            "notify_wechat",
+                            "User purchase product call back for product order--multi tenant.UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+                            rOrder.getEndUser().getUserName(), rOrder.getTenantID(),
+                            rOrder.getId(), rOrder.getAmount(), rOrder.getPaymentType(),
+                            rOrder.getPaymentStatus());
+                  }
+                  orderService.updatePayStatus(rOrder);
+                }
+              } else {
+                order.setPaymentStatus(PaymentStatus.paid);
+                order.setAmountPaid(order.getAmount());
+                if (LogUtil.isDebugEnabled(NotifyController.class)) {
+                  LogUtil
+                      .debug(
+                          NotifyController.class,
+                          "notify_wechat",
+                          "User purchase product call back for product order--single tenant.UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+                          order.getEndUser().getUserName(), order.getTenantID(), order.getId(),
+                          order.getAmount(), order.getPaymentType(), order.getPaymentStatus());
+                }
+                orderService.updatePayStatus(order);
               }
-              orderService.updatePayStatus(order);
+
             }
           }
           // 购买服务
@@ -338,18 +368,41 @@ public class NotifyController extends MobileBaseController {
       List<Order> records = orderService.findList(null, filters, null);
       if (!CollectionUtils.isEmpty(records) && records.size() == 1) {
         Order order = records.get(0);
-        order.setPaymentStatus(PaymentStatus.paid);
-        order.setAmountPaid(order.getAmount());
-        if (LogUtil.isDebugEnabled(NotifyController.class)) {
-          LogUtil
-              .debug(
-                  NotifyController.class,
-                  "notify_alipay",
-                  "User purchase product call back for product order.UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
-                  order.getEndUser().getUserName(), order.getTenantID(), order.getId(),
-                  order.getAmount(), order.getPaymentType(), order.getPaymentStatus());
+        List<Filter> relationFilters = new ArrayList<Filter>();
+        Filter rfilter = new Filter("mainOrderId", Operator.eq, order.getId());
+        relationFilters.add(rfilter);
+        List<OrderRelation> orderRelations = orderRelationService.findList(null, filters, null);
+        if (!CollectionUtils.isEmpty(orderRelations)) {// 有关联订单,一次购买涉及多个租户订单
+          for (OrderRelation orderRelation : orderRelations) {
+            Order rOrder = orderService.find(orderRelation.getOrderId());
+            rOrder.setPaymentStatus(PaymentStatus.paid);
+            rOrder.setAmountPaid(rOrder.getAmount());
+            if (LogUtil.isDebugEnabled(NotifyController.class)) {
+              LogUtil
+                  .debug(
+                      NotifyController.class,
+                      "notify_alipay",
+                      "User purchase product call back for product order--multi tenant.UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+                      rOrder.getEndUser().getUserName(), rOrder.getTenantID(), rOrder.getId(),
+                      rOrder.getAmount(), rOrder.getPaymentType(), rOrder.getPaymentStatus());
+            }
+            orderService.updatePayStatus(rOrder);
+          }
+        } else {
+          order.setPaymentStatus(PaymentStatus.paid);
+          order.setAmountPaid(order.getAmount());
+          if (LogUtil.isDebugEnabled(NotifyController.class)) {
+            LogUtil
+                .debug(
+                    NotifyController.class,
+                    "notify_alipay",
+                    "User purchase product call back for product order--single tenant.UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+                    order.getEndUser().getUserName(), order.getTenantID(), order.getId(),
+                    order.getAmount(), order.getPaymentType(), order.getPaymentStatus());
+          }
+          orderService.updatePayStatus(order);
         }
-        orderService.updatePayStatus(order);
+
       }
     }
     // 购买服务
