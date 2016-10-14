@@ -253,8 +253,10 @@ public class Setting implements Serializable {
    */
   private String alipayPublicKey ;
   
-  
-  
+  /**
+   * odb 接口 url
+   */
+  private String obdServiceUrl;
   
   public Integer getPasswordMaxlength() {
     return passwordMaxlength;
@@ -628,6 +630,14 @@ public Integer getSmsCodeTimeOut() {
 
   public void setAlipayPublicKey(String alipayPublicKey) {
     this.alipayPublicKey = alipayPublicKey;
+  }
+
+  public String getObdServiceUrl() {
+    return obdServiceUrl;
+  }
+
+  public void setObdServiceUrl(String obdServiceUrl) {
+    this.obdServiceUrl = obdServiceUrl;
   }
   
 }
