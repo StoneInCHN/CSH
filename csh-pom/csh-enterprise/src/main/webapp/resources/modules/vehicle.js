@@ -62,7 +62,7 @@ function drawMutPoint(map,allVehicleListStatus){
 			}
 			
 		}
-		console.log('lon:'+allVehicleListStatus[i].lon,"; lat:"+allVehicleListStatus[i].lat)
+		console.log('车牌号：'+allVehicleListStatus[i].plate+' lon:'+allVehicleListStatus[i].lon,"; lat:"+allVehicleListStatus[i].lat)
 	}
 	
 	
@@ -70,91 +70,91 @@ function drawMutPoint(map,allVehicleListStatus){
 }
 var index = 0;
 function loadAllVehicleStatus(map){
-//	$.ajax({
-//		url:"../vehicle/allVehicleStatus.jhtml",
-//		type:"post",
-//		success:function(result,response,status){
-//			if(result.length>0 ){
-//				oldVehicleListStatus = allVehicleListStatus;
-//				allVehicleListStatus = new Array();
-//				for(var i = 0;i<result.length;i++){
-//					var vehicleStatus = new Object();
-//					vehicleStatus.lat = result[i].lat; 
-//					vehicleStatus.lon = result[i].lon;
-//					vehicleStatus.plate = result[i].plate;
-//					allVehicleListStatus.push(vehicleStatus);
-//				}
-//			}else{
-//				
-//			}
-//			drawMutPoint(map,allVehicleListStatus);
-//		}
-//	});
-	var vehicleStatus1 = new Object();
-	var vehicleStatus2 = new Object();
-	if(index == 0){
-		oldVehicleListStatus = allVehicleListStatus;
-		allVehicleListStatus = new Array();
-		
-		vehicleStatus1.lat = 30.524146;
-		vehicleStatus1.lon = 104.071378;
-		vehicleStatus1.plate = "test1";
-		allVehicleListStatus.push(vehicleStatus1);
-		
-		
-		vehicleStatus2.lat = 30.526122;
-		vehicleStatus2.lon = 104.069788;
-		vehicleStatus2.plate = "test2";
-		allVehicleListStatus.push(vehicleStatus2);
-		
-		index++;
-	}else if( index ==1 ){
-		oldVehicleListStatus = allVehicleListStatus;
-		allVehicleListStatus = new Array();
-		
-		vehicleStatus1.lat = 30.525181;
-		vehicleStatus1.lon = 104.07304;
-		vehicleStatus1.plate = "test1";
-		allVehicleListStatus.push(vehicleStatus1);
-		
-		vehicleStatus2.lat = 30.526651;
-		vehicleStatus2.lon = 104.071917;
-		vehicleStatus2.plate = "test2";
-		allVehicleListStatus.push(vehicleStatus2);
-		index++;
-	}else if( index ==2 ){
-		oldVehicleListStatus = allVehicleListStatus;
-		allVehicleListStatus = new Array();
-		
-		vehicleStatus1.lat = 30.526363;
-		vehicleStatus1.lon = 104.072078;
-		vehicleStatus1.plate = "test1";
-		allVehicleListStatus.push(vehicleStatus1);
-		
-		vehicleStatus2.lat = 30.527133;
-		vehicleStatus2.lon = 104.073534;
-		vehicleStatus2.plate = "test2";
-		allVehicleListStatus.push(vehicleStatus2);
-		index++;
-	}
-	else{
-		oldVehicleListStatus = allVehicleListStatus;
-		allVehicleListStatus = new Array();
-		
-		var vehicleStatus = new Object();
-		vehicleStatus.lat = vehicleStatus1.lat+0.0001,
-		vehicleStatus.lon = vehicleStatus1.lon+0.0001;
-		vehicleStatus.plate = "test1";
-		allVehicleListStatus.push(vehicleStatus);
-	}
+	$.ajax({
+		url:"../vehicle/allVehicleStatus.jhtml",
+		type:"post",
+		success:function(result,response,status){
+			if(result.length>0 ){
+				oldVehicleListStatus = allVehicleListStatus;
+				allVehicleListStatus = new Array();
+				for(var i = 0;i<result.length;i++){
+					var vehicleStatus = new Object();
+					vehicleStatus.lat = result[i].lat; 
+					vehicleStatus.lon = result[i].lon;
+					vehicleStatus.plate = result[i].plate;
+					allVehicleListStatus.push(vehicleStatus);
+				}
+			}else{
+				
+			}
+			drawMutPoint(map,allVehicleListStatus);
+		}
+	});
+//	var vehicleStatus1 = new Object();
+//	var vehicleStatus2 = new Object();
+//	if(index == 0){
+//		oldVehicleListStatus = allVehicleListStatus;
+//		allVehicleListStatus = new Array();
+//		
+//		vehicleStatus1.lat = 30.524146;
+//		vehicleStatus1.lon = 104.071378;
+//		vehicleStatus1.plate = "test1";
+//		allVehicleListStatus.push(vehicleStatus1);
+//		
+//		
+//		vehicleStatus2.lat = 30.526122;
+//		vehicleStatus2.lon = 104.069788;
+//		vehicleStatus2.plate = "test2";
+//		allVehicleListStatus.push(vehicleStatus2);
+//		
+//		index++;
+//	}else if( index ==1 ){
+//		oldVehicleListStatus = allVehicleListStatus;
+//		allVehicleListStatus = new Array();
+//		
+//		vehicleStatus1.lat = 30.525181;
+//		vehicleStatus1.lon = 104.07304;
+//		vehicleStatus1.plate = "test1";
+//		allVehicleListStatus.push(vehicleStatus1);
+//		
+//		vehicleStatus2.lat = 30.526651;
+//		vehicleStatus2.lon = 104.071917;
+//		vehicleStatus2.plate = "test2";
+//		allVehicleListStatus.push(vehicleStatus2);
+//		index++;
+//	}else if( index ==2 ){
+//		oldVehicleListStatus = allVehicleListStatus;
+//		allVehicleListStatus = new Array();
+//		
+//		vehicleStatus1.lat = 30.526363;
+//		vehicleStatus1.lon = 104.072078;
+//		vehicleStatus1.plate = "test1";
+//		allVehicleListStatus.push(vehicleStatus1);
+//		
+//		vehicleStatus2.lat = 30.527133;
+//		vehicleStatus2.lon = 104.073534;
+//		vehicleStatus2.plate = "test2";
+//		allVehicleListStatus.push(vehicleStatus2);
+//		index++;
+//	}
+//	else{
+//		oldVehicleListStatus = allVehicleListStatus;
+//		allVehicleListStatus = new Array();
+//		
+//		var vehicleStatus = new Object();
+//		vehicleStatus.lat = vehicleStatus1.lat+0.0001,
+//		vehicleStatus.lon = vehicleStatus1.lon+0.0001;
+//		vehicleStatus.plate = "test1";
+//		allVehicleListStatus.push(vehicleStatus);
+//	}
+//	
+//	var vehicleStatus3 = new Object();
+//	vehicleStatus3.lat = 104.171045,
+//	vehicleStatus3.lon = 30.125325;
+//	vehicleStatus3.plate = "test3";
+//	allVehicleListStatus.push(vehicleStatus3);
 	
-	var vehicleStatus3 = new Object();
-	vehicleStatus3.lat = 104.171045,
-	vehicleStatus3.lon = 30.125325;
-	vehicleStatus3.plate = "test3";
-	allVehicleListStatus.push(vehicleStatus3);
-	
-	drawMutPoint(map,allVehicleListStatus);
+//	drawMutPoint(map,allVehicleListStatus);
 }
 var vehicle_manager_tool = {
 		add:function(){
@@ -531,9 +531,10 @@ var vehicle_manager_tool = {
 			    	map.addControl(new BMap.NavigationControl()); // 添加平移缩放控件
 			    	map.addControl(new BMap.ScaleControl()); // 添加比例尺控件
 			    	map.addControl(new BMap.OverviewMapControl()); //添加缩略地图控件
+			    	loadAllVehicleStatus(map);
 			    	
-			    	timer = setInterval(function () { loadAllVehicleStatus(map); },"5000")
-//			    	loadAllVehicleStatus();
+			    	timer = setInterval(function () { loadAllVehicleStatus(map); },"20000")
+			    	
 			    },
 			    onClose:function(){
 			    	clearInterval(timer);
