@@ -4,34 +4,93 @@ $("#track_search_btn").click(function(){
 	  if(_queryParams["vehicleID"] == "" || _queryParams["searchDate"] == ""){
 			showSuccessMsg(message("csh.vehicle.miss.param"));
 			return;
-	  }
+	  };
 	  
-	  $.ajax({
-			url:"../vehicleTrack/drawVehicleTrackMultiple.jhtml",
+	  $("#track-table-list").datagrid({
+			title:message("csh.vehicle.track"),
+			fitColumns:true,
+			pagination:true,
+			striped:true,
 			type:"post",
-			data:_queryParams,
+			queryParams:_queryParams,
+			url:"../vehicleTrack/drawVehicleTrackMultiple.jhtml",
 			beforeSend:function(){
 				$.messager.progress({
 					text:message("csh.common.progress")
 				});
 			},
-			success:function(result,response,status){
-				$.messager.progress('close');
-				console.log(result);
-				
-				if(result.length == 0){
+			onDblClickRow : function (rowIndex, rowData){
+				if(rowData.tracks.length == 0){
 					$("#vehicleTrackMap").html(message("csh.vehicle.no.track"));
 				}else{
-					createMap(result);
+					$('#vehicleTrackMap').dialog({    
+					    title: message("csh.common.detail"),    
+					    width: 900,    
+					    height: 700, 
+					    cache: false,
+					    modal: true,
+					    buttons:[{
+							text:message("csh.common.close"),
+							iconCls:'icon-cancel',
+							handler:function(){
+								 $('#vehicleTrackMap').dialog("close");
+							}
+					    }]
+					}); 
+					createMap(rowData.tracks);
+					
 				}
-				
-				//$("#vehicleTrackMap")
+				  
 			},
-			error:function (XMLHttpRequest, textStatus, errorThrown) {
-				$.messager.progress('close');
-				alertErrorMsg();
-			}
+			columns:[
+			   [
+			      {title : message("csh.vehicle.plate"),field : "plate"},
+			      {title:message("csh.vehicleTrack.startTime"),field:"from",formatter: function(value,row,index){
+							return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+					    }
+			      },
+			      {title:message("csh.vehicleTrack.endTime"),field:"to",formatter: function(value,row,index){
+							return new Date(value).Format("yyyy-MM-dd:hh:mm:ss");
+						}
+			      },
+			      {title:message("csh.vehicleTrack.time"),field:"runTime",formatter: function(value,row,index){
+			    	  		return formatSeconds(value);
+			      		}  
+			      },
+			      {title:message("csh.vehicleTrack.startPoint"),field:"startAddr"},
+			      {title:message("csh.vehicleTrack.endPoint"),field:"endAddr"},
+			      {title:message("csh.vehicleTrack.mile"),field:"mileage"},
+			   ]
+			]
 		});
+	  
+	  
+//	  $.ajax({
+//			url:"../vehicleTrack/drawVehicleTrackMultiple.jhtml",
+//			type:"post",
+//			data:_queryParams,
+//			beforeSend:function(){
+//				$.messager.progress({
+//					text:message("csh.common.progress")
+//				});
+//			},
+//			success:function(result,response,status){
+//				$.messager.progress('close');
+//				console.log(result);
+//				
+//				if(result.length == 0){
+//					$("#vehicleTrackMap").html(message("csh.vehicle.no.track"));
+//				}else{
+//					createMap(result);
+//				}
+//				
+//				//$("#vehicleTrackMap")
+//			},
+//			error:function (XMLHttpRequest, textStatus, errorThrown) {
+//				$.messager.progress('close');
+//				alertErrorMsg();
+//			}
+//		});
 });
 
 function createMarker(point, icon,map,isEndPoint){  // 创建图标对象   
@@ -66,28 +125,22 @@ function createMap(trackList){
 	var map = new BMap.Map("vehicleTrackMap");  
 	
 	var trackMap=[];
-	for(var i=0;i<trackList.length;i++){
-		var track = trackList[i];
 		
-		var s_point = track[0];
-		var e_point = track[track.length-1];
-		
-		var startPoint = new BMap.Point(s_point["x"], s_point["y"]);
-		var endPoint = new BMap.Point(e_point["x"], e_point["y"]);
-		
-		createMarker(startPoint,"../../resources/images/start.png",map,false);
-		createMarker(endPoint,"../../resources/images/end.png",map,true);
-		
-		var flag = 0;
-		for(var j=0;j<track.length;j++){
-			var m = new BMap.Point(track[j]["x"], track[j]["y"]);
-			trackMap.push(m);
-		}
-		map.centerAndZoom(startPoint,13);// 初始化地图,设置中心点坐标和地图级别。
+	var s_point = trackList[0];
+	var e_point = trackList[trackList.length-1];
+	
+	var startPoint = new BMap.Point(s_point["x"], s_point["y"]);
+	var endPoint = new BMap.Point(e_point["x"], e_point["y"]);
+	
+	createMarker(startPoint,"../../resources/images/start.png",map,false);
+	createMarker(endPoint,"../../resources/images/end.png",map,true);
+	
+	var flag = 0;
+	for(var j=0;j<trackList.length;j++){
+		var m = new BMap.Point(trackList[j]["x"], trackList[j]["y"]);
+		trackMap.push(m);
 	}
-	
-	
-	
+	map.centerAndZoom(startPoint,15);// 初始化地图,设置中心点坐标和地图级别。
 	
 	map.enableScrollWheelZoom();//启用滚轮放大缩小
 	map.addControl(new BMap.NavigationControl()); // 添加平移缩放控件
@@ -130,4 +183,9 @@ $("#track_vehicle_search_btn").click(function(){
 		  $('#trackVehicleSearch-table-list').datagrid('options').queryParams = _queryParams;  
 		  $("#trackVehicleSearch-table-list").datagrid('reload');			
 		});
+
+
+
+
+
 });

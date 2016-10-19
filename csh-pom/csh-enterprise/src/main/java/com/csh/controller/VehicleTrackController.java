@@ -22,6 +22,7 @@ import com.csh.json.response.VehicleTrack;
 import com.csh.service.VehicleService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
+import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.LatLonUtil;
 import com.csh.utils.SettingUtils;
 
@@ -52,7 +53,7 @@ public class VehicleTrackController extends BaseController {
 
 
   @RequestMapping(value = "/drawVehicleTrack", method = RequestMethod.POST)
-  @SuppressWarnings ("unchecked")
+  @SuppressWarnings("unchecked")
   public @ResponseBody List<Map<String, Object>> singleVehicleTrack(Model model, Long vehicleID,
       Date searchDate) {
     if (vehicleID == null || searchDate == null) {
@@ -63,16 +64,17 @@ public class VehicleTrackController extends BaseController {
     String date = DateTimeUtils.getSimpleFormatString(DateTimeUtils.shortDateFormat, searchDate);
     Setting set = SettingUtils.get();
     String url =
-        set.getObdServiceUrl () + "/appVehicleData/vehicleTrack.jhtml?date=" + date + "&deviceId="
+        set.getObdServiceUrl() + "/appVehicleData/vehicleTrack.jhtml?date=" + date + "&deviceId="
             + deviceNo;
-//    String url = "http://139.129.5.114:20001/obd-data/appVehicleData/vehicleTrack.jhtml?deviceId=8856017290&date=2016-07-11";
+    // String url =
+    // "http://139.129.5.114:20001/obd-data/appVehicleData/vehicleTrack.jhtml?deviceId=8856017290&date=2016-07-11";
     String res = ApiUtils.post(url);
 
     try {
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> map = mapper.readValue(res, Map.class);
       List<Map<String, Object>> maps = (List<Map<String, Object>>) map.get("msg");
-      return LatLonUtil.convertCoordinates (maps);
+      return LatLonUtil.convertCoordinates(maps);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -81,37 +83,62 @@ public class VehicleTrackController extends BaseController {
   }
 
   @RequestMapping(value = "/drawVehicleTrackMultiple", method = RequestMethod.POST)
-  @SuppressWarnings ("unchecked")
-  public @ResponseBody List<List<Map<String, Object>>> multipleVehicleTrack(Model model, Long vehicleID,
+  @SuppressWarnings("unchecked")
+  public @ResponseBody List<Map<String, Object>> multipleVehicleTrack(Model model, Long vehicleID,
       Date searchDate) {
     if (vehicleID == null || searchDate == null) {
       return null;
     }
-    List<List<Map<String, Object>>> responseTrackList = new ArrayList<List<Map<String,Object>>>();
+    List<Map<String, Object>> responseTrackList = new ArrayList<Map<String, Object>>();
     Vehicle vehicle = vehicleService.find(vehicleID);
     String deviceNo = vehicle.getDeviceNo();
     String date = DateTimeUtils.getSimpleFormatString(DateTimeUtils.shortDateFormat, searchDate);
     Setting set = SettingUtils.get();
     String url =
-        set.getObdServiceUrl () + "/appVehicleData/vehicleTrackFragment.jhtml?date=" + date + "&deviceId="
-            + deviceNo;
-//    String url = "http://139.129.5.114:20001/obd-data/appVehicleData/vehicleTrack.jhtml?deviceId=8856017290&date=2016-07-11";
+        set.getObdServiceUrl() + "/appVehicleData/vehicleTrackFragment.jhtml?date=" + date
+            + "&deviceId=" + deviceNo;
+    // String url =
+    // "http://139.129.5.114:20001/obd-data/appVehicleData/vehicleTrack.jhtml?deviceId=8856017290&date=2016-07-11";
     String res = ApiUtils.post(url);
 
     try {
       ObjectMapper mapper = new ObjectMapper();
       Map<String, Object> map = mapper.readValue(res, Map.class);
-      List<Map<String, Object>> trackMapList =  (List<Map<String, Object>>) map.get("msg");
-      String value = mapper.writeValueAsString (trackMapList);
-      
-      
-      List<VehicleTrack> trackList = mapper.readValue (value,mapper.getTypeFactory().constructParametricType(List.class, VehicleTrack.class));
-      for (VehicleTrack track : trackList)
-      {
-        List<Map<String, Object>> maps = track.getTracks ();
-        responseTrackList.add (LatLonUtil.convertCoordinates (maps));
-         
+      List<Map<String, Object>> trackMapList = (List<Map<String, Object>>) map.get("msg");
+      String value = mapper.writeValueAsString(trackMapList);
+
+
+      List<VehicleTrack> trackList =
+          mapper.readValue(value,
+              mapper.getTypeFactory().constructParametricType(List.class, VehicleTrack.class));
+      for (VehicleTrack vehicleTrack : trackList) {
+        if (vehicleTrack.getTracks() != null && vehicleTrack.getTracks().size() > 0) {
+          Map<String, Object> startPoint = vehicleTrack.getTracks().get(0);
+          Map<String, Object> endPoint =
+              vehicleTrack.getTracks().get(vehicleTrack.getTracks().size() - 1);
+          String startAddr =
+              LatLonUtil.convertCoorForAddr(startPoint.get("lat").toString(), startPoint.get("lon")
+                  .toString());
+          String endAddr =
+              LatLonUtil.convertCoorForAddr(endPoint.get("lat").toString(), endPoint.get("lon")
+                  .toString());
+          vehicleTrack.setStartAddr(startAddr);
+          vehicleTrack.setEndAddr(endAddr);
+
+          /*
+           * gps坐标转为百度坐标
+           */
+          List<Map<String, Object>> convertMaps =
+              LatLonUtil.convertCoordinates(vehicleTrack.getTracks());
+          vehicleTrack.setTracks(convertMaps);
+
+          vehicleTrack.setPlate(vehicle.getPlate());
+        }
+
       }
+      String[] properties =
+          {"from", "to", "plate", "mileage", "runTime", "tracks", "endAddr", "startAddr"};
+      responseTrackList = FieldFilterUtils.filterCollectionMap(properties, trackList);
       return responseTrackList;
     } catch (Exception e) {
       e.printStackTrace();
