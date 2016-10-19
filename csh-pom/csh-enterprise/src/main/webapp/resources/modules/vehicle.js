@@ -428,8 +428,8 @@ var vehicle_manager_tool = {
 			}
 			$('#vehicleDailyReport').dialog({
 			    title: message("csh.vehicle.vehicleDailyReport"),    
-			    width: 600,    
-			    height: 350,
+			    width: 650,    
+			    height: 400,
 			    href:'../vehicle/vehicleDailyReport.jhtml?vehicleId='+_select_row.id,
 			    method:"get",
 			    queryParams:params,
@@ -445,14 +445,19 @@ var vehicle_manager_tool = {
 			    }],
 			    onLoad:function(){
 			    	$('#reportVehicleId').val(_select_row.id);
+			    	$('#reportRunningTime').textbox('setValue',formatSeconds($('#dailyReportRunningTimeHidden').val()));
 			    	$('#queryReportDate').datebox({
+		    			validator: function(date){
+							var now = new Date(new Date().Format("yyyy-M-d"));
+							return now<=date ;
+						},
 			    	    onSelect: function(date){
 			    	    	$.ajax({
 								url:"../vehicle/getVehicleDailyData.jhtml",
 								type:"post",
 								data:{
 									vehicleId:$('#reportVehicleId').val(),
-									date:date
+									date:date.Format("yyyy-MM-dd")
 								},
 								beforeSend:function(){
 									$.messager.progress({
@@ -462,14 +467,17 @@ var vehicle_manager_tool = {
 								success:function(result,response,status){
 									$.messager.progress('close');
 									if(response == "success"){
-										$('reportDailyMileage').textbox('setValue',result.dailyMileage);
-										$('reportAverageFuelConsumption').textbox('setValue',result.averageFuelConsumption);
-										$('reportFuelConsumption').textbox('setValue',result.fuelConsumption);
-										$('reportCost').textbox('setValue',result.cost);
-										$('reportAverageSpeed').textbox('setValue',result.averageSpeed);
-										$('reportEmergencybrakecount').textbox('setValue',result.emergencybrakecount);
-										$('reportSuddenturncount').textbox('setValue',result.suddenturncount);
-										$('reportRapidlyspeedupcount').textbox('setValue',result.rapidlyspeedupcount);
+										$('#reportRunningTime').textbox('setValue',formatSeconds(result.runningTime));
+										$('#reportDailyMileage').textbox('setValue',result.mileAge);
+										$('#reportAverageFuelConsumption').textbox('setValue',result.averageFuelConsumption);
+										$('#reportFuelConsumption').textbox('setValue',result.fuelConsumption);
+										$('#reportCost').textbox('setValue',result.cost);
+										$('#reportAverageSpeed').textbox('setValue',result.averageSpeed);
+										$('#reportEmergencybrakecount').textbox('setValue',result.emergencybrakecount);
+										$('#reportSuddenturncount').textbox('setValue',result.suddenturncount);
+										$('#reportRapidlyspeedupcount').textbox('setValue',result.rapidlyspeedupcount);
+										$('#reportFatiguedrivingcount').textbox('setValue',result.fatiguedrivingcount);
+										$('#reportScore').textbox('setValue',result.score);
 									}else{
 										alertErrorMsg();
 									}
@@ -477,8 +485,12 @@ var vehicle_manager_tool = {
 							});
 			    	    }
 			    	});
-
-
+			    	$('#queryReportDate').datebox('calendar').calendar({
+						validator: function(date){
+							var now = new Date(new Date().Format("yyyy-MM-dd"));
+							return now>date ;
+						}
+					});
 			    	$('#vehicleDailyReport_form').show();
 			    },
 			});  

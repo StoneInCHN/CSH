@@ -1,4 +1,29 @@
-
+/**
+* 将秒数换成时分秒格式
+* 整理：www.jbxue.com
+*/
+  
+function formatSeconds(value) {
+    var theTime = parseInt(value);// 秒
+    var theTime1 = 0;// 分
+    var theTime2 = 0;// 小时
+    if(theTime > 60) {
+        theTime1 = parseInt(theTime/60);
+        theTime = parseInt(theTime%60);
+            if(theTime1 > 60) {
+            theTime2 = parseInt(theTime1/60);
+            theTime1 = parseInt(theTime1%60);
+            }
+    }
+        var result = ""+parseInt(theTime)+"秒";
+        if(theTime1 > 0) {
+        result = ""+parseInt(theTime1)+"分"+result;
+        }
+        if(theTime2 > 0) {
+        result = ""+parseInt(theTime2)+"小时"+result;
+        }
+    return result;
+}
  
 // 对Date的扩展，将 Date 转化为指定格式的String 
 // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符， 

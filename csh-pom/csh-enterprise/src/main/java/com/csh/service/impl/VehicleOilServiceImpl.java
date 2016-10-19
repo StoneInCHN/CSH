@@ -29,6 +29,10 @@ public class VehicleOilServiceImpl extends BaseServiceImpl<VehicleOil,Long> impl
       @Override
       public BigDecimal getOidPrice (OilType oilType, String shortPlate)
       {
+        if (oilType == null)
+        {
+          oilType = OilType.P93;
+        }
         List<Filter> filters = new ArrayList<Filter>();
         Filter oilTypeFilter = new Filter ("oilType", Operator.eq, oilType);
         Filter plateFilter = new Filter ("shortPlate", Operator.eq, shortPlate);
