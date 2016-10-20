@@ -555,7 +555,7 @@ public class OrderController extends MobileBaseController {
         {"id", "createDate", "sn", "consignee", "phone", "areaName", "address", "paymentStatus",
             "orderStatus", "shippingStatus", "freight"};
 
-    String[] itemPropertys = {"id", "name", "price", "thumbnail", "quantity"};
+    String[] itemPropertys = {"id", "name", "price", "thumbnail", "quantity", "product.id"};
 
     List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
