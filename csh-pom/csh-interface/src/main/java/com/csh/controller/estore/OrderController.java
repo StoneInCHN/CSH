@@ -285,7 +285,7 @@ public class OrderController extends MobileBaseController {
     BaseResponse response = new BaseResponse();
     Long userId = request.getUserId();
     String token = request.getToken();
-    Long orderId = request.getOrderId();
+    Long[] orderIds = request.getOrderIds();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -295,20 +295,26 @@ public class OrderController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
-    Order order = orderService.find(orderId);
-    order.setPaymentStatus(PaymentStatus.paid);
-    order.setAmountPaid(order.getAmount());
-    if (LogUtil.isDebugEnabled(OrderController.class)) {
-      LogUtil
-          .debug(
-              OrderController.class,
-              "updatePayStatus",
-              "Update Order pay status. UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
-              endUser.getUserName(), order.getTenantID(), order.getId(), order.getAmount(),
-              order.getPaymentType(), order.getPaymentStatus(), order.getSn());
+    if (orderIds != null && orderIds.length > 0) {
+      for (Long orderId : orderIds) {
+        Order order = orderService.find(orderId);
+        order.setPaymentStatus(PaymentStatus.paid);
+        order.setAmountPaid(order.getAmount());
+        if (LogUtil.isDebugEnabled(OrderController.class)) {
+          LogUtil
+              .debug(
+                  OrderController.class,
+                  "updatePayStatus",
+                  "Update Order pay status. UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+                  endUser.getUserName(), order.getTenantID(), order.getId(), order.getAmount(),
+                  order.getPaymentType(), order.getPaymentStatus(), order.getSn());
+        }
+
+        orderService.updatePayStatus(order);
+      }
     }
 
-    orderService.updatePayStatus(order);
+
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
