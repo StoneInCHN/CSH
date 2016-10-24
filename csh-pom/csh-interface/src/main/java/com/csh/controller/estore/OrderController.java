@@ -534,6 +534,8 @@ public class OrderController extends MobileBaseController {
 
     if ("1".equals(status.toString())) {// 待付款（PaymentStatus为unpaid）
       Filter paymentFilter = new Filter("paymentStatus", Operator.eq, PaymentStatus.unpaid);
+      Filter statusFilter = new Filter("orderStatus", Operator.ne, OrderStatus.failure);
+      filters.add(statusFilter);
       filters.add(paymentFilter);
     } else if ("2".equals(status.toString())) {// 待发货（PaymentStatus为paid且OrderStatus为confirmed）
       Filter paymentFilter = new Filter("paymentStatus", Operator.eq, PaymentStatus.paid);
@@ -558,8 +560,8 @@ public class OrderController extends MobileBaseController {
     checkOverDue(orderList.getContent());
 
     String[] propertys =
-        {"id", "createDate", "sn", "consignee", "phone", "areaName", "address", "paymentStatus",
-            "orderStatus", "shippingStatus", "freight"};
+        {"id", "createDate", "sn", "consignee", "phone", "areaName", "address", "paymentType",
+            "paymentStatus", "orderStatus", "shippingStatus", "freight"};
 
     String[] itemPropertys = {"id", "name", "price", "thumbnail", "quantity", "product.id"};
 
