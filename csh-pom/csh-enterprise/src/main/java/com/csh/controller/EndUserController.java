@@ -1,5 +1,8 @@
 package com.csh.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
@@ -33,6 +36,7 @@ import com.csh.framework.paging.Pageable;
 import com.csh.json.request.EndUserRequest;
 import com.csh.service.AccountBalanceService;
 import com.csh.service.EndUserService;
+import com.csh.service.FileService;
 import com.csh.service.RSAService;
 import com.csh.service.TenantAccountService;
 import com.csh.utils.ExcelImporter;
@@ -59,6 +63,9 @@ public class EndUserController extends BaseController
   
   @Resource(name="accountBalanceServiceImpl")
   private AccountBalanceService accountBalanceService;
+  
+  @Resource(name="fileServiceImpl")
+  private FileService fileService;
   
   @RequestMapping (value = "/endUser", method = RequestMethod.GET)
   public String list (ModelMap model)
@@ -198,10 +205,8 @@ public class EndUserController extends BaseController
       List<EndUserRequest> list = impoter.getListEntity(filePath.getInputStream (), sufix,params,0);
       
       endUserService.bulkSave(list);
-      
       String[] respParams = {"名称","联系电话","车牌号","结论","备注"};
       POIUtil.createExcel (response, respParams, list);
-      System.out.println ("执行结束");
     } catch (Exception e) {
       
       e.printStackTrace();

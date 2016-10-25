@@ -4,18 +4,26 @@ public class EndUserRequest
 {
   public enum ResultType{
     //插入成功
-    Success,
+    Success("插入成功"),
     //插入失败
-    Faild,
+    Faild("插入失败"),
     //记录已经存在
-    Already,
+    Already("记录已经存在"),
     //缺少参数
-    MissingParameters
+    MissingParameters("参数缺少");
+    private ResultType(String resultTypeName) {
+      this.resultTypeName = resultTypeName;
+    }
+    private String resultTypeName;
+
+    public String getResultTypeName() {
+      return resultTypeName;
+    }
   }
   private String name;
   private String mobile;
   private String plate;
-  private ResultType result;
+  private String result;
   private String comments;
   
   
@@ -43,11 +51,11 @@ public class EndUserRequest
   {
     this.plate = plate;
   }
-  public ResultType getResult ()
+  public String getResult ()
   {
     return result;
   }
-  public void setResult (ResultType result)
+  public void setResult (String result)
   {
     this.result = result;
   }

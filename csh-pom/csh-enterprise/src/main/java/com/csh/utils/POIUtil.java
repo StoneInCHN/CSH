@@ -1,5 +1,6 @@
 package com.csh.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -211,6 +212,73 @@ public class POIUtil {
 		return cellValue;
 	}
 
+	public static void createExcel(OutputStream out ,String[] params,List list){
+
+    // 创建Excel的工作书册 Workbook,对应到一个excel文档  
+    XSSFWorkbook wb = new XSSFWorkbook();
+    // 创建Excel的工作sheet,对应到一个excel文档的tab  
+    XSSFSheet sheet = wb.createSheet("导入结果"); 
+    
+    //创建标题
+    XSSFRow titleRow = sheet.createRow(0);  
+    for (int i =0;i<params.length;i++)
+    {
+      // 创建一个Excel的单元格  
+      XSSFCell cell = titleRow.createCell(i);  
+      // 给Excel的单元格设置样式和赋值  
+      cell.setCellValue(params[i]);  
+    }
+    
+    Class clazz = list.get (0).getClass ();
+    Field[] fields = clazz.getDeclaredFields ();
+    for (int j=0;j<list.size ();j++)
+    {
+      XSSFRow row = sheet.createRow(j+1);  
+      for (int i=0;i<fields.length;i++)
+      {
+        String name = fields[i].getName();
+//        String key = params[i];
+//        if (key.equals(name)) {
+          String methodName = getGetterMetodName (name);
+//          Class<?> parameterType = this.getFieldType(fields[i]);
+          try
+          {
+            Method method = clazz.getMethod(methodName);
+            XSSFCell cell = row.createCell(i);
+            Object value = method.invoke(list.get (j));
+            if (value != null)
+            {
+              cell.setCellValue( value.toString ());
+            }else {
+              cell.setCellValue ("");
+            }
+            
+          }
+          catch (Exception e)
+          {
+            e.printStackTrace ();
+          }
+//        }
+      }
+     
+    }
+    try
+    {
+      wb.write(out);
+      out.close();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }//将excel工作簿写入到输出流中
+    //关闭输出流
+	}
+	/**
+	 * 创建excel，结果通过流返回界面
+	 * @param response
+	 * @param params
+	 * @param list
+	 */
 	public static void createExcel (HttpServletResponse response,String[] params,List list)
   {
     // 创建Excel的工作书册 Workbook,对应到一个excel文档  

@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
 import com.csh.dao.EndUserDao;
@@ -23,6 +25,7 @@ import com.csh.json.request.EndUserRequest;
 import com.csh.json.request.EndUserRequest.ResultType;
 import com.csh.service.EndUserService;
 import com.csh.service.TenantAccountService;
+import com.csh.utils.UcpaasUtil;
 
 @Service ("endUserServiceImpl")
 public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long>
@@ -63,22 +66,20 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long>
   @Override
   public void bulkSave (List<EndUserRequest> endUserRequestList)
   {
-    
-    
     for (EndUserRequest endUserRequest : endUserRequestList)
     {
-      
       if (endUserRequest.getName ().trim ().equals ("") 
           ||  endUserRequest.getMobile ().trim ().equals ("")
           || endUserRequest.getPlate ().trim ().equals (""))
       {
-        endUserRequest.setResult (ResultType.MissingParameters);
+        endUserRequest.setResult (ResultType.MissingParameters.getResultTypeName ());
         continue;
       }
       EndUser endUser = new EndUser ();
       endUser.setMobileNum (endUserRequest.getMobile ());
       endUser.setUserName (endUserRequest.getName ());
-      
+      String password = UcpaasUtil.randomPwd ();
+      endUser.setPassword (DigestUtils.md5Hex(password));
       Vehicle vehicle = new Vehicle ();
       vehicle.setPlate (endUserRequest.getPlate ());
       vehicle.setEndUser (endUser);
@@ -90,22 +91,24 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long>
          if (checkedEnduser == null)
          {
            this.save (endUser);
-           endUserRequest.setResult (ResultType.Success);
+           UcpaasUtil.SendAccountBySms(endUser.getMobileNum (),password);
+           endUserRequest.setResult (ResultType.Success.getResultTypeName ());
          }else {
            Vehicle checkedVehicle = checkVehiclePlate (vehicle.getPlate ());
            if (checkedVehicle == null)
            {
              vehicle.setEndUser (checkedEnduser);
              vehicleDao.persist (vehicle);
-             endUserRequest.setResult (ResultType.Success);
-           }
-           endUserRequest.setResult (ResultType.Already);
+             endUserRequest.setResult (ResultType.Success.getResultTypeName ());
+           }else {
+             endUserRequest.setResult (ResultType.Already.getResultTypeName ());
+          }
          }
          
       }
       catch (Exception e)
       {
-        endUserRequest.setResult (ResultType.Faild);
+        endUserRequest.setResult (ResultType.Faild.getResultTypeName ());
       }
     }
   }
