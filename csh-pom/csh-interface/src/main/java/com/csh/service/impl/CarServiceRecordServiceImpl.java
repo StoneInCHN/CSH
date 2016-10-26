@@ -22,6 +22,7 @@ import com.csh.dao.CarWashingCouponEndUserDao;
 import com.csh.dao.CouponEndUserDao;
 import com.csh.dao.ItemPartDao;
 import com.csh.dao.MaintainReservationDao;
+import com.csh.dao.TenantMsgDao;
 import com.csh.dao.WalletDao;
 import com.csh.entity.AccountBalance;
 import com.csh.entity.BeautifyReservation;
@@ -35,6 +36,7 @@ import com.csh.entity.ItemPart;
 import com.csh.entity.MaintainReservation;
 import com.csh.entity.MessageInfo;
 import com.csh.entity.MsgEndUser;
+import com.csh.entity.TenantMsg;
 import com.csh.entity.Vehicle;
 import com.csh.entity.VehicleInsurance;
 import com.csh.entity.Wallet;
@@ -44,6 +46,7 @@ import com.csh.entity.commonenum.CommonEnum.ChargeStatus;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
 import com.csh.entity.commonenum.CommonEnum.ReservationInfoFrom;
+import com.csh.entity.commonenum.CommonEnum.ServiceType;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
@@ -95,6 +98,9 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
 
   @Resource(name = "carServiceServiceImpl")
   private CarServiceService carServiceService;
+
+  @Resource(name = "tenantMsgDaoImpl")
+  private TenantMsgDao tenantMsgDao;
 
 
   @Resource(name = "carServiceRecordDaoImpl")
@@ -415,8 +421,13 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     carService.setPurchaseCounts(carService.getPurchaseCounts() + 1);
     carServiceService.update(carService);
 
+    TenantMsg tenantMsg = new TenantMsg();
+    tenantMsg.setIsPush(false);
+    tenantMsg.setTenantID(carServiceRecord.getTenantID());
+
     if (setting.getServiceCateWash().equals(
         carServiceRecord.getCarService().getServiceCategory().getId())) {
+      tenantMsg.setMsgType(ServiceType.WASHING);
       if (PaymentType.WASHCOUPON.equals(carServiceRecord.getPaymentType())) {
         CarWashingCouponEndUser carWashingCoupon =
             carWashingCouponEndUserDao.userGetWashingCouponByTenant(carServiceRecord.getTenantID(),
@@ -462,7 +473,15 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
           carServiceRecord.getTenantName(), carServiceRecord.getCarService().getServiceName(),
           carServiceRecord.getCarService().getTenantInfo().getAddress(), tokenNo.toString());
 
+    } else if (setting.getServiceCateMaintain().equals(
+        carServiceRecord.getCarService().getServiceCategory().getId())) {
+      tenantMsg.setMsgType(ServiceType.UPKEEP);
+    } else if (setting.getServiceCateBeautify().equals(
+        carServiceRecord.getCarService().getServiceCategory().getId())) {
+      tenantMsg.setMsgType(ServiceType.COSMETOLOGY);
     }
+    tenantMsgDao.persist(tenantMsg);
+
     return carServiceRecord;
   }
 

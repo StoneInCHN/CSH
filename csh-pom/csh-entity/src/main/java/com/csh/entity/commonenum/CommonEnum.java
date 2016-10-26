@@ -350,7 +350,11 @@ public class CommonEnum {
     /**
      * 加油
      */
-    REFUEL;
+    REFUEL,
+    /**
+     * 商品
+     */
+    PRODUCT;
   }
 
   public enum ImageType {

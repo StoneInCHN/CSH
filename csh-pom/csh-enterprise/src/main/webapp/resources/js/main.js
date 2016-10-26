@@ -61,6 +61,31 @@ function generateQrcode(){
 		}
 	});
 }
+
+function getPushMsg(){
+	$.ajax({
+		url : "../../console/common/getPushMsg.jhtml",
+		type : "get",
+		cache : false,
+		success:function(result,response,status){
+			if(response == "success"){
+				if(result!=null && result.length>0){
+					for(var i=0;i<result.length;i++){
+						$.messager.show({
+							title : message("csh.common.prompt"),
+							msg : result[i],
+							timeout : 30000,
+							showType : 'slide'
+						});
+					}
+				}
+			}else{
+				alertErrorMsg();
+			}
+		}
+	});
+}
+
 /**
  *绑定流程点击事件 
  */
@@ -638,5 +663,10 @@ var beautifyReservationStatistics={
 			
 			});
 		});
+		
+		getPushMsg();
+		//轮询请求，是否有新的服务或商品订单  60s
+		window.setInterval(getPushMsg, 60000);
+		
 });
 

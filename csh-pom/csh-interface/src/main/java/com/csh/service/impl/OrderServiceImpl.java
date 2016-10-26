@@ -22,10 +22,12 @@ import com.csh.dao.OrderDao;
 import com.csh.dao.OrderRelationDao;
 import com.csh.dao.ProductDao;
 import com.csh.dao.ReceiverAddressDao;
+import com.csh.dao.TenantMsgDao;
 import com.csh.dao.WalletDao;
 import com.csh.entity.AccountBalance;
 import com.csh.entity.EndUser;
 import com.csh.entity.Sn.Type;
+import com.csh.entity.TenantMsg;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.BalanceType;
@@ -33,6 +35,7 @@ import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.entity.commonenum.CommonEnum.ServiceType;
 import com.csh.entity.commonenum.CommonEnum.ShippingStatus;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.entity.estore.CartItem;
@@ -75,6 +78,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
 
   @Resource(name = "orderRelationDaoImpl")
   private OrderRelationDao orderRelationDao;
+
+  @Resource(name = "tenantMsgDaoImpl")
+  private TenantMsgDao tenantMsgDao;
 
   @Resource(name = "orderDaoImpl")
   public void setBaseDao(OrderDao orderDao) {
@@ -334,6 +340,13 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     orderLog.setOrder(order);
     order.getOrderLogs().add(orderLog);
     orderDao.merge(order);
+
+    TenantMsg tenantMsg = new TenantMsg();
+    tenantMsg.setIsPush(false);
+    tenantMsg.setMsgType(ServiceType.PRODUCT);
+    tenantMsg.setTenantID(order.getTenantID());
+    tenantMsgDao.persist(tenantMsg);
+
     return order;
   }
 

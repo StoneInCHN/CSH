@@ -534,8 +534,10 @@ public class OrderController extends MobileBaseController {
 
     if ("1".equals(status.toString())) {// 待付款（PaymentStatus为unpaid）
       Filter paymentFilter = new Filter("paymentStatus", Operator.eq, PaymentStatus.unpaid);
-      Filter statusFilter = new Filter("orderStatus", Operator.ne, OrderStatus.failure);
-      filters.add(statusFilter);
+      Filter statusFailFilter = new Filter("orderStatus", Operator.ne, OrderStatus.failure);
+      Filter statusCancelFilter = new Filter("orderStatus", Operator.ne, OrderStatus.cancelled);
+      filters.add(statusFailFilter);
+      filters.add(statusCancelFilter);
       filters.add(paymentFilter);
     } else if ("2".equals(status.toString())) {// 待发货（PaymentStatus为paid且OrderStatus为confirmed）
       Filter paymentFilter = new Filter("paymentStatus", Operator.eq, PaymentStatus.paid);
