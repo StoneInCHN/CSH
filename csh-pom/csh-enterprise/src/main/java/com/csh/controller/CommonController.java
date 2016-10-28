@@ -344,24 +344,33 @@ public class CommonController extends BaseController {
    * 获取推送消息
    */
   @RequestMapping(value = "/getPushMsg", method = RequestMethod.GET)
-  public @ResponseBody List<String> getPushMsg() {
+  public @ResponseBody List<Map<String, String>> getPushMsg() {
 
-    List<String> msgList = new ArrayList<String>();
+    List<Map<String, String>> msgList = new ArrayList<Map<String, String>>();
     Long tenantID = tenantAccountService.getCurrentTenantID();
     Set<Integer> msgType = tenantMsgService.getPushMsgCat(tenantID);
     for (Integer type : msgType) {
+      Map<String, String> typeMap = new HashMap<String, String>();
       switch (type) {
         case 0: // 洗车
-          msgList.add(Message.success("csh.pusMsg.washing").toString());
+          typeMap.put("type", "0");
+          typeMap.put("info", Message.success("csh.pusMsg.washing").toString());
+          msgList.add(typeMap);
           break;
         case 1: // 美容
-          msgList.add(Message.success("csh.pusMsg.cosmetology").toString());
+          typeMap.put("type", "1");
+          typeMap.put("info", Message.success("csh.pusMsg.cosmetology").toString());
+          msgList.add(typeMap);
           break;
         case 2: // 保养
-          msgList.add(Message.success("csh.pusMsg.upkeep").toString());
+          typeMap.put("type", "2");
+          typeMap.put("info", Message.success("csh.pusMsg.upkeep").toString());
+          msgList.add(typeMap);
           break;
         case 4: // 商品订单
-          msgList.add(Message.success("csh.pusMsg.product").toString());
+          typeMap.put("type", "4");
+          typeMap.put("info", Message.success("csh.pusMsg.product").toString());
+          msgList.add(typeMap);
           break;
         default:
           break;

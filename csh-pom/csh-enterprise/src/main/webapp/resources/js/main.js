@@ -62,19 +62,36 @@ function generateQrcode(){
 	});
 }
 
+
+
 function getPushMsg(){
 	$.ajax({
 		url : "../../console/common/getPushMsg.jhtml",
 		type : "get",
 		cache : false,
 		success:function(result,response,status){
+			var player = $("#player");
 			if(response == "success"){
+				var name = "服务记录";
+				var url = "../../console/carServiceRecord/carServiceRecord.jhtml";//服务订单
+				var infos = '<a href="#" data-url="'+url+'" data-name="'+name+'" onclick="jumpPage(this)">查看详情</a>'
+				
 				if(result!=null && result.length>0){
+					player.html("<embed src='../../resources/media/orderPrompt.mp3' width='0' height='0'>");
+					var url = "../../console/carServiceRecord/carServiceRecord.jhtml";//服务订单
+					var name = "服务记录";
 					for(var i=0;i<result.length;i++){
+						console.log(result[i]);
+						if(result[i]["type"] == "4"){//商品订单
+							name="订单管理";
+							url = "../../console/estore/order/order.jhtml";
+						}
+						var info = result[i]["info"]+'<a href="#" data-url="'+url+'" data-name="'+name+'" onclick="jumpPage(this)">查看详情</a>'
+						
 						$.messager.show({
 							title : message("csh.common.prompt"),
-							msg : result[i],
-							timeout : 30000,
+							msg : info,
+							timeout : 10000,
 							showType : 'slide'
 						});
 					}
@@ -82,6 +99,7 @@ function getPushMsg(){
 			}else{
 				alertErrorMsg();
 			}
+			
 		}
 	});
 }
@@ -104,6 +122,7 @@ function shortcutNavigation(title,data_url){
 };
 
 $(function(){
+	
 	/**
 	 *初始化右侧的选项卡
 	 */
