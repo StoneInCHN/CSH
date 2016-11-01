@@ -165,8 +165,9 @@
 	}
 
 $("#vehicleMileageReport_search_btn").click(function(){
-		var date = new Date( new Date().getFullYear(),$("#vehicleStatusMonthID").combobox("getValue"), 0); 
-	    var daysCount = date.getDate();            //本月天数 
+	    month=$("#vehicleStatusMonthID").combobox("getValue");
+		date = new Date( new Date().getFullYear(),month, 0); 
+	    daysCount = date.getDate();            //本月天数
 	    fromDate =  new Date().getFullYear() + "-" + $("#vehicleStatusMonthID").combobox("getValue") + "-1";
 	    toDate =   new Date().getFullYear() + "-" + $("#vehicleStatusMonthID").combobox("getValue") + "-" + daysCount;
 	    loadReportDate();//调用接口，加载数据	
