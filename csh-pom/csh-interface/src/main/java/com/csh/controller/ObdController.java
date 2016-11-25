@@ -28,6 +28,8 @@ import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.DeviceRequest;
+import com.csh.json.request.SendCommandRequest;
+import com.csh.json.request.SendCommandRequest.CommandType;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.FaultCodeService;
@@ -38,6 +40,7 @@ import com.csh.utils.LatLonUtil;
 import com.csh.utils.TokenGenerator;
 import com.csh.utils.ToolsUtils;
 import com.csh.utils.VehicleUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Control odb设备
@@ -304,4 +307,72 @@ public class ObdController extends MobileBaseController {
     return response;
   }
 
+
+  /**
+   * OBD设备设防/撤防接口
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/sendObdDefence", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> sendObdDefence(
+      @RequestBody SendCommandRequest commandReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = commandReq.getUserId();
+    String token = commandReq.getToken();
+    String deviceId = commandReq.getDeviceId();
+    CommandType commandType = commandReq.getCommandType();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    List<Map<String, Object>> paramList = new ArrayList<Map<String, Object>>();
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("deviceId", deviceId);
+    map.put("commandType", commandType);
+    paramList.add(map);
+    try {
+      String params = objectMapper.writeValueAsString(paramList);
+      if (LogUtil.isDebugEnabled(ObdController.class)) {
+        LogUtil.debug(ObdController.class, "sendObdDefence",
+            "Send the defence command to obd server. param: %s", params);
+      }
+      String res =
+          ApiUtils.postJson(setting.getObdServerUrl() + "/receiverData/sendTCPCommand.jhtml",
+              "UTF-8", "UTF-8", params);
+      if (LogUtil.isDebugEnabled(ObdController.class)) {
+        LogUtil
+            .debug(
+                ObdController.class,
+                "vehicleScan",
+                "Receive the defence command response from obd server. deviceNo: %s,commandType: %s,Msg: %s",
+                deviceId, commandType, res);
+      }
+
+      if (res != null) {
+        if (res != null && !res.equals("")) {
+          Map<String, Object> resMap = ToolsUtils.convertStrToJson(res);
+          List<Map<String, Object>> msgs = (List<Map<String, Object>>) resMap.get("msg");
+          response.setMsg(msgs.get(0));
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    String newtoken = TokenGenerator.generateToken(commandReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+
+    return response;
+  }
 }
