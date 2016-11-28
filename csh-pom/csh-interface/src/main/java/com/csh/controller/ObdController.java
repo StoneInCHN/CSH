@@ -352,7 +352,7 @@ public class ObdController extends MobileBaseController {
         LogUtil
             .debug(
                 ObdController.class,
-                "vehicleScan",
+                "sendObdDefence",
                 "Receive the defence command response from obd server. deviceNo: %s,commandType: %s,Msg: %s",
                 deviceId, commandType, res);
       }
@@ -362,6 +362,63 @@ public class ObdController extends MobileBaseController {
           Map<String, Object> resMap = ToolsUtils.convertStrToJson(res);
           List<Map<String, Object>> msgs = (List<Map<String, Object>>) resMap.get("msg");
           response.setMsg(msgs.get(0));
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    String newtoken = TokenGenerator.generateToken(commandReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+
+    return response;
+  }
+
+
+  /**
+   * OBD设备设防/撤防状态，GPS状态
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/obdDefenceStatus", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> obdDefenceStatus(
+      @RequestBody SendCommandRequest commandReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = commandReq.getUserId();
+    String token = commandReq.getToken();
+    String deviceId = commandReq.getDeviceId();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    try {
+      if (LogUtil.isDebugEnabled(ObdController.class)) {
+        LogUtil.debug(ObdController.class, "obdDefenceStatus",
+            "get the defence status from obd server. deviceId: %s", deviceId);
+      }
+      String res =
+          ApiUtils.post(setting.getObdServerUrl() + "/receiverData/getArmStatus.jhtml?deviceId="
+              + deviceId);
+
+      if (LogUtil.isDebugEnabled(ObdController.class)) {
+        LogUtil.debug(ObdController.class, "obdDefenceStatus",
+            "Receive the defence status response from obd server. Msg: %s", res);
+      }
+
+      if (res != null) {
+        if (res != null && !res.equals("")) {
+          Map<String, Object> resMap = ToolsUtils.convertStrToJson(res);
+          response.setMsg(resMap);
         }
       }
     } catch (Exception e) {
