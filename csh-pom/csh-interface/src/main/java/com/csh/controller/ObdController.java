@@ -24,6 +24,7 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.DeviceInfo;
 import com.csh.entity.FaultCode;
+import com.csh.entity.commonenum.CommonEnum.GpsSwitch;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.json.base.ResponseOne;
@@ -33,6 +34,7 @@ import com.csh.json.request.SendCommandRequest.CommandType;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
 import com.csh.service.FaultCodeService;
+import com.csh.service.GpsSwitchRecordService;
 import com.csh.service.VehicleOilService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.FieldFilterUtils;
@@ -63,6 +65,9 @@ public class ObdController extends MobileBaseController {
 
   @Resource(name = "faultCodeServiceImpl")
   private FaultCodeService faultCodeService;
+
+  @Resource(name = "gpsSwitchRecordServiceImpl")
+  private GpsSwitchRecordService gpsSwitchRecordService;
 
 
   /**
@@ -418,6 +423,8 @@ public class ObdController extends MobileBaseController {
       if (res != null) {
         if (res != null && !res.equals("")) {
           Map<String, Object> resMap = ToolsUtils.convertStrToJson(res);
+          DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceId);
+          resMap.put("gpsEnabled", deviceInfo != null ? deviceInfo.getIsGpsEnable() : null);
           response.setMsg(resMap);
         }
       }
@@ -430,6 +437,43 @@ public class ObdController extends MobileBaseController {
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
 
+    return response;
+  }
+
+
+  /**
+   * gps开关
+   *
+   * @return
+   */
+  @RequestMapping(value = "/gpsSwitch", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> gpsSwitch(
+      @RequestBody DeviceRequest deviceReq) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+
+    Long userId = deviceReq.getUserId();
+    String token = deviceReq.getToken();
+    String deviceNo = deviceReq.getDeviceNo();
+    GpsSwitch switchOpr = deviceReq.getSwitchOpr();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
+    gpsSwitchRecordService.createGpsSwitchRecord(switchOpr, deviceInfo, userId);
+
+    response.setDesc(switchOpr.toString());;
+    String newtoken = TokenGenerator.generateToken(deviceReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
 }

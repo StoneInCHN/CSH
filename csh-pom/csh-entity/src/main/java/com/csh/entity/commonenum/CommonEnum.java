@@ -965,5 +965,16 @@ public class CommonEnum {
   }
 
 
+  public enum GpsSwitch {
+    /**
+     * 打开
+     */
+    TURNON,
+    /**
+     * 关闭
+     */
+    TURNOFF
+  }
+
 
 }

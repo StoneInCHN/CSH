@@ -61,7 +61,7 @@ public class DeviceInfo extends BaseEntity {
    * 绑定状态
    */
   private BindStatus bindStatus;
-  
+
 
   /**
    * sim 卡号
@@ -87,12 +87,26 @@ public class DeviceInfo extends BaseEntity {
    * 所属代理商
    */
   private Distributor distributor;
-  
+
   /** 文件 */
   private MultipartFile file;
-  
+
   private String tenantName;
-  
+
+  /**
+   * 是否开启GPS模块
+   */
+  private Boolean isGpsEnable = true;
+
+
+  public Boolean getIsGpsEnable() {
+    return isGpsEnable;
+  }
+
+  public void setIsGpsEnable(Boolean isGpsEnable) {
+    this.isGpsEnable = isGpsEnable;
+  }
+
   @JsonProperty
   public Date getBindTime() {
     return bindTime;
@@ -112,8 +126,8 @@ public class DeviceInfo extends BaseEntity {
   }
 
   @JsonProperty
-  @Column(unique = true,nullable=false,length=10)
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
+  @Column(unique = true, nullable = false, length = 10)
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
   public String getDeviceNo() {
     return deviceNo;
   }
@@ -123,7 +137,7 @@ public class DeviceInfo extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
   public DeviceStatus getDeviceStatus() {
     return deviceStatus;
   }
@@ -133,7 +147,7 @@ public class DeviceInfo extends BaseEntity {
   }
 
   @JsonProperty
-  @Column(nullable=false,length=15)
+  @Column(nullable = false, length = 15)
   public String getSimNo() {
     return simNo;
   }
@@ -163,7 +177,7 @@ public class DeviceInfo extends BaseEntity {
     this.vehicle = vehicle;
   }
 
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -173,7 +187,7 @@ public class DeviceInfo extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
   public BindStatus getBindStatus() {
     return bindStatus;
   }
@@ -182,15 +196,13 @@ public class DeviceInfo extends BaseEntity {
     this.bindStatus = bindStatus;
   }
 
-//  @Field(store = Store.NO, index = Index.YES)
+  // @Field(store = Store.NO, index = Index.YES)
   @ManyToOne
-  public Distributor getDistributor ()
-  {
+  public Distributor getDistributor() {
     return distributor;
   }
 
-  public void setDistributor (Distributor distributor)
-  {
+  public void setDistributor(Distributor distributor) {
     this.distributor = distributor;
   }
 
@@ -211,7 +223,7 @@ public class DeviceInfo extends BaseEntity {
   public void setTenantName(String tenantName) {
     this.tenantName = tenantName;
   }
-  
-  
-  
+
+
+
 }
