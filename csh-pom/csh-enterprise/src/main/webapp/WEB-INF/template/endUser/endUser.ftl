@@ -1,7 +1,7 @@
 <script src="${base}/resources/js/common.js"></script>
 <script src="${base}/resources/modules/endUser.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
-
+<script type="text/javascript" src="${base}/resources/js/jquery.form.js"></script>
 <div>
 	  <fieldset>
 	    <legend>${message("csh.endUser.search")}</legend>
@@ -38,6 +38,7 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="endUser_manager_tool.edit();">修改</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="endUser_manager_tool.remove();">删除</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="endUser_manager_tool.setBalance();">设置余额</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="endUser_manager_tool.import();">批量导入</a>
 	</div>
 	<div class="tool-filter"></div>
 </div>
@@ -103,6 +104,18 @@
 </div>
 <div id="editTenantAccount"></div>
 <div id="tenantAccountDetail"></div>
+<div id="importEndUserDialog">
+	<form id="endUserImport_form" method="post" class="form-table">   
+    <table class="table table-striped"  border="0">
+    	<tr>
+    		<th>${message("csh.endUser.excel")}:</th>
+    		<td>
+    			 <input class="easyui-filebox" style="width:300px" name="filePath"/>
+    		</td>
+    	</tr>
+    </table>
+</form>
+</div>
 <div id="setBalance4EndUser" >
 	<form id="setBalance4EndUser_form" method="post" class="form-table">
 		<input type="hidden" name="endUserId" id="setBalance4EndUser_form_endUserId">

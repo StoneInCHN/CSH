@@ -180,7 +180,7 @@
 													<th>
 														${message("csh.deviceInfo.currentPosition")}
 													</th>
-													<th>
+													<th style="width:120px">
 														<span>${message("csh.common.handle")}</span>
 													</th>
 												</tr>
@@ -260,6 +260,8 @@
 													[#if deviceInfo.deviceStatus == "SENDOUT" ] 
 															<a href="#" title="变更分销商" class="changeDistributor" data-id="${deviceInfo.id}"><i class="fa fa-users"></i></a>
 													[/#if]
+													
+														<a href="sendCommand.ftl.jhtml?id=${deviceInfo.id}" title="平台下发指令"><i class="fa fa-fire"></i></a>
 														
 													</td>
 												</tr>

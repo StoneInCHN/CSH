@@ -5,7 +5,7 @@
 			        <form id="track_vehicle_search_form" class="search-form">
 						<div class="search-item">
 						   <label>${message("csh.vehicle.plate")}:</label>
-						   <input type="text" class="easyui-textbox"  id="vehiclePlateSearch" name="vehiclePlateSearch" validtype="length[0,10]" style="width:60px;"/>
+						   <input type="text" class="easyui-textbox"  id="vehiclePlateSearch" name="plateSearch" validtype="length[0,10]" style="width:60px;"/>
 						</div>
 					</form>
 					<div class="search-item">
@@ -30,7 +30,9 @@
 								  	  <button id="track_search_btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">${message("csh.search")}</button>
 								    </div>
 								  </fieldset>
-								<div id="vehicleTrackMap" style="height:900px;width:99%;">
+								<div id="vehicleTrack" style="height:900px;width:99%">
+									<table id="track-table-list"></table>
+									<div id="vehicleTrackMap"/>
 								</div>
 				</div>
 		</div>

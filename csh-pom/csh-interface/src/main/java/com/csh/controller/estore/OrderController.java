@@ -87,6 +87,90 @@ public class OrderController extends MobileBaseController {
   private AccountBalanceService accountBalanceService;
 
 
+  private ResponseOne<Map<String, Object>> payForMultiTenant(Long userId, Long[] orderIds,
+      PaymentType paymentType, HttpServletRequest httpReq, String userToken) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    if (LogUtil.isDebugEnabled(OrderController.class)) {
+      LogUtil.debug(OrderController.class, "payForMultiTenant",
+          "pay for multi tenant orders.UserId: %s,paymentType: %s", userId, paymentType);
+    }
+
+    BigDecimal payAmount = new BigDecimal(0);
+    EndUser endUser = endUserService.find(userId);
+    Wallet wallet = endUser.getWallet();
+    BigDecimal walletMoney = wallet.getBalanceAmount();
+    List<Order> orders = new ArrayList<Order>();
+    for (Long orderId : orderIds) {
+      Order order = orderService.find(orderId);
+      orders.add(order);
+      if (LogUtil.isDebugEnabled(OrderController.class)) {
+        LogUtil.debug(OrderController.class, "payForMultiTenant",
+            "pay for multi tenant order.UserId: %s,orderId: %s,paymentType: %s,amount: %s", userId,
+            orderId, paymentType, order.getAmount());
+      }
+
+      payAmount = payAmount.add(order.getAmount());
+      /**
+       * 余额支付
+       */
+      if (PaymentType.WALLET.equals(paymentType)) {
+        AccountBalance accountBalance =
+            accountBalanceService.getOfflineBalanceByTenant(endUser, order.getTenantID());
+        if (accountBalance != null) {
+          walletMoney = walletMoney.add(accountBalance.getBalance());
+        }
+      }
+    }
+
+    if (payAmount.compareTo(walletMoney) > 0) {// 用户钱包余额不足
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc(Message.error("csh.wallet.money.insufficient").getContent());
+      return response;
+    }
+
+    Order order = orders.get(0);
+    if (payAmount.compareTo(new BigDecimal(0)) <= 0) {// 抵扣完之后订单金额
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("out_trade_no", order.getSn());
+      map.put("isNeedPay", false);
+      response.setMsg(map);
+      response.setCode(CommonAttributes.SUCCESS);
+    } else {
+      if (PaymentType.WECHAT.equals(paymentType)) {// 微信支付
+        try {
+          BigDecimal weChatPrice = order.getAmount().multiply(new BigDecimal(100));
+          response =
+              PayUtil.wechat(
+                  "E" + order.getSn() + "_" + TimeUtils.format("mmss", new Date().getTime()),
+                  order.getSn(), httpReq.getRemoteAddr(), order.getId().toString(),
+                  weChatPrice.intValue() + "");
+          response.getMsg().put("isNeedPay", true);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
+      } else {// 支付宝和余额支付
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("out_trade_no", "2_" + order.getSn());
+        map.put("isNeedPay", true);
+        response.setMsg(map);
+        response.setCode(CommonAttributes.SUCCESS);
+      }
+    }
+
+    for (Order updateOrder : orders) {
+      updateOrder.setPaymentType(paymentType);
+      orderService.update(updateOrder);
+    }
+
+
+    String newtoken = TokenGenerator.generateToken(userToken);
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+
+    return response;
+
+  }
 
   /**
    * 用户支付订单
@@ -102,7 +186,7 @@ public class OrderController extends MobileBaseController {
 
     Long userId = request.getUserId();
     String token = request.getToken();
-    Long orderId = request.getOrderId();
+    Long[] orderIds = request.getOrderIds();
     PaymentType paymentType = request.getPaymentType();
 
 
@@ -114,6 +198,14 @@ public class OrderController extends MobileBaseController {
       return response;
     }
 
+    /**
+     * 包含多个租户订单
+     */
+    if (orderIds.length != 1) {
+      return payForMultiTenant(userId, orderIds, paymentType, httpReq, userToken);
+    }
+
+    Long orderId = orderIds[0];
     Order order = orderService.find(orderId);
     if (LogUtil.isDebugEnabled(OrderController.class)) {
       LogUtil.debug(OrderController.class, "pay",
@@ -193,7 +285,7 @@ public class OrderController extends MobileBaseController {
     BaseResponse response = new BaseResponse();
     Long userId = request.getUserId();
     String token = request.getToken();
-    Long orderId = request.getOrderId();
+    Long[] orderIds = request.getOrderIds();
     // 验证登录token
     String userToken = endUserService.getEndUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -203,20 +295,26 @@ public class OrderController extends MobileBaseController {
     }
 
     EndUser endUser = endUserService.find(userId);
-    Order order = orderService.find(orderId);
-    order.setPaymentStatus(PaymentStatus.paid);
-    order.setAmountPaid(order.getAmount());
-    if (LogUtil.isDebugEnabled(OrderController.class)) {
-      LogUtil
-          .debug(
-              OrderController.class,
-              "updatePayStatus",
-              "Update Order pay status. UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
-              endUser.getUserName(), order.getTenantID(), order.getId(), order.getAmount(),
-              order.getPaymentType(), order.getPaymentStatus(), order.getSn());
+    if (orderIds != null && orderIds.length > 0) {
+      for (Long orderId : orderIds) {
+        Order order = orderService.find(orderId);
+        order.setPaymentStatus(PaymentStatus.paid);
+        order.setAmountPaid(order.getAmount());
+        if (LogUtil.isDebugEnabled(OrderController.class)) {
+          LogUtil
+              .debug(
+                  OrderController.class,
+                  "updatePayStatus",
+                  "Update Order pay status. UserName: %s, TenantId: %s, orderId: %s, amount: %s, paymentType: %s, paymentStatus: %s, sn: %s",
+                  endUser.getUserName(), order.getTenantID(), order.getId(), order.getAmount(),
+                  order.getPaymentType(), order.getPaymentStatus(), order.getSn());
+        }
+
+        orderService.updatePayStatus(order);
+      }
     }
 
-    orderService.updatePayStatus(order);
+
 
     String newtoken = TokenGenerator.generateToken(request.getToken());
     endUserService.createEndUserToken(newtoken, userId);
@@ -436,6 +534,10 @@ public class OrderController extends MobileBaseController {
 
     if ("1".equals(status.toString())) {// 待付款（PaymentStatus为unpaid）
       Filter paymentFilter = new Filter("paymentStatus", Operator.eq, PaymentStatus.unpaid);
+      Filter statusFailFilter = new Filter("orderStatus", Operator.ne, OrderStatus.failure);
+      Filter statusCancelFilter = new Filter("orderStatus", Operator.ne, OrderStatus.cancelled);
+      filters.add(statusFailFilter);
+      filters.add(statusCancelFilter);
       filters.add(paymentFilter);
     } else if ("2".equals(status.toString())) {// 待发货（PaymentStatus为paid且OrderStatus为confirmed）
       Filter paymentFilter = new Filter("paymentStatus", Operator.eq, PaymentStatus.paid);
@@ -460,10 +562,10 @@ public class OrderController extends MobileBaseController {
     checkOverDue(orderList.getContent());
 
     String[] propertys =
-        {"id", "createDate", "sn", "consignee", "phone", "areaName", "address", "paymentStatus",
-            "orderStatus", "shippingStatus", "freight"};
+        {"id", "createDate", "sn", "consignee", "phone", "areaName", "address", "paymentType",
+            "paymentStatus", "orderStatus", "shippingStatus", "freight"};
 
-    String[] itemPropertys = {"id", "name", "price", "thumbnail", "quantity"};
+    String[] itemPropertys = {"id", "name", "price", "thumbnail", "quantity", "product.id"};
 
     List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 

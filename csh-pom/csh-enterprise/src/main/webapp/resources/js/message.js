@@ -134,6 +134,7 @@ var messages = {
 	"csh.endUser.search":"用户搜索",
 	"csh.endUser.setBalance":"设置余额",
 	"csh.endUser.accountBalance":"余额",
+	"csh.endUser.import":"批量导入",
 	//设备信息
 	"csh.deviceInfo.list":"设备列表",
 	"csh.deviceInfo.deviceNO":"设备编号",
@@ -183,6 +184,15 @@ var messages = {
 	"csh.vehicle.location":"当前位置",
 	"csh.vehicle.obdStatusTime":"最新上传",
 	"csh.vehicle.allVehicleStatus":"全地图车况",
+	
+	//车辆轨迹
+	"csh.vehicle.track":"车辆轨迹",
+	"csh.vehicleTrack.startTime":"起始时间",
+	"csh.vehicleTrack.endTime":"结束时间",
+	"csh.vehicleTrack.time":"行驶时间",
+	"csh.vehicleTrack.startPoint":"起始地点",
+	"csh.vehicleTrack.endPoint":"结束地点",
+	"csh.vehicleTrack.mile":"里程(km)",
 	//车辆品牌
 	"csh.vehicleBrand.list":"车辆品牌列表",
 	"csh.vehicleBrand.name":"品牌名称",

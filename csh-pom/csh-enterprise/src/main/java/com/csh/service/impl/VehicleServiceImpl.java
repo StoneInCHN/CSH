@@ -55,6 +55,12 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
       @Resource(name = "deviceInfoServiceImpl")
       private DeviceInfoService deviceInfoService;
       private Setting setting = SettingUtils.get();
+      
+      
+      private static double avgJS = 0.110198205D;
+      private static double avgSC = 0.307525734D;
+      private static double avgZW = 0.194117877D;
+      
       @Resource
       public void setBaseDao(VehicleDao vehicleDao) {
          super.setBaseDao(vehicleDao);
@@ -150,8 +156,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
         VehicleDailyReport vehicleDailyReport = new VehicleDailyReport ();
         try
         {
-          String response = ApiUtils.post (setting.getObdServiceUrl ()+"tenantVehicleData/dailyVehicleStatus.jhtml" , params);
           
+          //String response = ApiUtils.post (setting.getObdServiceUrl ()+"tenantVehicleData/dailyVehicleStatus.jhtml" , params);
+          String response = ApiUtils.post (setting.getObdServiceUrl ()+"/appVehicleData/oneKeyDetection.jhtml" , params);
 //          String response = "{\"msg\":{\"dailyMileage\":10.0,\"averageFuelConsumption\":10.0,\"fuelConsumption\":0.0,\"cost\":null,\"averageSpeed\":0.0,\"emergencybrakecount\":0,\"suddenturncount\":0,\"rapidlyspeedupcount\":0}}";
           if (response != null)
           {
@@ -167,11 +174,19 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
             String msg = objectMapper.writeValueAsString(msgNode);
             vehicleDailyReport = objectMapper.readValue (msg, VehicleDailyReport.class);
             
-            BigDecimal dailMile = new BigDecimal(vehicleDailyReport.getDailyMileage ().toString ());
+            BigDecimal fuelConsumption = new BigDecimal(vehicleDailyReport.getFuelConsumption ());
             
-            vehicleDailyReport.setDeviceId (vehicle.getDevice ().getId ());
+            vehicleDailyReport.setDeviceId (vehicle.getDevice ().getDeviceNo ());
             vehicleDailyReport.setReportDate (date);
-            vehicleDailyReport.setCost (oilPrice.multiply (dailMile).doubleValue ());
+            vehicleDailyReport.setCost (oilPrice.multiply (fuelConsumption).setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue());
+            
+            Integer score =
+                getScore(vehicleDailyReport.getRapidlyspeedupcount (),
+                    vehicleDailyReport.getEmergencybrakecount (),vehicleDailyReport.getSuddenturncount (),
+                    vehicleDailyReport.getFatiguedrivingcount (), vehicleDailyReport.getMileAge ().doubleValue ());
+            if (score != -1) {
+              vehicleDailyReport.setScore (score);
+            } 
           }
         }
         catch (Exception e)
@@ -195,5 +210,58 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
       {
         return vehicleDao.listUnBuindVehicle(tenantAccountService.getCurrentTenantID (),vehiclePlateSearch,motorcadeSearch,
               vehicleFullBrandSearch,pageable);
+      }
+      
+      
+      
+      /**
+       * 计算驾驶得分
+       * 
+       * @param js 急加速次数
+       * @param sc 急刹车次数
+       * @param zw 急转弯次数
+       * @param pl 疲劳驾驶次数
+       * @param mile 里程
+       * @return
+       */
+      public static Integer getScore(Integer js, Integer sc, Integer zw, Integer pl, Double mile) {
+        if (mile <= 0) {
+          return -1;
+        }
+        int score = 100;
+        if (pl > 0) {
+          score -= 25;
+        }
+        if (js / mile > avgJS) {
+          double out = js / mile - avgJS;
+          int percent = (int) (out * 100.0D / avgJS);
+          if (percent >= 25)
+            score -= 25;
+          else {
+            score -= percent;
+          }
+        }
+        if (sc / mile > avgSC) {
+          double out = sc / mile - avgSC;
+          int percent = (int) (out * 100.0D / avgSC);
+          if (percent >= 25)
+            score -= 25;
+          else {
+            score -= percent;
+          }
+        }
+        if (zw / mile > avgZW) {
+          double out = zw / mile - avgZW;
+          int percent = (int) (out * 100.0D / avgZW);
+          if (percent >= 25)
+            score -= 25;
+          else {
+            score -= percent;
+          }
+        }
+        if (score == 100) {
+          score = 99;
+        }
+        return score;
       }
 }

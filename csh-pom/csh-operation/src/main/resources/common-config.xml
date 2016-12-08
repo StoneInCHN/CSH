@@ -47,6 +47,8 @@
 	
 	<setting name="imageMaxSize" value="412000" />
 	
+	<!-- obd 接口 -->
+	<setting name="obdServiceUrl" value="http://139.129.5.114:20001/obd-data/" />
 	<!-- 消息推送接口 -->
 	<setting name="msgPushUrl" value="http://10.174.236.186:10001/csh-interface/message/pushMsg.jhtml" />
 	<!-- 新闻消息推送接口 -->

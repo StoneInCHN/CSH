@@ -1,6 +1,7 @@
 package com.csh.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
+import org.apache.poi.ss.formula.functions.CalendarFieldFunction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -433,13 +435,15 @@ public class VehicleController extends BaseController
    */
   @RequestMapping(value = "/vehicleDailyReport", method = RequestMethod.GET)
   public String getVehicleDailyReport(ModelMap model,Long vehicleId) {
-   VehicleDailyReport report= vehicleService.callVehicleDailyData(new Date (),vehicleId);
+    Calendar calendar = Calendar.getInstance ();
+    calendar.add(Calendar.DAY_OF_MONTH,-1);
+   VehicleDailyReport report= vehicleService.callVehicleDailyData(new Date (calendar.getTimeInMillis ()),vehicleId);
    model.put ("vehicleDailyReport", report);
+   model.put ("vehicleReportDate", DateTimeUtils.convertDateToString (report.getReportDate (), "yyyy-MM-dd"));
     return "vehicle/vehicleDailyReport";
   }
   @RequestMapping(value = "/getVehicleDailyData", method = RequestMethod.POST)
   public @ResponseBody VehicleDailyReport getVehicleDailyData(ModelMap model,Date date, Long vehicleId){
-    
     return vehicleService.callVehicleDailyData(date,vehicleId);
    
   }

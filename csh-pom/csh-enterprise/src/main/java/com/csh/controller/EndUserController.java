@@ -1,17 +1,30 @@
 package com.csh.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.csh.beans.Message;
 import com.csh.controller.base.BaseController;
@@ -20,10 +33,14 @@ import com.csh.entity.EndUser;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
+import com.csh.json.request.EndUserRequest;
 import com.csh.service.AccountBalanceService;
 import com.csh.service.EndUserService;
+import com.csh.service.FileService;
 import com.csh.service.RSAService;
 import com.csh.service.TenantAccountService;
+import com.csh.utils.ExcelImporter;
+import com.csh.utils.POIUtil;
 import com.csh.utils.SpringUtils;
 
 /**
@@ -47,11 +64,15 @@ public class EndUserController extends BaseController
   @Resource(name="accountBalanceServiceImpl")
   private AccountBalanceService accountBalanceService;
   
+  @Resource(name="fileServiceImpl")
+  private FileService fileService;
+  
   @RequestMapping (value = "/endUser", method = RequestMethod.GET)
   public String list (ModelMap model)
   {
     return "endUser/endUser";
   }
+ 
   @RequestMapping (value = "/commonEndUserSearch", method = RequestMethod.GET)
   public String commonEndUserSearch (ModelMap model)
   {
@@ -149,7 +170,7 @@ public class EndUserController extends BaseController
   
   
   /**
-   * 删除
+   * 设置余额
    */
   @RequestMapping (value = "/setBalance", method = RequestMethod.POST)
   public @ResponseBody Message setBalance (AccountBalance accountBalance,Long endUserId)
@@ -171,4 +192,29 @@ public class EndUserController extends BaseController
     accountBalanceService.save(accountBalance);
     return SUCCESS_MESSAGE;
   }
+  /**
+   * 设置余额
+   */
+  @RequestMapping (value = "/saveImport", method = RequestMethod.POST)
+  public @ResponseBody Message saveImport (HttpServletResponse response,MultipartFile filePath)
+  {
+    ExcelImporter<EndUserRequest> impoter = new ExcelImporter<EndUserRequest>(EndUserRequest.class);
+    String[] params = {"name","mobile","plate"};
+    String sufix = filePath.getOriginalFilename ().split("\\.")[1];
+    try {
+      List<EndUserRequest> list = impoter.getListEntity(filePath.getInputStream (), sufix,params,0);
+      
+      endUserService.bulkSave(list);
+      String[] respParams = {"名称","联系电话","车牌号","结论","备注"};
+      POIUtil.createExcel (response, respParams, list);
+    } catch (Exception e) {
+      
+      e.printStackTrace();
+    }
+    
+//    return Message.success ("执行结果保存在result.xls文件中");
+    return SUCCESS_MESSAGE;
+  }
+  
+  
 }

@@ -278,7 +278,7 @@ public class MessageController extends MobileBaseController {
             + "_csh.wallet.obdDriver.comein.redPacket");
       } else if (msgType.equals("1")) {
         msgContent =
-            Message.warn("csh.obd.fire.message",
+            Message.warn("csh.obd.fire.message", deviceInfo.getVehicle().getPlate(),
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime())).getContent();
       } else if (msgType.equals("4")) {
         String content = msgReq.getMsgContent();

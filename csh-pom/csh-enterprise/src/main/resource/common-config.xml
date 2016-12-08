@@ -43,7 +43,7 @@
 		<setting name="ucpaasVersion" value="2014-06-30" />
 		<!-- 短信平台短信模板ID -->
 		<!-- <setting name="ucpaasTemplate" value="18130" /> -->
-		<setting name="ucpaasTemplate" value="22544" />
+		<setting name="ucpaasAccountTemplate" value="30959" />
 		<!-- 短信平台语音回拨号码 -->
 		<setting name="ucpaasCallDisplay" value="4007930888" />
 		<!-- cookie相关配置 -->

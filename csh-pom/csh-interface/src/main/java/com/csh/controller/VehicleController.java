@@ -250,7 +250,7 @@ public class VehicleController extends MobileBaseController {
       }
     }
 
-    if (!vehicle.getVehicleNo().equals(vehicleReq.getVehicleNo())) {
+    if (vehicle.getVehicleNo() != null && !vehicle.getVehicleNo().equals(vehicleReq.getVehicleNo())) {
       Vehicle vehicleNoVehicle = vehicleService.getVehicleByVehicleNo(vehicleReq.getVehicleNo());
       if (vehicleNoVehicle != null) {
         response.setCode(CommonAttributes.FAIL_VEHICLE_PLATE_EXIST);
@@ -535,11 +535,19 @@ public class VehicleController extends MobileBaseController {
       LogUtil.debug(VehicleController.class, "Update",
           "set default vehicle.UserId: %s, VehicleId: %s,", userId, vehicleId);
     }
-    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo"};
-    List<Map<String, Object>> map =
-        FieldFilterUtils.filterCollectionMap(properties, endUser.getVehicles());
-    response.setMsg(map);
 
+    /**
+     * 外部接口调用时会有车牌号为000000的虚拟车辆，显示时要过滤掉
+     */
+    List<Vehicle> vehicles = new ArrayList<Vehicle>();
+    for (Vehicle vehicle : endUser.getVehicles()) {
+      if (!"0000000".equals(vehicle.getPlate())) {
+        vehicles.add(vehicle);
+      }
+    }
+
+    String[] properties = {"id", "isDefault", "plate", "vehicleFullBrand", "brandIcon", "deviceNo"};
+    List<Map<String, Object>> map = FieldFilterUtils.filterCollectionMap(properties, vehicles);
     response.setMsg(map);
 
     App app = appService.getTenantAppById(tenantId);

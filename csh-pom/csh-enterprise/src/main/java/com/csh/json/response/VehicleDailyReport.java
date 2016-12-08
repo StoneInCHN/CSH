@@ -5,9 +5,16 @@ import java.util.Date;
 public class VehicleDailyReport {
 
   /**
-   * 每天的行驶公里数
+   * 总里程
    */
-  private Float dailyMileage;
+  private Float totalMileAge;
+  
+  /**
+   * 今日里程
+   */
+  private Float mileAge;
+  
+  private Integer runningTime;
 
   /**
    * 平均油耗
@@ -46,20 +53,28 @@ public class VehicleDailyReport {
   private Integer rapidlyspeedupcount;
 
   /**
+   * 疲劳驾驶次数
+   */
+  private Integer fatiguedrivingcount;
+  
+  /**
+   * 驾驶得分
+   */
+  private Integer score;
+  /**
+   * OBD 故障码
+   */
+  private String faultcode;
+  
+  private Boolean isNeedToAddInitMileAge;
+  
+  /**
    * 时间
    */
   private Date reportDate;
   
-  private Long deviceId;
+  private String deviceId;
   
-  public Float getDailyMileage() {
-    return dailyMileage;
-  }
-
-
-  public void setDailyMileage(Float dailyMileage) {
-    this.dailyMileage = dailyMileage;
-  }
 
 
   public Float getAverageFuelConsumption() {
@@ -144,16 +159,98 @@ public class VehicleDailyReport {
   }
 
 
-  public Long getDeviceId ()
+  public String getDeviceId ()
   {
     return deviceId;
   }
 
 
-  public void setDeviceId (Long deviceId)
+  public void setDeviceId (String deviceId)
   {
     this.deviceId = deviceId;
   }
-  
+
+
+  public Integer getFatiguedrivingcount ()
+  {
+    return fatiguedrivingcount;
+  }
+
+
+  public void setFatiguedrivingcount (Integer fatiguedrivingcount)
+  {
+    this.fatiguedrivingcount = fatiguedrivingcount;
+  }
+
+
+  public String getFaultcode ()
+  {
+    return faultcode;
+  }
+
+
+  public void setFaultcode (String faultcode)
+  {
+    this.faultcode = faultcode;
+  }
+
+
+  public Boolean getIsNeedToAddInitMileAge ()
+  {
+    return isNeedToAddInitMileAge;
+  }
+
+
+  public void setIsNeedToAddInitMileAge (Boolean isNeedToAddInitMileAge)
+  {
+    this.isNeedToAddInitMileAge = isNeedToAddInitMileAge;
+  }
+
+
+  public Float getTotalMileAge ()
+  {
+    return totalMileAge;
+  }
+
+
+  public void setTotalMileAge (Float totalMileAge)
+  {
+    this.totalMileAge = totalMileAge;
+  }
+
+
+  public Float getMileAge ()
+  {
+    return mileAge;
+  }
+
+
+  public void setMileAge (Float mileAge)
+  {
+    this.mileAge = mileAge;
+  }
+
+
+  public Integer getRunningTime ()
+  {
+    return runningTime;
+  }
+
+
+  public void setRunningTime (Integer runningTime)
+  {
+    this.runningTime = runningTime;
+  }
+
+
+  public Integer getScore ()
+  {
+    return score;
+  }
+
+  public void setScore (Integer score)
+  {
+    this.score = score;
+  }
   
 }

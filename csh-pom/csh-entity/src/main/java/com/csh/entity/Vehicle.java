@@ -276,6 +276,9 @@ public class Vehicle extends BaseEntity {
 
   @Transient
   public String getVehicleFullBrand() {
+    if (vehicleBrandDetail == null) {
+      return null;
+    }
     VehicleLine vl = vehicleBrandDetail.getVehicleLine();
     if (vl == null) {
       return null;
@@ -530,15 +533,16 @@ public class Vehicle extends BaseEntity {
   public void setObdStatusTime(Date obdStatusTime) {
     this.obdStatusTime = obdStatusTime;
   }
+
   @Transient
   @JsonProperty
   public Set<String> getFaultCodeSet() {
-	return faultCodeSet;
+    return faultCodeSet;
   }
 
   public void setFaultCodeSet(Set<String> faultCodeSet) {
-	this.faultCodeSet = faultCodeSet;
+    this.faultCodeSet = faultCodeSet;
   }
 
-  
+
 }

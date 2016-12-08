@@ -200,7 +200,8 @@ public class DeviceInfoController extends BaseController
         }
         if (deviceStatus == DeviceStatus.REFUNDED )
         {
-          if (deviceInfo.getDeviceStatus () != DeviceStatus.STORAGEOUT )
+          if (deviceInfo.getDeviceStatus () != DeviceStatus.STORAGEOUT 
+              && (deviceInfo.getDeviceStatus () != DeviceStatus.SALEOUT || deviceInfo.getBindStatus () == BindStatus.BINDED))
           {
             return ERROR_MESSAGE;
           }else {

@@ -156,7 +156,69 @@ var endUser_manager_tool = {
 			    	$("#setBalance4EndUser_form_endUserId").val(_edit_row.id);
 			    }
 			})
-		}
+		},
+		import:function(){
+			$('#importEndUserDialog').dialog({
+			    title: message("csh.endUser.import"),    
+			    width: 400,    
+			    height: 200,
+			    iconCls:'icon-mini-edit',
+			    cache: false, 
+			    buttons:[{
+			    	text:message("csh.common.save"),
+			    	iconCls:'icon-save',
+					handler:function(){
+						var validate = $('#endUserImport_form').form('validate');
+						
+						if(validate){
+//							$("#endUserImport_form").ajaxSubmit({
+//								url:"../endUser/saveImport.jhtml",
+//								type:"post",
+//								success:function(result,response,status){
+//									$.messager.progress('close');
+//									if(result.type == "success"){
+//										showSuccessMsg(result.content);
+//										$('#importEndUserDialog').dialog("close")
+//										$("#endUserImport_form").form("reset");
+//										$("#endUser-table-list").datagrid('reload');
+//									}else{
+//										alertInfoMsg(result.content);
+//									}
+//								}
+//				             });
+							
+							var form = $("#endUserImport_form");  //==>jQuery创建隐藏表单,实现ajax下载  
+			                form.attr('style','display:none');    
+			                form.attr('target','');
+			                form.attr('enctype','multipart/form-data'); 
+			                form.attr('method','post');    
+			                form.attr('action','../endUser/saveImport.jhtml');
+			                $('#importEndUserDialog').dialog("close");
+			                $.messager.show({
+			            		title : message("csh.common.prompt"),
+			            		msg : "上传进行中，结上传结果请在返回的Excel中查看",
+			            		timeout : 3000,
+			            		showType : 'slide'
+			            	});
+			                form.submit();
+//							$("#endUserImport_form").form("reset");
+//							$("#endUser-table-list").datagrid('reload');
+						};
+					}
+				},{
+					text:message("csh.common.cancel"),
+					iconCls:'icon-cancel',
+					handler:function(){
+						 $('#importEndUserDialog').dialog("close");
+						 $("#endUserImport_form").form("reset");
+					}
+			    }],
+			    onOpen:function(){
+			    	$("#endUserImport_form").form("reset");
+			    	$('#endUserImport_form').show();
+			    },
+			});  
+		},
 };
 
 $(function(){

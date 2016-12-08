@@ -120,6 +120,8 @@ public class Setting implements Serializable {
 
     /** 短信平台语音回拨号码 */
     private String ucpaasCallDisplay;
+    
+    private String ucpaasAccountTemplate;
     /**
      * odb Servier url
      */
@@ -870,6 +872,16 @@ public class Setting implements Serializable {
   public void setConvertMutipleMapUrl (String convertMutipleMapUrl)
   {
     this.convertMutipleMapUrl = convertMutipleMapUrl;
+  }
+
+  public String getUcpaasAccountTemplate ()
+  {
+    return ucpaasAccountTemplate;
+  }
+
+  public void setUcpaasAccountTemplate (String ucpaasAccountTemplate)
+  {
+    this.ucpaasAccountTemplate = ucpaasAccountTemplate;
   }
     
   

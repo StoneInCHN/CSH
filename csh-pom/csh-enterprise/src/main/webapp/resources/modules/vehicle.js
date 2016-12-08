@@ -62,7 +62,7 @@ function drawMutPoint(map,allVehicleListStatus){
 			}
 			
 		}
-		console.log('lon:'+allVehicleListStatus[i].lon,"; lat:"+allVehicleListStatus[i].lat)
+		console.log('车牌号：'+allVehicleListStatus[i].plate+' lon:'+allVehicleListStatus[i].lon,"; lat:"+allVehicleListStatus[i].lat)
 	}
 	
 	
@@ -70,91 +70,91 @@ function drawMutPoint(map,allVehicleListStatus){
 }
 var index = 0;
 function loadAllVehicleStatus(map){
-//	$.ajax({
-//		url:"../vehicle/allVehicleStatus.jhtml",
-//		type:"post",
-//		success:function(result,response,status){
-//			if(result.length>0 ){
-//				oldVehicleListStatus = allVehicleListStatus;
-//				allVehicleListStatus = new Array();
-//				for(var i = 0;i<result.length;i++){
-//					var vehicleStatus = new Object();
-//					vehicleStatus.lat = result[i].lat; 
-//					vehicleStatus.lon = result[i].lon;
-//					vehicleStatus.plate = result[i].plate;
-//					allVehicleListStatus.push(vehicleStatus);
-//				}
-//			}else{
-//				
-//			}
-//			drawMutPoint(map,allVehicleListStatus);
-//		}
-//	});
-	var vehicleStatus1 = new Object();
-	var vehicleStatus2 = new Object();
-	if(index == 0){
-		oldVehicleListStatus = allVehicleListStatus;
-		allVehicleListStatus = new Array();
-		
-		vehicleStatus1.lat = 30.524146;
-		vehicleStatus1.lon = 104.071378;
-		vehicleStatus1.plate = "test1";
-		allVehicleListStatus.push(vehicleStatus1);
-		
-		
-		vehicleStatus2.lat = 30.526122;
-		vehicleStatus2.lon = 104.069788;
-		vehicleStatus2.plate = "test2";
-		allVehicleListStatus.push(vehicleStatus2);
-		
-		index++;
-	}else if( index ==1 ){
-		oldVehicleListStatus = allVehicleListStatus;
-		allVehicleListStatus = new Array();
-		
-		vehicleStatus1.lat = 30.525181;
-		vehicleStatus1.lon = 104.07304;
-		vehicleStatus1.plate = "test1";
-		allVehicleListStatus.push(vehicleStatus1);
-		
-		vehicleStatus2.lat = 30.526651;
-		vehicleStatus2.lon = 104.071917;
-		vehicleStatus2.plate = "test2";
-		allVehicleListStatus.push(vehicleStatus2);
-		index++;
-	}else if( index ==2 ){
-		oldVehicleListStatus = allVehicleListStatus;
-		allVehicleListStatus = new Array();
-		
-		vehicleStatus1.lat = 30.526363;
-		vehicleStatus1.lon = 104.072078;
-		vehicleStatus1.plate = "test1";
-		allVehicleListStatus.push(vehicleStatus1);
-		
-		vehicleStatus2.lat = 30.527133;
-		vehicleStatus2.lon = 104.073534;
-		vehicleStatus2.plate = "test2";
-		allVehicleListStatus.push(vehicleStatus2);
-		index++;
-	}
-	else{
-		oldVehicleListStatus = allVehicleListStatus;
-		allVehicleListStatus = new Array();
-		
-		var vehicleStatus = new Object();
-		vehicleStatus.lat = vehicleStatus1.lat+0.0001,
-		vehicleStatus.lon = vehicleStatus1.lon+0.0001;
-		vehicleStatus.plate = "test1";
-		allVehicleListStatus.push(vehicleStatus);
-	}
+	$.ajax({
+		url:"../vehicle/allVehicleStatus.jhtml",
+		type:"post",
+		success:function(result,response,status){
+			if(result.length>0 ){
+				oldVehicleListStatus = allVehicleListStatus;
+				allVehicleListStatus = new Array();
+				for(var i = 0;i<result.length;i++){
+					var vehicleStatus = new Object();
+					vehicleStatus.lat = result[i].lat; 
+					vehicleStatus.lon = result[i].lon;
+					vehicleStatus.plate = result[i].plate;
+					allVehicleListStatus.push(vehicleStatus);
+				}
+			}else{
+				
+			}
+			drawMutPoint(map,allVehicleListStatus);
+		}
+	});
+//	var vehicleStatus1 = new Object();
+//	var vehicleStatus2 = new Object();
+//	if(index == 0){
+//		oldVehicleListStatus = allVehicleListStatus;
+//		allVehicleListStatus = new Array();
+//		
+//		vehicleStatus1.lat = 30.524146;
+//		vehicleStatus1.lon = 104.071378;
+//		vehicleStatus1.plate = "test1";
+//		allVehicleListStatus.push(vehicleStatus1);
+//		
+//		
+//		vehicleStatus2.lat = 30.526122;
+//		vehicleStatus2.lon = 104.069788;
+//		vehicleStatus2.plate = "test2";
+//		allVehicleListStatus.push(vehicleStatus2);
+//		
+//		index++;
+//	}else if( index ==1 ){
+//		oldVehicleListStatus = allVehicleListStatus;
+//		allVehicleListStatus = new Array();
+//		
+//		vehicleStatus1.lat = 30.525181;
+//		vehicleStatus1.lon = 104.07304;
+//		vehicleStatus1.plate = "test1";
+//		allVehicleListStatus.push(vehicleStatus1);
+//		
+//		vehicleStatus2.lat = 30.526651;
+//		vehicleStatus2.lon = 104.071917;
+//		vehicleStatus2.plate = "test2";
+//		allVehicleListStatus.push(vehicleStatus2);
+//		index++;
+//	}else if( index ==2 ){
+//		oldVehicleListStatus = allVehicleListStatus;
+//		allVehicleListStatus = new Array();
+//		
+//		vehicleStatus1.lat = 30.526363;
+//		vehicleStatus1.lon = 104.072078;
+//		vehicleStatus1.plate = "test1";
+//		allVehicleListStatus.push(vehicleStatus1);
+//		
+//		vehicleStatus2.lat = 30.527133;
+//		vehicleStatus2.lon = 104.073534;
+//		vehicleStatus2.plate = "test2";
+//		allVehicleListStatus.push(vehicleStatus2);
+//		index++;
+//	}
+//	else{
+//		oldVehicleListStatus = allVehicleListStatus;
+//		allVehicleListStatus = new Array();
+//		
+//		var vehicleStatus = new Object();
+//		vehicleStatus.lat = vehicleStatus1.lat+0.0001,
+//		vehicleStatus.lon = vehicleStatus1.lon+0.0001;
+//		vehicleStatus.plate = "test1";
+//		allVehicleListStatus.push(vehicleStatus);
+//	}
+//	
+//	var vehicleStatus3 = new Object();
+//	vehicleStatus3.lat = 104.171045,
+//	vehicleStatus3.lon = 30.125325;
+//	vehicleStatus3.plate = "test3";
+//	allVehicleListStatus.push(vehicleStatus3);
 	
-	var vehicleStatus3 = new Object();
-	vehicleStatus3.lat = 104.171045,
-	vehicleStatus3.lon = 30.125325;
-	vehicleStatus3.plate = "test3";
-	allVehicleListStatus.push(vehicleStatus3);
-	
-	drawMutPoint(map,allVehicleListStatus);
+//	drawMutPoint(map,allVehicleListStatus);
 }
 var vehicle_manager_tool = {
 		add:function(){
@@ -428,8 +428,8 @@ var vehicle_manager_tool = {
 			}
 			$('#vehicleDailyReport').dialog({
 			    title: message("csh.vehicle.vehicleDailyReport"),    
-			    width: 600,    
-			    height: 350,
+			    width: 650,    
+			    height: 400,
 			    href:'../vehicle/vehicleDailyReport.jhtml?vehicleId='+_select_row.id,
 			    method:"get",
 			    queryParams:params,
@@ -445,14 +445,19 @@ var vehicle_manager_tool = {
 			    }],
 			    onLoad:function(){
 			    	$('#reportVehicleId').val(_select_row.id);
+			    	$('#reportRunningTime').textbox('setValue',formatSeconds($('#dailyReportRunningTimeHidden').val()));
 			    	$('#queryReportDate').datebox({
+		    			validator: function(date){
+							var now = new Date(new Date().Format("yyyy-M-d"));
+							return now<=date ;
+						},
 			    	    onSelect: function(date){
 			    	    	$.ajax({
 								url:"../vehicle/getVehicleDailyData.jhtml",
 								type:"post",
 								data:{
 									vehicleId:$('#reportVehicleId').val(),
-									date:date
+									date:date.Format("yyyy-MM-dd")
 								},
 								beforeSend:function(){
 									$.messager.progress({
@@ -462,14 +467,17 @@ var vehicle_manager_tool = {
 								success:function(result,response,status){
 									$.messager.progress('close');
 									if(response == "success"){
-										$('reportDailyMileage').textbox('setValue',result.dailyMileage);
-										$('reportAverageFuelConsumption').textbox('setValue',result.averageFuelConsumption);
-										$('reportFuelConsumption').textbox('setValue',result.fuelConsumption);
-										$('reportCost').textbox('setValue',result.cost);
-										$('reportAverageSpeed').textbox('setValue',result.averageSpeed);
-										$('reportEmergencybrakecount').textbox('setValue',result.emergencybrakecount);
-										$('reportSuddenturncount').textbox('setValue',result.suddenturncount);
-										$('reportRapidlyspeedupcount').textbox('setValue',result.rapidlyspeedupcount);
+										$('#reportRunningTime').textbox('setValue',formatSeconds(result.runningTime));
+										$('#reportDailyMileage').textbox('setValue',result.mileAge);
+										$('#reportAverageFuelConsumption').textbox('setValue',result.averageFuelConsumption);
+										$('#reportFuelConsumption').textbox('setValue',result.fuelConsumption);
+										$('#reportCost').textbox('setValue',result.cost);
+										$('#reportAverageSpeed').textbox('setValue',result.averageSpeed);
+										$('#reportEmergencybrakecount').textbox('setValue',result.emergencybrakecount);
+										$('#reportSuddenturncount').textbox('setValue',result.suddenturncount);
+										$('#reportRapidlyspeedupcount').textbox('setValue',result.rapidlyspeedupcount);
+										$('#reportFatiguedrivingcount').textbox('setValue',result.fatiguedrivingcount);
+										$('#reportScore').textbox('setValue',result.score);
 									}else{
 										alertErrorMsg();
 									}
@@ -477,8 +485,12 @@ var vehicle_manager_tool = {
 							});
 			    	    }
 			    	});
-
-
+			    	$('#queryReportDate').datebox('calendar').calendar({
+						validator: function(date){
+							var now = new Date(new Date().Format("yyyy-MM-dd"));
+							return now>date ;
+						}
+					});
 			    	$('#vehicleDailyReport_form').show();
 			    },
 			});  
@@ -531,9 +543,10 @@ var vehicle_manager_tool = {
 			    	map.addControl(new BMap.NavigationControl()); // 添加平移缩放控件
 			    	map.addControl(new BMap.ScaleControl()); // 添加比例尺控件
 			    	map.addControl(new BMap.OverviewMapControl()); //添加缩略地图控件
+			    	loadAllVehicleStatus(map);
 			    	
-			    	timer = setInterval(function () { loadAllVehicleStatus(map); },"5000")
-//			    	loadAllVehicleStatus();
+			    	timer = setInterval(function () { loadAllVehicleStatus(map); },"20000")
+			    	
 			    },
 			    onClose:function(){
 			    	clearInterval(timer);

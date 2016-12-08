@@ -1,5 +1,6 @@
 package com.csh.json.request;
 
+import com.csh.entity.commonenum.CommonEnum.GpsSwitch;
 import com.csh.json.base.BaseRequest;
 
 public class DeviceRequest extends BaseRequest {
@@ -18,6 +19,20 @@ public class DeviceRequest extends BaseRequest {
    * 故障码
    */
   private String faultCode;
+
+  /**
+   * gps开关操作(TURNON:打开gps定位; TURNOFF:关闭gps定位)
+   */
+  private GpsSwitch switchOpr;
+
+
+  public GpsSwitch getSwitchOpr() {
+    return switchOpr;
+  }
+
+  public void setSwitchOpr(GpsSwitch switchOpr) {
+    this.switchOpr = switchOpr;
+  }
 
   public String getFaultCode() {
     return faultCode;

@@ -4,6 +4,7 @@
     var date = new Date(year, month, 0);  //指定的年月
     var daysCount = date.getDate();            //本月天数 
     var  deviceId = '8801001667';
+    var  oilPrice = 0; //当日油价;
     var  fromDate = year + "-" + month + "-1";
     var  toDate =  year + "-" + month + "-" + daysCount;
 
@@ -165,8 +166,9 @@
 	}
 
 $("#vehicleMileageReport_search_btn").click(function(){
-		var date = new Date( new Date().getFullYear(),$("#vehicleStatusMonthID").combobox("getValue"), 0); 
-	    var daysCount = date.getDate();            //本月天数 
+	    month=$("#vehicleStatusMonthID").combobox("getValue");
+		date = new Date( new Date().getFullYear(),month, 0); 
+	    daysCount = date.getDate();            //本月天数
 	    fromDate =  new Date().getFullYear() + "-" + $("#vehicleStatusMonthID").combobox("getValue") + "-1";
 	    toDate =   new Date().getFullYear() + "-" + $("#vehicleStatusMonthID").combobox("getValue") + "-" + daysCount;
 	    loadReportDate();//调用接口，加载数据	
@@ -183,6 +185,21 @@ $(function(){
 			if(rowData.deviceNo != null){
 				$('#vehicleMileage_deviceNo').val(rowData.deviceNo);
 				deviceId = $('#vehicleMileage_deviceNo').val();
+				$.ajax({
+					url : "../vehicleMileageReport/getOilPrice.jhtml",
+					type : "post",
+					traditional : true,
+					data : {
+						"deviceId" : deviceId
+					},
+					dataType: "json",
+					beforeSend : function() {},
+					success : function(result, response, status) {
+							if (response == "success" && result !="") {
+								oilPrice = result;
+							}
+						}
+					});
 				loadReportDate();//调用接口，加载数据	
 			}
 		},
@@ -237,7 +254,7 @@ function loadReportDate(){
 					dailyMileage.push(0);
 					averageFuelConsumption.push(0);
 					fuelConsumption.push(0);
-					cost.push(null);
+					cost.push(0);
 					averageSpeed.push(0);
 					emergencybrakecount.push(0);
 					suddenturncount.push(0);
@@ -250,7 +267,8 @@ function loadReportDate(){
 						dailyMileage[d] = msgJson[i].dailyMileage;
 						averageFuelConsumption[d] = msgJson[i].averageFuelConsumption;
 						fuelConsumption[d] = msgJson[i].fuelConsumption;
-						cost[d] = msgJson[i].cost;
+						//cost[d] = math.mul(oilPrice,fuelConsumption[d]);
+						cost[d] = Math.round(math.mul(oilPrice,fuelConsumption[d]));
 						averageSpeed[d] = msgJson[i].averageSpeed;
 						emergencybrakecount[d] = msgJson[i].emergencybrakecount;
 						suddenturncount[d] = msgJson[i].suddenturncount;

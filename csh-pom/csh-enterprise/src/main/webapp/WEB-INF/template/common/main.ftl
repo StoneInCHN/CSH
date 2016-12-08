@@ -389,8 +389,11 @@
 		   	 	</div>
 		   	 	
 			</div>
-		<div id = "commonMainDialog"></div>  
+		<div id = "commonMainDialog"></div> 
+		<div id = "player"></div> 
+		<div id = "info"></div> 
     </div>    
+    
     
     
     
@@ -421,6 +424,22 @@
     <script type="text/javascript" src="${base}/resources/js/jquery.easing.1.3.js"></script>
 	<script>
 		var BASE_URL = '${base}/resources' ;
+		
+		function jumpPage(e){
+			var aClick = $(e);
+			var _url = aClick.attr("data-url");
+			var _title = aClick.attr("data-name");
+			if($('#manager-tabs').tabs("exists",_title)){
+				$('#manager-tabs').tabs("select",_title)
+			}else{
+				$('#manager-tabs').tabs('add',{    
+				    title:_title,    
+				    href:_url,    
+				    closable:true      
+				}); 
+			}
+			
+	}
 	</script>
   </body>
 </html>

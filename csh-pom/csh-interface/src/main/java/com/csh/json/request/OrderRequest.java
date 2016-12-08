@@ -54,6 +54,11 @@ public class OrderRequest extends BaseRequest {
   private Long orderId;
 
   /**
+   * 订单IDs
+   */
+  private Long[] orderIds;
+
+  /**
    * 评分
    */
   private Integer reviewScore;
@@ -136,6 +141,14 @@ public class OrderRequest extends BaseRequest {
 
   public void setReviewContent(String reviewContent) {
     this.reviewContent = reviewContent;
+  }
+
+  public Long[] getOrderIds() {
+    return orderIds;
+  }
+
+  public void setOrderIds(Long[] orderIds) {
+    this.orderIds = orderIds;
   }
 
   public Long getOrderId() {

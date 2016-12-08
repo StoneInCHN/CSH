@@ -350,7 +350,11 @@ public class CommonEnum {
     /**
      * 加油
      */
-    REFUEL;
+    REFUEL,
+    /**
+     * 商品
+     */
+    PRODUCT;
   }
 
   public enum ImageType {
@@ -960,6 +964,17 @@ public class CommonEnum {
     OTHER
   }
 
+
+  public enum GpsSwitch {
+    /**
+     * 打开
+     */
+    TURNON,
+    /**
+     * 关闭
+     */
+    TURNOFF
+  }
 
 
 }

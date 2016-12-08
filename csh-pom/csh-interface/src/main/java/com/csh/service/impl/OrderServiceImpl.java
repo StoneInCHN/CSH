@@ -19,12 +19,15 @@ import com.csh.beans.Message;
 import com.csh.beans.Setting;
 import com.csh.dao.CartItemDao;
 import com.csh.dao.OrderDao;
+import com.csh.dao.OrderRelationDao;
 import com.csh.dao.ProductDao;
 import com.csh.dao.ReceiverAddressDao;
+import com.csh.dao.TenantMsgDao;
 import com.csh.dao.WalletDao;
 import com.csh.entity.AccountBalance;
 import com.csh.entity.EndUser;
 import com.csh.entity.Sn.Type;
+import com.csh.entity.TenantMsg;
 import com.csh.entity.Wallet;
 import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.BalanceType;
@@ -32,12 +35,14 @@ import com.csh.entity.commonenum.CommonEnum.OrderLogType;
 import com.csh.entity.commonenum.CommonEnum.OrderStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentStatus;
 import com.csh.entity.commonenum.CommonEnum.PaymentType;
+import com.csh.entity.commonenum.CommonEnum.ServiceType;
 import com.csh.entity.commonenum.CommonEnum.ShippingStatus;
 import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.entity.estore.CartItem;
 import com.csh.entity.estore.Order;
 import com.csh.entity.estore.OrderItem;
 import com.csh.entity.estore.OrderLog;
+import com.csh.entity.estore.OrderRelation;
 import com.csh.entity.estore.Product;
 import com.csh.entity.estore.ReceiverAddress;
 import com.csh.framework.service.impl.BaseServiceImpl;
@@ -70,6 +75,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
 
   @Resource(name = "walletDaoImpl")
   private WalletDao walletDao;
+
+  @Resource(name = "orderRelationDaoImpl")
+  private OrderRelationDao orderRelationDao;
+
+  @Resource(name = "tenantMsgDaoImpl")
+  private TenantMsgDao tenantMsgDao;
 
   @Resource(name = "orderDaoImpl")
   public void setBaseDao(OrderDao orderDao) {
@@ -132,7 +143,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     orderItem.setFullName(product.getFullName());
     orderItem.setPrice(product.getPrice());
     orderItem.setWeight(product.getWeight());
-    orderItem.setThumbnail(product.getThumbnail());
+    orderItem.setThumbnail(product.getImage());
     orderItem.setIsGift(false);
     orderItem.setQuantity(quantity);
     orderItem.setShippedQuantity(0);
@@ -154,6 +165,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     if (checkProductRemainNum(productId, quantity)) {
       orderDao.persist(order);
       response.setCode(CommonAttributes.SUCCESS);
+      response.setDesc(order.getId().toString());
     } else {
       response.setCode(CommonAttributes.FAIL_COMMON);
       response.setDesc(product.getName());
@@ -179,6 +191,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
       cartList.add(cartItem);
     }
 
+    List<Long> orderIds = new ArrayList<Long>();
     for (Long tenantId : tenantIds) {
       Order order = new Order();
       List<OrderItem> orderItems = order.getOrderItems();
@@ -226,7 +239,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
           orderItem.setFullName(product.getFullName());
           orderItem.setPrice(product.getPrice());
           orderItem.setWeight(product.getWeight());
-          orderItem.setThumbnail(product.getThumbnail());
+          orderItem.setThumbnail(product.getImage());
           orderItem.setIsGift(false);
           orderItem.setQuantity(cartItem.getQuantity());
           orderItem.setShippedQuantity(0);
@@ -246,7 +259,20 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
         cartItemDao.remove(cartItem);
       }
       orderDao.persist(order);
+      orderIds.add(order.getId());
     }
+
+    if (orderIds.size() > 1) {
+      Long mainOrderId = orderIds.get(0);
+      for (Long orderId : orderIds) {
+        OrderRelation orderRelation = new OrderRelation();
+        orderRelation.setMainOrderId(mainOrderId);
+        orderRelation.setOrderId(orderId);
+        orderRelationDao.persist(orderRelation);
+      }
+    }
+
+    response.setDesc(orderIds.toString().substring(1, orderIds.toString().length() - 1));
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
@@ -314,6 +340,13 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Long> implements Or
     orderLog.setOrder(order);
     order.getOrderLogs().add(orderLog);
     orderDao.merge(order);
+
+    TenantMsg tenantMsg = new TenantMsg();
+    tenantMsg.setIsPush(false);
+    tenantMsg.setMsgType(ServiceType.PRODUCT);
+    tenantMsg.setTenantID(order.getTenantID());
+    tenantMsgDao.persist(tenantMsg);
+
     return order;
   }
 
