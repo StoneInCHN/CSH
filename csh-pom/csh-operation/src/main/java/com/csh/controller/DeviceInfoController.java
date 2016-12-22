@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -340,9 +342,33 @@ public class DeviceInfoController extends BaseController {
       }
     }
     model.addAttribute("deviceInfo",deviceInfo );
+    String response = ApiUtils.post(setting.getObdServiceUrl ()+"receiverData/getDeviceStatus.jhtml?deviceId="+deviceInfo.getDeviceNo());
+    if (response != null){
+      if (response != null && !response.equals (""))
+      {
+        JSONObject resultJson = JSONObject.fromObject(response);
+        model.put("deviceStatus", resultJson);
+        model.put("createtime", getCreateDate(resultJson.get("createtime")));
+        model.put("obddate", getCreateDate(resultJson.get("obddate")));
+        model.put("obddtcdate", getCreateDate(resultJson.get("obddtcdate")));
+        model.put("agpstime", getCreateDate(resultJson.get("agpstime")));
+        model.put("istatustime", getCreateDate(resultJson.get("istatustime")));
+        model.put("t3dspeedtime", getCreateDate(resultJson.get("t3dspeedtime")));
+        model.put("tstatustime", getCreateDate(resultJson.get("tstatustime")));
+        model.put("xyz3dtime", getCreateDate(resultJson.get("xyz3dtime")));
+      }
+    }
     return "/deviceInfo/details";
   }
-
+  private String getCreateDate(Object object) {
+    if (object != null && !object.toString().equals("null")) {
+      SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+      Long time = new Long(object.toString());  
+      String formatStr = format.format(time);  
+      return formatStr;
+    }
+    return null;
+  }
 
   /**
    * 跳转到批量上传页面
