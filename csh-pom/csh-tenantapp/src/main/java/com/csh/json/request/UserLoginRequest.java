@@ -15,16 +15,17 @@ public class UserLoginRequest extends BaseRequest {
   private String appClientId;
 
   /**
-   * 手机IMEI号
+   * 租户组织机构代码
    */
-  private String imei;
+  private String orgCode;
 
-  public String getImei() {
-    return imei;
+
+  public String getOrgCode() {
+	return orgCode;
   }
 
-  public void setImei(String imei) {
-    this.imei = imei;
+  public void setOrgCode(String orgCode) {
+	this.orgCode = orgCode;
   }
 
   public String getAppClientId() {
@@ -42,7 +43,6 @@ public class UserLoginRequest extends BaseRequest {
   public void setPassword(String password) {
     this.password = password;
   }
-
 
 
 }
