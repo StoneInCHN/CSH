@@ -138,6 +138,11 @@ public class TenantAccountController extends MobileBaseController {
       return response;
     }
     TenantAccount tenantAccount = tenantAccountService.findByNameAndOrgCode(userName, orgCode);
+    if (tenantAccount == null) {
+      response.setCode(CommonAttributes.FAIL_LOGIN);
+      response.setDesc(Message.error("csh.tenantAccount.noexist").getContent());
+      return response;
+    }
     if (tenantAccount.getAccoutStatus().equals(AccountStatus.LOCKED)
         || tenantAccount.getAccoutStatus().equals(AccountStatus.DELETE)) {
       response.setCode(CommonAttributes.FAIL_LOGIN);
