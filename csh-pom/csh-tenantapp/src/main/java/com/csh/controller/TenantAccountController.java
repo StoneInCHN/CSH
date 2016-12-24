@@ -217,10 +217,13 @@ public class TenantAccountController extends MobileBaseController {
     TenantAccount tenantAccount = tenantAccountService.find(userId);
     try {
       password = KeyGenerator.decrypt(password, RSAHelper.getPrivateKey(serverPrivateKey));
+      password_confirm =
+          KeyGenerator.decrypt(password_confirm, RSAHelper.getPrivateKey(serverPrivateKey));
+      password_new = KeyGenerator.decrypt(password_new, RSAHelper.getPrivateKey(serverPrivateKey));
     } catch (Exception e) {
       e.printStackTrace();
     }
-    if (!DigestUtils.md5Hex(password).equals(tenantAccount.getPassword())) {
+    if (password == null || !tenantAccount.getPassword().equals(DigestUtils.md5Hex(password))) {
       response.setCode(CommonAttributes.FAIL_UPDATE_PWD);
       response.setDesc(Message.error("csh.originPwd.error").getContent());
       return response;
@@ -239,7 +242,6 @@ public class TenantAccountController extends MobileBaseController {
     response.setToken(newToken);
     return response;
   }
-
 
 
   /**
