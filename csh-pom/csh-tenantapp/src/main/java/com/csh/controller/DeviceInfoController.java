@@ -14,6 +14,7 @@ import com.csh.json.response.DeviceDetailResponse;
 import com.csh.json.response.DevicePageResponse;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.TenantAccountService;
+import com.csh.service.VehicleService;
 import com.csh.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 设备查询控制器
  * Created by zhangye on 2016/12/23.
  */
 @Controller("deviceInfoController")
@@ -37,6 +39,53 @@ public class DeviceInfoController extends MobileBaseController{
     @Autowired
     private DeviceInfoService deviceInfoService;
 
+    @Autowired
+    private VehicleService vehicleService;
+
+
+    @RequestMapping("/bindDevice")
+    public @ResponseBody BaseResponse bindDevice(@RequestBody DeviceInfoRequest request){
+        BaseResponse response = new BaseResponse();
+        Long userId = request.getUserId();
+        String token = request.getToken();
+        Long tenantId = request.getTenantId();
+        Long deviceId = request.getDeviceId();
+        Long vehicleId = request.getVehicleId();
+
+        if (LogUtil.isDebugEnabled(getClass())){
+            LogUtil.debug(getClass(), "bindDevice", "request param: %s", request.toString());
+        }
+
+        //参数有效性验证
+        if (userId == null || tenantId == null || deviceId == null){
+            response.setCode(CommonAttributes.MISSING_REQUIRE_PARAM);
+            response.setDesc(Message.error("csh.login.param.invalid").getContent());
+            return response;
+        }
+        String userToken = tenantAccountService.getTenantUserToken(userId);
+        // token验证
+        if (!TokenGenerator.isValiableToken(token, userToken)) {
+            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+            response.setDesc(Message.error("csh.user.token.timeout").getContent());
+            return response;
+        }
+
+        DeviceInfo deviceInfo = deviceInfoService.find(deviceId);
+        deviceInfo.setBindStatus(CommonEnum.BindStatus.BINDED);
+        deviceInfo.setVehicle(vehicleService.find(vehicleId));
+        deviceInfoService.update(deviceInfo);
+
+        String newToken = TokenGenerator.generateToken(token);
+        response.setToken(newToken);
+        response.setCode(CommonAttributes.SUCCESS);
+        response.setDesc(SUCCESS_MESSAGE.getContent());
+
+        if (LogUtil.isDebugEnabled(getClass())){
+            LogUtil.debug(getClass(), "bindDevice", "response:success");
+        }
+
+        return response;
+    }
 
     @RequestMapping("/unbindDevice")
     public @ResponseBody BaseResponse unbindDevice(@RequestBody DeviceInfoRequest request){
@@ -47,7 +96,7 @@ public class DeviceInfoController extends MobileBaseController{
         Long deviceId = request.getDeviceId();
 
         if (LogUtil.isDebugEnabled(getClass())){
-            LogUtil.debug(getClass(), "findPage", "request param: %s", request.toString());
+            LogUtil.debug(getClass(), "unbindDevice", "request param: %s", request.toString());
         }
 
         //参数有效性验证
@@ -75,7 +124,7 @@ public class DeviceInfoController extends MobileBaseController{
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
         if (LogUtil.isDebugEnabled(getClass())){
-            LogUtil.debug(getClass(), "findPage", "response:success");
+            LogUtil.debug(getClass(), "unbindDevice", "response:success");
         }
 
         return response;
@@ -91,7 +140,7 @@ public class DeviceInfoController extends MobileBaseController{
         String deviceNo = request.getDeviceNo();
 
         if (LogUtil.isDebugEnabled(getClass())){
-            LogUtil.debug(getClass(), "findPage", "request param: %s", request.toString());
+            LogUtil.debug(getClass(), "getDeviceDetail", "request param: %s", request.toString());
         }
 
         //参数有效性验证
@@ -143,7 +192,7 @@ public class DeviceInfoController extends MobileBaseController{
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
         if (LogUtil.isDebugEnabled(getClass())){
-            LogUtil.debug(getClass(), "findPage", "response:success");
+            LogUtil.debug(getClass(), "getDeviceDetail", "response:success");
         }
 
         return response;
@@ -205,8 +254,9 @@ public class DeviceInfoController extends MobileBaseController{
         }
 
         return response;
-
     }
+
+
 
 
 }

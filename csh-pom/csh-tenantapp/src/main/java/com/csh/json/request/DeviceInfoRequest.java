@@ -25,6 +25,11 @@ public class DeviceInfoRequest extends BaseRequest{
      */
     private Long deviceId;
 
+    /**
+     * 车辆ID
+     */
+    private Long vehicleId;
+
     public String getDeviceNo() {
         return deviceNo;
     }
@@ -49,6 +54,14 @@ public class DeviceInfoRequest extends BaseRequest{
         this.deviceId = deviceId;
     }
 
+    public Long getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(Long vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -57,6 +70,7 @@ public class DeviceInfoRequest extends BaseRequest{
         buffer.append("[tenantId=").append(getTenantId()).append("]");
         buffer.append("[deviceNo=").append(getDeviceNo()).append("]");
         buffer.append("[deviceId=").append(getDeviceId()).append("]");
+        buffer.append("[vehicleId=").append(getVehicleId()).append("]");
         buffer.append("[bindStatus=").append(getBindStatus()).append("]");
         return buffer.toString();
     }
