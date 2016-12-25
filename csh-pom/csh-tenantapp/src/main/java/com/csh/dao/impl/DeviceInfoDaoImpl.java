@@ -1,6 +1,6 @@
 package com.csh.dao.impl; 
 
-import org.springframework.stereotype.Repository; 
+import org.springframework.stereotype.Repository;
 
 import com.csh.entity.DeviceInfo;
 import com.csh.framework.dao.impl.BaseDaoImpl;
