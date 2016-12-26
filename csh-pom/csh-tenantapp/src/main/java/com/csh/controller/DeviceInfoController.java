@@ -44,7 +44,11 @@ public class DeviceInfoController extends MobileBaseController{
     @Autowired
     private VehicleService vehicleService;
 
-
+    /**
+     * 绑定设备
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/bindDevice", method = RequestMethod.POST)
     public @ResponseBody BaseResponse bindDevice(@RequestBody DeviceInfoRequest request){
         BaseResponse response = new BaseResponse();
@@ -89,6 +93,11 @@ public class DeviceInfoController extends MobileBaseController{
         return response;
     }
 
+    /**
+     * 解绑设备
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/unbindDevice", method = RequestMethod.POST)
     public @ResponseBody BaseResponse unbindDevice(@RequestBody DeviceInfoRequest request){
         BaseResponse response = new BaseResponse();
@@ -132,6 +141,11 @@ public class DeviceInfoController extends MobileBaseController{
         return response;
     }
 
+    /**
+     * 设备详情
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/getDeviceDetail", method = RequestMethod.POST)
     public @ResponseBody DeviceDetailResponse getDeviceDetail(@RequestBody DeviceInfoRequest request){
         DeviceDetailResponse response = new DeviceDetailResponse();
@@ -200,6 +214,11 @@ public class DeviceInfoController extends MobileBaseController{
         return response;
     }
 
+    /**
+     * 设备分页信息
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/findPage", method = RequestMethod.POST)
     public @ResponseBody
     DevicePageResponse findPage(@RequestBody DeviceInfoRequest request){
