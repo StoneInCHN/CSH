@@ -167,11 +167,11 @@ public class DeviceInfoController extends MobileBaseController{
         }
         String userToken = tenantAccountService.getTenantUserToken(userId);
         // token验证
-        if (!TokenGenerator.isValiableToken(token, userToken)) {
-            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
-            response.setDesc(Message.error("csh.user.token.timeout").getContent());
-            return response;
-        }
+//        if (!TokenGenerator.isValiableToken(token, userToken)) {
+//            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+//            response.setDesc(Message.error("csh.user.token.timeout").getContent());
+//            return response;
+//        }
 
         //获取设备详情信息
         DeviceInfo deviceInfo = deviceInfoService.find(deviceId);
@@ -202,8 +202,8 @@ public class DeviceInfoController extends MobileBaseController{
         }
         response.setDeviceDetail(resultMap);
 
-        String newToken = TokenGenerator.generateToken(token);
-        response.setToken(newToken);
+//        String newToken = TokenGenerator.generateToken(token);
+//        response.setToken(newToken);
         response.setCode(CommonAttributes.SUCCESS);
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
@@ -239,11 +239,11 @@ public class DeviceInfoController extends MobileBaseController{
         }
         String userToken = tenantAccountService.getTenantUserToken(userId);
         // token验证
-        if (!TokenGenerator.isValiableToken(token, userToken)) {
-            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
-            response.setDesc(Message.error("csh.user.token.timeout").getContent());
-            return response;
-        }
+//        if (!TokenGenerator.isValiableToken(token, userToken)) {
+//            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+//            response.setDesc(Message.error("csh.user.token.timeout").getContent());
+//            return response;
+//        }
 
         //设备结果List
         Page<DeviceInfo> pageByRequest = deviceInfoService.findPageByRequest(request);
@@ -265,8 +265,8 @@ public class DeviceInfoController extends MobileBaseController{
         response.setDeviceUnbindCount(unbindDeviceCount);
         response.setDeviceAllCount(bindDeviceCount + unbindDeviceCount);
 
-        String newToken = TokenGenerator.generateToken(token);
-        response.setToken(newToken);
+//        String newToken = TokenGenerator.generateToken(token);
+//        response.setToken(newToken);
         response.setCode(CommonAttributes.SUCCESS);
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
