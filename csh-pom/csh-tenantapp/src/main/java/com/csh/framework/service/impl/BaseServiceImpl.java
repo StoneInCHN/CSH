@@ -23,6 +23,7 @@ import org.springframework.util.Assert;
 import com.csh.entity.base.BaseEntity;
 import com.csh.framework.dao.BaseDao;
 import com.csh.framework.filter.Filter;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.ordering.Ordering;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
@@ -220,4 +221,35 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
   public void refreshIndex() {
     baseDao.refreshIndex();
   }
+  
+  @Transactional(readOnly = true)
+  public List<T> findAll(Boolean isTenant,Long tenantID) {
+    return findList(null, null, null,isTenant, null,tenantID);
+  }
+  
+  @Transactional(readOnly = true)
+  public List<T> findList(Integer count, List<Filter> filters, List<Ordering> orderings,
+      Boolean isTenant, String flag,Long tenantID) {
+    if (isTenant) {
+      if(filters == null){
+        filters = new ArrayList<Filter>();
+      }
+      Filter tenantFilter =
+          new Filter("tenantID", Operator.eq, tenantID);
+      filters.add(tenantFilter);
+    }
+    return findList(null, count, filters, orderings);
+  }
+
+  @Transactional(readOnly = true)
+  public Page<T> findPage(Pageable pageable, Boolean isTenant,Long tenantID) {
+    if (isTenant) {
+      List<Filter> filters = pageable.getFilters();
+      Filter tenantFilter =
+          new Filter("tenantID", Operator.eq, tenantID);
+      filters.add(tenantFilter);
+    }
+    return baseDao.findPage(pageable);
+  }
+
 }

@@ -112,7 +112,7 @@ public class VehicleStatus {
 
   public Float getGpsMileage ()
   {
-    return gpsMileage;
+    return gpsMileage==null?0:gpsMileage;
   }
 
   public void setGpsMileage (Float gpsMileage)

@@ -1,6 +1,5 @@
 package com.csh.entity;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +21,6 @@ import com.csh.entity.commonenum.CommonEnum.MessageType;
 import com.csh.entity.commonenum.CommonEnum.SendType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 /**
  * Entity - 推送消息
  * 
@@ -35,83 +33,116 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_message_info_sequence")
 public class MessageInfo extends BaseEntity {
 
-  private static final long serialVersionUID = 1170442128165498366L;
+	private static final long serialVersionUID = 1170442128165498366L;
 
+	/** 消息类型 */
+	private MessageType messageType;
 
-  /** 消息类型 */
-  private MessageType messageType;
+	/** 消息标题 */
+	private String messageTitle;
 
-  /** 消息标题 */
-  private String messageTitle;
+	/** 消息内容 */
+	private String messageContent;
 
-  /** 消息内容 */
-  private String messageContent;
+	private SendType sendType;
 
-  private SendType sendType;
-  /** 消息、会员对应关系实体 */
-  private Set<MsgEndUser> msgUser = new HashSet<MsgEndUser>();
+	/**
+	 * 经度
+	 */
+	private String lon;
+	/**
+	 * 纬度
+	 */
+	private String lat;
+	/** 异常发生地址 */
+	private String alarmPlace;
+	/** 消息、会员对应关系实体 */
+	private Set<MsgEndUser> msgUser = new HashSet<MsgEndUser>();
 
-  /**
-   * 租户ID
-   */
-  private Long tenantID;
-  
-  @JsonProperty
-  @Field(store = Store.NO,index = Index.YES,analyze = Analyze.NO)
-  public MessageType getMessageType() {
-    return messageType;
-  }
+	/**
+	 * 租户ID
+	 */
+	private Long tenantID;
 
-  public void setMessageType(MessageType messageType) {
-    this.messageType = messageType;
-  }
+	@JsonProperty
+	@Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
+	public MessageType getMessageType() {
+		return messageType;
+	}
 
-  @JsonProperty
-  public String getMessageTitle() {
-    return messageTitle;
-  }
+	public void setMessageType(MessageType messageType) {
+		this.messageType = messageType;
+	}
 
-  public void setMessageTitle(String messageTitle) {
-    this.messageTitle = messageTitle;
-  }
+	@JsonProperty
+	public String getMessageTitle() {
+		return messageTitle;
+	}
 
-  @JsonProperty
-  public String getMessageContent() {
-    return messageContent;
-  }
+	public void setMessageTitle(String messageTitle) {
+		this.messageTitle = messageTitle;
+	}
 
-  public void setMessageContent(String messageContent) {
-    this.messageContent = messageContent;
-  }
+	@JsonProperty
+	public String getMessageContent() {
+		return messageContent;
+	}
 
-  @OneToMany(mappedBy = "message", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  public Set<MsgEndUser> getMsgUser() {
-    return msgUser;
-  }
+	public void setMessageContent(String messageContent) {
+		this.messageContent = messageContent;
+	}
 
-  public void setMsgUser(Set<MsgEndUser> msgUser) {
-    this.msgUser = msgUser;
-  }
-  @org.hibernate.annotations.Index(name="messageInfo_tenantid")
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
-  public Long getTenantID() {
-    return tenantID;
-  }
+	@OneToMany(mappedBy = "message", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public Set<MsgEndUser> getMsgUser() {
+		return msgUser;
+	}
 
-  public void setTenantID(Long tenantID) {
-    this.tenantID = tenantID;
-  }
+	public void setMsgUser(Set<MsgEndUser> msgUser) {
+		this.msgUser = msgUser;
+	}
 
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
-  @JsonProperty
-  public SendType getSendType ()
-  {
-    return sendType;
-  }
+	@org.hibernate.annotations.Index(name = "messageInfo_tenantid")
+	@Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
+	public Long getTenantID() {
+		return tenantID;
+	}
 
-  public void setSendType (SendType sendType)
-  {
-    this.sendType = sendType;
-  }
+	public void setTenantID(Long tenantID) {
+		this.tenantID = tenantID;
+	}
+
+	@Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
+	@JsonProperty
+	public SendType getSendType() {
+		return sendType;
+	}
+
+	public void setSendType(SendType sendType) {
+		this.sendType = sendType;
+	}
+
+	public String getLon() {
+		return lon;
+	}
+
+	public void setLon(String lon) {
+		this.lon = lon;
+	}
+
+	public String getLat() {
+		return lat;
+	}
+
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+
+	public String getAlarmPlace() {
+		return alarmPlace;
+	}
+
+	public void setAlarmPlace(String alarmPlace) {
+		this.alarmPlace = alarmPlace;
+	}
 
 }

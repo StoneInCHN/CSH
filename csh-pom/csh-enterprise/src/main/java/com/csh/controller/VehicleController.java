@@ -438,8 +438,11 @@ public class VehicleController extends BaseController
     Calendar calendar = Calendar.getInstance ();
     calendar.add(Calendar.DAY_OF_MONTH,-1);
    VehicleDailyReport report= vehicleService.callVehicleDailyData(new Date (calendar.getTimeInMillis ()),vehicleId);
-   model.put ("vehicleDailyReport", report);
-   model.put ("vehicleReportDate", DateTimeUtils.convertDateToString (report.getReportDate (), "yyyy-MM-dd"));
+   if (report != null) {
+	   model.put ("vehicleDailyReport", report);
+	   model.put ("vehicleReportDate", DateTimeUtils.convertDateToString (report.getReportDate (), "yyyy-MM-dd"));
+   }
+  
     return "vehicle/vehicleDailyReport";
   }
   @RequestMapping(value = "/getVehicleDailyData", method = RequestMethod.POST)

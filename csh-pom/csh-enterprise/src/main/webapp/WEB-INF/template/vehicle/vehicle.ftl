@@ -2,6 +2,7 @@
 <script src="${base}/resources/modules/vehicle.js"></script>
 <script type="text/javascript" src="${base}/resources/js/datePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${base}/resources/js/LuShu.js"/>
+<link rel="stylesheet" type="text/css"href="${base}/resources/css/vehicel.css" >
 <div>
 	  <fieldset>
 	    <legend>${message("csh.vehicle.search")}</legend>

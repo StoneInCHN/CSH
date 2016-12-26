@@ -173,7 +173,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle,Long> implements
             JsonNode msgNode = rootNode.path ("msg");
             String msg = objectMapper.writeValueAsString(msgNode);
             vehicleDailyReport = objectMapper.readValue (msg, VehicleDailyReport.class);
-            
+            if (vehicleDailyReport == null) {
+				return vehicleDailyReport;
+			}
             BigDecimal fuelConsumption = new BigDecimal(vehicleDailyReport.getFuelConsumption ());
             
             vehicleDailyReport.setDeviceId (vehicle.getDevice ().getDeviceNo ());
