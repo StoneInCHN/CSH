@@ -9,4 +9,11 @@ public interface VehicleService extends BaseService<Vehicle,Long>{
 
     Page<Vehicle> findPageByRequest(VehicleRequest request);
 
+    /**
+     * 根据条件进行车辆查询
+     * @param request
+     * @return
+     */
+    Page<Vehicle> findPageForList(VehicleRequest request);
+    
 }

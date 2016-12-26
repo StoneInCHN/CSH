@@ -25,6 +25,7 @@ import com.csh.entity.MessageInfo;
 import com.csh.entity.MsgEndUser;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
 import com.csh.entity.commonenum.CommonEnum.SystemConfigKey;
+import com.csh.entity.commonenum.CommonEnum.TenantMsgType;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseRequest;
@@ -256,11 +257,32 @@ public class MessageController extends MobileBaseController {
       EndUser endUser = deviceInfo.getVehicle().getEndUser();
       msg.setMessageType(MessageType.PERSONALMSG);
       String msgContent = null;
+      TenantMsgType tenantMsgType = null;
       if (msgType.equals("3")) {// 警告信息
         msgContent =
             Message.warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
                 msgReq.getMsgContent()).getContent();
+        if (msgReq.getMsgContent().contains("非法启动")) {
+          tenantMsgType = TenantMsgType.ILLEGALSTARTWARN;
+        } else if (msgReq.getMsgContent().contains("非法震动")) {
+          tenantMsgType = TenantMsgType.ILLEGALSHOCKWARN;
+        } else if (msgReq.getMsgContent().contains("obd故障报警")) {
+          tenantMsgType = TenantMsgType.OBDWARN;
+        } else if (msgReq.getMsgContent().contains("水温异常报警")) {
+          tenantMsgType = TenantMsgType.WATERTEMPWARN;
+        } else if (msgReq.getMsgContent().contains("超速报警")) {
+          tenantMsgType = TenantMsgType.OVERSPEEDWARN;
+        } else if (msgReq.getMsgContent().contains("碰撞告警")) {
+          tenantMsgType = TenantMsgType.CRASHWARN;
+        } else if (msgReq.getMsgContent().contains("侧翻告警")) {
+          tenantMsgType = TenantMsgType.ROLLOVERWARN;
+        } else if (msgReq.getMsgContent().contains("电瓶拆除报警")) {
+          tenantMsgType = TenantMsgType.BATTERYREMOVEWARN;
+        } else if (msgReq.getMsgContent().contains("电瓶电压低报警")) {
+          tenantMsgType = TenantMsgType.LOWVOLTAGEWARN;
+        }
+
       } else if (msgType.equals("2")) {// 熄火指令
         String mile = msgReq.getGpsMileage();
         if (mile == null) {
@@ -282,6 +304,7 @@ public class MessageController extends MobileBaseController {
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime())).getContent();
       } else if (msgType.equals("4")) {// 故障码信息
         String content = msgReq.getMsgContent();
+        tenantMsgType = TenantMsgType.FAULTCODEWARN;
         Set<String> codeSet = new HashSet<String>();
         String[] codes = content.split(",");
         for (String code : codes) {
@@ -294,6 +317,7 @@ public class MessageController extends MobileBaseController {
                 .getContent();
       }
 
+      msg.setTenantMsgType(tenantMsgType);
       msg.setTenantID(deviceInfo.getTenantID());
       msg.setMessageContent(msgContent);
       MsgEndUser msgEndUser = new MsgEndUser();
