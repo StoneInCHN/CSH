@@ -199,7 +199,16 @@ public class Vehicle extends BaseEntity {
    */
   private Boolean isFirstBindDevice = true;
 
-
+  /**
+   * 故障码
+   */
+  private  String faultCode;
+  
+  /**
+   * 异常警告
+   */
+  private String  abnormalWarning;
+  
   public Boolean getIsFirstBindTenant() {
     return isFirstBindTenant;
   }
@@ -522,6 +531,22 @@ public class Vehicle extends BaseEntity {
 
   public void setLon(Float lon) {
     this.lon = lon;
+  }
+  
+  public String getFaultCode() {
+    return faultCode;
+  }
+
+  public void setFaultCode(String faultCode) {
+    this.faultCode = faultCode;
+  }
+
+  public String getAbnormalWarning() {
+    return abnormalWarning;
+  }
+
+  public void setAbnormalWarning(String abnormalWarning) {
+    this.abnormalWarning = abnormalWarning;
   }
 
   @Transient

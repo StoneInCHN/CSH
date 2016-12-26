@@ -425,8 +425,8 @@
 	<modules> 
 		<module>csh-entity</module>
 		<module>csh-interface</module>
-		<!-- <module>csh-operation</module> -->
+		<module>csh-operation</module>
 		<module>csh-enterprise</module>
-    <module>csh-tenantapp</module>
+    	<module>csh-tenantapp</module>
   </modules>
 </project>
