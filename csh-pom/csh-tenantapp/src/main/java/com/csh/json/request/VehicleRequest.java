@@ -2,13 +2,17 @@ package com.csh.json.request;
 
 import java.util.Date;
 
+import com.csh.entity.commonenum.CommonEnum.OnlineStatus;
 import com.csh.json.base.BaseRequest;
 
 /**
  * 车辆信息查询请求 Created by zhangye on 2016/12/25.
  */
 public class VehicleRequest extends BaseRequest {
-
+  
+  
+  private Long vehicleId;
+  
   /**
    * 所有者
    */
@@ -32,7 +36,7 @@ public class VehicleRequest extends BaseRequest {
   /**
    * 是否在线
    */
-  private boolean online;
+  private OnlineStatus onlineStatus;
 
   /**
    * 设备号
@@ -43,6 +47,15 @@ public class VehicleRequest extends BaseRequest {
    * 手机号
    */
   private String mobileNum;
+
+  
+  public Long getVehicleId() {
+    return vehicleId;
+  }
+
+  public void setVehicleId(Long vehicleId) {
+    this.vehicleId = vehicleId;
+  }
 
   public String getEndUserName() {
     return endUserName;
@@ -76,13 +89,6 @@ public class VehicleRequest extends BaseRequest {
     this.plateDateEnd = plateDateEnd;
   }
   
-  public boolean isOnline() {
-    return online;
-  }
-
-  public void setOnline(boolean online) {
-    this.online = online;
-  }
 
   public String getDeviceNo() {
     return deviceNo;
@@ -100,11 +106,19 @@ public class VehicleRequest extends BaseRequest {
     this.mobileNum = mobileNum;
   }
 
+  public OnlineStatus getOnlineStatus() {
+    return onlineStatus;
+  }
+
+  public void setOnlineStatus(OnlineStatus onlineStatus) {
+    this.onlineStatus = onlineStatus;
+  }
+
   @Override
   public String toString() {
     return "VehicleRequest [endUserName=" + endUserName + ", plate=" + plate + ", plateDateStart="
-        + plateDateStart + ", plateDateEnd=" + plateDateEnd + ", online=" + online + ", deviceNo="
-        + deviceNo + ", mobileNum=" + mobileNum + "]";
+        + plateDateStart + ", plateDateEnd=" + plateDateEnd + ", onlineStatus=" + onlineStatus
+        + ", deviceNo=" + deviceNo + ", mobileNum=" + mobileNum + "]";
   }
 
 }

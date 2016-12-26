@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +20,8 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.Vehicle;
 import com.csh.framework.paging.Page;
-import com.csh.framework.paging.Pageable;
 import com.csh.json.base.ResponseMultiple;
+import com.csh.json.base.ResponseOne;
 import com.csh.json.request.VehicleRequest;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.EndUserService;
@@ -39,9 +40,6 @@ public class VehicleController extends MobileBaseController {
 
   @Resource(name = "vehicleServiceImpl")
   private VehicleService vehicleService;
-
-  @Resource(name = "endUserServiceImpl")
-  private EndUserService endUserService;
 
   @Resource(name = "tenantInfoServiceImpl")
   private TenantInfoService tenantInfoService;
@@ -73,14 +71,20 @@ public class VehicleController extends MobileBaseController {
           .debug(
               VehicleController.class,
               "getVehicleList",
-              "search Vsehicle for vehicle with MobileNum: %s,deviceNo: %s,plate: %s,isOnline: %s,userName: %s, userId: %s",
+              "search Vsehicle for vehicle with MobileNum: %s,deviceNo: %s,plate: %s,OnlineStatus: %s,userName: %s, userId: %s",
               vehicleRequest.getMobileNum(), vehicleRequest.getDeviceNo(),
-              vehicleRequest.getPlate(), vehicleRequest.isOnline(), vehicleRequest.getUserName(),
-              vehicleRequest.getUserId());
+              vehicleRequest.getPlate(), vehicleRequest.getOnlineStatus(),
+              vehicleRequest.getUserName(), vehicleRequest.getUserId());
     }
-    Pageable pageable = new Pageable(vehicleRequest.getPageNumber(), vehicleRequest.getPageSize());
-
-
+    // 查询车辆分页数据
+    Page<Vehicle> vehiclePage = vehicleService.findPageForList(vehicleRequest);
+    String[] properties =
+        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail",
+            "faultCode", "wainingInfo", "isOnline", "vehicleFullBrand", "obdStatusTime",
+            "createDate"};
+    List<Map<String, Object>> resultMaps =
+        FieldFilterUtils.filterCollectionMap(properties, vehiclePage.getContent());
+    response.setMsg(resultMaps);
 
     String newtoken = TokenGenerator.generateToken(vehicleRequest.getToken());
     tenantAccountService.createTenantUserToken(newtoken, userId);
@@ -89,7 +93,33 @@ public class VehicleController extends MobileBaseController {
     return response;
   }
 
+  @RequestMapping(value = "/getVehicleDetails", method = RequestMethod.GET)
+  public @ResponseBody ResponseOne<Map<String, Object>> getVehicleDetails(
+      @RequestBody VehicleRequest request) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    // 验证登录token
+    String userToken = tenantAccountService.getTenantUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
 
+    Vehicle vehicle = vehicleService.find(request.getVehicleId());
+
+    //
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("vehicle", vehicle);
+    response.setMsg(map);
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    tenantAccountService.createTenantUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return null;
+  }
 
   @RequestMapping("/findUnbindVehiclePage")
   public @ResponseBody ResponseMultiple<Map<String, Object>> findUnbindVehiclePage(
@@ -137,7 +167,6 @@ public class VehicleController extends MobileBaseController {
 
     return response;
   }
-
 
 
 }

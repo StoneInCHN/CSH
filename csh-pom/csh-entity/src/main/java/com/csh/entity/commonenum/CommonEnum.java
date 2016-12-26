@@ -976,5 +976,18 @@ public class CommonEnum {
     TURNOFF
   }
 
-
+  public enum OnlineStatus {
+    /**
+     * 全部
+     */
+    ALL,
+    /**
+     * 在线
+     */
+    ONLINE,
+    /**
+     * 离线
+     */
+    OFFLINE;
+  }
 }
