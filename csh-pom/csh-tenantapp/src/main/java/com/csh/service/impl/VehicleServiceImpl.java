@@ -155,11 +155,12 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     query.add(plateNotQuery, Occur.MUST_NOT);
 
     if (plateQuery != null || deviceNoQuery != null || mobileNumQuery != null) {
-      vehiclePage = super.search(query, pageable, analyzer, filter, null);
+      vehiclePage = super.search(query, pageable, analyzer, filter, null,request.getTenantId());
     } else {
       List<Filter> filters = new ArrayList<Filter>();
       Filter plateFilter = new Filter("plate", Operator.ne, "0000000");
       filters.add(plateFilter);
+      filters.add(new Filter("tenantID", Operator.eq, request.getTenantId()));
       pageable.setFilters(filters);
       vehiclePage = this.findPage(pageable);
     }

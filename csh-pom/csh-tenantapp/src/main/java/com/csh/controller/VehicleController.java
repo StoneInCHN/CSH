@@ -52,8 +52,7 @@ public class VehicleController extends MobileBaseController {
 
   @RequestMapping(value = "/list", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseMultiple<Map<String, Object>> list(HttpServletRequest requesthttp,
-      @RequestBody VehicleRequest vehicleRequest) {
+  public @ResponseBody ResponseMultiple<Map<String, Object>> list(@RequestBody VehicleRequest vehicleRequest) {
 
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Long userId = vehicleRequest.getUserId();
@@ -79,7 +78,7 @@ public class VehicleController extends MobileBaseController {
     // 查询车辆分页数据
     Page<Vehicle> vehiclePage = vehicleService.findPageForList(vehicleRequest);
     String[] properties =
-        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail",
+        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail.name",
             "faultCode", "wainingInfo", "isOnline", "vehicleFullBrand", "obdStatusTime",
             "createDate"};
     List<Map<String, Object>> resultMaps =

@@ -113,6 +113,14 @@ public interface BaseService<T, ID extends Serializable> {
   long count(Filter... filters);
 
   /**
+   * 查询实体对象数量
+   * @param tenantID 租户ID
+   * @param filters 筛选
+   * @return 实体对象数量
+   */
+  long count (Long tenantID,Filter... filters);
+  
+  /**
    * 判断实体对象是否存在
    * 
    * @param id ID
@@ -204,6 +212,9 @@ public interface BaseService<T, ID extends Serializable> {
    */
   Page<T> search(Query query, Pageable pageable, Analyzer analyzer,
       org.apache.lucene.search.Filter filter, SortField sortField);
+  
+  Page<T> search(Query query, Pageable pageable, Analyzer analyzer,
+      org.apache.lucene.search.Filter filter, SortField sortField,Long tenantID);
 
   /**
    * 重建索引

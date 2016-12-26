@@ -11,8 +11,12 @@ import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
@@ -216,6 +220,16 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
       org.apache.lucene.search.Filter filter, SortField sortField) {
     return baseDao.search(query, pageable, analyzer, filter, sortField);
   }
+  
+  @Override
+  public Page<T> search(Query query, Pageable pageable, Analyzer analyzer,
+      org.apache.lucene.search.Filter filter, SortField sortField, Long tenantID) {
+    if(tenantID !=null){
+       TermQuery tenantIdQuery = new TermQuery(new Term("tenantID", tenantID.toString()));
+       ((BooleanQuery)query).add (tenantIdQuery,Occur.MUST);
+    }
+    return baseDao.search(query, pageable, analyzer, filter, sortField);
+  }
 
   @Override
   public void refreshIndex() {
@@ -251,5 +265,23 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     }
     return baseDao.findPage(pageable);
   }
+
+  @Override
+  public long count(Long tenantID, Filter... filters) {
+    if(tenantID !=null){
+      Filter tenantIdFilter = new Filter();
+      tenantIdFilter.setOperator (Operator.eq);
+      tenantIdFilter.setProperty ("tenantID");
+      tenantIdFilter.setValue (tenantID);
+      Filter[]copyArr = Arrays.copyOf(filters,filters.length+1);
+      copyArr[filters.length]=tenantIdFilter;
+      Arrays.sort(copyArr);
+      return baseDao.count (copyArr);
+    }else{
+      return baseDao.count(filters);
+    }  
+  }
+
+
 
 }
