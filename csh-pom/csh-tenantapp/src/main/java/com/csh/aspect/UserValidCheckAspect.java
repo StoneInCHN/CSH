@@ -17,18 +17,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
-import com.csh.entity.EndUser;
+import com.csh.entity.TenantAccount;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
-import com.csh.service.EndUserService;
+import com.csh.service.TenantAccountService;
 
 @Aspect
 @Component
 public class UserValidCheckAspect {
 
 
-
-  @Resource(name = "endUserServiceImpl")
-  private EndUserService endUserService;
+  @Resource(name = "tenantAccountServiceImpl")
+  private TenantAccountService tenantAccountService;
 
   // Controller层切点
   @Pointcut("@annotation(com.csh.aspect.UserValidCheck)")
@@ -45,9 +44,9 @@ public class UserValidCheckAspect {
   public @ResponseBody Object checkUserValid(ProceedingJoinPoint joinPoint) throws Throwable {
     UserParam userParam = getControllerMethodParam(joinPoint);
     Boolean validFlag = true;
-    EndUser endUser = endUserService.find(userParam.getUserId());
-    if (endUser == null || AccountStatus.DELETE.equals(endUser.getAccountStatus())
-        || AccountStatus.LOCKED.equals(endUser.getAccountStatus())) {
+    TenantAccount tenantAccount = tenantAccountService.find(userParam.getUserId());
+    if (tenantAccount == null || AccountStatus.DELETE.equals(tenantAccount.getAccoutStatus())
+        || AccountStatus.LOCKED.equals(tenantAccount.getAccoutStatus())) {
       validFlag = false;
     }
     if (!validFlag) {

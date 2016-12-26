@@ -1,18 +1,38 @@
 package com.csh.json.request;
 
+import java.util.Date;
+
 import com.csh.json.base.BaseRequest;
 
+/**
+ * 车辆信息查询请求 Created by zhangye on 2016/12/25.
+ */
 public class VehicleRequest extends BaseRequest {
 
   /**
-   * 是否在线
+   * 所有者
    */
-  private boolean online;
+  private String endUserName;
 
   /**
    * 车牌号
    */
   private String plate;
+
+  /**
+   * 上牌日期
+   */
+  private Date plateDateStart;
+
+  /**
+   * 上牌日期
+   */
+  private Date plateDateEnd;
+
+  /**
+   * 是否在线
+   */
+  private boolean online;
 
   /**
    * 设备号
@@ -24,12 +44,12 @@ public class VehicleRequest extends BaseRequest {
    */
   private String mobileNum;
 
-  public boolean isOnline() {
-    return online;
+  public String getEndUserName() {
+    return endUserName;
   }
 
-  public void setOnline(boolean online) {
-    this.online = online;
+  public void setEndUserName(String endUserName) {
+    this.endUserName = endUserName;
   }
 
   public String getPlate() {
@@ -38,6 +58,30 @@ public class VehicleRequest extends BaseRequest {
 
   public void setPlate(String plate) {
     this.plate = plate;
+  }
+
+  public Date getPlateDateStart() {
+    return plateDateStart;
+  }
+
+  public void setPlateDateStart(Date plateDateStart) {
+    this.plateDateStart = plateDateStart;
+  }
+
+  public Date getPlateDateEnd() {
+    return plateDateEnd;
+  }
+
+  public void setPlateDateEnd(Date plateDateEnd) {
+    this.plateDateEnd = plateDateEnd;
+  }
+  
+  public boolean isOnline() {
+    return online;
+  }
+
+  public void setOnline(boolean online) {
+    this.online = online;
   }
 
   public String getDeviceNo() {
@@ -54,6 +98,13 @@ public class VehicleRequest extends BaseRequest {
 
   public void setMobileNum(String mobileNum) {
     this.mobileNum = mobileNum;
+  }
+
+  @Override
+  public String toString() {
+    return "VehicleRequest [endUserName=" + endUserName + ", plate=" + plate + ", plateDateStart="
+        + plateDateStart + ", plateDateEnd=" + plateDateEnd + ", online=" + online + ", deviceNo="
+        + deviceNo + ", mobileNum=" + mobileNum + "]";
   }
 
 }

@@ -44,8 +44,8 @@ public final class CommonAttributes {
   public static final String FAIL_SMSTOKEN = "0003";// 短信验证码相关操作失败
   /** Token 失效 */
   public static final String FAIL_TOKEN_TIMEOUT = "0004";// Token 失效
-  /** 重置密码失败 */
-  public static final String FAIL_RESET_PWD = "0005";// 重置密码失败
+  /** 修改密码失败 */
+  public static final String FAIL_UPDATE_PWD = "0005";// 修改密码失败
   /** 缺失必要参数 */
   public static final String MISSING_REQUIRE_PARAM = "0006";// 缺失必要参数
 

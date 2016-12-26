@@ -2,39 +2,39 @@ package com.csh.json.request;
 
 import com.csh.json.base.BaseRequest;
 
-public class UserRegRequest extends BaseRequest {
+public class TenantLoginRequest extends BaseRequest {
 
   /**
-   * 密码
+   * 登录密码
    */
   private String password;
 
   /**
-   * 确认密码
+   * 修改时新密码
+   */
+  private String password_new;
+  /**
+   * 修改时确认密码
    */
   private String password_confirm;
 
   /**
-   * 手机验证码
-   */
-  private String smsToken;
-
-  /**
-   * app初始化个推SDK后生成的client id
+   * app初始化SDK后生成的client id
    */
   private String appClientId;
 
   /**
-   * 租户orgCode
+   * 租户组织机构代码
    */
   private String orgCode;
 
-  public String getOrgCode() {
-    return orgCode;
+
+  public String getPassword_new() {
+    return password_new;
   }
 
-  public void setOrgCode(String orgCode) {
-    this.orgCode = orgCode;
+  public void setPassword_new(String password_new) {
+    this.password_new = password_new;
   }
 
   public String getPassword_confirm() {
@@ -45,6 +45,14 @@ public class UserRegRequest extends BaseRequest {
     this.password_confirm = password_confirm;
   }
 
+  public String getOrgCode() {
+    return orgCode;
+  }
+
+  public void setOrgCode(String orgCode) {
+    this.orgCode = orgCode;
+  }
+
   public String getAppClientId() {
     return appClientId;
   }
@@ -53,7 +61,6 @@ public class UserRegRequest extends BaseRequest {
     this.appClientId = appClientId;
   }
 
-
   public String getPassword() {
     return password;
   }
@@ -61,15 +68,6 @@ public class UserRegRequest extends BaseRequest {
   public void setPassword(String password) {
     this.password = password;
   }
-
-  public String getSmsToken() {
-    return smsToken;
-  }
-
-  public void setSmsToken(String smsToken) {
-    this.smsToken = smsToken;
-  }
-
 
 
 }
