@@ -27,7 +27,6 @@ import com.csh.json.base.BaseResponse;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.TenantInfoRequest;
 import com.csh.json.request.TenantLoginRequest;
-import com.csh.service.EndUserService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantInfoService;
 import com.csh.utils.FieldFilterUtils;
@@ -46,15 +45,26 @@ import com.csh.utils.TokenGenerator;
 @RequestMapping("/tenantAccount")
 public class TenantAccountController extends MobileBaseController {
 
-  @Resource(name = "endUserServiceImpl")
-  private EndUserService endUserService;
-
   @Resource(name = "tenantInfoServiceImpl")
   private TenantInfoService tenantInfoService;
 
   @Resource(name = "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
 
+
+  /**
+   * 刷新索引
+   * 
+   * @return
+   */
+  @RequestMapping(value = "/refreshIndex", method = RequestMethod.GET)
+  public @ResponseBody BaseResponse refreshIndex(BaseRequest request) {
+
+    BaseResponse response = new BaseResponse();
+    tenantAccountService.refreshIndex();
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
   /**
    * 获取公匙
