@@ -33,6 +33,10 @@ public class BaseRequest {
    */
   private Long tenantId;
 
+  /**
+   * entity id
+   */
+  private Long entityId;
   public Long getTenantId() {
     return tenantId;
   }
@@ -79,6 +83,14 @@ public class BaseRequest {
 
   public void setPageNumber(Integer pageNumber) {
     this.pageNumber = pageNumber;
+  }
+
+  public Long getEntityId() {
+	return entityId;
+  }
+	
+  public void setEntityId(Long entityId) {
+	this.entityId = entityId;
   }
 
   // public String getMobileNum() {

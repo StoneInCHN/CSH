@@ -121,7 +121,7 @@ public class VehicleController extends MobileBaseController {
     return null;
   }
 
-  @RequestMapping("/findUnbindVehiclePage")
+  @RequestMapping(value = "/findUnbindVehiclePage", method = RequestMethod.POST)
   public @ResponseBody ResponseMultiple<Map<String, Object>> findUnbindVehiclePage(
       @RequestBody VehicleRequest request) {
     ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();

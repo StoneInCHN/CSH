@@ -16,10 +16,12 @@ import com.csh.service.DeviceInfoService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleService;
 import com.csh.utils.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -42,8 +44,12 @@ public class DeviceInfoController extends MobileBaseController{
     @Autowired
     private VehicleService vehicleService;
 
-
-    @RequestMapping("/bindDevice")
+    /**
+     * 绑定设备
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/bindDevice", method = RequestMethod.POST)
     public @ResponseBody BaseResponse bindDevice(@RequestBody DeviceInfoRequest request){
         BaseResponse response = new BaseResponse();
         Long userId = request.getUserId();
@@ -87,7 +93,12 @@ public class DeviceInfoController extends MobileBaseController{
         return response;
     }
 
-    @RequestMapping("/unbindDevice")
+    /**
+     * 解绑设备
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/unbindDevice", method = RequestMethod.POST)
     public @ResponseBody BaseResponse unbindDevice(@RequestBody DeviceInfoRequest request){
         BaseResponse response = new BaseResponse();
         Long userId = request.getUserId();
@@ -130,7 +141,12 @@ public class DeviceInfoController extends MobileBaseController{
         return response;
     }
 
-    @RequestMapping("/getDeviceDetail")
+    /**
+     * 设备详情
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getDeviceDetail", method = RequestMethod.POST)
     public @ResponseBody DeviceDetailResponse getDeviceDetail(@RequestBody DeviceInfoRequest request){
         DeviceDetailResponse response = new DeviceDetailResponse();
         Long userId = request.getUserId();
@@ -198,7 +214,12 @@ public class DeviceInfoController extends MobileBaseController{
         return response;
     }
 
-    @RequestMapping("/findPage")
+    /**
+     * 设备分页信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/findPage", method = RequestMethod.POST)
     public @ResponseBody
     DevicePageResponse findPage(@RequestBody DeviceInfoRequest request){
         DevicePageResponse response = new DevicePageResponse();
@@ -255,9 +276,6 @@ public class DeviceInfoController extends MobileBaseController{
 
         return response;
     }
-
-
-
 
 }
 

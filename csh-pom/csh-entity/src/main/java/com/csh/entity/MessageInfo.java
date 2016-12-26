@@ -1,6 +1,5 @@
 package com.csh.entity;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +19,8 @@ import org.hibernate.search.annotations.Store;
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.MessageType;
 import com.csh.entity.commonenum.CommonEnum.SendType;
+import com.csh.entity.commonenum.CommonEnum.TenantMsgType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 
 /**
  * Entity - 推送消息
@@ -37,7 +36,6 @@ public class MessageInfo extends BaseEntity {
 
   private static final long serialVersionUID = 1170442128165498366L;
 
-
   /** 消息类型 */
   private MessageType messageType;
 
@@ -48,6 +46,12 @@ public class MessageInfo extends BaseEntity {
   private String messageContent;
 
   private SendType sendType;
+
+  /**
+   * 租户APP消息类型
+   */
+  private TenantMsgType tenantMsgType;
+
   /** 消息、会员对应关系实体 */
   private Set<MsgEndUser> msgUser = new HashSet<MsgEndUser>();
 
@@ -55,9 +59,19 @@ public class MessageInfo extends BaseEntity {
    * 租户ID
    */
   private Long tenantID;
-  
+
+
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
+  public TenantMsgType getTenantMsgType() {
+    return tenantMsgType;
+  }
+
+  public void setTenantMsgType(TenantMsgType tenantMsgType) {
+    this.tenantMsgType = tenantMsgType;
+  }
+
   @JsonProperty
-  @Field(store = Store.NO,index = Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
   public MessageType getMessageType() {
     return messageType;
   }
@@ -92,8 +106,9 @@ public class MessageInfo extends BaseEntity {
   public void setMsgUser(Set<MsgEndUser> msgUser) {
     this.msgUser = msgUser;
   }
-  @org.hibernate.annotations.Index(name="messageInfo_tenantid")
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
+
+  @org.hibernate.annotations.Index(name = "messageInfo_tenantid")
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -102,15 +117,13 @@ public class MessageInfo extends BaseEntity {
     this.tenantID = tenantID;
   }
 
-  @Field(store = Store.NO, index = Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = Index.YES, analyze = Analyze.NO)
   @JsonProperty
-  public SendType getSendType ()
-  {
+  public SendType getSendType() {
     return sendType;
   }
 
-  public void setSendType (SendType sendType)
-  {
+  public void setSendType(SendType sendType) {
     this.sendType = sendType;
   }
 

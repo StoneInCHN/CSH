@@ -1,5 +1,6 @@
 <form id="vehicleDailyReport_form" method="post"> 
-	<input type="hidden" id="reportVehicleId" name="vehicleId"/>  
+	<input type="hidden" id="reportVehicleId" name="vehicleId"/>
+	[#if vehicleReportDate??]  
 	 <table class="table table-striped"  border="0">
 	 		<tr>
 	    		<th>查询日期:</th>
@@ -70,6 +71,9 @@
 	    		</td>
 	    	</tr>
 	    </table>
+	    [#else]
+	    	当日无车辆数据
+		[/#if]
 </form>
 
 

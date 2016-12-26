@@ -37,6 +37,12 @@ public interface BaseService<T, ID extends Serializable> {
   List<T> findAll();
 
   /**
+   * 查找所有实体对象集合
+   * @param isTenant 是否按租户查找
+   * @return 所有实体对象集合
+   */
+  List<T> findAll (Boolean isTenant,Long tenantID);
+  /**
    * 查找实体对象集合
    * 
    * @param ids ID
@@ -66,13 +72,31 @@ public interface BaseService<T, ID extends Serializable> {
   List<T> findList(Integer first, Integer count, List<Filter> filters, List<Ordering> orders);
 
   /**
+   * 查找实体对象集合
+   * 
+   * @param count 数量
+   * @param filters 筛选
+   * @param orders 排序
+   * @param isTenant 是否按租户查找
+   * @return 实体对象集合
+   */
+  List<T> findList (Integer count, List<Filter> filters, List<Ordering> orders,
+      Boolean isTenant, String flag,Long tenantID);
+  /**
    * 查找实体对象分页
    * 
    * @param pageable 分页信息
    * @return 实体对象分页
    */
   Page<T> findPage(Pageable pageable);
-
+  
+  /**
+   * 查找实体对象分页
+   * 
+   * @param pageable 分页信息
+   * @return 实体对象分页
+   */
+  Page<T> findPage(Pageable pageable,Boolean isTenant,Long tenantID);
   /**
    * 查询实体对象总数
    * 
@@ -185,4 +209,6 @@ public interface BaseService<T, ID extends Serializable> {
    * 重建索引
    */
   void refreshIndex();
+  
+  
 }
