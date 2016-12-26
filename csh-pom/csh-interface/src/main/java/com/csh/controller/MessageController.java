@@ -256,7 +256,7 @@ public class MessageController extends MobileBaseController {
       EndUser endUser = deviceInfo.getVehicle().getEndUser();
       msg.setMessageType(MessageType.PERSONALMSG);
       String msgContent = null;
-      if (msgType.equals("3")) {
+      if (msgType.equals("3")) {// 警告信息
         msgContent =
             Message.warn("csh.obd.warn.message", deviceInfo.getVehicle().getPlate(),
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime()),
@@ -276,11 +276,11 @@ public class MessageController extends MobileBaseController {
 
         walletService.giftRedPacket(endUser.getWallet(), SystemConfigKey.GROUTHFUND_DRIVING, mile
             + "_csh.wallet.obdDriver.comein.redPacket");
-      } else if (msgType.equals("1")) {
+      } else if (msgType.equals("1")) {// 点火指令
         msgContent =
             Message.warn("csh.obd.fire.message", deviceInfo.getVehicle().getPlate(),
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime())).getContent();
-      } else if (msgType.equals("4")) {
+      } else if (msgType.equals("4")) {// 故障码信息
         String content = msgReq.getMsgContent();
         Set<String> codeSet = new HashSet<String>();
         String[] codes = content.split(",");
@@ -294,6 +294,7 @@ public class MessageController extends MobileBaseController {
                 .getContent();
       }
 
+      msg.setTenantID(deviceInfo.getTenantID());
       msg.setMessageContent(msgContent);
       MsgEndUser msgEndUser = new MsgEndUser();
       msgEndUser.setEndUser(endUser);

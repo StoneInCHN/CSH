@@ -473,6 +473,26 @@ public class CommonEnum {
 
   }
 
+  /**
+   * 租户app消息列表类型
+   * 
+   * @author sujinxuan
+   *
+   */
+  public enum TenantMsgType {
+    /** 碰撞报警 */
+    CRASHWARN,
+    /** 震动报警 */
+    SHOCKWARN,
+    /** 水温报警 */
+    WATERTEMPWARN,
+    /** 故障码报警 */
+    FAULTCODEWARN,
+    /** 低电压报警 */
+    LOWVOLTAGEWARN
+
+  }
+
   public enum SendType {
     /** 推送消息 */
     PUSH,
