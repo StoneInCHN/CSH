@@ -182,7 +182,7 @@ public class DeviceInfoController extends MobileBaseController{
 
         //获取设备详情信息
         DeviceInfo deviceInfo = deviceInfoService.find(deviceId);
-        String[] properties = {"id", "deviceNo", "type", "bindStatus", "deviceStatus", "vehicle", "bindTime" ,"createDate"};
+        String[] properties = {"id", "deviceNo", "type", "bindStatus", "deviceStatus", "vehicle.plate", "bindTime" ,"createDate"};
         Map<String, Object> resultMap = FieldFilterUtils.filterEntityMap(properties, deviceInfo);
 
         //通过OBD接口获取：经纬度，方位角
@@ -254,7 +254,7 @@ public class DeviceInfoController extends MobileBaseController{
 
         //设备结果List
         Page<DeviceInfo> pageByRequest = deviceInfoService.findPageByRequest(request);
-        String[] properties = {"id", "deviceNo", "type", "bindStatus", "deviceStatus", "vehicle", "bindTime" ,"createDate"};
+        String[] properties = {"id", "deviceNo", "type", "bindStatus", "deviceStatus", "vehicle.plate", "bindTime" ,"createDate"};
         List<Map<String, Object>> resultMaps = FieldFilterUtils.filterCollectionMap(properties, pageByRequest.getContent());
         response.setMsg(resultMaps);
 

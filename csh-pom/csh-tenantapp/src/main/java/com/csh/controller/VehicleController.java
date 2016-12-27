@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +19,11 @@ import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.Vehicle;
 import com.csh.framework.paging.Page;
+import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.VehicleRequest;
 import com.csh.service.DeviceInfoService;
-import com.csh.service.EndUserService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantInfoService;
 import com.csh.service.VehicleService;
@@ -154,11 +153,18 @@ public class VehicleController extends MobileBaseController {
     // 查询车辆分页数据
     Page<Vehicle> vehiclePage = vehicleService.findPageForList(request);
     String[] properties =
-        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail",
+        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail.name",
             "vehicleFullBrand", "createDate"};
     List<Map<String, Object>> resultMaps =
         FieldFilterUtils.filterCollectionMap(properties, vehiclePage.getContent());
     response.setMsg(resultMaps);
+    
+    //分页信息
+    PageResponse pageResponse = new PageResponse();
+    pageResponse.setPageNumber(vehiclePage.getPageNumber());
+    pageResponse.setPageSize(vehiclePage.getPageSize());
+    pageResponse.setTotal((int)vehiclePage.getTotal());
+    response.setPage(pageResponse);
 
     String newToken = TokenGenerator.generateToken(token);
     response.setToken(newToken);
