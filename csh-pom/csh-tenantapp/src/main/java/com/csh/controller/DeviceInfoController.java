@@ -70,7 +70,7 @@ public class DeviceInfoController extends MobileBaseController{
         //参数有效性验证
         if (userId == null || tenantId == null || deviceId == null){
             response.setCode(CommonAttributes.MISSING_REQUIRE_PARAM);
-            response.setDesc(Message.error("csh.login.param.invalid").getContent());
+            response.setDesc(Message.error("csh.common.param.invalid").getContent());
             return response;
         }
         String userToken = tenantAccountService.getTenantUserToken(userId);
@@ -119,7 +119,7 @@ public class DeviceInfoController extends MobileBaseController{
         //参数有效性验证
         if (userId == null || tenantId == null || deviceId == null){
             response.setCode(CommonAttributes.MISSING_REQUIRE_PARAM);
-            response.setDesc(Message.error("csh.login.param.invalid").getContent());
+            response.setDesc(Message.error("csh.common.param.invalid").getContent());
             return response;
         }
         String userToken = tenantAccountService.getTenantUserToken(userId);
@@ -131,10 +131,7 @@ public class DeviceInfoController extends MobileBaseController{
         }
 
         DeviceInfo deviceInfo = deviceInfoService.find(deviceId);
-        deviceInfo.setBindStatus(CommonEnum.BindStatus.UNBINDED);
-        deviceInfo.setVehicle(null);
-        deviceInfo.setUnBindTime(new Date());
-        deviceInfoService.update(deviceInfo);
+        deviceInfoService.unBind(deviceInfo);
 
         String newToken = TokenGenerator.generateToken(token);
         response.setToken(newToken);
@@ -169,7 +166,7 @@ public class DeviceInfoController extends MobileBaseController{
         //参数有效性验证
         if (userId == null || tenantId == null || deviceId == null || deviceNo == null){
             response.setCode(CommonAttributes.MISSING_REQUIRE_PARAM);
-            response.setDesc(Message.error("csh.login.param.invalid").getContent());
+            response.setDesc(Message.error("csh.common.param.invalid").getContent());
             return response;
         }
         String userToken = tenantAccountService.getTenantUserToken(userId);
@@ -241,7 +238,7 @@ public class DeviceInfoController extends MobileBaseController{
         //参数有效性验证
         if (userId == null || tenantId == null){
             response.setCode(CommonAttributes.MISSING_REQUIRE_PARAM);
-            response.setDesc(Message.error("csh.login.param.invalid").getContent());
+            response.setDesc(Message.error("csh.common.param.invalid").getContent());
             return response;
         }
         String userToken = tenantAccountService.getTenantUserToken(userId);

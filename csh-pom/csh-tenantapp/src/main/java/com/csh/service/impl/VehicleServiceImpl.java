@@ -14,6 +14,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -34,6 +35,9 @@ import com.csh.utils.DateTimeUtils;
 
 @Service("vehicleServiceImpl")
 public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implements VehicleService {
+  
+  @Autowired
+  private VehicleDao vehicleDao;
 
   @Resource(name = "vehicleDaoImpl")
   public void setBaseDao(VehicleDao vehicleDao) {
@@ -152,6 +156,18 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
       vehiclePage = this.findPage(pageable);
     }
     return vehiclePage;
+  }
+
+  @Override
+  public Page<Vehicle> findUnbindVehiclePage(VehicleRequest request) {
+    Pageable pageable = new Pageable();
+    if (request.getPageNumber() != null) {
+      pageable.setPageNumber(request.getPageNumber());
+    }
+    if (request.getPageSize() != null) {
+      pageable.setPageSize(request.getPageSize());
+    }
+    return vehicleDao.listUnbindVehicle(request.getTenantId(), pageable);
   }
 
 }

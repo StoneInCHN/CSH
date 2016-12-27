@@ -150,7 +150,7 @@ public class VehicleController extends MobileBaseController {
     // 参数有效性验证
     if (userId == null || tenantId == null) {
       response.setCode(CommonAttributes.MISSING_REQUIRE_PARAM);
-      response.setDesc(Message.error("csh.login.param.invalid").getContent());
+      response.setDesc(Message.error("csh.common.param.invalid").getContent());
       return response;
     }
     String userToken = tenantAccountService.getTenantUserToken(userId);
@@ -162,7 +162,7 @@ public class VehicleController extends MobileBaseController {
     }
 
     // 查询车辆分页数据
-    Page<Vehicle> vehiclePage = vehicleService.findPageForList(request);
+    Page<Vehicle> vehiclePage = vehicleService.findUnbindVehiclePage(request);
     String[] properties =
         {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail.name",
             "vehicleFullBrand", "createDate"};

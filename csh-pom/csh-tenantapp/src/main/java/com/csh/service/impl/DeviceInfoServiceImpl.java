@@ -1,6 +1,7 @@
 package com.csh.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,24 +15,38 @@ import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.util.Version;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.common.log.LogUtil;
 import com.csh.dao.DeviceInfoDao;
+import com.csh.entity.AdvanceDeposits;
 import com.csh.entity.DeviceInfo;
+import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum;
+import com.csh.entity.commonenum.CommonEnum.AdvanceUsageType;
 import com.csh.entity.commonenum.CommonEnum.BindStatus;
+import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.json.request.DeviceInfoRequest;
+import com.csh.service.AdvanceDepositsService;
 import com.csh.service.DeviceInfoService;
 
 @Service("deviceInfoServiceImpl")
 public class DeviceInfoServiceImpl extends BaseServiceImpl<DeviceInfo, Long> implements
     DeviceInfoService {
+
+  @Resource(name = "advanceDepositsServiceImpl")
+  private AdvanceDepositsService advanceDepositsService;
+
+  @Autowired
+  private DeviceInfoDao deviceInfoDao;
 
   @Resource(name = "deviceInfoDaoImpl")
   public void setBaseDao(DeviceInfoDao deviceInfoDao) {
@@ -51,7 +66,7 @@ public class DeviceInfoServiceImpl extends BaseServiceImpl<DeviceInfo, Long> imp
 
     // 搜索条件(数据库)
     // List<com.csh.framework.filter.Filter> filterList = getFilterList(request);
-//    pageable.setFilters(filterList);
+    // pageable.setFilters(filterList);
 
     // 搜索(lucene)
     IKAnalyzer analyzer = new IKAnalyzer();
@@ -67,7 +82,7 @@ public class DeviceInfoServiceImpl extends BaseServiceImpl<DeviceInfo, Long> imp
     String deviceNo = request.getDeviceNo();
     BindStatus bindStatus = request.getBindStatus();
     Long tenantId = request.getTenantId();
-    
+
     if (!StringUtils.isEmpty(deviceNo)) {
       String text = QueryParser.escape(deviceNo);
       try {
@@ -121,6 +136,47 @@ public class DeviceInfoServiceImpl extends BaseServiceImpl<DeviceInfo, Long> imp
           com.csh.framework.filter.Filter.Operator.eq, request.getBindStatus()));
     }
     return filterList;
+  }
+
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED)
+  public void unBind(DeviceInfo deviceInfo) {
+    Vehicle vehicle = deviceInfo.getVehicle();
+
+    List<com.csh.framework.filter.Filter> filters =
+        new ArrayList<com.csh.framework.filter.Filter>();
+
+    com.csh.framework.filter.Filter deviceNoFilter =
+        new com.csh.framework.filter.Filter("deviceNo", Operator.eq, vehicle.getDeviceNo());
+    com.csh.framework.filter.Filter endUserFilter =
+        new com.csh.framework.filter.Filter("endUser", Operator.eq, vehicle.getEndUser());
+    com.csh.framework.filter.Filter usageFilter =
+        new com.csh.framework.filter.Filter("usageType", Operator.eq, AdvanceUsageType.DEVICE);
+    com.csh.framework.filter.Filter isBindFilter =
+        new com.csh.framework.filter.Filter("isBind", Operator.eq, true);
+
+    filters.add(deviceNoFilter);
+    filters.add(endUserFilter);
+    filters.add(usageFilter);
+    filters.add(isBindFilter);
+
+    List<AdvanceDeposits> advanceDepositsList =
+        advanceDepositsService.findList(null, filters, null);
+
+    for (AdvanceDeposits advanceDeposits : advanceDepositsList) {
+
+      advanceDeposits.setIsBind(false);
+      advanceDepositsService.update(advanceDeposits);
+    }
+
+    deviceInfo.setBindStatus(BindStatus.UNBINDED);
+    // vehicle.setTenantID (null);
+    deviceInfo.setVehicle(null);
+    deviceInfo.setBindTime(null);
+    deviceInfo.setUnBindTime(new Date());
+    // vehicleDao.merge (vehicle);
+
+    deviceInfoDao.merge(deviceInfo);
   }
 
 }
