@@ -143,6 +143,8 @@ public class Setting implements Serializable {
    */
   private String convertMapUrl;
 
+  private String convertMutipleMapUrl;
+  
   /**
    * 百度API地址转坐标
    */
@@ -659,4 +661,14 @@ public class Setting implements Serializable {
   public void setIllegalSearchAppKey(String illegalSearchAppKey) {
     this.illegalSearchAppKey = illegalSearchAppKey;
   }
+
+  public String getConvertMutipleMapUrl() {
+	return convertMutipleMapUrl;
+  }
+
+  public void setConvertMutipleMapUrl(String convertMutipleMapUrl) {
+	this.convertMutipleMapUrl = convertMutipleMapUrl;
+  }
+  
+  
 }

@@ -59,6 +59,7 @@
 		
 		<!-- 百度API:GPS坐标转百度坐标 -->
 		<setting name="convertMapUrl" value="http://api.map.baidu.com/ag/coord/convert"/>
+		<setting name="convertMutipleMapUrl" value="http://api.map.baidu.com/geoconv/v1/"/>
 		<!-- 百度API:地址转坐标 -->
 		<setting name="convertAddressUrl" value="http://api.map.baidu.com/geocoder/v2/"/>
 		<!-- 百度API ak -->

@@ -1020,4 +1020,14 @@ public class CommonEnum {
      */
     OFFLINE;
   }
+  public enum AccStatus{
+		/**
+		 * 开
+		 */
+		ON,
+		/**
+		 * 关
+		 */
+		OFF
+	}
 }

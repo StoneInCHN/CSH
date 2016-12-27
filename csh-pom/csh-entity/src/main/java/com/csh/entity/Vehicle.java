@@ -24,6 +24,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import com.csh.entity.base.BaseEntity;
+import com.csh.entity.commonenum.CommonEnum.AccStatus;
 import com.csh.lucene.LowCaseBridgeImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -203,8 +204,15 @@ public class Vehicle extends BaseEntity {
    * 故障码
    */
   private  String faultCode;
+  /**
+   * 方位角
+   */
+  private String azimuth;
   
-
+  /**
+   * acc 状态
+   */
+  private AccStatus accStatus;
   
   public Boolean getIsFirstBindTenant() {
     return isFirstBindTenant;
@@ -558,5 +566,21 @@ public class Vehicle extends BaseEntity {
     this.faultCodeSet = faultCodeSet;
   }
 
+  @Transient
+  public String getAzimuth() {
+	return azimuth;
+  }
 
+  public void setAzimuth(String azimuth) {
+	this.azimuth = azimuth;
+  }
+
+  @Transient
+  public AccStatus getAccStatus() {
+	return accStatus;
+  }
+
+  public void setAccStatus(AccStatus accStatus) {
+	this.accStatus = accStatus;
+  }
 }

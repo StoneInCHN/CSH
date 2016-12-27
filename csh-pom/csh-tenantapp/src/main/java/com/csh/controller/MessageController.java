@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.csh.aspect.UserValidCheck;
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
-import com.csh.beans.Setting;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.MessageInfo;
 import com.csh.framework.filter.Filter;
@@ -23,19 +22,18 @@ import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseRequest;
-import com.csh.json.base.BaseResponse;
 import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
+import com.csh.json.request.WarnMsgRequest;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
 import com.csh.service.TenantAccountService;
+import com.csh.service.VehicleService;
 import com.csh.service.WalletService;
-import com.csh.utils.ApiUtils;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.LatLonUtil;
-import com.csh.utils.SettingUtils;
 import com.csh.utils.TokenGenerator;
 
 
@@ -64,7 +62,8 @@ public class MessageController extends MobileBaseController {
   @Resource(name = "walletServiceImpl")
   private WalletService walletService;
 
-
+  @Resource(name = "vehicleServiceImpl")
+  private VehicleService vehicleService;
   /**
    * 获取消息列表
    * 
@@ -136,7 +135,7 @@ public class MessageController extends MobileBaseController {
    * @param req
    * @return
    */
-  @RequestMapping(value = "/readMessage", method = RequestMethod.POST)
+  @RequestMapping(value = "/showMessage", method = RequestMethod.POST)
   @UserValidCheck
   public @ResponseBody ResponseOne<Map<String, Object>> showMessage(@RequestBody BaseRequest req) {
 	  ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
@@ -166,5 +165,16 @@ public class MessageController extends MobileBaseController {
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
-  
+  /**
+   * 接受警告消息
+   * @return
+   */
+  @RequestMapping(value = "/pushVehicleWainingInfo", method = RequestMethod.POST)
+  public @ResponseBody String pushVehicleWainingInfo(@RequestBody List<WarnMsgRequest> msgRequestList){
+    for (WarnMsgRequest request:msgRequestList) {
+//		vehicleService.
+	}
+	
+    return "success";
+  }
 }
