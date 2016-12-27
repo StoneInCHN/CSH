@@ -11,14 +11,14 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.common.log.LogUtil;
+import com.csh.controller.DeviceInfoController;
 import com.csh.controller.VehicleController;
 import com.csh.dao.VehicleDao;
 import com.csh.entity.Vehicle;
@@ -30,6 +30,7 @@ import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.json.request.VehicleRequest;
 import com.csh.service.VehicleService;
+import com.csh.utils.DateTimeUtils;
 
 @Service("vehicleServiceImpl")
 public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implements VehicleService {
@@ -37,40 +38,6 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   @Resource(name = "vehicleDaoImpl")
   public void setBaseDao(VehicleDao vehicleDao) {
     super.setBaseDao(vehicleDao);
-  }
-
-  @Override
-  public Page<Vehicle> findPageByRequest(VehicleRequest request) {
-    // 搜索条件
-    List<Filter> filterList = getFilterList(request);
-    // 分页信息
-    Pageable pageable = new Pageable();
-    if (request.getPageNumber() != null) {
-      pageable.setPageNumber(request.getPageNumber());
-    }
-    if (request.getPageSize() != null) {
-      pageable.setPageSize(request.getPageSize());
-    }
-    pageable.setFilters(filterList);
-    return findPage(pageable);
-  }
-
-  private List<Filter> getFilterList(VehicleRequest request) {
-    List<Filter> filterList = new ArrayList<>();
-    filterList.add(new Filter("tenantID", Filter.Operator.eq, request.getTenantId()));
-    if (!StringUtils.isEmpty(request.getPlate())) {
-      filterList.add(new Filter("plate", Filter.Operator.eq, request.getPlate()));
-    }
-    if (request.getPlateDateStart() != null && request.getPlateDateEnd() != null) {
-      filterList.add(new Filter("plateDate", Filter.Operator.ge, request.getPlateDateStart()));
-      filterList.add(new Filter("plateDate", Filter.Operator.le, request.getPlateDateEnd()));
-    }
-    if (!StringUtils.isEmpty(request.getEndUserName())) {
-      // TODO:还不确定是不是模糊查询
-      filterList
-          .add(new Filter("endUser.realName", Filter.Operator.like, request.getEndUserName()));
-    }
-    return filterList;
   }
 
   @Override
@@ -93,12 +60,30 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     QueryParser plateParser = new QueryParser(Version.LUCENE_35, "plate", analyzer);
     QueryParser mobileNumParser = new QueryParser(Version.LUCENE_35, "endUser.mobileNum", analyzer);
     QueryParser deviceNoParser = new QueryParser(Version.LUCENE_35, "device.deviceNo", analyzer);
+    TermRangeQuery rangeQuery = null;
     Query plateQuery = null;
     Query plateNotQuery = null;
     Query mobileNumQuery = null;
     Query deviceNoQuery = null;
     Query isOnlineQuery = null;
     org.apache.lucene.search.Filter filter = null;
+    String startDateStr = null;
+    String endDateStr = null;
+    if (request.getCreateDateStart() != null) {
+      startDateStr = DateTimeUtils.convertDateToString(request.getCreateDateStart(), null);
+    }
+    if (request.getCreateDateEnd() != null) {
+      endDateStr = DateTimeUtils.convertDateToString(request.getCreateDateEnd(), null);
+    }
+    if (startDateStr != null && endDateStr != null) {
+      rangeQuery = new TermRangeQuery("createDate", startDateStr, endDateStr, true, true);
+      query.add(rangeQuery, Occur.MUST);
+      if (LogUtil.isDebugEnabled(DeviceInfoController.class)) {
+        LogUtil.debug(getClass(), "findPageForList", "Search start date: " + startDateStr
+            + " end date: " + endDateStr);
+      }
+    }
+
     // 车牌号
     if (request.getPlate() != null) {
       String text = QueryParser.escape(request.getPlate());
@@ -148,7 +133,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     // 是否离线
     if (request.getOnlineStatus() != null) {
       if (request.getOnlineStatus().ordinal() == OnlineStatus.ONLINE.ordinal()) {
-        isOnlineQuery = new TermQuery(new Term("isOnline","true"));
+        isOnlineQuery = new TermQuery(new Term("isOnline", "true"));
         query.add(isOnlineQuery, Occur.MUST);
       } else if (request.getOnlineStatus().ordinal() == OnlineStatus.OFFLINE.ordinal()) {
         isOnlineQuery = new TermQuery(new Term("isOnline", "false"));
@@ -159,9 +144,13 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     plateNotQuery = new TermQuery(new Term("plate", "0000000"));
     query.add(plateNotQuery, Occur.MUST_NOT);
 
-    if (plateQuery != null || deviceNoQuery != null || mobileNumQuery != null
-        || (request.getOnlineStatus()!=null && request.getOnlineStatus().ordinal() == OnlineStatus.ONLINE.ordinal())
-        || (request.getOnlineStatus()!=null && request.getOnlineStatus().ordinal() == OnlineStatus.OFFLINE.ordinal())) {
+    if (plateQuery != null
+        || deviceNoQuery != null
+        || mobileNumQuery != null
+        || (request.getOnlineStatus() != null && request.getOnlineStatus().ordinal() == OnlineStatus.ONLINE
+            .ordinal())
+        || (request.getOnlineStatus() != null && request.getOnlineStatus().ordinal() == OnlineStatus.OFFLINE
+            .ordinal()) || rangeQuery != null) {
       vehiclePage = super.search(query, pageable, analyzer, filter, null, request.getTenantId());
     } else {
       List<Filter> filters = new ArrayList<Filter>();

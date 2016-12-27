@@ -52,6 +52,17 @@ public class MessageInfo extends BaseEntity {
    */
   private TenantMsgType tenantMsgType;
 
+  /**
+   * 经度
+   */
+  private String lon;
+  /**
+   * 纬度
+   */
+  private String lat;
+  /** 异常发生地址*/
+  private String alarmPlace;
+  
   /** 消息、会员对应关系实体 */
   private Set<MsgEndUser> msgUser = new HashSet<MsgEndUser>();
 
@@ -127,4 +138,28 @@ public class MessageInfo extends BaseEntity {
     this.sendType = sendType;
   }
 
+  public String getLon() {
+	return lon;
+  }
+
+  public void setLon(String lon) {
+	this.lon = lon;
+  }
+
+  public String getLat() {
+	return lat;
+  }
+
+  public void setLat(String lat) {
+	this.lat = lat;
+  }
+
+  public String getAlarmPlace() {
+	return alarmPlace;
+  }
+
+public void setAlarmPlace(String alarmPlace) {
+	this.alarmPlace = alarmPlace;
+}
+  
 }
