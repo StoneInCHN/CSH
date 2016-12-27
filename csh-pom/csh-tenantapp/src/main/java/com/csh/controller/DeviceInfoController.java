@@ -1,5 +1,16 @@
 package com.csh.controller;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.csh.beans.CommonAttributes;
 import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
@@ -15,17 +26,11 @@ import com.csh.json.response.DevicePageResponse;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleService;
-import com.csh.utils.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
-import java.util.Map;
+import com.csh.utils.ApiUtils;
+import com.csh.utils.FieldFilterUtils;
+import com.csh.utils.LatLonUtil;
+import com.csh.utils.TokenGenerator;
+import com.csh.utils.ToolsUtils;
 
 /**
  * 设备查询控制器
@@ -79,6 +84,7 @@ public class DeviceInfoController extends MobileBaseController{
         DeviceInfo deviceInfo = deviceInfoService.find(deviceId);
         deviceInfo.setBindStatus(CommonEnum.BindStatus.BINDED);
         deviceInfo.setVehicle(vehicleService.find(vehicleId));
+        deviceInfo.setBindTime(new Date());
         deviceInfoService.update(deviceInfo);
 
         String newToken = TokenGenerator.generateToken(token);
@@ -127,6 +133,7 @@ public class DeviceInfoController extends MobileBaseController{
         DeviceInfo deviceInfo = deviceInfoService.find(deviceId);
         deviceInfo.setBindStatus(CommonEnum.BindStatus.UNBINDED);
         deviceInfo.setVehicle(null);
+        deviceInfo.setUnBindTime(new Date());
         deviceInfoService.update(deviceInfo);
 
         String newToken = TokenGenerator.generateToken(token);
@@ -167,11 +174,11 @@ public class DeviceInfoController extends MobileBaseController{
         }
         String userToken = tenantAccountService.getTenantUserToken(userId);
         // token验证
-//        if (!TokenGenerator.isValiableToken(token, userToken)) {
-//            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
-//            response.setDesc(Message.error("csh.user.token.timeout").getContent());
-//            return response;
-//        }
+        if (!TokenGenerator.isValiableToken(token, userToken)) {
+            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+            response.setDesc(Message.error("csh.user.token.timeout").getContent());
+            return response;
+        }
 
         //获取设备详情信息
         DeviceInfo deviceInfo = deviceInfoService.find(deviceId);
@@ -190,10 +197,10 @@ public class DeviceInfoController extends MobileBaseController{
         if (msg != null) {
             //经纬度
             Map<String, Object> xy =
-                    LatLonUtil.convertCoordinate(msg.get("lon").toString(), msg.get("lat").toString());
+                    LatLonUtil.convertCoordinate(((Double)msg.get("lon")).toString(), ((Double)msg.get("lat")).toString());
             resultMap.putAll(xy);
             //方位角
-            Float azimuth = (Float) msg.get("azimuth");
+            Double azimuth = (Double) msg.get("azimuth");
             resultMap.put("azimuth", azimuth);
         }else {
             resultMap.put("azimuth", null);
@@ -202,8 +209,8 @@ public class DeviceInfoController extends MobileBaseController{
         }
         response.setDeviceDetail(resultMap);
 
-//        String newToken = TokenGenerator.generateToken(token);
-//        response.setToken(newToken);
+        String newToken = TokenGenerator.generateToken(token);
+        response.setToken(newToken);
         response.setCode(CommonAttributes.SUCCESS);
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
@@ -239,11 +246,11 @@ public class DeviceInfoController extends MobileBaseController{
         }
         String userToken = tenantAccountService.getTenantUserToken(userId);
         // token验证
-//        if (!TokenGenerator.isValiableToken(token, userToken)) {
-//            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
-//            response.setDesc(Message.error("csh.user.token.timeout").getContent());
-//            return response;
-//        }
+        if (!TokenGenerator.isValiableToken(token, userToken)) {
+            response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+            response.setDesc(Message.error("csh.user.token.timeout").getContent());
+            return response;
+        }
 
         //设备结果List
         Page<DeviceInfo> pageByRequest = deviceInfoService.findPageByRequest(request);
@@ -265,8 +272,8 @@ public class DeviceInfoController extends MobileBaseController{
         response.setDeviceUnbindCount(unbindDeviceCount);
         response.setDeviceAllCount(bindDeviceCount + unbindDeviceCount);
 
-//        String newToken = TokenGenerator.generateToken(token);
-//        response.setToken(newToken);
+        String newToken = TokenGenerator.generateToken(token);
+        response.setToken(newToken);
         response.setCode(CommonAttributes.SUCCESS);
         response.setDesc(SUCCESS_MESSAGE.getContent());
 

@@ -120,6 +120,11 @@ public class VehicleController extends MobileBaseController {
     return null;
   }
 
+  /**
+   * 未绑定车辆分页接口
+   * @param request
+   * @return
+   */
   @RequestMapping(value = "/findUnbindVehiclePage", method = RequestMethod.POST)
   public @ResponseBody ResponseMultiple<Map<String, Object>> findUnbindVehiclePage(
       @RequestBody VehicleRequest request) {
@@ -147,7 +152,7 @@ public class VehicleController extends MobileBaseController {
     }
 
     // 查询车辆分页数据
-    Page<Vehicle> vehiclePage = vehicleService.findPageByRequest(request);
+    Page<Vehicle> vehiclePage = vehicleService.findPageForList(request);
     String[] properties =
         {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail",
             "vehicleFullBrand", "createDate"};
