@@ -93,7 +93,7 @@ public class DeviceInfoController extends MobileBaseController{
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
         if (LogUtil.isDebugEnabled(getClass())){
-            LogUtil.debug(getClass(), "bindDevice", "response:success");
+            LogUtil.debug(getClass(), "bindDevice", "bind success:deviceId = %s, vehicleId = %s", deviceId, vehicleId);
         }
 
         return response;
@@ -142,7 +142,7 @@ public class DeviceInfoController extends MobileBaseController{
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
         if (LogUtil.isDebugEnabled(getClass())){
-            LogUtil.debug(getClass(), "unbindDevice", "response:success");
+            LogUtil.debug(getClass(), "unbindDevice", "unbind success:deviceId = %s", deviceId);
         }
 
         return response;
@@ -215,7 +215,7 @@ public class DeviceInfoController extends MobileBaseController{
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
         if (LogUtil.isDebugEnabled(getClass())){
-            LogUtil.debug(getClass(), "getDeviceDetail", "response:success");
+            LogUtil.debug(getClass(), "getDeviceDetail", "response success:deviceId = %s, deviceNo = %s", deviceId, deviceNo);
         }
 
         return response;
@@ -278,7 +278,7 @@ public class DeviceInfoController extends MobileBaseController{
         response.setDesc(SUCCESS_MESSAGE.getContent());
 
         if (LogUtil.isDebugEnabled(getClass())){
-            LogUtil.debug(getClass(), "findPage", "response:success");
+            LogUtil.debug(getClass(), "findPage", "response success:tenantId = %s", tenantId);
         }
 
         return response;

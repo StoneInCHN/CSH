@@ -172,7 +172,7 @@ public class VehicleController extends MobileBaseController {
     response.setDesc(SUCCESS_MESSAGE.getContent());
 
     if (LogUtil.isDebugEnabled(getClass())) {
-      LogUtil.debug(getClass(), "findUnbindVehiclePage", "response:success");
+      LogUtil.debug(getClass(), "findUnbindVehiclePage", "response success:tenantId = %s", tenantId);
     }
 
     return response;
