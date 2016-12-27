@@ -401,7 +401,7 @@ public class Vehicle extends BaseEntity {
     if (device != null) {
       return device.getDeviceNo();
     } else {
-      return null;
+      return deviceNo;
     }
 
   }
@@ -463,8 +463,8 @@ public class Vehicle extends BaseEntity {
     this.plateDate = plateDate;
   }
 
-  @Transient
   @JsonProperty
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.NO)
   public Boolean getIsOnline() {
     return isOnline;
   }
