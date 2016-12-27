@@ -50,9 +50,13 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     Pageable pageable = new Pageable();
     if (request.getPageNumber() != null) {
       pageable.setPageNumber(request.getPageNumber());
+    } else {
+      pageable.setPageNumber(1);
     }
     if (request.getPageSize() != null) {
       pageable.setPageSize(request.getPageSize());
+    } else {
+      pageable.setPageSize(5);
     }
     IKAnalyzer analyzer = new IKAnalyzer();
     analyzer.setMaxWordLength(true);
@@ -67,7 +71,6 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     Query deviceNoQuery = null;
     Query isOnlineQuery = null;
     org.apache.lucene.search.Filter filter = null;
-
     String startDateStr = null;
     String endDateStr = null;
     if (request.getCreateDateStart() != null) {
@@ -134,10 +137,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     // 是否离线
     if (request.getOnlineStatus() != null) {
       if (request.getOnlineStatus().ordinal() == OnlineStatus.ONLINE.ordinal()) {
-        isOnlineQuery = new TermQuery(new Term("isOnline", "1"));
+        isOnlineQuery = new TermQuery(new Term("isOnline", "true"));
         query.add(isOnlineQuery, Occur.MUST);
       } else if (request.getOnlineStatus().ordinal() == OnlineStatus.OFFLINE.ordinal()) {
-        isOnlineQuery = new TermQuery(new Term("isOnline", "0"));
+        isOnlineQuery = new TermQuery(new Term("isOnline", "false"));
         query.add(isOnlineQuery, Occur.MUST);
       }
     }
@@ -145,7 +148,13 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     plateNotQuery = new TermQuery(new Term("plate", "0000000"));
     query.add(plateNotQuery, Occur.MUST_NOT);
 
-    if (plateQuery != null || deviceNoQuery != null || mobileNumQuery != null || rangeQuery != null) {
+    if (plateQuery != null
+        || deviceNoQuery != null
+        || mobileNumQuery != null
+        || (request.getOnlineStatus() != null && request.getOnlineStatus().ordinal() == OnlineStatus.ONLINE
+            .ordinal())
+        || (request.getOnlineStatus() != null && request.getOnlineStatus().ordinal() == OnlineStatus.OFFLINE
+            .ordinal()) || rangeQuery != null) {
       vehiclePage = super.search(query, pageable, analyzer, filter, null, request.getTenantId());
     } else {
       List<Filter> filters = new ArrayList<Filter>();
@@ -169,5 +178,36 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     }
     return vehicleDao.listUnbindVehicle(request.getTenantId(), pageable);
   }
+
+  @SuppressWarnings("null")
+  @Override
+  public Long getCountByOnlineStatus(VehicleRequest request, OnlineStatus onlineStatus) {
+    List<Filter> filters = new ArrayList<Filter>();
+    long count = 0;
+    filters.add(Filter.ne("plate", "0000000"));
+    if (request.getPlate() != null) {
+      filters.add(Filter.eq("plate", request.getPlate()));
+    }
+    if (request.getDeviceNo() != null) {
+      filters.add(Filter.eq("device.deviceNo", request.getDeviceNo()));
+    }
+    if (request.getMobileNum() != null) {
+      filters.add(Filter.eq("endUser.mobileNum", request.getDeviceNo()));
+    }
+    if (onlineStatus != null && OnlineStatus.ONLINE.ordinal() == onlineStatus.ordinal()) {
+      filters.add(Filter.eq("isOnline", 1));
+    } else if (onlineStatus != null && OnlineStatus.OFFLINE.ordinal() == onlineStatus.ordinal()) {
+      filters.add(Filter.eq("isOnline", 0));
+    }
+
+    Filter[] tempfilters = new Filter[filters.size()];
+    for (int i = 0; i < filters.size(); i++) {
+      tempfilters[i] = filters.get(i);
+    }
+    count = super.count(request.getTenantId(), tempfilters);
+    return count;
+  }
+
+
 
 }
