@@ -24,6 +24,7 @@ import com.csh.entity.DeviceInfo;
 import com.csh.entity.Vehicle;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
+import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.VehicleRequest;
@@ -129,6 +130,11 @@ public class VehicleController extends MobileBaseController {
     return null;
   }
 
+  /**
+   * 未绑定车辆分页接口
+   * @param request
+   * @return
+   */
   @RequestMapping(value = "/findUnbindVehiclePage", method = RequestMethod.POST)
   public @ResponseBody ResponseMultiple<Map<String, Object>> findUnbindVehiclePage(
       @RequestBody VehicleRequest request) {
@@ -156,13 +162,20 @@ public class VehicleController extends MobileBaseController {
     }
 
     // 查询车辆分页数据
-    Page<Vehicle> vehiclePage = vehicleService.findPageByRequest(request);
+    Page<Vehicle> vehiclePage = vehicleService.findPageForList(request);
     String[] properties =
-        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail",
+        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail.name",
             "vehicleFullBrand", "createDate"};
     List<Map<String, Object>> resultMaps =
         FieldFilterUtils.filterCollectionMap(properties, vehiclePage.getContent());
     response.setMsg(resultMaps);
+    
+    //分页信息
+    PageResponse pageResponse = new PageResponse();
+    pageResponse.setPageNumber(vehiclePage.getPageNumber());
+    pageResponse.setPageSize(vehiclePage.getPageSize());
+    pageResponse.setTotal((int)vehiclePage.getTotal());
+    response.setPage(pageResponse);
 
     String newToken = TokenGenerator.generateToken(token);
     response.setToken(newToken);
@@ -170,7 +183,7 @@ public class VehicleController extends MobileBaseController {
     response.setDesc(SUCCESS_MESSAGE.getContent());
 
     if (LogUtil.isDebugEnabled(getClass())) {
-      LogUtil.debug(getClass(), "findUnbindVehiclePage", "response:success");
+      LogUtil.debug(getClass(), "findUnbindVehiclePage", "response success:tenantId = %s", tenantId);
     }
 
     return response;

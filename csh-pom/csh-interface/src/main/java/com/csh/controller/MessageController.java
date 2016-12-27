@@ -317,6 +317,8 @@ public class MessageController extends MobileBaseController {
                 .getContent();
       }
 
+      msg.setLat(msgReq.getLat());
+      msg.setLon(msgReq.getLon());
       msg.setTenantMsgType(tenantMsgType);
       msg.setTenantID(deviceInfo.getTenantID());
       msg.setMessageContent(msgContent);

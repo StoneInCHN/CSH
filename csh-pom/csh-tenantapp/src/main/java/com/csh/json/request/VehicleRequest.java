@@ -12,11 +12,6 @@ public class VehicleRequest extends BaseRequest {
   
   
   private Long vehicleId;
-  
-  /**
-   * 所有者
-   */
-  private String endUserName;
 
   /**
    * 车牌号
@@ -24,14 +19,14 @@ public class VehicleRequest extends BaseRequest {
   private String plate;
 
   /**
-   * 上牌日期
+   * 创建日期
    */
-  private Date plateDateStart;
+  private Date createDateStart;
 
   /**
-   * 上牌日期
+   * 创建日期
    */
-  private Date plateDateEnd;
+  private Date createDateEnd;
 
   /**
    * 是否在线
@@ -57,14 +52,6 @@ public class VehicleRequest extends BaseRequest {
     this.vehicleId = vehicleId;
   }
 
-  public String getEndUserName() {
-    return endUserName;
-  }
-
-  public void setEndUserName(String endUserName) {
-    this.endUserName = endUserName;
-  }
-
   public String getPlate() {
     return plate;
   }
@@ -72,23 +59,6 @@ public class VehicleRequest extends BaseRequest {
   public void setPlate(String plate) {
     this.plate = plate;
   }
-
-  public Date getPlateDateStart() {
-    return plateDateStart;
-  }
-
-  public void setPlateDateStart(Date plateDateStart) {
-    this.plateDateStart = plateDateStart;
-  }
-
-  public Date getPlateDateEnd() {
-    return plateDateEnd;
-  }
-
-  public void setPlateDateEnd(Date plateDateEnd) {
-    this.plateDateEnd = plateDateEnd;
-  }
-  
 
   public String getDeviceNo() {
     return deviceNo;
@@ -116,9 +86,27 @@ public class VehicleRequest extends BaseRequest {
 
   @Override
   public String toString() {
-    return "VehicleRequest [endUserName=" + endUserName + ", plate=" + plate + ", plateDateStart="
-        + plateDateStart + ", plateDateEnd=" + plateDateEnd + ", onlineStatus=" + onlineStatus
+    return "VehicleRequest [plate=" + plate + ", plateDateStart="
+        + createDateStart + ", plateDateEnd=" + createDateEnd + ", onlineStatus=" + onlineStatus
         + ", deviceNo=" + deviceNo + ", mobileNum=" + mobileNum + "]";
   }
+
+  public Date getCreateDateStart() {
+    return createDateStart;
+  }
+
+  public void setCreateDateStart(Date createDateStart) {
+    this.createDateStart = createDateStart;
+  }
+
+  public Date getCreateDateEnd() {
+    return createDateEnd;
+  }
+
+  public void setCreateDateEnd(Date createDateEnd) {
+    this.createDateEnd = createDateEnd;
+  }
+  
+  
 
 }

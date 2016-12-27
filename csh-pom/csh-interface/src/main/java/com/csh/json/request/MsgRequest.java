@@ -30,6 +30,32 @@ public class MsgRequest extends BaseRequest {
    */
   private String deviceNo;
 
+  /**
+   * 经度
+   */
+  private String lon;
+
+  /**
+   * 纬度
+   */
+  private String lat;
+
+
+  public String getLon() {
+    return lon;
+  }
+
+  public void setLon(String lon) {
+    this.lon = lon;
+  }
+
+  public String getLat() {
+    return lat;
+  }
+
+  public void setLat(String lat) {
+    this.lat = lat;
+  }
 
   public String getMsgType() {
     return msgType;
