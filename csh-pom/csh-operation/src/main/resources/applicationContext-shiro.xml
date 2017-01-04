@@ -21,6 +21,7 @@
 				/console/apply/submit.jhtml = anon
 				/console/apply/apply.jhtml = anon
 				/console/news/details.jhtml = anon
+				/console/vehicle/pushVehicleStatus.jhtml = anon
 				/console/password/** = anon
 				
 				/console/admin/** = perms["admin:admin"]

@@ -133,7 +133,7 @@ public class VehicleController extends MobileBaseController {
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, vehicle);
     try {
       // 车辆动态接口
-      vehicle.setDeviceNo("8856003537");
+      // vehicle.setDeviceNo("8856003537");
       map.put("deviceNo", vehicle.getDeviceNo());
       String vehicleTrendsUrl =
           setting.getObdServerUrl() + "/appVehicleData/vehicleTrends.jhtml?deviceId="
@@ -187,6 +187,7 @@ public class VehicleController extends MobileBaseController {
 
   /**
    * 未绑定车辆分页接口
+   * 
    * @param request
    * @return
    */
@@ -219,17 +220,17 @@ public class VehicleController extends MobileBaseController {
     // 查询车辆分页数据
     Page<Vehicle> vehiclePage = vehicleService.findUnbindVehiclePage(request);
     String[] properties =
-        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo", "vehicleBrandDetail.name",
-            "vehicleFullBrand", "createDate"};
+        {"id", "plate", "endUser.realName", "endUser.mobileNum", "vehicleNo",
+            "vehicleBrandDetail.name", "vehicleFullBrand", "createDate"};
     List<Map<String, Object>> resultMaps =
         FieldFilterUtils.filterCollectionMap(properties, vehiclePage.getContent());
     response.setMsg(resultMaps);
-    
-    //分页信息
+
+    // 分页信息
     PageResponse pageResponse = new PageResponse();
     pageResponse.setPageNumber(vehiclePage.getPageNumber());
     pageResponse.setPageSize(vehiclePage.getPageSize());
-    pageResponse.setTotal((int)vehiclePage.getTotal());
+    pageResponse.setTotal((int) vehiclePage.getTotal());
     response.setPage(pageResponse);
 
     String newToken = TokenGenerator.generateToken(token);
@@ -238,7 +239,8 @@ public class VehicleController extends MobileBaseController {
     response.setDesc(SUCCESS_MESSAGE.getContent());
 
     if (LogUtil.isDebugEnabled(getClass())) {
-      LogUtil.debug(getClass(), "findUnbindVehiclePage", "response success:tenantId = %s", tenantId);
+      LogUtil
+          .debug(getClass(), "findUnbindVehiclePage", "response success:tenantId = %s", tenantId);
     }
 
     return response;
@@ -271,36 +273,37 @@ public class VehicleController extends MobileBaseController {
     }
 
     // 查询车辆分页数据
-    List<com.csh.framework.filter.Filter > filters = new ArrayList<com.csh.framework.filter.Filter > ();
-    com.csh.framework.filter.Filter exceptFilter = new com.csh.framework.filter.Filter("plate",Operator.ne,"0000000");
-    filters.add (exceptFilter);
-    
-    List<Vehicle> vehicleList = prepareVehicleList(vehicleService.findList (null, filters, null, true,null,request.getTenantId()));
-    List<Map<String, Object>> mapList = new ArrayList<Map<String,Object>> ();
-    for (Vehicle vehicle : vehicleList)
-    {
-      Map<String, Object> map = new HashMap<String, Object> ();
-      map.put ("lon", vehicle.getLon ());
-      map.put ("lat", vehicle.getLat ());
+    List<com.csh.framework.filter.Filter> filters =
+        new ArrayList<com.csh.framework.filter.Filter>();
+    com.csh.framework.filter.Filter exceptFilter =
+        new com.csh.framework.filter.Filter("plate", Operator.ne, "0000000");
+    filters.add(exceptFilter);
+
+    List<Vehicle> vehicleList =
+        prepareVehicleList(vehicleService.findList(null, filters, null, true, null,
+            request.getTenantId()));
+    List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+    for (Vehicle vehicle : vehicleList) {
+      Map<String, Object> map = new HashMap<String, Object>();
+      map.put("lon", vehicle.getLon());
+      map.put("lat", vehicle.getLat());
       map.put("vehicleId", vehicle.getId());
-      mapList.add (map);
+      mapList.add(map);
     }
-    List<Map<String, Object>> newMapList = LatLonUtil.convertCoordinates (mapList);
-    for (int i=0;i<newMapList.size ();i++)
-    {
-    	for (int j = 0; j < vehicleList.size(); j++) {
-    		if(vehicleList.get(j).getId().equals(newMapList.get(i).get("vehicleId"))){
-    			 vehicleList.get (j).setLon (Float.parseFloat (newMapList.get (i).get ("x").toString ()));
-    		     vehicleList.get (j).setLat (Float.parseFloat ( newMapList.get (i).get ("y").toString ()));
-    		     break;
-    		}
-		}
-     
+    List<Map<String, Object>> newMapList = LatLonUtil.convertCoordinates(mapList);
+    for (int i = 0; i < newMapList.size(); i++) {
+      for (int j = 0; j < vehicleList.size(); j++) {
+        if (vehicleList.get(j).getId().equals(newMapList.get(i).get("vehicleId"))) {
+          vehicleList.get(j).setLon(Float.parseFloat(newMapList.get(i).get("x").toString()));
+          vehicleList.get(j).setLat(Float.parseFloat(newMapList.get(i).get("y").toString()));
+          break;
+        }
+      }
+
     }
 
-    
-    String[] properties =
-        {"id", "plate", "lat", "lon", "deviceNo", "accStatus","azimuth"};
+
+    String[] properties = {"id", "plate", "lat", "lon", "deviceNo", "accStatus", "azimuth"};
     List<Map<String, Object>> resultMaps =
         FieldFilterUtils.filterCollectionMap(properties, vehicleList);
     response.setMsg(resultMaps);
@@ -316,77 +319,74 @@ public class VehicleController extends MobileBaseController {
 
     return response;
   }
-  
-  private List<Vehicle> prepareVehicleList(List<Vehicle> vehicleList){
-	    ObjectMapper objectMapper = new ObjectMapper ();
-	    List<Map<String, Object>> paramList = new ArrayList<Map<String,Object>> ();
-	    for (Vehicle vehicle : vehicleList)
-	    {
-	      DeviceInfo deviceInfo = vehicle.getDevice ();
-	      if (deviceInfo != null)
-	      {
-	        Map<String, Object> map =new HashMap<String, Object> ();
-	        map.put ("deviceId", deviceInfo.getDeviceNo ());
-	        map.put ("rowId", deviceInfo.getId ());
-	        paramList.add (map);
-	      }
-	     
-	    }
-	    try
-	    {
-	      String params = objectMapper.writeValueAsString(paramList);
-	    
-	      String response= ApiUtils.postJson (setting.getObdServerUrl()+"/tenantVehicleData/vehicleOnlineStatus.jhtml", "UTF-8", "UTF-8", params);
-//	      String response = "{\"msg\": [{\"deviceId\": \"1\",\"rowId\": \"1\",\"mileage\": 100,\"online\": true,\"remaininggas\": 10, \"bv\": 12.5},{\"deviceId\": \"2\",\"rowId\": \"1\",\"mileage\": 20,\"online\": true,\"remaininggas\": 20,\"bv\": 10.5}]}";
-	      if (response != null && !response.equals (""))
-	      {
-	        JsonNode rootNode = objectMapper.readTree(response);
-	        JsonNode msgNode = rootNode.path ("msg");
-	        String msg = objectMapper.writeValueAsString(msgNode);
-	        List<VehicleStatus> vehicleStatusList = objectMapper.readValue (msg, new TypeReference<List<VehicleStatus>>() {});
-	        for (Vehicle vehicle : vehicleList)
-	        {
-	          for (VehicleStatus vehicleStatus : vehicleStatusList)
-	          {
-	            if (vehicle.getDevice ()!= null && vehicle.getDevice ().getId ().toString ().equals (vehicleStatus.getRowId ()))
-	            {
-	              vehicle.setDashboardBV (vehicleStatus.getBv ());
-	              if (vehicleStatus.getMileage ()!=null && vehicleStatus.getMileage () !=0)
-	              {
-	                vehicle.setDashboardMileage (vehicleStatus.getMileage ());
-	              }else {
-	                vehicle.setDashboardMileage (vehicleStatus.getGpsMileage ()+vehicle.getDriveMileage  ());
-	              }
-	              vehicle.setDashboradOil (vehicleStatus.getRemaininggas ());
-	              vehicle.setIsOnline (vehicleStatus.getOnline ());
-	              vehicle.setLat (vehicleStatus.getLat ());
-	              vehicle.setLon (vehicleStatus.getLon ());
-	              vehicle.setObdStatusTime (vehicleStatus.getCreatetime ());
-	              vehicle.setAccStatus(vehicleStatus.getAccStatus());
-	              vehicle.setAzimuth(vehicleStatus.getAzimuth());
-	              //解析故障码
-	              if (vehicleStatus.getFaultcode()!= null) {
-	            	  String[] faultCodes = vehicleStatus.getFaultcode().split(",");
-	                  Set<String> faultCodeSet = new HashSet<String>();
-	                  for (String faultCode :faultCodes) {
-	                	  String code = faultCode.split(":")[0].trim();
-	                	  if (!faultCodeSet.contains(code)) {
-	                		  faultCodeSet.add(code);
-	                	  }
-	                  }
-	                  vehicle.setFaultCodeSet(faultCodeSet);
-	              }
-	              
-	            }
-	          }
-	        }
-	      }
-	    }
-	    
-	    catch (Exception e)
-	    {
-	      e.printStackTrace();
-	    }
-	    return vehicleList;
-	  }
+
+  private List<Vehicle> prepareVehicleList(List<Vehicle> vehicleList) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    List<Map<String, Object>> paramList = new ArrayList<Map<String, Object>>();
+    for (Vehicle vehicle : vehicleList) {
+      DeviceInfo deviceInfo = vehicle.getDevice();
+      if (deviceInfo != null) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("deviceId", deviceInfo.getDeviceNo());
+        map.put("rowId", deviceInfo.getId());
+        paramList.add(map);
+      }
+
+    }
+    try {
+      String params = objectMapper.writeValueAsString(paramList);
+
+      String response =
+          ApiUtils.postJson(setting.getObdServerUrl()
+              + "/tenantVehicleData/vehicleOnlineStatus.jhtml", "UTF-8", "UTF-8", params);
+      // String response =
+      // "{\"msg\": [{\"deviceId\": \"1\",\"rowId\": \"1\",\"mileage\": 100,\"online\": true,\"remaininggas\": 10, \"bv\": 12.5},{\"deviceId\": \"2\",\"rowId\": \"1\",\"mileage\": 20,\"online\": true,\"remaininggas\": 20,\"bv\": 10.5}]}";
+      if (response != null && !response.equals("")) {
+        JsonNode rootNode = objectMapper.readTree(response);
+        JsonNode msgNode = rootNode.path("msg");
+        String msg = objectMapper.writeValueAsString(msgNode);
+        List<VehicleStatus> vehicleStatusList =
+            objectMapper.readValue(msg, new TypeReference<List<VehicleStatus>>() {});
+        for (Vehicle vehicle : vehicleList) {
+          for (VehicleStatus vehicleStatus : vehicleStatusList) {
+            if (vehicle.getDevice() != null
+                && vehicle.getDevice().getId().toString().equals(vehicleStatus.getRowId())) {
+              vehicle.setDashboardBV(vehicleStatus.getBv());
+              if (vehicleStatus.getMileage() != null && vehicleStatus.getMileage() != 0) {
+                vehicle.setDashboardMileage(vehicleStatus.getMileage());
+              } else {
+                vehicle.setDashboardMileage(vehicleStatus.getGpsMileage()
+                    + vehicle.getDriveMileage());
+              }
+              vehicle.setDashboradOil(vehicleStatus.getRemaininggas());
+              vehicle.setIsOnline(vehicleStatus.getOnline());
+              vehicle.setLat(vehicleStatus.getLat());
+              vehicle.setLon(vehicleStatus.getLon());
+              vehicle.setObdStatusTime(vehicleStatus.getCreatetime());
+              vehicle.setAccStatus(vehicleStatus.getAccStatus());
+              vehicle.setAzimuth(vehicleStatus.getAzimuth());
+              // 解析故障码
+              if (vehicleStatus.getFaultcode() != null) {
+                String[] faultCodes = vehicleStatus.getFaultcode().split(",");
+                Set<String> faultCodeSet = new HashSet<String>();
+                for (String faultCode : faultCodes) {
+                  String code = faultCode.split(":")[0].trim();
+                  if (!faultCodeSet.contains(code)) {
+                    faultCodeSet.add(code);
+                  }
+                }
+                vehicle.setFaultCodeSet(faultCodeSet);
+              }
+
+            }
+          }
+        }
+      }
+    }
+
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+    return vehicleList;
+  }
 }
