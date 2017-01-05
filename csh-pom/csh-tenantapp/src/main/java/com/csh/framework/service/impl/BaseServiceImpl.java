@@ -275,7 +275,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
       tenantIdFilter.setValue (tenantID);
       Filter[]copyArr = Arrays.copyOf(filters,filters.length+1);
       copyArr[filters.length]=tenantIdFilter;
-      Arrays.sort(copyArr);
+     /* Arrays.sort(copyArr);*/
       return baseDao.count (copyArr);
     }else{
       return baseDao.count(filters);

@@ -53,24 +53,24 @@
 	</logger>
 
 	<!-- ===================================================================================== -->
-	<!-- com.cienet.* will inherit these value unless overridden below -->
+	<!-- com.csh.* will inherit these value unless overridden below -->
 	<!-- Allows for logging of info, warn, error and fatal messages to the specified 
 		appenders -->
 	<!-- ===================================================================================== -->
 
-	<logger name="com.cienet" level="debug">
+	<logger name="com.csh" level="debug">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="rolling_file_appender" />
 	</logger>
 
 	<!-- ================================================================================= -->
-	<!-- Below are the overrides to the default values specified above for com.cienet.* -->
+	<!-- Below are the overrides to the default values specified above for com.csh.* -->
 	<!-- ================================================================================= -->
-	<logger name="com.cienet.service.impl" level="debug" />
+	<logger name="com.csh.service.impl" level="debug" />
 
-	<logger name="com.cienet.dao.impl" level="debug" />
+	<logger name="com.csh.dao.impl" level="debug" />
 
-	<logger name="com.cienet.framework" level="debug" />
+	<logger name="com.csh.framework" level="debug" />
 
 	<!-- ================================================================================= -->
 	<!-- 3p settings -->
@@ -81,7 +81,7 @@
 	</logger>
 
 	<!-- ====================================================================================================== -->
-	<!-- If not part of com.cienet.* override or a specific 3p setting, logging 
+	<!-- If not part of com.csh.* override or a specific 3p setting, logging 
 		is turned -->
 	<!-- off at the root logger level -->
 	<!-- ====================================================================================================== -->

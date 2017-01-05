@@ -83,10 +83,11 @@ public class VehicleController extends MobileBaseController {
           .debug(
               VehicleController.class,
               "getVehicleList",
-              "search Vsehicle for vehicle with MobileNum: %s,deviceNo: %s,plate: %s,OnlineStatus: %s,userName: %s, userId: %s",
+              "search Vehicle for vehicle with MobileNum: %s,deviceNo: %s,plate: %s,OnlineStatus: %s,tenantId: %s, userId: %s ,pageNumber %s ,pageSize %s",
               vehicleRequest.getMobileNum(), vehicleRequest.getDeviceNo(),
               vehicleRequest.getPlate(), vehicleRequest.getOnlineStatus(),
-              vehicleRequest.getUserName(), vehicleRequest.getUserId());
+              vehicleRequest.getTenantId(), vehicleRequest.getUserId(),
+              vehicleRequest.getPageNumber(), vehicleRequest.getPageSize());
     }
     // 查询车辆分页数据
     Page<Vehicle> vehiclePage = vehicleService.findPageForList(vehicleRequest);
