@@ -62,6 +62,7 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public void jpushMsg(MessageInfo msg) {
     Integer unread_count = 0;
+    Map<String, String> map = new HashMap<String, String>();
     for (MsgEndUser msgEndUser : msg.getMsgUser()) {
       Long tenantId = null;
       if (!msgEndUser.getIsPush()) {
@@ -80,7 +81,6 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
           }
         }
 
-        Map<String, String> map = new HashMap<String, String>();
         map.put("msgId", msg.getId().toString());
         map.put("title", msg.getMessageTitle());
         map.put("content", msg.getMessageContent());
@@ -123,6 +123,6 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
       }
 
     }
-
+    map = null;
   }
 }

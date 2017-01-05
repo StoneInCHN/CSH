@@ -20,16 +20,19 @@ public class JPushUtil {
 
   public static PushResult sendPush(PushPayload payload, String masterSecret, String appKey)
       throws Exception {
+    JPushClient client;
     try {
       if (masterSecret == null && appKey == null) {
         masterSecret = setting.getMasterSecret();
         appKey = setting.getAppKey();
       }
-      JPushClient client = new JPushClient(masterSecret, appKey);
+      client = new JPushClient(masterSecret, appKey);
       return client.sendPush(payload);
     } catch (Exception e) {
       e.printStackTrace();
       return null;
+    } finally {
+      client = null;
     }
   }
 
