@@ -134,4 +134,18 @@ public interface BaseDao<T, ID extends Serializable> {
    */
   void flush();
 
+  /**
+   * 持久化多个实体对象
+   * 
+   * @param entities 实体对象集合
+   */
+  void persist(List<T> entities);
+
+  /**
+   * 合并多个实体对象
+   * 
+   * @param entities 实体对象集合
+   */
+  void merge(List<T> entities);
+
 }

@@ -25,7 +25,6 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.util.Assert;
 
 import com.csh.common.log.LogUtil;
@@ -430,16 +429,16 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
             .conjunction();
     if (StringUtils.isNotEmpty(pageable.getSearchProperty())
         && StringUtils.isNotEmpty(pageable.getSearchValue())) {
-      if(pageable.getSearchProperty().contains("&")){
-        String[] propetys = pageable.getSearchProperty().split("&"); 
-        if (propetys !=null && propetys.length == 2) {
+      if (pageable.getSearchProperty().contains("&")) {
+        String[] propetys = pageable.getSearchProperty().split("&");
+        if (propetys != null && propetys.length == 2) {
           restrictions =
               criteriaBuilder.and(
                   restrictions,
-                  criteriaBuilder.like(root.<String>get(propetys[0]).get(propetys[1]),
-                      "%" + pageable.getSearchValue() + "%"));
+                  criteriaBuilder.like(root.<String>get(propetys[0]).get(propetys[1]), "%"
+                      + pageable.getSearchValue() + "%"));
         }
-      }else{
+      } else {
         restrictions =
             criteriaBuilder.and(
                 restrictions,
@@ -489,33 +488,29 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
                   criteriaBuilder.lt(root.<Number>get(filter.getProperty()),
                       (Number) filter.getValue()));
         } else if (filter.getOperator() == Operator.ge && filter.getValue() != null) {
-          if(filter.getValue() instanceof Date){
+          if (filter.getValue() instanceof Date) {
             restrictions =
-                criteriaBuilder.and(
-                    restrictions,
-                    criteriaBuilder.greaterThanOrEqualTo(root.<Date>get(filter.getProperty()),
-                        (Date) filter.getValue()));
-          }else{
+                criteriaBuilder.and(restrictions, criteriaBuilder.greaterThanOrEqualTo(
+                    root.<Date>get(filter.getProperty()), (Date) filter.getValue()));
+          } else {
             restrictions =
                 criteriaBuilder.and(
                     restrictions,
                     criteriaBuilder.ge(root.<Number>get(filter.getProperty()),
                         (Number) filter.getValue()));
-          }   
+          }
         } else if (filter.getOperator() == Operator.le && filter.getValue() != null) {
-          if(filter.getValue() instanceof Date){
+          if (filter.getValue() instanceof Date) {
             restrictions =
-                criteriaBuilder.and(
-                    restrictions,
-                    criteriaBuilder.lessThanOrEqualTo(root.<Date>get(filter.getProperty()),
-                        (Date) filter.getValue()));
-          }else{
+                criteriaBuilder.and(restrictions, criteriaBuilder.lessThanOrEqualTo(
+                    root.<Date>get(filter.getProperty()), (Date) filter.getValue()));
+          } else {
             restrictions =
                 criteriaBuilder.and(
                     restrictions,
                     criteriaBuilder.le(root.<Number>get(filter.getProperty()),
                         (Number) filter.getValue()));
-            
+
           }
         } else if (filter.getOperator() == Operator.like && filter.getValue() != null
             && filter.getValue() instanceof String) {
@@ -526,7 +521,8 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
                       (String) filter.getValue()));
         } else if (filter.getOperator() == Operator.in && filter.getValue() != null) {
           restrictions =
-              criteriaBuilder.and(restrictions, root.get(filter.getProperty()).in(filter.getValue()));
+              criteriaBuilder.and(restrictions, root.get(filter.getProperty())
+                  .in(filter.getValue()));
         } else if (filter.getOperator() == Operator.isNull) {
           restrictions = criteriaBuilder.and(restrictions, root.get(filter.getProperty()).isNull());
         } else if (filter.getOperator() == Operator.isNotNull) {
@@ -624,6 +620,20 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     stringBuilder.append("SELECT COUNT(*) ");
     stringBuilder.append(jpql.substring(from));
     return stringBuilder.toString();
+  }
+
+  public void persist(List<T> entities) {
+    Assert.notNull(entities, "entities is null.");
+    for (T entity : entities) {
+      entityManager.persist(entity);
+    }
+  }
+
+  public void merge(List<T> entities) {
+    Assert.notNull(entities);
+    for (T entity : entities) {
+      entityManager.merge(entity);
+    }
   }
 
 }

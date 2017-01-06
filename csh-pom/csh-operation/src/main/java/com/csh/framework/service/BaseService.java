@@ -144,4 +144,16 @@ public interface BaseService<T, ID extends Serializable> {
    */
   void delete(T entity);
 
+  /**
+   * 保存多个实体对象
+   */
+  void save(List<T> entities);
+
+  /**
+   * 更新多个实体对象
+   * 
+   * @param entities 实体对象集合
+   */
+  void update(List<T> entities);
+
 }
