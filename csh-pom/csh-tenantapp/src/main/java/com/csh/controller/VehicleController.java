@@ -36,6 +36,7 @@ import com.csh.service.TenantAccountService;
 import com.csh.service.TenantInfoService;
 import com.csh.service.VehicleService;
 import com.csh.utils.ApiUtils;
+import com.csh.utils.DateTimeUtils;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.LatLonUtil;
 import com.csh.utils.TokenGenerator;
@@ -92,7 +93,7 @@ public class VehicleController extends MobileBaseController {
     // 查询车辆分页数据
     Page<Vehicle> vehiclePage = vehicleService.findPageForList(vehicleRequest);
     String[] properties =
-        {"id", "plate", "endUser.mobileNum", "vehicleBrandDetail.name", "faultCode", "wainingInfo",
+        {"id", "plate","device.deviceNo", "endUser.mobileNum", "vehicleBrandDetail.name", "faultCode", "wainingInfo",
             "isOnline", "vehicleFullBrand", "obdStatusTime", "createDate"};
     List<Map<String, Object>> resultMaps =
         FieldFilterUtils.filterCollectionMap(properties, vehiclePage.getContent());
@@ -101,7 +102,7 @@ public class VehicleController extends MobileBaseController {
     PageResponse pageResponse = new PageResponse();
     pageResponse.setPageNumber(vehiclePage.getPageNumber());
     pageResponse.setPageSize(vehiclePage.getPageSize());
-    pageResponse.setTotal(vehiclePage.getTotalPages());
+    pageResponse.setTotal((int) vehiclePage.getTotal());
     response.setPage(pageResponse);
     response.setAllCount(vehicleService.getCountByOnlineStatus(vehicleRequest, OnlineStatus.ALL));
     response.setOnlineCount(vehicleService.getCountByOnlineStatus(vehicleRequest,
@@ -140,6 +141,10 @@ public class VehicleController extends MobileBaseController {
           setting.getObdServerUrl() + "/appVehicleData/vehicleTrends.jhtml?deviceId="
               + vehicle.getDeviceNo();
       String vehicleTrendsRes = ApiUtils.post(vehicleTrendsUrl);
+      if (LogUtil.isDebugEnabled(getClass())) {
+        LogUtil.debug(getClass(), "vehicleTrendsUrl", "url: %s", vehicleTrendsUrl);
+        LogUtil.debug(getClass(), "api vehicleTrendsRes", "response data: %s", vehicleTrendsRes);
+      }
       Map<String, Object> vehicleTrendsMap = ToolsUtils.convertStrToJson(vehicleTrendsRes);
       Map<String, Object> vehicleTrendsMsg = (Map<String, Object>) vehicleTrendsMap.get("msg");
       if (vehicleTrendsMsg != null) {
@@ -159,8 +164,12 @@ public class VehicleController extends MobileBaseController {
       // 一键检测接口
       String oneKeyDetectionUrl =
           setting.getObdServerUrl() + "/appVehicleData/oneKeyDetection.jhtml?deviceId="
-              + vehicle.getDeviceNo() + "&date=" + "2016-12-28";
+              + vehicle.getDeviceNo() + "&date=" + DateTimeUtils.getShortToday();
       String oneKeyDetectionRes = ApiUtils.post(oneKeyDetectionUrl);
+      if (LogUtil.isDebugEnabled(getClass())) {
+        LogUtil.debug(getClass(), "oneKeyDetectionUrl", "url: %s", oneKeyDetectionUrl);
+        LogUtil.debug(getClass(), "oneKeyDetectionRes api", "response data: %s", oneKeyDetectionRes);
+      }
       Map<String, Object> oneKeyDetectionMap = ToolsUtils.convertStrToJson(oneKeyDetectionRes);
       Map<String, Object> oneKeyDetectionMsg = (Map<String, Object>) vehicleTrendsMap.get("msg");
       if (oneKeyDetectionMsg != null) {
