@@ -104,7 +104,7 @@ public class VehicleController extends BaseController {
       DeviceInfo deviceInfo = deviceInfoService.findByDeviceNo(vehicleStatus.getDeviceNo());
       if (deviceInfo != null && deviceInfo.getVehicle() != null) {
         Vehicle vehicle = deviceInfo.getVehicle();
-        vehicle.setWainingInfo(vehicleStatus.getWainingInfo());
+        vehicle.setWarning(vehicleStatus.getWainingInfo());
         vehicle.setFaultCode(vehicleStatus.getFaultCode());
         if ("1".equals(vehicleStatus.getIsOnline())) {
           vehicle.setIsOnline(true);

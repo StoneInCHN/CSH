@@ -92,7 +92,7 @@ public class VehicleController extends MobileBaseController {
     // 查询车辆分页数据
     Page<Vehicle> vehiclePage = vehicleService.findPageForList(vehicleRequest);
     String[] properties =
-        {"id", "plate", "endUser.mobileNum", "vehicleBrandDetail.name", "faultCode", "wainingInfo",
+        {"id", "plate", "endUser.mobileNum", "vehicleBrandDetail.name", "faultCode", "warning",
             "isOnline", "vehicleFullBrand", "obdStatusTime", "createDate"};
     List<Map<String, Object>> resultMaps =
         FieldFilterUtils.filterCollectionMap(properties, vehiclePage.getContent());

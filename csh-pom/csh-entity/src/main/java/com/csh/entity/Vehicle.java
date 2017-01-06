@@ -203,17 +203,31 @@ public class Vehicle extends BaseEntity {
   /**
    * 故障码
    */
-  private  String faultCode;
+  private String faultCode;
   /**
    * 方位角
    */
   private String azimuth;
-  
+
   /**
    * acc 状态
    */
   private AccStatus accStatus;
-  
+
+  /**
+   * 警告信息(用于tenantApp显示)
+   */
+  private String warning;
+
+  @Column(length = 100)
+  public String getWarning() {
+    return warning;
+  }
+
+  public void setWarning(String warning) {
+    this.warning = warning;
+  }
+
   public Boolean getIsFirstBindTenant() {
     return isFirstBindTenant;
   }
@@ -537,7 +551,7 @@ public class Vehicle extends BaseEntity {
   public void setLon(Float lon) {
     this.lon = lon;
   }
-  
+
   public String getFaultCode() {
     return faultCode;
   }
@@ -568,19 +582,19 @@ public class Vehicle extends BaseEntity {
 
   @Transient
   public String getAzimuth() {
-	return azimuth;
+    return azimuth;
   }
 
   public void setAzimuth(String azimuth) {
-	this.azimuth = azimuth;
+    this.azimuth = azimuth;
   }
 
   @Transient
   public AccStatus getAccStatus() {
-	return accStatus;
+    return accStatus;
   }
 
   public void setAccStatus(AccStatus accStatus) {
-	this.accStatus = accStatus;
+    this.accStatus = accStatus;
   }
 }
