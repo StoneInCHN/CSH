@@ -180,7 +180,7 @@ public class VehicleController extends MobileBaseController {
     vehicle.setNextAnnualInspection(vehicleReq.getNextAnnualInspection());
     vehicle.setDriveMileage(vehicleReq.getDriveMileage());
     vehicle.setLastMaintainMileage(vehicleReq.getLastMaintainMileage());
-
+    vehicle.setIsOnline(false);
     EndUser endUser = endUserService.find(userId);
     // if (endUser.getVehicles() == null || endUser.getVehicles().size() <= 0) {
     // vehicle.setIsDefault(true);

@@ -185,4 +185,15 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
       }
     }
   }
+
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public void save(List<T> entities) {
+    baseDao.persist(entities);
+
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public void update(List<T> entities) {
+    baseDao.merge(entities);
+  }
 }

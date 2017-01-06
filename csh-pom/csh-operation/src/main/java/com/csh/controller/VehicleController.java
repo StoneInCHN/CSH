@@ -86,31 +86,35 @@ public class VehicleController extends BaseController {
    * @return
    */
   @RequestMapping(value = "/pushVehicleStatus", method = RequestMethod.POST)
-  public @ResponseBody BaseResponse pushVehicleStatus(@RequestBody VehicleStatus vehicleStatus) {
+  public @ResponseBody BaseResponse pushVehicleStatus(
+      @RequestBody List<VehicleStatus> vehicleStatusList) {
     BaseResponse response = new BaseResponse();
-    if (LogUtil.isDebugEnabled(VehicleController.class)) {
-      LogUtil
-          .debug(
-              VehicleController.class,
-              "pushVehicleStatus",
-              "get push vehicle status from obd server. deviceNo: %s,wainingInfo: %s,faultCode: %s,isOnline: %s",
-              vehicleStatus.getDeviceNo(), vehicleStatus.getWainingInfo(),
-              vehicleStatus.getFaultCode(), vehicleStatus.getIsOnline());
-    }
-
-    DeviceInfo deviceInfo = deviceInfoService.findByDeviceNo(vehicleStatus.getDeviceNo());
-    if (deviceInfo != null && deviceInfo.getVehicle() != null) {
-      Vehicle vehicle = deviceInfo.getVehicle();
-      vehicle.setWainingInfo(vehicleStatus.getWainingInfo());
-      vehicle.setFaultCode(vehicleStatus.getFaultCode());
-      if ("1".equals(vehicleStatus.getIsOnline())) {
-        vehicle.setIsOnline(true);
-      } else {
-        vehicle.setIsOnline(false);
+    List<Vehicle> vehicles = new ArrayList<>();
+    for (VehicleStatus vehicleStatus : vehicleStatusList) {
+      if (LogUtil.isDebugEnabled(VehicleController.class)) {
+        LogUtil
+            .debug(
+                VehicleController.class,
+                "pushVehicleStatus",
+                "get push vehicle status from obd server. deviceNo: %s,wainingInfo: %s,faultCode: %s,isOnline: %s",
+                vehicleStatus.getDeviceNo(), vehicleStatus.getWainingInfo(),
+                vehicleStatus.getFaultCode(), vehicleStatus.getIsOnline());
       }
-      vehicleService.update(vehicle);
-      response.setDesc("车辆状态更新成功");
+
+      DeviceInfo deviceInfo = deviceInfoService.findByDeviceNo(vehicleStatus.getDeviceNo());
+      if (deviceInfo != null && deviceInfo.getVehicle() != null) {
+        Vehicle vehicle = deviceInfo.getVehicle();
+        vehicle.setWainingInfo(vehicleStatus.getWainingInfo());
+        vehicle.setFaultCode(vehicleStatus.getFaultCode());
+        if ("1".equals(vehicleStatus.getIsOnline())) {
+          vehicle.setIsOnline(true);
+        } else {
+          vehicle.setIsOnline(false);
+        }
+        vehicles.add(vehicle);
+      }
     }
+    vehicleService.update(vehicles);
     response.setCode(CommonAttributes.SUCCESS);
     return response;
   }
