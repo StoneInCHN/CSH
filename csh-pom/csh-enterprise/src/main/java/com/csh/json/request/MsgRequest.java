@@ -18,7 +18,33 @@ public class MsgRequest {
    * 设备类型，
    */
   private String msgType;
-  
+
+  /**
+   * 经度
+   */
+  private String lon;
+
+  /**
+   * 纬度
+   */
+  private String lat;
+
+  public String getLon() {
+    return lon;
+  }
+
+  public void setLon(String lon) {
+    this.lon = lon;
+  }
+
+  public String getLat() {
+    return lat;
+  }
+
+  public void setLat(String lat) {
+    this.lat = lat;
+  }
+
   public String getMsgContent() {
     return msgContent;
   }
@@ -35,13 +61,11 @@ public class MsgRequest {
     this.deviceNo = deviceNo;
   }
 
-  public String getMsgType ()
-  {
+  public String getMsgType() {
     return msgType;
   }
 
-  public void setMsgType (String msgType)
-  {
+  public void setMsgType(String msgType) {
     this.msgType = msgType;
   }
 
