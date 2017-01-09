@@ -93,8 +93,9 @@ public class VehicleController extends MobileBaseController {
     // 查询车辆分页数据
     Page<Vehicle> vehiclePage = vehicleService.findPageForList(vehicleRequest);
     String[] properties =
-        {"id", "plate","device.deviceNo", "endUser.mobileNum", "vehicleBrandDetail.name", "faultCode", "wainingInfo",
-            "isOnline", "vehicleFullBrand", "obdStatusTime", "createDate"};
+        {"id", "plate", "device.deviceNo", "endUser.mobileNum", "vehicleBrandDetail.name",
+            "faultCode", "wainingInfo", "isOnline", "vehicleFullBrand", "obdStatusTime",
+            "createDate"};
     List<Map<String, Object>> resultMaps =
         FieldFilterUtils.filterCollectionMap(properties, vehiclePage.getContent());
     response.setMsg(resultMaps);
@@ -152,13 +153,15 @@ public class VehicleController extends MobileBaseController {
         map.put("lon", vehicleTrendsMsg.get("lon"));// 经度
         map.put("lat", vehicleTrendsMsg.get("lat"));// 纬度
         map.put("azimuth", vehicleTrendsMsg.get("azimuth"));// 方位角
-        map.put("createtime", vehicleTrendsMsg.get("createtime"));// 方位角
+        map.put("averageOil", vehicleTrendsMsg.get("averageOil"));// 平均油耗
+        map.put("createtime", vehicleTrendsMsg.get("createtime"));// 最后上传时间
       } else {
         map.put("acc", null); // ACC状态（启动、熄火）
         map.put("lon", null);// 经度
         map.put("lat", null);// 纬度
         map.put("azimuth", null);// 方位角
-        map.put("createtime", null);// 方位角
+        map.put("averageOil", null);// 平均油耗
+        map.put("createtime", null);// 最后上传时间
       }
 
       // 一键检测接口
@@ -168,7 +171,8 @@ public class VehicleController extends MobileBaseController {
       String oneKeyDetectionRes = ApiUtils.post(oneKeyDetectionUrl);
       if (LogUtil.isDebugEnabled(getClass())) {
         LogUtil.debug(getClass(), "oneKeyDetectionUrl", "url: %s", oneKeyDetectionUrl);
-        LogUtil.debug(getClass(), "oneKeyDetectionRes api", "response data: %s", oneKeyDetectionRes);
+        LogUtil
+            .debug(getClass(), "oneKeyDetectionRes api", "response data: %s", oneKeyDetectionRes);
       }
       Map<String, Object> oneKeyDetectionMap = ToolsUtils.convertStrToJson(oneKeyDetectionRes);
       Map<String, Object> oneKeyDetectionMsg = (Map<String, Object>) vehicleTrendsMap.get("msg");
