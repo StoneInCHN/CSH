@@ -21,7 +21,9 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.DeviceInfoController;
 import com.csh.controller.VehicleController;
+import com.csh.dao.EndUserDao;
 import com.csh.dao.VehicleDao;
+import com.csh.entity.EndUser;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.OnlineStatus;
 import com.csh.framework.filter.Filter;
@@ -35,9 +37,12 @@ import com.csh.utils.DateTimeUtils;
 
 @Service("vehicleServiceImpl")
 public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implements VehicleService {
-  
+
   @Autowired
   private VehicleDao vehicleDao;
+
+  @Autowired
+  private EndUserDao userDao;
 
   @Resource(name = "vehicleDaoImpl")
   public void setBaseDao(VehicleDao vehicleDao) {
@@ -73,11 +78,11 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     org.apache.lucene.search.Filter filter = null;
     String startDateStr = null;
     String endDateStr = null;
-    if (request.getCreateDateStart() != null) {
-      startDateStr = DateTimeUtils.convertDateToString(request.getCreateDateStart(), null);
+    if (request.getStartTime() != null) {
+      startDateStr = DateTimeUtils.convertDateToString(request.getStartTime(), null);
     }
-    if (request.getCreateDateEnd() != null) {
-      endDateStr = DateTimeUtils.convertDateToString(request.getCreateDateEnd(), null);
+    if (request.getEndTime() != null) {
+      endDateStr = DateTimeUtils.convertDateToString(request.getEndTime(), null);
     }
     if (startDateStr != null && endDateStr != null) {
       rangeQuery = new TermRangeQuery("createDate", startDateStr, endDateStr, true, true);
@@ -176,7 +181,17 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     if (request.getPageSize() != null) {
       pageable.setPageSize(request.getPageSize());
     }
-    return vehicleDao.listUnbindVehicle(request.getTenantId(), pageable);
+    if (request.getMobileNum() != null) {
+      EndUser endUser = userDao.findByUserMobile(request.getMobileNum());
+      if (endUser != null) {
+        return vehicleDao.listUnbindVehicle(request.getTenantId(), request.getPlate(), endUser,
+            request.getStartTime(), request.getEndTime(), pageable);
+      } else {
+        return new Page<Vehicle>();
+      }
+    }
+    return vehicleDao.listUnbindVehicle(request.getTenantId(), request.getPlate(), null,
+        request.getStartTime(), request.getEndTime(), pageable);
   }
 
   @SuppressWarnings("null")

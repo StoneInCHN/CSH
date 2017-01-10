@@ -9,24 +9,14 @@ import com.csh.json.base.BaseRequest;
  * 车辆信息查询请求 Created by zhangye on 2016/12/25.
  */
 public class VehicleRequest extends BaseRequest {
-  
-  
+
+
   private Long vehicleId;
 
   /**
    * 车牌号
    */
   private String plate;
-
-  /**
-   * 创建日期
-   */
-  private Date createDateStart;
-
-  /**
-   * 创建日期
-   */
-  private Date createDateEnd;
 
   /**
    * 是否在线
@@ -43,8 +33,37 @@ public class VehicleRequest extends BaseRequest {
    */
   private String mobileNum;
 
+  /**
+   * 故障码
+   */
   private String faultCode;
-  
+
+  /**
+   * 录入日期 开始时间
+   */
+  private Date startTime;
+
+  /**
+   * 录入日期 结束时间
+   */
+  private Date endTime;
+
+  public Date getStartTime() {
+    return startTime;
+  }
+
+  public void setStartTime(Date startTime) {
+    this.startTime = startTime;
+  }
+
+  public Date getEndTime() {
+    return endTime;
+  }
+
+  public void setEndTime(Date endTime) {
+    this.endTime = endTime;
+  }
+
   public Long getVehicleId() {
     return vehicleId;
   }
@@ -85,28 +104,19 @@ public class VehicleRequest extends BaseRequest {
     this.onlineStatus = onlineStatus;
   }
 
-  public Date getCreateDateStart() {
-    return createDateStart;
-  }
-
-  public void setCreateDateStart(Date createDateStart) {
-    this.createDateStart = createDateStart;
-  }
-
-  public Date getCreateDateEnd() {
-    return createDateEnd;
-  }
-
-  public void setCreateDateEnd(Date createDateEnd) {
-    this.createDateEnd = createDateEnd;
-  }
-
   public String getFaultCode() {
     return faultCode;
   }
 
   public void setFaultCode(String faultCode) {
     this.faultCode = faultCode;
+  }
+
+  @Override
+  public String toString() {
+    return "VehicleRequest [plate=" + plate + ", startTime=" + startTime + ", endTime=" + endTime
+        + ", onlineStatus=" + onlineStatus + ", faultCode=" + faultCode + ", deviceNo=" + deviceNo
+        + ", mobileNum=" + mobileNum + "]";
   }
 
 }

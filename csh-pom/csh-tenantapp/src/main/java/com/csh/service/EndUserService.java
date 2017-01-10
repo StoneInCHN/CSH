@@ -5,4 +5,6 @@ import com.csh.framework.service.BaseService;
 
 public interface EndUserService extends BaseService<EndUser, Long> {
 
+  EndUser findByUserMobile(String mobileNo);
+
 }

@@ -20,4 +20,9 @@ public class EndUserServiceImpl extends BaseServiceImpl<EndUser, Long> implement
     super.setBaseDao(endUserDao);
   }
 
+  @Override
+  public EndUser findByUserMobile(String mobileNo) {
+    return endUserDao.findByUserMobile(mobileNo);
+  }
+
 }
