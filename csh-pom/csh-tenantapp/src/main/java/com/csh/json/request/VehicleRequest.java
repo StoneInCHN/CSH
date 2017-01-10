@@ -43,6 +43,7 @@ public class VehicleRequest extends BaseRequest {
    */
   private String mobileNum;
 
+  private String faultCode;
   
   public Long getVehicleId() {
     return vehicleId;
@@ -84,13 +85,6 @@ public class VehicleRequest extends BaseRequest {
     this.onlineStatus = onlineStatus;
   }
 
-  @Override
-  public String toString() {
-    return "VehicleRequest [plate=" + plate + ", plateDateStart="
-        + createDateStart + ", plateDateEnd=" + createDateEnd + ", onlineStatus=" + onlineStatus
-        + ", deviceNo=" + deviceNo + ", mobileNum=" + mobileNum + "]";
-  }
-
   public Date getCreateDateStart() {
     return createDateStart;
   }
@@ -106,7 +100,13 @@ public class VehicleRequest extends BaseRequest {
   public void setCreateDateEnd(Date createDateEnd) {
     this.createDateEnd = createDateEnd;
   }
-  
-  
+
+  public String getFaultCode() {
+    return faultCode;
+  }
+
+  public void setFaultCode(String faultCode) {
+    this.faultCode = faultCode;
+  }
 
 }

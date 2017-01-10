@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +22,10 @@ import com.csh.beans.Message;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.DeviceInfo;
+import com.csh.entity.FaultCode;
 import com.csh.entity.Vehicle;
 import com.csh.entity.commonenum.CommonEnum.OnlineStatus;
+import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.json.base.PageResponse;
@@ -32,6 +35,7 @@ import com.csh.json.request.VehicleRequest;
 import com.csh.json.response.VehiclePageResponse;
 import com.csh.json.response.VehicleStatus;
 import com.csh.service.DeviceInfoService;
+import com.csh.service.FaultCodeService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.TenantInfoService;
 import com.csh.service.VehicleService;
@@ -64,6 +68,9 @@ public class VehicleController extends MobileBaseController {
   @Resource(name = "tenantAccountServiceImpl")
   private TenantAccountService tenantAccountService;
 
+  @Resource(name = "faultCodeServiceImpl")
+  private FaultCodeService faultCodeService;
+  
   @RequestMapping(value = "/list", method = RequestMethod.POST)
   @UserValidCheck
   public @ResponseBody VehiclePageResponse list(@RequestBody VehicleRequest vehicleRequest) {
@@ -135,26 +142,29 @@ public class VehicleController extends MobileBaseController {
         {"id", "plate", "endUser.userName", "vehicleBrandDetail.name", "vehicleFullBrand"};
     Map<String, Object> map = FieldFilterUtils.filterEntityMap(properties, vehicle);
     try {
-      // 车辆动态接口
-      // vehicle.setDeviceNo("8856003537");
+      
       map.put("deviceNo", vehicle.getDeviceNo());
-      String vehicleTrendsUrl =
-          setting.getObdServerUrl() + "/appVehicleData/vehicleTrends.jhtml?deviceId="
+      String vehicleTodayDetailsUrl =
+          setting.getObdServerUrl() + "appVehicleData/vehicleTodayDetails.jhtml?deviceId="
               + vehicle.getDeviceNo();
-      String vehicleTrendsRes = ApiUtils.post(vehicleTrendsUrl);
+      String vehicleTodayDetailsRes = ApiUtils.post(vehicleTodayDetailsUrl);
       if (LogUtil.isDebugEnabled(getClass())) {
-        LogUtil.debug(getClass(), "vehicleTrendsUrl", "url: %s", vehicleTrendsUrl);
-        LogUtil.debug(getClass(), "api vehicleTrendsRes", "response data: %s", vehicleTrendsRes);
+        LogUtil.debug(getClass(), "vehicleTodayDetailsUrl", "url: %s", vehicleTodayDetailsRes);
+        LogUtil.debug(getClass(), "api vehicleTodayDetailsRes", "response data: %s", vehicleTodayDetailsRes);
       }
-      Map<String, Object> vehicleTrendsMap = ToolsUtils.convertStrToJson(vehicleTrendsRes);
-      Map<String, Object> vehicleTrendsMsg = (Map<String, Object>) vehicleTrendsMap.get("msg");
-      if (vehicleTrendsMsg != null) {
-        map.put("acc", vehicleTrendsMsg.get("acc")); // ACC状态（启动、熄火）
-        map.put("lon", vehicleTrendsMsg.get("lon"));// 经度
-        map.put("lat", vehicleTrendsMsg.get("lat"));// 纬度
-        map.put("azimuth", vehicleTrendsMsg.get("azimuth"));// 方位角
-        map.put("averageOil", vehicleTrendsMsg.get("averageOil"));// 平均油耗
-        map.put("createtime", vehicleTrendsMsg.get("createtime"));// 最后上传时间
+      Map<String, Object> vehicleTodayDetailsMap = ToolsUtils.convertStrToJson(vehicleTodayDetailsRes);
+      Map<String, Object> vehicleTodayDetailsMsg = (Map<String, Object>) vehicleTodayDetailsMap.get("msg");
+      if (vehicleTodayDetailsMsg != null) {
+        map.put("acc", vehicleTodayDetailsMsg.get("acc")); // ACC状态（启动、熄火）
+        map.put("lon", vehicleTodayDetailsMsg.get("lon"));// 经度
+        map.put("lat", vehicleTodayDetailsMsg.get("lat"));// 纬度
+        map.put("azimuth", vehicleTodayDetailsMsg.get("azimuth"));// 方位角
+        map.put("averageOil", vehicleTodayDetailsMsg.get("averageOil"));// 平均油耗
+        map.put("createtime", vehicleTodayDetailsMsg.get("createtime"));// 最后上传时间
+        map.put("fuelConsumption", vehicleTodayDetailsMsg.get("fuelConsumption"));
+        map.put("mileAge", vehicleTodayDetailsMsg.get("mileAge"));
+        map.put("runningTime", vehicleTodayDetailsMsg.get("runningTime"));
+        map.put("averageSpeed", vehicleTodayDetailsMsg.get("averageSpeed"));
       } else {
         map.put("acc", null); // ACC状态（启动、熄火）
         map.put("lon", null);// 经度
@@ -162,34 +172,13 @@ public class VehicleController extends MobileBaseController {
         map.put("azimuth", null);// 方位角
         map.put("averageOil", null);// 平均油耗
         map.put("createtime", null);// 最后上传时间
-      }
-
-      // 一键检测接口
-      String oneKeyDetectionUrl =
-          setting.getObdServerUrl() + "/appVehicleData/oneKeyDetection.jhtml?deviceId="
-              + vehicle.getDeviceNo() + "&date=" + DateTimeUtils.getShortToday();
-      String oneKeyDetectionRes = ApiUtils.post(oneKeyDetectionUrl);
-      if (LogUtil.isDebugEnabled(getClass())) {
-        LogUtil.debug(getClass(), "oneKeyDetectionUrl", "url: %s", oneKeyDetectionUrl);
-        LogUtil
-            .debug(getClass(), "oneKeyDetectionRes api", "response data: %s", oneKeyDetectionRes);
-      }
-      Map<String, Object> oneKeyDetectionMap = ToolsUtils.convertStrToJson(oneKeyDetectionRes);
-      Map<String, Object> oneKeyDetectionMsg = (Map<String, Object>) vehicleTrendsMap.get("msg");
-      if (oneKeyDetectionMsg != null) {
-        map.put("fuelConsumption", vehicleTrendsMsg.get("fuelConsumption")); // 当日油耗
-        map.put("mileAge", vehicleTrendsMsg.get("mileAge"));// 当日里程
-        map.put("runningTime", vehicleTrendsMsg.get("runningTime"));// 当日运行时间
-        map.put("averageSpeed", vehicleTrendsMsg.get("averageSpeed"));// 平均速度
-      } else {
         map.put("fuelConsumption", null); // 当日油耗
         map.put("mileAge", null);// 当日里程
         map.put("runningTime", null);// 当日运行时间
         map.put("averageSpeed", null);// 平均速度
-
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LogUtil.error(getClass(), "getVehicleTodayDetails", "Exception: %s", e.getMessage());
     }
     response.setMsg(map);
     String newtoken = TokenGenerator.generateToken(request.getToken());
@@ -403,4 +392,46 @@ public class VehicleController extends MobileBaseController {
     }
     return vehicleList;
   }
+  
+  /**
+   * 获取故障码信息
+   *
+   * @return
+   */
+  @RequestMapping(value = "/getFaultCode", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> getFaultCode(
+      @RequestBody VehicleRequest request) {
+
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+
+    Long userId = request.getUserId();
+    String token = request.getToken();
+    String faultCode = request.getFaultCode();
+
+    // 验证登录token
+    String userToken = tenantAccountService.getTenantUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+    List<Filter> filters = new ArrayList<Filter>();
+    filters.add(Filter.eq("code", faultCode));
+    List<FaultCode> codes = faultCodeService.findList(null, filters, null);
+    Map<String, Object> map = new HashMap<String, Object>();
+    if (!CollectionUtils.isEmpty(codes)) {
+      String[] propertys = {"id", "code", "defineCh", "defineEn", "scope", "info"};
+      map = FieldFilterUtils.filterEntityMap(propertys, codes.get(0));
+    }
+    response.setMsg(map);
+    String newtoken = TokenGenerator.generateToken(request.getToken());
+    tenantAccountService.createTenantUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    
+    return response;
+  }
+
+  
 }
