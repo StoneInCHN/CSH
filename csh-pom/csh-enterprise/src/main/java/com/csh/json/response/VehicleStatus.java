@@ -73,6 +73,11 @@ public class VehicleStatus {
    * acc 状态
    */
   private AccStatus accStatus;
+  
+  /**
+   * 实时速度
+   */
+  private Float speed;
 
 
   public String getAzimuth() {
@@ -177,6 +182,14 @@ public class VehicleStatus {
 
   public void setFaultcode(String faultcode) {
     this.faultcode = faultcode;
+  }
+
+  public Float getSpeed() {
+    return speed;
+  }
+
+  public void setSpeed(Float speed) {
+    this.speed = speed;
   }
 
 }
