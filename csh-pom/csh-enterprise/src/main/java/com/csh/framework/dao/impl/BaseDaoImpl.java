@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javassist.expr.Instanceof;
-
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
@@ -89,9 +87,12 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
   public List<T> findList(Integer first, Integer count, List<Filter> filters,
       List<Ordering> orderings) {
     if (LogUtil.isDebugEnabled(BaseDaoImpl.class)) {
-      LogUtil.debug(BaseDaoImpl.class, "find",
-          "Fetching entities from database with first : %d, count : %d, filters : %s, orderings : %s",
-          first, count, filters, orderings);
+      LogUtil
+          .debug(
+              BaseDaoImpl.class,
+              "find",
+              "Fetching entities from database with first : %d, count : %d, filters : %s, orderings : %s",
+              first, count, filters, orderings);
     }
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
@@ -350,60 +351,52 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
                   criteriaBuilder.notEqual(root.get(filter.getProperty()), filter.getValue()));
         }
       } else if (filter.getOperator() == Operator.gt && filter.getValue() != null) {
-        if (filter.getValue () instanceof Number){
-        restrictions =
-            criteriaBuilder.and(
-                restrictions,
-                criteriaBuilder.gt(root.<Number>get(filter.getProperty()),
-                    (Number) filter.getValue()));
-        }else if (filter.getValue () instanceof Date)
-        {
+        if (filter.getValue() instanceof Number) {
           restrictions =
               criteriaBuilder.and(
                   restrictions,
-                  criteriaBuilder.greaterThan (root.<Date>get(filter.getProperty()),
+                  criteriaBuilder.gt(root.<Number>get(filter.getProperty()),
+                      (Number) filter.getValue()));
+        } else if (filter.getValue() instanceof Date) {
+          restrictions =
+              criteriaBuilder.and(
+                  restrictions,
+                  criteriaBuilder.greaterThan(root.<Date>get(filter.getProperty()),
                       (Date) filter.getValue()));
         }
       } else if (filter.getOperator() == Operator.lt && filter.getValue() != null) {
-        if (filter.getValue () instanceof Number)
-        {
+        if (filter.getValue() instanceof Number) {
           restrictions =
               criteriaBuilder.and(
                   restrictions,
                   criteriaBuilder.lt(root.<Number>get(filter.getProperty()),
                       (Number) filter.getValue()));
-        }else if(filter.getValue () instanceof Date){
+        } else if (filter.getValue() instanceof Date) {
           restrictions =
               criteriaBuilder.and(
                   restrictions,
-                  criteriaBuilder.lessThan (root.<Date>get(filter.getProperty()),
+                  criteriaBuilder.lessThan(root.<Date>get(filter.getProperty()),
                       (Date) filter.getValue()));
         }
-       
+
       } else if (filter.getOperator() == Operator.ge && filter.getValue() != null) {
-        if (filter.getValue () instanceof Number)
-        {
+        if (filter.getValue() instanceof Number) {
           restrictions =
               criteriaBuilder.and(
                   restrictions,
                   criteriaBuilder.ge(root.<Number>get(filter.getProperty()),
                       (Number) filter.getValue()));
-        }else if (filter.getValue () instanceof Date)
-        {
+        } else if (filter.getValue() instanceof Date) {
           restrictions =
-              criteriaBuilder.and(
-                  restrictions,
-                  criteriaBuilder.greaterThanOrEqualTo (root.<Date>get(filter.getProperty()),
-                      (Date) filter.getValue()));
-        }         
+              criteriaBuilder.and(restrictions, criteriaBuilder.greaterThanOrEqualTo(
+                  root.<Date>get(filter.getProperty()), (Date) filter.getValue()));
+        }
       } else if (filter.getOperator() == Operator.le && filter.getValue() != null) {
-        if(filter.getValue() instanceof Date){
+        if (filter.getValue() instanceof Date) {
           restrictions =
-              criteriaBuilder.and(
-                  restrictions,
-                  criteriaBuilder.lessThanOrEqualTo(root.<Date>get(filter.getProperty()),
-                      (Date) filter.getValue()));
-        }else{
+              criteriaBuilder.and(restrictions, criteriaBuilder.lessThanOrEqualTo(
+                  root.<Date>get(filter.getProperty()), (Date) filter.getValue()));
+        } else {
           restrictions =
               criteriaBuilder.and(
                   restrictions,
@@ -512,15 +505,14 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
                       (String) filter.getValue()));
         } else if (filter.getOperator() == Operator.in && filter.getValue() != null) {
           if (filter.getValue() instanceof Object[]) {
-            //传递多个参数 Object... values
-            Object[] objects = (Object[])filter.getValue();
+            // 传递多个参数 Object... values
+            Object[] objects = (Object[]) filter.getValue();
             restrictions =
-                criteriaBuilder.and(restrictions, root.get(filter.getProperty())
-                    .in(objects));
-          }else {
+                criteriaBuilder.and(restrictions, root.get(filter.getProperty()).in(objects));
+          } else {
             restrictions =
-                criteriaBuilder.and(restrictions, root.get(filter.getProperty())
-                    .in(filter.getValue()));
+                criteriaBuilder.and(restrictions,
+                    root.get(filter.getProperty()).in(filter.getValue()));
           }
         } else if (filter.getOperator() == Operator.isNull) {
           restrictions = criteriaBuilder.and(restrictions, root.get(filter.getProperty()).isNull());
@@ -587,8 +579,9 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
         }
       }
     }
-    //未设置排序，默认createDate降序
-    if ((StringUtils.isEmpty(pageable.getSort()) || pageable.getOrder() == null) && pageable.getOrderings() == null) {
+    // 未设置排序，默认createDate降序
+    if ((StringUtils.isEmpty(pageable.getSort()) || pageable.getOrder() == null)
+        && pageable.getOrderings() == null) {
       orderList.add(criteriaBuilder.desc(root.get("createDate")));
     }
     criteriaQuery.orderBy(orderList);
@@ -617,6 +610,16 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     return new Page<T>(queryEntity.getResultList(), total, pageable);
   }
 
+  public List<T> findListCustomized(String jpql, Map<String, ? extends Object> paramMap) {
+
+    TypedQuery<T> queryEntity =
+        entityManager.createQuery(jpql, entityClass).setFlushMode(FlushModeType.COMMIT);
+    for (final Entry<String, ? extends Object> entry : paramMap.entrySet()) {
+      queryEntity.setParameter(entry.getKey(), entry.getValue());
+    }
+    return queryEntity.getResultList();
+  }
+
   private String getCountJpql(String jpql) {
     StringBuilder stringBuilder = new StringBuilder();
     int from = jpql.toUpperCase().indexOf("FROM");
@@ -628,82 +631,71 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
   /**
    * 关键字搜索
    */
-  @SuppressWarnings ("unchecked")
+  @SuppressWarnings("unchecked")
   @Override
-  public Page<T> search (Query query, Pageable pageable, Analyzer analyzer,org.apache.lucene.search.Filter filter)
-  {
+  public Page<T> search(Query query, Pageable pageable, Analyzer analyzer,
+      org.apache.lucene.search.Filter filter) {
 
-    if (pageable == null)
-    {
-      pageable = new Pageable ();
+    if (pageable == null) {
+      pageable = new Pageable();
     }
     List<?> list;
-    List<T> entityList = new ArrayList<T> ();
+    List<T> entityList = new ArrayList<T>();
 
-    FullTextEntityManager fullTextEntityManager = Search
-        .getFullTextEntityManager (entityManager);
-    FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery (
-        query, entityClass);
-    fullTextQuery.setMaxResults (pageable.getRows ());
-    fullTextQuery.setFirstResult ((pageable.getPage () - 1)
-        * pageable.getRows ());
-    if (filter != null)
-    {
-      fullTextQuery.setFilter (filter);
+    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+    FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, entityClass);
+    fullTextQuery.setMaxResults(pageable.getRows());
+    fullTextQuery.setFirstResult((pageable.getPage() - 1) * pageable.getRows());
+    if (filter != null) {
+      fullTextQuery.setFilter(filter);
     }
-    list = fullTextQuery.getResultList ();
-    
-    for (Object o : list)
-    {
-      if (!entityList.contains ((T) o))
-      {
-        entityList.add ((T) o);
+    list = fullTextQuery.getResultList();
+
+    for (Object o : list) {
+      if (!entityList.contains((T) o)) {
+        entityList.add((T) o);
       }
     }
-    int resultSize = fullTextQuery.getResultSize ();
-    return new Page<T> (entityList,resultSize , pageable);
+    int resultSize = fullTextQuery.getResultSize();
+    return new Page<T>(entityList, resultSize, pageable);
 
   }
+
   /**
    * 关键字搜索，所有匹配的个数
    */
   @Override
-  public int count(Query query, Analyzer analyzer, org.apache.lucene.search.Filter filter){
+  public int count(Query query, Analyzer analyzer, org.apache.lucene.search.Filter filter) {
 
     int count = 0;
-    FullTextEntityManager fullTextEntityManager = Search
-        .getFullTextEntityManager (entityManager);
-    FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery (
-        query, entityClass);
-    fullTextQuery.setFirstResult (0);
-    if (filter != null)
-    {
+    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+    FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, entityClass);
+    fullTextQuery.setFirstResult(0);
+    if (filter != null) {
       fullTextQuery.setFilter(filter);
     }
     count = fullTextQuery.getResultSize();
-    fullTextEntityManager.close ();
+    fullTextEntityManager.close();
     return count;
   }
+
   /**
    * 关键字搜索，所有匹配的List
    */
   @SuppressWarnings("unchecked")
   @Override
-  public List<T> searchList (Query query, Analyzer analyzer, org.apache.lucene.search.Filter filter){
-    List<T> entityList = new ArrayList<T> ();
-    FullTextEntityManager fullTextEntityManager = Search
-        .getFullTextEntityManager (entityManager);
-    FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery (
-        query, entityClass);
-    if (filter != null)
-    {
-      fullTextQuery.setFilter (filter);
+  public List<T> searchList(Query query, Analyzer analyzer, org.apache.lucene.search.Filter filter) {
+    List<T> entityList = new ArrayList<T>();
+    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+    FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, entityClass);
+    if (filter != null) {
+      fullTextQuery.setFilter(filter);
     }
-    entityList = fullTextQuery.getResultList ();
-    fullTextEntityManager.close ();
+    entityList = fullTextQuery.getResultList();
+    fullTextEntityManager.close();
     return entityList;
   }
-  
+
   /**
    * 从数据库初始化Index
    */
@@ -714,46 +706,39 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     try {
       fullTextEntityManager.createIndexer().startAndWait();
     } catch (InterruptedException e) {
-      e.printStackTrace ();
+      e.printStackTrace();
     }
-    fullTextEntityManager.close ();
-    }
+    fullTextEntityManager.close();
+  }
 
   @Override
-  public void callProcedure (String procName ,Object...args)
-  {
+  public void callProcedure(String procName, Object... args) {
     StoredProcedureQuery storedProcedure = entityManager.createStoredProcedureQuery(procName);
-    storedProcedure.registerStoredProcedureParameter(0 , String.class , ParameterMode.IN);
-    storedProcedure .setParameter(0, args[0]);
-    storedProcedure.executeUpdate ();
+    storedProcedure.registerStoredProcedureParameter(0, String.class, ParameterMode.IN);
+    storedProcedure.setParameter(0, args[0]);
+    storedProcedure.executeUpdate();
   }
+
   @Override
-  public List<T> callProcedureWithResult (String procName, Object... args)
-  {
-    StringBuffer sb = new StringBuffer ();
-    sb.append ("{call " + procName + "(");
-    if (args != null && args.length > 0)
-    {
-      for (int i = 0; i < args.length; i++)
-      {
-        if (i == 0)
-        {
-          sb.append ("?");
-        }
-        else
-        {
-          sb.append (",?");
+  public List<T> callProcedureWithResult(String procName, Object... args) {
+    StringBuffer sb = new StringBuffer();
+    sb.append("{call " + procName + "(");
+    if (args != null && args.length > 0) {
+      for (int i = 0; i < args.length; i++) {
+        if (i == 0) {
+          sb.append("?");
+        } else {
+          sb.append(",?");
         }
 
       }
     }
-    sb.append (")}");
-    javax.persistence.Query query = entityManager.createNativeQuery (sb
-        .toString (),CarServiceRecord.class);
-    for (int i = 0; i < args.length; i++)
-    {
-      query.setParameter (i + 1, args[i]);
+    sb.append(")}");
+    javax.persistence.Query query =
+        entityManager.createNativeQuery(sb.toString(), CarServiceRecord.class);
+    for (int i = 0; i < args.length; i++) {
+      query.setParameter(i + 1, args[i]);
     }
-    return query.getResultList ();
+    return query.getResultList();
   }
 }

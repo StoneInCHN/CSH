@@ -219,6 +219,26 @@ public class Vehicle extends BaseEntity {
    */
   private String warning;
 
+  /**
+   * 实时速度
+   */
+  private Float speed;
+
+  /**
+   * 车辆是否被删除（逻辑删）
+   */
+  private Boolean delFlag = false;
+
+
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.NO)
+  public Boolean getDelFlag() {
+    return delFlag;
+  }
+
+  public void setDelFlag(Boolean delFlag) {
+    this.delFlag = delFlag;
+  }
+
   @Column(length = 100)
   public String getWarning() {
     return warning;
@@ -597,4 +617,16 @@ public class Vehicle extends BaseEntity {
   public void setAccStatus(AccStatus accStatus) {
     this.accStatus = accStatus;
   }
+
+  @JsonProperty
+  @Transient
+  public Float getSpeed() {
+    return speed;
+  }
+
+  public void setSpeed(Float speed) {
+    this.speed = speed;
+  }
+
+
 }

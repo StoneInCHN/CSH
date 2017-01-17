@@ -1,4 +1,4 @@
-package com.csh.service; 
+package com.csh.service;
 
 import java.util.Date;
 import java.util.List;
@@ -10,17 +10,26 @@ import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.BaseService;
 import com.csh.json.response.VehicleDailyReport;
 
-public interface VehicleService extends BaseService<Vehicle,Long>{
+public interface VehicleService extends BaseService<Vehicle, Long> {
 
-  List<Map<String, Object>> findVehicleUnderUser (Long userId);
+  List<Map<String, Object>> findVehicleUnderUser(Long userId);
 
-  List<Map<String, Object>> findVehicleUserInfoUnderTenant (String endUserFilter);
+  List<Map<String, Object>> findVehicleUserInfoUnderTenant(String endUserFilter);
 
-  VehicleDailyReport callVehicleDailyData (Date date, Long vehicleId);
+  VehicleDailyReport callVehicleDailyData(Date date, Long vehicleId);
 
   Vehicle findVehicleByDeviceId(Long deviceId);
-//  VehicleDailyReport callVehicleStatus (Long[] ids);
 
-  Page<Vehicle> listUnBuindVehicle (String vehiclePlateSearch,
-      String motorcadeSearch, String vehicleFullBrandSearch, Pageable pageable);
+  // VehicleDailyReport callVehicleStatus (Long[] ids);
+
+  Page<Vehicle> listUnBuindVehicle(String vehiclePlateSearch, String motorcadeSearch,
+      String vehicleFullBrandSearch, Pageable pageable);
+
+  /**
+   * 查询租户下绑定了obd设备的车辆
+   * 
+   * @param tenantID
+   * @return
+   */
+  List<Vehicle> listVehicleBindDeviceByTenant(Long tenantID);
 }

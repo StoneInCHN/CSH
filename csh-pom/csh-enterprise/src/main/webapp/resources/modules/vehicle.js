@@ -57,12 +57,12 @@ function drawMutPoint(map,allVehicleListStatus){
 					var epoint = new BMap.Point(allVehicleListStatus[i].lon,allVehicleListStatus[i].lat);
 					pointsArrs.push(spoint);
 					pointsArrs.push(epoint);
-					driveVehicle(map,pointsArrs,oldVehicleListStatus[k].plate);
+					driveVehicle(map,pointsArrs,oldVehicleListStatus[k].plate+"("+oldVehicleListStatus[k].speed+"km/h)");
 				}
 			}
 			
 		}
-		console.log('车牌号：'+allVehicleListStatus[i].plate+' lon:'+allVehicleListStatus[i].lon,"; lat:"+allVehicleListStatus[i].lat)
+		console.log('车牌号：'+allVehicleListStatus[i].plate+'实时车速：'+allVehicleListStatus[i].speed+'km/h  lon:'+allVehicleListStatus[i].lon,"; lat:"+allVehicleListStatus[i].lat)
 	}
 	
 	
@@ -82,6 +82,7 @@ function loadAllVehicleStatus(map){
 					vehicleStatus.lat = result[i].lat; 
 					vehicleStatus.lon = result[i].lon;
 					vehicleStatus.plate = result[i].plate;
+					vehicleStatus.speed = result[i].speed;
 					allVehicleListStatus.push(vehicleStatus);
 				}
 			}else{
@@ -376,9 +377,13 @@ var vehicle_manager_tool = {
 			listRemove('vehicle-table-list','../vehicle/delete.jhtml');
 		},
 		realTimeCarCondition:function(){
-			var _select_row = $('#vehicle-table-list').datagrid('getSelected');
-			if( _select_row == null ){
-				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
+			var _select_row = $('#vehicle-table-list').datagrid('getSelections');
+			if( _select_row == null || _select_row.length == 0){
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.veiewRow"),'warning');
+				return false;
+			}
+			if( _select_row.length >1 ){
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.veiewRow.unique"),'warning');
 				return false;
 			}
 			$('#realTimeCarCondition').dialog({
@@ -387,7 +392,7 @@ var vehicle_manager_tool = {
 			    height: 620,
 			    iconCls:'icon-mini-add',
 			    cache: false,
-			    href:'../vehicle/realTimeCarCondition.jhtml?deviceId='+_select_row.deviceNo,
+			    href:'../vehicle/realTimeCarCondition.jhtml?deviceId='+_select_row[0].deviceNo,
 			    buttons:[{
 					text:message("csh.common.cancel"),
 					iconCls:'icon-cancel',
@@ -415,13 +420,17 @@ var vehicle_manager_tool = {
 			});  
 		},
 		vehicleDailyReport:function(){
-			var _select_row = $('#vehicle-table-list').datagrid('getSelected');
-			if( _select_row == null ){
-				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');
+			var _select_row = $('#vehicle-table-list').datagrid('getSelections');
+			if( _select_row == null || _select_row.length == 0){
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.veiewRow"),'warning');
+				return false;
+			}
+			if( _select_row.length >1 ){
+				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.veiewRow.unique"),'warning');
 				return false;
 			}
 			var params=new Object();
-				params.vehicleId=_select_row.id;
+			params.vehicleId=_select_row[0].id;
 			
 			if($('#queryReportDate').length){
 				params.date = $('#queryReportDate').datebox('getValue');
@@ -430,7 +439,7 @@ var vehicle_manager_tool = {
 			    title: message("csh.vehicle.vehicleDailyReport"),    
 			    width: 650,    
 			    height: 400,
-			    href:'../vehicle/vehicleDailyReport.jhtml?vehicleId='+_select_row.id,
+			    href:'../vehicle/vehicleDailyReport.jhtml?vehicleId='+params.vehicleId,
 			    method:"get",
 			    queryParams:params,
 			    iconCls:'icon-mini-add',
