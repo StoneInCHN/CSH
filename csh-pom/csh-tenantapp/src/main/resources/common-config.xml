@@ -39,7 +39,7 @@
 		<setting name="intfApiKey" value="8fe0c292c2e64a10a556a10bb9f8942b" />
 		
 		<!-- 极光推送Key -->
-		<setting name="appKey" value="ad64e1b4efd40816a4b6a813 " />
+		<setting name="appKey" value="ad64e1b4efd40816a4b6a813" />
 		<setting name="masterSecret" value="12c9e9103f219f0b39a7b948" />
 		
 		<!-- 违章查询 -->

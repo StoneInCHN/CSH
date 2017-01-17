@@ -65,16 +65,16 @@ public class EndUserDaoImpl extends BaseDaoImpl<EndUser, Long> implements EndUse
 
   }
 
-@Override
-@Cacheable(value = "endUser", key = "'endUser.appPlatform='+#id")
-public AppPlatform getEndUserAppPlatform(Long id) {
-	return null;
-}
+  @Override
+  @Cacheable(value = "endUser", key = "'endUser.appPlatform='+#id")
+  public AppPlatform getEndUserAppPlatform(Long id) {
+    return null;
+  }
 
-@Override
-@CachePut(value = "endUser", key = "'endUser.appPlatform='+#id")
-public AppPlatform createEndUserAppPlatform(AppPlatform appPlatform, Long id) {
-	return appPlatform;
-}
+  @Override
+  @CachePut(value = "endUser", key = "'endUser.appPlatform='+#id")
+  public AppPlatform createEndUserAppPlatform(AppPlatform appPlatform, Long id) {
+    return appPlatform;
+  }
 
 }

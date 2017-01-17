@@ -278,6 +278,20 @@ public class Setting implements Serializable {
    */
   private Integer orderCompleteTimeOut;
 
+  /**
+   * 租户app url
+   */
+  private String tenantAppUrl;
+
+
+  public String getTenantAppUrl() {
+    return tenantAppUrl;
+  }
+
+  public void setTenantAppUrl(String tenantAppUrl) {
+    this.tenantAppUrl = tenantAppUrl;
+  }
+
 
   public Integer getOrderReceiveTimeOut() {
     return orderReceiveTimeOut;

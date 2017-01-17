@@ -4,56 +4,53 @@ import com.csh.json.base.BaseRequest;
 
 public class WarnMsgRequest extends BaseRequest {
 
-	/**
-	 * 设备号
-	 */
-	private String deviceNo;
+  private Long msgId;
+  /**
+   * obd消息类型 1->车辆点火 2->车辆熄火 3->警告消息
+   */
+  private String msgType;
 
-	/**
-	 * 在线状态
-	 */
-	private String onlineStatus;
+  /**
+   * 消息内容
+   */
+  private String msgContent;
 
-	/**
-	 * 故障码
-	 */
-	private String fautCode;
+  /**
+   * 设备号
+   */
+  private String deviceNo;
 
-	/**
-	 * 异常信息
-	 */
-	private String warningMsg;
 
-	public String getDeviceNo() {
-		return deviceNo;
-	}
+  public Long getMsgId() {
+    return msgId;
+  }
 
-	public void setDeviceNo(String deviceNo) {
-		this.deviceNo = deviceNo;
-	}
+  public void setMsgId(Long msgId) {
+    this.msgId = msgId;
+  }
 
-	public String getOnlineStatus() {
-		return onlineStatus;
-	}
+  public String getMsgType() {
+    return msgType;
+  }
 
-	public void setOnlineStatus(String onlineStatus) {
-		this.onlineStatus = onlineStatus;
-	}
+  public void setMsgType(String msgType) {
+    this.msgType = msgType;
+  }
 
-	public String getFautCode() {
-		return fautCode;
-	}
+  public String getMsgContent() {
+    return msgContent;
+  }
 
-	public void setFautCode(String fautCode) {
-		this.fautCode = fautCode;
-	}
+  public void setMsgContent(String msgContent) {
+    this.msgContent = msgContent;
+  }
 
-	public String getWarningMsg() {
-		return warningMsg;
-	}
+  public String getDeviceNo() {
+    return deviceNo;
+  }
 
-	public void setWarningMsg(String warningMsg) {
-		this.warningMsg = warningMsg;
-	}
+  public void setDeviceNo(String deviceNo) {
+    this.deviceNo = deviceNo;
+  }
 
 }

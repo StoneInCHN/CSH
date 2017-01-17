@@ -38,6 +38,7 @@ import com.csh.service.EndUserService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
 import com.csh.service.WalletService;
+import com.csh.utils.ApiUtils;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.TimeUtils;
 import com.csh.utils.TokenGenerator;
@@ -242,7 +243,9 @@ public class MessageController extends MobileBaseController {
     String msgType = msgReq.getMsgType();
     // EndUser endUser = endUserService.find(userId);
     MessageInfo msg = new MessageInfo();
+    Boolean isPushForTenant = true;
     if (msgId != null) {
+      isPushForTenant = false;
       msg = messageInfoService.find(msgId);
     } else {
       DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
@@ -265,14 +268,17 @@ public class MessageController extends MobileBaseController {
                 msgReq.getMsgContent()).getContent();
         if (msgReq.getMsgContent().contains("非法启动")) {
           tenantMsgType = TenantMsgType.ILLEGALSTARTWARN;
+          isPushForTenant = false;
         } else if (msgReq.getMsgContent().contains("非法震动")) {
           tenantMsgType = TenantMsgType.ILLEGALSHOCKWARN;
+          isPushForTenant = false;
         } else if (msgReq.getMsgContent().contains("obd故障报警")) {
           tenantMsgType = TenantMsgType.OBDWARN;
         } else if (msgReq.getMsgContent().contains("水温异常报警")) {
           tenantMsgType = TenantMsgType.WATERTEMPWARN;
         } else if (msgReq.getMsgContent().contains("超速报警")) {
           tenantMsgType = TenantMsgType.OVERSPEEDWARN;
+          isPushForTenant = false;
         } else if (msgReq.getMsgContent().contains("碰撞告警")) {
           tenantMsgType = TenantMsgType.CRASHWARN;
         } else if (msgReq.getMsgContent().contains("侧翻告警")) {
@@ -284,6 +290,7 @@ public class MessageController extends MobileBaseController {
         }
 
       } else if (msgType.equals("2")) {// 熄火指令
+        isPushForTenant = false;
         String mile = msgReq.getGpsMileage();
         if (mile == null) {
           mile = "";
@@ -299,6 +306,7 @@ public class MessageController extends MobileBaseController {
         walletService.giftRedPacket(endUser.getWallet(), SystemConfigKey.GROUTHFUND_DRIVING, mile
             + "_csh.wallet.obdDriver.comein.redPacket");
       } else if (msgType.equals("1")) {// 点火指令
+        isPushForTenant = false;
         msgContent =
             Message.warn("csh.obd.fire.message", deviceInfo.getVehicle().getPlate(),
                 TimeUtils.format("yyyy-MM-dd HH:mm:ss", new Date().getTime())).getContent();
@@ -331,8 +339,14 @@ public class MessageController extends MobileBaseController {
       messageInfoService.save(msg);
     }
 
-    // 极光推送消息
+    // 极光推送消息到用户APP
     messageInfoService.jpushMsg(msg);
+
+    // 推送消息到租户app（只包括故障码，警告消息（除非法震动，非法启动，超速））
+    if (isPushForTenant) {
+      String params = "[{\"msgId\":" + msg.getId() + "}]";
+      ApiUtils.postJson(setting.getTenantAppUrl(), "UTF-8", "UTF-8", params);
+    }
 
     response.setCode(CommonAttributes.SUCCESS);
     return response;

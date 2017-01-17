@@ -23,6 +23,7 @@ import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.base.BaseRequest;
+import com.csh.json.base.BaseResponse;
 import com.csh.json.base.PageResponse;
 import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
@@ -184,13 +185,21 @@ public class MessageController extends MobileBaseController {
    * 
    * @return
    */
-  @RequestMapping(value = "/pushVehicleWainingInfo", method = RequestMethod.POST)
-  public @ResponseBody String pushVehicleWainingInfo(
+  @RequestMapping(value = "/pushMsgForTenant", method = RequestMethod.POST)
+  public @ResponseBody BaseResponse pushMsgForTenant(
       @RequestBody List<WarnMsgRequest> msgRequestList) {
-    for (WarnMsgRequest request : msgRequestList) {
-      // vehicleService.
+    BaseResponse response = new BaseResponse();
+    WarnMsgRequest msgReq = msgRequestList.get(0);
+    if (msgReq.getMsgId() == null) {
+      return null;
     }
-
-    return "success";
+    MessageInfo messageInfo = messageInfoService.find(msgReq.getMsgId());
+    if (messageInfo == null) {
+      return null;
+    }
+    // 极光推送消息
+    messageInfoService.jpushMsgForTenant(messageInfo);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
   }
 }

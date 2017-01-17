@@ -179,4 +179,9 @@ public class DeviceInfoServiceImpl extends BaseServiceImpl<DeviceInfo, Long> imp
     deviceInfoDao.merge(deviceInfo);
   }
 
+  @Override
+  public DeviceInfo getDeviceByDeviceNo(String deviceNo) {
+    return deviceInfoDao.getDeviceByDeviceNo(deviceNo);
+  }
+
 }

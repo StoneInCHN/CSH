@@ -15,12 +15,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.entity.base.BaseEntity;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
@@ -35,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "csh_tenant_account")
 @SequenceGenerator(name = "sequenceGenerator", sequenceName = "csh_tenant_account_sequence")
-@Indexed(index="tenantAccount")
+@Indexed(index = "tenantAccount")
 public class TenantAccount extends BaseEntity {
 
   private static final long serialVersionUID = -665961639617388534L;
@@ -54,37 +52,51 @@ public class TenantAccount extends BaseEntity {
    * 密码
    */
   private String password;
-  
+
   /** 角色 */
-  private Set<Role> roles = new HashSet <Role>();
-  
+  private Set<Role> roles = new HashSet<Role>();
+
   /**
    * 账号状态
    */
   private AccountStatus accoutStatus;
-  
+
   /** 姓名 */
   private String realName;
-  
+
   /** 最后登录日期 */
   private Date loginDate;
 
   /** 最后登录IP */
   private String loginIp;
-  
-  /**员工编号*/
+
+  /** 员工编号 */
   private String staffID;
-  
+
   /**
    * 是否为内置账户
    */
   private Boolean isSystem;
-  
+
   /**
-   *  租户用户
+   * 租户用户
    */
   private TenantUser tenantUser;
-  
+
+  /**
+   * 极光push注册ID
+   */
+  private String jpushRegId;
+
+  @Column(length = 100)
+  public String getjpushRegId() {
+    return jpushRegId;
+  }
+
+  public void setjpushRegId(String jPushRegId) {
+    this.jpushRegId = jPushRegId;
+  }
+
   @OneToOne
   @JsonProperty
   public TenantUser getTenantUser() {
@@ -95,7 +107,7 @@ public class TenantAccount extends BaseEntity {
     this.tenantUser = tenantUser;
   }
 
-  @Column(length=30)
+  @Column(length = 30)
   public String getStaffID() {
     return staffID;
   }
@@ -105,7 +117,7 @@ public class TenantAccount extends BaseEntity {
   }
 
   @JsonProperty
-  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
+  @Field(store = Store.NO, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
   public AccountStatus getAccoutStatus() {
     return accoutStatus;
   }
@@ -114,7 +126,7 @@ public class TenantAccount extends BaseEntity {
     this.accoutStatus = accoutStatus;
   }
 
-  @Column(length=20)
+  @Column(length = 20)
   @JsonProperty
   public String getRealName() {
     return realName;
@@ -133,7 +145,7 @@ public class TenantAccount extends BaseEntity {
     this.loginDate = loginDate;
   }
 
-  @Column(length=20)
+  @Column(length = 20)
   @JsonProperty
   public String getLoginIp() {
     return loginIp;
@@ -142,6 +154,7 @@ public class TenantAccount extends BaseEntity {
   public void setLoginIp(String loginIp) {
     this.loginIp = loginIp;
   }
+
   @JsonProperty
   public Boolean getIsSystem() {
     return isSystem;
@@ -161,21 +174,20 @@ public class TenantAccount extends BaseEntity {
   @JoinTable(name = "csh_tenant_account_role")
   @JsonProperty
   public Set<Role> getRoles() {
-      return roles;
+    return roles;
   }
 
   /**
    * 设置角色
    * 
-   * @param roles
-   *            角色
+   * @param roles 角色
    */
   public void setRoles(Set<Role> roles) {
-      this.roles = roles;
+    this.roles = roles;
   }
 
-  @Index(name="tenant_account_tenantid")
-  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO,analyze = Analyze.NO)
+  @Index(name = "tenant_account_tenantid")
+  @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.NO)
   public Long getTenantID() {
     return tenantID;
   }
@@ -186,7 +198,7 @@ public class TenantAccount extends BaseEntity {
 
   @Column(length = 20)
   @JsonProperty
-  @Field(index=org.hibernate.search.annotations.Index.YES,analyze = Analyze.NO)
+  @Field(index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
   public String getUserName() {
     return userName;
   }
