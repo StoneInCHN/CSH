@@ -65,4 +65,23 @@ public class VehicleDaoImpl extends BaseDaoImpl<Vehicle, Long> implements Vehicl
     paramMap.put("tenantID", tenantID);
     return findListCustomized(jpql, paramMap);
   }
+
+	@Override
+	public Page<Vehicle> listVehicleBindDeviceByTenant(Pageable pageable,Long tenantID, String plate) {
+		
+		  if (tenantID == null) {
+		      return null;
+		    }
+	
+		    Map<String, Object> paramMap = new HashMap<String, Object>();
+		    String jpql =
+		        "select vehicle from DeviceInfo deviceInfo right join deviceInfo.vehicle vehicle"
+		            + " where vehicle.plate != '0000000' and vehicle.delFlag = false and vehicle.tenantID=:tenantID and deviceInfo.id is not null";
+		    if (plate != null) {
+				jpql = jpql+" and vehicle.plate like :plate";
+				paramMap.put("plate", "%"+plate+"%");
+			}
+		    paramMap.put("tenantID", tenantID);
+		    return findPageCustomized(pageable,jpql, paramMap);
+	}
 }

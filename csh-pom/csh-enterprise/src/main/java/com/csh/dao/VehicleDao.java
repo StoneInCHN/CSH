@@ -21,4 +21,7 @@ public interface VehicleDao extends BaseDao<Vehicle, Long> {
    * @return
    */
   List<Vehicle> listVehicleBindDeviceByTenant(Long tenantID);
+
+  Page<Vehicle> listVehicleBindDeviceByTenant(Pageable pageable, Long tenantID,
+		String plate);
 }

@@ -581,4 +581,9 @@ public class VehicleController extends BaseController {
     }
     return vehicleList;
   }
+  @RequestMapping(value = "/listVehicleHasDevice", method = RequestMethod.POST)
+  public @ResponseBody Page<Vehicle> listVehicleHasDevice(Pageable pageable,String plateSearch) {
+	
+	  return vehicleService.listVehicleBindDeviceByTenant(pageable,tenantAccountService.getCurrentTenantID(), plateSearch);
+  }
 }

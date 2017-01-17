@@ -161,7 +161,7 @@ function createMap(trackList){
 //车辆查询
 $(function(){
 	$("#trackVehicleSearch-table-list").datagrid({
-		url:'../vehicle/list.jhtml',  
+		url:'../vehicle/listVehicleHasDevice.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
@@ -183,9 +183,5 @@ $("#track_vehicle_search_btn").click(function(){
 		  $('#trackVehicleSearch-table-list').datagrid('options').queryParams = _queryParams;  
 		  $("#trackVehicleSearch-table-list").datagrid('reload');			
 		});
-
-
-
-
 
 });

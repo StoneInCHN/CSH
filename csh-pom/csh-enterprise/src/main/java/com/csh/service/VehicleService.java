@@ -32,4 +32,8 @@ public interface VehicleService extends BaseService<Vehicle, Long> {
    * @return
    */
   List<Vehicle> listVehicleBindDeviceByTenant(Long tenantID);
+
+
+  Page<Vehicle> listVehicleBindDeviceByTenant(Pageable pageable, Long tenantID,
+		String plate);
 }

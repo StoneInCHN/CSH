@@ -262,4 +262,8 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   public List<Vehicle> listVehicleBindDeviceByTenant(Long tenantID) {
     return vehicleDao.listVehicleBindDeviceByTenant(tenantID);
   }
+  @Override
+  public Page<Vehicle> listVehicleBindDeviceByTenant(Pageable pageable,Long tenantID,String plate) {
+    return vehicleDao.listVehicleBindDeviceByTenant(pageable,tenantID,plate);
+  }
 }
