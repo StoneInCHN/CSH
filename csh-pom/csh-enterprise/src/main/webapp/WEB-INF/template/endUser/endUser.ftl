@@ -34,8 +34,10 @@
 <table id="endUser-table-list"></table>
 <div id="endUser_manager_tool">
 	<div class="tool-button">
+		<!--
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain=true onclick="endUser_manager_tool.add();">添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="endUser_manager_tool.edit();">修改</a>
+		-->
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain=true onclick="endUser_manager_tool.remove();">删除</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="endUser_manager_tool.setBalance();">设置余额</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain=true onclick="endUser_manager_tool.import();">批量导入</a>
