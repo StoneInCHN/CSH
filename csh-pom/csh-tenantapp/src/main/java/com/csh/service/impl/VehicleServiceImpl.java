@@ -204,10 +204,10 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
       filters.add(Filter.eq("plate", request.getPlate()));
     }
     if (request.getDeviceNo() != null) {
-      filters.add(Filter.eq("device.deviceNo", request.getDeviceNo()));
+      filters.add(Filter.eq("device&deviceNo", request.getDeviceNo()));
     }
     if (request.getMobileNum() != null) {
-      filters.add(Filter.eq("endUser.mobileNum", request.getDeviceNo()));
+      filters.add(Filter.eq("endUser&mobileNum", request.getMobileNum()));
     }
     if (onlineStatus != null && OnlineStatus.ONLINE.ordinal() == onlineStatus.ordinal()) {
       filters.add(Filter.eq("isOnline", 1));

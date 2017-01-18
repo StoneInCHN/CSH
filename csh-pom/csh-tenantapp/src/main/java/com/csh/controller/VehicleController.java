@@ -145,7 +145,7 @@ public class VehicleController extends MobileBaseController {
       
       map.put("deviceNo", vehicle.getDeviceNo());
       String vehicleTodayDetailsUrl =
-          setting.getObdServerUrl() + "appVehicleData/vehicleTodayDetails.jhtml?deviceId="
+          setting.getObdServerUrl() + "/appVehicleData/vehicleTodayDetails.jhtml?deviceId="
               + vehicle.getDeviceNo();
       String vehicleTodayDetailsRes = ApiUtils.post(vehicleTodayDetailsUrl);
       if (LogUtil.isDebugEnabled(getClass())) {
