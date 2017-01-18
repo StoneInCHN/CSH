@@ -176,7 +176,7 @@ $("#vehicleMileageReport_search_btn").click(function(){
 	//车辆查询
 $(function(){
 	$("#vehicleMileageVehicleSearch-table-list").datagrid({
-		url:'../vehicle/list.jhtml',  
+		url:'../vehicle/listVehicleHasDevice.jhtml',  
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
@@ -202,9 +202,6 @@ $(function(){
 					});
 				loadReportDate();//调用接口，加载数据	
 			}
-		},
-		onDblClickRow : function (rowIndex, rowData){
-			
 		},
 		columns:[[
 			{field : 'ck',checkbox : true},
