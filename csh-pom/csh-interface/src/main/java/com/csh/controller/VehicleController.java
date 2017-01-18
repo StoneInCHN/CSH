@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -122,7 +123,7 @@ public class VehicleController extends MobileBaseController {
      * 外部接口调用时会有车牌号为000000的虚拟车辆，显示时要过滤掉
      */
     for (Vehicle vehicle : endUser.getVehicles()) {
-      if (!"0000000".equals(vehicle.getPlate())) {
+      if (!"0000000".equals(vehicle.getPlate()) && BooleanUtils.isFalse(vehicle.getDelFlag())) {
         vehicles.add(vehicle);
       }
     }
@@ -135,6 +136,58 @@ public class VehicleController extends MobileBaseController {
     return response;
   }
 
+
+  /**
+   * 删除车辆
+   * 
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/delete", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody ResponseOne<Map<String, Object>> delete(
+      @RequestBody VehicleRequest vehicleReq) {
+    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    Long userId = vehicleReq.getUserId();
+    String token = vehicleReq.getToken();
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    Vehicle vehicle = vehicleService.find(vehicleReq.getVehicleId());
+    if (vehicle != null) {
+      if (vehicle.getDeviceNo() != null) {
+        response.setCode(CommonAttributes.FAIL_VEHICLE_DELETE);
+        response.setDesc(Message.error("csh.vehicle.bind.obd.del").getContent());
+        return response;
+      }
+      // if (BooleanUtils.isTrue(vehicle.getIsDefault())) {
+      // response.setCode(CommonAttributes.FAIL_VEHICLE_DELETE);
+      // response.setDesc(Message.error("csh.vehicle.bind.obd.del").getContent());
+      // return response;
+      // }
+      if (LogUtil.isDebugEnabled(VehicleController.class)) {
+        LogUtil.debug(VehicleController.class, "deleteVehicle",
+            "delete vehicle for User with UserName: %s,VehiclePlate: %s,isDefault: %s", vehicle
+                .getEndUser().getUserName(), vehicle.getPlate(), vehicle.getIsDefault());
+      }
+      vehicle.setDelFlag(true);
+      vehicleService.update(vehicle);
+    }
+
+
+    // response.setMsg(map);
+
+    String newtoken = TokenGenerator.generateToken(vehicleReq.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
   /**
    * 添加车辆
@@ -541,7 +594,7 @@ public class VehicleController extends MobileBaseController {
      */
     List<Vehicle> vehicles = new ArrayList<Vehicle>();
     for (Vehicle vehicle : endUser.getVehicles()) {
-      if (!"0000000".equals(vehicle.getPlate())) {
+      if (!"0000000".equals(vehicle.getPlate()) && BooleanUtils.isFalse(vehicle.getDelFlag())) {
         vehicles.add(vehicle);
       }
     }

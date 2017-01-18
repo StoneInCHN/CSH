@@ -128,6 +128,7 @@ public class VehicleController extends BaseController {
     Query plateNotQuery = null;
     Query userNameQuery = null;
     Query mobileNumQuery = null;
+    Query delFlagQuery = null;
     TermRangeQuery rangeQuery = null;
 
 
@@ -196,6 +197,8 @@ public class VehicleController extends BaseController {
     plateNotQuery = new TermQuery(new Term("plate", "0000000"));
     query.add(plateNotQuery, Occur.MUST_NOT);
 
+    delFlagQuery = new TermQuery(new Term("delFlag", "false"));
+    query.add(delFlagQuery, Occur.MUST);
     if (plateQuery != null || userNameQuery != null || mobileNumQuery != null || rangeQuery != null) {
       vehiclePage = vehicleService.search(query, pageable, analyzer, filter, true);
     } else {
@@ -203,7 +206,10 @@ public class VehicleController extends BaseController {
           new ArrayList<com.csh.framework.filter.Filter>();
       com.csh.framework.filter.Filter plateFilter =
           new com.csh.framework.filter.Filter("plate", Operator.ne, "0000000");
+      com.csh.framework.filter.Filter delFilter =
+          new com.csh.framework.filter.Filter("delFlag", Operator.eq, false);
       filters.add(plateFilter);
+      filters.add(delFilter);
       pageable.setFilters(filters);
       vehiclePage = vehicleService.findPage(pageable, true);
     }
@@ -269,8 +275,9 @@ public class VehicleController extends BaseController {
       List<Vehicle> vehicles = vehicleService.findList(ids);
       for (Vehicle v : vehicles) {
         if (v.getDeviceNo() != null) {
-          return Message.error("");
+          return Message.error("csh.vehicle.delete.invalid", v.getPlate(), v.getDeviceNo());
         }
+        v.setDelFlag(true);
       }
       vehicleService.update(vehicles);
     }
@@ -581,9 +588,11 @@ public class VehicleController extends BaseController {
     }
     return vehicleList;
   }
+
   @RequestMapping(value = "/listVehicleHasDevice", method = RequestMethod.POST)
-  public @ResponseBody Page<Vehicle> listVehicleHasDevice(Pageable pageable,String plateSearch) {
-	
-	  return vehicleService.listVehicleBindDeviceByTenant(pageable,tenantAccountService.getCurrentTenantID(), plateSearch);
+  public @ResponseBody Page<Vehicle> listVehicleHasDevice(Pageable pageable, String plateSearch) {
+
+    return vehicleService.listVehicleBindDeviceByTenant(pageable,
+        tenantAccountService.getCurrentTenantID(), plateSearch);
   }
 }

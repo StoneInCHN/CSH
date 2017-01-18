@@ -83,6 +83,9 @@ public final class CommonAttributes {
   /** 购买OBD设备失败 */
   public static final String FAIL_PURCHASE_DEVICE = "0020";// 购买OBD设备失败
 
+  /** 车辆删除失败 */
+  public static final String FAIL_VEHICLE_DELETE = "0021";// 车辆删除失败
+
   /** 操作失败 */
   public static final String FAIL_COMMON = "1000"; // 操作失败
   /** 没有取得任何信息 */

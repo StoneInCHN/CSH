@@ -71,9 +71,9 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
             .debug(
                 MessageInfoServiceImpl.class,
                 "jpush message for tenant app",
-                "Push Message to tenant  with tenantId: %s,msgId: %s, iosRegJpushIdCounts: %s, androidRegJpushIdCounts: %s",
-                messageInfo.getTenantID(), messageInfo.getId().toString(), iosPushRegIds.size(),
-                andoridPushRegIds.size());
+                "Push Message to tenant  with tenantId: %s,msgId: %s,msgContent: %s, iosRegJpushIdCounts: %s, androidRegJpushIdCounts: %s",
+                messageInfo.getTenantID(), messageInfo.getId().toString(),
+                messageInfo.getMessageContent(), iosPushRegIds.size(), andoridPushRegIds.size());
       }
 
       try {
