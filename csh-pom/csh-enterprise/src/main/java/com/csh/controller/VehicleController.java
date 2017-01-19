@@ -92,9 +92,10 @@ public class VehicleController extends BaseController {
 
   @RequestMapping(value = "/list", method = RequestMethod.POST)
   public @ResponseBody Page<Vehicle> list(Pageable pageable, ModelMap model, Date beginDate,
-      Date endDate, String plateSearch, String userNameSearch, String mobileNumSearch) {
+      Date endDate, String plateSearch, String userNameSearch, String mobileNumSearch,
+      Integer bindStatus) {
     return searchVehicleList(pageable, model, beginDate, endDate, plateSearch, userNameSearch,
-        mobileNumSearch);
+        mobileNumSearch, bindStatus);
   }
 
   /**
@@ -110,7 +111,8 @@ public class VehicleController extends BaseController {
    * @return
    */
   private Page<Vehicle> searchVehicleList(Pageable pageable, ModelMap model, Date beginDate,
-      Date endDate, String plateSearch, String userNameSearch, String mobileNumSearch) {
+      Date endDate, String plateSearch, String userNameSearch, String mobileNumSearch,
+      Integer bindStatus) {
 
 
     Page<Vehicle> vehiclePage;
@@ -208,10 +210,25 @@ public class VehicleController extends BaseController {
           new com.csh.framework.filter.Filter("plate", Operator.ne, "0000000");
       com.csh.framework.filter.Filter delFilter =
           new com.csh.framework.filter.Filter("delFlag", Operator.eq, false);
-      filters.add(plateFilter);
-      filters.add(delFilter);
-      pageable.setFilters(filters);
-      vehiclePage = vehicleService.findPage(pageable, true);
+      if (bindStatus != null) {
+        if (bindStatus == 1) {// 已绑定
+          vehiclePage =
+              vehicleService.listVehicleBindDeviceByTenant(pageable,
+                  tenantAccountService.getCurrentTenantID(), null);
+        } else if (bindStatus == 2) {// 未绑定
+          vehiclePage = vehicleService.listUnBuindVehicle(null, null, null, pageable);
+        } else {
+          filters.add(plateFilter);
+          filters.add(delFilter);
+          pageable.setFilters(filters);
+          vehiclePage = vehicleService.findPage(pageable, true);
+        }
+      } else {
+        filters.add(plateFilter);
+        filters.add(delFilter);
+        pageable.setFilters(filters);
+        vehiclePage = vehicleService.findPage(pageable, true);
+      }
     }
     prepareVehicleList(vehiclePage.getRows());
     return vehiclePage;
@@ -306,16 +323,41 @@ public class VehicleController extends BaseController {
   @RequestMapping(value = "/exportData", method = {RequestMethod.GET, RequestMethod.POST})
   public void exportData(HttpServletResponse response, Pageable pageable, ModelMap model,
       Date beginDate, Date endDate, String plateSearch, String userNameSearch,
-      String mobileNumSearch) {
-
+      String mobileNumSearch, Integer bindStatus) {
+    pageable.setPage(1);
+    pageable.setRows(1000);
     List<Vehicle> vehicleList = null;
     if (plateSearch != null || beginDate != null || endDate != null || userNameSearch != null
         || mobileNumSearch != null) {
       vehicleList =
           searchVehicleList(pageable, model, beginDate, endDate, plateSearch, userNameSearch,
-              mobileNumSearch).getRows();
+              mobileNumSearch, bindStatus).getRows();
     } else {
-      vehicleList = vehicleService.findAll();
+      List<com.csh.framework.filter.Filter> filters =
+          new ArrayList<com.csh.framework.filter.Filter>();
+      com.csh.framework.filter.Filter plateFilter =
+          new com.csh.framework.filter.Filter("plate", Operator.ne, "0000000");
+      com.csh.framework.filter.Filter delFilter =
+          new com.csh.framework.filter.Filter("delFlag", Operator.eq, false);
+      if (bindStatus != null) {
+        if (bindStatus == 1) {// 已绑定
+          vehicleList =
+              vehicleService.listVehicleBindDeviceByTenant(pageable,
+                  tenantAccountService.getCurrentTenantID(), null).getRows();
+        } else if (bindStatus == 2) {// 未绑定
+          vehicleList = vehicleService.listUnBuindVehicle(null, null, null, pageable).getRows();
+        } else {
+          filters.add(plateFilter);
+          filters.add(delFilter);
+          pageable.setFilters(filters);
+          vehicleList = vehicleService.findPage(pageable, true).getRows();
+        }
+      } else {
+        filters.add(plateFilter);
+        filters.add(delFilter);
+        pageable.setFilters(filters);
+        vehicleList = vehicleService.findPage(pageable, true).getRows();
+      }
     }
 
     if (vehicleList != null && vehicleList.size() > 0) {

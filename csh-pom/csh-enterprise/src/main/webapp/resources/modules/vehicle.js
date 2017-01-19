@@ -712,5 +712,9 @@ $(function(){
 	  var _queryParams = $("#vehicle-search-form").serializeJSON();
 	  $('#vehicle-table-list').datagrid('options').queryParams = _queryParams;  
 	  $("#vehicle-table-list").datagrid('reload');
+	  if(_queryParams.plateSearch!="" || _queryParams.userNameSearch!="" || _queryParams.mobileNumSearch!="" || _queryParams.beginDate!="" || _queryParams.endDate!=""){
+		  $("#bindStatus").combobox("select","0");
+	  }
+	  
 	})
 })

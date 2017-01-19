@@ -9,6 +9,14 @@
 	    <form id="vehicle-search-form" class="search-form" >
 	    <input type="hidden" name="totalRecord" id="totalRecord"/>
 	    	<div class="search-item">
+			    <label>设备绑定状态:</label>
+			    <select id="bindStatus" class="easyui-combobox" name="bindStatus" style="width:100px;" panelMaxHeight="100px">  
+			    	<option value="0" selected="selected">全部</option> 
+    			  	<option value="1">已绑定</option>
+					<option value="2">未绑定</option>
+				</select>
+			</div>
+	    	<div class="search-item">
 			    <label> ${message("csh.vehicle.plate")}:</label>
 			    <input type="text" class="easyui-textbox" id="plateSearch" name="plateSearch" validtype="length[0,20]"/>
 			</div>
