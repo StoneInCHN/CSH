@@ -19,13 +19,23 @@
 						  <fieldset>
 								  	<legend>条件查询</legend>
 								    <form id="vehicleMileageReport_search_form" class="search-form">
+								    	<div class="search-item">
+										    <label> 选择年份:</label>
+										    <input class="easyui-combobox" data-options="valueField: 'label',textField: 'value',
+												data: [
+													[#list selectYears as selectYear]
+														{label: ${selectYear},value:${selectYear}},
+													[/#list]
+												],prompt:'${message("csh.common.please.select")}',panelMaxHeight:100" value="${year}"  id="vehicleStatusYearID"  />
+										</div>		
 										<div class="search-item">
 										    <label> 选择月份:</label>
 										    <input class="easyui-combobox" data-options="valueField: 'label',textField: 'value',
-												data: [{label: 1,value: '1'},{label:2,value: 2},{label:3,value: 3},{label:4,value: 4},
-														{label:5,value: 5},{label:6,value: 6},{label:7,value: 7},{label:8,value: 8}
-														,{label:9,value: 9},{label:10,value: 10},{label:11,value: 11},{label:12,value: 12}],
-														prompt:'${message("csh.common.please.select")}',panelMaxHeight:200"  id="vehicleStatusMonthID"  style="width:100px;"/>
+												data: [
+													[#list [1,2,3,4,5,6,7,8,9,10,11,12] as month]
+														{label: ${month},value:${month}},
+													[/#list]
+												],prompt:'${message("csh.common.please.select")}',panelMaxHeight:250" value="${month}"  id="vehicleStatusMonthID" />
 										</div>										
 										<input type="hidden" name="vehicleID" id="vehicleMileage_deviceNo" value="1">
 									</form>

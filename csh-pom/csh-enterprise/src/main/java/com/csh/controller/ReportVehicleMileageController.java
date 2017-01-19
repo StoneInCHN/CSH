@@ -1,6 +1,8 @@
 package com.csh.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -50,6 +52,19 @@ public class ReportVehicleMileageController extends BaseController {
    */
   @RequestMapping(value = "/vehicleMileageReport", method = RequestMethod.GET)
   public String list(ModelMap model) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Date());
+    int year = calendar.get(Calendar.YEAR);//默认查询年份(当年)
+    model.put("year", year); 
+    int month = calendar.get(Calendar.MONTH)+1;//默认查询月份（当月）
+    model.put("month", month); 
+    
+    //可选年份
+    List<Integer> selectYears = new ArrayList<Integer>();
+    for (int i = year; i >= 2016; i--) {
+      selectYears.add(i);
+    }
+    model.put("selectYears", selectYears);
     return "/report/vehicleMileageReport";
   }
 

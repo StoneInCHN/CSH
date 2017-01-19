@@ -166,11 +166,16 @@
 	}
 
 $("#vehicleMileageReport_search_btn").click(function(){
-	    month=$("#vehicleStatusMonthID").combobox("getValue");
-		date = new Date( new Date().getFullYear(),month, 0); 
+		if($("#vehicleStatusMonthID").combobox("getValue") != ''){
+			 month=$("#vehicleStatusMonthID").combobox("getValue");
+		}
+		if($("#vehicleStatusYearID").combobox("getValue") != ''){
+			 year=$("#vehicleStatusYearID").combobox("getValue");
+		}
+		date = new Date(year,month, 0); 
 	    daysCount = date.getDate();            //本月天数
-	    fromDate =  new Date().getFullYear() + "-" + $("#vehicleStatusMonthID").combobox("getValue") + "-1";
-	    toDate =   new Date().getFullYear() + "-" + $("#vehicleStatusMonthID").combobox("getValue") + "-" + daysCount;
+	    fromDate =  year + "-" + month + "-1";//月初 例如：2017-02-01
+	    toDate =   year + "-" +month+ "-" + daysCount;//月末  例如：2017-02-28
 	    loadReportDate();//调用接口，加载数据	
 });
 	//车辆查询
@@ -206,7 +211,7 @@ $(function(){
 		columns:[[
 			{field : 'ck',checkbox : true},
 			{title : message("csh.vehicle.plate"),field : "plate",width:120,align : 'center',sortable : true},
-			 {title:message("csh.vehicle.vehicleBrand"),width:80,field:"vehicleBrand",align:'right',sortable:true,
+			 {title:message("csh.vehicle.vehicleBrand"),width:80,field:"vehicleBrand",align:'center',sortable:true,
 		    	  formatter: function(value,row,index){
 			    	  if(row != null){
 			    		  return  row.vehicleBrandDetail.vehicleLine.vehicleBrand.name;
