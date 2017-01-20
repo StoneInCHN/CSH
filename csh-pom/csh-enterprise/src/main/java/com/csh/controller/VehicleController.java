@@ -550,6 +550,7 @@ public class VehicleController extends BaseController {
             }
           }
         }
+        vehicleService.update(vehicleList);
       }
     }
 

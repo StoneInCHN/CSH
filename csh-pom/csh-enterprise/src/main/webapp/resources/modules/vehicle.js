@@ -386,6 +386,10 @@ var vehicle_manager_tool = {
 				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.veiewRow.unique"),'warning');
 				return false;
 			}
+			if(_select_row[0].deviceNo == '' || _select_row[0].deviceNo == null){
+				$.messager.alert(message("csh.common.prompt"),message("csh.vehicle.no.bind"),'warning');
+				return false;
+			}
 			$('#realTimeCarCondition').dialog({
 			    title: message("csh.vehicle.realTimeCarCondition"),    
 			    width: 700,    
@@ -431,7 +435,10 @@ var vehicle_manager_tool = {
 			}
 			var params=new Object();
 			params.vehicleId=_select_row[0].id;
-			
+			if(_select_row[0].deviceNo == '' || _select_row[0].deviceNo == null){
+				$.messager.alert(message("csh.common.prompt"),message("csh.vehicle.no.bind"),'warning');
+				return false;
+			}
 			if($('#queryReportDate').length){
 				params.date = $('#queryReportDate').datebox('getValue');
 			}
