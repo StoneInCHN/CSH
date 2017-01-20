@@ -53,12 +53,12 @@ public class VehicleStatus {
    * 经度
    */
   private Float Lon;
-  
+
   /**
    * 创建时间
    */
   private Date createtime;
-  
+
   /**
    * 车辆故障码
    */
@@ -71,6 +71,21 @@ public class VehicleStatus {
    * 方位角
    */
   private String azimuth;
+
+  /**
+   * 实时速度
+   */
+  private Float speed;
+
+
+  public Float getSpeed() {
+    return speed;
+  }
+
+  public void setSpeed(Float speed) {
+    this.speed = speed;
+  }
+
   public Long getDeviceId() {
     return deviceId;
   }
@@ -119,68 +134,60 @@ public class VehicleStatus {
     this.bv = bv;
   }
 
-  public Float getGpsMileage ()
-  {
-    return gpsMileage==null?0:gpsMileage;
+  public Float getGpsMileage() {
+    return gpsMileage == null ? 0 : gpsMileage;
   }
 
-  public void setGpsMileage (Float gpsMileage)
-  {
+  public void setGpsMileage(Float gpsMileage) {
     this.gpsMileage = gpsMileage;
   }
 
-  public Float getLat ()
-  {
+  public Float getLat() {
     return lat;
   }
 
-  public void setLat (Float lat)
-  {
+  public void setLat(Float lat) {
     this.lat = lat;
   }
 
-  public Float getLon ()
-  {
+  public Float getLon() {
     return Lon;
   }
 
-  public void setLon (Float lon)
-  {
+  public void setLon(Float lon) {
     Lon = lon;
   }
 
-  public Date getCreatetime ()
-  {
+  public Date getCreatetime() {
     return createtime;
   }
 
-  public void setCreatetime (Date createtime)
-  {
+  public void setCreatetime(Date createtime) {
     this.createtime = createtime;
   }
 
   public String getFaultcode() {
-	return faultcode;
+    return faultcode;
   }
 
   public void setFaultcode(String faultcode) {
-	this.faultcode = faultcode;
+    this.faultcode = faultcode;
   }
 
   public AccStatus getAccStatus() {
-	return accStatus;
+    return accStatus;
   }
 
   public void setAccStatus(AccStatus accStatus) {
-	this.accStatus = accStatus;
+    this.accStatus = accStatus;
   }
 
   public String getAzimuth() {
-	return azimuth;
+    return azimuth;
   }
 
   public void setAzimuth(String azimuth) {
-	this.azimuth = azimuth;
+    this.azimuth = azimuth;
   }
-  
+
 }
