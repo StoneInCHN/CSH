@@ -11,6 +11,7 @@
 					<div class="search-item">
 				  	  <button id="track_vehicle_search_btn" class="easyui-linkbutton" style="margin-left:2px;margin-right:2px"data-options="iconCls:'icon-search'">${message("csh.search")}</button>
 				    </div>
+				  
 				</fieldset>
                 <table id="trackVehicleSearch-table-list"></table>
 		</div>
@@ -27,8 +28,11 @@
 										<input type="hidden" name="vehicleID" id="track_vehicleID">
 									</form>
 									<div class="search-item">
-								  	  <button id="track_search_btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">${message("csh.search")}</button>
+								  	  	<button id="track_search_btn" class="easyui-linkbutton" data-options="iconCls:'icon-search'">${message("csh.search")}</button>
 								    </div>
+								    <div class="search-item">
+								  		<button id="track_export_btn" class="easyui-linkbutton" style="margin-left:2px;margin-right:2px"data-options="iconCls:'icon-redo'">${message("csh.button.export")}</button>
+								     </div>
 								  </fieldset>
 								<div id="vehicleTrack" style="height:900px;width:99%">
 									<table id="track-table-list"></table>
@@ -36,4 +40,17 @@
 								</div>
 				</div>
 		</div>
+</div>
+<div id="trackExportDialog">
+	<form id="trackExport_form" method="post" class="form-table">
+		<div class="search-item">
+		    <label> ${message("csh.vehicleTrack.startTime")}:</label>
+		    <input type="text" class="Wdate" id="trackExportStartDate" readonly="readonly" name="beginDate"  onclick="WdatePicker({maxDate: '#F{$dp.$D(\'trackExportEndDate\')}'});" />
+		</div>
+		<div class="search-item">
+		    <label>${message("csh.vehicleTrack.endTime")}:</label>
+		   	<input type="text" class="Wdate" id="trackExportEndDate" readonly="readonly" name="endDate" onclick="WdatePicker({minDate: '#F{$dp.$D(\'trackExportStartDate\')}'});"/>
+		</div>
+		<input type="hidden" name="vehicleID" id="track_export_vehicleID">
+	</form>
 </div>

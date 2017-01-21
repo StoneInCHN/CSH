@@ -92,7 +92,44 @@ $("#track_search_btn").click(function(){
 //			}
 //		});
 });
-
+$("#track_export_btn").click(function(){
+	 var _queryParams = $("#track_search_form").serializeJSON();
+	  if(_queryParams["vehicleID"] == "" ){
+			showSuccessMsg(message("csh.vehicle.miss.param"));
+			return;
+	  };
+	  
+	  $('#trackExportDialog').dialog({
+		    title: message("csh.vehicleTrack.export"),    
+		    width: 300,    
+		    height: 250,
+		    iconCls:'icon-mini-add',
+		    cache: false, 
+		    buttons:[{
+		    	text:message("csh.common.save"),
+		    	iconCls:'icon-save',
+				handler:function(){
+//					exportExcel("vehicleTrack","trackExport_form",totalRecord);
+					window.location.href="../vehicleTrack/exportData.jhtml?beginDate="
+							+$('#trackExportStartDate').val()+"&&endDate="+$('#trackExportEndDate').val()
+							+"&&vehicleID="+$('#track_export_vehicleID').val();
+					showSuccessMsg(message("csh.vehicleTrack.export.start"));
+					$('#trackExportDialog').dialog("close");
+					$("#trackExport_form").form("reset");
+				}
+			},{
+				text:message("csh.common.cancel"),
+				iconCls:'icon-cancel',
+				handler:function(){
+					 $('#trackExportDialog').dialog("close");
+					 $("#trackExport_form").form("reset");
+				}
+		    }],
+		    onOpen:function(){
+		    	$('#trackExport_form').show();
+		    },
+		});  
+});
 function createMarker(point, icon,map,isEndPoint){  // 创建图标对象   
 	var myIcon = new BMap.Icon(icon, new BMap.Size(30, 90), {    
 	// 指定定位位置。   
@@ -167,7 +204,8 @@ $(function(){
 		striped:true,
 		singleSelect:true,
 		onSelect:function(rowIndex,rowData){
-			$('#track_vehicleID').val(rowData.id);
+//			$('#track_vehicleID').val(rowData.id);
+			$("input[name='vehicleID']").val(rowData.id);
 		},
 		onDblClickRow : function (rowIndex, rowData){
 			
@@ -183,5 +221,6 @@ $("#track_vehicle_search_btn").click(function(){
 		  $('#trackVehicleSearch-table-list').datagrid('options').queryParams = _queryParams;  
 		  $("#trackVehicleSearch-table-list").datagrid('reload');			
 		});
-
 });
+
+

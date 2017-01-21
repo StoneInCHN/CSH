@@ -196,6 +196,8 @@ var messages = {
 	"csh.vehicleTrack.startPoint":"起始地点",
 	"csh.vehicleTrack.endPoint":"结束地点",
 	"csh.vehicleTrack.mile":"里程(km)",
+	"csh.vehicleTrack.export.start":"导出开始，请等待",
+	"csh.vehicleTrack.export":"轨迹导出",
 	//车辆品牌
 	"csh.vehicleBrand.list":"车辆品牌列表",
 	"csh.vehicleBrand.name":"品牌名称",
