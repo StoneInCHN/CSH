@@ -125,4 +125,20 @@ public class MessageInfoServiceImpl extends BaseServiceImpl<MessageInfo, Long> i
     }
     map = null;
   }
+
+  @Override
+  public String createMsgInfoCache(String deviceNo, String msgContent) {
+    return messageInfoDao.createMsgInfoCache(deviceNo, msgContent);
+  }
+
+  @Override
+  public String getMsgInfoCache(String deviceNo) {
+    return messageInfoDao.getMsgInfoCache(deviceNo);
+  }
+
+  @Override
+  public void deleteMsgInfoCache(String deviceNo) {
+    messageInfoDao.deleteMsgInfoCache(deviceNo);
+  }
+
 }

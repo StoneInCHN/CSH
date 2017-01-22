@@ -241,6 +241,7 @@ public class MessageController extends MobileBaseController {
     Long msgId = msgReq.getMsgId();
     String deviceNo = msgReq.getDeviceNo();
     String msgType = msgReq.getMsgType();
+
     // EndUser endUser = endUserService.find(userId);
     MessageInfo msg = new MessageInfo();
     Boolean isPushForTenant = true;
@@ -248,6 +249,13 @@ public class MessageController extends MobileBaseController {
       isPushForTenant = false;
       msg = messageInfoService.find(msgId);
     } else {
+      String msgContent = null;
+      msgContent = messageInfoService.getMsgInfoCache(deviceNo);
+      if (msgReq.getMsgContent().equals(msgContent)) {
+        response.setCode(CommonAttributes.FAIL_DEVICE_MSG_DUPLICATE);
+        return response;
+      }
+      messageInfoService.createMsgInfoCache(deviceNo, msgReq.getMsgContent());
       DeviceInfo deviceInfo = deviceInfoService.getDeviceByDeviceNo(deviceNo);
       if (deviceInfo == null) {
         response.setCode(CommonAttributes.FAIL_DEVICE_NOEXIST);
@@ -259,7 +267,7 @@ public class MessageController extends MobileBaseController {
       }
       EndUser endUser = deviceInfo.getVehicle().getEndUser();
       msg.setMessageType(MessageType.PERSONALMSG);
-      String msgContent = null;
+
       TenantMsgType tenantMsgType = null;
       if (msgType.equals("3")) {// 警告信息
         msgContent =

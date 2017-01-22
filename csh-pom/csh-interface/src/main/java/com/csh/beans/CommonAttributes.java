@@ -86,6 +86,9 @@ public final class CommonAttributes {
   /** 车辆删除失败 */
   public static final String FAIL_VEHICLE_DELETE = "0021";// 车辆删除失败
 
+  /** 重复消息 */
+  public static final String FAIL_DEVICE_MSG_DUPLICATE = "0022";// 重复消息,不推送
+
   /** 操作失败 */
   public static final String FAIL_COMMON = "1000"; // 操作失败
   /** 没有取得任何信息 */

@@ -142,3 +142,10 @@ fieldset .search-item button{
   color: #0285b3;
   cursor: pointer;
 }
+.check_box_text{
+	display:block;
+	float:right;
+	height:20px; 
+	line-height:20px;
+	margin-left:5px;
+}

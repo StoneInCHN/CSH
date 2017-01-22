@@ -5,6 +5,8 @@ var deviceInfo_manager_tool = {
 			if (_rows.length == 0) {
 				$.messager.alert(message("csh.common.prompt"),
 						message("csh.common.select.editRow"), 'warning');
+			}else if(deviceStatus !="SALEOUT" && _rows.length >1){
+				$.messager.alert(message("csh.common.prompt"),message("该修改不能进行批量操作，只能选择一条记录！"), 'warning');
 			} else {
 				var _ids = [];
 				for (var i = 0; i < _rows.length; i++) {
@@ -46,11 +48,16 @@ var deviceInfo_manager_tool = {
 		},
 		//解绑车辆
 		unBind:function(){
+			var _rows = $("#deviceInfo-table-list").datagrid('getSelections');
+			if( _rows.length >1){
+					$.messager.alert(message("csh.common.prompt"),message("该修改不能进行批量操作，只能选择一条记录！"), 'warning');
+					return false;
+			}
 			var _edit_row = $('#deviceInfo-table-list').datagrid('getSelected');
 			if( _edit_row == null ){
 				$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');  
 				return false;
-			}
+			}else 
 			if(_edit_row.bindStatus=="UNBINDED"){
 				$.messager.alert(message("csh.deviceInfo.bindStatus"),message("csh.deviceInfo.bindStatus.unBinded"),'warning');  
 				return false;
@@ -83,7 +90,13 @@ var deviceInfo_manager_tool = {
 		},
 		//绑定车辆
 		bind:function(){
+				var _rows = $("#deviceInfo-table-list").datagrid('getSelections');
+				if( _rows.length >1){
+						$.messager.alert(message("csh.common.prompt"),message("该修改不能进行批量操作，只能选择一条记录！"), 'warning');
+						return false;
+				}
 				var _edit_row = $('#deviceInfo-table-list').datagrid('getSelected');
+				
 				if( _edit_row == null ){
 					$.messager.alert(message("csh.common.prompt"),message("csh.common.select.editRow"),'warning');  
 					return false;
@@ -154,7 +167,7 @@ $(function(){
 		toolbar:"#deviceInfo_manager_tool",
 		url:'../deviceInfo/list.jhtml',  
 		pagination:true,
-		singleSelect:true,
+	//	singleSelect:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
 		onDblClickRow : function (rowIndex, rowData){
