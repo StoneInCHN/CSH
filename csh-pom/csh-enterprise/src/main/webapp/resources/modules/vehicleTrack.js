@@ -110,9 +110,9 @@ $("#track_export_btn").click(function(){
 		    	iconCls:'icon-save',
 				handler:function(){
 //					exportExcel("vehicleTrack","trackExport_form",totalRecord);
-					window.location.href="../vehicleTrack/exportData.jhtml?beginDate="
+					window.open("../vehicleTrack/exportData.jhtml?beginDate="
 							+$('#trackExportStartDate').val()+"&&endDate="+$('#trackExportEndDate').val()
-							+"&&vehicleID="+$('#track_export_vehicleID').val();
+							+"&&vehicleID="+$('#track_export_vehicleID').val());
 					showSuccessMsg(message("csh.vehicleTrack.export.start"));
 					$('#trackExportDialog').dialog("close");
 					$("#trackExport_form").form("reset");

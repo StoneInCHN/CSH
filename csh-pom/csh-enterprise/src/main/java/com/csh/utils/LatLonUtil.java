@@ -132,7 +132,11 @@ public class LatLonUtil {
    * 
    * } catch (Exception e) { e.printStackTrace(); } return null; }
    */
-
+  public static Map<String, Object> convertCoordinate(Map<String, Object> point) {
+	  String lon =  point.get("lon").toString();
+	  String lat =  point.get("lat").toString();
+	  return convertCoordinate(lon, lat);
+  }
   public static Map<String, Object> convertCoordinate(String lon, String lat) {
     try {
       Map<String, Object> map = new HashMap<String, Object>();
@@ -143,7 +147,7 @@ public class LatLonUtil {
       Map<String, Object> resMap = (Map<String, Object>) mapper.readValue(res, Map.class);
       String x = resMap.get("x").toString();
       String y = resMap.get("y").toString();
-      map.put("lng", new String(Base64.decodeBase64(x), "UTF-8"));
+      map.put("lon", new String(Base64.decodeBase64(x), "UTF-8"));
       map.put("lat", new String(Base64.decodeBase64(y), "UTF-8"));
       return map;
     } catch (Exception e) {

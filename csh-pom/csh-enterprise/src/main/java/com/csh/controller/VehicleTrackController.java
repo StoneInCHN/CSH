@@ -117,9 +117,10 @@ public class VehicleTrackController extends BaseController {
               mapper.getTypeFactory().constructParametricType(List.class, VehicleTrack.class));
       for (VehicleTrack vehicleTrack : trackList) {
         if (vehicleTrack.getTracks() != null && vehicleTrack.getTracks().size() > 0) {
-          Map<String, Object> startPoint = vehicleTrack.getTracks().get(0);
-          Map<String, Object> endPoint =
-              vehicleTrack.getTracks().get(vehicleTrack.getTracks().size() - 1);
+        	Map<String, Object> startPoint = LatLonUtil.convertCoordinate(vehicleTrack.getTracks()
+					.get(0));
+			Map<String, Object> endPoint = LatLonUtil.convertCoordinate(vehicleTrack.getTracks()
+					.get(vehicleTrack.getTracks().size() - 1));
           String startAddr =
               LatLonUtil.convertCoorForAddr(startPoint.get("lat").toString(), startPoint.get("lon")
                   .toString());
@@ -195,10 +196,11 @@ public class VehicleTrackController extends BaseController {
 			for (VehicleTrack vehicleTrack : trackList) {
 				if (vehicleTrack.getTracks() != null
 						&& vehicleTrack.getTracks().size() > 0) {
-					Map<String, Object> startPoint = vehicleTrack.getTracks()
-							.get(0);
-					Map<String, Object> endPoint = vehicleTrack.getTracks()
-							.get(vehicleTrack.getTracks().size() - 1);
+					Map<String, Object> startPoint = LatLonUtil.convertCoordinate(vehicleTrack.getTracks()
+							.get(0));
+					Map<String, Object> endPoint = LatLonUtil.convertCoordinate(vehicleTrack.getTracks()
+							.get(vehicleTrack.getTracks().size() - 1));
+					
 					String startAddr = LatLonUtil.convertCoorForAddr(startPoint
 							.get("lat").toString(), startPoint.get("lon")
 							.toString());
@@ -211,9 +213,9 @@ public class VehicleTrackController extends BaseController {
 					/*
 					 * gps坐标转为百度坐标
 					 */
-					List<Map<String, Object>> convertMaps = LatLonUtil
-							.convertCoordinates(vehicleTrack.getTracks());
-					vehicleTrack.setTracks(convertMaps);
+//					List<Map<String, Object>> convertMaps = LatLonUtil
+//							.convertCoordinates(vehicleTrack.getTracks());
+//					vehicleTrack.setTracks(convertMaps);
 
 					vehicleTrack.setPlate(vehicle.getPlate());
 				}
