@@ -178,6 +178,59 @@ $("#vehicleMileageReport_search_btn").click(function(){
 	    toDate =   year + "-" +month+ "-" + daysCount;//月末  例如：2017-02-28
 	    loadReportDate();//调用接口，加载数据	
 });
+//数据导出
+$("#vehicleStatus_export_btn").click(function(){
+		$('#vehicleStatus_export_div').dialog({
+		    title: ' 导出',    
+		    width: 600,    
+		    height: 270,
+		    iconCls:'icon-redo',
+		    cache: false, 
+		    modal: true,
+		    buttons:[{
+		    	text:'导出',
+		    	iconCls:'icon-redo',
+				handler:function(){
+					if($("#vehicleStatusExportYear").combobox("getValue") != ''){
+						 year=$("#vehicleStatusExportYear").combobox("getValue");
+					}else{
+						$.messager.alert(message("jlr.common.prompt"),'请选择月份!','info');
+						return false;
+					}
+					if($("#vehicleStatusExportMonth").combobox("getValue") != ''){
+						 month=$("#vehicleStatusExportMonth").combobox("getValue");
+					}else{
+						$.messager.alert(message("jlr.common.prompt"),'请选择年份!','info');
+						return false;
+					}
+					var exportDate = new Date(year,month, 0); 
+				    var exportMonthdays = exportDate.getDate();            //本月天数
+					    $('#exportFromDate').val( year + "-" + month + "-01");//月初 例如：2017-02-01
+					    $('#exportToDate').val(year + "-" +month+ "-" + exportMonthdays);//月末  例如：2017-02-28
+					//一次性导出所有车辆一个月报表数据
+					$("#vehicleStatus_export_form").attr("action","../vehicleMileageReport/exportAllVehicleReport.jhtml");
+					$("#vehicleStatus_export_form").attr("target", "downloadReport_iframe");
+					$("#vehicleStatus_export_form").submit();
+					$('#vehicleStatus_export_div').dialog("close");
+					$('#vehicleStatus_export_form').form("reset");
+				}
+			},{
+				text:message("csh.common.cancel"),
+				iconCls:'icon-cancel',
+				handler:function(){
+					 $('#vehicleStatus_export_div').dialog("close");
+					 $('#vehicleStatus_export_form').form("reset");
+				}
+		    }],
+		    onOpen:function(){
+		    	$('#vehicleStatus_export_form').show();
+		    },
+		    onClose:function(){
+		    	$("#UserUploader-add .uploadBtn").trigger("clearFileQuene");
+		    }
+		}); 
+});	
+	
 	//车辆查询
 $(function(){
 	$("#vehicleMileageVehicleSearch-table-list").datagrid({
