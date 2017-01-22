@@ -31,4 +31,27 @@ public interface MessageInfoService extends BaseService<MessageInfo, Long> {
    * @param msg
    */
   void jpushMsg(MessageInfo msg);
+
+  /**
+   * 创建消息缓存
+   * 
+   * @return
+   */
+  String createMsgInfoCache(String deviceNo, String msgContent);
+
+  /**
+   * 获取缓存消息
+   * 
+   * @param deviceNo
+   * @return
+   */
+  String getMsgInfoCache(String deviceNo);
+
+  /**
+   * 删除缓存消息
+   * 
+   * @param deviceNo
+   * @param msgContent
+   */
+  void deleteMsgInfoCache(String deviceNo);
 }
