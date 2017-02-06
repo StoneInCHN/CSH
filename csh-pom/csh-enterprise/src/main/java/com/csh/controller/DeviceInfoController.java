@@ -1,7 +1,9 @@
 package com.csh.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -227,8 +229,12 @@ public class DeviceInfoController extends BaseController
   @RequestMapping(value = "/details", method = RequestMethod.GET)
   public String details(ModelMap model, Long id) {
     DeviceInfo deviceInfo = deviceInfoService.find(id);
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("deviceId", deviceInfo.getDeviceNo ());
+    
+    model.addAttribute("realTimeCarCondition",  vehicleService.getRealTimeCarCondition (params));;
     model.addAttribute("deviceInfo", deviceInfo);
-    return "endUser/details";
+    return "deviceInfo/details";
   }
   /**
    * 解绑设备

@@ -65,6 +65,7 @@
 		    </table>
 	</form>
 </div>
+<div id="deviceInfoDetail"></div>
 
 
 

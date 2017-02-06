@@ -29,6 +29,7 @@ import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.impl.BaseServiceImpl;
+import com.csh.json.response.RealTimeCarCondition;
 import com.csh.json.response.VehicleDailyReport;
 import com.csh.service.DeviceInfoService;
 import com.csh.service.TenantAccountService;
@@ -265,5 +266,38 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   @Override
   public Page<Vehicle> listVehicleBindDeviceByTenant(Pageable pageable,Long tenantID,String plate) {
     return vehicleDao.listVehicleBindDeviceByTenant(pageable,tenantID,plate);
+  }
+
+  @Override
+  public RealTimeCarCondition getRealTimeCarCondition (
+      Map<String, Object> params)
+  {
+    RealTimeCarCondition realTimeCarCondition = null;
+    try {
+      // String response =
+      // "{\"msg\":{\"mileAge\":100,\"engineRuntime\":12,\"averageOil\":10,\"speed\":60,\"lon\":104.0637,\"lat\":30.6338,\"azimuth\":null,\"acc\":1}}";
+      String response =
+          ApiUtils.post(setting.getObdServiceUrl()
+              + "tenantVehicleData/realTimeVehicleStatus.jhtml", params);
+      ObjectMapper objectMapper = new ObjectMapper();
+      if (response != null && !response.equals ("")){
+        JsonNode rootNode = objectMapper.readTree(response);
+        JsonNode msgNode = rootNode.path("msg");
+        String msg = objectMapper.writeValueAsString(msgNode);
+        realTimeCarCondition = objectMapper.readValue(msg, RealTimeCarCondition.class);
+        if (realTimeCarCondition.getIsNeedToAddInitMileAge()) {
+          Vehicle vehicle = this.findVehicleByDeviceId(Long.parseLong ((String) params.get ("deviceId")));
+          if(vehicle != null){
+            realTimeCarCondition.setMileAge(realTimeCarCondition.getMileAge()
+                + vehicle.getDriveMileage());
+            }
+        }
+      }
+      
+      return realTimeCarCondition;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+   return null;
   }
 }

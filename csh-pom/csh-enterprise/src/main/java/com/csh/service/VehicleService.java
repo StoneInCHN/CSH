@@ -8,6 +8,7 @@ import com.csh.entity.Vehicle;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.framework.service.BaseService;
+import com.csh.json.response.RealTimeCarCondition;
 import com.csh.json.response.VehicleDailyReport;
 
 public interface VehicleService extends BaseService<Vehicle, Long> {
@@ -36,4 +37,6 @@ public interface VehicleService extends BaseService<Vehicle, Long> {
 
   Page<Vehicle> listVehicleBindDeviceByTenant(Pageable pageable, Long tenantID,
 		String plate);
+
+  RealTimeCarCondition getRealTimeCarCondition (Map<String, Object> params);
 }

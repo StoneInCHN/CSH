@@ -173,8 +173,8 @@ $(function(){
 		onDblClickRow : function (rowIndex, rowData){
 			$('#deviceInfoDetail').dialog({    
 			    title: message("csh.common.detail"),    
-			    width: 400,    
-			    height: 350, 
+			    width: 600,    
+			    height: 450, 
 			    cache: false,
 			    modal: true,
 			    href:'../deviceInfo/details.jhtml?id='+rowData.id,

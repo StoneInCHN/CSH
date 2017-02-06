@@ -436,28 +436,8 @@ public class VehicleController extends BaseController {
   public String getRealTimeCarCondition(ModelMap model, Long deviceId) {
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("deviceId", deviceId);
-    try {
-      // String response =
-      // "{\"msg\":{\"mileAge\":100,\"engineRuntime\":12,\"averageOil\":10,\"speed\":60,\"lon\":104.0637,\"lat\":30.6338,\"azimuth\":null,\"acc\":1}}";
-      String response =
-          ApiUtils.post(setting.getObdServiceUrl()
-              + "tenantVehicleData/realTimeVehicleStatus.jhtml", params);
-      ObjectMapper objectMapper = new ObjectMapper();
-
-      JsonNode rootNode = objectMapper.readTree(response);
-      JsonNode msgNode = rootNode.path("msg");
-      String msg = objectMapper.writeValueAsString(msgNode);
-      RealTimeCarCondition realTimeCarCondition =
-          objectMapper.readValue(msg, RealTimeCarCondition.class);
-      if (realTimeCarCondition.getIsNeedToAddInitMileAge()) {
-        Vehicle vehicle = vehicleService.findVehicleByDeviceId(deviceId);
-        realTimeCarCondition.setMileAge(realTimeCarCondition.getMileAge()
-            + vehicle.getDriveMileage());
-      }
-      model.put("realTimeCarCondition", realTimeCarCondition);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    
+    model.put("realTimeCarCondition", vehicleService.getRealTimeCarCondition(params));
     return "vehicle/realTimeCarCondition";
   }
 
