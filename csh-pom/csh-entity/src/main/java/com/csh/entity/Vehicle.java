@@ -150,6 +150,11 @@ public class Vehicle extends BaseEntity {
   private Long lastMaintainMileage;
 
   /**
+   * 用户车辆保养提醒
+   */
+  private Boolean isMaintainReminder;
+
+  /**
    * 警告信息
    */
   private String wainingInfo;
@@ -229,6 +234,14 @@ public class Vehicle extends BaseEntity {
    */
   private Boolean delFlag = false;
 
+
+  public Boolean getIsMaintainReminder() {
+    return isMaintainReminder;
+  }
+
+  public void setIsMaintainReminder(Boolean isMaintainReminder) {
+    this.isMaintainReminder = isMaintainReminder;
+  }
 
   @Field(index = org.hibernate.search.annotations.Index.YES, store = Store.NO, analyze = Analyze.NO)
   public Boolean getDelFlag() {

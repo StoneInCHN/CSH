@@ -283,6 +283,19 @@ public class Setting implements Serializable {
    */
   private String tenantAppUrl;
 
+  /**
+   * 车辆保养里程
+   */
+  private Integer maintainMileage;
+
+
+  public Integer getMaintainMileage() {
+    return maintainMileage;
+  }
+
+  public void setMaintainMileage(Integer maintainMileage) {
+    this.maintainMileage = maintainMileage;
+  }
 
   public String getTenantAppUrl() {
     return tenantAppUrl;
