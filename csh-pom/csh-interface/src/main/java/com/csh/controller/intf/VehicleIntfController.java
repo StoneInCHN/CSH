@@ -121,13 +121,17 @@ public class VehicleIntfController extends MobileBaseController {
       for (Map<String, Object> result : resultList) {
         List<Map<String, Object>> trackMap = (List<Map<String, Object>>) result.get("tracks");
         if (trackMap != null && trackMap.size() > 0) {
-          Map<String, Object> startTrack = trackMap.get(0);
-          Map<String, Object> endTrack = trackMap.get(trackMap.size() - 1);
+          Map<String, Object> startTrack =
+              LatLonUtil.convertCoordinate(trackMap.get(0).get("lon").toString(), trackMap.get(0)
+                  .get("lat").toString());
+          Map<String, Object> endTrack =
+              LatLonUtil.convertCoordinate(trackMap.get(trackMap.size() - 1).get("lon").toString(),
+                  trackMap.get(trackMap.size() - 1).get("lat").toString());
           String startAddr =
-              LatLonUtil.convertCoorForAddr(startTrack.get("lat").toString(), startTrack.get("lon")
+              LatLonUtil.convertCoorForAddr(startTrack.get("lat").toString(), startTrack.get("lng")
                   .toString());
           String endAddr =
-              LatLonUtil.convertCoorForAddr(endTrack.get("lat").toString(), endTrack.get("lon")
+              LatLonUtil.convertCoorForAddr(endTrack.get("lat").toString(), endTrack.get("lng")
                   .toString());
           result.put("startAddr", startAddr);
           result.put("endAddr", endAddr);

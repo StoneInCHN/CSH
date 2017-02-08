@@ -133,10 +133,11 @@ public class LatLonUtil {
    * } catch (Exception e) { e.printStackTrace(); } return null; }
    */
   public static Map<String, Object> convertCoordinate(Map<String, Object> point) {
-	  String lon =  point.get("lon").toString();
-	  String lat =  point.get("lat").toString();
-	  return convertCoordinate(lon, lat);
+    String lon = point.get("lon").toString();
+    String lat = point.get("lat").toString();
+    return convertCoordinate(lon, lat);
   }
+
   public static Map<String, Object> convertCoordinate(String lon, String lat) {
     try {
       Map<String, Object> map = new HashMap<String, Object>();
