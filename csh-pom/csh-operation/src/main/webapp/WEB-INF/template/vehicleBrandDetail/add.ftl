@@ -6,13 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="${base}/resources/style/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/font-awesome.css" rel="stylesheet" type="text/css" />
-<link href="${base}/resources/style/style.css" rel="stylesheet" type="text/css" />
 <link href="${base}/resources/style/common.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/style/style.css" rel="stylesheet" type="text/css" />
+<link href="${base}/resources/style/chosen/chosen.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="${base}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${base}/resources/js/jquery.validate.js"></script>
 <script type="text/javascript" src="${base}/resources/js/jquery.placeholder.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/input.js"></script>
+<script type="text/javascript" src="${base}/resources/js/chosen.jquery.min.js"></script>
 <script type="text/javascript">
 $().ready(function() {
 
@@ -60,6 +62,7 @@ $().ready(function() {
 		}
 	});
 	
+	$("#vehicleLineId").chosen(); 
 });
 </script>
 </head>
@@ -138,10 +141,10 @@ $().ready(function() {
 									<span class="requiredField">*</span>${message("csh.vehicleBrandDetail.vehicleLine")}:
 								</th>
 								<td>
-									<select name="vehicleLineId">
+									<select id="vehicleLineId" name="vehicleLineId">
 										<option value="">${message("csh.vehicleBrandDetail.vehicleLine.select")}</option>
 										[#list vehicleLines as vehicleLine]
-											<option value="${vehicleLine.id}">${vehicleLine.code}&nbsp;&nbsp;&nbsp;${vehicleLine.name}</option>
+											<option value="${vehicleLine.id}">${vehicleLine.name}</option>
 										[/#list]
 									</select>
 								</td>
