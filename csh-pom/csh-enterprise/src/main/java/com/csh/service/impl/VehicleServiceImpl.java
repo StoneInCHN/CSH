@@ -286,7 +286,7 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
         String msg = objectMapper.writeValueAsString(msgNode);
         realTimeCarCondition = objectMapper.readValue(msg, RealTimeCarCondition.class);
         if (realTimeCarCondition.getIsNeedToAddInitMileAge()) {
-          Vehicle vehicle = this.findVehicleByDeviceId(Long.parseLong ((String) params.get ("deviceId")));
+          Vehicle vehicle = this.findVehicleByDeviceId((Long)params.get ("deviceId"));
           if(vehicle != null){
             realTimeCarCondition.setMileAge(realTimeCarCondition.getMileAge()
                 + vehicle.getDriveMileage());
