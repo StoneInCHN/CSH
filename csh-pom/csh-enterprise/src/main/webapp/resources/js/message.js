@@ -187,6 +187,9 @@ var messages = {
 	"csh.vehicle.obdStatusTime":"最新上传",
 	"csh.vehicle.allVehicleStatus":"全地图车况",
 	"csh.vehicle.no.bind":"车辆未绑定设备,无法查看数据",
+	"csh.vehicle.lastMaintainMileage":"上次保养里程",
+	"csh.vehicle.isMaintainReminder":"提醒操作",
+	"csh.vehicle.mileagePerMaintain":"保养间隔里程",
 	
 	//车辆轨迹
 	"csh.vehicle.track":"车辆轨迹",

@@ -16,14 +16,20 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.csh.beans.Setting;
 import com.csh.dao.EndUserDao;
 import com.csh.dao.VehicleDao;
 import com.csh.entity.EndUser;
+import com.csh.entity.MessageInfo;
+import com.csh.entity.MsgEndUser;
 import com.csh.entity.Vehicle;
+import com.csh.entity.commonenum.CommonEnum.MessageType;
 import com.csh.entity.commonenum.CommonEnum.OilType;
+import com.csh.entity.commonenum.CommonEnum.SendType;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
@@ -32,6 +38,8 @@ import com.csh.framework.service.impl.BaseServiceImpl;
 import com.csh.json.response.RealTimeCarCondition;
 import com.csh.json.response.VehicleDailyReport;
 import com.csh.service.DeviceInfoService;
+import com.csh.service.MessageInfoService;
+import com.csh.service.MsgEndUserService;
 import com.csh.service.TenantAccountService;
 import com.csh.service.VehicleOilService;
 import com.csh.service.VehicleService;
@@ -55,6 +63,11 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
   private VehicleOilService vehicleOilService;
   @Resource(name = "deviceInfoServiceImpl")
   private DeviceInfoService deviceInfoService;
+  @Resource(name ="messageInfoServiceImpl")
+  private MessageInfoService messageInfoService;
+  @Resource(name ="msgEndUserServiceImpl")
+  private MsgEndUserService msgEndUserService;
+  
   private Setting setting = SettingUtils.get();
 
 
@@ -299,5 +312,37 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
       e.printStackTrace();
     }
    return null;
+  }
+
+  
+  @Override
+  @Transactional(propagation=Propagation.REQUIRED)
+  public MessageInfo updateMaintainReminder (Boolean maintainRequired,Vehicle vehicle)
+  {
+    vehicle.setIsMaintainReminder (false);
+    vehicle.setLastMaintainMileage (vehicle.getDashboardMileage ().longValue ());
+    this.update (vehicle);
+    if (maintainRequired)
+    {
+      MessageInfo msgInfo = new MessageInfo ();
+      msgInfo.setMessageTitle ("保养提醒");
+      
+      msgInfo.setMessageType (MessageType.PERSONALMSG);
+      msgInfo.setMessageContent ("车辆需要保养，请尽快前往4S店做保养");
+      msgInfo.setSendType (SendType.PUSH);
+      msgInfo.setTenantID (vehicle.getTenantID ());
+      EndUser owner = vehicle.getEndUser ();
+      
+      MsgEndUser msgEndUser = new MsgEndUser ();
+      msgEndUser.setEndUser (owner);
+      msgEndUser.setIsRead (false);
+      msgEndUser.setIsPush (false);
+      msgEndUser.setMessage (msgInfo);
+      msgEndUserService.save (msgEndUser);
+      vehicle.setIsMaintainReminder (false);
+      messageInfoService.save (msgInfo);
+      return msgInfo;
+    }
+    return null;
   }
 }

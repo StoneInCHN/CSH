@@ -27,7 +27,6 @@ function drawMutPoint(map,allVehicleListStatus){
 		map.addOverlay(marker);
 	}
 	function deletePoint(point){
-		debugger;
 		var allOverlay = map.getOverlays();
 		for (var i = 0; i < allOverlay.length -1; i++){
 			if(allOverlay[i].getPosition()!= null && allOverlay[i].getPosition().lon == point.lon
@@ -37,7 +36,6 @@ function drawMutPoint(map,allVehicleListStatus){
 			}
 		}
 	}
-	debugger;
 	map.clearOverlays();
 	for(var i=0;i<allVehicleListStatus.length;i++){
 		var point = new BMap.Point(allVehicleListStatus[i].lon,allVehicleListStatus[i].lat);
@@ -67,6 +65,16 @@ function drawMutPoint(map,allVehicleListStatus){
 	
 	
 	
+}
+function remind(opear,vehicleId){
+	$.ajax({
+		url:"../vehicle/updateMaintainReminder.jhtml",
+		type:"post",
+		data:{"maintainRequired":opear,"vehicleId":vehicleId},
+		success:function(result,response,status){
+			$("#vehicle-table-list").datagrid('reload');
+		}
+	});
 }
 var index = 0;
 function loadAllVehicleStatus(map){
@@ -276,10 +284,10 @@ var vehicle_manager_tool = {
 			    	text:message("csh.common.save"),
 			    	iconCls:'icon-save',
 					handler:function(){
-						var validate = $('#vehicle_form').form('validate');
+						var validate = $('#editVehicle_form').form('validate');
 						if(validate){
 							$.ajax({
-								url:"../vehicle/update.jhtml",
+								url:"../vehicle/updateMaintainMileage.jhtml",
 								type:"post",
 								data:$("#editVehicle_form").serialize(),
 								beforeSend:function(){
@@ -328,7 +336,8 @@ var vehicle_manager_tool = {
 
 					});
 			    	$("#vehicleSelectVehicleLine-edit").combobox({
-			    		url : '../vehicleLine/findVehicleLineByBrand.jhtml',
+//			    		url : '../vehicleLine/findVehicleLineByBrand.jhtml',
+			    		url : '../vehicleLine/findVehicleLineByBrand.jhtml?vehicleBrandId='+$("#vehicleSelectVehicleBrand-edit").attr("data-value"),
 					    valueField:'id',    
 					    textField:'name',
 					    editable : false,
@@ -338,11 +347,13 @@ var vehicle_manager_tool = {
 						loadFilter :function(data) {
 							var newData=new Array()
 							for(var i=0;i<data.length;i++){
-								var newDataItem = null;
-								newData.name = data[i].name;
-								newData.id = data[i].id;
-								newData.group=data[i].parent.name;
-								newData.push(newData)
+								var newDataItem = new Object();
+								newDataItem.name = data[i].name;
+								newDataItem.id = data[i].id;
+								if(data[i].parent != null){
+									newDataItem.group=data[i].parent.name;
+								}
+								newData.push(newDataItem)
 							}
 							return newData;
 						},
@@ -359,7 +370,7 @@ var vehicle_manager_tool = {
 
 					});
 			    	$("#vehicleSelectVehicleBrandDetail-edit").combobox({
-			    		url:'../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml',
+			    		url:'../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml?vehicleLineId='+$("#vehicleSelectVehicleLine-edit").attr("data-value"),
 					    valueField:'id',    
 					    textField:'name',
 					    editable : false,
@@ -580,6 +591,7 @@ $(function(){
 		pagination:true,
 		loadMsg:message("csh.common.loading"),
 		striped:true,
+		checkOnSelect:true,
 		onDblClickRow : function (rowIndex, rowData){
 			$('#vehicleDetail').dialog({    
 			    title: message("csh.common.detail"),    
@@ -605,7 +617,7 @@ $(function(){
 					    prompt:message("csh.common.please.select"),
 					});
 			    	$("#vehicleSelectVehicleLine-detail").combobox({
-			    		url : '../vehicleLine/findVehicleLineByBrand.jhtml',
+			    		url : '../vehicleLine/findVehicleLineByBrand.jhtml?vehicleBrandId='+$("#vehicleSelectVehicleBrand-detail").attr("data-value"),
 					    valueField:'id',    
 					    textField:'name',
 					    editable : false,
@@ -613,7 +625,7 @@ $(function(){
 					    prompt:message("csh.common.please.select")
 					});
 			    	$("#vehicleSelectVehicleBrandDetail-detail").combobox({
-			    		url:'../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml',
+			    		url:'../vehicleBrandDetail/findVehicleBrandDetailByLine.jhtml?vehicleLineId='+$("#vehicleSelectVehicleLine-detail").attr("data-value"),
 					    valueField:'id',    
 					    textField:'name',
 					    editable : false,
@@ -630,6 +642,8 @@ $(function(){
 		},
 		onLoadSuccess:function(data){
 			$("#totalRecord").val(data.total);
+			$('.remind').linkbutton({text:'提醒',plain:true,color:'red'});
+			$('.cancel').linkbutton({text:'取消',plain:true});
 		},
 		columns:[
 		   [
@@ -709,7 +723,18 @@ $(function(){
 						return "";
 					}
 				}
+		      },
+		      {title:message("csh.vehicle.lastMaintainMileage"),field:"lastMaintainMileage",width:130,sortable:true},
+		      {title:message("csh.vehicle.mileagePerMaintain"),field:"mileagePerMaintain",width:130,sortable:true},
+		      {title:message("csh.vehicle.isMaintainReminder"),field:"isMaintainReminder",width:130,sortable:true,
+		    	  formatter:function(value,row,index){
+		    		  if(value){
+		    			  var btn = '<a class="remind" style="color:red" onclick="remind(true,'+row.id+')" href="#">提醒</a>|<a class="cancel" href="#" onclick="remind(false,'+row.id+')">取消</a>';  
+		    			  return btn;
+		    		  }
+		    	  }
 		      }
+		      
 		   ]
 		]
 	});
