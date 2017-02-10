@@ -47,6 +47,7 @@ import com.csh.utils.ApiUtils;
 import com.csh.utils.DateTimeUtils;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.SettingUtils;
+import com.csh.utils.SpringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -325,10 +326,9 @@ public class VehicleServiceImpl extends BaseServiceImpl<Vehicle, Long> implement
     if (maintainRequired)
     {
       MessageInfo msgInfo = new MessageInfo ();
-      msgInfo.setMessageTitle ("保养提醒");
-      
+      msgInfo.setMessageTitle (SpringUtils.getMessage ("csh.vehicleMaintain.title"));
       msgInfo.setMessageType (MessageType.PERSONALMSG);
-      msgInfo.setMessageContent ("车辆需要保养，请尽快前往4S店做保养");
+      msgInfo.setMessageContent (SpringUtils.getMessage ("csh.vehicleMaintain.remindContent"));
       msgInfo.setSendType (SendType.PUSH);
       msgInfo.setTenantID (vehicle.getTenantID ());
       EndUser owner = vehicle.getEndUser ();

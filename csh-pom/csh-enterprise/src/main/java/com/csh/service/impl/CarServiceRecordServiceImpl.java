@@ -42,6 +42,7 @@ import com.csh.service.MessageInfoService;
 import com.csh.service.TenantAccountService;
 import com.csh.utils.ApiUtils;
 import com.csh.utils.SettingUtils;
+import com.csh.utils.SpringUtils;
 
 @Service("carServiceRecordServiceImpl")
 public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecord,Long> implements CarServiceRecordService {
@@ -230,8 +231,8 @@ public class CarServiceRecordServiceImpl extends BaseServiceImpl<CarServiceRecor
     @Transactional(propagation=Propagation.REQUIRED)
     public void sendRecordStatusUpdateMessag(CarServiceRecord record,ChargeStatus newChargeStatus){
         MessageInfo msgInfo = new MessageInfo ();
-        msgInfo.setMessageContent ("订单状态已改为："+newChargeStatus.getChargeStatusName ());
-        msgInfo.setMessageTitle ("订单修改");
+        msgInfo.setMessageContent (SpringUtils.getMessage ("csh.order.remindContent",newChargeStatus.getChargeStatusName ()));
+        msgInfo.setMessageTitle (SpringUtils.getMessage ("csh.order.update"));
         msgInfo.setTenantID (tenantAccountService.getCurrentTenantID ());
         msgInfo.setMessageType (MessageType.PERSONALMSG);
         msgInfo.setSendType (SendType.PUSH);
