@@ -659,9 +659,10 @@ public class Vehicle extends BaseEntity {
   }
 
   @JsonProperty
+  @Column(columnDefinition="bigint default 5000")
   public Long getMileagePerMaintain ()
   {
-    if (mileagePerMaintain == null)
+    if (mileagePerMaintain == null )
     {
       return 0L;
     }else {
@@ -673,6 +674,5 @@ public class Vehicle extends BaseEntity {
   {
     this.mileagePerMaintain = mileagePerMaintain;
   }
-
   
 }
