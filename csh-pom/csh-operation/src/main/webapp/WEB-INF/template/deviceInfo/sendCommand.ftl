@@ -88,6 +88,8 @@ $().ready(function() {
 										<option value="sm" >标定初始里程</option>
 										<option value="arm" >车辆设防</option>
 										<option value="disarm" >车辆撤防</option>
+										<option value="ion" >断油电</option>
+										<option value="ioff" >恢复油电</option>
 										<option value="nobd" >nobd模式</option>
 										<option value="rhw" >终端重启</option>
 									</select>
