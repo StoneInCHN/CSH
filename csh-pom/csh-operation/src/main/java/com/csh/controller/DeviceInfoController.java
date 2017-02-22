@@ -559,6 +559,10 @@ public class DeviceInfoController extends BaseController {
     arm,
     /** 车辆撤防 ，无参数 */
     disarm,
+    /** 断油电 */
+    ion,
+    /** 恢复油电 */
+    ioff,
     /** nobd模式 ,参数 parameter=1 为nobd模式，parameter=0 为obd模式*/
     nobd,
     /** 终端(硬件)重启 ，无参数*/

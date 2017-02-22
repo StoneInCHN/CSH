@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import antlr.StringUtils;
+
 import com.csh.dao.CouponDao;
 import com.csh.entity.Coupon;
 import com.csh.entity.EndUser;
@@ -22,6 +24,8 @@ import com.csh.service.CouponService;
 import com.csh.service.MessageInfoService;
 import com.csh.service.MsgEndUserService;
 import com.csh.service.TenantInfoService;
+import com.csh.utils.SpringUtils;
+import com.opensymphony.oscache.util.StringUtil;
 
 @Service("couponServiceImpl")
 public class CouponServiceImpl extends BaseServiceImpl<Coupon,Long> implements CouponService {
@@ -48,10 +52,10 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon,Long> implements C
           Set<MsgEndUser> msgEndUserList = new HashSet <MsgEndUser> ();
           
           MessageInfo msgInfo = new MessageInfo ();
-          msgInfo.setMessageTitle ("优惠券");
+          msgInfo.setMessageTitle (SpringUtils.getMessage ("csh.coupon.title"));
           
           msgInfo.setMessageType (MessageType.PROMOTION);
-          msgInfo.setMessageContent ("优惠券发送，赶快前往活动中心领取");
+          msgInfo.setMessageContent(SpringUtils.getMessage("csh.coupon.send"));
           msgInfo.setSendType (SendType.PUSH);
           msgInfo.setTenantID (tenantID);
 //          msgInfo.setMsgUser (msgEndUserList);
@@ -90,10 +94,10 @@ public class CouponServiceImpl extends BaseServiceImpl<Coupon,Long> implements C
           Set<MsgEndUser> msgEndUserList = new HashSet <MsgEndUser> ();
           
           MessageInfo msgInfo = new MessageInfo ();
-          msgInfo.setMessageTitle ("优惠券");
+          msgInfo.setMessageTitle (SpringUtils.getMessage ("csh.coupon.title"));
           
           msgInfo.setMessageType (MessageType.PROMOTION);
-          msgInfo.setMessageContent ("优惠券发送，赶快前往活动中心领取");
+          msgInfo.setMessageContent(SpringUtils.getMessage("csh.coupon.send"));
           msgInfo.setSendType (SendType.PUSH);
           msgInfo.setTenantID (tenantID);
 //          msgInfo.setMsgUser (msgEndUserList);

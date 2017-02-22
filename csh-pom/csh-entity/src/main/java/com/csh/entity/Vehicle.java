@@ -153,6 +153,11 @@ public class Vehicle extends BaseEntity {
    * 用户车辆保养提醒
    */
   private Boolean isMaintainReminder;
+  
+  /**
+   * 多少公里保养一次
+   */
+  private Long mileagePerMaintain;
 
   /**
    * 警告信息
@@ -234,9 +239,14 @@ public class Vehicle extends BaseEntity {
    */
   private Boolean delFlag = false;
 
-
+  @JsonProperty
   public Boolean getIsMaintainReminder() {
-    return isMaintainReminder;
+    if (isMaintainReminder == null)
+    {
+      return false;
+    }else {
+      return isMaintainReminder;
+    }
   }
 
   public void setIsMaintainReminder(Boolean isMaintainReminder) {
@@ -327,8 +337,15 @@ public class Vehicle extends BaseEntity {
     this.driveMileage = driveMileage;
   }
 
+  @JsonProperty
   public Long getLastMaintainMileage() {
-    return lastMaintainMileage;
+    if (lastMaintainMileage == null)
+    {
+      return 0L;
+    }else {
+      return lastMaintainMileage;
+    }
+    
   }
 
   public void setLastMaintainMileage(Long lastMaintainMileage) {
@@ -641,5 +658,21 @@ public class Vehicle extends BaseEntity {
     this.speed = speed;
   }
 
+  @JsonProperty
+  @Column(columnDefinition="bigint default 5000")
+  public Long getMileagePerMaintain ()
+  {
+    if (mileagePerMaintain == null )
+    {
+      return 0L;
+    }else {
+      return mileagePerMaintain;
+    }
+  }
 
+  public void setMileagePerMaintain (Long mileagePerMaintain)
+  {
+    this.mileagePerMaintain = mileagePerMaintain;
+  }
+  
 }

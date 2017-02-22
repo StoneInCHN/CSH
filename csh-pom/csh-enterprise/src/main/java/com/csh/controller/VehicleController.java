@@ -35,12 +35,12 @@ import com.csh.beans.Setting;
 import com.csh.common.log.LogUtil;
 import com.csh.controller.base.BaseController;
 import com.csh.entity.DeviceInfo;
+import com.csh.entity.MessageInfo;
 import com.csh.entity.Vehicle;
 import com.csh.framework.filter.Filter.Operator;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
 import com.csh.json.request.MsgRequest;
-import com.csh.json.response.RealTimeCarCondition;
 import com.csh.json.response.VehicleDailyReport;
 import com.csh.json.response.VehicleStatus;
 import com.csh.service.DeviceInfoService;
@@ -526,7 +526,12 @@ public class VehicleController extends BaseController {
                 }
                 vehicle.setFaultCodeSet(faultCodeSet);
               }
-
+              //判断是否需要保养提醒
+              if (!vehicle.getIsMaintainReminder () 
+                  && vehicle.getDashboardMileage ()-vehicle.getLastMaintainMileage () >= vehicle.getMileagePerMaintain ())
+              {
+                vehicle.setIsMaintainReminder (true);
+              }
             }
           }
         }
@@ -618,4 +623,32 @@ public class VehicleController extends BaseController {
     return vehicleService.listVehicleBindDeviceByTenant(pageable,
         tenantAccountService.getCurrentTenantID(), plateSearch);
   }
+  @RequestMapping(value = "/updateMaintainReminder", method = RequestMethod.POST)
+  public @ResponseBody Message updateMaintainReminder(Boolean maintainRequired,Long vehicleId) {
+
+    Vehicle vehicle = vehicleService.find (vehicleId);
+    MessageInfo messageInfo = vehicleService.updateMaintainReminder (maintainRequired,vehicle);
+    if (messageInfo != null )
+    {
+      Setting setting = SettingUtils.get();
+      String params = "[{\"msgId\":"+messageInfo.getId ()+"}]";
+      ApiUtils.postJson (setting.getMsgPushUrl (),"UTF-8", "UTF-8", params);
+    }
+    return SUCCESS_MESSAGE;
+  }  
+  @RequestMapping(value = "/updateMaintainMileage", method = RequestMethod.POST)
+  public @ResponseBody Message updateMaintainMileage(Vehicle newVehicle) {
+
+    Vehicle vehicle = vehicleService.find (newVehicle.getId ());
+    if (vehicle.getLastMaintainMileage () != newVehicle.getLastMaintainMileage ())
+    {
+      vehicle.setLastMaintainMileage (newVehicle.getLastMaintainMileage ());
+    }
+    if (vehicle.getMileagePerMaintain () != newVehicle.getMileagePerMaintain ())
+    {
+      vehicle.setMileagePerMaintain (newVehicle.getMileagePerMaintain ());
+    }
+    vehicleService.update (vehicle);
+    return SUCCESS_MESSAGE;
+  } 
 }

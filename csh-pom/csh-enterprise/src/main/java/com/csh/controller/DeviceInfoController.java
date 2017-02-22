@@ -230,7 +230,7 @@ public class DeviceInfoController extends BaseController
   public String details(ModelMap model, Long id) {
     DeviceInfo deviceInfo = deviceInfoService.find(id);
     Map<String, Object> params = new HashMap<String, Object>();
-    params.put("deviceId", deviceInfo.getDeviceNo ());
+    params.put("deviceId", Long.parseLong (deviceInfo.getDeviceNo ()));
     
     model.addAttribute("realTimeCarCondition",  vehicleService.getRealTimeCarCondition (params));;
     model.addAttribute("deviceInfo", deviceInfo);

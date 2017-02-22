@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.csh.entity.MessageInfo;
 import com.csh.entity.Vehicle;
 import com.csh.framework.paging.Page;
 import com.csh.framework.paging.Pageable;
@@ -39,4 +40,7 @@ public interface VehicleService extends BaseService<Vehicle, Long> {
 		String plate);
 
   RealTimeCarCondition getRealTimeCarCondition (Map<String, Object> params);
+
+
+  MessageInfo updateMaintainReminder (Boolean maintainRequired,Vehicle vehicle);
 }
