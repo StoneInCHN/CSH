@@ -27,6 +27,7 @@ import com.csh.entity.FaultCode;
 import com.csh.entity.commonenum.CommonEnum.GpsSwitch;
 import com.csh.framework.filter.Filter;
 import com.csh.framework.filter.Filter.Operator;
+import com.csh.json.base.ResponseMultiple;
 import com.csh.json.base.ResponseOne;
 import com.csh.json.request.DeviceRequest;
 import com.csh.json.request.SendCommandRequest;
@@ -278,10 +279,10 @@ public class ObdController extends MobileBaseController {
    */
   @RequestMapping(value = "/getObdCode", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseOne<Map<String, Object>> getObdCode(
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getObdCode(
       @RequestBody DeviceRequest deviceReq) {
 
-    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
 
     Long userId = deviceReq.getUserId();
     String token = deviceReq.getToken();
@@ -299,12 +300,12 @@ public class ObdController extends MobileBaseController {
     Filter filter = new Filter("code", Operator.eq, faultCode);
     filters.add(filter);
     List<FaultCode> codes = faultCodeService.findList(null, filters, null);
-    Map<String, Object> map = new HashMap<String, Object>();
+    List<Map<String, Object>> resultMaps = new ArrayList<Map<String,Object>>();
     if (!CollectionUtils.isEmpty(codes)) {
-      String[] propertys = {"id", "code", "defineCh", "defineEn", "scope", "info"};
-      map = FieldFilterUtils.filterEntityMap(propertys, codes.get(0));
+      String[] properties = {"id","rangeScope", "code", "defineCh", "defineEn", "scope", "info"};
+      resultMaps = FieldFilterUtils.filterCollectionMap(properties, codes);
     }
-    response.setMsg(map);
+    response.setMsg(resultMaps);
     String newtoken = TokenGenerator.generateToken(deviceReq.getToken());
     endUserService.createEndUserToken(newtoken, userId);
     response.setToken(newtoken);

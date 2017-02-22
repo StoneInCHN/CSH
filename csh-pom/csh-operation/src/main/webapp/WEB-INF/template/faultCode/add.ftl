@@ -28,6 +28,10 @@ $().ready(function() {
 				required: true,
 				maxlength:20
 			},
+			rangeScope: {
+				required: true,
+				maxlength:200
+			},
 			defineCh: {
 				required: true,
 				maxlength:200
@@ -84,6 +88,14 @@ $().ready(function() {
 								</th>
 								<td>
 									<input type="text" name="code" class="text wid380" maxlength="20" />
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<span class="requiredField">*</span>${message("csh.faultCode.rangeScope")}:
+								</th>
+								<td>
+									<input type="text" name="rangeScope" class="text wid380" maxlength="200" />
 								</td>
 							</tr>
 							<tr>

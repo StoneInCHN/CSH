@@ -392,7 +392,7 @@ public class VehicleController extends MobileBaseController {
     }
     return vehicleList;
   }
-  
+
   /**
    * 获取故障码信息
    *
@@ -400,15 +400,12 @@ public class VehicleController extends MobileBaseController {
    */
   @RequestMapping(value = "/getFaultCode", method = RequestMethod.POST)
   @UserValidCheck
-  public @ResponseBody ResponseOne<Map<String, Object>> getFaultCode(
+  public @ResponseBody ResponseMultiple<Map<String, Object>> getFaultCodeDetails(
       @RequestBody VehicleRequest request) {
-
-    ResponseOne<Map<String, Object>> response = new ResponseOne<Map<String, Object>>();
-
+    ResponseMultiple<Map<String, Object>> response = new ResponseMultiple<Map<String, Object>>();
     Long userId = request.getUserId();
     String token = request.getToken();
     String faultCode = request.getFaultCode();
-
     // 验证登录token
     String userToken = tenantAccountService.getTenantUserToken(userId);
     if (!TokenGenerator.isValiableToken(token, userToken)) {
@@ -416,22 +413,24 @@ public class VehicleController extends MobileBaseController {
       response.setDesc(Message.error("csh.user.token.timeout").getContent());
       return response;
     }
+    if (LogUtil.isDebugEnabled(VehicleController.class)) {
+      LogUtil.debug(VehicleController.class, "getFaultCodeDetails", "request param: %s", request.toString());
+    }
     List<Filter> filters = new ArrayList<Filter>();
     filters.add(Filter.eq("code", faultCode));
     List<FaultCode> codes = faultCodeService.findList(null, filters, null);
-    Map<String, Object> map = new HashMap<String, Object>();
+    
+    List<Map<String, Object>> resultMaps = new ArrayList<Map<String,Object>>();
     if (!CollectionUtils.isEmpty(codes)) {
-      String[] propertys = {"id", "code", "defineCh", "defineEn", "scope", "info"};
-      map = FieldFilterUtils.filterEntityMap(propertys, codes.get(0));
+      String[] properties = {"id","rangeScope", "code", "defineCh", "defineEn", "scope", "info"};
+      resultMaps = FieldFilterUtils.filterCollectionMap(properties, codes);
     }
-    response.setMsg(map);
+    response.setMsg(resultMaps);
     String newtoken = TokenGenerator.generateToken(request.getToken());
     tenantAccountService.createTenantUserToken(newtoken, userId);
     response.setToken(newtoken);
     response.setCode(CommonAttributes.SUCCESS);
-    
     return response;
+    
   }
-
-  
 }

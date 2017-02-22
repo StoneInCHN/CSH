@@ -85,9 +85,7 @@ public class FaultCodeController extends BaseController {
   @RequestMapping(value = "/dataImport", method = RequestMethod.GET)
   public @ResponseBody Message dataImport() {
     List<FaultCode> lists = FaultcodeUtils.readCode();
-    for (FaultCode faultCode : lists) {
-      faultCodeService.save(faultCode);
-    }
+    faultCodeService.save(lists);
     return SUCCESS_MESSAGE;
   }
   

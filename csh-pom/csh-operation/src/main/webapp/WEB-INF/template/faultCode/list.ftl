@@ -101,6 +101,9 @@
 														<a href="javascript:;" class="sort" name="code">${message("csh.faultCode.code")}</a>
 													</th>
 													<th>
+														<span>${message("csh.faultCode.rangeScope")}</span>
+													</th>
+													<th>
 														<a href="javascript:;" class="sort" name="defineCh">${message("csh.faultCode.defineCh")}</a>
 													</th>
 													<th>
@@ -125,6 +128,11 @@
 													</td>
 													<td>
 														${faultCode.code}
+													</td>
+													<td>
+														<span title="${faultCode.rangeScope}">
+															${abbreviate(faultCode.rangeScope, 50, "...")}
+														</span>		
 													</td>
 													<td>
 														<span title="${faultCode.defineCh}">

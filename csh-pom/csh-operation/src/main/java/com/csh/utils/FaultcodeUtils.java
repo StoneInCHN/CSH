@@ -16,54 +16,37 @@ public class FaultcodeUtils {
     List<FaultCode> lists = new ArrayList<FaultCode>(); 
     int count = 0;
     try {
-      File f = new File("C:\\Users\\tanbiao\\Desktop\\csh\\OBD-II-2.1.txt");
+      File f = new File("C:\\Users\\tanbiao\\Desktop\\csh\\OBD-II-P1.txt");
       InputStream input = new FileInputStream(f);
-      BufferedReader b = new BufferedReader(new InputStreamReader(input,"gbk"));
+      BufferedReader b = new BufferedReader(new InputStreamReader(input,"utf-8"));
       String value = b.readLine();
      // if(value != null)
       FaultCode faultCode = new FaultCode();
       while(value !=null){
        count++;
-         /*if(count%6 ==1){
-           System.out.println(count +": " +value.substring(5, value.length()));
-         }*/
-         /*if(count%6 ==2){
-           System.out.println(count +": " +value.substring(6, value.length()));
-         }*/
-         /*if(count%6 ==3){
-           System.out.println(count +": " +value);
-         }*/
-         /*if(count%6 ==4){
-           System.out.println(count +": " +value.substring(4, value.length()));
-         }*/
-       /*if(count%6 ==5){
-         if (value.length() >6){
-         System.out.println(count +": " +value.substring(6, value.length()));
-         }else{
-           System.out.println(count +": " +value.substring(5, value.length()));
-         }
-       }*/
-       
-         switch (count%6){
+         switch (count%7){
            case 1:
-             faultCode.setCode(value.substring(5, value.length()).trim());
+             faultCode.setRangeScope(value.substring(7, value.length()).trim());
              break;
            case 2:
+             faultCode.setCode(value.substring(5, value.length()).trim());
+             break;
+           case 3:
              if (value.length() >6) {
                faultCode.setDefineCh(value.substring(6, value.length()).trim());
              }
              break;
-           case 3:
+           case 4:
              if (value.length() >6) {
                faultCode.setDefineEn(value.substring(6, value.length()).trim());
              }
              break;
-           case 4:
+           case 5:
              if (value.length() >4) {
                faultCode.setScope(value.substring(4, value.length()).trim());
              }
              break;
-           case 5:
+           case 6:
              if (value.length() >6) {
                faultCode.setInfo(value.substring(6, value.length()).trim());
              }
@@ -79,7 +62,9 @@ public class FaultcodeUtils {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
     System.out.println("该txt文件的总行数为 :" +count);
     return lists;
   }
+  
 }

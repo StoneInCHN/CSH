@@ -23,6 +23,11 @@ public class FaultCode extends BaseEntity{
   private String code;
   
   /**
+   * 适用范围
+   */
+  private String rangeScope;
+  
+  /**
    * 中文定义
    */
   private String defineCh;
@@ -86,5 +91,13 @@ public class FaultCode extends BaseEntity{
   public void setInfo(String info) {
     this.info = info;
   }
-  
+
+  @Column(length=200)
+  public String getRangeScope() {
+    return rangeScope;
+  }
+
+  public void setRangeScope(String rangeScope) {
+    this.rangeScope = rangeScope;
+  }
 }
