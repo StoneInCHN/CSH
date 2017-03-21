@@ -283,6 +283,45 @@ public class Setting implements Serializable {
    */
   private String tenantAppUrl;
 
+  /**
+   * 合作身份者ID
+   */
+  private String alipayPartner;
+
+  /**
+   * 商户的私钥
+   */
+  private String alipayPrivateKey;
+
+  /**
+   * 支付宝的公钥
+   */
+  private String alipayPublicKey;
+
+
+  public String getAlipayPartner() {
+    return alipayPartner;
+  }
+
+  public void setAlipayPartner(String alipayPartner) {
+    this.alipayPartner = alipayPartner;
+  }
+
+  public String getAlipayPrivateKey() {
+    return alipayPrivateKey;
+  }
+
+  public void setAlipayPrivateKey(String alipayPrivateKey) {
+    this.alipayPrivateKey = alipayPrivateKey;
+  }
+
+  public String getAlipayPublicKey() {
+    return alipayPublicKey;
+  }
+
+  public void setAlipayPublicKey(String alipayPublicKey) {
+    this.alipayPublicKey = alipayPublicKey;
+  }
 
   public String getTenantAppUrl() {
     return tenantAppUrl;

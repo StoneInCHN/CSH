@@ -6,6 +6,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
+import com.csh.beans.Setting;
+import com.csh.utils.SettingUtils;
 import com.csh.utils.alipay.config.AlipayConfig;
 import com.csh.utils.alipay.sign.RSA;
 
@@ -23,6 +25,7 @@ public class AlipayNotify {
    */
   private static final String HTTPS_VERIFY_URL =
       "https://mapi.alipay.com/gateway.do?service=notify_verify&";
+  private static final Setting setting = SettingUtils.get();
 
   /**
    * 验证消息是否是支付宝发出的合法消息
@@ -74,7 +77,7 @@ public class AlipayNotify {
     boolean isSign = false;
     if (AlipayConfig.sign_type.equals("RSA")) {
       isSign =
-          RSA.verify(preSignStr, sign, AlipayConfig.ali_public_key, AlipayConfig.input_charset);
+          RSA.verify(preSignStr, sign, setting.getAlipayPublicKey(), AlipayConfig.input_charset);
     }
     return isSign;
   }
@@ -89,7 +92,7 @@ public class AlipayNotify {
   private static String verifyResponse(String notify_id) {
     // 获取远程服务器ATN结果，验证是否是支付宝服务器发来的请求
 
-    String partner = AlipayConfig.partner;
+    String partner = setting.getAlipayPartner();
     String veryfy_url = HTTPS_VERIFY_URL + "partner=" + partner + "&notify_id=" + notify_id;
 
     return checkUrl(veryfy_url);
