@@ -29,6 +29,7 @@ public final class DateUtils implements ApplicationContextAware, DisposableBean 
       "yyyy-MM-dd HH:mm");
   private static final SimpleDateFormat hourAndMinuteFormat = new SimpleDateFormat("hh:mm");
   private static final SimpleDateFormat dateToNumberFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+  public static final SimpleDateFormat filePostfixFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
   private DateUtils() {}
 
@@ -93,7 +94,15 @@ public final class DateUtils implements ApplicationContextAware, DisposableBean 
     return str + " " + weekday;
 
   }
-
+  /**
+   * 格式化时间
+   * 
+   * @param date
+   * @return format string
+   */
+  public static String getDateFormatString(SimpleDateFormat sf, Date date) {
+    return sf.format(date);
+  }
   /**
    * format date to hh:mm
    * 

@@ -7,7 +7,11 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.csh.entity.FaultCode;
 
@@ -65,6 +69,26 @@ public class FaultcodeUtils {
     
     System.out.println("该txt文件的总行数为 :" +count);
     return lists;
+  }
+  /**
+   * 准备导出的数据
+   * @param response
+   * @param lists
+   * @return
+   */
+  public static List<Map<String, String>> prepareExportData(List<FaultCode> lists){
+      List<Map<String, String>> mapList = new ArrayList<Map<String,String>>();
+      for (FaultCode faultCode : lists) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("code", faultCode.getCode());
+        map.put("rangeScope", faultCode.getRangeScope());
+        map.put("defineCh", faultCode.getDefineCh());
+        map.put("defineEn", faultCode.getDefineEn());
+        map.put("scope", faultCode.getScope());
+        map.put("info", faultCode.getInfo());
+        mapList.add(map);
+      }
+      return mapList;
   }
   
 }

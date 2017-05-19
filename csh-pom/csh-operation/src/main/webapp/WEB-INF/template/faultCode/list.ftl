@@ -25,7 +25,7 @@
 					</div>
 					<div class="clearfix"></div>
 				</div>
-			
+
 			<form id="listForm" action="list.jhtml" method="get">
 				  <div class="container operation">
 					<div class="row">
@@ -40,6 +40,9 @@
 										</div>
 										<div class="btn-group operationButton">
 										  <button type="button" id="refreshButton" class="btn btn-default"><i class="fa fa-refresh"></i>&nbsp;&nbsp;${message("csh.common.refresh")}</button>
+										</div>
+										<div class="btn-group operationButton">
+										  <button type="button" id="exportButton" class="btn btn-default"><i class="fa fa-download"></i>&nbsp;&nbsp;${message("csh.common.export")}</button>
 										</div>
 									</li>
 									  <li role="presentation" class="dropdown pull-right">
@@ -172,10 +175,34 @@
 				</div>
 			</form>
 </div>
+<form id="exportForm" action="dataExport.jhtml" method="post"></form>
+<iframe name="exportData_iframe" style="display:none"></iframe>
 <script type="text/javascript" src="${base}/resources/js/jquery.js"></script>
 <script type="text/javascript" src="${base}/resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="${base}/resources/js/common.js"></script>
 <script type="text/javascript" src="${base}/resources/js/list.js"></script>
 <script type="text/javascript" src="${base}/resources/js/custom.js"></script>
+<script type="text/javascript">
+$(function(){
+	// 导出
+	var $exportButton = $("#exportButton");
+	$exportButton.click( function() {
+		var $this = $(this);
+		if ($this.hasClass("disabled")) {
+			return false;
+		}
+		$.dialog({
+			type: "warn",
+			content: message("admin.dialog.exportConfirm"),
+			ok: message("admin.dialog.ok"),
+			cancel: message("admin.dialog.cancel"),
+			onOk: function() {
+					$("#exportForm").attr("target", "exportData_iframe");
+					$("#exportForm").submit();
+			}
+		});
+	});
+});
+</script>
 </body>
 </html>
