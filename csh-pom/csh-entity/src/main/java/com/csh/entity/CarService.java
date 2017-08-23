@@ -248,7 +248,7 @@ public class CarService extends BaseEntity {
 	this.isAllowedRedPackage = isAllowedRedPackage;
   }
 
-  @Column(scale = 2, precision = 10)
+  @Column(scale = 6, precision = 14)
   @JsonProperty
   public BigDecimal getRedPackageMax() {
 	return redPackageMax;

@@ -190,7 +190,7 @@ public class CarServiceRecord extends BaseEntity {
   private Set<CarServiceRecordPartInst> recordItemPartInsts =
       new HashSet<CarServiceRecordPartInst>();
 
-  @Column(scale = 2, precision = 10)
+  @Column(scale = 6, precision = 14)
   @JsonProperty
   public BigDecimal getOfflineBalance() {
     return offlineBalance;
@@ -200,7 +200,7 @@ public class CarServiceRecord extends BaseEntity {
     this.offlineBalance = offlineBalance;
   }
 
-  @Column(scale = 2, precision = 10)
+  @Column(scale = 6, precision = 14)
   @JsonProperty
   public BigDecimal getRedPackageUsage() {
     return redPackageUsage;
@@ -228,7 +228,7 @@ public class CarServiceRecord extends BaseEntity {
     this.couponEndUser = couponEndUser;
   }
 
-  @Column(scale = 2, precision = 10)
+  @Column(scale = 6, precision = 14)
   @JsonProperty
   public BigDecimal getDiscountPrice() {
     return discountPrice;

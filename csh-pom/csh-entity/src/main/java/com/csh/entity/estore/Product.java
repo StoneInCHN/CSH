@@ -1966,7 +1966,7 @@ public class Product extends BaseEntity {
     this.barCode = barCode;
   }
 
-  @Column(scale = 2, precision = 10)
+  @Column(scale = 6, precision = 14)
   public BigDecimal getRedPackageMax() {
 	return redPackageMax;
   }

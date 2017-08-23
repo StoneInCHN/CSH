@@ -200,7 +200,7 @@ public class Order extends BaseEntity {
    */
   private BigDecimal offlineBalance;
 
-  @Column(scale = 2, precision = 10)
+  @Column(scale = 6, precision = 14)
   public BigDecimal getOfflineBalance() {
     return offlineBalance;
   }
