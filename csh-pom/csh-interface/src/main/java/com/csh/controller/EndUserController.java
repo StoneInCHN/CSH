@@ -1,5 +1,6 @@
 package com.csh.controller;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +25,14 @@ import com.csh.controller.base.MobileBaseController;
 import com.csh.entity.EndUser;
 import com.csh.entity.LoginStatistics;
 import com.csh.entity.SmsToken;
+import com.csh.entity.Wallet;
+import com.csh.entity.WalletRecord;
 import com.csh.entity.commonenum.CommonEnum.AccountStatus;
+import com.csh.entity.commonenum.CommonEnum.BalanceType;
 import com.csh.entity.commonenum.CommonEnum.ImageType;
 import com.csh.entity.commonenum.CommonEnum.SmsTokenType;
 import com.csh.entity.commonenum.CommonEnum.TokenSendType;
+import com.csh.entity.commonenum.CommonEnum.WalletType;
 import com.csh.json.base.BaseRequest;
 import com.csh.json.base.BaseResponse;
 import com.csh.json.base.ResponseOne;
@@ -35,10 +40,12 @@ import com.csh.json.request.EndUserInfoRequest;
 import com.csh.json.request.SmsTokenRequest;
 import com.csh.json.request.UserLoginRequest;
 import com.csh.json.request.UserRegRequest;
+import com.csh.json.request.WalletRequest;
 import com.csh.service.EndUserService;
 import com.csh.service.FileService;
 import com.csh.service.ReportUserRegStatisticsService;
 import com.csh.service.SmsTokenService;
+import com.csh.service.WalletService;
 import com.csh.utils.FieldFilterUtils;
 import com.csh.utils.KeyGenerator;
 import com.csh.utils.RSAHelper;
@@ -54,6 +61,9 @@ public class EndUserController extends MobileBaseController {
 
   @Resource(name = "endUserServiceImpl")
   private EndUserService endUserService;
+
+  @Resource(name = "walletServiceImpl")
+  private WalletService walletService;
 
   @Resource(name = "smsTokenServiceImpl")
   private SmsTokenService smsTokenService;
@@ -619,6 +629,54 @@ public class EndUserController extends MobileBaseController {
     return response;
   }
 
+
+
+  /**
+   * 修改用户红包金额（商城）
+   *
+   * @param req
+   * @return
+   */
+  @RequestMapping(value = "/updateGiftAmount", method = RequestMethod.POST)
+  @UserValidCheck
+  public @ResponseBody BaseResponse updateRedPacket(@RequestBody WalletRequest req) {
+    BaseResponse response = new BaseResponse();
+    Long userId = req.getUserId();
+    String token = req.getToken();
+    BigDecimal amount = req.getAmount();
+
+    // 验证登录token
+    String userToken = endUserService.getEndUserToken(userId);
+    if (!TokenGenerator.isValiableToken(token, userToken)) {
+      response.setCode(CommonAttributes.FAIL_TOKEN_TIMEOUT);
+      response.setDesc(Message.error("csh.user.token.timeout").getContent());
+      return response;
+    }
+
+    EndUser endUser = endUserService.find(userId);
+    Wallet wallet = endUser.getWallet();
+    if (wallet.getGiftAmount().compareTo(amount) < 0) {
+      response.setCode(CommonAttributes.FAIL_COMMON);
+      response.setDesc("用户红包金额不足!");
+      return response;
+    }
+    wallet.setGiftAmount(wallet.getGiftAmount().subtract(amount));
+    WalletRecord walletRecord = new WalletRecord();
+    walletRecord.setBalanceType(BalanceType.OUTCOME);
+    walletRecord.setWalletType(WalletType.REDPACKET);
+    walletRecord.setRedPacket(amount);
+    walletRecord.setRemark("红包消费(商城)");
+    walletRecord.setWallet(wallet);
+    wallet.getWalletRecords().add(walletRecord);
+    walletService.update(wallet);
+
+    String newtoken = TokenGenerator.generateToken(req.getToken());
+    endUserService.createEndUserToken(newtoken, userId);
+    response.setToken(newtoken);
+    response.setDesc(wallet.getGiftAmount().toString());
+    response.setCode(CommonAttributes.SUCCESS);
+    return response;
+  }
 
   // /**
   // * 获取用户信息
